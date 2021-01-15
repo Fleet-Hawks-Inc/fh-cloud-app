@@ -58,11 +58,6 @@ export class AddIssueComponent implements OnInit {
   public issueDocs = [];
   pdfSrc: any;
 
-  alldocs = [];
-  allImages = [];
-  deletedImages = [];
-  deletedDocs = [];
-
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
               private router: Router,
@@ -248,12 +243,10 @@ hideErrors() {
       this.existingDocs = result.uploadedDocs;
 
       if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-        this.allImages = result.uploadedPhotos;
         this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
 
       if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-        this.alldocs = result.uploadedDocs;
         this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
     });
@@ -338,10 +331,17 @@ setSrcValue(){
     });
   }
 
-  // delete uploaded images and documents
+  // delete uploaded images and documents 
   delete(type: string,name: string){
     this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
       this.fetchIssueByID();
+      let alertmsg = '';
+      if(type == 'doc') {
+        alertmsg = 'Document';
+      } else {
+        alertmsg = 'Image';
+      }
+      this.toaster.success(alertmsg+ ' Deleted Successfully');
     });
   }
 }

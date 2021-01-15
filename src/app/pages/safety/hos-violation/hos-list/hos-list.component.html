@@ -12,7 +12,7 @@
         <section role="main" class="content-body">
             <header class="page-header">
                 <div class="row px-2 pt-2">
-                    <h2 class="pull-left line-height-xl">Violations</h2>
+                    <h2 class="pull-left line-height-xl">HOS Violations</h2> 
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
@@ -23,14 +23,12 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
-                            <select class="form-control" name="severity" [(ngModel)]="filterData.severity">
-                                <option value="">Select severity</option>
-                                <option value="high">High severity</option>
-                                <option value="medium">Medium severity</option>
-                                <option value="low">Low severity</option>
-                            </select>
-                        </div>
+                        <ng-select [(ngModel)]="filterData.severity" name="severity"
+                            placeholder="Search by severity">
+                            <ng-option class="text-capitalize" value="high">High severity</ng-option>
+                            <ng-option class="text-capitalize" value="medium">Medium severity</ng-option>
+                            <ng-option class="text-capitalize" value="low">Low severity</ng-option>
+                        </ng-select>
                     </div>
                     <div class="col-md-3 col-lg-3">
                         <div class="input-daterange input-group" data-plugin-datepicker="">
@@ -39,11 +37,23 @@
                                     <i class="fas fa-calendar-alt"></i>
                                 </span>
                             </span>
-                            <input type="date" placeholder="From date" class="form-control" name="startDate" [(ngModel)]="filterData.startDate">
+                            <!-- <input type="date" placeholder="From date" class="form-control" name="startDate" [(ngModel)]="filterData.startDate"> -->
+                            <input 
+                                [(ngModel)]="filterData.startDate" name="startDate" 
+                                type="text" 
+                                placeholder="Search By Event Start Date"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                 to
                             </span>
-                            <input type="date" placeholder="To date" class="form-control" name="endDate" [(ngModel)]="filterData.endDate">
+                            <!-- <input type="date" placeholder="To date" class="form-control" name="endDate" [(ngModel)]="filterData.endDate"> -->
+                            <input 
+                                [(ngModel)]="filterData.endDate" name="endDate" 
+                                type="text" 
+                                placeholder="Search By Event End Date"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                class="form-control" autocomplete="off"> 
                         </div>
                     </div>
                     <div class="col-md-3 col-lg-3">
@@ -51,7 +61,7 @@
                             class="btn btn-success btn-sm mr-2" style="color:white;"> Search
                         </a>
                         <a href="javascript:;" (click)="resetFilter()"
-                            class="btn btn-success btn-sm" style="color:white;"> Reset Filter
+                            class="btn btn-success btn-sm" style="color:white;"> Reset
                         </a>
                     </div>
                 </div>

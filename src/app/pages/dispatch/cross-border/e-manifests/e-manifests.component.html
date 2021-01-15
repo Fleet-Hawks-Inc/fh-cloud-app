@@ -9,30 +9,44 @@
         <!-- end: sidebar -->
   
         <section role="main" class="content-body p-0">
-            <header class="page-header pr-5">
+            <header class="page-header pr-5" *ngIf="activeDiv === 'ace'">
                <form class="form-horizontal" method="get">
                   <div class="row px-2" style="padding-top:10px;">
-                     <div class="col-md-2 col-lg-3">
+                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
-                        <input type="text" class="form-control" placeholder="Search by Trip Number, Driver, Shipment Control Number etc." name="">
+                            <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
+                                [(ngModel)]="vehicleIdentification" class="form-control"
+                                (input)="getSuggestions($event.target.value)" />
                         </div>
-                     </div>
+                        <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
+                            setVehicle(
+                                suggestedVehicle.vehicleID,
+                                suggestedVehicle.vehicleIdentification
+                            )
+                            ">
+                            {{ suggestedVehicle.vehicleIdentification }}
+                        </div>
+                    </div>
                      <div class="col-md-2  col-lg-2">
-                        <div class="btn-group flex-wrap" style="width:240px;">
-                           <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle text-left" data-toggle="dropdown">Search by Status <span class="caret"></span></button>
-                           <div class="dropdown-menu" role="menu">
-                              <a class="dropdown-item text-1" href="#">Draft</a>
-                              <a class="dropdown-item text-1" href="#">Accepted</a>
-                              <a class="dropdown-item text-1" href="#">On file with CBP</a>
-                              <a class="dropdown-item text-1" href="#">Rejected</a>
-                           </div>
-                        </div>
+                        <ng-select [(ngModel)]="currentStatus" name="currentStatus">
+                           <ng-option value="Draft">Draft</ng-option>
+                           <ng-option value="Cancelled Manifest">Cancelled Manifest</ng-option>
+                           <ng-option value="Transmitted to CBP">Transmitted to CBP</ng-option>
+                           <ng-option value="Preliminary Manifest on File with CBP">Preliminary Manifest On File with CBP</ng-option>
+                           <ng-option value="CBP Returned Error">CBP Returned Error</ng-option>
+                           <ng-option value="Complete Manifest On File with CBP">Complete Manifest On File with CBP</ng-option>
+                           <ng-option value="Complete Manifest and Entry Numbers On File with CBP">Complete Manifest and Entry Numbers On File with CBP</ng-option>                        
+                           <ng-option value="Truck Arrived at Border">Truck Arrived at Border</ng-option>
+                           <ng-option value="Truck Released at Border">Truck Released at Border</ng-option>
+                        </ng-select>
                      </div>
                     
-                     <div class="col-md-1  col-lg-1">
-                        <button type="submit" class="btn btn-sm btn-success">Search</button>
+                     <div class="col-md-2  col-lg-2">
+                        <button type="submit" (click)="searchACEFilter()"
+                                class="btn btn-sm btn-success mr-2">Search</button>
+                            <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
-                     <div class="col-md-7 col-lg-6 text-right">
+                     <div class="col-md-6 col-lg-6 text-right">
                         
                         <div class="btn-group flex-wrap">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
@@ -42,8 +56,62 @@
                               <a class="dropdown-item text-1" href="">Export</a>
                            </div>
                         </div>
-                        <a [routerLink] = "['/dispatch','cross-border','ACE-new-eManifest']" *ngIf="activeDiv === 'ace'" class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACE eManifest</a>
-                        <a [routerLink] = "['/dispatch','cross-border','ACI-new-eManifest']" *ngIf="activeDiv === 'aci'"  class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
+                        <a [routerLink] = "['/dispatch','cross-border','ACE-new-eManifest']"  class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACE eManifest</a>
+
+                     </div>
+                  </div>
+               </form>
+            </header>
+            <header class="page-header pr-5" *ngIf="activeDiv === 'aci'">
+               <form class="form-horizontal" method="get">
+                  <div class="row px-2" style="padding-top:10px;">
+                     <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-md mb-3">
+                            <input type="text" autocomplete="off" name="vehicleIdentificationACI" placeholder="Search vehicle"
+                                [(ngModel)]="vehicleIdentificationACI" class="form-control"
+                                (input)="getSuggestionsACI($event.target.value)" />
+                        </div>
+                        <div *ngFor="let suggestedVehicle of suggestedVehiclesACI" class="suggestionClass" (click)="
+                            setVehicleACI(
+                                suggestedVehicle.vehicleID,
+                                suggestedVehicle.vehicleIdentification
+                            )
+                            ">
+                            {{ suggestedVehicle.vehicleIdentification }}
+                        </div>
+                    </div>
+                     <div class="col-md-2  col-lg-2">
+                           <ng-select [(ngModel)]="currentStatusACI" name="currentStatusACI">
+                              <ng-option value="Draft">Draft</ng-option>
+                              <ng-option value="Cancelled">Cancelled</ng-option>
+                              <ng-option value="Transmitted to CBSA">Transmitted to CBSA</ng-option>
+                              <ng-option value="CBSA Returned Error">CBSA Returned Error</ng-option>
+                              <ng-option value="On File with CBSA">On File with CBSA</ng-option>
+                              <ng-option value="On File with Match Notice">On File with Match Notice</ng-option>
+                              <ng-option value="On File with Transaction Number(s)">On File with Transaction Number(s)</ng-option>
+                              <ng-option value="Arrival Reported at Border">Arrival Reported at Border</ng-option>
+                              <ng-option value="Rejected After Arrival at Border">Rejected After Arrival at Border</ng-option>
+                              <ng-option value="Released">Released</ng-option>
+                           </ng-select>                       
+                     </div>
+                    
+                     <div class="col-md-2  col-lg-2">
+                        <button type="submit" (click)="searchACIFilter()"
+                        class="btn btn-sm btn-success mr-2">Search</button>
+                    <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
+                     </div>
+                     <div class="col-md-6 col-lg-6 text-right">
+                        
+                        <div class="btn-group flex-wrap">
+                           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                           <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                            
+                              <a class="dropdown-item text-1" href="">Import</a>
+                              <a class="dropdown-item text-1" href="">Export</a>
+                           </div>
+                        </div>
+                        <a [routerLink] = "['/dispatch','cross-border','ACI-new-eManifest']"   class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
+
                      </div>
                   </div>
                </form>
@@ -51,14 +119,11 @@
             <div id="list_view">
                <ul class="nav nav-tabs top-tabs p-2" id="eManifests-tabs" role="tablist">
                   <li class="nav-item">
-                     <a class="nav-link active" id="ace-emanifest-tab" (click)= "activeDiv = 'ace'" data-toggle="tab" href="#ace-emanifest" role="tab" aria-controls="ace-emanifest" aria-selected="true">ACE eManifest</a>
+                     <a class="nav-link active" id="ace-emanifest-tab"  (click)="ACEEntries()" data-toggle="tab" href="#ace-emanifest" role="tab" aria-controls="ace-emanifest" aria-selected="true">ACE eManifest</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="aci-emanifest-tab"  (click)= "activeDiv = 'aci'" data-toggle="tab" href="#aci-emanifest" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
+                     <a class="nav-link" id="aci-emanifest-tab"  (click)= "ACIEntries()" data-toggle="tab" href="#aci-emanifest" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
                   </li>
-                  <!-- <li class="nav-item">
-                     <a class="nav-link" id="csaFast-tab" data-toggle="tab" href="#csaFast" role="tab" aria-controls="csaFast" aria-selected="false">CSA/FAST Shipment</a>
-                  </li> -->
                </ul>
             <div class="row">
                <div class="col">
@@ -66,7 +131,7 @@
                      <div class="card-body">
                          <div class="tab-content p-0">
                            <div class="tab-pane show active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
-                              <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0"  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
                                  <thead>
                                     <tr> 
                                        <th>Trip</th>
@@ -83,16 +148,16 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers">{{driver.firstName}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
-                                          <!-- {{aceManifest.truck.number}} -->
+                                          {{vehiclesList[aceManifest.truck.truckID]}}
                                        </td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{trailer.number}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.shipmentControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">Diamond, Detroit</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -103,10 +168,15 @@
                                         </div></td>                                       
                                     </tr> 
                                  </tbody>
+                                 <tbody *ngIf="ACEList.length === 0">
+                                    <tr>
+                                        <td colspan="13" class="no-data-available">No records found</td>
+                                    </tr>
+                                <tbody>
                               </table>                              
                            </div>
                            <div class="tab-pane" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
-                               <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable">
+                               <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptionsACI" [dtTrigger]="dtTriggerACI">
                                  <thead>
                                     <tr>                                 
                                        
@@ -126,12 +196,12 @@
                                     <tr *ngFor = "let aciManifest of ACIList;">                                       
                                        <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                         <td>{{aciManifest.CCC}}</td>                                          
-                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driver.firstName}}</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">
-                                          <!-- {{aciManifest.truck.number}} -->
+                                          {{vehiclesList[aciManifest.truck.truckID]}}
                                        </td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{trailer.number}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">Diamond, Detroit</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.currentStatus}}</span></td>
@@ -145,18 +215,11 @@
                                     </tr> 
                                     
                                  </tbody>
-                              </table>
-                           </div>
-                           <div class="tab-pane" id="csaFast" role="tabpanel" aria-labelledby="csaFast-tab">
-                               <table class="table table-bordered table-striped mb-0 simple-table">
-                          
-                                 <tbody>
+                                 <tbody *ngIf="ACIList.length === 0">
                                     <tr>
-                                       <td width="5%"><p>CSA FAST</p></td>
+                                        <td colspan="13" class="no-data-available">No records found</td>
                                     </tr>
-
-                                    
-                                 </tbody>
+                                <tbody>
                               </table>
                            </div>
                         </div>

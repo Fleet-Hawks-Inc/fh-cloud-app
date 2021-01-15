@@ -83,59 +83,61 @@
                 <div class="col">
                     <section class="card">
                         <div class="card-body pt-1">
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="30%">Vehicle</th>
-                                        <th width="15%">Vehicle Renewal Type</th>
-                                        <th width="15%">Due Date</th>
-                                        <th width="15%">Send Reminder</th>
-                                        <th width="15%">Subscribers</th>
-                                        <th width="5%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="remindersData.length > 0">
-                                    <tr *ngFor="let item of remindersData;">
-                                        <td>{{ vehicleList[item.reminderIdentification]}}</td>
-                                        <td>
-                                            <span class="text-warning font-weight-bold font-size-12"
-                                                *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
-                                            <span class="text-danger font-weight-bold font-size-12"
-                                                *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Vehicle</th>
+                                            <th width="15%">Vehicle Renewal Type</th>
+                                            <th width="15%">Due Date</th>
+                                            <th width="15%">Send Reminder</th>
+                                            <th width="15%">Subscribers</th>
+                                            <th width="5%">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="remindersData.length > 0">
+                                        <tr *ngFor="let item of remindersData;">
+                                            <td>{{ vehicleList[item.reminderIdentification]}}</td>
+                                            <td>
+                                                <span class="text-warning font-weight-bold font-size-12"
+                                                    *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                <span class="text-danger font-weight-bold font-size-12"
+                                                    *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
 
-                                            <span class="font-weight-bold"
-                                                title="Task">{{tasksList[item.reminderTasks.task]}}</span>
-                                        </td>
-                                        <td>{{item.reminderTasks.dueDate}}</td>
-                                        <td>{{item.reminderTasks.remindByDays}} Day(s) Before</td>
-                                        <td><span *ngFor="let s of item.subscribers">
-                                                <span
-                                                    *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
-                                                <span
-                                                    *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
-                                            </span></td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                        class="fas fa-ellipsis-v"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                    <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.reminderID }}"
-                                                        class="dropdown-item text-1">Edit</a>
-                                                    <a href="javascript:;" class="dropdown-item text-1"
-                                                        (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                <span class="font-weight-bold"
+                                                    title="Task">{{tasksList[item.reminderTasks.task]}}</span>
+                                            </td>
+                                            <td>{{item.reminderTasks.dueDate}}</td>
+                                            <td>{{item.reminderTasks.remindByDays}} Day(s) Before</td>
+                                            <td><span *ngFor="let s of item.subscribers">
+                                                    <span
+                                                        *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                                    <span
+                                                        *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                                </span></td>
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i
+                                                            class="fas fa-ellipsis-v"></i></button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
+                                                        <a routerLink="/fleet/reminders/vehicle-renewals/edit/{{item.reminderID }}"
+                                                            class="dropdown-item text-1">Edit</a>
+                                                        <a href="javascript:;" class="dropdown-item text-1"
+                                                            (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody *ngIf="remindersData.length === 0">
-                                    <tr>
-                                      <td colspan="10" class="no-data-available">No records found</td>
-                                    </tr>
-                                <tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="remindersData.length === 0">
+                                        <tr>
+                                        <td colspan="10" class="no-data-available">No records found</td>
+                                        </tr>
+                                    <tbody>
+                                </table>
+                            </div>
                         </div>
                     </section>
                 </div>

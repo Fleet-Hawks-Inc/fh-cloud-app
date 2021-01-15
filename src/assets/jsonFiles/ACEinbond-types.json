@@ -1,0 +1,18 @@
+[
+	{
+		"code": "61",
+		"longDescription": "Immediate Transportation"
+	},
+	{
+		"code": "62",
+		"longDescription": "Transportation and Exportation"
+	},
+	{
+		"code": "63",
+		"longDescription": "Immediate Export"
+	},
+	{
+		"code": "70",
+		"longDescription": "Canada U.S. Canada In Transit"
+	}
+]

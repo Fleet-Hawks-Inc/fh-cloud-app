@@ -8,7 +8,6 @@ import {SlickCarouselModule} from 'ngx-slick-carousel';
 import {
   AddServiceProgramComponent,
   ServiceProgramListComponent,
-  EditServiceProgramComponent,
   AddVendorComponent,
   VendorsListComponent,
   EditVendorComponent,
@@ -27,7 +26,6 @@ import {
 const COMPONENTS = [
   AddServiceProgramComponent,
   ServiceProgramListComponent,
-  EditServiceProgramComponent,
   AddVendorComponent,
   VendorsListComponent,
   EditVendorComponent,

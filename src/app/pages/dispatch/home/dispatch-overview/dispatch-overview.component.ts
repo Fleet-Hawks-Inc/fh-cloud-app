@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 // import { EventActivitiesService } from '../../../../services/event-activities.service';
 import {forkJoin} from 'rxjs';
 declare var $: any;
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dispatch-overview',
@@ -30,7 +31,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   response: any = '';
   hasError = false;
-  hasSuccess = false;
+  hasSuccess = false; 
   Error = '';
   Success = '';
   activityData = {
@@ -54,6 +55,53 @@ export class DispatchOverviewComponent implements OnInit {
   tripChartLegend;
   tripChartData = [];
 
+  tripsMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
+
+  aceMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
+
+  aciMonths = {
+    jan: 0,
+    feb: 0,
+    march: 0,
+    april: 0,
+    may: 0,
+    june: 0,
+    july: 0,
+    aug: 0,
+    sept: 0,
+    oct: 0,
+    nov: 0,
+    dec: 0
+  }
+  tripGraphData = [];
+  aceGraphData = [];
+  aciGraphData = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService) { }
@@ -120,12 +168,14 @@ export class DispatchOverviewComponent implements OnInit {
           if(element.isDeleted === 0 && element.tripStatus === 'planned'){
             for (let j = 0; j < element.tripPlanning.length; j++) {
               const element2 = element.tripPlanning[j];
-              let pickDate = element2.date.split("-");
-              var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
-              if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup") { 
-                  pickupObj.todPickupCount = pickupObj.todPickupCount+1;
-              } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup"){
-                  pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
+              if(element2.date != '' && element2.date != undefined) {
+                let pickDate = element2.date.split("-");
+                var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
+                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup") { 
+                    pickupObj.todPickupCount = pickupObj.todPickupCount+1;
+                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup"){
+                    pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
+                }
               }
             }
             resolve(pickupObj);
@@ -157,11 +207,45 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
-  fetchAllTrips() {
+  fetchAllTrips() { 
     this.spinner.show();
     this.apiService.getData('trips/active/all').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        for (let i = 0; i < result.Items.length; i++) {
+          const element = result.Items[i];
+          if(element.dateCreated !== '' && element.dateCreated !== undefined) {
+            let tripDate = element.dateCreated.split('-');
+            let tripMonth = tripDate[1];
+            if(tripMonth == '1' || tripMonth == '01') {
+              this.tripsMonths.jan += 1;
+            } else if(tripMonth == '2' || tripMonth == '02') {
+              this.tripsMonths.feb += 1;
+            } else if(tripMonth == '3' || tripMonth == '03') {
+              this.tripsMonths.march += 1;
+            } else if(tripMonth == '4' || tripMonth == '04') {
+              this.tripsMonths.april += 1;
+            } else if(tripMonth == '5' || tripMonth == '05') {
+              this.tripsMonths.may += 1;
+            } else if(tripMonth == '6' || tripMonth == '06') {
+              this.tripsMonths.june += 1;
+            } else if(tripMonth == '7' || tripMonth == '07') {
+              this.tripsMonths.july += 1;
+            } else if(tripMonth == '8' || tripMonth == '08') {
+              this.tripsMonths.aug += 1;
+            } else if(tripMonth == '9' || tripMonth == '09') {
+              this.tripsMonths.sept += 1;
+            } else if(tripMonth == '10') {
+              this.tripsMonths.oct += 1;
+            } else if(tripMonth == '11') {
+              this.tripsMonths.nov += 1;
+            } else if(tripMonth == '12') {
+              this.tripsMonths.dec += 1;
+            }
+          }
+        }
+
+        this.tripGraphData = Object.keys(this.tripsMonths).map(key => this.tripsMonths[key]);
+        this.initTripsGraph();
         this.totalTripsCount = result.Count;
         this.spinner.hide();
       })
@@ -239,8 +323,46 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACIeManifest').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        let data = result.Items;
         this.aceManifestCount = result.Count;
+        if(result.Count > 0) {
+          for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+
+            if(element.timeCreated != undefined && element.timeCreated != '') {
+              let check = moment(element.timeCreated);
+              let eventMonth = check.format('M');
+
+              if(eventMonth == '1' || eventMonth == '01') {
+                this.aceMonths.jan += 1;
+              } else if(eventMonth == '2' || eventMonth == '02') {
+                this.aceMonths.feb += 1;
+              } else if(eventMonth == '3' || eventMonth == '03') {
+                this.aceMonths.march += 1;
+              } else if(eventMonth == '4' || eventMonth == '04') {
+                this.aceMonths.april += 1;
+              } else if(eventMonth == '5' || eventMonth == '05') {
+                this.aceMonths.may += 1;
+              } else if(eventMonth == '6' || eventMonth == '06') {
+                this.aceMonths.june += 1;
+              } else if(eventMonth == '7' || eventMonth == '07') {
+                this.aceMonths.july += 1;
+              } else if(eventMonth == '8' || eventMonth == '08') {
+                this.aceMonths.aug += 1;
+              } else if(eventMonth == '9' || eventMonth == '09') {
+                this.aceMonths.sept += 1;
+              } else if(eventMonth == '10') {
+                this.aceMonths.oct += 1;
+              } else if(eventMonth == '11') {
+                this.aceMonths.nov += 1;
+              } else if(eventMonth == '12') {
+                this.aceMonths.dec += 1;
+              }
+            }
+          }
+          this.aceGraphData = Object.keys(this.aceMonths).map(key => this.aceMonths[key]);
+          this.initManifestGraph()
+        }
         this.spinner.hide();
       })
   }
@@ -249,8 +371,47 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACEeManifest').
       subscribe((result: any) => {
-        // result = result.Items[0];
+        let data = result.Items;
         this.aciManifestCount = result.Count;
+
+        if(result.Count > 0) {
+          for (let i = 0; i < data.length; i++) {
+            const element = data[i];
+
+            if(element.timeCreated != undefined && element.timeCreated != '') {
+              let check = moment(element.timeCreated);
+              let eventMonth = check.format('M');
+
+              if(eventMonth == '1' || eventMonth == '01') {
+                this.aciMonths.jan += 1;
+              } else if(eventMonth == '2' || eventMonth == '02') {
+                this.aciMonths.feb += 1;
+              } else if(eventMonth == '3' || eventMonth == '03') {
+                this.aciMonths.march += 1;
+              } else if(eventMonth == '4' || eventMonth == '04') {
+                this.aciMonths.april += 1;
+              } else if(eventMonth == '5' || eventMonth == '05') {
+                this.aciMonths.may += 1;
+              } else if(eventMonth == '6' || eventMonth == '06') {
+                this.aciMonths.june += 1;
+              } else if(eventMonth == '7' || eventMonth == '07') {
+                this.aciMonths.july += 1;
+              } else if(eventMonth == '8' || eventMonth == '08') {
+                this.aciMonths.aug += 1;
+              } else if(eventMonth == '9' || eventMonth == '09') {
+                this.aciMonths.sept += 1;
+              } else if(eventMonth == '10') {
+                this.aciMonths.oct += 1;
+              } else if(eventMonth == '11') {
+                this.aciMonths.nov += 1;
+              } else if(eventMonth == '12') {
+                this.aciMonths.dec += 1;
+              }
+            }
+          }
+          this.aciGraphData = Object.keys(this.aciMonths).map(key => this.aciMonths[key]);
+          this.initManifestGraph()
+        }
         this.spinner.hide();
       })
   }
@@ -301,9 +462,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#9c9ea1',
         borderColor: '#9c9ea1',
         borderWidth: 1,
-        data: [
-          15,85,45,15,16,18,84,58,64,15,74,15,1,69,25,45
-        ],
+        data: this.aceGraphData
       },
       {
         label: 'ACI',
@@ -311,9 +470,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#000',
         borderColor: '#000',
         borderWidth: 1,
-        data: [
-           15,85,45,64,15,74,15,1,69,25,45,15,16,18,84,58,
-        ],
+        data: this.aciGraphData
      }
     ];
   }
@@ -353,9 +510,7 @@ export class DispatchOverviewComponent implements OnInit {
         backgroundColor: '#9c9ea1',
         borderColor: '#9c9ea1',
         borderWidth: 1,
-        data: [
-           15,85,45,64,15,74,15,1,69,25,45,15,16,18,84,58,
-        ],
+        data: this.tripGraphData,
      }
     ];
   }

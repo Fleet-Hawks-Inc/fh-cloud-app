@@ -20,6 +20,15 @@
 
             <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm"  ><i class="fas fa-plus"></i> Add Inventory</a
             >
+            <div class="btn-group flex-wrap">
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                 aria-expanded="false">Actions<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                 <a class="dropdown-item text-1" routerLink="/fleet/inventory/edit/{{itemID }}" href="javascript:;">Edit</a>
+                 <a class="modal-with-form dropdown-item text-1"(click)="deleteItem()" href="javascript:;">Delete</a>
+              </div>
+           </div>
           </div>
         </div>
       </header>
@@ -46,7 +55,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Part Name
                             </td>
-                            <td>{{name}}</td>
+                            <td>{{itemName}}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">

@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { HereMapService } from '../../../../services/here-map.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-incident-detail',
@@ -25,13 +26,13 @@ export class IncidentDetailComponent implements OnInit {
     eventDate: '',
     eventTime: '',
     location: '',
-    driverUsername: '',
-    driverName: '',
-    criticalityType: '',
-    vehicleName: '',
-    AsigneeName: '',
-    tripNo: '',
-    severity: ''
+    driverUsername: '-',
+    driverName: '-',
+    criticalityType: '-',
+    vehicleName: '-',
+    AsigneeName: '-',
+    tripNo: '-',
+    severity: '-'
   };
 
   eventID = '';
@@ -46,12 +47,15 @@ export class IncidentDetailComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('safety/eventLogs/details/' + this.eventID)
       .subscribe((result: any) => {
-        this.event.eventDate = result.Items[0].eventDate;
-        this.event.eventTime = result.Items[0].eventTime;
+
+        this.event.eventDate = moment(result.Items[0].date).format("DD-MM-YYYY");
+        this.event.eventTime = moment(result.Items[0].date).format("HH:mm");
         this.event.location = result.Items[0].location;
         this.event.driverUsername = result.Items[0].driverUsername;
-        this.event.severity = result.Items[0].severity;
-        // this.event.criticalityType = result.Items[0].criticalityType;  
+
+        if(result.Items[0].severity != '' && result.Items[0].severity != undefined) {
+          this.event.severity = result.Items[0].severity; 
+        }
 
         if(result.Items[0].criticalityType == 'harshBrake') {
           this.event.criticalityType = 'Harsh Brake';
@@ -61,13 +65,18 @@ export class IncidentDetailComponent implements OnInit {
           this.event.criticalityType = 'Over Speeding';
         }
         
-        this.fetchDriverDetail(this.event.driverUsername);
-        this.fetchVehicleDetail(result.Items[0].vehicleID);
-        this.fetchUserDetail(result.Items[0].username);
-        this.fetchTripDetail(result.Items[0].tripID);
-
-        console.log('this.event')
-        console.log(this.event)
+        if(this.event.driverUsername != '' && this.event.driverUsername != undefined) {
+          this.fetchDriverDetail(this.event.driverUsername);
+        }
+        if(result.Items[0].vehicleID != '' && result.Items[0].vehicleID != undefined) {
+          this.fetchVehicleDetail(result.Items[0].vehicleID);
+        }
+        if(result.Items[0].assignedUsername != '' && result.Items[0].assignedUsername != undefined) {
+          this.fetchUserDetail(result.Items[0].assignedUsername);
+        }
+        if(result.Items[0].tripID != '' && result.Items[0].tripID != undefined) {
+          this.fetchTripDetail(result.Items[0].tripID);
+        }
         this.spinner.hide();
       })
   }

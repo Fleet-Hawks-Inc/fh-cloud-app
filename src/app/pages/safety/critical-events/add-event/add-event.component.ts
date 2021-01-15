@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
+import { from, Subject, throwError  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import * as moment from "moment";
+import { HereMapService } from '../../../../services';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 declare var $: any;
 
@@ -24,15 +25,8 @@ export class AddEventComponent implements OnInit {
         date: <any>'',
         eventTime: '',
         location: '',
-        username: '',
-        driverUsername: '',
-        vehicleID: '',
-        severity: '',
-        tripID: '',
         documentID: [],
         incidentVideodocumentID: [],
-        remarks: '',
-        criticalityType: '',
         eventType: 'critical',
         modeOfOrign: 'manual',
         coachingStatus: 'open'
@@ -90,8 +84,14 @@ export class AddEventComponent implements OnInit {
     users = [];
     trips = [];
 
+    public searchResults: any;
+    private readonly search: any;
+    public searchTerm = new Subject<string>();
+    uploadedVideos = [];
+    uploadedDocs = [];
+
     constructor(private apiService: ApiService, private awsUS: AwsUploadService,private toastr: ToastrService, 
-        private spinner: NgxSpinnerService, private router: Router) { 
+        private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) { 
 
         this.selectedFileNames = new Map<any, any>();
     }
@@ -101,6 +101,7 @@ export class AddEventComponent implements OnInit {
         this.fetchDrivers();
         this.fetchUsers();
         this.fetchTrips();
+        this.searchLocation();
     }
 
     fetchVehicles() {
@@ -155,7 +156,26 @@ export class AddEventComponent implements OnInit {
         timestamp = moment(date+' '+ this.event.eventTime).format("X");
         this.event.date = timestamp*1000;
 
-        this.apiService.postData('safety/eventLogs', this.event).subscribe({
+        this.event.documentID = this.uploadedDocs;
+        this.event.incidentVideodocumentID = this.uploadedVideos;
+
+        // create form data instance
+        const formData = new FormData();
+
+        //append videos if any
+        for(let i = 0; i < this.uploadedVideos.length; i++){
+            formData.append('uploadedVideos', this.uploadedVideos[i]);
+        }
+
+        //append docs if any
+        for(let j = 0; j < this.uploadedDocs.length; j++){
+            formData.append('uploadedDocs', this.uploadedDocs[j]);
+        }
+
+        //append other fields
+        formData.append('data', JSON.stringify(this.event));
+        
+        this.apiService.postData('safety/eventLogs', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
                 from(err.error)
@@ -177,7 +197,7 @@ export class AddEventComponent implements OnInit {
                     });
             },
             next: (res) => {
-                this.uploadFiles();
+                // this.uploadFiles();
                 this.spinner.hide();
                 this.toastr.success('Critical event added successfully');
                 this.router.navigateByUrl('/safety/critical-events');
@@ -193,7 +213,7 @@ export class AddEventComponent implements OnInit {
               .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
               .addClass('error')
           });
-      }
+    }
     
     hideErrors() {
         from(Object.keys(this.errors))
@@ -204,31 +224,52 @@ export class AddEventComponent implements OnInit {
               .remove('label')
           });
         this.errors = {};
-      }
+    }
     
-    uploadFiles = async () => {
-        this.carrierID = await this.apiService.getCarrierID();
-        this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-          this.awsUS.uploadFile(this.carrierID, fileName, fileData);
+    public searchLocation() {
+        let target;
+        this.searchTerm.pipe(
+          map((e: any) => {
+            $('.map-search__results').hide();
+            $(e.target).closest('div').addClass('show-search__result');
+            target = e;
+            return e.target.value;
+          }),
+          debounceTime(400),
+          distinctUntilChanged(),
+          switchMap(term => {
+            return this.hereMap.searchEntries(term);
+          }),
+          catchError((e) => {
+            return throwError(e);
+          }),
+        ).subscribe(res => {
+          this.searchResults = res;
         });
     }
 
+    async assignLocation(label) {
+        this.event.location = label;
+        this.searchResults = false;
+        $('div').removeClass('show-search__result');
+    }
+
+    /*
+    * Selecting files before uploading
+    */
     selectDocuments(event, obj) {
-        this.selectedFiles = event.target.files;
-        if (obj === 'document') {
-          for (let i = 0; i < this.selectedFiles.item.length; i++) {
-            const randomFileGenerate = this.selectedFiles[i].name.split('.');
-            const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-            this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-            this.event.documentID.push(fileName);
-          }
+        let files = [...event.target.files];
+
+        if (obj === 'uploadedDocs') {
+            this.uploadedDocs = [];
+            for (let i = 0; i < files.length; i++) {
+                this.uploadedDocs.push(files[i])
+            }
         } else {
-          for (let i = 0; i < this.selectedFiles.item.length; i++) {
-            const randomFileGenerate = this.selectedFiles[i].name.split('.');
-            const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-            this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-            this.event.incidentVideodocumentID.push(fileName);
-          }
+            this.uploadedVideos = [];
+            for (let i = 0; i < files.length; i++) {
+                this.uploadedVideos.push(files[i])
+            }
         }
     }
 }

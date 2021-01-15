@@ -313,4 +313,15 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       return false;
     }
   }
+
+  sendEmailNotification(value) {
+    if(value.reminderTasks.reminderStatus !== undefined && value.reminderTasks.reminderStatus !== '') {
+      this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?type=vehicle&status=${value.reminderTasks.reminderStatus}`).subscribe((result) => {
+        this.toastr.success('Email sent successfully');
+      });
+    } else {
+      this.toastr.error('Vehicle renewal is upto date');
+      return false;
+    }
+  }
 }

@@ -6,10 +6,7 @@ import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
-import * as moment from "moment";
-import { letterSpacing } from 'html2canvas/dist/types/css/property-descriptors/letter-spacing';
-import { ENODEV } from 'constants';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-safety-overview',
@@ -72,7 +69,8 @@ export class SafetyOverviewComponent implements OnInit {
   speedingChartData = [];
   eventData = [];
   
-  currentYear = '2020';
+  lastYear = '2020';
+  currentYear = new Date().getFullYear();
   // graph data
   harshEventRateData = {
     acceleration: [],
@@ -134,8 +132,8 @@ export class SafetyOverviewComponent implements OnInit {
             //to get data of current year or filtered year
             let start:any = '';
             let end:any = '';
-            if(this.currentYear !== '') {
-              let startDate = this.currentYear+'-01-01 00:00:00';
+            if(this.currentYear) {
+              let startDate = this.lastYear+'-01-01 00:00:00';
               let endDate = this.currentYear+'-12-31 23:59:59';
 
               start = moment(startDate).format("X")
@@ -582,7 +580,7 @@ export class SafetyOverviewComponent implements OnInit {
     //to get data of current year or filtered year
     let start:any = '';
     let end:any = '';
-    if(this.currentYear !== '') {
+    if(this.currentYear) {
       let startDate = this.currentYear+'-01-01 00:00:00';
       let endDate = this.currentYear+'-12-31 23:59:59';
 
@@ -839,7 +837,7 @@ export class SafetyOverviewComponent implements OnInit {
               countRollingStopMonths.oct += 1;
             } else if(eventMonth == '11') {
               countRollingStopMonths.nov += 1;
-            } else if(eventMonth == '12') {
+            } else if(eventMonth == '12') { 
               countRollingStopMonths.dec += 1;
             }
             //graph data end
