@@ -1,0 +1,426 @@
+[
+	{
+		"code": "B5",
+		"description": "Affiliated Company"
+	},
+	{
+		"code": "AEB",
+		"description": "Airport Authority"
+	},
+	{
+		"code": "LA",
+		"description": "Attorney"
+	},
+	{
+		"code": "J3",
+		"description": "Authorized entity"
+	},
+	{
+		"code": "CJ",
+		"description": "Automated Data Processing (ADP) Point A qualifier for an address of a location providing ADP support to an entity that is the intended recipient of a transmission, but that entity does not have its own organic capability to receive the transmission directly, relying instead on the support provided by the ADP point"
+	},
+	{
+		"code": "BK",
+		"description": "Bank"
+	},
+	{
+		"code": "BN",
+		"description": "Beneficial Owner"
+	},
+	{
+		"code": "BS",
+		"description": "Bill and Ship To"
+	},
+	{
+		"code": "BT",
+		"description": "Bill-to-Party"
+	},
+	{
+		"code": "ZF",
+		"description": "Break Bulk Point"
+	},
+	{
+		"code": "BO",
+		"description": "Broker or Sales Office"
+	},
+	{
+		"code": "BY",
+		"description": "Buying Party (Purchaser)"
+	},
+	{
+		"code": "CG",
+		"description": "Carnet Issuer"
+	},
+	{
+		"code": "CA",
+		"description": "Carrier"
+	},
+	{
+		"code": "CE",
+		"description": "Consignee (To receive large parcels and freight)"
+	},
+	{
+		"code": "CD",
+		"description": "Consignee (To Receive Mail and Small Parcels)"
+	},
+	{
+		"code": "CI",
+		"description": "Consignor"
+	},
+	{
+		"code": "CS",
+		"description": "Consolidator"
+	},
+	{
+		"code": "CL",
+		"description": "Container Location"
+	},
+	{
+		"code": "CR",
+		"description": "Container Return Company"
+	},
+	{
+		"code": "CQ",
+		"description": "Corporate Office"
+	},
+	{
+		"code": "DA",
+		"description": "Delivery Address"
+	},
+	{
+		"code": "MQ",
+		"description": "Delivery Location"
+	},
+	{
+		"code": "HW",
+		"description": "Designated Hazardous Waste Facility"
+	},
+	{
+		"code": "DC",
+		"description": "Destination Carrier"
+	},
+	{
+		"code": "DR",
+		"description": "Destination Drayman"
+	},
+	{
+		"code": "RD",
+		"description": "Destination Intermodal Ramp"
+	},
+	{
+		"code": "DM",
+		"description": "Destination Mail Facility"
+	},
+	{
+		"code": "DT",
+		"description": "Destination Terminal"
+	},
+	{
+		"code": "D8",
+		"description": "Dispatcher"
+	},
+	{
+		"code": "DX",
+		"description": "Distiller An entity that manufactures an alcoholic product using Bureau of Alcohol, Tobacco and Firearms approved methods and formulas"
+	},
+	{
+		"code": "DS",
+		"description": "Distributor"
+	},
+	{
+		"code": "DB",
+		"description": "Distributor Branch"
+	},
+	{
+		"code": "DV",
+		"description": "Division"
+	},
+	{
+		"code": "DH",
+		"description": "Doing Business As"
+	},
+	{
+		"code": "DW",
+		"description": "Downstream Party"
+	},
+	{
+		"code": "EH",
+		"description": "Exhibitor"
+	},
+	{
+		"code": "EX",
+		"description": "Exporter"
+	},
+	{
+		"code": "FN",
+		"description": "Filer Name"
+	},
+	{
+		"code": "FS",
+		"description": "Final Scheduled Destination Customs duties, excise taxes, and use of bonded fuels are dependent on whether an  aircraft flight originated or is destined for an international location, these codes would be used to note those occurrences"
+	},
+	{
+		"code": "FW",
+		"description": "Forwarder"
+	},
+	{
+		"code": "IM",
+		"description": "Importer"
+	},
+	{
+		"code": "C1",
+		"description": "In Care Of Party no. 1"
+	},
+	{
+		"code": "C2",
+		"description": "In Care Of Party no. 2"
+	},
+	{
+		"code": "I1",
+		"description": "Interested Party"
+	},
+	{
+		"code": "IK",
+		"description": "Intermediate Carrier"
+	},
+	{
+		"code": "IC",
+		"description": "Intermediate Consignee"
+	},
+	{
+		"code": "IF",
+		"description": "International Freight Forwarder"
+	},
+	{
+		"code": "JV",
+		"description": "Joint Owner"
+	},
+	{
+		"code": "JW",
+		"description": "Joint Venture"
+	},
+	{
+		"code": "LL",
+		"description": "Location of Load Exchange (Export) Name of the location at which load (trailer) is exchanged with another motor  carrier for export MA Party for whom Item is Ultimately Intended"
+	},
+	{
+		"code": "MF",
+		"description": "Manufacturer of Goods"
+	},
+	{
+		"code": "DF",
+		"description": "Material Disposition Authorization Location"
+	},
+	{
+		"code": "XR",
+		"description": "Mexican Customs broker"
+	},
+	{
+		"code": "MC",
+		"description": "Motor Carrier"
+	},
+	{
+		"code": "NP",
+		"description": "Notify Party"
+	},
+	{
+		"code": "OP",
+		"description": "Operator of property or unit"
+	},
+	{
+		"code": "OB",
+		"description": "Ordered By"
+	},
+	{
+		"code": "OO",
+		"description": "Order Of (Shippers Orders) - (Transportation)"
+	},
+	{
+		"code": "RO",
+		"description": "Original Intermodal Ramp"
+	},
+	{
+		"code": "OR",
+		"description": "Origin Drayman"
+	},
+	{
+		"code": "IAV",
+		"description": "Other Related Party"
+	},
+	{
+		"code": "OW",
+		"description": "Owner of Property or Unit"
+	},
+	{
+		"code": "OY",
+		"description": "Owner of Vehicle"
+	},
+	{
+		"code": "PU",
+		"description": "Party at Pickup Location"
+	},
+	{
+		"code": "SP",
+		"description": "Party filling Shippers Order"
+	},
+	{
+		"code": "CP",
+		"description": "Party to Receive Cert. of Compliance"
+	},
+	{
+		"code": "PK",
+		"description": "Party to Receive Copy"
+	},
+	{
+		"code": "PJ",
+		"description": "Party to Receive Correspondence"
+	},
+	{
+		"code": "PF",
+		"description": "Party to Receive Freight Bill"
+	},
+	{
+		"code": "PO",
+		"description": "Party to Receive Invoice for Goods or Services"
+	},
+	{
+		"code": "PM",
+		"description": "Party to receive paper Memo of Invoice"
+	},
+	{
+		"code": "PL",
+		"description": "Party to Receive Purchase Order"
+	},
+	{
+		"code": "SM",
+		"description": "Party to Receive Shipping Manifest"
+	},
+	{
+		"code": "PN",
+		"description": "Party to Receive Shipping Notice"
+	},
+	{
+		"code": "Z1",
+		"description": "Party to receive Status"
+	},
+	{
+		"code": "PE",
+		"description": "Payee"
+	},
+	{
+		"code": "PR",
+		"description": "Payer"
+	},
+	{
+		"code": "PW",
+		"description": "Pickup Address"
+	},
+	{
+		"code": "FQ",
+		"description": "Pier Name"
+	},
+	{
+		"code": "AEE",
+		"description": "Port Authority"
+	},
+	{
+		"code": "J6",
+		"description": "Power of Attorney"
+	},
+	{
+		"code": "MO",
+		"description": "Release Drayman"
+	},
+	{
+		"code": "DU",
+		"description": "Resale Dealer"
+	},
+	{
+		"code": "SNP",
+		"description": "Secondary Notify Party"
+	},
+	{
+		"code": "EV",
+		"description": "Selling Agent"
+	},
+	{
+		"code": "SE",
+		"description": "Selling Party"
+	},
+	{
+		"code": "SQ",
+		"description": "Service Bureau A business entity that is responsible for providing computer resources to other firms that do not have computer resources of their own"
+	},
+	{
+		"code": "SF",
+		"description": "Ship From"
+	},
+	{
+		"code": "ST",
+		"description": "Ship To"
+	},
+	{
+		"code": "SD",
+		"description": "Sold To and Ship To"
+	},
+	{
+		"code": "SO",
+		"description": "Sold To If Different From Bill To"
+	},
+	{
+		"code": "SS",
+		"description": "Steamship Company"
+	},
+	{
+		"code": "CF",
+		"description": "Subsidiary"
+	},
+	{
+		"code": "SU",
+		"description": "Supplier/Manufacturer"
+	},
+	{
+		"code": "V1",
+		"description": "Surety"
+	},
+	{
+		"code": "TR",
+		"description": "Terminal"
+	},
+	{
+		"code": "T3",
+		"description": "Terminal Location A geographic location where a motor or rail or air or water terminal is located"
+	},
+	{
+		"code": "T6",
+		"description": "Terminal Operator"
+	},
+	{
+		"code": "YE",
+		"description": "Third Party"
+	},
+	{
+		"code": "T4",
+		"description": "Transfer Point A geographic location where a shipment is transferred or diverted to a new destination"
+	},
+	{
+		"code": "TT",
+		"description": "Transfer To"
+	},
+	{
+		"code": "HX",
+		"description": "Transporter of Hazardous Waste"
+	},
+	{
+		"code": "UC",
+		"description": "Ultimate Consignee"
+	},
+	{
+		"code": "XU",
+		"description": "United States Customs Broker"
+	},
+	{
+		"code": "WH",
+		"description": "Warehouse"
+	}
+]

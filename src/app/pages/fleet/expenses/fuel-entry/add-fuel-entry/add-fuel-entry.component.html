@@ -211,7 +211,7 @@
                        <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
                         <div class="col-lg-5 offset-lg-5">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number</label>
-                           <input type="text" class="form-control" >
+                           <input type="text" class="form-control" name="fuelCardNumber" [(ngModel)]="fuelData.fuelCardNumber">
                         </div>
                      </div>
                     </div>

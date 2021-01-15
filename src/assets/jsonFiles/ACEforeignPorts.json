@@ -1,0 +1,6882 @@
+[
+	{
+		"code": "10100",
+		"portOfEntry": "All Other Greenland, Greenland"
+	},
+	{
+		"code": "10101",
+		"portOfEntry": "Thule, Greenland"
+	},
+	{
+		"code": "10125",
+		"portOfEntry": "Godthaab, Greenland"
+	},
+	{
+		"code": "16101",
+		"portOfEntry": "St. Pierre, St. Pierre/Miq"
+	},
+	{
+		"code": "20100",
+		"portOfEntry": "All West Coast Mexico Ports"
+	},
+	{
+		"code": "20101",
+		"portOfEntry": "Acapulco, Mexico"
+	},
+	{
+		"code": "20104",
+		"portOfEntry": "Cerros Island, Mexico"
+	},
+	{
+		"code": "20105",
+		"portOfEntry": "La Paz, Mexico"
+	},
+	{
+		"code": "20106",
+		"portOfEntry": "Topolobampo, Mexico"
+	},
+	{
+		"code": "20107",
+		"portOfEntry": "Lazaro Cardenas, Mexico"
+	},
+	{
+		"code": "20108",
+		"portOfEntry": "Ensenada, Mexico"
+	},
+	{
+		"code": "20113",
+		"portOfEntry": "Guaymas, Mexico"
+	},
+	{
+		"code": "20120",
+		"portOfEntry": "Manzanillo, Mexico"
+	},
+	{
+		"code": "20122",
+		"portOfEntry": "Mazatlan, Mexico"
+	},
+	{
+		"code": "20125",
+		"portOfEntry": "Rosarito, Mexico"
+	},
+	{
+		"code": "20128",
+		"portOfEntry": "Islas Coronados, Mexico"
+	},
+	{
+		"code": "20129",
+		"portOfEntry": "Salina Cruz, Mexico"
+	},
+	{
+		"code": "20135",
+		"portOfEntry": "San Marcos Island, Mexico"
+	},
+	{
+		"code": "20141",
+		"portOfEntry": "Santa Rosalia, Mexico"
+	},
+	{
+		"code": "20142",
+		"portOfEntry": "El Sauzal, Mexico"
+	},
+	{
+		"code": "20143",
+		"portOfEntry": "Puerto Vallarta, Mexico"
+	},
+	{
+		"code": "20144",
+		"portOfEntry": "Cabo San Lucas, Mexico"
+	},
+	{
+		"code": "20152",
+		"portOfEntry": "Cayo Arcas, Mexico"
+	},
+	{
+		"code": "20153",
+		"portOfEntry": "Alvaro Obregon, Mexico"
+	},
+	{
+		"code": "20154",
+		"portOfEntry": "Dos Bocas, Mexico"
+	},
+	{
+		"code": "20155",
+		"portOfEntry": "Campeche, Mexico"
+	},
+	{
+		"code": "20157",
+		"portOfEntry": "Carmen, Mexico"
+	},
+	{
+		"code": "20161",
+		"portOfEntry": "Calica, Mexico"
+	},
+	{
+		"code": "20162",
+		"portOfEntry": "Cancun, Mexico"
+	},
+	{
+		"code": "20171",
+		"portOfEntry": "Coatzacoalcos, Mexico"
+	},
+	{
+		"code": "20173",
+		"portOfEntry": "Cozumel Island, Mexico"
+	},
+	{
+		"code": "20174",
+		"portOfEntry": "Chetumal, Mexico"
+	},
+	{
+		"code": "20179",
+		"portOfEntry": "Isla Mujeres, Mexico"
+	},
+	{
+		"code": "20181",
+		"portOfEntry": "Minatitlan, Mexico"
+	},
+	{
+		"code": "20184",
+		"portOfEntry": "Pajaritos, Mexico"
+	},
+	{
+		"code": "20185",
+		"portOfEntry": "Progreso, Mexico"
+	},
+	{
+		"code": "20193",
+		"portOfEntry": "Altamira, Mexico"
+	},
+	{
+		"code": "20194",
+		"portOfEntry": "Puerto de Morales, Mexico"
+	},
+	{
+		"code": "20195",
+		"portOfEntry": "All East Coast Mexico Ports"
+	},
+	{
+		"code": "20197",
+		"portOfEntry": "Tuxpan, Mexico"
+	},
+	{
+		"code": "20199",
+		"portOfEntry": "Veracruz, Mexico"
+	},
+	{
+		"code": "20500",
+		"portOfEntry": "All Other Guatemala Caribbean Region Ports, Guatemala"
+	},
+	{
+		"code": "20505",
+		"portOfEntry": "Puerto Matias de Galves, Guatemala"
+	},
+	{
+		"code": "20506",
+		"portOfEntry": "Puerto Quetzal, Guatemala"
+	},
+	{
+		"code": "20513",
+		"portOfEntry": "Puerto Barrios, Guatemala"
+	},
+	{
+		"code": "20577",
+		"portOfEntry": "San Jose, Guatemala"
+	},
+	{
+		"code": "20599",
+		"portOfEntry": "All Other Guatemala West Coast Region Ports, Guatemala"
+	},
+	{
+		"code": "20800",
+		"portOfEntry": "Other Belize Ports, Belize"
+	},
+	{
+		"code": "20801",
+		"portOfEntry": "Belize, Belize"
+	},
+	{
+		"code": "20802",
+		"portOfEntry": "Big Creek, Belize"
+	},
+	{
+		"code": "20803",
+		"portOfEntry": "Dangriga, Belize"
+	},
+	{
+		"code": "21101",
+		"portOfEntry": "Acajutla, El Salvador"
+	},
+	{
+		"code": "21137",
+		"portOfEntry": "Cutuco, El Salvador"
+	},
+	{
+		"code": "21199",
+		"portOfEntry": "All Other El Salvador Ports, El Salvador"
+	},
+	{
+		"code": "21500",
+		"portOfEntry": "All Other Honduras Caribbean Region Ports, Honduras"
+	},
+	{
+		"code": "21515",
+		"portOfEntry": "La Ceiba, Honduras"
+	},
+	{
+		"code": "21519",
+		"portOfEntry": "Limon, Honduras"
+	},
+	{
+		"code": "21527",
+		"portOfEntry": "Puerto Castilla, Honduras"
+	},
+	{
+		"code": "21531",
+		"portOfEntry": "Puerto Cortes, Honduras"
+	},
+	{
+		"code": "21535",
+		"portOfEntry": "Guanaja, Honduras"
+	},
+	{
+		"code": "21543",
+		"portOfEntry": "Tela, Honduras"
+	},
+	{
+		"code": "21551",
+		"portOfEntry": "Amapala, Honduras"
+	},
+	{
+		"code": "21552",
+		"portOfEntry": "Puerto Henecan, Honduras"
+	},
+	{
+		"code": "21599",
+		"portOfEntry": "All Other Honduras West Coast Region Ports, Honduras"
+	},
+	{
+		"code": "21900",
+		"portOfEntry": "All Other Nicaragua Caribbean Region Ports, Nicaragua"
+	},
+	{
+		"code": "21901",
+		"portOfEntry": "Bluefields, Nicaragua"
+	},
+	{
+		"code": "21902",
+		"portOfEntry": "Arlen Siu, Nicaragua"
+	},
+	{
+		"code": "21925",
+		"portOfEntry": "Puerto Cabezas, Nicaragua"
+	},
+	{
+		"code": "21951",
+		"portOfEntry": "Corinto, Nicaragua"
+	},
+	{
+		"code": "21999",
+		"portOfEntry": "All Other Nicaragua West Coast Region Ports, Nicaragua"
+	},
+	{
+		"code": "22300",
+		"portOfEntry": "All Other Costa Rica Caribbean Region"
+	},
+	{
+		"code": "22301",
+		"portOfEntry": "Colorado Bar, Costa Rica"
+	},
+	{
+		"code": "22313",
+		"portOfEntry": "Puerto Limon, Costa Rica"
+	},
+	{
+		"code": "22315",
+		"portOfEntry": "Bahia de Moin, Costa Rica"
+	},
+	{
+		"code": "22361",
+		"portOfEntry": "Caldera, Costa Rica"
+	},
+	{
+		"code": "22363",
+		"portOfEntry": "Golfito, Costa Rica"
+	},
+	{
+		"code": "22381",
+		"portOfEntry": "Punta Quepos, Costa Rica"
+	},
+	{
+		"code": "22386",
+		"portOfEntry": "Punta Morales, Costa Rica"
+	},
+	{
+		"code": "22387",
+		"portOfEntry": "Puntarenas, Costa Rica"
+	},
+	{
+		"code": "22389",
+		"portOfEntry": "Aguadulce, Costa Rica"
+	},
+	{
+		"code": "22399",
+		"portOfEntry": "All Other Costa Rica West Coast Region"
+	},
+	{
+		"code": "22500",
+		"portOfEntry": "All Other Panama Ports"
+	},
+	{
+		"code": "22501",
+		"portOfEntry": "Almirante, Panama"
+	},
+	{
+		"code": "22517",
+		"portOfEntry": "Coco Solo, Panama"
+	},
+	{
+		"code": "22518",
+		"portOfEntry": "Cristobal, Panama"
+	},
+	{
+		"code": "22519",
+		"portOfEntry": "Colon, Panama"
+	},
+	{
+		"code": "22520",
+		"portOfEntry": "Chiriqui Grande Terminal, Panama"
+	},
+	{
+		"code": "22525",
+		"portOfEntry": "Golfo de Parita, Panama"
+	},
+	{
+		"code": "22555",
+		"portOfEntry": "Portobelo, Panama"
+	},
+	{
+		"code": "22556",
+		"portOfEntry": "Manzanillo, Panama"
+	},
+	{
+		"code": "22565",
+		"portOfEntry": "Bahia de Las Minas, Panama"
+	},
+	{
+		"code": "22575",
+		"portOfEntry": "Balboa, Panama"
+	},
+	{
+		"code": "22577",
+		"portOfEntry": "La Palma, Panama"
+	},
+	{
+		"code": "22579",
+		"portOfEntry": "Panama Canal- Pacific, Panama"
+	},
+	{
+		"code": "22581",
+		"portOfEntry": "Aguadulce, Panama"
+	},
+	{
+		"code": "22582",
+		"portOfEntry": "Pedregal, Panama"
+	},
+	{
+		"code": "22587",
+		"portOfEntry": "Armuelles, Panama"
+	},
+	{
+		"code": "22599",
+		"portOfEntry": "All Other Panama West Coast Region Ports, Panama"
+	},
+	{
+		"code": "23201",
+		"portOfEntry": "Hamilton, Bermuda"
+	},
+	{
+		"code": "23251",
+		"portOfEntry": "Saint Georges, Bermuda"
+	},
+	{
+		"code": "23299",
+		"portOfEntry": "All Other Bermuda Ports, Bermuda"
+	},
+	{
+		"code": "23600",
+		"portOfEntry": "All Other Bahamas Ports, Bahamas"
+	},
+	{
+		"code": "23619",
+		"portOfEntry": "Eleuthera Island, Bahamas"
+	},
+	{
+		"code": "23620",
+		"portOfEntry": "Cat Cay, Bahamas"
+	},
+	{
+		"code": "23621",
+		"portOfEntry": "Exuma, Bahamas"
+	},
+	{
+		"code": "23622",
+		"portOfEntry": "Spanish Wells, Bahamas"
+	},
+	{
+		"code": "23623",
+		"portOfEntry": "Governors Harbour, Bahamas"
+	},
+	{
+		"code": "23624",
+		"portOfEntry": "Half Moon Cay, Bahamas"
+	},
+	{
+		"code": "23630",
+		"portOfEntry": "Arawak Cay, Bahamas"
+	},
+	{
+		"code": "23635",
+		"portOfEntry": "Clarence Town, Bahamas"
+	},
+	{
+		"code": "23636",
+		"portOfEntry": "Duncan Town, Bahamas"
+	},
+	{
+		"code": "23640",
+		"portOfEntry": "Abaco-Snake Cay, Bahamas"
+	},
+	{
+		"code": "23641",
+		"portOfEntry": "Chub Cay, Bahamas"
+	},
+	{
+		"code": "23642",
+		"portOfEntry": "Great Stirrup Cay, Bahamas"
+	},
+	{
+		"code": "23643",
+		"portOfEntry": "Great Harbour Cay, Bahamas"
+	},
+	{
+		"code": "23644",
+		"portOfEntry": "Treasure Cay, Bahamas"
+	},
+	{
+		"code": "23645",
+		"portOfEntry": "Freeport Grand Bahama I, Bahamas"
+	},
+	{
+		"code": "23646",
+		"portOfEntry": "Port Lucaya, Bahamas"
+	},
+	{
+		"code": "23647",
+		"portOfEntry": "West End, Bahamas"
+	},
+	{
+		"code": "23650",
+		"portOfEntry": "Port Nelson, Bahamas"
+	},
+	{
+		"code": "23653",
+		"portOfEntry": "Great Inagua, Bahamas"
+	},
+	{
+		"code": "23660",
+		"portOfEntry": "Cat Island, Bahamas"
+	},
+	{
+		"code": "23661",
+		"portOfEntry": "Nassau, Bahamas"
+	},
+	{
+		"code": "23665",
+		"portOfEntry": "Ocean Cay, Bahamas"
+	},
+	{
+		"code": "23667",
+		"portOfEntry": "Walker Cay, Bahamas"
+	},
+	{
+		"code": "23672",
+		"portOfEntry": "Andros Island, Bahamas"
+	},
+	{
+		"code": "23675",
+		"portOfEntry": "Clifton Pier, Bahamas"
+	},
+	{
+		"code": "23683",
+		"portOfEntry": "Bimini Island, Bahamas"
+	},
+	{
+		"code": "23684",
+		"portOfEntry": "Castaway Cay, Bahamas"
+	},
+	{
+		"code": "23900",
+		"portOfEntry": "All Other Cuba Ports, Cuba"
+	},
+	{
+		"code": "23931",
+		"portOfEntry": "Daiquiri Bay, Cuba"
+	},
+	{
+		"code": "23937",
+		"portOfEntry": "Isabela del Sagua, Cuba"
+	},
+	{
+		"code": "23941",
+		"portOfEntry": "Boqueron, Cuba"
+	},
+	{
+		"code": "23944",
+		"portOfEntry": "Havana, Cuba"
+	},
+	{
+		"code": "23961",
+		"portOfEntry": "Lengua de Pajaro, Cuba"
+	},
+	{
+		"code": "23979",
+		"portOfEntry": "Guayabal, Cuba"
+	},
+	{
+		"code": "23983",
+		"portOfEntry": "Santa Cruz del Sur, Cuba"
+	},
+	{
+		"code": "24100",
+		"portOfEntry": "All Other Jamaica Ports, Jamaica"
+	},
+	{
+		"code": "24128",
+		"portOfEntry": "Kingston, Jamaica"
+	},
+	{
+		"code": "24145",
+		"portOfEntry": "Montego Bay, Jamaica"
+	},
+	{
+		"code": "24155",
+		"portOfEntry": "Ocho Rios, Jamaica"
+	},
+	{
+		"code": "24163",
+		"portOfEntry": "Esquivel, Jamaica"
+	},
+	{
+		"code": "24165",
+		"portOfEntry": "Alligator Pond, Jamaica"
+	},
+	{
+		"code": "24167",
+		"portOfEntry": "Port Rhoades, Jamaica"
+	},
+	{
+		"code": "24175",
+		"portOfEntry": "Rocky Point, Jamaica"
+	},
+	{
+		"code": "24185",
+		"portOfEntry": "Savanna La Mar, Jamaica"
+	},
+	{
+		"code": "24300",
+		"portOfEntry": "All Other Caicos Islands, Turks Is"
+	},
+	{
+		"code": "24310",
+		"portOfEntry": "Cockburn harbor, Turks Is"
+	},
+	{
+		"code": "24311",
+		"portOfEntry": "Providenciales, Turks Is"
+	},
+	{
+		"code": "24320",
+		"portOfEntry": "Grand Turks, Turks Is"
+	},
+	{
+		"code": "24399",
+		"portOfEntry": "All Other Turks Islands Ports, Turks Is"
+	},
+	{
+		"code": "24400",
+		"portOfEntry": "All Other Cayman Island Ports"
+	},
+	{
+		"code": "24410",
+		"portOfEntry": "Georgetown, Cayman Isl"
+	},
+	{
+		"code": "24415",
+		"portOfEntry": "Cayman Brac, Cayman Isl"
+	},
+	{
+		"code": "24500",
+		"portOfEntry": "All Other Haiti Ports, Haiti"
+	},
+	{
+		"code": "24509",
+		"portOfEntry": "Aux Cayes, Haiti"
+	},
+	{
+		"code": "24513",
+		"portOfEntry": "Cap Haitien, Haiti"
+	},
+	{
+		"code": "24514",
+		"portOfEntry": "Fort Liberte, Haiti"
+	},
+	{
+		"code": "24515",
+		"portOfEntry": "Labadee, Haiti"
+	},
+	{
+		"code": "24537",
+		"portOfEntry": "Jacmel, Haiti"
+	},
+	{
+		"code": "24553",
+		"portOfEntry": "La Fitteau, Haiti"
+	},
+	{
+		"code": "24559",
+		"portOfEntry": "Miragoane, Haiti"
+	},
+	{
+		"code": "24571",
+		"portOfEntry": "Petit Goave, Haiti"
+	},
+	{
+		"code": "24579",
+		"portOfEntry": "Port Au Prince, Haiti"
+	},
+	{
+		"code": "24585",
+		"portOfEntry": "Port de Paix, Haiti"
+	},
+	{
+		"code": "24588",
+		"portOfEntry": "Gonaives, Haiti"
+	},
+	{
+		"code": "24591",
+		"portOfEntry": "Saint Marc, Haiti"
+	},
+	{
+		"code": "24700",
+		"portOfEntry": "All Other Dominican Republic Ports, Dominican Republic"
+	},
+	{
+		"code": "24713",
+		"portOfEntry": "Barahona, Dominican Republic"
+	},
+	{
+		"code": "24720",
+		"portOfEntry": "Samana, Dominican Republic"
+	},
+	{
+		"code": "24721",
+		"portOfEntry": "Boca Chica, Dominican Republic"
+	},
+	{
+		"code": "24722",
+		"portOfEntry": "Caucedo, Dominican Republic"
+	},
+	{
+		"code": "24727",
+		"portOfEntry": "Cabo Rojo, Dominican Republic"
+	},
+	{
+		"code": "24731",
+		"portOfEntry": "Bahia de Las Calderas, Dominican Republic"
+	},
+	{
+		"code": "24737",
+		"portOfEntry": "Ciudad Trujillo, Dominican Republic"
+	},
+	{
+		"code": "24738",
+		"portOfEntry": "Punta Torrecilla, Dominican Republic"
+	},
+	{
+		"code": "24741",
+		"portOfEntry": "Haina, Dominican Republic"
+	},
+	{
+		"code": "24743",
+		"portOfEntry": "La Romana, Dominican Republic"
+	},
+	{
+		"code": "24745",
+		"portOfEntry": "Manzanillo, Dominican Republic"
+	},
+	{
+		"code": "24773",
+		"portOfEntry": "Puerto Plata, Dominican Republic"
+	},
+	{
+		"code": "24774",
+		"portOfEntry": "Luperon, Dominican Republic"
+	},
+	{
+		"code": "24791",
+		"portOfEntry": "San Pedro de Macoris, Dominican Republic"
+	},
+	{
+		"code": "24800",
+		"portOfEntry": "All Other Leeward Islands, Unknown"
+	},
+	{
+		"code": "24813",
+		"portOfEntry": "Virgin  Gorda, British Virgin"
+	},
+	{
+		"code": "24815",
+		"portOfEntry": "Port Purcell, British Virgin"
+	},
+	{
+		"code": "24821",
+		"portOfEntry": "Anguilla, Anguilla"
+	},
+	{
+		"code": "24823",
+		"portOfEntry": "Sombrero Island, Anguilla"
+	},
+	{
+		"code": "24831",
+		"portOfEntry": "Parham Harbour Antigua, Antigua"
+	},
+	{
+		"code": "24835",
+		"portOfEntry": "Basseterre St. Kitts, St. Kitts Nevis"
+	},
+	{
+		"code": "24837",
+		"portOfEntry": "Charlestown Nevis Is., St. Kitts Nevis"
+	},
+	{
+		"code": "24845",
+		"portOfEntry": "Plymouth, Montserrat"
+	},
+	{
+		"code": "24851",
+		"portOfEntry": "Rouseau, Dominica"
+	},
+	{
+		"code": "24852",
+		"portOfEntry": "Portsmouth, Dominica"
+	},
+	{
+		"code": "24853",
+		"portOfEntry": "Woodbridge Bay, Dominica"
+	},
+	{
+		"code": "24865",
+		"portOfEntry": "Castries, St. Lucia"
+	},
+	{
+		"code": "24866",
+		"portOfEntry": "Cul de Sac, St. Lucia"
+	},
+	{
+		"code": "24867",
+		"portOfEntry": "Vieux Fort, St. Lucia"
+	},
+	{
+		"code": "24871",
+		"portOfEntry": "Admiralty Bay, St. Vincent"
+	},
+	{
+		"code": "24881",
+		"portOfEntry": "St. George, Grenada"
+	},
+	{
+		"code": "24882",
+		"portOfEntry": "Grande Anse, Grenada"
+	},
+	{
+		"code": "24899",
+		"portOfEntry": "All Other Windward Island Ports, Unknown"
+	},
+	{
+		"code": "27201",
+		"portOfEntry": "Bridgetown, Barbados"
+	},
+	{
+		"code": "27210",
+		"portOfEntry": "Oistino, Barbados"
+	},
+	{
+		"code": "27213",
+		"portOfEntry": "Speightstown, Barbados"
+	},
+	{
+		"code": "27400",
+		"portOfEntry": "All Other Trinidad Ports, Trinidad"
+	},
+	{
+		"code": "27410",
+		"portOfEntry": "Galeota Point, Trinidad"
+	},
+	{
+		"code": "27415",
+		"portOfEntry": "Pointe a Pierre, Trinidad"
+	},
+	{
+		"code": "27420",
+		"portOfEntry": "Point Fortin, Trinidad"
+	},
+	{
+		"code": "27425",
+		"portOfEntry": "Point Lisas, Trinidad"
+	},
+	{
+		"code": "27431",
+		"portOfEntry": "Port of Spain, Trinidad"
+	},
+	{
+		"code": "27443",
+		"portOfEntry": "San Fernando, Trinidad"
+	},
+	{
+		"code": "27446",
+		"portOfEntry": "Tembladora, Trinidad"
+	},
+	{
+		"code": "27451",
+		"portOfEntry": "Scarborough, Trinidad"
+	},
+	{
+		"code": "27700",
+		"portOfEntry": "All Netherlands Antilles Ports, Netherlands Antilles"
+	},
+	{
+		"code": "27701",
+		"portOfEntry": "Orangestad, Aruba"
+	},
+	{
+		"code": "27702",
+		"portOfEntry": "San Nicolas Bay, Aruba"
+	},
+	{
+		"code": "27703",
+		"portOfEntry": "Barcadera, Aruba"
+	},
+	{
+		"code": "27705",
+		"portOfEntry": "Fort Baii, Neth Antilles"
+	},
+	{
+		"code": "27715",
+		"portOfEntry": "Goto oil terminal, Neth Antilles"
+	},
+	{
+		"code": "27725",
+		"portOfEntry": "Bullen Baai, Neth Antilles"
+	},
+	{
+		"code": "27726",
+		"portOfEntry": "Philipsborough, Neth Antilles"
+	},
+	{
+		"code": "27727",
+		"portOfEntry": "Galisbay, Neth Antilles"
+	},
+	{
+		"code": "27730",
+		"portOfEntry": "Sint Eustatius, Neth Antilles"
+	},
+	{
+		"code": "28300",
+		"portOfEntry": "All Other Guadeloupe Ports, Guadeloupe"
+	},
+	{
+		"code": "28313",
+		"portOfEntry": "Pointe a Pitre, Guadeloupe"
+	},
+	{
+		"code": "28315",
+		"portOfEntry": "Basse Terre, Guadeloupe"
+	},
+	{
+		"code": "28319",
+		"portOfEntry": "Gustavia, Guadeloupe"
+	},
+	{
+		"code": "28320",
+		"portOfEntry": "Marigot St. Martin, Guadeloupe"
+	},
+	{
+		"code": "28351",
+		"portOfEntry": "Fort de France, Martinique"
+	},
+	{
+		"code": "28399",
+		"portOfEntry": "All Other Martinique Ports, Martinique"
+	},
+	{
+		"code": "30100",
+		"portOfEntry": "All Other Colombian Caribbean Ports"
+	},
+	{
+		"code": "30104",
+		"portOfEntry": "Barranquilla, Colombia"
+	},
+	{
+		"code": "30107",
+		"portOfEntry": "Cartagena, Colombia"
+	},
+	{
+		"code": "30110",
+		"portOfEntry": "Covenas, Colombia"
+	},
+	{
+		"code": "30121",
+		"portOfEntry": "Puerto Bolivar, Colombia"
+	},
+	{
+		"code": "30125",
+		"portOfEntry": "Mamonal, Colombia"
+	},
+	{
+		"code": "30130",
+		"portOfEntry": "Isla San Andres, Colombia"
+	},
+	{
+		"code": "30131",
+		"portOfEntry": "Puerto Colombia, Colombia"
+	},
+	{
+		"code": "30140",
+		"portOfEntry": "Puerto Drummond, Colombia"
+	},
+	{
+		"code": "30145",
+		"portOfEntry": "Turbo, Colombia"
+	},
+	{
+		"code": "30151",
+		"portOfEntry": "Buenaventura, Colombia"
+	},
+	{
+		"code": "30152",
+		"portOfEntry": "Tumaco, Colombia"
+	},
+	{
+		"code": "30198",
+		"portOfEntry": "All Colombia Amazon Region Ports"
+	},
+	{
+		"code": "30199",
+		"portOfEntry": "All Other Colombia West Coast Region Ports"
+	},
+	{
+		"code": "30700",
+		"portOfEntry": "All Other Venezuela Ports"
+	},
+	{
+		"code": "30704",
+		"portOfEntry": "Amuay Bay, Venezuela"
+	},
+	{
+		"code": "30708",
+		"portOfEntry": "Bajo Grande, Venezuela"
+	},
+	{
+		"code": "30721",
+		"portOfEntry": "Carupano, Venezuela"
+	},
+	{
+		"code": "30725",
+		"portOfEntry": "Ciudad Bolivar, Venezuela"
+	},
+	{
+		"code": "30735",
+		"portOfEntry": "El Chaure, Venezuela"
+	},
+	{
+		"code": "30737",
+		"portOfEntry": "El Palito, Venezuela"
+	},
+	{
+		"code": "30739",
+		"portOfEntry": "El Tablazo, Venezuela"
+	},
+	{
+		"code": "30741",
+		"portOfEntry": "Guanta, Venezuela"
+	},
+	{
+		"code": "30742",
+		"portOfEntry": "Guaranao, Venezuela"
+	},
+	{
+		"code": "30743",
+		"portOfEntry": "Jose, Venezuela"
+	},
+	{
+		"code": "30745",
+		"portOfEntry": "Caracas, Venezuela"
+	},
+	{
+		"code": "30753",
+		"portOfEntry": "La Salina, Venezuela"
+	},
+	{
+		"code": "30755",
+		"portOfEntry": "Las Piedras, Venezuela"
+	},
+	{
+		"code": "30758",
+		"portOfEntry": "Moron, Venezuela"
+	},
+	{
+		"code": "30759",
+		"portOfEntry": "Maracaibo, Venezuela"
+	},
+	{
+		"code": "30760",
+		"portOfEntry": "Matanzas, Venezuela"
+	},
+	{
+		"code": "30761",
+		"portOfEntry": "Palua, Venezuela"
+	},
+	{
+		"code": "30763",
+		"portOfEntry": "Puerto Miranda, Venezuela"
+	},
+	{
+		"code": "30764",
+		"portOfEntry": "Puerto Cabello, Venezuela"
+	},
+	{
+		"code": "30765",
+		"portOfEntry": "Coro, Venezuela"
+	},
+	{
+		"code": "30766",
+		"portOfEntry": "Cumarebo, Venezuela"
+	},
+	{
+		"code": "30767",
+		"portOfEntry": "Punta Cuchillo, Venezuela"
+	},
+	{
+		"code": "30768",
+		"portOfEntry": "Puerto Ordaz, Venezuela"
+	},
+	{
+		"code": "30769",
+		"portOfEntry": "Cumana, Venezuela"
+	},
+	{
+		"code": "30770",
+		"portOfEntry": "Punta Cardon, Venezuela"
+	},
+	{
+		"code": "30771",
+		"portOfEntry": "Puerto La Cruz, Venezuela"
+	},
+	{
+		"code": "30772",
+		"portOfEntry": "Caripito, Venezuela"
+	},
+	{
+		"code": "30773",
+		"portOfEntry": "Punta Palmas, Venezuela"
+	},
+	{
+		"code": "30774",
+		"portOfEntry": "El Guamache, Venezuela"
+	},
+	{
+		"code": "30775",
+		"portOfEntry": "Pertigalete, Venezuela"
+	},
+	{
+		"code": "30780",
+		"portOfEntry": "San Felix, Venezuela"
+	},
+	{
+		"code": "31200",
+		"portOfEntry": "All Other Guyana Ports, Guyana"
+	},
+	{
+		"code": "31201",
+		"portOfEntry": "Demerara, Guyana"
+	},
+	{
+		"code": "31202",
+		"portOfEntry": "New Amsterdam, Guyana"
+	},
+	{
+		"code": "31215",
+		"portOfEntry": "Linden, Guyana"
+	},
+	{
+		"code": "31230",
+		"portOfEntry": "Barama, Guyana"
+	},
+	{
+		"code": "31235",
+		"portOfEntry": "McKenzie, Guyana"
+	},
+	{
+		"code": "31268",
+		"portOfEntry": "Everton, Guyana"
+	},
+	{
+		"code": "31500",
+		"portOfEntry": "All Other Suriname Ports, Suriname"
+	},
+	{
+		"code": "31501",
+		"portOfEntry": "Moengo, Suriname"
+	},
+	{
+		"code": "31523",
+		"portOfEntry": "Paramaribo, Suriname"
+	},
+	{
+		"code": "31524",
+		"portOfEntry": "Paranam, Suriname"
+	},
+	{
+		"code": "31700",
+		"portOfEntry": "All Other French Guiana Ports, French Guiana"
+	},
+	{
+		"code": "31707",
+		"portOfEntry": "Degrad des Cannes, French Guiana"
+	},
+	{
+		"code": "33100",
+		"portOfEntry": "All Other Ecuador Ports"
+	},
+	{
+		"code": "33101",
+		"portOfEntry": "Bahia de Caraquez, Ecuador"
+	},
+	{
+		"code": "33109",
+		"portOfEntry": "Balao, Ecuador"
+	},
+	{
+		"code": "33115",
+		"portOfEntry": "Salinas, Ecuador"
+	},
+	{
+		"code": "33121",
+		"portOfEntry": "Esmeraldas, Ecuador"
+	},
+	{
+		"code": "33131",
+		"portOfEntry": "Duran, Ecuador"
+	},
+	{
+		"code": "33132",
+		"portOfEntry": "Puerto Nuevo, Ecuador"
+	},
+	{
+		"code": "33136",
+		"portOfEntry": "La Libertad, Ecuador"
+	},
+	{
+		"code": "33151",
+		"portOfEntry": "Manta, Ecuador"
+	},
+	{
+		"code": "33159",
+		"portOfEntry": "Puerto Bolivar, Ecuador"
+	},
+	{
+		"code": "33300",
+		"portOfEntry": "All Other Peru Ports"
+	},
+	{
+		"code": "33301",
+		"portOfEntry": "Ancon, Peru"
+	},
+	{
+		"code": "33303",
+		"portOfEntry": "Callao, Peru"
+	},
+	{
+		"code": "33305",
+		"portOfEntry": "Conchan, Peru"
+	},
+	{
+		"code": "33335",
+		"portOfEntry": "Ilo, Peru"
+	},
+	{
+		"code": "33337",
+		"portOfEntry": "Iquitos, Peru"
+	},
+	{
+		"code": "33340",
+		"portOfEntry": "La Pampilla, Peru"
+	},
+	{
+		"code": "33354",
+		"portOfEntry": "Matarani, Peru"
+	},
+	{
+		"code": "33355",
+		"portOfEntry": "Mollendo, Peru"
+	},
+	{
+		"code": "33363",
+		"portOfEntry": "Paita, Peru"
+	},
+	{
+		"code": "33371",
+		"portOfEntry": "Pimentel, Peru"
+	},
+	{
+		"code": "33373",
+		"portOfEntry": "General San Martin, Peru"
+	},
+	{
+		"code": "33377",
+		"portOfEntry": "Salaverry, Peru"
+	},
+	{
+		"code": "33380",
+		"portOfEntry": "San Nicolas, Peru"
+	},
+	{
+		"code": "33385",
+		"portOfEntry": "Supe, Peru"
+	},
+	{
+		"code": "33389",
+		"portOfEntry": "Talara, Peru"
+	},
+	{
+		"code": "33700",
+		"portOfEntry": "All Other Chile Ports"
+	},
+	{
+		"code": "33703",
+		"portOfEntry": "Antofagasta, Chile"
+	},
+	{
+		"code": "33706",
+		"portOfEntry": "Arica, Chile"
+	},
+	{
+		"code": "33708",
+		"portOfEntry": "Caldera, Chile"
+	},
+	{
+		"code": "33716",
+		"portOfEntry": "Caleta Barquito, Chile"
+	},
+	{
+		"code": "33721",
+		"portOfEntry": "Coquimbo, Chile"
+	},
+	{
+		"code": "33735",
+		"portOfEntry": "Guayacan, Chile"
+	},
+	{
+		"code": "33739",
+		"portOfEntry": "Huasco, Chile"
+	},
+	{
+		"code": "33741",
+		"portOfEntry": "Iquique, Chile"
+	},
+	{
+		"code": "33751",
+		"portOfEntry": "Lirquen, Chile"
+	},
+	{
+		"code": "33765",
+		"portOfEntry": "Caleta Patillos, Chile"
+	},
+	{
+		"code": "33770",
+		"portOfEntry": "Punta Arenas, Chile"
+	},
+	{
+		"code": "33775",
+		"portOfEntry": "Quintero, Chile"
+	},
+	{
+		"code": "33776",
+		"portOfEntry": "Santiago, Chile"
+	},
+	{
+		"code": "33779",
+		"portOfEntry": "San Antonio, Chile"
+	},
+	{
+		"code": "33780",
+		"portOfEntry": "San Vicente, Chile"
+	},
+	{
+		"code": "33781",
+		"portOfEntry": "Talcahuano, Chile"
+	},
+	{
+		"code": "33782",
+		"portOfEntry": "Penco, Chile"
+	},
+	{
+		"code": "33788",
+		"portOfEntry": "Tocopilla, Chile"
+	},
+	{
+		"code": "33797",
+		"portOfEntry": "Las Salinas, Chile"
+	},
+	{
+		"code": "35107",
+		"portOfEntry": "Angra dos Reis, Brazil"
+	},
+	{
+		"code": "35113",
+		"portOfEntry": "Madre de Deus, Brazil"
+	},
+	{
+		"code": "35115",
+		"portOfEntry": "Aratu, Brazil"
+	},
+	{
+		"code": "35120",
+		"portOfEntry": "Pecem, Brazil"
+	},
+	{
+		"code": "35121",
+		"portOfEntry": "Barcarena, Brazil"
+	},
+	{
+		"code": "35123",
+		"portOfEntry": "Breves, Brazil"
+	},
+	{
+		"code": "35127",
+		"portOfEntry": "Cabedelo, Brazil"
+	},
+	{
+		"code": "35133",
+		"portOfEntry": "Ceara, Brazil"
+	},
+	{
+		"code": "35135",
+		"portOfEntry": "Itaqui, Brazil"
+	},
+	{
+		"code": "35136",
+		"portOfEntry": "Navegantes, Brazil"
+	},
+	{
+		"code": "35137",
+		"portOfEntry": "Ilheus, Brazil"
+	},
+	{
+		"code": "35138",
+		"portOfEntry": "Itajai, Brazil"
+	},
+	{
+		"code": "35139",
+		"portOfEntry": "Itacoatiara, Brazil"
+	},
+	{
+		"code": "35141",
+		"portOfEntry": "Maceio, Brazil"
+	},
+	{
+		"code": "35144",
+		"portOfEntry": "Manaus, Brazil"
+	},
+	{
+		"code": "35157",
+		"portOfEntry": "Natal, Brazil"
+	},
+	{
+		"code": "35158",
+		"portOfEntry": "Obidos, Brazil"
+	},
+	{
+		"code": "35159",
+		"portOfEntry": "Antonina, Brazil"
+	},
+	{
+		"code": "35160",
+		"portOfEntry": "Praia Mole, Brazil"
+	},
+	{
+		"code": "35161",
+		"portOfEntry": "Tramandai, Brazil"
+	},
+	{
+		"code": "35163",
+		"portOfEntry": "Parnahyba, Brazil"
+	},
+	{
+		"code": "35164",
+		"portOfEntry": "Munguba, Brazil"
+	},
+	{
+		"code": "35165",
+		"portOfEntry": "Macapa, Brazil"
+	},
+	{
+		"code": "35166",
+		"portOfEntry": "Point Ubu, Brazil"
+	},
+	{
+		"code": "35167",
+		"portOfEntry": "Porto Alegre, Brazil"
+	},
+	{
+		"code": "35168",
+		"portOfEntry": "Ponta da Madeira, Brazil"
+	},
+	{
+		"code": "35169",
+		"portOfEntry": "Pernambuco, Brazil"
+	},
+	{
+		"code": "35170",
+		"portOfEntry": "Suape, Brazil"
+	},
+	{
+		"code": "35171",
+		"portOfEntry": "Niteroi, Brazil"
+	},
+	{
+		"code": "35173",
+		"portOfEntry": "Rio Grande, Brazil"
+	},
+	{
+		"code": "35175",
+		"portOfEntry": "Sao Sebastio, Brazil"
+	},
+	{
+		"code": "35176",
+		"portOfEntry": "Trombetas, Brazil"
+	},
+	{
+		"code": "35177",
+		"portOfEntry": "Santos, Brazil"
+	},
+	{
+		"code": "35178",
+		"portOfEntry": "Imbituba, Brazil"
+	},
+	{
+		"code": "35179",
+		"portOfEntry": "Sao Francisco do Sul, Brazil"
+	},
+	{
+		"code": "35181",
+		"portOfEntry": "Salvador, Brazil"
+	},
+	{
+		"code": "35185",
+		"portOfEntry": "Itaguai, Brazil"
+	},
+	{
+		"code": "35195",
+		"portOfEntry": "Victoria, Brazil"
+	},
+	{
+		"code": "35198",
+		"portOfEntry": "All Other Brazil Ports North of Recife, Brazil"
+	},
+	{
+		"code": "35199",
+		"portOfEntry": "All Other Brazil Ports South of Recife, Brazil"
+	},
+	{
+		"code": "35300",
+		"portOfEntry": "All Other Paraguay Ports, Paraguay"
+	},
+	{
+		"code": "35301",
+		"portOfEntry": "Asuncion, Paraguay"
+	},
+	{
+		"code": "35500",
+		"portOfEntry": "All Other Uruguay Ports, Uruguay"
+	},
+	{
+		"code": "35525",
+		"portOfEntry": "Montevideo, Uruguay"
+	},
+	{
+		"code": "35535",
+		"portOfEntry": "Nueva Palmira, Uruguay"
+	},
+	{
+		"code": "35537",
+		"portOfEntry": "Punta del Este, Uruguay"
+	},
+	{
+		"code": "35700",
+		"portOfEntry": "All Other Argentina Ports"
+	},
+	{
+		"code": "35701",
+		"portOfEntry": "Bahia Blanca, Argentina"
+	},
+	{
+		"code": "35702",
+		"portOfEntry": "Comodoro Rivadavia, Argentina"
+	},
+	{
+		"code": "35703",
+		"portOfEntry": "Caleta Cordova, Argentina"
+	},
+	{
+		"code": "35705",
+		"portOfEntry": "Buenos Aires, Argentina"
+	},
+	{
+		"code": "35710",
+		"portOfEntry": "Bagual, Argentina"
+	},
+	{
+		"code": "35711",
+		"portOfEntry": "Campana, Argentina"
+	},
+	{
+		"code": "35737",
+		"portOfEntry": "La Plata, Argentina"
+	},
+	{
+		"code": "35739",
+		"portOfEntry": "Mar del Plata, Argentina"
+	},
+	{
+		"code": "35740",
+		"portOfEntry": "Madryn, Argentina"
+	},
+	{
+		"code": "35741",
+		"portOfEntry": "Necochea, Argentina"
+	},
+	{
+		"code": "35745",
+		"portOfEntry": "Puerto Deseado, Argentina"
+	},
+	{
+		"code": "35771",
+		"portOfEntry": "Rosario, Argentina"
+	},
+	{
+		"code": "35779",
+		"portOfEntry": "Pto. General San Martin, Argentina"
+	},
+	{
+		"code": "35781",
+		"portOfEntry": "San Nicolas, Argentina"
+	},
+	{
+		"code": "35785",
+		"portOfEntry": "San Pedro, Argentina"
+	},
+	{
+		"code": "35791",
+		"portOfEntry": "Santa Fe, Argentina"
+	},
+	{
+		"code": "35795",
+		"portOfEntry": "Villa Constitucion, Argentina"
+	},
+	{
+		"code": "35796",
+		"portOfEntry": "Zarate, Argentina"
+	},
+	{
+		"code": "37200",
+		"portOfEntry": "All Falkland Islands Ports, Falk Is"
+	},
+	{
+		"code": "40000",
+		"portOfEntry": "All Other Iceland Ports, Iceland"
+	},
+	{
+		"code": "40001",
+		"portOfEntry": "Hafnarfjordhur, Iceland"
+	},
+	{
+		"code": "40002",
+		"portOfEntry": "Grundarfjordur, Iceland"
+	},
+	{
+		"code": "40010",
+		"portOfEntry": "Njardvik, Iceland"
+	},
+	{
+		"code": "40036",
+		"portOfEntry": "Neskaupstadur, Iceland"
+	},
+	{
+		"code": "40037",
+		"portOfEntry": "Reykjavik, Iceland"
+	},
+	{
+		"code": "40038",
+		"portOfEntry": "Akranes, Iceland"
+	},
+	{
+		"code": "40039",
+		"portOfEntry": "Akureyri, Iceland"
+	},
+	{
+		"code": "40040",
+		"portOfEntry": "Vestmannaeyjar, Iceland"
+	},
+	{
+		"code": "40100",
+		"portOfEntry": "All Other Sweden Ports, Sweden"
+	},
+	{
+		"code": "40115",
+		"portOfEntry": "Gaddvik, Sweden"
+	},
+	{
+		"code": "40116",
+		"portOfEntry": "Gafle, Sweden"
+	},
+	{
+		"code": "40117",
+		"portOfEntry": "Goteborg, Sweden"
+	},
+	{
+		"code": "40118",
+		"portOfEntry": "Hallstavik, Sweden"
+	},
+	{
+		"code": "40119",
+		"portOfEntry": "Halmstad, Sweden"
+	},
+	{
+		"code": "40120",
+		"portOfEntry": "Halsingborg, Sweden"
+	},
+	{
+		"code": "40121",
+		"portOfEntry": "Falkenberg, Sweden"
+	},
+	{
+		"code": "40122",
+		"portOfEntry": "Ahus, Sweden"
+	},
+	{
+		"code": "40123",
+		"portOfEntry": "Hoganas, Sweden"
+	},
+	{
+		"code": "40124",
+		"portOfEntry": "Skelleftea, Sweden"
+	},
+	{
+		"code": "40125",
+		"portOfEntry": "Umea, Sweden"
+	},
+	{
+		"code": "40127",
+		"portOfEntry": "Holmsund, Sweden"
+	},
+	{
+		"code": "40129",
+		"portOfEntry": "Iggesund, Sweden"
+	},
+	{
+		"code": "40132",
+		"portOfEntry": "Karlsborg, Sweden"
+	},
+	{
+		"code": "40133",
+		"portOfEntry": "Karlshamn, Sweden"
+	},
+	{
+		"code": "40142",
+		"portOfEntry": "Lulea, Sweden"
+	},
+	{
+		"code": "40143",
+		"portOfEntry": "Limhamn, Sweden"
+	},
+	{
+		"code": "40148",
+		"portOfEntry": "Norrkoping, Sweden"
+	},
+	{
+		"code": "40149",
+		"portOfEntry": "Norrsundet, Sweden"
+	},
+	{
+		"code": "40150",
+		"portOfEntry": "Lanskrona, Sweden"
+	},
+	{
+		"code": "40153",
+		"portOfEntry": "Obbola, Sweden"
+	},
+	{
+		"code": "40155",
+		"portOfEntry": "Ornskoldsvik, Sweden"
+	},
+	{
+		"code": "40157",
+		"portOfEntry": "Oskarshamn, Sweden"
+	},
+	{
+		"code": "40159",
+		"portOfEntry": "Oxelosund, Sweden"
+	},
+	{
+		"code": "40161",
+		"portOfEntry": "Ronnsker, Sweden"
+	},
+	{
+		"code": "40166",
+		"portOfEntry": "Sandarne, Sweden"
+	},
+	{
+		"code": "40174",
+		"portOfEntry": "Soderhamn, Sweden"
+	},
+	{
+		"code": "40176",
+		"portOfEntry": "Stenungsund, Sweden"
+	},
+	{
+		"code": "40179",
+		"portOfEntry": "Stockholm, Sweden"
+	},
+	{
+		"code": "40180",
+		"portOfEntry": "Stockvik, Sweden"
+	},
+	{
+		"code": "40182",
+		"portOfEntry": "Sundsvall, Sweden"
+	},
+	{
+		"code": "40185",
+		"portOfEntry": "Trelleborg, Sweden"
+	},
+	{
+		"code": "40188",
+		"portOfEntry": "Uddevalla, Sweden"
+	},
+	{
+		"code": "40191",
+		"portOfEntry": "Utansjo, Sweden"
+	},
+	{
+		"code": "40192",
+		"portOfEntry": "Vasteras, Sweden"
+	},
+	{
+		"code": "40194",
+		"portOfEntry": "Vastervik, Sweden"
+	},
+	{
+		"code": "40196",
+		"portOfEntry": "Vallvik, Sweden"
+	},
+	{
+		"code": "40197",
+		"portOfEntry": "Wallhamn, Sweden"
+	},
+	{
+		"code": "40300",
+		"portOfEntry": "All Other Norway Ports, Norway"
+	},
+	{
+		"code": "40301",
+		"portOfEntry": "Aalesund, Norway"
+	},
+	{
+		"code": "40302",
+		"portOfEntry": "Aardal, Norway"
+	},
+	{
+		"code": "40311",
+		"portOfEntry": "Aagotnes, Norway"
+	},
+	{
+		"code": "40313",
+		"portOfEntry": "Brevik, Norway"
+	},
+	{
+		"code": "40320",
+		"portOfEntry": "Holla, Norway"
+	},
+	{
+		"code": "40321",
+		"portOfEntry": "Drammen, Norway"
+	},
+	{
+		"code": "40325",
+		"portOfEntry": "Egersund, Norway"
+	},
+	{
+		"code": "40327",
+		"portOfEntry": "Eydehamn, Norway"
+	},
+	{
+		"code": "40329",
+		"portOfEntry": "Farsund, Norway"
+	},
+	{
+		"code": "40334",
+		"portOfEntry": "Borg Hbr., Norway"
+	},
+	{
+		"code": "40335",
+		"portOfEntry": "Larvik, Norway"
+	},
+	{
+		"code": "40336",
+		"portOfEntry": "Hammerfest, Norway"
+	},
+	{
+		"code": "40337",
+		"portOfEntry": "Bogen, Norway"
+	},
+	{
+		"code": "40338",
+		"portOfEntry": "Tromso, Norway"
+	},
+	{
+		"code": "40340",
+		"portOfEntry": "Floro, Norway"
+	},
+	{
+		"code": "40342",
+		"portOfEntry": "Halden, Norway"
+	},
+	{
+		"code": "40345",
+		"portOfEntry": "Haugesund, Norway"
+	},
+	{
+		"code": "40348",
+		"portOfEntry": "Heroen, Norway"
+	},
+	{
+		"code": "40363",
+		"portOfEntry": "Kristiansand N, Norway"
+	},
+	{
+		"code": "40364",
+		"portOfEntry": "Kristiansand S, Norway"
+	},
+	{
+		"code": "40369",
+		"portOfEntry": "Bodo, Norway"
+	},
+	{
+		"code": "40370",
+		"portOfEntry": "Mo i Rana, Norway"
+	},
+	{
+		"code": "40371",
+		"portOfEntry": "Moss, Norway"
+	},
+	{
+		"code": "40372",
+		"portOfEntry": "Maaloy, Norway"
+	},
+	{
+		"code": "40373",
+		"portOfEntry": "Mongstad, Norway"
+	},
+	{
+		"code": "40377",
+		"portOfEntry": "Lysaker, Norway"
+	},
+	{
+		"code": "40378",
+		"portOfEntry": "Porsgrunn, Norway"
+	},
+	{
+		"code": "40379",
+		"portOfEntry": "Rekefjord, Norway"
+	},
+	{
+		"code": "40380",
+		"portOfEntry": "Salten, Norway"
+	},
+	{
+		"code": "40381",
+		"portOfEntry": "Sandnes, Norway"
+	},
+	{
+		"code": "40383",
+		"portOfEntry": "Sauda, Norway"
+	},
+	{
+		"code": "40385",
+		"portOfEntry": "Skien, Norway"
+	},
+	{
+		"code": "40387",
+		"portOfEntry": "Stavanger, Norway"
+	},
+	{
+		"code": "40390",
+		"portOfEntry": "Sunndalsora, Norway"
+	},
+	{
+		"code": "40392",
+		"portOfEntry": "Svelgen, Norway"
+	},
+	{
+		"code": "40397",
+		"portOfEntry": "Trondheim, Norway"
+	},
+	{
+		"code": "40398",
+		"portOfEntry": "Spitsbergen, Sv Jm Islands"
+	},
+	{
+		"code": "40500",
+		"portOfEntry": "All Other Finland Ports, Finland"
+	},
+	{
+		"code": "40504",
+		"portOfEntry": "LappajarviI, Finland"
+	},
+	{
+		"code": "40520",
+		"portOfEntry": "Fredrikshamn, Finland"
+	},
+	{
+		"code": "40523",
+		"portOfEntry": "Hango, Finland"
+	},
+	{
+		"code": "40525",
+		"portOfEntry": "Helsingfors, Finland"
+	},
+	{
+		"code": "40527",
+		"portOfEntry": "Inga, Finland"
+	},
+	{
+		"code": "40531",
+		"portOfEntry": "Ouleborg, Finland"
+	},
+	{
+		"code": "40532",
+		"portOfEntry": "Koverhar, Finland"
+	},
+	{
+		"code": "40533",
+		"portOfEntry": "Loviisa, Finland"
+	},
+	{
+		"code": "40534",
+		"portOfEntry": "Porvoo, Finland"
+	},
+	{
+		"code": "40535",
+		"portOfEntry": "Raahe, Finland"
+	},
+	{
+		"code": "40536",
+		"portOfEntry": "Saimaa Canal, Finland"
+	},
+	{
+		"code": "40537",
+		"portOfEntry": "Nystad, Finland"
+	},
+	{
+		"code": "40538",
+		"portOfEntry": "Vaasa, Finland"
+	},
+	{
+		"code": "40543",
+		"portOfEntry": "Kemi, Finland"
+	},
+	{
+		"code": "40549",
+		"portOfEntry": "Kotka, Finland"
+	},
+	{
+		"code": "40551",
+		"portOfEntry": "Mantyluoto, Finland"
+	},
+	{
+		"code": "40552",
+		"portOfEntry": "Naantali, Finland"
+	},
+	{
+		"code": "40562",
+		"portOfEntry": "Bjorneborg, Finland"
+	},
+	{
+		"code": "40571",
+		"portOfEntry": "Rauma, Finland"
+	},
+	{
+		"code": "40587",
+		"portOfEntry": "Abo, Finland"
+	},
+	{
+		"code": "40591",
+		"portOfEntry": "Ykspihlaja, Finland"
+	},
+	{
+		"code": "40900",
+		"portOfEntry": "All Other Denmark Ports, Denmark"
+	},
+	{
+		"code": "40903",
+		"portOfEntry": "Aalborg, Denmark"
+	},
+	{
+		"code": "40906",
+		"portOfEntry": "Aarhus, Denmark"
+	},
+	{
+		"code": "40908",
+		"portOfEntry": "Enstead, Denmark"
+	},
+	{
+		"code": "40909",
+		"portOfEntry": "Frederikshavn, Denmark"
+	},
+	{
+		"code": "40910",
+		"portOfEntry": "Gulfhavn, Denmark"
+	},
+	{
+		"code": "40911",
+		"portOfEntry": "Haderslev, Denmark"
+	},
+	{
+		"code": "40912",
+		"portOfEntry": "Hobro, Denmark"
+	},
+	{
+		"code": "40913",
+		"portOfEntry": "Holbaek, Denmark"
+	},
+	{
+		"code": "40914",
+		"portOfEntry": "Horsens, Denmark"
+	},
+	{
+		"code": "40915",
+		"portOfEntry": "Kjoge, Denmark"
+	},
+	{
+		"code": "40916",
+		"portOfEntry": "Kolding, Denmark"
+	},
+	{
+		"code": "40917",
+		"portOfEntry": "Korsor, Denmark"
+	},
+	{
+		"code": "40918",
+		"portOfEntry": "Kyndby, Denmark"
+	},
+	{
+		"code": "40919",
+		"portOfEntry": "Esbjerg, Denmark"
+	},
+	{
+		"code": "40921",
+		"portOfEntry": "Fredericia, Denmark"
+	},
+	{
+		"code": "40922",
+		"portOfEntry": "Nakskov, Denmark"
+	},
+	{
+		"code": "40923",
+		"portOfEntry": "Nyborg, Denmark"
+	},
+	{
+		"code": "40924",
+		"portOfEntry": "Nykobing, Denmark"
+	},
+	{
+		"code": "40925",
+		"portOfEntry": "Randers, Denmark"
+	},
+	{
+		"code": "40926",
+		"portOfEntry": "Ronne, Denmark"
+	},
+	{
+		"code": "40927",
+		"portOfEntry": "Struer, Denmark"
+	},
+	{
+		"code": "40928",
+		"portOfEntry": "Svendborg, Denmark"
+	},
+	{
+		"code": "40929",
+		"portOfEntry": "Veile, Denmark"
+	},
+	{
+		"code": "40940",
+		"portOfEntry": "Asnaes, Denmark"
+	},
+	{
+		"code": "40948",
+		"portOfEntry": "Copenhagen, Denmark"
+	},
+	{
+		"code": "40956",
+		"portOfEntry": "Norresundby, Denmark"
+	},
+	{
+		"code": "40961",
+		"portOfEntry": "Odense, Denmark"
+	},
+	{
+		"code": "40971",
+		"portOfEntry": "Stigsnaes, Denmark"
+	},
+	{
+		"code": "40985",
+		"portOfEntry": "All Faroe Islands Ports, Faroe"
+	},
+	{
+		"code": "41201",
+		"portOfEntry": "Avonmouth, United Kingdom"
+	},
+	{
+		"code": "41207",
+		"portOfEntry": "Birkenhead, United Kingdom"
+	},
+	{
+		"code": "41211",
+		"portOfEntry": "Bebington, United Kingdom"
+	},
+	{
+		"code": "41214",
+		"portOfEntry": "Bromsborough, United Kingdom"
+	},
+	{
+		"code": "41216",
+		"portOfEntry": "Eastham, United Kingdom"
+	},
+	{
+		"code": "41227",
+		"portOfEntry": "Ellesmere, United Kingdom"
+	},
+	{
+		"code": "41231",
+		"portOfEntry": "Erith, United Kingdom"
+	},
+	{
+		"code": "41249",
+		"portOfEntry": "Lands End, United Kingdom"
+	},
+	{
+		"code": "41251",
+		"portOfEntry": "Liverpool, United Kingdom"
+	},
+	{
+		"code": "41253",
+		"portOfEntry": "Acton Grange, United Kingdom"
+	},
+	{
+		"code": "41258",
+		"portOfEntry": "Newport, United Kingdom"
+	},
+	{
+		"code": "41262",
+		"portOfEntry": "Portbury, United Kingdom"
+	},
+	{
+		"code": "41264",
+		"portOfEntry": "Preston, United Kingdom"
+	},
+	{
+		"code": "41269",
+		"portOfEntry": "Seaforth, United Kingdom"
+	},
+	{
+		"code": "41299",
+		"portOfEntry": "All Other England West Coast Ports"
+	},
+	{
+		"code": "41320",
+		"portOfEntry": "Dagenham, United Kingdom"
+	},
+	{
+		"code": "41323",
+		"portOfEntry": "Felixstowe, United Kingdom"
+	},
+	{
+		"code": "41328",
+		"portOfEntry": "Falmouth, United Kingdom"
+	},
+	{
+		"code": "41329",
+		"portOfEntry": "Fawley, United Kingdom"
+	},
+	{
+		"code": "41332",
+		"portOfEntry": "Fowey, United Kingdom"
+	},
+	{
+		"code": "41335",
+		"portOfEntry": "Goole, United Kingdom"
+	},
+	{
+		"code": "41336",
+		"portOfEntry": "Greenhite, United Kingdom"
+	},
+	{
+		"code": "41337",
+		"portOfEntry": "Dover, United Kingdom"
+	},
+	{
+		"code": "41338",
+		"portOfEntry": "Hartlepool, United Kingdom"
+	},
+	{
+		"code": "41341",
+		"portOfEntry": "Hull, United Kingdom"
+	},
+	{
+		"code": "41342",
+		"portOfEntry": "Immingham, United Kingdom"
+	},
+	{
+		"code": "41343",
+		"portOfEntry": "Kings North, United Kingdom"
+	},
+	{
+		"code": "41345",
+		"portOfEntry": "Killingholme, United Kingdom"
+	},
+	{
+		"code": "41351",
+		"portOfEntry": "Thamesport, United Kingdom"
+	},
+	{
+		"code": "41352",
+		"portOfEntry": "London, United Kingdom"
+	},
+	{
+		"code": "41355",
+		"portOfEntry": "Middlesbrough, United Kingdom"
+	},
+	{
+		"code": "41356",
+		"portOfEntry": "Newcastle on Tyne, United Kingdom"
+	},
+	{
+		"code": "41357",
+		"portOfEntry": "Newhaven, United Kingdom"
+	},
+	{
+		"code": "41358",
+		"portOfEntry": "Oakham Ness, United Kingdom"
+	},
+	{
+		"code": "41359",
+		"portOfEntry": "Berwick, United Kingdom"
+	},
+	{
+		"code": "41360",
+		"portOfEntry": "Plymouth, United Kingdom"
+	},
+	{
+		"code": "41362",
+		"portOfEntry": "Redcar, United Kingdom"
+	},
+	{
+		"code": "41370",
+		"portOfEntry": "Ridham Dock, United Kingdom"
+	},
+	{
+		"code": "41371",
+		"portOfEntry": "Shellhaven, United Kingdom"
+	},
+	{
+		"code": "41374",
+		"portOfEntry": "Hamble, United Kingdom"
+	},
+	{
+		"code": "41376",
+		"portOfEntry": "Sunderland, United Kingdom"
+	},
+	{
+		"code": "41377",
+		"portOfEntry": "North Tees, United Kingdom"
+	},
+	{
+		"code": "41378",
+		"portOfEntry": "Thames Haven, United Kingdom"
+	},
+	{
+		"code": "41380",
+		"portOfEntry": "Tilbury, United Kingdom"
+	},
+	{
+		"code": "41398",
+		"portOfEntry": "All Other England South and East Coast Ports"
+	},
+	{
+		"code": "41400",
+		"portOfEntry": "All Other Wales Ports, United Kingdom"
+	},
+	{
+		"code": "41401",
+		"portOfEntry": "Barri, United Kingdom"
+	},
+	{
+		"code": "41415",
+		"portOfEntry": "Holyhead, United Kingdom"
+	},
+	{
+		"code": "41446",
+		"portOfEntry": "Milford Haven, United Kingdom"
+	},
+	{
+		"code": "41465",
+		"portOfEntry": "Pembroke, United Kingdom"
+	},
+	{
+		"code": "41477",
+		"portOfEntry": "Port Talbot, United Kingdom"
+	},
+	{
+		"code": "41485",
+		"portOfEntry": "Swansea, United Kingdom"
+	},
+	{
+		"code": "41486",
+		"portOfEntry": "Neath, United Kingdom"
+	},
+	{
+		"code": "41487",
+		"portOfEntry": "Cardiff, United Kingdom"
+	},
+	{
+		"code": "41488",
+		"portOfEntry": "Newport, United Kingdom"
+	},
+	{
+		"code": "41600",
+		"portOfEntry": "All Other Scotland West Coast Ports, United Kingdom"
+	},
+	{
+		"code": "41615",
+		"portOfEntry": "Clyde, United Kingdom"
+	},
+	{
+		"code": "41623",
+		"portOfEntry": "Glasgow, United Kingdom"
+	},
+	{
+		"code": "41625",
+		"portOfEntry": "Greenock, United Kingdom"
+	},
+	{
+		"code": "41627",
+		"portOfEntry": "Hunterston, United Kingdom"
+	},
+	{
+		"code": "41630",
+		"portOfEntry": "Irvine, United Kingdom"
+	},
+	{
+		"code": "41640",
+		"portOfEntry": "Peterhead, United Kingdom"
+	},
+	{
+		"code": "41650",
+		"portOfEntry": "Aberdeen, United Kingdom"
+	},
+	{
+		"code": "41659",
+		"portOfEntry": "Dundee, United Kingdom"
+	},
+	{
+		"code": "41665",
+		"portOfEntry": "Grangemouth, United Kingdom"
+	},
+	{
+		"code": "41668",
+		"portOfEntry": "Hound Point, United Kingdom"
+	},
+	{
+		"code": "41674",
+		"portOfEntry": "Inverkip, United Kingdom"
+	},
+	{
+		"code": "41675",
+		"portOfEntry": "Edinburg, United Kingdom"
+	},
+	{
+		"code": "41680",
+		"portOfEntry": "Flotta, United Kingdom"
+	},
+	{
+		"code": "41681",
+		"portOfEntry": "Montrose, United Kingdom"
+	},
+	{
+		"code": "41682",
+		"portOfEntry": "Sullom Voe, United Kingdom"
+	},
+	{
+		"code": "41683",
+		"portOfEntry": "Inverness, United Kingdom"
+	},
+	{
+		"code": "41684",
+		"portOfEntry": "Braefoot Bay, United Kingdom"
+	},
+	{
+		"code": "41685",
+		"portOfEntry": "Nigg Bay, United Kingdom"
+	},
+	{
+		"code": "41698",
+		"portOfEntry": "All Other Scotland East Coast Ports, United Kingdom"
+	},
+	{
+		"code": "41800",
+		"portOfEntry": "All Other Northern Ireland Ports, United Kingdom"
+	},
+	{
+		"code": "41801",
+		"portOfEntry": "Belfast, United Kingdom"
+	},
+	{
+		"code": "41802",
+		"portOfEntry": "Bangor, United Kingdom"
+	},
+	{
+		"code": "41805",
+		"portOfEntry": "Warren Point, United Kingdom"
+	},
+	{
+		"code": "41815",
+		"portOfEntry": "Londonderry, United Kingdom"
+	},
+	{
+		"code": "41900",
+		"portOfEntry": "All Other Ireland Ports, Ireland"
+	},
+	{
+		"code": "41904",
+		"portOfEntry": "Limerick, Ireland"
+	},
+	{
+		"code": "41905",
+		"portOfEntry": "Cobh, Ireland"
+	},
+	{
+		"code": "41906",
+		"portOfEntry": "Aughinish, Ireland"
+	},
+	{
+		"code": "41910",
+		"portOfEntry": "Waterford, Ireland"
+	},
+	{
+		"code": "41911",
+		"portOfEntry": "Dublin, Ireland"
+	},
+	{
+		"code": "41913",
+		"portOfEntry": "Foynes, Ireland"
+	},
+	{
+		"code": "41915",
+		"portOfEntry": "Money Point, Ireland"
+	},
+	{
+		"code": "41916",
+		"portOfEntry": "Arklow, Ireland"
+	},
+	{
+		"code": "41919",
+		"portOfEntry": "Drogheda, Ireland"
+	},
+	{
+		"code": "41920",
+		"portOfEntry": "Tarbert, Ireland"
+	},
+	{
+		"code": "41921",
+		"portOfEntry": "Dundalk, Ireland"
+	},
+	{
+		"code": "41922",
+		"portOfEntry": "Greenore, Ireland"
+	},
+	{
+		"code": "42100",
+		"portOfEntry": "All Other Netherlands Ports, Netherlands"
+	},
+	{
+		"code": "42103",
+		"portOfEntry": "Alphen aan den Rijn, Netherlands"
+	},
+	{
+		"code": "42105",
+		"portOfEntry": "Amsterdam, Netherlands"
+	},
+	{
+		"code": "42115",
+		"portOfEntry": "Botlek, Netherlands"
+	},
+	{
+		"code": "42116",
+		"portOfEntry": "Delfzijl, Netherlands"
+	},
+	{
+		"code": "42117",
+		"portOfEntry": "Dordrecht, Netherlands"
+	},
+	{
+		"code": "42118",
+		"portOfEntry": "Europoort, Netherlands"
+	},
+	{
+		"code": "42119",
+		"portOfEntry": "Moerdjik, Netherlands"
+	},
+	{
+		"code": "42123",
+		"portOfEntry": "Gravenhage, Netherlands"
+	},
+	{
+		"code": "42132",
+		"portOfEntry": "Eemshaven, Netherlands"
+	},
+	{
+		"code": "42140",
+		"portOfEntry": "Mardejk, Netherlands"
+	},
+	{
+		"code": "42151",
+		"portOfEntry": "Pernis, Netherlands"
+	},
+	{
+		"code": "42157",
+		"portOfEntry": "Rotterdam, Netherlands"
+	},
+	{
+		"code": "42165",
+		"portOfEntry": "Sluiskil, Netherlands"
+	},
+	{
+		"code": "42171",
+		"portOfEntry": "Terneuzen, Netherlands"
+	},
+	{
+		"code": "42181",
+		"portOfEntry": "Vlaardingen, Netherlands"
+	},
+	{
+		"code": "42185",
+		"portOfEntry": "Flushing, Netherlands"
+	},
+	{
+		"code": "42190",
+		"portOfEntry": "Ijmuiden, Netherlands"
+	},
+	{
+		"code": "42300",
+		"portOfEntry": "All Other Belgium Ports"
+	},
+	{
+		"code": "42305",
+		"portOfEntry": "Antwerp, Belgium"
+	},
+	{
+		"code": "42306",
+		"portOfEntry": "Schelde, Belgium"
+	},
+	{
+		"code": "42311",
+		"portOfEntry": "Bruges, Belgium"
+	},
+	{
+		"code": "42315",
+		"portOfEntry": "Brussels, Belgium"
+	},
+	{
+		"code": "42331",
+		"portOfEntry": "Gand, Belgium"
+	},
+	{
+		"code": "42351",
+		"portOfEntry": "Ostend, Belgium"
+	},
+	{
+		"code": "42381",
+		"portOfEntry": "Zeebrugge, Belgium"
+	},
+	{
+		"code": "42385",
+		"portOfEntry": "Hemiksem, Belgium"
+	},
+	{
+		"code": "42700",
+		"portOfEntry": "All Other France Atlantic Region Ports"
+	},
+	{
+		"code": "42701",
+		"portOfEntry": "Bassens, France"
+	},
+	{
+		"code": "42702",
+		"portOfEntry": "Bayonne, France"
+	},
+	{
+		"code": "42703",
+		"portOfEntry": "Ambes, France"
+	},
+	{
+		"code": "42705",
+		"portOfEntry": "Blaye, France"
+	},
+	{
+		"code": "42707",
+		"portOfEntry": "Bordeaux, France"
+	},
+	{
+		"code": "42708",
+		"portOfEntry": "Boulogne, France"
+	},
+	{
+		"code": "42709",
+		"portOfEntry": "Brest, France"
+	},
+	{
+		"code": "42711",
+		"portOfEntry": "Caen, France"
+	},
+	{
+		"code": "42713",
+		"portOfEntry": "Calais, France"
+	},
+	{
+		"code": "42715",
+		"portOfEntry": "Cherbourg, France"
+	},
+	{
+		"code": "42723",
+		"portOfEntry": "Donges, France"
+	},
+	{
+		"code": "42727",
+		"portOfEntry": "Dunkerque, France"
+	},
+	{
+		"code": "42733",
+		"portOfEntry": "La Pallice, France"
+	},
+	{
+		"code": "42735",
+		"portOfEntry": "Boucau, France"
+	},
+	{
+		"code": "42736",
+		"portOfEntry": "Dieppe, France"
+	},
+	{
+		"code": "42737",
+		"portOfEntry": "Le Havre, France"
+	},
+	{
+		"code": "42742",
+		"portOfEntry": "Le Verdon, France"
+	},
+	{
+		"code": "42743",
+		"portOfEntry": "Lorient, France"
+	},
+	{
+		"code": "42745",
+		"portOfEntry": "Montoir, France"
+	},
+	{
+		"code": "42749",
+		"portOfEntry": "Nantes, France"
+	},
+	{
+		"code": "42751",
+		"portOfEntry": "Pauillac, France"
+	},
+	{
+		"code": "42754",
+		"portOfEntry": "Radicatel, France"
+	},
+	{
+		"code": "42755",
+		"portOfEntry": "Port Jerome, France"
+	},
+	{
+		"code": "42757",
+		"portOfEntry": "Rochefort, France"
+	},
+	{
+		"code": "42759",
+		"portOfEntry": "Rouen, France"
+	},
+	{
+		"code": "42762",
+		"portOfEntry": "Saint Nazaire, France"
+	},
+	{
+		"code": "42773",
+		"portOfEntry": "Berre, France"
+	},
+	{
+		"code": "42775",
+		"portOfEntry": "Cannes, France"
+	},
+	{
+		"code": "42776",
+		"portOfEntry": "Fos, France"
+	},
+	{
+		"code": "42780",
+		"portOfEntry": "LAvera, France"
+	},
+	{
+		"code": "42782",
+		"portOfEntry": "Marseille, France"
+	},
+	{
+		"code": "42784",
+		"portOfEntry": "Caronte, France"
+	},
+	{
+		"code": "42785",
+		"portOfEntry": "Port Saint Louis, France"
+	},
+	{
+		"code": "42786",
+		"portOfEntry": "Nice, France"
+	},
+	{
+		"code": "42789",
+		"portOfEntry": "Sete, France"
+	},
+	{
+		"code": "42790",
+		"portOfEntry": "Toulon, France"
+	},
+	{
+		"code": "42796",
+		"portOfEntry": "All Corsica Ports, France"
+	},
+	{
+		"code": "42797",
+		"portOfEntry": "Monte Carlo, Monaco"
+	},
+	{
+		"code": "42799",
+		"portOfEntry": "All Other France Mediterranean Region Ports"
+	},
+	{
+		"code": "42800",
+		"portOfEntry": "All Germany Ports, Germany"
+	},
+	{
+		"code": "42811",
+		"portOfEntry": "Rostock, Germany"
+	},
+	{
+		"code": "42825",
+		"portOfEntry": "Holtenau, Germany"
+	},
+	{
+		"code": "42835",
+		"portOfEntry": "Wismar, Germany"
+	},
+	{
+		"code": "42867",
+		"portOfEntry": "Brake, Germany"
+	},
+	{
+		"code": "42868",
+		"portOfEntry": "Elsfleth, Germany"
+	},
+	{
+		"code": "42869",
+		"portOfEntry": "Bremen, Germany"
+	},
+	{
+		"code": "42870",
+		"portOfEntry": "Bremerhaven, Germany"
+	},
+	{
+		"code": "42871",
+		"portOfEntry": "Brunsbuttel, Germany"
+	},
+	{
+		"code": "42873",
+		"portOfEntry": "Cuxhaven, Germany"
+	},
+	{
+		"code": "42874",
+		"portOfEntry": "Einswarden, Germany"
+	},
+	{
+		"code": "42875",
+		"portOfEntry": "Emden, Germany"
+	},
+	{
+		"code": "42879",
+		"portOfEntry": "Hamburg, Germany"
+	},
+	{
+		"code": "42880",
+		"portOfEntry": "Butzfleth, Germany"
+	},
+	{
+		"code": "42881",
+		"portOfEntry": "Harburg, Germany"
+	},
+	{
+		"code": "42883",
+		"portOfEntry": "Nordenham, Germany"
+	},
+	{
+		"code": "42891",
+		"portOfEntry": "Wilhelmshaven, Germany"
+	},
+	{
+		"code": "42899",
+		"portOfEntry": "All Other Germany Atlantic Region Ports, Germany"
+	},
+	{
+		"code": "44700",
+		"portOfEntry": "All Other Estonia Ports, Estonia"
+	},
+	{
+		"code": "44701",
+		"portOfEntry": "Tallinn, Estonia"
+	},
+	{
+		"code": "44702",
+		"portOfEntry": "Muuga, Estonia"
+	},
+	{
+		"code": "44900",
+		"portOfEntry": "All Other Latvia Ports, Latvia"
+	},
+	{
+		"code": "44911",
+		"portOfEntry": "Riga, Latvia"
+	},
+	{
+		"code": "44951",
+		"portOfEntry": "Ventspils, Latvia"
+	},
+	{
+		"code": "45100",
+		"portOfEntry": "All Other Lithuania Ports, Lithuania"
+	},
+	{
+		"code": "45101",
+		"portOfEntry": "Klaipeda, Lithuania"
+	},
+	{
+		"code": "45500",
+		"portOfEntry": "All Other Poland Ports, Poland"
+	},
+	{
+		"code": "45505",
+		"portOfEntry": "Gdynia, Poland"
+	},
+	{
+		"code": "45507",
+		"portOfEntry": "Stettin, Poland"
+	},
+	{
+		"code": "45511",
+		"portOfEntry": "Danzig, Poland"
+	},
+	{
+		"code": "45512",
+		"portOfEntry": "Swinemunde, Poland"
+	},
+	{
+		"code": "45513",
+		"portOfEntry": "Police, Poland"
+	},
+	{
+		"code": "46200",
+		"portOfEntry": "All Other Russia Siberia Region Ports"
+	},
+	{
+		"code": "46208",
+		"portOfEntry": "Yandraknnot, Russia"
+	},
+	{
+		"code": "46209",
+		"portOfEntry": "Murmansk, Russia"
+	},
+	{
+		"code": "46213",
+		"portOfEntry": "Kaliningrad, Russia"
+	},
+	{
+		"code": "46215",
+		"portOfEntry": "Leningrad, Russia"
+	},
+	{
+		"code": "46220",
+		"portOfEntry": "All Other Russia Baltic Region Ports"
+	},
+	{
+		"code": "46222",
+		"portOfEntry": "Lorino, Russia"
+	},
+	{
+		"code": "46230",
+		"portOfEntry": "Nakhodka, Russia"
+	},
+	{
+		"code": "46231",
+		"portOfEntry": "Vostochnyy, Russia"
+	},
+	{
+		"code": "46232",
+		"portOfEntry": "Magadan, Russia"
+	},
+	{
+		"code": "46233",
+		"portOfEntry": "Petropavlovsk, Russia"
+	},
+	{
+		"code": "46234",
+		"portOfEntry": "Vanino, Russia"
+	},
+	{
+		"code": "46236",
+		"portOfEntry": "Korsakov, Russia"
+	},
+	{
+		"code": "46237",
+		"portOfEntry": "Provideniya, Russia"
+	},
+	{
+		"code": "46238",
+		"portOfEntry": "Vladivostok, Russia"
+	},
+	{
+		"code": "46239",
+		"portOfEntry": "All Other Russia Eastern Region Ports"
+	},
+	{
+		"code": "46241",
+		"portOfEntry": "Novorossiysk, Russia"
+	},
+	{
+		"code": "46242",
+		"portOfEntry": "Taganrog, Russia"
+	},
+	{
+		"code": "46245",
+		"portOfEntry": "Tuapse, Russia"
+	},
+	{
+		"code": "46250",
+		"portOfEntry": "All Other Russia Black Sea Region Ports"
+	},
+	{
+		"code": "46271",
+		"portOfEntry": "Ilichevsk, Ukraine"
+	},
+	{
+		"code": "46272",
+		"portOfEntry": "Ust-Dunaisk, Ukraine"
+	},
+	{
+		"code": "46274",
+		"portOfEntry": "Kerch, Ukraine"
+	},
+	{
+		"code": "46275",
+		"portOfEntry": "Juzhny, Ukraine"
+	},
+	{
+		"code": "46276",
+		"portOfEntry": "Mariupol, Ukraine"
+	},
+	{
+		"code": "46277",
+		"portOfEntry": "Belgrod-Dnestrovskiy, Ukraine"
+	},
+	{
+		"code": "46278",
+		"portOfEntry": "Berdyansk, Ukraine"
+	},
+	{
+		"code": "46279",
+		"portOfEntry": "All Other Ukraine Ports, Ukraine"
+	},
+	{
+		"code": "46321",
+		"portOfEntry": "Batumi, Georgia"
+	},
+	{
+		"code": "46337",
+		"portOfEntry": "Poti, Georgia"
+	},
+	{
+		"code": "46350",
+		"portOfEntry": "Sukhumi, Georgia"
+	},
+	{
+		"code": "46357",
+		"portOfEntry": "All Other Georgia Ports, Georgia"
+	},
+	{
+		"code": "47000",
+		"portOfEntry": "All Other Spain Atlantic Region Ports North of Por, Spain"
+	},
+	{
+		"code": "47003",
+		"portOfEntry": "Aviles, Spain"
+	},
+	{
+		"code": "47005",
+		"portOfEntry": "Bilbao, Spain"
+	},
+	{
+		"code": "47013",
+		"portOfEntry": "Santander, Spain"
+	},
+	{
+		"code": "47017",
+		"portOfEntry": "Gijon, Spain"
+	},
+	{
+		"code": "47021",
+		"portOfEntry": "Corunna, Spain"
+	},
+	{
+		"code": "47022",
+		"portOfEntry": "El Ferrol, Spain"
+	},
+	{
+		"code": "47027",
+		"portOfEntry": "Pasages, Spain"
+	},
+	{
+		"code": "47029",
+		"portOfEntry": "Vigo, Spain"
+	},
+	{
+		"code": "47031",
+		"portOfEntry": "Algeciras, Spain"
+	},
+	{
+		"code": "47032",
+		"portOfEntry": "Tarifa, Spain"
+	},
+	{
+		"code": "47035",
+		"portOfEntry": "Cadiz, Spain"
+	},
+	{
+		"code": "47036",
+		"portOfEntry": "San Ciprian, Spain"
+	},
+	{
+		"code": "47039",
+		"portOfEntry": "Sevilla, Spain"
+	},
+	{
+		"code": "47044",
+		"portOfEntry": "Huelva, Spain"
+	},
+	{
+		"code": "47049",
+		"portOfEntry": "All Other Spain Atlantic Region Ports Southeast of, Spain"
+	},
+	{
+		"code": "47051",
+		"portOfEntry": "Alcanar, Spain"
+	},
+	{
+		"code": "47057",
+		"portOfEntry": "Alicante, Spain"
+	},
+	{
+		"code": "47059",
+		"portOfEntry": "Almeria, Spain"
+	},
+	{
+		"code": "47061",
+		"portOfEntry": "Barcelona, Spain"
+	},
+	{
+		"code": "47062",
+		"portOfEntry": "Carboneras, Spain"
+	},
+	{
+		"code": "47063",
+		"portOfEntry": "Cartagena, Spain"
+	},
+	{
+		"code": "47065",
+		"portOfEntry": "Palamos, Spain"
+	},
+	{
+		"code": "47066",
+		"portOfEntry": "Majorca, Spain"
+	},
+	{
+		"code": "47067",
+		"portOfEntry": "Ibiza, Spain"
+	},
+	{
+		"code": "47068",
+		"portOfEntry": "Castellon, Spain"
+	},
+	{
+		"code": "47070",
+		"portOfEntry": "All Other Canary Islands Ports, Spain"
+	},
+	{
+		"code": "47071",
+		"portOfEntry": "Las Palmas, Spain"
+	},
+	{
+		"code": "47073",
+		"portOfEntry": "Santa Cruz de Tenerife, Spain"
+	},
+	{
+		"code": "47076",
+		"portOfEntry": "Malaga, Spain"
+	},
+	{
+		"code": "47077",
+		"portOfEntry": "Motril, Spain"
+	},
+	{
+		"code": "47083",
+		"portOfEntry": "Puerto de Sagunto, Spain"
+	},
+	{
+		"code": "47088",
+		"portOfEntry": "San Feliu de Guixols, Spain"
+	},
+	{
+		"code": "47090",
+		"portOfEntry": "Torrevieja, Spain"
+	},
+	{
+		"code": "47092",
+		"portOfEntry": "Tarragona, Spain"
+	},
+	{
+		"code": "47093",
+		"portOfEntry": "Gandia, Spain"
+	},
+	{
+		"code": "47094",
+		"portOfEntry": "Valencia, Spain"
+	},
+	{
+		"code": "47095",
+		"portOfEntry": "All other Spanish Africa N.E.C. Ports, Spain"
+	},
+	{
+		"code": "47096",
+		"portOfEntry": "Ceuta, Spain"
+	},
+	{
+		"code": "47099",
+		"portOfEntry": "All Other Spain Mediterranean Region Ports, Spain"
+	},
+	{
+		"code": "47100",
+		"portOfEntry": "All Other Portugal Ports, Portugal"
+	},
+	{
+		"code": "47101",
+		"portOfEntry": "Funchal, Portugal"
+	},
+	{
+		"code": "47123",
+		"portOfEntry": "Leixoes, Portugal"
+	},
+	{
+		"code": "47125",
+		"portOfEntry": "Lisboa, Portugal"
+	},
+	{
+		"code": "47126",
+		"portOfEntry": "Barreiro, Portugal"
+	},
+	{
+		"code": "47127",
+		"portOfEntry": "Porto de Sines, Portugal"
+	},
+	{
+		"code": "47130",
+		"portOfEntry": "Aveiro, Portugal"
+	},
+	{
+		"code": "47133",
+		"portOfEntry": "Oporto, Portugal"
+	},
+	{
+		"code": "47135",
+		"portOfEntry": "Figueira da Foz, Portugal"
+	},
+	{
+		"code": "47141",
+		"portOfEntry": "Setubal, Portugal"
+	},
+	{
+		"code": "47150",
+		"portOfEntry": "All Other Azores Ports, Portugal"
+	},
+	{
+		"code": "47151",
+		"portOfEntry": "Ponta Delgada, Portugal"
+	},
+	{
+		"code": "47152",
+		"portOfEntry": "Praia, Portugal"
+	},
+	{
+		"code": "47155",
+		"portOfEntry": "Terceira Island, Portugal"
+	},
+	{
+		"code": "47201",
+		"portOfEntry": "Gibraltar, Gibraltar"
+	},
+	{
+		"code": "47300",
+		"portOfEntry": "All Other Malta Ports, Malta"
+	},
+	{
+		"code": "47305",
+		"portOfEntry": "Valletta, Malta"
+	},
+	{
+		"code": "47306",
+		"portOfEntry": "Marsaxlokk, Malta"
+	},
+	{
+		"code": "47500",
+		"portOfEntry": "All Other Italy West Coast Ports, Italy"
+	},
+	{
+		"code": "47505",
+		"portOfEntry": "Bagnoli, Italy"
+	},
+	{
+		"code": "47507",
+		"portOfEntry": "Naples, Italy"
+	},
+	{
+		"code": "47515",
+		"portOfEntry": "Piombino, Italy"
+	},
+	{
+		"code": "47517",
+		"portOfEntry": "Savona, Italy"
+	},
+	{
+		"code": "47519",
+		"portOfEntry": "Civitavecchia, Italy"
+	},
+	{
+		"code": "47525",
+		"portOfEntry": "Gaeta, Italy"
+	},
+	{
+		"code": "47527",
+		"portOfEntry": "Genoa, Italy"
+	},
+	{
+		"code": "47528",
+		"portOfEntry": "Marina di Carrara, Italy"
+	},
+	{
+		"code": "47531",
+		"portOfEntry": "La Spezia, Italy"
+	},
+	{
+		"code": "47536",
+		"portOfEntry": "Gioia Tauro, Italy"
+	},
+	{
+		"code": "47537",
+		"portOfEntry": "Leghorn, Italy"
+	},
+	{
+		"code": "47538",
+		"portOfEntry": "Salerno, Italy"
+	},
+	{
+		"code": "47539",
+		"portOfEntry": "Vada, Italy"
+	},
+	{
+		"code": "47540",
+		"portOfEntry": "Rada di Vado, Italy"
+	},
+	{
+		"code": "47541",
+		"portOfEntry": "Canneto, Italy"
+	},
+	{
+		"code": "47542",
+		"portOfEntry": "Augusta, Italy"
+	},
+	{
+		"code": "47543",
+		"portOfEntry": "Gela, Italy"
+	},
+	{
+		"code": "47548",
+		"portOfEntry": "Catania, Italy"
+	},
+	{
+		"code": "47550",
+		"portOfEntry": "Milazzo, Italy"
+	},
+	{
+		"code": "47551",
+		"portOfEntry": "Palermo, Italy"
+	},
+	{
+		"code": "47554",
+		"portOfEntry": "Porto Empedocle, Italy"
+	},
+	{
+		"code": "47555",
+		"portOfEntry": "Priolo, Italy"
+	},
+	{
+		"code": "47556",
+		"portOfEntry": "Santa Panagia, Italy"
+	},
+	{
+		"code": "47558",
+		"portOfEntry": "All Other Sicily Ports, Italy"
+	},
+	{
+		"code": "47561",
+		"portOfEntry": "Porto Torres, Italy"
+	},
+	{
+		"code": "47563",
+		"portOfEntry": "Cagliari, Italy"
+	},
+	{
+		"code": "47565",
+		"portOfEntry": "Golfo de Palmas, Italy"
+	},
+	{
+		"code": "47567",
+		"portOfEntry": "Sarroch Oil Terminal, Italy"
+	},
+	{
+		"code": "47568",
+		"portOfEntry": "Porto Vesme, Italy"
+	},
+	{
+		"code": "47569",
+		"portOfEntry": "All Other Sardinia Ports, Italy"
+	},
+	{
+		"code": "47571",
+		"portOfEntry": "Ancona, Italy"
+	},
+	{
+		"code": "47578",
+		"portOfEntry": "Bari, Italy"
+	},
+	{
+		"code": "47579",
+		"portOfEntry": "Barletta, Italy"
+	},
+	{
+		"code": "47581",
+		"portOfEntry": "Chioggia, Italy"
+	},
+	{
+		"code": "47582",
+		"portOfEntry": "Crotone, Italy"
+	},
+	{
+		"code": "47583",
+		"portOfEntry": "Brindisi, Italy"
+	},
+	{
+		"code": "47584",
+		"portOfEntry": "Porto Corsini, Italy"
+	},
+	{
+		"code": "47585",
+		"portOfEntry": "Taranto, Italy"
+	},
+	{
+		"code": "47587",
+		"portOfEntry": "Trieste, Italy"
+	},
+	{
+		"code": "47588",
+		"portOfEntry": "Monfalcone, Italy"
+	},
+	{
+		"code": "47595",
+		"portOfEntry": "Lido, Italy"
+	},
+	{
+		"code": "47598",
+		"portOfEntry": "All Other Italy East Coast Ports, Italy"
+	},
+	{
+		"code": "47900",
+		"portOfEntry": "Zelenika, Serbia"
+	},
+	{
+		"code": "47901",
+		"portOfEntry": "Bar, Serbia"
+	},
+	{
+		"code": "47902",
+		"portOfEntry": "Dubrovnik, Croatia"
+	},
+	{
+		"code": "47905",
+		"portOfEntry": "Novigrad, Croatia"
+	},
+	{
+		"code": "47906",
+		"portOfEntry": "Dugi Rat, Croatia"
+	},
+	{
+		"code": "47909",
+		"portOfEntry": "Kopar, Slovenia"
+	},
+	{
+		"code": "47910",
+		"portOfEntry": "Piran, Slovenia"
+	},
+	{
+		"code": "47911",
+		"portOfEntry": "Kardeljevo, Croatia"
+	},
+	{
+		"code": "47912",
+		"portOfEntry": "Obrovac, Croatia"
+	},
+	{
+		"code": "47920",
+		"portOfEntry": "Pola, Croatia"
+	},
+	{
+		"code": "47923",
+		"portOfEntry": "Bakar, Croatia"
+	},
+	{
+		"code": "47925",
+		"portOfEntry": "Shibenik, Croatia"
+	},
+	{
+		"code": "47931",
+		"portOfEntry": "Kastel Sucurac, Croatia"
+	},
+	{
+		"code": "47933",
+		"portOfEntry": "Zadar, Croatia"
+	},
+	{
+		"code": "47998",
+		"portOfEntry": "All Other Croatia Ports, Croatia"
+	},
+	{
+		"code": "47999",
+		"portOfEntry": "All Other Slovenia Ports, Slovenia"
+	},
+	{
+		"code": "48100",
+		"portOfEntry": "All Other Albania Ports, Albania"
+	},
+	{
+		"code": "48109",
+		"portOfEntry": "Durazzo, Albania"
+	},
+	{
+		"code": "48400",
+		"portOfEntry": "All Other Greece Ports, Greece"
+	},
+	{
+		"code": "48402",
+		"portOfEntry": "Ayia Marina, Greece"
+	},
+	{
+		"code": "48405",
+		"portOfEntry": "Ayios Nikolaos, Greece"
+	},
+	{
+		"code": "48406",
+		"portOfEntry": "Souda Bay, Greece"
+	},
+	{
+		"code": "48410",
+		"portOfEntry": "Corinth, Greece"
+	},
+	{
+		"code": "48411",
+		"portOfEntry": "Heraklion, Greece"
+	},
+	{
+		"code": "48412",
+		"portOfEntry": "Kali Limenes, Greece"
+	},
+	{
+		"code": "48421",
+		"portOfEntry": "Calamata, Greece"
+	},
+	{
+		"code": "48425",
+		"portOfEntry": "Kalamaki, Greece"
+	},
+	{
+		"code": "48427",
+		"portOfEntry": "Cavala, Greece"
+	},
+	{
+		"code": "48445",
+		"portOfEntry": "Elefsis, Greece"
+	},
+	{
+		"code": "48449",
+		"portOfEntry": "Aliver, Greece"
+	},
+	{
+		"code": "48451",
+		"portOfEntry": "Patrai, Greece"
+	},
+	{
+		"code": "48452",
+		"portOfEntry": "Piraeus, Greece"
+	},
+	{
+		"code": "48453",
+		"portOfEntry": "Aspropirgos, Greece"
+	},
+	{
+		"code": "48454",
+		"portOfEntry": "Ayia Trias, Greece"
+	},
+	{
+		"code": "48455",
+		"portOfEntry": "Chios, Greece"
+	},
+	{
+		"code": "48456",
+		"portOfEntry": "Corfu, Greece"
+	},
+	{
+		"code": "48457",
+		"portOfEntry": "Itea, Greece"
+	},
+	{
+		"code": "48458",
+		"portOfEntry": "Katakolon, Greece"
+	},
+	{
+		"code": "48459",
+		"portOfEntry": "Kymassi, Greece"
+	},
+	{
+		"code": "48460",
+		"portOfEntry": "Mikonos, Greece"
+	},
+	{
+		"code": "48461",
+		"portOfEntry": "Psachna, Greece"
+	},
+	{
+		"code": "48462",
+		"portOfEntry": "Mitilini, Greece"
+	},
+	{
+		"code": "48463",
+		"portOfEntry": "Pilos, Greece"
+	},
+	{
+		"code": "48464",
+		"portOfEntry": "Samos, Greece"
+	},
+	{
+		"code": "48465",
+		"portOfEntry": "Serifos, Greece"
+	},
+	{
+		"code": "48466",
+		"portOfEntry": "Syros, Greece"
+	},
+	{
+		"code": "48467",
+		"portOfEntry": "Zakinthos, Greece"
+	},
+	{
+		"code": "48468",
+		"portOfEntry": "Milos Island, Greece"
+	},
+	{
+		"code": "48471",
+		"portOfEntry": "Salonika, Greece"
+	},
+	{
+		"code": "48473",
+		"portOfEntry": "Volos, Greece"
+	},
+	{
+		"code": "48475",
+		"portOfEntry": "Iali, Greece"
+	},
+	{
+		"code": "48476",
+		"portOfEntry": "Skaramanga, Greece"
+	},
+	{
+		"code": "48500",
+		"portOfEntry": "All Other Romania Ports, Romania"
+	},
+	{
+		"code": "48511",
+		"portOfEntry": "Constanta, Romania"
+	},
+	{
+		"code": "48700",
+		"portOfEntry": "All Other Ports in Bulgaria, Bulgaria"
+	},
+	{
+		"code": "48702",
+		"portOfEntry": "Bourgas, Bulgaria"
+	},
+	{
+		"code": "48707",
+		"portOfEntry": "Varna, Bulgaria"
+	},
+	{
+		"code": "48900",
+		"portOfEntry": "All Other Turkey Mediterranean Ports"
+	},
+	{
+		"code": "48903",
+		"portOfEntry": "Adalia, Turkey"
+	},
+	{
+		"code": "48905",
+		"portOfEntry": "Dikili, Turkey"
+	},
+	{
+		"code": "48915",
+		"portOfEntry": "Aliaga, Turkey"
+	},
+	{
+		"code": "48925",
+		"portOfEntry": "Gocek, Turkey"
+	},
+	{
+		"code": "48928",
+		"portOfEntry": "Isdemir, Turkey"
+	},
+	{
+		"code": "48931",
+		"portOfEntry": "Alexandretta, Turkey"
+	},
+	{
+		"code": "48932",
+		"portOfEntry": "Toros Gubre, Turkey"
+	},
+	{
+		"code": "48938",
+		"portOfEntry": "Adana, Turkey"
+	},
+	{
+		"code": "48939",
+		"portOfEntry": "Izmir, Turkey"
+	},
+	{
+		"code": "48940",
+		"portOfEntry": "Izmit, Turkey"
+	},
+	{
+		"code": "48941",
+		"portOfEntry": "Darcia, Turkey"
+	},
+	{
+		"code": "48942",
+		"portOfEntry": "Derince, Turkey"
+	},
+	{
+		"code": "48943",
+		"portOfEntry": "Eregli, Turkey"
+	},
+	{
+		"code": "48944",
+		"portOfEntry": "Gebze, Turkey"
+	},
+	{
+		"code": "48945",
+		"portOfEntry": "Istanbul, Turkey"
+	},
+	{
+		"code": "48946",
+		"portOfEntry": "Giresun, Turkey"
+	},
+	{
+		"code": "48947",
+		"portOfEntry": "Gemlik, Turkey"
+	},
+	{
+		"code": "48951",
+		"portOfEntry": "Mudania, Turkey"
+	},
+	{
+		"code": "48963",
+		"portOfEntry": "Bandirma, Turkey"
+	},
+	{
+		"code": "48967",
+		"portOfEntry": "Samsun, Turkey"
+	},
+	{
+		"code": "48971",
+		"portOfEntry": "Yalova, Turkey"
+	},
+	{
+		"code": "48999",
+		"portOfEntry": "All Other Turkey Black Sea Ports"
+	},
+	{
+		"code": "49133",
+		"portOfEntry": "Larnaca, Cyprus"
+	},
+	{
+		"code": "49134",
+		"portOfEntry": "Vassiliko, Cyprus"
+	},
+	{
+		"code": "49135",
+		"portOfEntry": "Limassol, Cyprus"
+	},
+	{
+		"code": "49199",
+		"portOfEntry": "All Other Cyprus Ports, Cyprus"
+	},
+	{
+		"code": "50200",
+		"portOfEntry": "All Other Syria Ports, Syria"
+	},
+	{
+		"code": "50215",
+		"portOfEntry": "Al Ladhiqiyah, Syria"
+	},
+	{
+		"code": "50220",
+		"portOfEntry": "Tartous, Syria"
+	},
+	{
+		"code": "50400",
+		"portOfEntry": "All Other Lebanon Ports"
+	},
+	{
+		"code": "50401",
+		"portOfEntry": "Bayrut, Lebanon"
+	},
+	{
+		"code": "50500",
+		"portOfEntry": "All Other Iraq Ports"
+	},
+	{
+		"code": "50501",
+		"portOfEntry": "Baghdad, Iraq"
+	},
+	{
+		"code": "50505",
+		"portOfEntry": "Al Bakir, Iraq"
+	},
+	{
+		"code": "50525",
+		"portOfEntry": "Basra, Iraq"
+	},
+	{
+		"code": "50560",
+		"portOfEntry": "Khor-al-Amaya, Iraq"
+	},
+	{
+		"code": "50570",
+		"portOfEntry": "Khor al Zubair, Iraq"
+	},
+	{
+		"code": "50700",
+		"portOfEntry": "All Other Iran Ports, Iran"
+	},
+	{
+		"code": "50725",
+		"portOfEntry": "Ahvaz, Iran"
+	},
+	{
+		"code": "50730",
+		"portOfEntry": "Bandar Abbas, Iran"
+	},
+	{
+		"code": "50739",
+		"portOfEntry": "Bandar E Mah Shahr, Iran"
+	},
+	{
+		"code": "50769",
+		"portOfEntry": "Gazireh Ye Lavan, Iran"
+	},
+	{
+		"code": "50770",
+		"portOfEntry": "Bandar Khomeini, Iran"
+	},
+	{
+		"code": "50771",
+		"portOfEntry": "Kharg Island, Iran"
+	},
+	{
+		"code": "50800",
+		"portOfEntry": "All Other Israel Mediterranean Area Ports, Israel"
+	},
+	{
+		"code": "50801",
+		"portOfEntry": "Haifa, Israel"
+	},
+	{
+		"code": "50805",
+		"portOfEntry": "Ashdod, Israel"
+	},
+	{
+		"code": "50810",
+		"portOfEntry": "Ascalon, Israel"
+	},
+	{
+		"code": "50815",
+		"portOfEntry": "Hadera, Israel"
+	},
+	{
+		"code": "50845",
+		"portOfEntry": "Tel Aviv Yafo, Israel"
+	},
+	{
+		"code": "50871",
+		"portOfEntry": "Eilat, Israel"
+	},
+	{
+		"code": "51100",
+		"portOfEntry": "All Other Jordan Ports, Jordan"
+	},
+	{
+		"code": "51105",
+		"portOfEntry": "Al Aqabah, Jordan"
+	},
+	{
+		"code": "51300",
+		"portOfEntry": "All Other Kuwait Ports, Kuwait"
+	},
+	{
+		"code": "51321",
+		"portOfEntry": "Al Kuwayt, Kuwait"
+	},
+	{
+		"code": "51323",
+		"portOfEntry": "Fahaheel, Kuwait"
+	},
+	{
+		"code": "51330",
+		"portOfEntry": "Mina Saud, Kuwait"
+	},
+	{
+		"code": "51350",
+		"portOfEntry": "Ash Shuaiba, Kuwait"
+	},
+	{
+		"code": "51700",
+		"portOfEntry": "All Other Saudi Arabia Ports"
+	},
+	{
+		"code": "51712",
+		"portOfEntry": "Al Khobar, Saudi Arabia"
+	},
+	{
+		"code": "51715",
+		"portOfEntry": "Ad Dammam, Saudi Arabia"
+	},
+	{
+		"code": "51717",
+		"portOfEntry": "Dhahran, Saudi Arabia"
+	},
+	{
+		"code": "51719",
+		"portOfEntry": "Gizan, Saudi Arabia"
+	},
+	{
+		"code": "51720",
+		"portOfEntry": "Al Jubail, Saudi Arabia"
+	},
+	{
+		"code": "51721",
+		"portOfEntry": "Jeddeh, Saudi Arabia"
+	},
+	{
+		"code": "51723",
+		"portOfEntry": "Al Juaymah, Saudi Arabia"
+	},
+	{
+		"code": "51727",
+		"portOfEntry": "Ras at Tannurah, Saudi Arabia"
+	},
+	{
+		"code": "51730",
+		"portOfEntry": "Dhuba, Saudi Arabia"
+	},
+	{
+		"code": "51800",
+		"portOfEntry": "All Other Qatar Ports, Qatar"
+	},
+	{
+		"code": "51813",
+		"portOfEntry": "Doha, Qatar"
+	},
+	{
+		"code": "51814",
+		"portOfEntry": "Ras Laffan, Qatar"
+	},
+	{
+		"code": "51825",
+		"portOfEntry": "Musayid, Qatar"
+	},
+	{
+		"code": "52000",
+		"portOfEntry": "All Other United Arab Emirates Ports"
+	},
+	{
+		"code": "52001",
+		"portOfEntry": "Abu Dhabi, United Arab Em"
+	},
+	{
+		"code": "52003",
+		"portOfEntry": "Arzanah Island, United Arab Em"
+	},
+	{
+		"code": "52005",
+		"portOfEntry": "Dubai, United Arab Em"
+	},
+	{
+		"code": "52030",
+		"portOfEntry": "Das, United Arab Em"
+	},
+	{
+		"code": "52040",
+		"portOfEntry": "Fateh Terminal, United Arab Em"
+	},
+	{
+		"code": "52050",
+		"portOfEntry": "Jebel Dhanna, United Arab Em"
+	},
+	{
+		"code": "52051",
+		"portOfEntry": "Jebel Ali, United Arab Em"
+	},
+	{
+		"code": "52060",
+		"portOfEntry": "Khor Fakkan, United Arab Em"
+	},
+	{
+		"code": "52070",
+		"portOfEntry": "Ash Shariqah, United Arab Em"
+	},
+	{
+		"code": "52077",
+		"portOfEntry": "Fujairah, United Arab Em"
+	},
+	{
+		"code": "52100",
+		"portOfEntry": "All Other Yemen Ports, Yemen"
+	},
+	{
+		"code": "52101",
+		"portOfEntry": "Aden, Yemen"
+	},
+	{
+		"code": "52115",
+		"portOfEntry": "Al Hudayah, Yemen"
+	},
+	{
+		"code": "52125",
+		"portOfEntry": "Al Mokha, Yemen"
+	},
+	{
+		"code": "52300",
+		"portOfEntry": "All Other Oman Ports"
+	},
+	{
+		"code": "52310",
+		"portOfEntry": "Sur, Oman"
+	},
+	{
+		"code": "52312",
+		"portOfEntry": "Qalhat, Oman"
+	},
+	{
+		"code": "52315",
+		"portOfEntry": "Masirah, Oman"
+	},
+	{
+		"code": "52320",
+		"portOfEntry": "Mina al Fahal, Oman"
+	},
+	{
+		"code": "52325",
+		"portOfEntry": "Muscat, Oman"
+	},
+	{
+		"code": "52330",
+		"portOfEntry": "Salalah, Oman"
+	},
+	{
+		"code": "52500",
+		"portOfEntry": "All Other Bahrain Ports, Bahrain"
+	},
+	{
+		"code": "52501",
+		"portOfEntry": "Mina Sulman, Bahrain"
+	},
+	{
+		"code": "52502",
+		"portOfEntry": "Al Manamah Harbor, Bahrain"
+	},
+	{
+		"code": "53300",
+		"portOfEntry": "All Other India West Coast Ports"
+	},
+	{
+		"code": "53301",
+		"portOfEntry": "Alleppey, India"
+	},
+	{
+		"code": "53303",
+		"portOfEntry": "Bhavnagar, India"
+	},
+	{
+		"code": "53304",
+		"portOfEntry": "Pipavav, India"
+	},
+	{
+		"code": "53305",
+		"portOfEntry": "Bedi, India"
+	},
+	{
+		"code": "53306",
+		"portOfEntry": "Mundra, India"
+	},
+	{
+		"code": "53307",
+		"portOfEntry": "Kandla, India"
+	},
+	{
+		"code": "53312",
+		"portOfEntry": "Mumbai, India"
+	},
+	{
+		"code": "53313",
+		"portOfEntry": "Jawaharlal Nehru, India"
+	},
+	{
+		"code": "53333",
+		"portOfEntry": "Cochin, India"
+	},
+	{
+		"code": "53340",
+		"portOfEntry": "Goa, India"
+	},
+	{
+		"code": "53343",
+		"portOfEntry": "Mangalore, India"
+	},
+	{
+		"code": "53347",
+		"portOfEntry": "Veraval, India"
+	},
+	{
+		"code": "53351",
+		"portOfEntry": "Baj-Baj, India"
+	},
+	{
+		"code": "53353",
+		"portOfEntry": "Calcutta, India"
+	},
+	{
+		"code": "53354",
+		"portOfEntry": "Haldia, India"
+	},
+	{
+		"code": "53357",
+		"portOfEntry": "Chennai, India"
+	},
+	{
+		"code": "53371",
+		"portOfEntry": "Paradip, India"
+	},
+	{
+		"code": "53395",
+		"portOfEntry": "New Tuticorin, India"
+	},
+	{
+		"code": "53396",
+		"portOfEntry": "All Other India East Coast Ports"
+	},
+	{
+		"code": "53398",
+		"portOfEntry": "All Other India East Coast Ports, India"
+	},
+	{
+		"code": "53399",
+		"portOfEntry": "Visakhapatnam, India"
+	},
+	{
+		"code": "53550",
+		"portOfEntry": "Karachi, Pakistan"
+	},
+	{
+		"code": "53551",
+		"portOfEntry": "Port Muhammad Bin Qasim, Pakistan"
+	},
+	{
+		"code": "53599",
+		"portOfEntry": "All Other Pakistan Ports, Pakistan"
+	},
+	{
+		"code": "53800",
+		"portOfEntry": "All Other Bangladesh Ports, Bangladesh"
+	},
+	{
+		"code": "53820",
+		"portOfEntry": "Chalna, Bangladesh"
+	},
+	{
+		"code": "53827",
+		"portOfEntry": "Chittagong, Bangladesh"
+	},
+	{
+		"code": "54200",
+		"portOfEntry": "All Other Sri Lanka Ports, Sri Lanka"
+	},
+	{
+		"code": "54201",
+		"portOfEntry": "Colombo, Sri Lanka"
+	},
+	{
+		"code": "54205",
+		"portOfEntry": "Trincomalee, Sri Lanka"
+	},
+	{
+		"code": "54600",
+		"portOfEntry": "All Other Burma Ports, Burma"
+	},
+	{
+		"code": "54601",
+		"portOfEntry": "Rangoon, Burma"
+	},
+	{
+		"code": "54900",
+		"portOfEntry": "All Other Thailand Ports, Thailand"
+	},
+	{
+		"code": "54901",
+		"portOfEntry": "Bangkok, Thailand"
+	},
+	{
+		"code": "54902",
+		"portOfEntry": "Ao Phuket, Thailand"
+	},
+	{
+		"code": "54903",
+		"portOfEntry": "Mab Ta Pud, Thailand"
+	},
+	{
+		"code": "54905",
+		"portOfEntry": "Sri Racha, Thailand"
+	},
+	{
+		"code": "54920",
+		"portOfEntry": "Ko Sichang, Thailand"
+	},
+	{
+		"code": "54927",
+		"portOfEntry": "Songkhla, Thailand"
+	},
+	{
+		"code": "54929",
+		"portOfEntry": "Katang, Thailand"
+	},
+	{
+		"code": "54930",
+		"portOfEntry": "Laem Chabang, Thailand"
+	},
+	{
+		"code": "55200",
+		"portOfEntry": "All Other Vietnam Ports"
+	},
+	{
+		"code": "55201",
+		"portOfEntry": "Hai Phong, Vietnam"
+	},
+	{
+		"code": "55202",
+		"portOfEntry": "Hon Gai, Vietnam"
+	},
+	{
+		"code": "55204",
+		"portOfEntry": "Da Nang, Vietnam"
+	},
+	{
+		"code": "55205",
+		"portOfEntry": "Cam Pha, Vietnam"
+	},
+	{
+		"code": "55206",
+		"portOfEntry": "Vung Tau, Vietnam"
+	},
+	{
+		"code": "55207",
+		"portOfEntry": "Cam Rahn Bay, Vietnam"
+	},
+	{
+		"code": "55208",
+		"portOfEntry": "Nha Trang, Vietnam"
+	},
+	{
+		"code": "55224",
+		"portOfEntry": "Ho Chi Mihn City, Vietnam"
+	},
+	{
+		"code": "55500",
+		"portOfEntry": "All Ports in Cambodia, Cambodia"
+	},
+	{
+		"code": "55700",
+		"portOfEntry": "All Other Malaysia Ports, Malaysia"
+	},
+	{
+		"code": "55705",
+		"portOfEntry": "Butterworth, Malaysia"
+	},
+	{
+		"code": "55706",
+		"portOfEntry": "Sandakan, Malaysia"
+	},
+	{
+		"code": "55707",
+		"portOfEntry": "Johore, Malaysia"
+	},
+	{
+		"code": "55709",
+		"portOfEntry": "Lumut, Malaysia"
+	},
+	{
+		"code": "55711",
+		"portOfEntry": "Kuala Terengganu, Malaysia"
+	},
+	{
+		"code": "55713",
+		"portOfEntry": "Kuching, Malaysia"
+	},
+	{
+		"code": "55715",
+		"portOfEntry": "Kuantan, Malaysia"
+	},
+	{
+		"code": "55716",
+		"portOfEntry": "Kereth, Malaysia"
+	},
+	{
+		"code": "55717",
+		"portOfEntry": "Labuan, Malaysia"
+	},
+	{
+		"code": "55725",
+		"portOfEntry": "Lahad Datu, Malaysia"
+	},
+	{
+		"code": "55731",
+		"portOfEntry": "Miri, Malaysia"
+	},
+	{
+		"code": "55732",
+		"portOfEntry": "Bintulu, Malaysia"
+	},
+	{
+		"code": "55735",
+		"portOfEntry": "Penang, Malaysia"
+	},
+	{
+		"code": "55742",
+		"portOfEntry": "Kuala Selangor, Malaysia"
+	},
+	{
+		"code": "55750",
+		"portOfEntry": "Tanjung Pelepas, Malaysia"
+	},
+	{
+		"code": "55751",
+		"portOfEntry": "Kajang, Malaysia"
+	},
+	{
+		"code": "55752",
+		"portOfEntry": "Kota Kinabalu, Malaysia"
+	},
+	{
+		"code": "55753",
+		"portOfEntry": "Port Dickson, Malaysia"
+	},
+	{
+		"code": "55900",
+		"portOfEntry": "Singapore Ports, Singapore"
+	},
+	{
+		"code": "55901",
+		"portOfEntry": "Pulau Sebarok, Singapore"
+	},
+	{
+		"code": "55950",
+		"portOfEntry": "Pulau Bukom, Singapore"
+	},
+	{
+		"code": "55976",
+		"portOfEntry": "Singapore, Singapore"
+	},
+	{
+		"code": "56000",
+		"portOfEntry": "All Other Indonesia Ports"
+	},
+	{
+		"code": "56001",
+		"portOfEntry": "Beliling, Indonesia"
+	},
+	{
+		"code": "56002",
+		"portOfEntry": "Benoa, Indonesia"
+	},
+	{
+		"code": "56003",
+		"portOfEntry": "Muntok, Indonesia"
+	},
+	{
+		"code": "56004",
+		"portOfEntry": "Pangkal Balam, Indonesia"
+	},
+	{
+		"code": "56005",
+		"portOfEntry": "Tanjong Pandan, Indonesia"
+	},
+	{
+		"code": "56006",
+		"portOfEntry": "Attaka, Indonesia"
+	},
+	{
+		"code": "56007",
+		"portOfEntry": "Balikpapan, Indonesia"
+	},
+	{
+		"code": "56009",
+		"portOfEntry": "Senipah Terminal, Indonesia"
+	},
+	{
+		"code": "56010",
+		"portOfEntry": "Lawe Lawe Terminal, Indonesia"
+	},
+	{
+		"code": "56011",
+		"portOfEntry": "Pontianak, Indonesia"
+	},
+	{
+		"code": "56012",
+		"portOfEntry": "Samarinda, Indonesia"
+	},
+	{
+		"code": "56013",
+		"portOfEntry": "Banjarmasin, Indonesia"
+	},
+	{
+		"code": "56016",
+		"portOfEntry": "Santan Terminal, Indonesia"
+	},
+	{
+		"code": "56017",
+		"portOfEntry": "Sibuco Bay, Indonesia"
+	},
+	{
+		"code": "56018",
+		"portOfEntry": "Tarakan, Indonesia"
+	},
+	{
+		"code": "56019",
+		"portOfEntry": "Alluth Kalimantan, Indonesia"
+	},
+	{
+		"code": "56020",
+		"portOfEntry": "All Other Kalimantan Ports, Indonesia"
+	},
+	{
+		"code": "56021",
+		"portOfEntry": "Sukarnapura, Indonesia"
+	},
+	{
+		"code": "56022",
+		"portOfEntry": "Kendiri, Indonesia"
+	},
+	{
+		"code": "56023",
+		"portOfEntry": "Kasim, Indonesia"
+	},
+	{
+		"code": "56025",
+		"portOfEntry": "All Other West New Guinea Ports, Indonesia"
+	},
+	{
+		"code": "56027",
+		"portOfEntry": "Macassar, Indonesia"
+	},
+	{
+		"code": "56028",
+		"portOfEntry": "Bitung, Indonesia"
+	},
+	{
+		"code": "56030",
+		"portOfEntry": "All Other Sulawesi Ports, Indonesia"
+	},
+	{
+		"code": "56033",
+		"portOfEntry": "Djakarta, Indonesia"
+	},
+	{
+		"code": "56034",
+		"portOfEntry": "Gresik, Indonesia"
+	},
+	{
+		"code": "56035",
+		"portOfEntry": "Cheribon, Indonesia"
+	},
+	{
+		"code": "56036",
+		"portOfEntry": "Cilacap, Indonesia"
+	},
+	{
+		"code": "56037",
+		"portOfEntry": "Cinta Terminal, Indonesia"
+	},
+	{
+		"code": "56038",
+		"portOfEntry": "Lalang Terminal, Indonesia"
+	},
+	{
+		"code": "56039",
+		"portOfEntry": "Merak, Indonesia"
+	},
+	{
+		"code": "56040",
+		"portOfEntry": "Arjuna Terminal, Indonesia"
+	},
+	{
+		"code": "56041",
+		"portOfEntry": "Ampenan, Indonesia"
+	},
+	{
+		"code": "56042",
+		"portOfEntry": "Balongan Terminal, Indonesia"
+	},
+	{
+		"code": "56043",
+		"portOfEntry": "Panarukan, Indonesia"
+	},
+	{
+		"code": "56045",
+		"portOfEntry": "Palu, Indonesia"
+	},
+	{
+		"code": "56051",
+		"portOfEntry": "Semarang, Indonesia"
+	},
+	{
+		"code": "56053",
+		"portOfEntry": "Soerabaja, Indonesia"
+	},
+	{
+		"code": "56055",
+		"portOfEntry": "Tegal, Indonesia"
+	},
+	{
+		"code": "56056",
+		"portOfEntry": "Cigading, Indonesia"
+	},
+	{
+		"code": "56058",
+		"portOfEntry": "All Other Java Ports, Indonesia"
+	},
+	{
+		"code": "56064",
+		"portOfEntry": "All Moluccas Ports, Indonesia"
+	},
+	{
+		"code": "56065",
+		"portOfEntry": "Pulau Sambu, Indonesia"
+	},
+	{
+		"code": "56066",
+		"portOfEntry": "Kidjang, Indonesia"
+	},
+	{
+		"code": "56067",
+		"portOfEntry": "Timor, Indonesia"
+	},
+	{
+		"code": "56073",
+		"portOfEntry": "Belawan, Indonesia"
+	},
+	{
+		"code": "56074",
+		"portOfEntry": "Bima, Indonesia"
+	},
+	{
+		"code": "56075",
+		"portOfEntry": "Dumai, Indonesia"
+	},
+	{
+		"code": "56076",
+		"portOfEntry": "Kuala Tanjung, Indonesia"
+	},
+	{
+		"code": "56077",
+		"portOfEntry": "Bontang, Indonesia"
+	},
+	{
+		"code": "56078",
+		"portOfEntry": "Djambi, Indonesia"
+	},
+	{
+		"code": "56079",
+		"portOfEntry": "Bengkulu, Indonesia"
+	},
+	{
+		"code": "56081",
+		"portOfEntry": "Padang, Indonesia"
+	},
+	{
+		"code": "56083",
+		"portOfEntry": "Palembang, Indonesia"
+	},
+	{
+		"code": "56085",
+		"portOfEntry": "Pangkalan Brandan, Indonesia"
+	},
+	{
+		"code": "56087",
+		"portOfEntry": "Plaju, Indonesia"
+	},
+	{
+		"code": "56097",
+		"portOfEntry": "Pandjang, Indonesia"
+	},
+	{
+		"code": "56099",
+		"portOfEntry": "All Other Sumatra Ports, Indonesia"
+	},
+	{
+		"code": "56100",
+		"portOfEntry": "All Other Brunei Ports, Brunei"
+	},
+	{
+		"code": "56150",
+		"portOfEntry": "Seria, Brunei"
+	},
+	{
+		"code": "56151",
+		"portOfEntry": "Muara Port, Brunei"
+	},
+	{
+		"code": "56500",
+		"portOfEntry": "All Other Philippines Ports, Philippines"
+	},
+	{
+		"code": "56503",
+		"portOfEntry": "Bais, Philippines"
+	},
+	{
+		"code": "56504",
+		"portOfEntry": "Bauan, Philippines"
+	},
+	{
+		"code": "56506",
+		"portOfEntry": "Batangas, Philippines"
+	},
+	{
+		"code": "56507",
+		"portOfEntry": "Bataan, Philippines"
+	},
+	{
+		"code": "56508",
+		"portOfEntry": "Bislig, Philippines"
+	},
+	{
+		"code": "56513",
+		"portOfEntry": "Butuan, Philippines"
+	},
+	{
+		"code": "56514",
+		"portOfEntry": "Buayan, Philippines"
+	},
+	{
+		"code": "56520",
+		"portOfEntry": "Cebu, Philippines"
+	},
+	{
+		"code": "56522",
+		"portOfEntry": "Dadiangas, Philippines"
+	},
+	{
+		"code": "56523",
+		"portOfEntry": "Davao, Philippines"
+	},
+	{
+		"code": "56525",
+		"portOfEntry": "Dumaguete, Philippines"
+	},
+	{
+		"code": "56530",
+		"portOfEntry": "Hondagua, Philippines"
+	},
+	{
+		"code": "56531",
+		"portOfEntry": "Iligan, Philippines"
+	},
+	{
+		"code": "56532",
+		"portOfEntry": "Iloilo, Philippines"
+	},
+	{
+		"code": "56542",
+		"portOfEntry": "Legaspi, Philippines"
+	},
+	{
+		"code": "56545",
+		"portOfEntry": "Mariveles, Philippines"
+	},
+	{
+		"code": "56549",
+		"portOfEntry": "Manila, Philippines"
+	},
+	{
+		"code": "56552",
+		"portOfEntry": "Masinloc, Philippines"
+	},
+	{
+		"code": "56554",
+		"portOfEntry": "Maseru, Philippines"
+	},
+	{
+		"code": "56556",
+		"portOfEntry": "Misamis, Philippines"
+	},
+	{
+		"code": "56569",
+		"portOfEntry": "Pulupandan, Philippines"
+	},
+	{
+		"code": "56578",
+		"portOfEntry": "Poro, Philippines"
+	},
+	{
+		"code": "56585",
+		"portOfEntry": "Olongapo, Philippines"
+	},
+	{
+		"code": "56588",
+		"portOfEntry": "Tabaco, Philippines"
+	},
+	{
+		"code": "56589",
+		"portOfEntry": "Tacloban, Philippines"
+	},
+	{
+		"code": "56590",
+		"portOfEntry": "Isabel, Philippines"
+	},
+	{
+		"code": "56591",
+		"portOfEntry": "Jose Panganiban, Philippines"
+	},
+	{
+		"code": "56592",
+		"portOfEntry": "Limay, Philippines"
+	},
+	{
+		"code": "56593",
+		"portOfEntry": "Santa Cruz, Philippines"
+	},
+	{
+		"code": "56594",
+		"portOfEntry": "Tandoc, Philippines"
+	},
+	{
+		"code": "56597",
+		"portOfEntry": "Zamboanga, Philippines"
+	},
+	{
+		"code": "56649",
+		"portOfEntry": "Macao, Macau"
+	},
+	{
+		"code": "56805",
+		"portOfEntry": "Male Male Island, Maldives"
+	},
+	{
+		"code": "56899",
+		"portOfEntry": "All Other Southern Asia N.E.C. Ports, Unknown"
+	},
+	{
+		"code": "57000",
+		"portOfEntry": "All Other China Ports"
+	},
+	{
+		"code": "57003",
+		"portOfEntry": "Basuo, China"
+	},
+	{
+		"code": "57005",
+		"portOfEntry": "Beilun, China"
+	},
+	{
+		"code": "57009",
+		"portOfEntry": "Chen Huang Tao, China"
+	},
+	{
+		"code": "57012",
+		"portOfEntry": "Haikou, China"
+	},
+	{
+		"code": "57013",
+		"portOfEntry": "Hankow, China"
+	},
+	{
+		"code": "57014",
+		"portOfEntry": "Nan Ching, China"
+	},
+	{
+		"code": "57015",
+		"portOfEntry": "Foochou, China"
+	},
+	{
+		"code": "57016",
+		"portOfEntry": "Bei Jao, China"
+	},
+	{
+		"code": "57017",
+		"portOfEntry": "Dagu/Tanggu, China"
+	},
+	{
+		"code": "57018",
+		"portOfEntry": "Shekou, China"
+	},
+	{
+		"code": "57019",
+		"portOfEntry": "Zhenjiang, China"
+	},
+	{
+		"code": "57020",
+		"portOfEntry": "Ningeo, China"
+	},
+	{
+		"code": "57021",
+		"portOfEntry": "Wenzhow, China"
+	},
+	{
+		"code": "57022",
+		"portOfEntry": "Huizhou, China"
+	},
+	{
+		"code": "57024",
+		"portOfEntry": "Rizhao, China"
+	},
+	{
+		"code": "57025",
+		"portOfEntry": "Lianyungang, China"
+	},
+	{
+		"code": "57030",
+		"portOfEntry": "Tanjiajing, China"
+	},
+	{
+		"code": "57035",
+		"portOfEntry": "Shang hai, China"
+	},
+	{
+		"code": "57043",
+		"portOfEntry": "Tianjin, China"
+	},
+	{
+		"code": "57044",
+		"portOfEntry": "Fang Cheng, China"
+	},
+	{
+		"code": "57045",
+		"portOfEntry": "Da Chan Bay, China"
+	},
+	{
+		"code": "57047",
+		"portOfEntry": "Ching Tao, China"
+	},
+	{
+		"code": "57051",
+		"portOfEntry": "Dairen, China"
+	},
+	{
+		"code": "57052",
+		"portOfEntry": "Lu Shun, China"
+	},
+	{
+		"code": "57053",
+		"portOfEntry": "Yingkou, China"
+	},
+	{
+		"code": "57055",
+		"portOfEntry": "Chefoo, China"
+	},
+	{
+		"code": "57056",
+		"portOfEntry": "Dongguan, China"
+	},
+	{
+		"code": "57067",
+		"portOfEntry": "Chiwan, China"
+	},
+	{
+		"code": "57069",
+		"portOfEntry": "Amoy, China"
+	},
+	{
+		"code": "57070",
+		"portOfEntry": "San T Ou, China"
+	},
+	{
+		"code": "57071",
+		"portOfEntry": "Guangzhou, China"
+	},
+	{
+		"code": "57072",
+		"portOfEntry": "Huangpu, China"
+	},
+	{
+		"code": "57073",
+		"portOfEntry": "Nansha, China"
+	},
+	{
+		"code": "57074",
+		"portOfEntry": "Nantong, China"
+	},
+	{
+		"code": "57075",
+		"portOfEntry": "Tsamkong, China"
+	},
+	{
+		"code": "57076",
+		"portOfEntry": "Bei Hai, China"
+	},
+	{
+		"code": "57077",
+		"portOfEntry": "Jiuzhou, China"
+	},
+	{
+		"code": "57078",
+		"portOfEntry": "Yantian, China"
+	},
+	{
+		"code": "57079",
+		"portOfEntry": "Zhongshan, China"
+	},
+	{
+		"code": "57080",
+		"portOfEntry": "Jiangyin, China"
+	},
+	{
+		"code": "57900",
+		"portOfEntry": "All Other North Korea Ports, North Korea"
+	},
+	{
+		"code": "57910",
+		"portOfEntry": "Onsong, North Korea"
+	},
+	{
+		"code": "58000",
+		"portOfEntry": "All Other South Korea Ports"
+	},
+	{
+		"code": "58014",
+		"portOfEntry": "Bukpyung, South Korea"
+	},
+	{
+		"code": "58015",
+		"portOfEntry": "Chen Hai, South Korea"
+	},
+	{
+		"code": "58023",
+		"portOfEntry": "Busan, Kor Rep"
+	},
+	{
+		"code": "58028",
+		"portOfEntry": "Gunsan, South Korea"
+	},
+	{
+		"code": "58029",
+		"portOfEntry": "Inchon, South Korea"
+	},
+	{
+		"code": "58030",
+		"portOfEntry": "Daesan, South Korea"
+	},
+	{
+		"code": "58031",
+		"portOfEntry": "Kwangyang, South Korea"
+	},
+	{
+		"code": "58032",
+		"portOfEntry": "Pyongtaek, South Korea"
+	},
+	{
+		"code": "58033",
+		"portOfEntry": "Masan, South Korea"
+	},
+	{
+		"code": "58034",
+		"portOfEntry": "Okpo, South Korea"
+	},
+	{
+		"code": "58035",
+		"portOfEntry": "Mogpo, South Korea"
+	},
+	{
+		"code": "58055",
+		"portOfEntry": "Pohang, South Korea"
+	},
+	{
+		"code": "58061",
+		"portOfEntry": "Ulsan, South Korea"
+	},
+	{
+		"code": "58065",
+		"portOfEntry": "Samil, South Korea"
+	},
+	{
+		"code": "58201",
+		"portOfEntry": "Hong Kong, Hong Kong"
+	},
+	{
+		"code": "58270",
+		"portOfEntry": "Kowloon, Hong Kong"
+	},
+	{
+		"code": "58300",
+		"portOfEntry": "All Other Taiwan Ports"
+	},
+	{
+		"code": "58301",
+		"portOfEntry": "Chi Lung, China Taiwan"
+	},
+	{
+		"code": "58302",
+		"portOfEntry": "Su Ao, China Taiwan"
+	},
+	{
+		"code": "58303",
+		"portOfEntry": "Tai Chung, China Taiwan"
+	},
+	{
+		"code": "58304",
+		"portOfEntry": "Taipei, Taiwan"
+	},
+	{
+		"code": "58305",
+		"portOfEntry": "Tai-Nan, China Taiwan"
+	},
+	{
+		"code": "58309",
+		"portOfEntry": "Kao Hsiung, China Taiwan"
+	},
+	{
+		"code": "58311",
+		"portOfEntry": "Tamsui, China Taiwan"
+	},
+	{
+		"code": "58312",
+		"portOfEntry": "Hualien, China Taiwan"
+	},
+	{
+		"code": "58800",
+		"portOfEntry": "All Other Japan Ports, Japan"
+	},
+	{
+		"code": "58801",
+		"portOfEntry": "Kashiwazaki, Japan"
+	},
+	{
+		"code": "58802",
+		"portOfEntry": "Imari, Japan"
+	},
+	{
+		"code": "58803",
+		"portOfEntry": "Fukuyama, Japan"
+	},
+	{
+		"code": "58804",
+		"portOfEntry": "Keihin, Japan"
+	},
+	{
+		"code": "58805",
+		"portOfEntry": "Oita, Japan"
+	},
+	{
+		"code": "58806",
+		"portOfEntry": "Matsushima, Japan"
+	},
+	{
+		"code": "58807",
+		"portOfEntry": "Kagoshima, Japan"
+	},
+	{
+		"code": "58808",
+		"portOfEntry": "Hachinohe, Japan"
+	},
+	{
+		"code": "58809",
+		"portOfEntry": "Kanado, Japan"
+	},
+	{
+		"code": "58810",
+		"portOfEntry": "Toyama, Japan"
+	},
+	{
+		"code": "58811",
+		"portOfEntry": "Tomakomai, Japan"
+	},
+	{
+		"code": "58812",
+		"portOfEntry": "Iyo Mishima, Japan"
+	},
+	{
+		"code": "58813",
+		"portOfEntry": "Amagasaki, Japan"
+	},
+	{
+		"code": "58814",
+		"portOfEntry": "Shimonoseki, Japan"
+	},
+	{
+		"code": "58815",
+		"portOfEntry": "Kiire, Japan"
+	},
+	{
+		"code": "58816",
+		"portOfEntry": "Sasebo, Japan"
+	},
+	{
+		"code": "58817",
+		"portOfEntry": "Kita Kyushu, Japan"
+	},
+	{
+		"code": "58818",
+		"portOfEntry": "Chiba, Japan"
+	},
+	{
+		"code": "58819",
+		"portOfEntry": "Saiki, Japan"
+	},
+	{
+		"code": "58820",
+		"portOfEntry": "Rumoi, Japan"
+	},
+	{
+		"code": "58821",
+		"portOfEntry": "Funabashi, Japan"
+	},
+	{
+		"code": "58822",
+		"portOfEntry": "Susaki, Japan"
+	},
+	{
+		"code": "58823",
+		"portOfEntry": "Aioi, Japan"
+	},
+	{
+		"code": "58824",
+		"portOfEntry": "Fushiki, Japan"
+	},
+	{
+		"code": "58825",
+		"portOfEntry": "Hakata, Japan"
+	},
+	{
+		"code": "58826",
+		"portOfEntry": "Hakodate, Japan"
+	},
+	{
+		"code": "58827",
+		"portOfEntry": "Kimitsu, Japan"
+	},
+	{
+		"code": "58828",
+		"portOfEntry": "Higashi Harima, Japan"
+	},
+	{
+		"code": "58829",
+		"portOfEntry": "Ishinomaki, Japan"
+	},
+	{
+		"code": "58830",
+		"portOfEntry": "Hirohata, Japan"
+	},
+	{
+		"code": "58831",
+		"portOfEntry": "Hiroshima, Japan"
+	},
+	{
+		"code": "58832",
+		"portOfEntry": "Akita Ko, Japan"
+	},
+	{
+		"code": "58833",
+		"portOfEntry": "Iwakuni, Japan"
+	},
+	{
+		"code": "58834",
+		"portOfEntry": "Kamaishi, Japan"
+	},
+	{
+		"code": "58835",
+		"portOfEntry": "Mogi, Japan"
+	},
+	{
+		"code": "58836",
+		"portOfEntry": "Kanokawa, Japan"
+	},
+	{
+		"code": "58837",
+		"portOfEntry": "Kasaoka, Japan"
+	},
+	{
+		"code": "58838",
+		"portOfEntry": "Kawasaki, Japan"
+	},
+	{
+		"code": "58839",
+		"portOfEntry": "Kashima, Japan"
+	},
+	{
+		"code": "58840",
+		"portOfEntry": "Kobe, Japan"
+	},
+	{
+		"code": "58841",
+		"portOfEntry": "Kokura, Japan"
+	},
+	{
+		"code": "58842",
+		"portOfEntry": "Kawanoe, Japan"
+	},
+	{
+		"code": "58843",
+		"portOfEntry": "Kudamatsu, Japan"
+	},
+	{
+		"code": "58844",
+		"portOfEntry": "Aomori, Japan"
+	},
+	{
+		"code": "58845",
+		"portOfEntry": "Hiro, Japan"
+	},
+	{
+		"code": "58846",
+		"portOfEntry": "Kushiro, Japan"
+	},
+	{
+		"code": "58847",
+		"portOfEntry": "Matsunaga, Japan"
+	},
+	{
+		"code": "58848",
+		"portOfEntry": "Maizuru, Japan"
+	},
+	{
+		"code": "58849",
+		"portOfEntry": "Matsuyama, Japan"
+	},
+	{
+		"code": "58850",
+		"portOfEntry": "Minamata, Japan"
+	},
+	{
+		"code": "58851",
+		"portOfEntry": "Miike, Japan"
+	},
+	{
+		"code": "58852",
+		"portOfEntry": "Misumi, Japan"
+	},
+	{
+		"code": "58853",
+		"portOfEntry": "Miya Ko, Japan"
+	},
+	{
+		"code": "58854",
+		"portOfEntry": "Mizushima, Japan"
+	},
+	{
+		"code": "58855",
+		"portOfEntry": "Muroran, Japan"
+	},
+	{
+		"code": "58856",
+		"portOfEntry": "Nagasaki, Japan"
+	},
+	{
+		"code": "58857",
+		"portOfEntry": "Nagoya, Japan"
+	},
+	{
+		"code": "58858",
+		"portOfEntry": "Niihama, Japan"
+	},
+	{
+		"code": "58859",
+		"portOfEntry": "Niigata, Japan"
+	},
+	{
+		"code": "58860",
+		"portOfEntry": "Aia port, Japan"
+	},
+	{
+		"code": "58861",
+		"portOfEntry": "Mutsui, Japan"
+	},
+	{
+		"code": "58862",
+		"portOfEntry": "Kanda, Japan"
+	},
+	{
+		"code": "58863",
+		"portOfEntry": "Ofunato, Japan"
+	},
+	{
+		"code": "58864",
+		"portOfEntry": "Onahama, Japan"
+	},
+	{
+		"code": "58865",
+		"portOfEntry": "Onagawa, Japan"
+	},
+	{
+		"code": "58866",
+		"portOfEntry": "Misaki, Japan"
+	},
+	{
+		"code": "58867",
+		"portOfEntry": "Otaru, Japan"
+	},
+	{
+		"code": "58868",
+		"portOfEntry": "Funagawa, Japan"
+	},
+	{
+		"code": "58869",
+		"portOfEntry": "Hitachi, Japan"
+	},
+	{
+		"code": "58870",
+		"portOfEntry": "Karatsu, Japan"
+	},
+	{
+		"code": "58871",
+		"portOfEntry": "Himeji, Japan"
+	},
+	{
+		"code": "58872",
+		"portOfEntry": "Kinuura, Japan"
+	},
+	{
+		"code": "58873",
+		"portOfEntry": "Kochi, Japan"
+	},
+	{
+		"code": "58874",
+		"portOfEntry": "Sakai, Japan"
+	},
+	{
+		"code": "58875",
+		"portOfEntry": "Sakaide, Japan"
+	},
+	{
+		"code": "58876",
+		"portOfEntry": "Sakata, Japan"
+	},
+	{
+		"code": "58877",
+		"portOfEntry": "Shiogama, Japan"
+	},
+	{
+		"code": "58878",
+		"portOfEntry": "Shimizu, Japan"
+	},
+	{
+		"code": "58879",
+		"portOfEntry": "Shimotsu, Japan"
+	},
+	{
+		"code": "58880",
+		"portOfEntry": "Tagonoura, Japan"
+	},
+	{
+		"code": "58881",
+		"portOfEntry": "Tobata, Japan"
+	},
+	{
+		"code": "58882",
+		"portOfEntry": "Komatsujima, Japan"
+	},
+	{
+		"code": "58883",
+		"portOfEntry": "Gamagori, Japan"
+	},
+	{
+		"code": "58884",
+		"portOfEntry": "Uno, Japan"
+	},
+	{
+		"code": "58885",
+		"portOfEntry": "Tokuyama, Japan"
+	},
+	{
+		"code": "58886",
+		"portOfEntry": "Tokyo, Japan"
+	},
+	{
+		"code": "58887",
+		"portOfEntry": "Yatsushiro, Japan"
+	},
+	{
+		"code": "58888",
+		"portOfEntry": "Ube, Japan"
+	},
+	{
+		"code": "58889",
+		"portOfEntry": "Tsukumi, Japan"
+	},
+	{
+		"code": "58890",
+		"portOfEntry": "Wakamatsu, Japan"
+	},
+	{
+		"code": "58891",
+		"portOfEntry": "Wakayama, Japan"
+	},
+	{
+		"code": "58892",
+		"portOfEntry": "Naoetsu, Japan"
+	},
+	{
+		"code": "58893",
+		"portOfEntry": "Yawata, Japan"
+	},
+	{
+		"code": "58894",
+		"portOfEntry": "Yokkaichi, Japan"
+	},
+	{
+		"code": "58895",
+		"portOfEntry": "Yokohama, Japan"
+	},
+	{
+		"code": "58896",
+		"portOfEntry": "Yokosuka, Japan"
+	},
+	{
+		"code": "58897",
+		"portOfEntry": "Sendai, Japan"
+	},
+	{
+		"code": "58898",
+		"portOfEntry": "Seibu, Japan"
+	},
+	{
+		"code": "58899",
+		"portOfEntry": "Sodegaura, Japan"
+	},
+	{
+		"code": "60200",
+		"portOfEntry": "All Other Australia Ports"
+	},
+	{
+		"code": "60201",
+		"portOfEntry": "Adelaide, Australia"
+	},
+	{
+		"code": "60204",
+		"portOfEntry": "Mackay, Australia"
+	},
+	{
+		"code": "60205",
+		"portOfEntry": "Botany Bay, Australia"
+	},
+	{
+		"code": "60210",
+		"portOfEntry": "Brisbane, Australia"
+	},
+	{
+		"code": "60212",
+		"portOfEntry": "Dalrymple Bay, Australia"
+	},
+	{
+		"code": "60213",
+		"portOfEntry": "Bunbury, Australia"
+	},
+	{
+		"code": "60214",
+		"portOfEntry": "Bundaberg, Australia"
+	},
+	{
+		"code": "60217",
+		"portOfEntry": "Liezen, Australia"
+	},
+	{
+		"code": "60218",
+		"portOfEntry": "Dampier, Australia"
+	},
+	{
+		"code": "60219",
+		"portOfEntry": "Port Hedland, Australia"
+	},
+	{
+		"code": "60220",
+		"portOfEntry": "Darwin, Australia"
+	},
+	{
+		"code": "60222",
+		"portOfEntry": "Fremantle, Australia"
+	},
+	{
+		"code": "60224",
+		"portOfEntry": "Geraldton, Australia"
+	},
+	{
+		"code": "60225",
+		"portOfEntry": "Geelong, Australia"
+	},
+	{
+		"code": "60227",
+		"portOfEntry": "Gove, Australia"
+	},
+	{
+		"code": "60231",
+		"portOfEntry": "Gladstone, Australia"
+	},
+	{
+		"code": "60234",
+		"portOfEntry": "Kwinana, Australia"
+	},
+	{
+		"code": "60237",
+		"portOfEntry": "Hasting, Australia"
+	},
+	{
+		"code": "60239",
+		"portOfEntry": "Mourilyan Harbour, Australia"
+	},
+	{
+		"code": "60240",
+		"portOfEntry": "Newcastle, Australia"
+	},
+	{
+		"code": "60243",
+		"portOfEntry": "Perth, Australia"
+	},
+	{
+		"code": "60249",
+		"portOfEntry": "Port Alma, Australia"
+	},
+	{
+		"code": "60252",
+		"portOfEntry": "Port Kembla, Australia"
+	},
+	{
+		"code": "60258",
+		"portOfEntry": "Port Pirie, Australia"
+	},
+	{
+		"code": "60261",
+		"portOfEntry": "Portland, Australia"
+	},
+	{
+		"code": "60267",
+		"portOfEntry": "Sydney, Australia"
+	},
+	{
+		"code": "60273",
+		"portOfEntry": "Townsville, Australia"
+	},
+	{
+		"code": "60275",
+		"portOfEntry": "Weipa, Australia"
+	},
+	{
+		"code": "60276",
+		"portOfEntry": "Androssan, Australia"
+	},
+	{
+		"code": "60280",
+		"portOfEntry": "Westernport, Australia"
+	},
+	{
+		"code": "60281",
+		"portOfEntry": "Clarence River, Australia"
+	},
+	{
+		"code": "60282",
+		"portOfEntry": "Esperance, Australia"
+	},
+	{
+		"code": "60290",
+		"portOfEntry": "Bell Bay, Australia"
+	},
+	{
+		"code": "60291",
+		"portOfEntry": "Burnie, Australia"
+	},
+	{
+		"code": "60295",
+		"portOfEntry": "Hobart, Australia"
+	},
+	{
+		"code": "60297",
+		"portOfEntry": "Launceston, Australia"
+	},
+	{
+		"code": "60299",
+		"portOfEntry": "All Other Tasmania Ports, Australia"
+	},
+	{
+		"code": "60400",
+		"portOfEntry": "All Other Papua New Guinea Ports, Papua New Guinea"
+	},
+	{
+		"code": "60431",
+		"portOfEntry": "Anewa Bay, Papua New Guinea"
+	},
+	{
+		"code": "60432",
+		"portOfEntry": "Alotau, Papua New Guinea"
+	},
+	{
+		"code": "60433",
+		"portOfEntry": "Amamapare, Papua New Guinea"
+	},
+	{
+		"code": "60440",
+		"portOfEntry": "Montagu, Papua New Guinea"
+	},
+	{
+		"code": "60441",
+		"portOfEntry": "Lae, Papua New Guinea"
+	},
+	{
+		"code": "60447",
+		"portOfEntry": "Port Moresby, Papua New Guinea"
+	},
+	{
+		"code": "60449",
+		"portOfEntry": "Rabaul, Papua New Guinea"
+	},
+	{
+		"code": "60450",
+		"portOfEntry": "Wewak, Papua New Guinea"
+	},
+	{
+		"code": "61400",
+		"portOfEntry": "All Other New Zealand Ports"
+	},
+	{
+		"code": "61401",
+		"portOfEntry": "Auckland, New Zealand"
+	},
+	{
+		"code": "61403",
+		"portOfEntry": "Bluff Harbor, New Zealand"
+	},
+	{
+		"code": "61405",
+		"portOfEntry": "Christchurch, New Zealand"
+	},
+	{
+		"code": "61406",
+		"portOfEntry": "Nelson, New Zealand"
+	},
+	{
+		"code": "61407",
+		"portOfEntry": "Dunedin, New Zealand"
+	},
+	{
+		"code": "61408",
+		"portOfEntry": "Gisborne, New Zealand"
+	},
+	{
+		"code": "61415",
+		"portOfEntry": "Lyttelton, New Zealand"
+	},
+	{
+		"code": "61416",
+		"portOfEntry": "Mangonui, New Zealand"
+	},
+	{
+		"code": "61419",
+		"portOfEntry": "Napier, New Zealand"
+	},
+	{
+		"code": "61423",
+		"portOfEntry": "New Plymouth, New Zealand"
+	},
+	{
+		"code": "61431",
+		"portOfEntry": "Port Chalmers, New Zealand"
+	},
+	{
+		"code": "61443",
+		"portOfEntry": "Taoranga, New Zealand"
+	},
+	{
+		"code": "61445",
+		"portOfEntry": "Timaru, New Zealand"
+	},
+	{
+		"code": "61447",
+		"portOfEntry": "Wellington, New Zealand"
+	},
+	{
+		"code": "61460",
+		"portOfEntry": "Penrhyn, New Zealand"
+	},
+	{
+		"code": "61461",
+		"portOfEntry": "Avatiu, New Zealand"
+	},
+	{
+		"code": "61471",
+		"portOfEntry": "Tokelau, Tokelau"
+	},
+	{
+		"code": "61481",
+		"portOfEntry": "Alofi, Niue"
+	},
+	{
+		"code": "61500",
+		"portOfEntry": "All Other Western Samoa Ports, Samoa"
+	},
+	{
+		"code": "61501",
+		"portOfEntry": "Apia, Samoa"
+	},
+	{
+		"code": "62200",
+		"portOfEntry": "All Solomon Islands Ports, Solomon Is"
+	},
+	{
+		"code": "62201",
+		"portOfEntry": "Luganville, Vanuatu"
+	},
+	{
+		"code": "62207",
+		"portOfEntry": "Palikulo, Vanuatu"
+	},
+	{
+		"code": "62209",
+		"portOfEntry": "Port Vila, Vanuatu"
+	},
+	{
+		"code": "62211",
+		"portOfEntry": "Pitcairn Islands, Pitcairn"
+	},
+	{
+		"code": "62215",
+		"portOfEntry": "All Gilbert Islands Ports, Kiribati"
+	},
+	{
+		"code": "62220",
+		"portOfEntry": "Washington Island, Kiribati"
+	},
+	{
+		"code": "62223",
+		"portOfEntry": "English Harbor, Kiribati"
+	},
+	{
+		"code": "62225",
+		"portOfEntry": "Christmas Island, Kiribati"
+	},
+	{
+		"code": "62227",
+		"portOfEntry": "All Caroline Islands Ports, Kiribati"
+	},
+	{
+		"code": "62231",
+		"portOfEntry": "Funafuti Atoll, Tuvalu"
+	},
+	{
+		"code": "62299",
+		"portOfEntry": "All Other Southern Pacific Islands, Unknown"
+	},
+	{
+		"code": "64100",
+		"portOfEntry": "All Other New Caledonia Ports"
+	},
+	{
+		"code": "64109",
+		"portOfEntry": "Noumea, New Caledonia"
+	},
+	{
+		"code": "64131",
+		"portOfEntry": "All Wallis and Futuna Ports, Wallis"
+	},
+	{
+		"code": "64151",
+		"portOfEntry": "Papeete Tahiti, French Polyn"
+	},
+	{
+		"code": "64178",
+		"portOfEntry": "All Other Society Islands Ports, French Polyn"
+	},
+	{
+		"code": "64181",
+		"portOfEntry": "Makatea, French Polyn"
+	},
+	{
+		"code": "64191",
+		"portOfEntry": "Marquesas Islands, French Polyn"
+	},
+	{
+		"code": "64195",
+		"portOfEntry": "Clipperton Island, French Polyn"
+	},
+	{
+		"code": "68190",
+		"portOfEntry": "All Marshall Island Ports, Marshall Is"
+	},
+	{
+		"code": "68205",
+		"portOfEntry": "Chuuk, Micronesia"
+	},
+	{
+		"code": "68206",
+		"portOfEntry": "Kosrae, Fedrated States of Micron"
+	},
+	{
+		"code": "68207",
+		"portOfEntry": "Pohnpei, Micronesia"
+	},
+	{
+		"code": "68209",
+		"portOfEntry": "Yap, Micronesia"
+	},
+	{
+		"code": "68394",
+		"portOfEntry": "Koror, Palau"
+	},
+	{
+		"code": "68628",
+		"portOfEntry": "Savu, Fiji"
+	},
+	{
+		"code": "68630",
+		"portOfEntry": "All Other Fiji Islands Ports, Fiji"
+	},
+	{
+		"code": "68651",
+		"portOfEntry": "Nauru, Nauru"
+	},
+	{
+		"code": "68682",
+		"portOfEntry": "All Tonga Islands Ports, Tonga"
+	},
+	{
+		"code": "68699",
+		"portOfEntry": "All Other Pacific Islands N.E.C. Ports, Unknown"
+	},
+	{
+		"code": "71400",
+		"portOfEntry": "All Other Morocco Atlantic Region Ports, Morocco"
+	},
+	{
+		"code": "71401",
+		"portOfEntry": "Casablanca, Morocco"
+	},
+	{
+		"code": "71403",
+		"portOfEntry": "Agadir, Morocco"
+	},
+	{
+		"code": "71415",
+		"portOfEntry": "El Jorf Lasfar, Morocco"
+	},
+	{
+		"code": "71417",
+		"portOfEntry": "Nador, Morocco"
+	},
+	{
+		"code": "71418",
+		"portOfEntry": "Mohammedia, Morocco"
+	},
+	{
+		"code": "71419",
+		"portOfEntry": "Saffi, Morocco"
+	},
+	{
+		"code": "71425",
+		"portOfEntry": "Tanger, Morocco"
+	},
+	{
+		"code": "71499",
+		"portOfEntry": "All Other Morocco Mediterranean Ports, Morocco"
+	},
+	{
+		"code": "72100",
+		"portOfEntry": "All Other Algeria Ports, Algeria"
+	},
+	{
+		"code": "72101",
+		"portOfEntry": "Alger, Algeria"
+	},
+	{
+		"code": "72105",
+		"portOfEntry": "Arzew, Algeria"
+	},
+	{
+		"code": "72107",
+		"portOfEntry": "Bejaia, Algeria"
+	},
+	{
+		"code": "72123",
+		"portOfEntry": "Annaba, Algeria"
+	},
+	{
+		"code": "72142",
+		"portOfEntry": "Ghazaouet, Algeria"
+	},
+	{
+		"code": "72179",
+		"portOfEntry": "Oran, Algeria"
+	},
+	{
+		"code": "72189",
+		"portOfEntry": "Skikda, Algeria"
+	},
+	{
+		"code": "72300",
+		"portOfEntry": "All Other Tunisia Ports, Tunisia"
+	},
+	{
+		"code": "72301",
+		"portOfEntry": "Banzart, Tunisia"
+	},
+	{
+		"code": "72305",
+		"portOfEntry": "Gabes, Tunisia"
+	},
+	{
+		"code": "72310",
+		"portOfEntry": "La Goulette, Tunisia"
+	},
+	{
+		"code": "72315",
+		"portOfEntry": "As Sukhayrah, Tunisia"
+	},
+	{
+		"code": "72337",
+		"portOfEntry": "Sfax, Tunisia"
+	},
+	{
+		"code": "72357",
+		"portOfEntry": "Sousee, Tunisia"
+	},
+	{
+		"code": "72373",
+		"portOfEntry": "Tunis, Tunisia"
+	},
+	{
+		"code": "72500",
+		"portOfEntry": "All Other Libya Ports"
+	},
+	{
+		"code": "72501",
+		"portOfEntry": "Benghazi, Libya"
+	},
+	{
+		"code": "72515",
+		"portOfEntry": "Marsa al Brega, Libya"
+	},
+	{
+		"code": "72516",
+		"portOfEntry": "Marsa al Hariga, Libya"
+	},
+	{
+		"code": "72519",
+		"portOfEntry": "As Sidr, Libya"
+	},
+	{
+		"code": "72520",
+		"portOfEntry": "Ras Lanuf, Libya"
+	},
+	{
+		"code": "72525",
+		"portOfEntry": "Tripoli, Libya"
+	},
+	{
+		"code": "72590",
+		"portOfEntry": "Zavia, Libya"
+	},
+	{
+		"code": "72591",
+		"portOfEntry": "Zuara, Libya"
+	},
+	{
+		"code": "72595",
+		"portOfEntry": "Zuetina, Libya"
+	},
+	{
+		"code": "72900",
+		"portOfEntry": "All Other Egypt Mediterranean Region Ports, Egypt"
+	},
+	{
+		"code": "72901",
+		"portOfEntry": "Alexandria, Egypt"
+	},
+	{
+		"code": "72905",
+		"portOfEntry": "Abu Kir Bay, Egypt"
+	},
+	{
+		"code": "72906",
+		"portOfEntry": "El Alamein, Egypt"
+	},
+	{
+		"code": "72912",
+		"portOfEntry": "Damietta, Egypt"
+	},
+	{
+		"code": "72913",
+		"portOfEntry": "Bur Said, Egypt"
+	},
+	{
+		"code": "72914",
+		"portOfEntry": "Sidi Kerir, Egypt"
+	},
+	{
+		"code": "72925",
+		"portOfEntry": "El Ismailiya, Egypt"
+	},
+	{
+		"code": "72932",
+		"portOfEntry": "Ain Sukhna, Egypt"
+	},
+	{
+		"code": "72939",
+		"portOfEntry": "Ras Gharib, Egypt"
+	},
+	{
+		"code": "72940",
+		"portOfEntry": "Ras Shukheir, Egypt"
+	},
+	{
+		"code": "72945",
+		"portOfEntry": "Ras Sudr, Egypt"
+	},
+	{
+		"code": "72947",
+		"portOfEntry": "East Zeit Terminal, Egypt"
+	},
+	{
+		"code": "72948",
+		"portOfEntry": "Safaga, Egypt"
+	},
+	{
+		"code": "72949",
+		"portOfEntry": "Adabiya, Egypt"
+	},
+	{
+		"code": "72999",
+		"portOfEntry": "All Other Egypt Red Sea Region Ports, Egypt"
+	},
+	{
+		"code": "73201",
+		"portOfEntry": "Port Sudan, Sudan"
+	},
+	{
+		"code": "73700",
+		"portOfEntry": "All Other Western Sahara Ports, Western Sahara"
+	},
+	{
+		"code": "73701",
+		"portOfEntry": "Laayoune, Western Sahara"
+	},
+	{
+		"code": "73800",
+		"portOfEntry": "All Other Equatorial Guinea Ports, Equatorial Gui"
+	},
+	{
+		"code": "73801",
+		"portOfEntry": "Malabo, Equatorial Gui"
+	},
+	{
+		"code": "73802",
+		"portOfEntry": "Zafira, Equatorial Gui"
+	},
+	{
+		"code": "74100",
+		"portOfEntry": "All Other Mauritania Ports, Mauritania"
+	},
+	{
+		"code": "74165",
+		"portOfEntry": "Nouadhibou, Mauritania"
+	},
+	{
+		"code": "74201",
+		"portOfEntry": "Bonaberi, Cameroon"
+	},
+	{
+		"code": "74213",
+		"portOfEntry": "Kribi, Cameroon"
+	},
+	{
+		"code": "74296",
+		"portOfEntry": "Moudi Terminal, Cameroon"
+	},
+	{
+		"code": "74297",
+		"portOfEntry": "Garoua, Cameroon"
+	},
+	{
+		"code": "74298",
+		"portOfEntry": "Cap  Limboh, Cameroon"
+	},
+	{
+		"code": "74299",
+		"portOfEntry": "All Other Cameroon Ports, Cameroon"
+	},
+	{
+		"code": "74473",
+		"portOfEntry": "Dakar, Senegal"
+	},
+	{
+		"code": "74499",
+		"portOfEntry": "All Other Senegal Ports, Senegal"
+	},
+	{
+		"code": "74619",
+		"portOfEntry": "Conakri, Guinea"
+	},
+	{
+		"code": "74625",
+		"portOfEntry": "Kamsar, Guinea"
+	},
+	{
+		"code": "74699",
+		"portOfEntry": "All Other Guinea Ports, Guinea"
+	},
+	{
+		"code": "74751",
+		"portOfEntry": "Freetown, Sierra Leone"
+	},
+	{
+		"code": "74799",
+		"portOfEntry": "All Other Sierra Leone Ports, Sierra Leone"
+	},
+	{
+		"code": "74825",
+		"portOfEntry": "Abidjan, Ivory Coast"
+	},
+	{
+		"code": "74826",
+		"portOfEntry": "Baobab Oil Field, Ivory Coast"
+	},
+	{
+		"code": "74827",
+		"portOfEntry": "San Pedro, Ivory Coast"
+	},
+	{
+		"code": "74899",
+		"portOfEntry": "All Other Ivory Coast Ports, Ivory Coast"
+	},
+	{
+		"code": "74900",
+		"portOfEntry": "All Other Ghana Ports"
+	},
+	{
+		"code": "74901",
+		"portOfEntry": "Accra, Ghana"
+	},
+	{
+		"code": "74985",
+		"portOfEntry": "Takoradi, Ghana"
+	},
+	{
+		"code": "74990",
+		"portOfEntry": "Tema, Ghana"
+	},
+	{
+		"code": "75041",
+		"portOfEntry": "Banjul, Gambia"
+	},
+	{
+		"code": "75099",
+		"portOfEntry": "All Other Gambia Ports, Gambia"
+	},
+	{
+		"code": "75200",
+		"portOfEntry": "All Other Togo Ports"
+	},
+	{
+		"code": "75291",
+		"portOfEntry": "Lome, Togo"
+	},
+	{
+		"code": "75300",
+		"portOfEntry": "All Other Nigeria Ports"
+	},
+	{
+		"code": "75313",
+		"portOfEntry": "Apapa, Nigeria"
+	},
+	{
+		"code": "75315",
+		"portOfEntry": "Antan Terminal, Nigeria"
+	},
+	{
+		"code": "75320",
+		"portOfEntry": "Brass, Nigeria"
+	},
+	{
+		"code": "75322",
+		"portOfEntry": "Bonny, Nigeria"
+	},
+	{
+		"code": "75323",
+		"portOfEntry": "Ukpokiti, Nigeria"
+	},
+	{
+		"code": "75330",
+		"portOfEntry": "Calabar, Nigeria"
+	},
+	{
+		"code": "75345",
+		"portOfEntry": "Escravos, Nigeria"
+	},
+	{
+		"code": "75349",
+		"portOfEntry": "Forcados, Nigeria"
+	},
+	{
+		"code": "75361",
+		"portOfEntry": "Koko, Nigeria"
+	},
+	{
+		"code": "75367",
+		"portOfEntry": "Lagos, Nigeria"
+	},
+	{
+		"code": "75380",
+		"portOfEntry": "Pennington, Nigeria"
+	},
+	{
+		"code": "75383",
+		"portOfEntry": "Sapele, Nigeria"
+	},
+	{
+		"code": "75385",
+		"portOfEntry": "Okrika, Nigeria"
+	},
+	{
+		"code": "75387",
+		"portOfEntry": "Warri, Nigeria"
+	},
+	{
+		"code": "75389",
+		"portOfEntry": "Kwa Ibo Terminal, Nigeria"
+	},
+	{
+		"code": "75500",
+		"portOfEntry": "All Other Gabon Ports, Gabon"
+	},
+	{
+		"code": "75501",
+		"portOfEntry": "Libreville, Gabon"
+	},
+	{
+		"code": "75503",
+		"portOfEntry": "Gamba, Gabon"
+	},
+	{
+		"code": "75505",
+		"portOfEntry": "Cap Lopez, Gabon"
+	},
+	{
+		"code": "75515",
+		"portOfEntry": "Lucina Terminal, Gabon"
+	},
+	{
+		"code": "75517",
+		"portOfEntry": "Oguendjo Terminal, Gabon"
+	},
+	{
+		"code": "75521",
+		"portOfEntry": "Owendo, Gabon"
+	},
+	{
+		"code": "75525",
+		"portOfEntry": "Port Gentil, Gabon"
+	},
+	{
+		"code": "75898",
+		"portOfEntry": "Clarence Bay Ascension Is, St. Helena"
+	},
+	{
+		"code": "75899",
+		"portOfEntry": "All St. Helena Ports, St. Helena"
+	},
+	{
+		"code": "76100",
+		"portOfEntry": "All Other Benin ports, Benin"
+	},
+	{
+		"code": "76101",
+		"portOfEntry": "Cotonou, Benin"
+	},
+	{
+		"code": "76102",
+		"portOfEntry": "Seme Terminal, Benin"
+	},
+	{
+		"code": "76231",
+		"portOfEntry": "Cabinda, Angola"
+	},
+	{
+		"code": "76274",
+		"portOfEntry": "Lobito, Angola"
+	},
+	{
+		"code": "76278",
+		"portOfEntry": "Luanda, Angola"
+	},
+	{
+		"code": "76279",
+		"portOfEntry": "Namibe, Angola"
+	},
+	{
+		"code": "76281",
+		"portOfEntry": "Soyo Oil Terminal, Angola"
+	},
+	{
+		"code": "76282",
+		"portOfEntry": "Malongo Oil Terminal, Angola"
+	},
+	{
+		"code": "76283",
+		"portOfEntry": "Palanca Terminal, Angola"
+	},
+	{
+		"code": "76284",
+		"portOfEntry": "Takula, Angola"
+	},
+	{
+		"code": "76288",
+		"portOfEntry": "Lombo, Angola"
+	},
+	{
+		"code": "76299",
+		"portOfEntry": "All Other Angola Ports, Angola"
+	},
+	{
+		"code": "76300",
+		"portOfEntry": "All Other Congo(Brazzaville) Ports, Congo Brazzaville"
+	},
+	{
+		"code": "76330",
+		"portOfEntry": "Yombo, Congo Brazzaville"
+	},
+	{
+		"code": "76345",
+		"portOfEntry": "Djeno Terminal, Congo Brazzaville"
+	},
+	{
+		"code": "76350",
+		"portOfEntry": "Pointe Noire, Congo Brazzaville"
+	},
+	{
+		"code": "76465",
+		"portOfEntry": "Mindelo, Cape Verde"
+	},
+	{
+		"code": "76475",
+		"portOfEntry": "Porto Praia, Cape Verde"
+	},
+	{
+		"code": "76489",
+		"portOfEntry": "All Guinea-Bissau Ports, Guinea Bissau"
+	},
+	{
+		"code": "76491",
+		"portOfEntry": "Sao Tome (St. Thomas), Sao Tome and Principe"
+	},
+	{
+		"code": "76495",
+		"portOfEntry": "All Other Sao Tome and Principe Ports, Sao Tome and Principe"
+	},
+	{
+		"code": "76499",
+		"portOfEntry": "All Other Cape Verde Ports, Cape Verde"
+	},
+	{
+		"code": "76500",
+		"portOfEntry": "All Other Liberia Ports, Liberia"
+	},
+	{
+		"code": "76505",
+		"portOfEntry": "Buchanan, Liberia"
+	},
+	{
+		"code": "76529",
+		"portOfEntry": "Monrovia, Liberia"
+	},
+	{
+		"code": "76600",
+		"portOfEntry": "All Other Congo(Kinshasha) Ports, Congo Kinshasha"
+	},
+	{
+		"code": "76637",
+		"portOfEntry": "Matadi, Congo Kinshasha"
+	},
+	{
+		"code": "76638",
+		"portOfEntry": "Boma, Congo Kinshasha"
+	},
+	{
+		"code": "76639",
+		"portOfEntry": "Moanda Terminal, Congo Kinshasha"
+	},
+	{
+		"code": "77000",
+		"portOfEntry": "All Other Somalia Northern Region Ports, Somalia"
+	},
+	{
+		"code": "77001",
+		"portOfEntry": "Berbera, Somalia"
+	},
+	{
+		"code": "77051",
+		"portOfEntry": "Mogadiscio, Somalia"
+	},
+	{
+		"code": "77099",
+		"portOfEntry": "All Other Somalia Eastern Region Ports, Somalia"
+	},
+	{
+		"code": "77405",
+		"portOfEntry": "Aseb, Eritrea"
+	},
+	{
+		"code": "77409",
+		"portOfEntry": "Massaua, Eritrea"
+	},
+	{
+		"code": "77419",
+		"portOfEntry": "All Other Eritrea Ports, Eritrea"
+	},
+	{
+		"code": "77701",
+		"portOfEntry": "Djibouti, Djibouti"
+	},
+	{
+		"code": "77913",
+		"portOfEntry": "Kilindini, Kenya"
+	},
+	{
+		"code": "77999",
+		"portOfEntry": "All Other Kenya Ports, Kenya"
+	},
+	{
+		"code": "78000",
+		"portOfEntry": "All Other Seychelles Ports, Seychelles"
+	},
+	{
+		"code": "78083",
+		"portOfEntry": "Port Victoria, Seychelles"
+	},
+	{
+		"code": "78100",
+		"portOfEntry": "All Other British Indian Ocean Territory, Brit Ind Ocean"
+	},
+	{
+		"code": "78101",
+		"portOfEntry": "Diego Garcia, Brit Ind Ocean"
+	},
+	{
+		"code": "78351",
+		"portOfEntry": "Dar es Salaam, Tanzania"
+	},
+	{
+		"code": "78379",
+		"portOfEntry": "Tanga, Tanzania"
+	},
+	{
+		"code": "78387",
+		"portOfEntry": "Zanzibar, Tanzania"
+	},
+	{
+		"code": "78399",
+		"portOfEntry": "All Other Tanzania Ports, Tanzania"
+	},
+	{
+		"code": "78500",
+		"portOfEntry": "All Other Mauritius Ports, Mauritius"
+	},
+	{
+		"code": "78501",
+		"portOfEntry": "Port Louis, Mauritius"
+	},
+	{
+		"code": "78700",
+		"portOfEntry": "All Other Mozambique Ports"
+	},
+	{
+		"code": "78701",
+		"portOfEntry": "Beira, Mozambique"
+	},
+	{
+		"code": "78717",
+		"portOfEntry": "Maputo, Mozambique"
+	},
+	{
+		"code": "78725",
+		"portOfEntry": "Mozambique Island"
+	},
+	{
+		"code": "78735",
+		"portOfEntry": "Nacala, Mozambique"
+	},
+	{
+		"code": "78800",
+		"portOfEntry": "All Other Madagascar Ports, Madagascar"
+	},
+	{
+		"code": "78845",
+		"portOfEntry": "Tamatave, Madagascar"
+	},
+	{
+		"code": "78900",
+		"portOfEntry": "All Comoros Ports, Comoros"
+	},
+	{
+		"code": "79051",
+		"portOfEntry": "Pointe des Galets, Reunion"
+	},
+	{
+		"code": "79052",
+		"portOfEntry": "Saint Denis, Reunion"
+	},
+	{
+		"code": "79060",
+		"portOfEntry": "All French Southern and Antartic Lands, French So and Art"
+	},
+	{
+		"code": "79100",
+		"portOfEntry": "All other South Africa Ports"
+	},
+	{
+		"code": "79101",
+		"portOfEntry": "Cape Town, South Africa"
+	},
+	{
+		"code": "79113",
+		"portOfEntry": "Durban, South Africa"
+	},
+	{
+		"code": "79125",
+		"portOfEntry": "East London, South Africa"
+	},
+	{
+		"code": "79145",
+		"portOfEntry": "Port Elizabeth, South Africa"
+	},
+	{
+		"code": "79155",
+		"portOfEntry": "Richards Bay, South Africa"
+	},
+	{
+		"code": "79286",
+		"portOfEntry": "Walvis Baai, Namibia"
+	},
+	{
+		"code": "79299",
+		"portOfEntry": "All Other Namibia Ports, Namibia"
+	},
+	{
+		"code": "80101",
+		"portOfEntry": "Alberta, Canada"
+	},
+	{
+		"code": "80102",
+		"portOfEntry": "Manitoba, Canada"
+	},
+	{
+		"code": "80103",
+		"portOfEntry": "Saskatchewan, Canada"
+	},
+	{
+		"code": "80104",
+		"portOfEntry": "Northwest Territories, Canada"
+	},
+	{
+		"code": "80105",
+		"portOfEntry": "Yukon, Canada"
+	},
+	{
+		"code": "80106",
+		"portOfEntry": "British Columbia, Canada"
+	},
+	{
+		"code": "80107",
+		"portOfEntry": "Ontario, Canada"
+	},
+	{
+		"code": "80108",
+		"portOfEntry": "Quebec, Canada"
+	},
+	{
+		"code": "80109",
+		"portOfEntry": "Nova Scotia, Canada"
+	},
+	{
+		"code": "80110",
+		"portOfEntry": "New Brunswick, Canada"
+	},
+	{
+		"code": "80111",
+		"portOfEntry": "Prince Edward Island, Canada"
+	},
+	{
+		"code": "80112",
+		"portOfEntry": "Newfoundland, Canada"
+	},
+	{
+		"code": "80113",
+		"portOfEntry": "Nunavut, Canada"
+	},
+	{
+		"code": "91115",
+		"portOfEntry": "Christiansted St. Croix, US Virgin Is"
+	},
+	{
+		"code": "91125",
+		"portOfEntry": "Hess Oil Term. St. Croix, US Virgin Is"
+	},
+	{
+		"code": "91145",
+		"portOfEntry": "Frederiksted St. Croix, US Virgin Is"
+	},
+	{
+		"code": "91149",
+		"portOfEntry": "All Other St. Croix Virgin Islands, US Virgin Is"
+	},
+	{
+		"code": "91155",
+		"portOfEntry": "Charlotte Amalie St. Th, US Virgin Is"
+	},
+	{
+		"code": "91160",
+		"portOfEntry": "Cruz Bay St. John I., US Virgin Is"
+	},
+	{
+		"code": "91195",
+		"portOfEntry": "All Other Virgin Islands Ports, US Virgin Is"
+	},
+	{
+		"code": "92001",
+		"portOfEntry": "Military-Yokohama, Japan"
+	},
+	{
+		"code": "92002",
+		"portOfEntry": "Military-Naha, Japan"
+	},
+	{
+		"code": "92003",
+		"portOfEntry": "Military-Mannheim, Germany"
+	},
+	{
+		"code": "92004",
+		"portOfEntry": "Military-Germersheim, Germany"
+	},
+	{
+		"code": "92005",
+		"portOfEntry": "Military-Escravos, Nigeria"
+	},
+	{
+		"code": "92006",
+		"portOfEntry": "Military-Bass River Terminal, Nigeria"
+	},
+	{
+		"code": "92007",
+		"portOfEntry": "Military-Hsinhaing, China"
+	},
+	{
+		"code": "92008",
+		"portOfEntry": "Military-Guangzhou, China"
+	},
+	{
+		"code": "92009",
+		"portOfEntry": "Military-Tainjin, China"
+	},
+	{
+		"code": "92010",
+		"portOfEntry": "Military-Quingdao, China"
+	},
+	{
+		"code": "92011",
+		"portOfEntry": "Military-Port Kelang, Malaysia"
+	},
+	{
+		"code": "92012",
+		"portOfEntry": "Military-Kajang, Malaysia"
+	},
+	{
+		"code": "92013",
+		"portOfEntry": "Military-Al Zubair, Iraq"
+	},
+	{
+		"code": "92014",
+		"portOfEntry": "Military-Oktyabrsk, Ukraine"
+	},
+	{
+		"code": "92015",
+		"portOfEntry": "Military-Mykolayiv, Ukraine"
+	},
+	{
+		"code": "92016",
+		"portOfEntry": "Military-Sfax, Tunisia"
+	},
+	{
+		"code": "92017",
+		"portOfEntry": "Military-Aschaffenburg, Germany"
+	},
+	{
+		"code": "92018",
+		"portOfEntry": "Military-Mina Qaboos, Oman"
+	},
+	{
+		"code": "92019",
+		"portOfEntry": "Military-Muscat, Oman"
+	},
+	{
+		"code": "93501",
+		"portOfEntry": "Guam Island, Guam"
+	},
+	{
+		"code": "95101",
+		"portOfEntry": "Pago Pago Harbor, American Samoa"
+	},
+	{
+		"code": "96165",
+		"portOfEntry": "Saipan, Northern Marian"
+	},
+	{
+		"code": "96169",
+		"portOfEntry": "Tinian, Northern Marian"
+	},
+	{
+		"code": "97101",
+		"portOfEntry": "Aguascalientes, Mexico"
+	},
+	{
+		"code": "97102",
+		"portOfEntry": "Baja California, Mexico"
+	},
+	{
+		"code": "97103",
+		"portOfEntry": "Baja California Sur, Mexico"
+	},
+	{
+		"code": "97104",
+		"portOfEntry": "Chihuahua, Mexico"
+	},
+	{
+		"code": "97105",
+		"portOfEntry": "Colima, Mexico"
+	},
+	{
+		"code": "97106",
+		"portOfEntry": "Campeche, Mexico"
+	},
+	{
+		"code": "97107",
+		"portOfEntry": "Coahuila, Mexico"
+	},
+	{
+		"code": "97108",
+		"portOfEntry": "Chiapas, Mexico"
+	},
+	{
+		"code": "97109",
+		"portOfEntry": "Distrito Federal, Mexico"
+	},
+	{
+		"code": "97110",
+		"portOfEntry": "Durango, Mexico"
+	},
+	{
+		"code": "97111",
+		"portOfEntry": "Guerrero, Mexico"
+	},
+	{
+		"code": "97112",
+		"portOfEntry": "Guanajuato, Mexico"
+	},
+	{
+		"code": "97113",
+		"portOfEntry": "Hidalgo, Mexico"
+	},
+	{
+		"code": "97114",
+		"portOfEntry": "Jalisco, Mexico"
+	},
+	{
+		"code": "97115",
+		"portOfEntry": "Michoacan, Mexico"
+	},
+	{
+		"code": "97116",
+		"portOfEntry": "Morelos, Mexico"
+	},
+	{
+		"code": "97117",
+		"portOfEntry": "Mexico State, Mexico"
+	},
+	{
+		"code": "97118",
+		"portOfEntry": "Nayarit, Mexico"
+	},
+	{
+		"code": "97119",
+		"portOfEntry": "Nuevo Leon, Mexico"
+	},
+	{
+		"code": "97120",
+		"portOfEntry": "Oaxaca, Mexico"
+	},
+	{
+		"code": "97121",
+		"portOfEntry": "Puebla, Mexico"
+	},
+	{
+		"code": "97122",
+		"portOfEntry": "Quintana Roo, Mexico"
+	},
+	{
+		"code": "97123",
+		"portOfEntry": "Queretaro, Mexico"
+	},
+	{
+		"code": "97124",
+		"portOfEntry": "Sinaloa, Mexico"
+	},
+	{
+		"code": "97125",
+		"portOfEntry": "San Luis Potosi, Mexico"
+	},
+	{
+		"code": "97126",
+		"portOfEntry": "Sonora, Mexico"
+	},
+	{
+		"code": "97127",
+		"portOfEntry": "Tabasco, Mexico"
+	},
+	{
+		"code": "97128",
+		"portOfEntry": "Tlaxcala, Mexico"
+	},
+	{
+		"code": "97129",
+		"portOfEntry": "Tamaulipas, Mexico"
+	},
+	{
+		"code": "97130",
+		"portOfEntry": "Veracruz, Mexico"
+	},
+	{
+		"code": "97131",
+		"portOfEntry": "Yucatan, Mexico"
+	},
+	{
+		"code": "97132",
+		"portOfEntry": "Zacatecas, Mexico"
+	},
+	{
+		"code": "98000",
+		"portOfEntry": "All United States Outlying Islands, US Outlying Is"
+	},
+	{
+		"code": "99900",
+		"portOfEntry": "High Seas, Unknown"
+	},
+	{
+		"code": "99910",
+		"portOfEntry": "High SeasNorth Atlantic, Unknown"
+	},
+	{
+		"code": "99920",
+		"portOfEntry": "High SeasSouth Atlantic, Unknown"
+	},
+	{
+		"code": "99930",
+		"portOfEntry": "High SeasGulf of Mexico, Unknown"
+	},
+	{
+		"code": "99940",
+		"portOfEntry": "High SeasNorth Pacific, Unknown"
+	},
+	{
+		"code": "99950",
+		"portOfEntry": "High SeasSouth Pacific, Unknown"
+	}
+]
