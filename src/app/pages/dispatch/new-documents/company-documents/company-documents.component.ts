@@ -10,6 +10,7 @@ declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import * as moment from 'moment';
+import { Auth } from 'aws-amplify';
 
 @Component({
   selector: 'app-company-documents',
@@ -46,6 +47,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   errors = {};
   carrierID: any;
   documentData = {
+    category: 'company',
     uploadedDocs: []
   };
   totalRecords = 20;
@@ -62,6 +64,8 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   lastEvaluatedKey = '';
   suggestions = [];
 
+  currentUser: any;
+  
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -88,12 +92,8 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       error: () => { },
       next: (result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].isDeleted === 0) {
-            // this.documents.push(result.Items[i]);
-            this.totalRecords += 1;
-          }
+         this.totalRecords += 1;
         }
-        console.log("docu", this.documents)
       }
     });
   };
@@ -105,40 +105,35 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   }
   
   addDocument() {
+    console.log("documentData", this.documentData);
+    return;
     this.apiService.postData('documents', this.documentData).
-      subscribe({
-        complete: () => { },
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                console.log(key);
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.Success = '';
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+    subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
-          this.uploadFiles();
           this.Success = 'Document Added successfully';
+          
           $('#addDocumentModal').modal('hide');
-          setTimeout(() => {
-            this.fetchDocuments();
-            this.dtTrigger.next();
-          }, 1000);
+          // setTimeout(() => {
+          //   this.fetchDocuments();
+          //   this.dtTrigger.next();
+          // }, 1000);
         }
       });
   }
@@ -205,33 +200,27 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
 
   updateDocument() {
     this.apiService.putData('documents', this.documentData).
-      subscribe({
-        complete: () => { },
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                console.log(key);
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.Success = '';
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+    subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
-          this.response = res;
-          this.hasSuccess = true;
           this.Success = 'Document Updated successfully';
+          
           $('#addDocumentModal').modal('hide');
           setTimeout(() => {
             this.fetchDocuments();
@@ -321,6 +310,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +
           "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
             current.documents = resp['Items'];
+            console.log('docum', current.documents)
             if (resp['LastEvaluatedKey'] !== undefined) {
               current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
             } else {
@@ -335,6 +325,11 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       }
     };
+  }
+
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
   }
 
   ngAfterViewInit(): void {

@@ -49,6 +49,7 @@ export class AddFuelEntryComponent implements OnInit {
     vendorID : '',
     paidBy: '',
     paymentMode: '',
+    fuelCardNumber: '',
     reimburseToDriver: false,
     deductFromPay: false,
     additionalDetails: {
@@ -347,6 +348,7 @@ export class AddFuelEntryComponent implements OnInit {
 
         this.fuelData[`paidBy`] = result.paidBy;
         this.fuelData[`paymentMode`] = result.paymentMode;
+        this.fuelData[`fuelCardNumber`] = result.fuelCardNumber;
         this.fuelData[`reference`] = result.reference;
         this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
         this.fuelData[`deductFromPay`] = result.deductFromPay;

@@ -149,19 +149,30 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="orders.length > 0">
+                                <tbody>
                                     <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
-                                        <td>Date: -<br>
-                                            Location: -</td>
-                                        <td>Date:-<br>
-                                            Location: -</td>
-                                        <td>Name: -<br>
-                                            Qty:-<br>
-                                            Rate:-</td>
-                                        <td>T Amt: CAD -<br>
+                                        <td>
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
+                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
+                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
+                                            <!-- Rate:- -->
+                                        </td>
+                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
                                             <!-- <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
                                             Location: {{order.shipperInfo[i].pickupLocation}}</td>
                                         <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
@@ -170,10 +181,10 @@
                                             Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
                                             Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
                                         <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00
+                                            Received: 0<br>
+                                            Balance: 0
                                         </td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
@@ -186,7 +197,7 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateAsset(order.orderID)">Delete</a>
+                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
                                                 </div>
                                             </div>
                                         </td>
