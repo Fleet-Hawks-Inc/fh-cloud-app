@@ -5,14 +5,14 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      - REPOSITORY_URI=112567001577.dkr.ecr.us-east-2.amazonaws.com/fleet-manager-application-respository
+      - REPOSITORY_URI=112567001577.dkr.ecr.ap-south-1.amazonaws.com/fleet-manager-application-respository
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
+      - docker build -t $REPOSITORY_URI:latest -f DockerfileDev
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
@@ -20,7 +20,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - printf '[{"name":"container-fleet-manager-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > task-definition.json
+      - printf '[{"name":"container-fleet-manager-app","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > image-definition.json
 artifacts:
   files:
-    - task-definition.json
+    - image-definition.json
