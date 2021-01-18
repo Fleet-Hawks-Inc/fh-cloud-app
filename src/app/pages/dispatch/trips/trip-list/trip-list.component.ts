@@ -288,7 +288,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.spinner.hide();
         $("#tripStatusModal").modal('hide');
-        this.toastr.success('Trip status updated successfully');
+        this.toastr.success('Trip status updated successfully.');
         this.router.navigateByUrl('/dispatch/trips/trip-list');
       },
     });
