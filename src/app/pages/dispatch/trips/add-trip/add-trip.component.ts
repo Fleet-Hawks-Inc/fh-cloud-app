@@ -281,7 +281,7 @@ export class AddTripComponent implements OnInit {
                 this.getCoords(locations);
             }
         } else {
-            this.toastr.error('Please fill type and location to add trip');
+            this.toastr.error('Please fill type and location to add trip plan.');
             return false;
         }
     }
@@ -860,12 +860,12 @@ export class AddTripComponent implements OnInit {
         let planData = this.trips
 
         if (planData.length == 0) {
-            this.toastr.error('Please add trip plan');
+            this.toastr.error('Please add trip plan.');
             return false;
         }
 
         if (planData.length < 2) {
-            this.toastr.error('Please add atleast two trip plans');
+            this.toastr.error('Please add atleast two trip plans.');
             return false;
         }
 
@@ -873,7 +873,7 @@ export class AddTripComponent implements OnInit {
             let addedPlan = planData.map(function (v) { return v.type; });
 
             if (addedPlan.includes('Pickup') !== true || addedPlan.includes('Delivery') !== true) {
-                this.toastr.error('Pickup and delivery points are required');
+                this.toastr.error('Pickup and delivery points are required.');
                 return false;
             }
 
@@ -958,7 +958,7 @@ export class AddTripComponent implements OnInit {
             next: (res) => {
                 this.spinner.hide();
                 this.response = res;
-                this.toastr.success('Trip added successfully');
+                this.toastr.success('Trip added successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
         });
@@ -1287,12 +1287,12 @@ export class AddTripComponent implements OnInit {
         let planData = this.trips;
 
         if (planData.length == 0) {
-            this.toastr.error('Please add trip plan');
+            this.toastr.error('Please add trip plan.');
             return false;
         }
 
         if (planData.length < 2) {
-            this.toastr.error('Please add atleast two trip plans');
+            this.toastr.error('Please add atleast two trip plans.');
             return false;
         }
 
@@ -1300,7 +1300,7 @@ export class AddTripComponent implements OnInit {
             let addedPlan = planData.map(function (v) { return v.type; });
 
             if (addedPlan.includes('Pickup') !== true || addedPlan.includes('Delivery') !== true) {
-                this.toastr.error('Pickup and delivery points are required');
+                this.toastr.error('Pickup and delivery points are required.');
                 return false;
             }
         }
@@ -1384,7 +1384,7 @@ export class AddTripComponent implements OnInit {
             next: (res) => {
                 this.spinner.hide();
                 this.response = res;
-                this.toastr.success('Trip updated successfully');
+                this.toastr.success('Trip updated successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
         });
