@@ -261,7 +261,7 @@ export class AddRouteComponent implements OnInit {
       next: (res) => {
         this.spinner.hide();
         this.response = res;
-        this.toastr.success('Route added successfully');
+        this.toastr.success('Route added successfully.');
         this.router.navigateByUrl('/dispatch/routes/list');
       },
     });
@@ -475,23 +475,23 @@ export class AddRouteComponent implements OnInit {
     this.hasSuccess = false;
     if (this.routeData.recurring.recurringRoute === true) {
       if(this.routeData.recurring.recurringType == '') {
-        this.toastr.error('Please select recurring type');
+        this.toastr.error('Please select recurring type.');
         return false;
       }
 
       if ($('input.daysChecked:checked').length == 0) { 
-        this.toastr.error('Please select day and date of recurring');
+        this.toastr.error('Please select day and date of recurring.');
         return false;
       }
 
       if (this.routeData.recurring.recurringType === 'weekly') {
         if ($('input.daysChecked:checked').length > 1) {
-          this.toastr.error('Please select a single day for weekly recurring route');
+          this.toastr.error('Please select a single day for weekly recurring route.');
           return false;
         }
       } else if (this.routeData.recurring.recurringType === 'biweekly') {
         if ($('input.daysChecked:checked').length > 2) {
-          this.toastr.error('Please select only two days for biweekly recurring route');
+          this.toastr.error('Please select only two days for biweekly recurring route.');
           return false;
         }
       }
@@ -529,7 +529,8 @@ export class AddRouteComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.spinner.hide();
-        this.toastr.success('Route updated successfully');
+        this.router.navigateByUrl('/dispatch/routes/list');
+        this.toastr.success('Route updated successfully.');
       },
     })
   }
