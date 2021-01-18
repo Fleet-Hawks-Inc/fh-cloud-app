@@ -56,7 +56,7 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
+                            <a data-toggle="modal" data-target="#addDocumentModal" href="javascript:;"
                                 class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
                             <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
@@ -167,7 +167,7 @@
                                         <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="documents.length > 0">
+                                <tbody>
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{document.tripID}}</td>
@@ -195,13 +195,11 @@
                                             </div>
                                         </td>
                                     </tr>
-
+                                    <tr *ngIf="documents.length === 0">
+                                        <td colspan="9" class="no-data-available">No records found</td>
+                                      </tr>
                                 </tbody>
-                                <tbody *ngIf="documents.length === 0">
-                                    <tr>
-                                      <td colspan="9" class="no-data-available">No records found</td>
-                                    </tr>
-                                <tbody>
+                                
                             </table>
 
                             <!-- email modal Form -->
@@ -347,23 +345,18 @@
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Select Trip ID</label>
-                            <select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
-                                <option>#7876</option>
-                                <option>#7877</option>
-                                <option>#7878</option>
-                                <option>#7879</option>
-                                <option>#7880</option>
-                                <option>#7881</option>
-                            </select>
+                            <ng-select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
+                                <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
+                            </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Type</label>
-                            <select [(ngModel)]="documentData.docType" name="docType" class="form-control">
-                                <option>BOL</option>
-                                <option>POD</option>
-                                <option>Fuel Receipts</option>
-                                <option>Load Confirmation</option>
-                            </select>
+                            <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
+                                <ng-option>BOL</ng-option>
+                                <ng-option>POD</ng-option>
+                                <ng-option>Fuel Receipts</ng-option>
+                                <ng-option>Load Confirmation</ng-option>
+                            </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Name</label>
