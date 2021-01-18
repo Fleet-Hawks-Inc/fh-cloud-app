@@ -472,8 +472,7 @@ export class AddRouteComponent implements OnInit {
 
   updateRoute() {
     this.hasError = false;
-    this.has
-      = false;
+    this.hasSuccess = false;
     if (this.routeData.recurring.recurringRoute === true) {
       if(this.routeData.recurring.recurringType == '') {
         this.toastr.error('Please select recurring type.');
