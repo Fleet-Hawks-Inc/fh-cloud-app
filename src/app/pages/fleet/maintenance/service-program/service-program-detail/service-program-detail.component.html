@@ -10,7 +10,7 @@
                   </div>
                   <div class="col-md-8 col-lg-8 text-right pr-1">
                      <a routerLink="/fleet/maintenance/service-program/list"  class="btn btn-default btn-sm mr-2" style="color:black;"><i class="fas fa-list"></i> Service Programs List</a>
-                     <a href="javascript:;" data-toggle="modal" data-target="#editServiceScheduleModal" class="modal-with-form btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add Service Schedule</a>
+                     <a href="javascript:;" (click)="taskEdit = false; Title = 'Add'" data-toggle="modal" data-target="#editServiceScheduleModal" class="modal-with-form btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add Service Schedule</a>
                      <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModal" class="modal-with-form btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Vehicle</a>
                   </div>
                </div>
@@ -143,8 +143,8 @@
             </div>
             <div class="modal-footer">
                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-               <button class="btn btn-success" *ngIf="Title === 'Add'" (click)="addServiceProgram()">Add</button>
-               <button class="btn btn-success" *ngIf="Title !== 'Add'" (click)="updateServiceProgram()">Update</button>
+               <button class="btn btn-success" *ngIf="!taskEdit" (click)="addServiceProgram()">Add</button>
+               <button class="btn btn-success" *ngIf="taskEdit" (click)="updateServiceProgram()">Update</button>
             </div>
          </div>
       </div>
