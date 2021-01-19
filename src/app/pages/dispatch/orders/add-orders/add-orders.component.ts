@@ -36,6 +36,7 @@ export class AddOrdersComponent implements OnInit {
   ShipperDetails;
   ConsigneeDetails;
   CustomerPO;
+  Customer;
   Reference;
   csa;
   ctpat;
@@ -131,6 +132,7 @@ export class AddOrdersComponent implements OnInit {
   ShipperDetails:'',
   ConsigneeDetails:'',
   CustomerPO:'',
+  Customer:'',
   Reference:'',
   csa:'',
   ctpat:'',
@@ -197,14 +199,16 @@ export class AddOrdersComponent implements OnInit {
 
     this.subscription = this.pdfService.missionAnnounced$.subscribe((v) => {
       this.OrderNumber = v['OrderNumber']
-      this.CarrierName = v['CarrierName']
-      this.CarrierAddress = v['CarrierAddress']
-      this.Email = v['Email']
-      this.Phone = v['Phone']
-      this.TotalAgreedAmount = v['TotalAgreedAmount']
-      this.ShipperDetails = v['ShipperDetails']
-      this.ConsigneeDetails = v['ConsigneeDetails']
+      this.Customer = v['Customer']
+      // this.CarrierName = v['CarrierName']
+      // this.CarrierAddress = v['CarrierAddress']
+      // this.Email = v['Email']
+      // this.Phone = v['Phone']
+      // this.TotalAgreedAmount = v['TotalAgreedAmount']
+      // this.ShipperDetails = v['ShipperDetails']
+      // this.ConsigneeDetails = v['ConsigneeDetails']
       this.CustomerPO = v['CustomerPO']
+
       this.Reference = v['Reference']
       this.csa= v['csa']
       this.ctpat= v['ctpat']
@@ -225,12 +229,18 @@ export class AddOrdersComponent implements OnInit {
 
 
       
-     
+      this.shipperCurrent.shipperName= v['shipperName']
+      this.shipperCurrent.pickupLocation= v['pickupLocation']
+
       this.shipperCurrent.pickupDate= v['pickupDate']
       this.shipperCurrent.pickupTime= v['pickupTime']
-      this.shipperCurrent.pickupInstruction= v['pickupinstruction']
+
+      // this.shipperCurrent.pickupInstruction= v['pickupinstruction']
+
       this.shipperCurrent.contactPerson= v['contactPerson']
       this.shipperCurrent.phone= v['phone']
+     
+
       this.shipperCurrent.BOL= v['BOL']
       this.shipperCurrent.reference= v['reference']
       this.shipperCurrent.notes= v['notes']
@@ -261,6 +271,7 @@ export class AddOrdersComponent implements OnInit {
       this.orderData.orderNumber = this.OrderNumber;
       
        this.orderData.customerPO = this.CustomerPO;
+       this.Customer.Customer = this.Customer
        this.orderData.reference = this.ConsigneeDetails;
       this.orderData.phone =  this.Phone;
       this.orderData.email =  this.Email;

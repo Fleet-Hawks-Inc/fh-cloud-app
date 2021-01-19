@@ -51,7 +51,7 @@
           <div class="vt"></div>
           <div class="hl"></div>
         </div>
-        <input type="file" id="myFile" size="50"/>
+        <input type="file" id="myFile" size="50" (click)="selectfile(event)"/>
         <input type="file" id="uploadedfile" size="50" (load)="onpdfLoad()" />
         
        <canvas id="src" width="500"  height="500"  class="d-flex" style="cursor:crosshair" #pdfcanvas (mouseout)="mymouseout($event)" (mousedown)="mymousedown($event)" (mouseup)="mymouseup($event)" (mousemove)="mymousemove($event)" ></canvas>

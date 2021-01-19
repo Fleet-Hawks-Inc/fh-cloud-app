@@ -25,6 +25,7 @@ export class PdfAutomationComponent implements OnInit {
   $cursorHL: any = {};
   $val: any = [];
   $head: any = [];
+  $annotateinfo: any = {};
 
   $rectn: any = [];
   $res: any = [];
@@ -33,11 +34,27 @@ export class PdfAutomationComponent implements OnInit {
   $xmax;
   $ymin;
   $ymax;
+  $data: any = {};
   i = 0;
   $rct: any = [];
   postData = {
     "u1": "1000",
     "u2": "1100"
+  };
+
+  $obj = {
+    "documentId": "RANDOM VALUE", //Random value generated
+    "typeofDocument": "Order", // This will be static 
+    "nameofDocument": "LighSpeed",
+    "carrierId": "carrierId",
+
+
+    "createDate": "",
+    "createdTime": "",
+    "rct": [
+
+    ]
+
   };
 
   $jsonfile: any = {};
@@ -58,10 +75,14 @@ export class PdfAutomationComponent implements OnInit {
   drag = false;
 
   private selectOpt;
+  selectfile(value){
+    console.log(value);
+  }
   constructor(private service: PdfAutomationService, private http: HttpClient) {
 
 
     console.log("pdfservice called");
+    
 
 
     $(() => {
@@ -83,14 +104,14 @@ export class PdfAutomationComponent implements OnInit {
       this.$rect = rect;
       let drag = false;
       const imageObj = null;
-      let renderTask; 
+      let renderTask;
       const delay = ms => new Promise(res => setTimeout(res, ms));
 
       const srcContext = canvas.getContext('2d');
       this.$srcContext = srcContext;
       this.$cursorVT = document.querySelector('.vt')
       this.$cursorHL = document.querySelector('.hl')
-  
+
 
       el.onchange = () => {
         // var url = document.getElementById('myFile').value;
@@ -197,60 +218,106 @@ export class PdfAutomationComponent implements OnInit {
           console.error(reason);
         });
 
-    
+
         (async () => {
-          await delay(2500);
-        
-          const rectangles = [
-            {
-              left: 18,
-              top: 59,
-              width: 395,
-              height: 89,
-            },
-            {
-              left: 462,
-              top: 29,
-              width: 299,
-              height: 80,
-            },
-          ];
-         const worker = new Tesseract.TesseractWorker();
+          await delay(2000);
 
-        
-          for (let i = 0; i < rectangles.length; i++) {
-            const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
-            if (cropImgCanvas) {
-              console.log("crop successful");
+          this.http.get(this.url + "/d0e7af30-5a20-11eb-be8e-796d5a0f8b51").subscribe((data: any) => {
+            console.log(this.$jsonfile)
+
+            console.log(data.Items[0].rct[0][1]);
+            console.log(data.Items[0].rct[0][2]);
+            console.log(data.Items[0].rct[0][3]);
+            console.log(data.Items[0].rct[0][4]);
+            const rectangles = [];
+            for (let i = 0; i < data.Items[0].rct.length; i++) {
+              let a = {
+                left: data.Items[0].rct[i][1],
+                top: data.Items[0].rct[i][2],
+                width: data.Items[0].rct[i][3],
+                height: data.Items[0].rct[i][4],
+              }
+              rectangles.push(a)
             }
-            else {
-              console.log("crop not successful");
+            console.log(rectangles);
+
+
+            // const rectangles = [
+            //   {
+            //     left:data.Items[0].rct[0][1],
+            //     top: data.Items[0].rct[0][2],
+            //     width:data.Items[0].rct[0][3],
+            //     height: data.Items[0].rct[0][4],
+            //   },
+            //   {
+            //     left: 462,
+            //     top: 29,
+            //     width: 299,
+            //     height: 80,
+            //   },
+            // ];
+
+
+
+            const worker = new Tesseract.TesseractWorker();
+
+
+            for (let i = 0; i < rectangles.length; i++) {
+              const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
+              if (cropImgCanvas) {
+                console.log("crop successful");
+              }
+              else {
+                console.log("crop not successful");
+              }
+
+              // just renderint to visualize - no need for actual crop
+
+              this.$srcContext.rect(rectangles[i].left, rectangles[i].top, rectangles[i].width, rectangles[i].height);
+              this.$srcContext.strokeStyle = '#FF0000';
+              this.$srcContext.stroke();
+
+
+
+
+              worker.recognize(cropImgCanvas)
+                .progress(progress => {
+                  //console.log('progress:', progress);
+                }).then(result => {
+                  console.log('result:', result.text);
+
+                  const para = document.createElement('P');
+                  const h = document.createElement('h3');
+                  // h.innerHTML = document.getElementById('select').value;
+                  h.innerHTML = data.Items[0].rct[i][0];
+                  para.innerHTML = result.text;
+
+
+                  this.$val.push(result.text);
+                  this.$head.push(data.Items[0].rct[i][0]);
+                  this.$pdfjson[data.Items[0].rct[i][0]] = result.text;
+
+                  JSON.stringify(this.$pdfjson);
+                  console.log(this.$pdfjson);
+
+
+                  document.getElementById('myDIV').appendChild(h);
+                  document.getElementById('myDIV').appendChild(para);
+
+
+
+                });
+
+
+
+
+
+
+
             }
-
-            // just renderint to visualize - no need for actual crop
-
-            this.$srcContext.rect(rectangles[i].left, rectangles[i].top, rectangles[i].width, rectangles[i].height);
-            this.$srcContext.strokeStyle = '#FF0000';
-            this.$srcContext.stroke();
-
-
-
-
-            worker.recognize(cropImgCanvas)
-              .progress(progress => {
-                //console.log('progress:', progress);
-              }).then(result => {
-                console.log('result:', result.text);
-                // document.getElementById('text').value = result.text;
-                // text = result.text
-
-
-              });
-
-
-          }
+          });
         })();
-        
+
       }
 
 
@@ -335,7 +402,9 @@ export class PdfAutomationComponent implements OnInit {
 
     this.drag = false;
 
+
     this.$ctx.strokeRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
+
 
     console.log(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h)
 
@@ -399,8 +468,9 @@ export class PdfAutomationComponent implements OnInit {
           annotateInfo: [// CarrierId
             result.text,
             this.$xmin,
-            this.$xmax,
+
             this.$ymin,
+            this.$xmax,
             this.$ymax
           ]
         }
@@ -432,6 +502,22 @@ export class PdfAutomationComponent implements OnInit {
 
   mybutton() {
     console.log('H1')
+    let rct = "rct" + this.i;
+
+
+    var newData = [
+      this.selectOpt,
+      this.$xmin,
+      this.$ymin,
+      this.$xmax,
+
+      this.$ymax];
+
+
+
+    this.$obj.rct.push(newData);
+
+    console.log(this.$obj);
 
 
     this.$jsonfile = {
@@ -440,27 +526,33 @@ export class PdfAutomationComponent implements OnInit {
       "nameofDocument": "LighSpeed",
       "carrierId": "carrierId",
       "value": this.selectOpt,
+
       "createDate": "",
       "createdTime": "",
-   
+
+
 
     };
 
-    let rct = "rct" + this.i;
 
-    this.$rectn.push();
-    this.$res.push(this.$xmin,
-      this.$xmax,
-      this.$ymin,
-      this.$ymax)
+    // let rct = "rct" + this.i;
+
+    // this.$rectn.push(rct);
+    // this.$res.push(this.$xmin,
+    //   this.$xmax,
+    //   this.$ymin,
+    //   this.$ymax)
 
 
-    this.$jsonfile[rct] = [this.$xmin,
-    this.$xmax,
-    this.$ymin,
-    this.$ymax]
+    // this.$annotateinfo[rct] =1;
+    // // this.$xmin,
+    // // this.$xmax,
+    // // this.$ymin,
+    // // this.$ymax;
 
-    this.i++;
+    // console.log(this.$annotateinfo + "this.$annotateinfo ")
+
+    // this.i++;
 
     JSON.stringify(this.$jsonfile);
     console.log(this.$jsonfile);
@@ -496,18 +588,18 @@ export class PdfAutomationComponent implements OnInit {
   }
 
   myclick(e) {
-    // this.http.post(this.url, this.$jsonfile).subscribe((data) => {
-    //   console.log(this.$jsonfile)
-    //   console.log("done");
-    // });
-    this.http.get(this.url + "/fgfd").subscribe((data : any) => {
-      console.log(this.$jsonfile)
-      console.log(data.Items[0].documentId);
+    this.http.post(this.url, this.$obj).subscribe((data) => {
+      console.log(this.$obj)
+      console.log("done");
     });
+    // this.http.get(this.url + "/fgfd").subscribe((data : any) => {
+    //   console.log(this.$jsonfile)
+    //   console.log(data.Items[0].documentId);
+    // });
 
     console.log("this.$val" + JSON.stringify(this.$pdfjson));
     this.service.missionAnnouncedSource.next(this.$pdfjson);
-  
+
 
   }
 
@@ -521,11 +613,19 @@ export class PdfAutomationComponent implements OnInit {
     this.$cursorHL.setAttribute('style', `top: ${e.clientY}px;`);
     if (this.drag) {
 
+
       this.$rect.w = (e.pageX - this.$canvas.offsetLeft) - this.$rect.startX - 260;
       this.$rect.h = (e.pageY - this.$canvas.offsetTop) - this.$rect.startY - 115;
       this.$ctx.strokeStyle = 'red';
-      // ctx.strokeRect(rect.startX, rect.startY, rect.w, rect.h);
+
+      //  this.$ctx.strokeRect( this.$rect.startX,  this.$rect.startY,  this.$rect.w,  this.$rect.h);
+      // this.$ctx.fillStyle = "green";
+      // this.$ctx.globalAlpha = 0.01;  // [0, 1]
+      // this.$ctx.fillRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
+
+
     }
+
     console.log("mousemove works");
 
 
