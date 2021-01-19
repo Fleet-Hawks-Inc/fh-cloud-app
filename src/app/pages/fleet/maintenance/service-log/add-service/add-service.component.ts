@@ -128,7 +128,7 @@ export class AddServiceComponent implements OnInit {
    * Add new asset
    */
   addService() {
-    console.log('serviceData', this.uploadedPhotos, this.uploadedDocs);
+    
     this.hideErrors();
     // create form data instance
     const formData = new FormData();
