@@ -155,7 +155,7 @@ export class AssetDetailComponent implements OnInit {
           if (!this.assetData.hasOwnProperty('devices')) {
             this.assetData['devices'] = [];
           }
-          console.log('this.assetData', this.assetData);
+          
           this.fetchDevicesByID();
           this.assetIdentification = this.assetData.assetIdentification;
           this.VIN = this.assetData.VIN;
