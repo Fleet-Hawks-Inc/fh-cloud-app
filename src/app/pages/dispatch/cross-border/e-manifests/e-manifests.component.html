@@ -13,7 +13,13 @@
                <form class="form-horizontal" method="get">
                   <div class="row px-2" style="padding-top:10px;">
                      <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
+                        <div class="input-group input-group mb-3">
+                            <input type="text" name="aceTripNumber" [(ngModel)]="aceTripNumber" class="form-control"
+                                placeholder="Search by trip number" />
+                        </div>
+                    </div>
+                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
                                 [(ngModel)]="vehicleIdentification" class="form-control"
                                 (input)="getSuggestions($event.target.value)" />
@@ -46,7 +52,7 @@
                                 class="btn btn-sm btn-success mr-2">Search</button>
                             <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
-                     <div class="col-md-6 col-lg-6 text-right">
+                     <div class="col-md-4 col-lg-4 text-right">
                         
                         <div class="btn-group flex-wrap">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>

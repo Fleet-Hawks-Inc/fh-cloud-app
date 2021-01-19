@@ -26,6 +26,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
  countries = [];
  ACEList = [];
  ACIList = [];
+ aceTripNumber: string = '';
  vehicleID: string ='';
  vehicleIdentification: string;
  currentStatus = '';
@@ -148,7 +149,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('ACEeManifest/fetchRecords?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('ACEeManifest/fetchRecords?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&tripNumber='+this.aceTripNumber+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.ACEList= resp['Items'];
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
@@ -177,7 +178,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTriggerACI.unsubscribe();
   }
   searchACEFilter() {
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
+    if (this.vehicleID !== '' || this.currentStatus !== '' || this.aceTripNumber !== '') {
       this.rerender('reset');
     } else {
       return false;
@@ -185,10 +186,11 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   resetACEFilter() {
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
+    if (this.vehicleID !== '' || this.currentStatus !== '' || this.aceTripNumber !== '') {
       this.vehicleID = '';
       this.vehicleIdentification = '';
       this.currentStatus = '';
+      this.aceTripNumber = '';
       this.rerender();
     } else {
       return false;
