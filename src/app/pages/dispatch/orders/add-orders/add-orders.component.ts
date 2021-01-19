@@ -497,7 +497,7 @@ export class AddOrdersComponent implements OnInit {
     return strTime;
   }
 
-  getMiles(value) {
+  async getMiles(value) {
     this.orderData.milesInfo['calculateBy'] = value;
     
     if (this.mergedArray !== undefined) {
@@ -519,10 +519,7 @@ export class AddOrdersComponent implements OnInit {
           this.destination = this.googleCords.shift();
         }
 
-        this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
-          
-          this.orderData.milesInfo['totalMiles'] = res;
-        });
+        this.orderData.milesInfo['totalMiles'] = await this.google.googleDistance([this.origin], [this.googleCords.join('|')]);
       } else if (value === 'pcmiles') {
         this.google.pcMiles.next(true);
         this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {} from "googlemaps";
 @Injectable({
   providedIn: 'root'
 })
@@ -13,26 +14,20 @@ export class GoogleMapsService {
   
   constructor(private http: HttpClient) { }
 
-  googleDistance(origin, destination) {
-    let headers = new HttpHeaders();
-    headers = headers.set(
-      'Content-Type', 'application/json, charset=utf-8',
-    );
-    // let headers = new HttpHeaders({
-    //   'Content-Type': 'application/json; charset=utf-8',
-    //   'Access-Control-Allow-Origin': '*',
-    //   'Access-Control-Allow-Methods': '*',
-    //   'dataType': 'jsonp',
-    // });
 
-    const URL = 'https://maps.googleapis.com/maps/api/distancematrix/json';
-    return this.http.post(URL + '?units=imperial&origins=' + origin + '&destinations=' + destination + '&key=' + this.apiKey, headers)
-    .pipe(map(res => {
-      console.log('google res', res);
-      return res;
-    }))
-    
-  }
+googleDistance(origin, destination) {
+  const matrix = new google.maps.DistanceMatrixService();
+ 
+  return new Promise((resolve, reject) => {matrix.getDistanceMatrix({
+    origins: [new google.maps.LatLng(25.7694708, -80.259947)],
+    destinations: [new google.maps.LatLng(25.768915, -80.254659)],
+    travelMode: google.maps.TravelMode.DRIVING,
+  }, function(response, status) {
+    console.log(response);
+    resolve(response);
+  })});
+}
+
 
   pcMilesDistance(stops){
     let headers = new HttpHeaders({
