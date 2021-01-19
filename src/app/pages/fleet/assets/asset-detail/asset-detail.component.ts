@@ -217,8 +217,7 @@ export class AssetDetailComponent implements OnInit {
               name: x,
             }));
           }
-          console.log('photos', this.assetsImages)
-
+          
           if(this.assetData.uploadedDocs != undefined && this.assetData.uploadedDocs.length > 0){
             this.assetsDocs = this.assetData.uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, name: x}));
           }
