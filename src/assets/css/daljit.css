@@ -584,15 +584,20 @@ html.fixed .content-body {
 #addDriverVehicleModal .content-body {
     margin: 0;;
 }
-.address-item.open .address-inner {
-    display: block;
-}
-.address-book__driver .inner-wrapper {
-    padding-top: 0 !important;
-}
-.address-book__driver .inner-wrapper .content-body {
+.order-accordian .card {
     margin: 0;
 }
-.address-book__driver .inner-wrapper .page-header {
-    display: none;
+.order-accordian .card-header .btn {
+    width: 100%;
+    text-align: left;
+}
+
+/* Order Page */
+.ngx-time-picker-container {
+    z-index: 99;
+}
+.ngx-time-picker-selection .arrow {
+    background: none;
+    width: auto;
+    height: auto;
 }

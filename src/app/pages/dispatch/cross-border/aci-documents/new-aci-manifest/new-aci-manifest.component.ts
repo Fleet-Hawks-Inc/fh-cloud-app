@@ -103,17 +103,16 @@ export class NewAciManifestComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-  countryID = '73cba1a0-8977-11ea-b61f-0996be58fec9';
   timeCreated: string;
   countries: any = [];
   stateID: string;
   states: any = [];
   cities: any = [];
   CANPorts: any = [];
-  trips: any = [];
   vehicles: any = [];
   vehicleData: any = [];
-  // assetArray: any = [];
+  loadingCities : any = [];
+  acceptanceCities : any = [];
   assets: any = [];
   drivers: any = [];
   shippers = [];
@@ -121,20 +120,19 @@ export class NewAciManifestComponent implements OnInit {
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
   cityList: any = [];
+  notifyPartyCities : any = [];
+  notifyPartyStates: any = [];
+  deliveryDestinationCities: any = [];
+  deliveryDestinationStates: any = [];
   subLocationsList: any = [];
-  vehicleSeals: any = [];
   cargoExemptionsList: any = [];
   documentTypeList: any = [];
+  countriesList: any = [];
   currentStatus: string;
   CCC: string;
-  tripNo: string;
-  truckcargoExemptions: [];
-  assetSeals: any = [];
   addTrailerBtn = true;
   data: string;
   sendId: string;
-  companyKey: string;
-  operation: string;
   tripNumber: string;
   portOfEntry: string;
   subLocation: string;
@@ -196,6 +194,7 @@ export class NewAciManifestComponent implements OnInit {
       releaseOffice: '',
       subLocation: '',
       importerCsaBusinessNumber: '',
+      uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
       estimatedArrivalTimeZone: '',
@@ -211,6 +210,8 @@ export class NewAciManifestComponent implements OnInit {
       specialInstructions: '',
       shipperID: '',
       consigneeID: '',
+      deliveryDestinations: [],
+      notifyParties: [],
       commodities: [
         {
           description: '',
@@ -248,6 +249,9 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Edit ACI e-Manifest';
       this.fetchACIEntry();
       this.getDocStates();
+      this.fetchCities();
+      this.getNotifyPartyStatesCities();
+      this.getDeliveryDestinationStatesCities();
     } else {
       this.title = 'Add ACI e-Manifest';
     }
@@ -258,13 +262,7 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchDrivers();
     this.fetchCountries();
     this.fetchUSStates();
-    this.fetchCities();
-    if (this.entryID) {
-      this.title = 'Edit ACE e-Manifest';
-      // this.fetchACEEntry();
-    } else {
-      this.title = 'Add ACE e-Manifest';
-    }
+    this.fetchCities();   
     this.httpClient.get('assets/canadianPorts.json').subscribe(data => {
       this.CANPorts = data;
     });
@@ -274,7 +272,7 @@ export class NewAciManifestComponent implements OnInit {
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
       this.documentTypeList = data;
     });
-    this.httpClient.get('assets/ACIShipmentType.json').subscribe(data => {
+    this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe(data => {
       this.shipmentTypeList = data;
     });
     this.httpClient.get('assets/ACIReleaseOffice.json').subscribe(data => {
@@ -289,7 +287,13 @@ export class NewAciManifestComponent implements OnInit {
     this.httpClient.get('assets/ACIcargoExemption.json').subscribe(data => {
       this.cargoExemptionsList = data;
     });
+    this.httpClient.get('assets/jsonFiles/worldCountries.json').subscribe(data => {  
+      this.countriesList = data;
+    });
   }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  } 
   fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
@@ -303,6 +307,20 @@ export class NewAciManifestComponent implements OnInit {
         this.states = result.Items;
       });
   }
+  getLoadingCities(s) {
+    let stateID = this.shipments[s].cityOfLoading.stateProvince;
+    this.apiService.getData('cities/state/'+ stateID)
+      .subscribe((result: any) => {
+        this.loadingCities = result.Items;
+      });
+  }
+  getAccetanceCities(s) {
+    let stateID = this.shipments[s].cityOfAcceptance.stateProvince;
+    this.apiService.getData('cities/state/'+ stateID)
+      .subscribe((result: any) => {
+        this.acceptanceCities = result.Items;
+      });
+  }
   getDocStates(){
     this.apiService.getData('states')
     .subscribe((result: any) => {
@@ -312,7 +330,8 @@ export class NewAciManifestComponent implements OnInit {
   fetchCities() {
     this.apiService.getData('cities')
       .subscribe((result: any) => {
-        this.cities = result.Items;
+        this.acceptanceCities = result.Items;
+        this.loadingCities = result.Items;
       });
   }
   fetchShippers(){
@@ -328,7 +347,6 @@ export class NewAciManifestComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
-      console.log('vehicles in init', this.vehicles);
     });
   }
   // TRUCK DATA
@@ -341,11 +359,6 @@ export class NewAciManifestComponent implements OnInit {
       this.addTruckSealBtn = false;
     }    
   }
-  async fetchStateCode(ID) {
-    const code = await this.apiService.getData('states/' + ID).toPromise();
-    return code.Items[0].stateCode;
-  }
- 
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
@@ -359,15 +372,20 @@ export class NewAciManifestComponent implements OnInit {
   }
   //container data
   addContainer() {
-    this.containers.push({
-      loadedOn: {
-        type: '',
-        number: ''
-      },
-      number: '',
-      cargoExemptions: [],
-      sealNumbers: [{sealNumber: ''}],
-    });
+    if(this.containers.length <=4){
+      this.containers.push({
+        loadedOn: {
+          type: '',
+          number: ''
+        },
+        number: '',
+        cargoExemptions: [],
+        sealNumbers: [{sealNumber: ''}],
+      });
+    }
+   else{
+    this.toastr.warning('Only 5 containers are allowed in ACI manifest!');
+   }
   }
   deleteContainer(i: number) {
     this.containers.splice(i, 1);
@@ -424,12 +442,16 @@ export class NewAciManifestComponent implements OnInit {
     this.passengers.splice(i, 1);
   }
   addDocument(i) {
-    this.passengers[i].travelDocuments.push({
-      type: '',
-      number: '',
-      country: '',
-      stateProvince: ''
-    });
+    if(this.passengers[i].travelDocuments.length <= 2){
+      this.passengers[i].travelDocuments.push({
+        type: '',
+        number: '',
+        country: '',
+        stateProvince: ''
+      });
+    }else{
+      this.toastr.warning('Only 3 travel documents of passenger are allowed in ACI manifest');
+    }   
   }
   deleteDocument(i: number, p: number) {
     this.passengers[p].travelDocuments.splice(i, 1);
@@ -442,6 +464,90 @@ export class NewAciManifestComponent implements OnInit {
         this.passengerDocStates = result.Items;
       });
   }
+  //delivery destinations
+  getDeliveryDestinationStatesCities(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.deliveryDestinationStates = result.Items;
+    });
+    this.apiService.getData('cities')
+    .subscribe((result: any) => {
+      this.deliveryDestinationCities = result.Items;
+    });
+  }
+  getDeliveryDestinationStates(s,p){
+    const countryID = this.shipments[s].deliveryDestinations[p].address.country;
+    this.apiService.getData('states/country/' + countryID)
+    .subscribe((result: any) => {
+      this.deliveryDestinationStates = result.Items;
+    });
+    }
+    getDeliveryDestinationCities(s,p){
+      const stateID = this.shipments[s].deliveryDestinations[p].address.stateProvince;
+      this.apiService.getData('cities/state/' + stateID)
+      .subscribe((result: any) => {
+        this.deliveryDestinationCities = result.Items;
+      });
+      }
+  addDeliveryDestination(p){
+    if(this.shipments[p].deliveryDestinations.length <= 96){
+    this.shipments[p].deliveryDestinations.push({   
+     name:'',
+     contactNumber: '',
+     address: {
+     addressLine: '',
+     city: '',
+     stateProvince: '',
+     country: '',
+     postalCode: '',
+     }
+     });}
+  }
+  deleteDeliveryDestination(i: number, s: number) {
+   this.shipments[s].deliveryDestinations.splice(i, 1);
+ }
+  // notify parties
+  getNotifyPartyStatesCities(){
+    this.apiService.getData('states')
+    .subscribe((result: any) => {
+      this.notifyPartyStates = result.Items;
+    });
+    this.apiService.getData('cities')
+    .subscribe((result: any) => {
+      this.notifyPartyCities = result.Items;
+    });
+  }
+  getNotifyPartyStates(s,p){
+    const countryID = this.shipments[s].notifyParties[p].address.country;
+    this.apiService.getData('states/country/' + countryID)
+    .subscribe((result: any) => {
+      this.notifyPartyStates = result.Items;
+    });
+    }
+    getNotifyPartyCities(s,p){
+      const stateID = this.shipments[s].notifyParties[p].address.stateProvince;
+      this.apiService.getData('cities/state/' + stateID)
+      .subscribe((result: any) => {
+        this.notifyPartyCities = result.Items;
+      });
+      }
+  addNotifyParty(p){
+    if(this.shipments[p].notifyParties.length <= 97){
+    this.shipments[p].notifyParties.push({   
+     name:'',
+     contactNumber: '',
+     address: {
+     addressLine: '',
+     city: '',
+     stateProvince: '',
+     country: '',
+     postalCode: '',
+     }
+     });}
+  }
+  deleteNotifyParty(i: number, s: number) {
+   this.shipments[s].notifyParties.splice(i, 1);
+ }
   addCommodity(i) {
     this.shipments[i].commodities.push({
       description: '',
@@ -476,6 +582,7 @@ export class NewAciManifestComponent implements OnInit {
       releaseOffice: '',
       subLocation: '',
       importerCsaBusinessNumber: '',
+      uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
       estimatedArrivalTimeZone: '',
@@ -491,6 +598,8 @@ export class NewAciManifestComponent implements OnInit {
       specialInstructions: '',
       shipperID: '',
       consigneeID: '',
+      notifyParties: [],
+      deliveryDestinations: [],
       commodities: [
         {
           description: '',
@@ -512,22 +621,11 @@ export class NewAciManifestComponent implements OnInit {
   deleteShipment(i: number) {
     this.shipments.splice(i, 1);
   }
-  loadedOnFn(e) {
-    if (e === 'TRUCK') {
-      this.loadedType = 'TRUCK';
-    }
-    else if (e === 'CONTAINER') {
-      this.loadedType = 'CONTAINER';
-    }
-    else {
-      this.loadedType = 'TRAILER';
-    }
-  }
 
   addACIManifest() {
     const data = {
-      CCC: this.CCC.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
-      tripNumber: this.tripNumber.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
+      CCC: this.CCC,
+      tripNumber: this.CCC+this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -539,9 +637,8 @@ export class NewAciManifestComponent implements OnInit {
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
-       currentStatus: 'DRAFT'
+       currentStatus: 'Draft'
     };
-    console.log('Data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -594,12 +691,13 @@ export class NewAciManifestComponent implements OnInit {
     this.apiService
       .getData('ACIeManifest/' + this.entryID)
       .subscribe((result: any) => {
+        console.log('result',result.Items[0]);
         result = result.Items[0];
-        console.log('Fetched Data', result);
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
+        this.sendId = result.sendId;
           this.CCC = result.CCC,
-          this.tripNumber = result.tripNumber,
+          this.tripNumber = result.tripNumber.substring(4,result.tripNumber.length),
           this.portOfEntry = result.portOfEntry,
           this.subLocation = result.subLocation,
           this.estimatedArrivalDate = result.estimatedArrivalDate,
@@ -621,8 +719,9 @@ export class NewAciManifestComponent implements OnInit {
   updateACIManifest()  {
     const data = {
       entryID: this.entryID,
-      CCC: this.CCC.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
-      tripNumber: this.tripNumber.toUpperCase().replace(/o/gi, "0").replace(/i/gi,"1"),
+      sendId: this.sendId,
+      CCC: this.CCC,
+      tripNumber: this.CCC+this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -634,10 +733,9 @@ export class NewAciManifestComponent implements OnInit {
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
-       currentStatus: 'DRAFT',
+       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated
     };
-    console.log('Data', data);
     this.apiService.putData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -661,7 +759,6 @@ export class NewAciManifestComponent implements OnInit {
         this.hasSuccess = true;
         this.toastr.success('Manifest Updated Successfully');
         this.router.navigateByUrl('/dispatch/cross-border/eManifests');
-
       },
     });
   }

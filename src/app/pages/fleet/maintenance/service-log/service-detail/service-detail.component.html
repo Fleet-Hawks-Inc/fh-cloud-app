@@ -45,20 +45,20 @@
                                           </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Start Date</td>
-                                            <td>Jun 1, 2020</td>
+                                            <td>{{startDate | date:'dd-MM-yyyy'}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Completion Date</td>
-                                            <td>{{completionDate}}</td>
+                                            <td>{{completionDate ? completionDate : '-'}}</td>
                                          </tr>
                                          <tr *ngIf="vehicle">
                                             <td class="back-color-gray font-weight-bold">Odometer</td>
-                                            <td>{{odometer}} miles</td>
+                                            <td>{{odometer ? odometer : '-'}} miles</td>
                                          </tr>
-                                         <tr *ngIf="logsData?.selectedTasks">
+                                         <tr *ngIf="logsData?.selectedIssues">
                                             <td class="back-color-gray font-weight-bold">Resolved Issues</td>
                                             <td>
-                                               <a href="resolved-issue-details.php" *ngFor="">#6 window broken</a>
+                                               <a *ngFor="let item of logsData.selectedIssues" routerLink="/fleet/maintenance/issues/add">{{item}}</a>
                                              </td>
                                          </tr>
                                          <tr>
@@ -71,7 +71,7 @@
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Notes</td>
-                                            <td>{{description}}</td>
+                                            <td>{{description ? description : '-'}}</td>
                                          </tr>
                                       </tbody>
                                    </table>
@@ -79,7 +79,7 @@
                              </div>
                              <div class="row mt-2">
                                 <div class="col-lg-12">
-                                   <table class="table table-bordered table-striped table-responsive-lg">
+                                   <table class="table table-bordered table-striped table-responsive-lg" *ngIf="allServiceTasks?.length > 0">
                                       <thead>
                                          <tr>
                                             <th>Task</th>
@@ -116,7 +116,7 @@
                                       </tbody>
                                    </table>
 
-                                   <table class="table table-bordered table-striped table-responsive-lg mt-3">
+                                   <table class="table table-bordered table-striped table-responsive-lg mt-3" *ngIf="allServiceParts?.length > 0">
                                     <thead>
                                        <tr>
                                           <th width="60%">Part Number</th>
@@ -178,14 +178,14 @@
                              <div class="row">
                                 <div class="col-lg-12">
                                    <div class="vehicle-common-box p-3">
-                                      <div class="row">
+                                      <!-- <div class="row">
                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
                                          <div class="col-lg-6 text-right">
                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div>
                                          </div>
-                                      </div>
+                                      </div> -->
                                       <hr class="solid mt-3">
-                                      <div class="row">
+                                      <div class="row" *ngIf="photos?.length > 0">
                                          <div class="col-lg-6" *ngFor="let photo of photos;">
                                             <div class="vehicle-photo-box">
                                                <img src="{{photo}}" height="180px" width="330px">
@@ -210,7 +210,7 @@
                                 </div>
                              </div>
                              <!-- DOCUMENTS -->
-                             <div class="row mt-2" *ngIf="logsData?.uploadedDocs.length > 0">
+                             <div class="row mt-2" *ngIf="logsData?.uploadedDocs?.length > 0">
                                 <div class="col-lg-12">
                                    <div class="vehicle-common-box p-3">
                                       <div class="row">

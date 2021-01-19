@@ -94,7 +94,9 @@ export class AddAssetsComponent implements OnInit {
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
-  pdfSrc:any = '';
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
+  years = [];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -106,7 +108,7 @@ export class AddAssetsComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
-   
+    this.getYears();
     this.fetchManufactuer();
     this.fetchVendors();
     this.fetchCountries(); // fetch countries
@@ -126,6 +128,16 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
+  getYears() {
+    var max = new Date().getFullYear(),
+    min = max - 30,
+    max = max;
+    
+    for(var i=max; i>=min; i--){
+     this.years.push(i);
+    }
+  }
+  
   /*
    * Get all assets types from trailers.json file
    */

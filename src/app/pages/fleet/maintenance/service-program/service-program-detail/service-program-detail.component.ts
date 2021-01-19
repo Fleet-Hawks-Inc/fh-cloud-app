@@ -56,7 +56,7 @@ export class ServiceProgramDetailComponent implements OnInit {
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
-        console.log("tasks", this.tasks);
+        console.log("tasks", this.programs);
         this.spinner.hide(); // loader hide
       },
     });
@@ -162,8 +162,9 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.allVehicles = [];
-        this.updateVehicles(result.Items, this.programs[0].vehicles);
-        
+        if(this.programs[0].vehicles) {
+          this.updateVehicles(result.Items, this.programs[0].vehicles);
+        }
       });
   }
 

@@ -60,13 +60,14 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   deleteRoute(routeID) {
     this.spinner.show();
-    this.apiService.getData('routes/delete/' + routeID + '/1').subscribe({
+    this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.rerender();
         this.spinner.hide();
         this.hasSuccess = true;
+        this.toastr.success('Route deleted successfully.');
       }
     })
   }
@@ -139,8 +140,6 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.searchedRouteId = route.id;
     this.searchedRouteName = route.name;
     this.suggestedRoutes = [];
-
-    this.rerender('reset');
   }
 
   ngAfterViewInit(): void {
@@ -164,6 +163,13 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  searchFilter() {
+    if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
+      this.rerender('reset');
+    }
+    return false;
   }
 
   resetFilter() {

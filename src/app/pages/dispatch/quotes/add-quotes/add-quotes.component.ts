@@ -310,7 +310,7 @@ export class AddQuotesComponent implements OnInit {
       console.log('customers', this.customers);
     });
   }
-  onItemChange(value) {
+  async onItemChange(value) {
     if (this.mergedArray) {
       this.mergedArray.forEach(element => {
         this.getAllCords.push(element.position);
@@ -334,12 +334,7 @@ export class AddQuotesComponent implements OnInit {
         console.log("destination", this.destination);
       }
       
-      this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
-        console.log("google res", res);
-        this.quoteData['totalMiles'] =  res;
-      }, err => {
-        console.log('google res', err);
-      });
+      this.quoteData['totalMiles'] = await this.google.googleDistance([this.origin], [this.googleCords.join('|')]);
     } else if (value === 'pcmiles') {
       this.google.pcMiles.next(true);
       this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {

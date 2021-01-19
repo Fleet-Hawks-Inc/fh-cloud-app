@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment';
 @Component({
   selector: 'app-aci-details',
   templateUrl: './aci-details.component.html',
@@ -19,8 +20,8 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDateTime: string;
   estimatedArrivalTimeZone: string;
+  truck:any = {};
   drivers = [];
-  truck: any;
   shipmentType: string;
   tripNumber: string;
   CCC: string;
@@ -30,6 +31,8 @@ export class AciDetailsComponent implements OnInit {
   containers: any = [];
   passengers: any = [];
   currentStatus: string;
+  timeCreated: any;
+  timeModified: any;
   errors = {};
   form;
   response: any = '';
@@ -37,36 +40,17 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-   
+  
   constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchACEEntry();
-  }
-  modifyShipment() {
-
-    for (let i = 0; i < this.shipments.length; i++) {
-      let totalQty = 0;
-      for (let j = 0; j < this.shipments[i].commodities.length; j++) {
-        totalQty = totalQty + this.shipments[i].commodities[j].quantity;
-      }
-      this.shipmentArray.push({
-        shipmentNumber: this.shipments[i].CCC.concat(this.shipments[i].cargoControlNumber.toString()),
-        type: this.shipments[i].shipmentType,
-        totalCommodities: this.shipments[i].commodities.length,
-        totalQuantity: totalQty,
-        loadedOnType: this.shipments[i].loadedOn.type,
-        loadedOnNumber: this.shipments[i].loadedOn.number
-      });
-    }
-  }
-  
+  }  
   fetchACEEntry() {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
-      .subscribe((result: any) => {;
-        console.log('Fetched Data', result);
+      .subscribe((result: any) => {
         this.entryID = this.entryID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -85,7 +69,8 @@ export class AciDetailsComponent implements OnInit {
         this.containers = result.containers,
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;     
-        
+        this.timeCreated = moment(result.timeCreated).format("MMMM D YYYY, h:mm:ss a");
+        this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
       });
   }
  
@@ -98,8 +83,7 @@ export class AciDetailsComponent implements OnInit {
   sendCBSAFn(){
     this.apiService
     .getData('ACIeManifest/CBSAdetails/' + this.entryID)
-    .subscribe((result: any) => {     
-      console.log('result',result);
+    .subscribe((result: any) => { 
     });
  
   }

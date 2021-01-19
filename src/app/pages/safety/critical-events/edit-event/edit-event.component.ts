@@ -6,7 +6,7 @@ import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
-import * as moment from "moment";
+import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
