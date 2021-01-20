@@ -6,6 +6,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject,timer } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { QueryList, ViewChildren } from '@angular/core';
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
@@ -13,13 +14,13 @@ declare var $: any;
   styleUrls: ['./e-manifests.component.css']
 })
 export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
 
-  dtElementACI: DataTableDirective;
-  dtOptionsACI: DataTables.Settings = {};
+  @ViewChildren(DataTableDirective)
+  dtElement: QueryList<DataTableDirective>;
+
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject();
+  dtOptionsACI: any = {};
   dtTriggerACI: Subject<any> = new Subject()
 
  activeDiv = 'ace';
@@ -45,6 +46,8 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   totalACIRecords = 20;
   pageLengthACI = 10;
   lastEvaluatedKeyACI = '';
+  aceClass = 'active';
+  aciClass = '';
    constructor(  private apiService: ApiService,
     private route: Router,
     private spinner: NgxSpinnerService,
@@ -52,8 +55,8 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchCountries();
-    // this.ACEEntries();
-    // this.ACIEntries();
+    this.ACEEntries();
+    this.ACIEntries();
     this.fetchVehiclesList();
     this.fetchAssetsList();
     this.fetchDriversList();
@@ -121,14 +124,10 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   ACEEntries() {
     this.spinner.show(); // loader init
-    this.activeDiv = 'ace';
     this.apiService.getData('ACEeManifest').subscribe({
-      complete: () => {
-      //  this.initDataTable();
-      },
+      complete: () => {},
       error: () => { },
       next: (result: any) => {
-     //   this.ACEList = result.Items;
         this.totalRecords = result.Count;
       },
     });
@@ -167,15 +166,55 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     };
   }
   ngAfterViewInit(): void {
-    this.dtTrigger.next();
-    this.dtTriggerACI.next();
+    // if(this.activeDiv == 'ace') {
+      this.dtTrigger.next();
+    // } else {
+      this.dtTriggerACI.next();
+    // }
   }
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-    this.dtTriggerACI.unsubscribe();
+    if(this.activeDiv == 'ace') { 
+      this.dtTrigger.unsubscribe();
+    } else {
+      this.dtTriggerACI.unsubscribe();
+    }
   }
+
+  rerender(status=''): void {
+
+    this.dtElement.forEach((dtElement: DataTableDirective) => {
+      dtElement.dtInstance.then((dtInstance: any) => {
+        let tableId = dtInstance.table().node().id;
+        if(this.activeDiv == tableId) { 
+          if(tableId == 'ace') { 
+            // Destroy the table first
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptions.pageLength = this.totalRecords;
+            } else {
+              this.dtOptions.pageLength = 10;
+            }
+            // Call the dtTrigger to rerender again
+            this.dtTrigger.next();
+          } else {
+            // Destroy the table first
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsACI.pageLength = this.totalACIRecords;
+            } else {
+              this.dtOptionsACI.pageLength = 10;
+            }
+            // Call the dtTrigger to rerender again
+            this.dtTriggerACI.next();
+          }
+        }
+        
+      });
+    });
+  }
+
   searchACEFilter() {
     if (this.vehicleID !== '' || this.currentStatus !== '') {
       this.rerender('reset');
@@ -185,6 +224,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   resetACEFilter() {
+    console.log('in rst')
     if (this.vehicleID !== '' || this.currentStatus !== '') {
       this.vehicleID = '';
       this.vehicleIdentification = '';
@@ -204,23 +244,10 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       });
     }
 }
-rerender(status = ''): void {
-  this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-    // Destroy the table first
-    dtInstance.destroy();
-    if (status === 'reset') {
-      this.dtOptions.pageLength = this.totalRecords;
-    } else {
-      this.dtOptions.pageLength = 10;
-    }
-    // Call the dtTrigger to rerender again
-    this.dtTrigger.next();
-  });
-}
 
 // ACI operations
   ACIEntries() {
-    this.activeDiv = 'aci';
+    // this.activeDiv = 'aci';
     this.spinner.show(); // loader init
     this.apiService.getData('ACIeManifest').subscribe({
       complete: () => { },
@@ -231,7 +258,8 @@ rerender(status = ''): void {
       },
     });
   }
-  initDataTableACI() {
+  initDataTableACI() { 
+    console.log('in tbl')
     let current = this;
     this.dtOptionsACI = { // All list options
       pagingType: 'full_numbers',
@@ -264,7 +292,7 @@ rerender(status = ''): void {
   }
   searchACIFilter() {
     if (this.vehicleIDACI !== '' || this.currentStatusACI !== '') {
-      this.rerenderACI('reset');
+      this.rerender('reset');
     } else {
       return false;
     }
@@ -275,32 +303,35 @@ rerender(status = ''): void {
       this.vehicleIDACI = '';
       this.vehicleIdentificationACI = '';
       this.currentStatusACI = '';
-      this.rerenderACI();
+      this.rerender();
     } else {
       return false;
     }
   }
+  
   deleteACIEntry(entryID) {
       if (confirm('Are you sure you want to delete?') === true) {
         this.apiService
         .getData(`ACIeManifest/isDeleted/${entryID}/`+1)
         .subscribe((result: any) => {
-          this.rerenderACI();
+          this.rerender();
           this.toastr.success('ACI eManifest Entry Deleted Successfully!');
         });
       }
   }
-  rerenderACI(status = ''): void {
-    this.dtElementACI.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptionsACI.pageLength = this.totalACIRecords;
-      } else {
-        this.dtOptionsACI.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTriggerACI.next();
-    });
+ 
+  changeTab(tabType) {
+    this.activeDiv = tabType;
+    if(tabType == 'ace') {
+      this.aceClass = 'active';
+      this.aciClass = '';
+      $("#ace-emanifest").show();
+      $("#aci-emanifest").hide();
+    } else if(tabType == 'aci'){
+      this.aceClass = '';
+      this.aciClass = 'active';
+      $("#ace-emanifest").hide();
+      $("#aci-emanifest").show();
+    }
   }
 }
