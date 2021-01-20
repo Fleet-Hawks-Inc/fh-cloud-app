@@ -162,6 +162,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   assetsImages = []
   assetsDocs = [];
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  isSubmitted: boolean = false;
+  profileTitle: string = 'Add';
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -205,7 +207,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
      * Unsaved Changes
      */
     canLeave(): boolean {
-      if (this.driverForm.dirty) {
+      if (this.driverForm.dirty && !this.isSubmitted) {
         if (!this.modalService.hasOpenModals()) {
           this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
         }
@@ -418,7 +420,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0])
+    if(this.uploadedPhotos.length > 0) {
+      this.profileTitle = 'Change';
+    } 
+  }
 
+  removeProfile() {
+    this.driverProfileSrc = 'assets/img/driver/driver.png';
+    this.uploadedPhotos = [];
+    this.profileTitle = 'Add';
   }
 
 
@@ -483,7 +493,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
-
+   
     // this.hasError = false;
     // this.hasSuccess = false;
     // this.register();
@@ -550,6 +560,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         // this.response = res;
         // this.hasSuccess = true;
         this.toastr.success('Driver added successfully');
+        this.isSubmitted = true;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
         this.router.navigateByUrl('/fleet/drivers/list');
 
       },
@@ -856,7 +870,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-
+        this.isSubmitted = true;
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
