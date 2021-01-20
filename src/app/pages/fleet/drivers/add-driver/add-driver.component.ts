@@ -62,7 +62,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   };
   driverData = {
     driverType: 'employee',
-    gender: 'Male',
+    gender: 'M',
     address: [{
       addressType: '',
       countryID: '',
@@ -161,7 +161,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
-  pdfSrc:any = '';
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  isSubmitted: boolean = false;
+  profileTitle: string = 'Add';
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -205,7 +207,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
      * Unsaved Changes
      */
     canLeave(): boolean {
-      if (this.driverForm.dirty) {
+      if (this.driverForm.dirty && !this.isSubmitted) {
         if (!this.modalService.hasOpenModals()) {
           this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
         }
@@ -418,7 +420,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0])
+    if(this.uploadedPhotos.length > 0) {
+      this.profileTitle = 'Change';
+    } 
+  }
 
+  removeProfile() {
+    this.driverProfileSrc = 'assets/img/driver/driver.png';
+    this.uploadedPhotos = [];
+    this.profileTitle = 'Add';
   }
 
 
@@ -483,10 +493,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
-
-    this.hasError = false;
-    this.hasSuccess = false;
+   
+    // this.hasError = false;
+    // this.hasSuccess = false;
     // this.register();
+    
     this.hideErrors();
     if (this.driverData.licenceDetails.DOB !== '') {
       //date in Y-m-d format 
@@ -498,10 +509,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
                            ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-        delete element['userLocation'];
+        if(result.items.length > 0){
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+          // delete element['userLocation'];
+        }
+        
       }
     }
     // create form data instance
@@ -543,9 +557,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           });
       },
       next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
+        // this.response = res;
+        // this.hasSuccess = true;
         this.toastr.success('Driver added successfully');
+        this.isSubmitted = true;
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
         this.router.navigateByUrl('/fleet/drivers/list');
 
       },
@@ -684,8 +702,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData['citizenship'] = result.citizenship;
         this.driverData['assignedVehicle'] = result.assignedVehicle;
         this.driverData['groupID'] = result.groupID;
-        this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
-
+        if(result.driverImage != '' && result.driverImage != undefined) {
+          this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
+        }
+        
         this.driverData['gender'] = result.gender;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
@@ -850,7 +870,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-
+        this.isSubmitted = true;
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 

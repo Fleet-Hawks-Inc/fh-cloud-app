@@ -56,11 +56,11 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" data-target="#addDocumentModal" href="javascript:;"
+                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
                                 class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
-                            <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
-                                    class="fas fa-download"></i> Download</button>
+                            <!-- <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
+                                    class="fas fa-download"></i> Download</button> -->
                             <!-- <a href="#emailForm" class="modal-with-form mb-1 btn-sm mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a> -->
                         </div>
                     </div>
@@ -70,97 +70,15 @@
             <div class="row text-dark">
                 <div class="col">
                     <section class="card">
-                        <!-- <header class="card-header">
-                        <div class="row">
-                           <div class="col-lg-6">
-                              <h2 class="card-title" style="margin: 5px;">Documents - Load Documents</h2>
-                           </div>
-                           <div class="col-lg-4 offset-lg-2">
-                              <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-download"></i> Download</button>
-                              <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a>
-                           </div>
-                        </div>                  
-
-                                                  
-                     </header> -->
                         <div class="card-body">
-                            <!-- <div class="document-top-box">
-                             <form class="form-horizontal form-bordered" method="get">
-                                 <div class="form-group row">
-                                     <div class="col-lg-2">
-                                         <label class="control-label font-weight-bold text-lg-right" for="inputDefault">Duration</label>
-                                         <select data-plugin-selectTwo class="form-control populate">
-                                            <optgroup label="">
-                                               <option value="1">Last 1 Week</option>
-                                               <option value="2">Last 1 Month</option>
-                                               <option value="2">Year to Date</option>
-                                               <option value="2">Previous Year to Date</option>
-                                               <option value="2">Date Range</option>
-                                            </optgroup>
-                                         </select>
-                                      </div>
-                                      <div class="col-lg-2">
-                                         <label class="control-label font-weight-bold text-lg-right" for="inputDefault">Begin Date</label>
-                                         <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Enter Begin Date">
-                                      </div>
-                                      <div class="col-lg-2">
-                                         <label class="control-label font-weight-bold text-lg-right" for="inputDefault">End Date</label>
-                                         <input type="text" data-plugin-datepicker="" class="form-control" placeholder="Enter End Date">
-                                      </div>             
-                                      <div class="col-lg-2">
-                                       <label class="control-label font-weight-bold text-lg-right" for="inputDefault">Field</label>
-                                       <select data-plugin-selectTwo class="form-control populate">
-                                          <optgroup label="">
-                                             <option value="1">Document Name</option>
-                                             <option value="2">Load Number</option>
-                                             <option value="2">Dispatch Number</option>
-                                          </optgroup>
-                                       </select>
-                                       </div>  
-                                    <div class="col-lg-2">
-                                       <label class="control-label font-weight-bold text-lg-right" for="inputDefault">Text</label>
-                                       <input type="text" class="form-control" >
-                                    </div>                       
-                                     <div class="col-lg-2 mar-top-30">
-                                     
-                                             <button type="button" class="btn btn-default mr-2">Reset</button>
-                                             <button class="btn btn-dark" type="submit">Search</button>
-                                         
-                                     </div>
-                                 </div>
-                             </form>
-                         </div> -->
-                            <!-- <div class="document-table-box">
-                         <form class="form-horizontal form-bordered" method="get">
-                             <div class="row">
-    
-                                 <div class="col-lg-7  offset-lg-5">
-                                    
-                                    <ul class="pagination pull-right justify-content-end">
-                                       <li class="paginate_button page-item previous" id="datatable-editable_previous">
-                                          <a href="#" data-dt-idx="1" tabindex="0" class="page-link"><i class="fas fa-chevron-left"></i>   </a>
-                                       </li>
-                                       <li class="paginate_button page-item next" id="datatable-editable_next">
-                                          <a href="#" data-dt-idx="7" tabindex="0" class="page-link"><i class="fas fa-chevron-right"></i></a>
-                                       </li>
-                                    </ul>
-                                    <p class="pull-right text-4 justify-content-end mr-3 pt-1">1-9 of 100</p>
-                                 </div>
-      
-                                 
-                              </div>
-                            </form>
-                       </div> -->
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                                 class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
-
                                     <tr>
                                         <th width="10%">Document#</th>
                                         <th width="10%">Trip ID</th>
                                         <th width="10%">Type</th>
                                         <th width="10%">Document Name</th>
-                                        <th width="15%">File Name</th>
                                         <th width="10%">Uploaded By</th>
                                         <th width="10%">Uploaded On</th>
                                         <th width="20%">Description</th>
@@ -170,13 +88,14 @@
                                 <tbody>
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
-                                        <td>{{document.tripID}}</td>
+                                        <td>{{tripsObjects[document.tripID]}}</td>
                                         <td>{{document.docType}}</td>
                                         <td>{{document.documentName}}</td>
-                                        <td>{{document.uploadedDocs[0]}}</td>
-                                        <td>--</td>
-                                        <td>{{document.timeCreated | date: 'dd-MM-yyyy'}}</td>
-                                        <td>{{document.description}}</td>
+                                        <td>{{document.uploadedBy}}</td>
+                                        <td>Created: {{document.timeCreated | date: 'dd-MM-yyyy'}} <br>
+                                            Last modified: {{document.timeModified | date: 'dd-MM-yyyy'}}
+                                        </td>
+                                        <td>{{document.description ? document.description : '-'}}</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
@@ -190,16 +109,16 @@
                                                         (click)="editDocument(document.docID)">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
                                                         (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
-                                                    <a class="dropdown-item" href="javascript:;">Download File</a>
+                                                    <a target="_blank" class="dropdown-item" href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download File</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr *ngIf="documents.length === 0">
-                                        <td colspan="9" class="no-data-available">No records found</td>
-                                      </tr>
+                                    
                                 </tbody>
-                                
+                                <!-- <tr *ngIf="documents.length === 0">
+                                        <td colspan="9" class="no-data-available">No records found</td>
+                                      </tr> -->
                             </table>
 
                             <!-- email modal Form -->
@@ -254,83 +173,13 @@
 
 </section>
 
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 600px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addSequenceModalLabel">Sequence</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-row">
-
-                        <div class="form-group col-lg-6 col-md-12">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <!-- <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop">
-                                        <input value="manual" name="mode" type="radio"> Manual </label>
-                                        <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard">
-                                        <input value="auto" name="mode" type="radio"> Automatic</label> -->
-
-                            </div>
-                            <label>
-                                <input [(ngModel)]="documentMode" type="radio" name="mode" value="Manual">Manual
-                            </label>
-                            <label>
-                                <input [(ngModel)]="documentMode" type="radio" name="mode" value="Automatic">Automatic
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div *ngIf="documentMode == 'Manual'" class="form-group col-lg-12 col-md-12" id="manualDiv">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Document number must be entered manually for each new
-                                        Document.</small></div>
-                            </div>
-
-                        </div>
-                        <div *ngIf="documentMode == 'Automatic'" class="form-group col-lg-12 col-md-12"
-                            id="automaticDiv">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-5"><input type="text" name="prefix" [(ngModel)]="documentPrefix"
-                                        value="" class="form-control" placeholder="Prefix"></div>
-                                <div class="col-lg-1">-</div>
-                                <div class="col-lg-5"> <input type="text" name="sequence" [(ngModel)]="documentSequence"
-                                        value="" class="form-control" placeholder="Sequence"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric
-                                        characters.</small></div>
-                                <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for
-                                        each new "Document".</small></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button (click)="saveDocumentMode()" data-dismiss="modal" data-toggle="modal"
-                    data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}}</h5>
+                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
                 </button>
@@ -352,10 +201,10 @@
                         <div class="form-group col-lg-12">
                             <label for="">Document Type</label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
-                                <ng-option>BOL</ng-option>
-                                <ng-option>POD</ng-option>
-                                <ng-option>Fuel Receipts</ng-option>
-                                <ng-option>Load Confirmation</ng-option>
+                                <ng-option value="BOL">BOL</ng-option>
+                                <ng-option value="POD">POD</ng-option>
+                                <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
+                                <ng-option value="Load Confirmation">Load Confirmation</ng-option>
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
@@ -365,11 +214,15 @@
                         </div>
                         <div class="form-group col-lg-12 mb-3">
                             <label for="">Choose File</label>
-                            <input (change)="selectDocuments($event)" type="file" class="form-control">
+                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
                                 tiff).
                                 The maximum file size can be 15MB or less.</span>
+                            <div *ngIf="newDoc" class="border my-2 p-2">
+                                <h4 class="mt-0">Uploaded Document</h4>
+                                <a href="{{newDoc}}" target="_blank">Document</a>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -381,7 +234,7 @@
             </div>
             <div class="modal-footer">
                 <button *ngIf="ifEdit" (click)="updateDocument()" class="btn btn-success modal-confirm">Update</button>
-                <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm">Submit</button>
+                <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm">Save</button>
                 <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
             </div>
         </div>

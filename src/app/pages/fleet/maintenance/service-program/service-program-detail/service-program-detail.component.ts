@@ -27,7 +27,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   form;
   vehiclesObject: any = {};
   tasksObjects: any = {};
-  
+  taskEdit: boolean = false;
   constructor(
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
@@ -110,7 +110,9 @@ export class ServiceProgramDetailComponent implements OnInit {
         },
         next: (res) => {
           this.toastr.success('Service Updated Successfully');
+          this.programData = {}
           $('#editServiceScheduleModal').modal('hide');
+          this.taskEdit = true;
         },
       });
   
@@ -149,6 +151,7 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.programData['repeatByOdometer'] = task.repeatByOdometer;
 
     this.programs[0].serviceScheduleDetails[i] = this.programData;
+    this.taskEdit = true;
   }
 
   fetchAllVehiclesIDs() {
@@ -181,6 +184,7 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.programs[0].serviceScheduleDetails.push(this.programData);
     this.updateServiceProgram();
     $('#editServiceScheduleModal').modal('hide');
+    this.taskEdit = false;
   }
 
   addVehicle() {

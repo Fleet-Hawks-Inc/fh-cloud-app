@@ -67,6 +67,7 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.spinner.hide();
         this.hasSuccess = true;
+        this.toastr.success('Route deleted successfully.');
       }
     })
   }

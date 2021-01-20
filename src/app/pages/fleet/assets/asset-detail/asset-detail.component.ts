@@ -112,6 +112,10 @@ export class AssetDetailComponent implements OnInit {
       borderWidth: 1,
     }
   ];
+
+  manufacturersObjects: any = {};
+  modelsObjects: any = {};
+
   constructor(public hereMap: HereMapService, private toastr: ToastrService,
               private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
               private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
@@ -122,6 +126,20 @@ export class AssetDetailComponent implements OnInit {
     this.fetchAsset();
     this.fetchDeviceInfo();
     this.fetchAllStatesIDs();
+    this.fetchManufacturesByIDs();
+    this.fetchModalsByIDs();
+  }
+
+  fetchManufacturesByIDs() {
+    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+      this.manufacturersObjects = result;
+    });
+  }
+
+  fetchModalsByIDs() {
+    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+      this.modelsObjects = result;
+    });
   }
 
   /**
@@ -137,6 +155,7 @@ export class AssetDetailComponent implements OnInit {
           if (!this.assetData.hasOwnProperty('devices')) {
             this.assetData['devices'] = [];
           }
+          
           this.fetchDevicesByID();
           this.assetIdentification = this.assetData.assetIdentification;
           this.VIN = this.assetData.VIN;
@@ -198,7 +217,7 @@ export class AssetDetailComponent implements OnInit {
               name: x,
             }));
           }
-
+          
           if(this.assetData.uploadedDocs != undefined && this.assetData.uploadedDocs.length > 0){
             this.assetsDocs = this.assetData.uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, name: x}));
           }
@@ -213,6 +232,7 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.deviceData = result['Items'];
+          console.log("this.deviceData", this.deviceData);
         }
       }, (err) => {});
   }
@@ -268,6 +288,7 @@ export class AssetDetailComponent implements OnInit {
   addDevice() {
     delete this.assetData.carrierID;
     delete this.assetData.timeModified;
+    console.log('this.assetData', this.assetData);
     this.apiService.postData('assets/' + this.assetID, this.assetData).subscribe({
       complete: () => { },
       error: (err: any) => {

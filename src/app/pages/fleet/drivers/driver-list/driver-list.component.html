@@ -500,11 +500,11 @@
                                     <td *ngIf="hideShow.dutyStatus">Live Status</td>
 
                                     <td *ngIf="hideShow.location">Live Address</td>
-                                    <td *ngIf="hideShow.currCycle">{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
-                                    <td *ngIf="hideShow.currVehicle">{{vehiclesObject[driver.assignedVehicle]}}</td>
+                                    <td *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
+                                    <td *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td *ngIf="hideShow.assets">Live Status</td>
                                     <td *ngIf="hideShow.contact"><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span
-                                          class="font-weight-bold">E-mail: </span>{{driver.workEmail}}</td>
+                                          class="font-weight-bold">E-mail: </span>{{driver.workEmail ? driver.workEmail : '-'}}</td>
                                     <td *ngIf="hideShow.dl"><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}}
                                        <br><span class="font-weight-bold">DL State:
                                        </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>

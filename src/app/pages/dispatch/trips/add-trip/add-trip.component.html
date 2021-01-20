@@ -43,7 +43,7 @@
             <header class="page-header pr-5">
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4">
-                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Create Trip</h4>
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
 
                     <div class="col-md-8  col-lg-8 text-right pr-1">
@@ -65,7 +65,7 @@
                                             </div>
                                             <div class="col-lg-6">
                                                 <input type="text" class="form-control" name="tripNo"
-                                                    [(ngModel)]="tripData.tripNo">
+                                                    [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
                                             </div>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                                 </label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <input type="text" class="form-control" (click)="showMOdal()">
+                                                <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
                                             </div>
                                         </div>
                                     </div>
@@ -104,12 +104,9 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select Permanent Route</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <select class="form-control populate" name="routeID"
-                                                    [(ngModel)]="tripData.routeID">
-                                                    <option>Select Route</option>
-                                                    <option *ngFor="let route of routes" value="{{ route.routeID }}">
-                                                        {{ route.routeName }}</option>
-                                                </select>
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID" placeholder="Select Route">
+                                                    <ng-option *ngFor = "let route of routes" value="{{ route.routeID }}">{{ route.routeName }}</ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +129,7 @@
                                             </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <input type="text" class="form-control" name="bol"
-                                                    [(ngModel)]="tripData.bol">
+                                                    [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
                                             </div>
                                         </div>
                                     </div>
@@ -147,16 +144,35 @@
                                                     <div class="col-lg-6">
                                                         <input type="number" class="form-control"
                                                             name="reeferTemperature"
-                                                            [(ngModel)]="tripData.reeferTemperature">
+                                                            [(ngModel)]="tripData.reeferTemperature"
+                                                            placeholder="Enter reefer temperature">
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
-                                                        <select class="form-control" name="reeferTemperatureUnit"
-                                                            [(ngModel)]="tripData.reeferTemperatureUnit">
-                                                            <option value="F">F</option>
-                                                            <option value="C">C</option>
-                                                        </select>
+                                                        <ng-select [(ngModel)]="tripData.reeferTemperatureUnit" name="reeferTemperatureUnit" placeholder="Select Temperature Unit">
+                                                            <ng-option value="C">C</ng-option>
+                                                            <ng-option value="F">F</ng-option>
+                                                        </ng-select>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row my-2">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-3 labelalign">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date</label>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <input 
+                                                    [(ngModel)]="tripData.dateCreated" name="dateCreated" 
+                                                    type="text" 
+                                                    placeholder="Select Trip Date"
+                                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                                    class="form-control" autocomplete="off"> 
                                             </div>
                                         </div>
                                     </div>
@@ -170,8 +186,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
+                                                    <!-- <th>Date</th> -->
+                                                    <!-- <th>Time</th> -->
                                                     <th>Pickup Time</th>
                                                     <th>Drop Time</th>
                                                     <th>Actual Pickup Time</th>
@@ -193,9 +209,8 @@
                                                 <tr class="ui-sortable-handle" cdkDrag
                                                     *ngFor="let trip of trips; let i= index">
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
-                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
-
-                                                    <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td>
+                                                    <!-- <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
+                                                    <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
                                                     <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime }}</td>
                                                     <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}</td>
                                                     <td id="labelCell15{{i}}" class="labelRow{{i}}">{{ trip.actualPickupTime }}</td>
@@ -212,11 +227,6 @@
                                                             *ngIf="!!trip.mileType">{{ trip.mileType }}</span>
                                                     </td>
                                                     <td id="labelCell6{{i}}" class="labelRow{{i}}">{{ trip.miles }}
-                                                        <!-- <span class="badge badge-dark p-1" title=""
-                                                            data-original-title="Empty Miles" *ngIf="!!trip.mileType">
-                                                            {{ (trip.mileType == 'empty') ? 'EM' : 'LM' }}
-
-                                                        </span> -->
                                                     </td>
                                                     <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ trip.vehicleName }}</td>
                                                     <td id="labelCell8{{i}}" class="labelRow{{i}}">{{ trip.trailerName }}</td>
@@ -242,47 +252,53 @@
                                                                 {{ type }}</option>
                                                         </select>
                                                     </td>
-                                                    <td class="rowStatus textRows editRow{{i}}">
+                                                    <!-- <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="date" class="form-control" id="editCell2{{i}}"
                                                             value="{{ trip.date }}">
-                                                    </td>
+                                                    </td>-->
 
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell12{{i}}" [ngxTimepicker]="editCell12_i" 
-                                                        [format]="24" readonly value="{{ trip.time }}">
-                                                        <ngx-material-timepicker #editCell12_i></ngx-material-timepicker>
-                                                    </td>
-
-                                                    <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell13{{i}}" [ngxTimepicker]="editCell13_i" 
-                                                        [format]="24" readonly value="{{ trip.pickupTime }}">
-                                                        <ngx-material-timepicker #editCell13_i></ngx-material-timepicker>
+                                                        <input type="time" class="form-control" id="editCell13{{i}}" name="editCell13" value="{{ trip.pickupTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell14{{i}}" [ngxTimepicker]="editCell14_i" 
-                                                        [format]="24" readonly value="{{ trip.dropTime }}">
-                                                        <ngx-material-timepicker #editCell14_i></ngx-material-timepicker>
+                                                        <input type="time" class="form-control" id="editCell14{{i}}" name="editCell14" value="{{ trip.dropTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell15{{i}}" [ngxTimepicker]="editCell15_i" 
-                                                        [format]="24" readonly value="{{ trip.actualPickupTime }}">
-                                                        <ngx-material-timepicker #editCell15_i></ngx-material-timepicker>
+                                                        <input type="time" class="form-control" id="editCell15{{i}}" name="editCell15" value="{{ trip.actualPickupTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell16{{i}}" [ngxTimepicker]="editCell16_i" 
-                                                        [format]="24" readonly value="{{ trip.actualDropTime }}">
-                                                        <ngx-material-timepicker #editCell16_i></ngx-material-timepicker>
+                                                        <input type="time" class="form-control" id="editCell16{{i}}" name="editCell16" value="{{ trip.actualDropTime }}">
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="text" class="form-control" id="editCell3{{i}}"
-                                                            value="{{ trip.name }}">
+                                                            value="{{ trip.name }}" *ngIf="trip.fromOrder != 'yes'">
+
+                                                        <span *ngIf="trip.fromOrder == 'yes'">
+                                                            {{ trip.name }}
+                                                        </span>
                                                     </td>
+
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" class="form-control" id="editCell4{{i}}"
-                                                            (click)="showlocationModal('edit',i)"
-                                                            value="{{ trip.locationName }}">
+                                                        <input type="text" id="editCell4{{i}}" name="editCell4{{i}}" [(ngModel)]="trip.locationName" class="form-control newRow"
+                                                            autocomplete="off" (keyup)="searchTerm.next($event);"
+                                                             placeholder="Start typing to get location suggestions"
+                                                            *ngIf="trip.fromOrder != 'yes'">
+                                                        
+                                                        <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                            *ngIf="searchResults">
+                                                            <li *ngFor="let item of searchResults;">
+                                                                <a href="javascript:;"
+                                                                    (click)="assignLocation('editLoc', item.address.label, i)"
+                                                                    title="{{item.address.label}}">{{item.address.label}}</a>
+                                                            </li>
+                                                        </ul>
+                                                        
+                                                        <span *ngIf="trip.fromOrder == 'yes'">
+                                                            {{ trip.locationName }}
+                                                        </span>
                                                     </td>
+
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <select class="form-control" id="editCell5{{i}}">
                                                             <option value="empty">EMPTY</option>
@@ -320,7 +336,6 @@
                                                             <option *ngFor="let carrier of carriers"
                                                                 value="{{ carrier.carrierID }}">
                                                                 {{ carrier.carrierName }}
-                                                                <!-- {{ carrier.businessDetail.carrierName }} -->
                                                             </option>
                                                         </select>
                                                     </td>
@@ -331,7 +346,6 @@
                                                 </tr>
                                                 <tr class="ui-sortable-handle">
                                                     <td>
-                                                        <!-- <input type="text" id="cell1" class="form-control newRow"> -->
                                                         <select class="form-control newRow"
                                                             (change)="getNewRowValues($event,'tripType')" id="cell1">
                                                             <option value="">Select Type</option>
@@ -340,28 +354,16 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="date" id="cell2" class="form-control newRow"
-                                                            (change)="getNewRowValues($event,'date')">
-                                                    </td> 
-                                                    <td>
-                                                        <input type="text" class="form-control newRow" id="cell12" [ngxTimepicker]="cell12" [format]="24"  readonly>
-                                                        <ngx-material-timepicker #cell12></ngx-material-timepicker>
+                                                        <input type="time" class="form-control newRow" id="cell13" name="cell13">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control newRow" id="cell13" [ngxTimepicker]="cell13" [format]="24"  readonly>
-                                                        <ngx-material-timepicker #cell13></ngx-material-timepicker>
+                                                        <input type="time" class="form-control newRow" id="cell14" name="cell14">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control newRow" id="cell14" [ngxTimepicker]="cell14" [format]="24"  readonly>
-                                                        <ngx-material-timepicker #cell14></ngx-material-timepicker>
+                                                        <input type="time" class="form-control newRow" id="cell15" name="cell15">
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control newRow" id="cell15" [ngxTimepicker]="cell15" [format]="24"  readonly>
-                                                        <ngx-material-timepicker #cell15></ngx-material-timepicker>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control newRow" id="cell16" [ngxTimepicker]="cell16" [format]="24"  readonly>
-                                                        <ngx-material-timepicker #cell16></ngx-material-timepicker>
+                                                        <input type="time" class="form-control newRow" id="cell16" name="cell16">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell3" class="form-control newRow"
@@ -369,10 +371,18 @@
                                                             autocomplete="off">
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="cell4" class="form-control newRow"
-                                                            data-toggle="modal" (click)="showlocationModal('add','')"
-                                                            autocomplete="off" readonly
-                                                            value="{{ textFieldValues.locationName }}">
+                                                        <input type="text" id="cell4" name="cell4" class="form-control newRow"
+                                                            autocomplete="off" (keyup)="searchTerm.next($event);"
+                                                            [(ngModel)]="textFieldValues.locationName" placeholder="Start typing to get location suggestions">
+                                                        
+                                                        <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                            *ngIf="searchResults">
+                                                            <li *ngFor="let item of searchResults;">
+                                                                <a href="javascript:;"
+                                                                    (click)="assignLocation('loc', item.address.label,'')"
+                                                                    title="{{item.address.label}}">{{item.address.label}}</a>
+                                                            </li>
+                                                        </ul>
                                                     </td>
                                                     <td>
                                                         <select class="form-control newRow"
@@ -427,11 +437,6 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <!-- <div class="row">
-                                            <div class="col-lg-12 text-right">
-                                                <button type="button" class="btn btn-sm btn-success">Plan Trip </button>
-                                            </div>
-                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -485,7 +490,9 @@
                                                     <li class="" *ngFor="let trip of trips">
                                                         <a class="" href=""
                                                             data-toggle="tab"><span></span>{{ trip.type}}
-                                                            <br>{{ trip.date }}</a>
+                                                            <br>{{ trip.locationName }}
+                                                            <br>{{ trip.pickupTime }}
+                                                        </a>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -557,7 +564,8 @@
                                 <div class="row text-right">
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;" routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" class="btn btn-success mt-1">Create Trip</a>
+                                        <a href="javascript:;" (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1">Create Trip</a>
+                                        <a href="javascript:;" (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1">Update Trip</a>
                                     </div>
                                 </div>
                             </form>
@@ -601,8 +609,7 @@
                                         <div class="tab-pane show active" id="loadFTL" role="tabpanel"
                                             aria-labelledby="loadFTL-tab">
                                             <div class="table-responsive">
-                                                <table datatable [dtOptions]="ftlOptions"
-                                                    class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                                <table class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                     <thead>
                                                         <tr class="" role="row">
                                                             <th></th>
@@ -613,24 +620,25 @@
                                                             <th class="text-2">Total Amount</th>
                                                             <th class="text-2">Status</th>
                                                         </tr>
-                                                    </thead>
+                                                    </thead> 
                                                     <tbody class="ui-sortable">
                                                         <tr class="ui-sortable-handle odd" role="row"
                                                             *ngFor="let order of ftlOrders">
                                                             <td class="sorting_1">
-                                                                <input type="radio" value="{{ order.orderNumber }}"
-                                                                    name="ftlOrderIds" (change)="selectOrderIDS('ftl')">
+                                                                <input type="radio" name="ftlOrderIds" value="{{ order.orderNumber }}" [checked]="order.selected" id="{{ order.orderID }}" (change)="selectOrderIDS('ftl', order)">
                                                             </td>
                                                             <td class="loadid"><span class="FTLload">FTL</span><br>
                                                                 <a href="javascript:;">{{ order.orderNumber }}</a>
                                                             </td>
-                                                            <td>{{ order.customer }}</td>
-                                                            <td>{{ order.pickupLocation }}<br>
-                                                                06/02/2020 05:25 AM</td>
-                                                            <td>{{ order.deliveryLocation }}<br>
-                                                                06/10/2020 05:20 PM</td>
-                                                            <td>CAD {{ order.orderAmount }}</td>
-                                                            <td>{{ order.status }}</td>
+                                                            <td>{{ customersObjects[order.customerID] }}</td>
+                                                            <td>
+                                                                <div [innerHTML]="order.pickupLocations"></div>
+                                                            </td>
+                                                            <td>
+                                                                <div [innerHTML]="order.deliveryLocations"></div>
+                                                            </td>
+                                                            <td>CAD {{ order.totalAmount }}</td>
+                                                            <td>{{ order.orderStatus }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -639,8 +647,7 @@
                                         <div class="tab-pane fade" id="loadLTL" role="tabpanel"
                                             aria-labelledby="loadLTL-tab">
                                             <!-- <table class="table table-bordered table-striped mb-0" id="datatable-default"> -->
-                                            <table datatable [dtOptions]="ltlOptions"
-                                                class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                            <table class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                 <thead>
                                                     <tr class="">
                                                         <th><input type="checkbox" name="checkUncheckltl"
@@ -658,18 +665,20 @@
                                                         <td>
                                                             <!-- <input type="checkbox"> -->
                                                             <input type="checkbox" value="{{ order.orderNumber }}"
-                                                                name="ltlOrderIds" (change)="selectOrderIDS('ltl')">
+                                                                name="ltlOrderIds" id="{{ order.orderID }}" [checked]="order.selected" (change)="selectOrderIDS('ltl')">
                                                         </td>
                                                         <td class="loadid"><span class="LTLload">LTL</span><br>
                                                             <a href="javascript:;">{{ order.orderNumber }}</a>
                                                         </td>
-                                                        <td>{{ order.customer }}</td>
-                                                        <td>{{ order.pickupLocation }}<br>
-                                                            06/02/2020 05:25 AM</td>
-                                                        <td>{{ order.deliveryLocation }}<br>
-                                                            06/10/2020 05:20 PM</td>
-                                                        <td>CAD {{ order.orderAmount }}</td>
-                                                        <td>{{ order.status }}</td>
+                                                        <td>{{ customersObjects[order.customerID] }}</td>
+                                                        <td>
+                                                            <div [innerHTML]="order.pickupLocations"></div>
+                                                        </td>
+                                                        <td>
+                                                            <div [innerHTML]="order.deliveryLocations"></div>
+                                                        </td>
+                                                        <td>CAD {{ order.totalAmount }}</td>
+                                                        <td>{{ order.orderStatus }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>

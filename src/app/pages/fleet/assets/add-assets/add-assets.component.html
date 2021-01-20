@@ -120,12 +120,12 @@
 												name="assetDetails.year"
 												class="form-control populate" placeholder="Select year">
 
-												<ng-option value="2020">2020</ng-option>
-												<ng-option value="2019">2019</ng-option>
+												<ng-option *ngFor="let year of years;" value="{{year}}">{{year}}</ng-option>
+												<!-- <ng-option value="2019">2019</ng-option>
 												<ng-option value="2018">2018</ng-option>
 												<ng-option value="2017">2017</ng-option>
 												<ng-option value="2016">2016</ng-option>
-												<ng-option value="2015">2015</ng-option>
+												<ng-option value="2015">2015</ng-option> -->
 
 											</ng-select>
 										</div>
