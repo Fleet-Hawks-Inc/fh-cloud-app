@@ -1,0 +1,448 @@
+<style>
+  .extra {
+     display: none;
+  }
+</style>
+
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+
+        <div class="row px-2" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="itemName" [(ngModel)]="itemName"
+                    class="form-control" (input)="getItemSuggestions($event.target.value)"
+                    placeholder="Search items by name" />
+            </div>
+            <div *ngFor="let suggestedItem of suggestedItems" class="suggestionClass"
+                (click)="setItem(suggestedItem.itemID, suggestedItem.itemName)">
+                {{ suggestedItem.itemName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="companyName" [(ngModel)]="companyName"
+                    class="form-control" (input)="getVendorSuggestions($event.target.value)"
+                    placeholder="Search items by vendor" />
+            </div>
+            <div *ngFor="let suggestedVendor of suggestedVendors" class="suggestionClass"
+                (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName)">
+                {{ suggestedVendor.companyName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-sm mb-3">
+                <input autocomplete="off" type="text" name="groupName" [(ngModel)]="groupName"
+                    class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
+                    placeholder="Search items by category" />
+            </div>
+            <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
+                (click)="setItemGroup(suggestedItemGroup.itemGroupID, suggestedItemGroup.groupName)">
+                {{ suggestedItemGroup.groupName }}
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+              <button type="submit" (click)="searchFilter()"
+                  class="btn btn-sm btn-success mr-2">Search</button>
+              <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+          </div>
+          
+        <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
+    
+            <div class="btn-group flex-wrap" style="min-width:190px;">
+              <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+              <div class="dropdown-menu dutystatwd" role="menu">
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.part" name="part" (change)="hideShowColumn()"> Part# </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.name" name="name" (change)="hideShowColumn()"> Item Name </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.category" name="category" (change)="hideShowColumn()">
+                    Category </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.vendor" name="vendor" (change)="hideShowColumn()">
+                    Vendor </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.quantity" name="quantity" (change)="hideShowColumn()"> Quantity </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.onHand" name="onHand" (change)="hideShowColumn()"> On Hand </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.unitCost" name="unitCost" (change)="hideShowColumn()"> Unit Cost </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.warehouse" name="warehouse" (change)="hideShowColumn()">
+                    Warehouse Details </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.warranty" name="warranty" (change)="hideShowColumn()"> Warranty Days and Time
+                  </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.reorderPoint" name="reorderPoint" (change)="hideShowColumn()"> Reorder Point </label>
+                </a>
+                <a class="dropdown-item text-1" href="javascript:;">
+                  <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity" name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                </a>
+              </div>
+            </div>
+            <a [routerLink]="" (click)="openTransferModal()" class="modal-with-form btn btn-success btn-sm mr-2"><i class="fas fa-exchange-alt"></i> Transfer</a>
+             <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm" style="color: white"><i class="fas fa-plus"></i> Add Inventory</a>
+          </div>
+       </div>
+    
+    
+      </header>
+
+      <div class="routing-overview__wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <section class="card">
+              <div class="card-body">
+                <div class="pb-3">
+                  <ul class="nav nav-tabs top-tabs mb-1" id="top-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="all-tab" data-toggle="tab" href="#einv" role="tab"
+                        aria-controls="allassets" aria-selected="true">Existing Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="reefer-tab" data-toggle="tab" href="#rinv" role="tab"
+                        aria-controls="reefer" aria-selected="false">Required Inventory</a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="tab-content border-0 p-0" id="myTabContent">
+                  <div class="tab-pane show active" id="einv" role="tabpanel" aria-labelledby="all-tab">
+                    <div class="table-responsive">
+                      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                        <thead>
+                          <tr>
+                            <th class="col1">Part#</th>
+                            <th class="col2">Name</th>
+                            <th class="col3">Category</th>
+                            <th class="col4">Vendor</th>
+                            <th class="col5">Quantity</th>
+                            <th class="col6">On Hand</th>
+                            <th class="col7">Unit Cost</th>
+                            <th class="col8">Warehouse Details</th>
+                            <th class="col9 extra">Warranty Days and Time</th>
+                            <th class="col10 extra">Reorder Point</th>
+                            <th class="col11 extra">Reorder Quality</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+
+                        <tbody *ngIf="items.length > 0">
+                          <tr class="cursorpoint" *ngFor="let item of items; let i = index">
+                            <td *ngIf="hideShow.part"routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{ partNo[i]}}
+
+                            </td>
+                            <td *ngIf="hideShow.name" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.itemName}}
+                            </td>
+                            <td *ngIf="hideShow.category" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{itemGroups[item.categoryID]}}
+                            </td>
+                            <td *ngIf="hideShow.vendor" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{vendors[item.preferredVendorID]}}
+                            </td>
+                            <td *ngIf="hideShow.quantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.quantity}}
+                            </td>
+                            <td *ngIf="hideShow.onHand" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              234
+                            </td>
+                            <td *ngIf="hideShow.unitCost" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              $ {{item.cost}}
+                            </td>
+                            <td *ngIf="hideShow.warehouse" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{warehouses[item.warehouseID]}}
+                            </td>
+                            <!-- extra columns -->
+                            <td *ngIf="hideShow.warranty" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.days}} and {{item.time}}
+                            </td>
+                            <td *ngIf="hideShow.reorderPoint" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.reorderPoint}}
+                            </td>
+                            <td *ngIf="hideShow.reorderQuantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                              {{item.reorderQuality}}
+                            </td>
+
+                            <td>
+                              <div class="dropdown dropright">
+                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                    <a class="dropdown-item" routerLink="/fleet/inventory/edit/{{item.itemID}}">Edit</a>
+                                    <a href="javascript:;" class="dropdown-item" (click)="deleteItem(item.itemID)">Delete</a>
+                                </div>
+                              </div>
+                          </td>
+                          </tr>
+                        </tbody>
+                        <tbody *ngIf="items.length === 0">
+                          <tr>
+                            <td colspan="9" class="no-data-available">No records found</td>
+                          </tr>
+                        <tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
+                    <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table1">
+                      <thead>
+                        <tr>
+                          <th width="5%">Part#</th>
+                          <th width="20%">Name</th>
+                          <th width="10%">Category</th>
+                          <th width="20%">Vendor</th>
+                          <th width="5%">Quantity</th>
+                          <th width="10%">On Hand</th>
+                          <th width="10%">Unit Cost</th>
+                          <th width="15%">Warehouse Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="cursorpoint">
+                          <td>
+                            01
+                          </td>
+                          <td>
+                            10-30wt Oil
+                          </td>
+                          <td>
+                            Oil
+                          </td>
+                          <td>
+                            Warren CAT
+                          </td>
+                          <td>
+                            15
+                          </td>
+                          <td>
+                            234
+                          </td>
+                          <td>
+                            $ 2.34
+                          </td>
+                          <td>
+                            Warehouse Location 1
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            01
+                          </td>
+                          <td>
+                            10-30wt Oil
+                          </td>
+                          <td>
+                            Oil
+                          </td>
+                          <td>
+                            Warren CAT
+                          </td>
+                          <td>
+                            3
+                          </td>
+                          <td>
+                            234
+                          </td>
+                          <td>
+                            $ 2.34
+                          </td>
+                          <td>
+                            Warehouse Detail 1
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            01
+                          </td>
+                          <td>
+                            10-30wt Oil
+                          </td>
+                          <td>
+                            Oil
+                          </td>
+                          <td>
+                            Warren CAT
+                          </td>
+                          <td>
+                            4
+                          </td>
+                          <td>
+                            234
+                          </td>
+                          <td>
+                            $ 2.34
+                          </td>
+                          <td>
+                            Warehouse Location 2
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            01
+                          </td>
+                          <td>
+                            10-30wt Oil
+                          </td>
+                          <td>
+                            Oil
+                          </td>
+                          <td>
+                            Warren CAT
+                          </td>
+                          <td>
+                            11
+                          </td>
+                          <td>
+                            234
+                          </td>
+                          <td>
+                            $ 2.34
+                          </td>
+                          <td>
+                            Warehouse Location 3
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            01
+                          </td>
+                          <td>
+                            10-30wt Oil
+                          </td>
+                          <td>
+                            Oil
+                          </td>
+                          <td>
+                            Warren CAT
+                          </td>
+                          <td>
+                            6
+                          </td>
+                          <td>
+                            234
+                          </td>
+                          <td>
+                            $ 2.34
+                          </td>
+                          <td>
+                            Warehouse Location 4
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+
+<div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Transfer Inventory</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-lg-12">
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                  <input type="text" class="form-control" name="partNumber" [(ngModel)]="partNumber">
+                </div>
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Details</label>
+                  <input type="text" class="form-control" name="partDetails" [(ngModel)]="partDetails">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
+                  <input type="text" class="form-control" name="quantity" [(ngModel)]="quantity">
+                </div>
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Date/Time</label>
+                  <input type="date" data-plugin-datepicker="" class="form-control" name="date" [(ngModel)]="date">
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse</label>
+                  <select data-plugin-selectTwo class="form-control populate" name="warehouseID1"
+                    [(ngModel)]="warehouseID1">
+                    <optgroup label="Select Warehouse">
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
+
+                    </optgroup>
+                  </select>
+                </div>
+
+                <div class="col-lg-6">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse</label>
+                  <select data-plugin-selectTwo class="form-control populate" name="warehouseID2"
+                    [(ngModel)]="warehouseID2">
+                    <optgroup label="Select Warehouse">
+                      <option *ngFor="let warehouse of warehouses | keyvalue" value="{{warehouse.key}}">
+                        {{warehouse.value}}</option>
+
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-success" [routerLink]="" (click)="addGroup()">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

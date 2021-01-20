@@ -1,0 +1,82 @@
+[
+	{
+		"code": "AR",
+		"name": "Armored truck"
+	},
+	{
+		"code": "AU",
+		"name": "Automobile"
+	},
+	{
+		"code": "BT",
+		"name": "Box truck"
+	},
+	{
+		"code": "BU",
+		"name": "Bus"
+	},
+	{
+		"code": "BV",
+		"name": "Beverage truck"
+	},
+	{
+		"code": "BY",
+		"name": "Bicycle"
+	},
+	{
+		"code": "CO",
+		"name": "Construction vehicle (General)"
+	},
+	{
+		"code": "EV",
+		"name": "Emergency vehicle (General)"
+	},
+	{
+		"code": "FE",
+		"name": "Ferry"
+	},
+	{
+		"code": "FM",
+		"name": "Farm tractor"
+	},
+	{
+		"code": "GB",
+		"name": "Garbage truck"
+	},
+	{
+		"code": "MC",
+		"name": "Motorcycle"
+	},
+	{
+		"code": "OC",
+		"name": "Other"
+	},
+	{
+		"code": "PM",
+		"name": "Pick-up truck with camper"
+	},
+	{
+		"code": "PN",
+		"name": "Panel truck"
+	},
+	{
+		"code": "PU",
+		"name": "Pick-up truck"
+	},
+	{
+		"code": "PV",
+		"name": "Passenger, van"
+	},
+	{
+		"code": "RV",
+		"name": "Recreation vehicle"
+	},
+	{
+		"code": "TR",
+		"name": "Tractor (Semi)"
+	},
+	{
+		"code": "TV",
+		"name": "Van"
+	}
+]

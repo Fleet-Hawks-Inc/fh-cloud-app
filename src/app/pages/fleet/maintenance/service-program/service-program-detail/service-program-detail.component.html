@@ -1,0 +1,185 @@
+<section class="body">
+    
+    <div class="inner-wrapper">
+        
+        <section role="main" class="content-body pl-1  pr-0 pt-0">
+            <header class="page-header pr-5">
+               <div class="row pr-1 mr-1" style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4">
+                     <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Service Program Details</h4>
+                  </div>
+                  <div class="col-md-8 col-lg-8 text-right pr-1">
+                     <a routerLink="/fleet/maintenance/service-program/list"  class="btn btn-default btn-sm mr-2" style="color:black;"><i class="fas fa-list"></i> Service Programs List</a>
+                     <a href="javascript:;" (click)="taskEdit = false; Title = 'Add'" data-toggle="modal" data-target="#editServiceScheduleModal" class="modal-with-form btn btn-success btn-sm mr-2" style="color:white;"><i class="fas fa-plus"></i> Add Service Schedule</a>
+                     <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModal" class="modal-with-form btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Vehicle</a>
+                  </div>
+               </div>
+            </header>
+            <div class="row">
+               <div class="col pr-0">
+                  <section class="card">
+                     <div class="card-body">
+                        <div class="row" *ngFor="let program of programs">
+                           <div class="col-lg-12 font-weight-bold"><span class="text-4  text-dark">Service Program Name: </span><span class="text-4 text-info">{{program.programName}}</span></div>
+                           <div class="col-lg-12"><span class="text-4  font-weight-bold  text-dark">Description: </span><span class="text-3 text-dark">{{program.description}}</span></div>
+                        </div>
+                        <div class="row mt-3">
+                           <div class="col-lg-4">
+                              <div class="row">
+                                 <div class="col-lg-12"><label class="text-dark control-label font-weight-bold text-4">List of Vehicles</label></div>
+                              </div>
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0 assetDetailsTable">
+                                 <thead>
+                                    <tr>
+                                       <th width="95%">Vehicle Name</th>
+                                       <th  width="5%" ></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let vehicle of vehicles; let i = index;">
+                                       <td>{{vehiclesObject[vehicle]}}</td>
+                                       <td class="text-center">
+                                       <a class="text-danger" (click)="remove('vehicle', i)" href="javascript:;"><i class="fas fa-times"></i></a>
+
+                                       </td>
+                                    </tr>
+                                    <tr *ngIf="!vehicles?.length > 0">
+                                          <td colspan="3">No Data Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="col-lg-8">
+                              <div class="row">
+                                 <div class="col-lg-12"><label class="text-dark control-label font-weight-bold text-4">Service Schedules</label></div>
+                              </div>
+                              <table class="table table-responsive-lg table-bordered table-striped mb-0 assetDetailsTable">
+                                 <thead>
+                                    <tr>
+                                       <th width="20%">Interval</th>
+                                       <th width="65%">Service Task</th>
+                                       <th  width="5%"></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngFor="let task of tasks; let i = index;">
+                                       <td>Every {{task.repeatByTime}} {{task.repeatByTimeUnit}} or {{task.repeatByOdometer}} miles   </td>
+                                       <td>{{tasksObjects[task.serviceTask]}}</td>
+                                       <td>
+                                          <div class="btn-group flex-wrap mx-2">
+                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                             <a class="dropdown-item text-1 modal-with-form"  href="javascript:;" (click)="editTask(task, i)">Edit</a>
+                                                <a class="modal-with-form dropdown-item text-1" href="javascript:;" (click)="remove('task', i)">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                    <tr *ngIf="!tasks?.length > 0">
+                                          <td colspan="3">No Data Found</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </section>
+               </div>
+            </div>
+         </section>
+    </div>
+  </section>
+
+  <div class="modal fade" id="editServiceScheduleModal" tabindex="-1" role="dialog" aria-labelledby="editServiceScheduleModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{Title}} Service Schedule</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body">
+               <form class="form-horizontal form-bordered" id="taskForm" method="get">
+                  
+                  <div class="form-row">
+                     <div class="form-group col-md-12">
+                        <label class="font-weight-bold control-label">Select Service Task</label>
+                        <ng-select [(ngModel)]="programData.serviceTask" name="serviceTask" style="width: 100%;">
+                           <ng-option *ngFor="let item of allTasks;" value="{{item.taskID}}">{{item.taskName}}</ng-option>
+                        </ng-select>
+                     </div>
+                  </div>
+                  
+                  <div class="form-row pt-2">
+                     <div class="col-lg-12">
+                        <div class="row">
+                           <div class="col-lg-6">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
+                              <div class="row">
+                                 <div class="col-lg-6">
+                                    <input [(ngModel)]="programData.repeatByTime" name="repeatByTime" type="text" class="form-control">
+                                 </div>
+                                 <div class="col-lg-6 pl-0">
+                                    <select [(ngModel)]="programData.repeatByTimeUnit" name="repeatByTimeUnit" class="form-control populate" tabindex="-1" aria-hidden="true">
+                                       <optgroup label="">
+                                          <option value="Days">Days</option>
+                                          <option value="Weeks">Weeks</option>
+                                          <option value="Months">Months</option>
+                                       </optgroup>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer miles</label>
+                              <input [(ngModel)]="programData.repeatByOdometer" name="repeatByOdometer" type="text" class="form-control" value="">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+               <button class="btn btn-success" *ngIf="!taskEdit" (click)="addServiceProgram()">Add</button>
+               <button class="btn btn-success" *ngIf="taskEdit" (click)="updateServiceProgram()">Update</button>
+            </div>
+         </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="addVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Vehicle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body">
+               <form class="form-horizontal form-bordered" id="vehicleForm" method="get">
+                  <div class="form-row">
+                     <div class="form-group col-md-12">
+                        <label class="font-weight-bold control-label">Select Vehicle</label>
+                        <ng-select [(ngModel)]="vehicleData" name="vehicleData" [multiple]="true" class="form-control populate">
+                           <ng-option *ngFor="let vehicle of allVehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+                        </ng-select>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+               <button class="btn btn-success" (click)="addVehicle()">Save</button>
+            </div>
+         </div>
+      </div>
+  </div>
+
+ 
+  

@@ -1,0 +1,895 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <!-- <section role="main" class="content-body">
+            <header class="page-header">
+                <div class="row px-4" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4  font-weight-bold text-4 text-dark">
+                        IFTA Quarter Reports
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right">
+                    </div>
+                </div>
+            </header>
+            <div class="row text-dark">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">
+                            <form class="form-horizontal form-bordered" method="get">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <h3>Tax Year 2020</h3>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-1 (JAN - MAR)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">5000</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">6000</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">00.83</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">8.67</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a [routerLink]="['/compliance','ifta','return-details']"
+                                                            class="btn btn-default btn-sm font-weight-semibold"> IFTA
+                                                            Return Details</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-2 (APR - JUN)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">0.00</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a [routerLink]="['/compliance', 'ifta', 'mileage']"
+                                                            class="btn btn-default btn-sm font-weight-semibold">File
+                                                            IFTA Return</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <h3>Tax Year 2019</h3>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-1 (JAN - MAR)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">0.00</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a href="new-ifta-list.php"
+                                                            class="btn btn-default btn-sm font-weight-semibold">File
+                                                            IFTA Return</a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-2 (APR - JUN)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">0.00</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a href="new-ifta-return-details.php"
+                                                            class="btn btn-default btn-sm font-weight-semibold"> IFTA
+                                                            Return Details</a>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-3 (JUL - SEP)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">0.00</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a href="new-ifta-return-details.php"
+                                                            class="btn btn-default btn-sm font-weight-semibold"> IFTA
+                                                            Return Details</a>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <section class="card card-border">
+                                            <header class="card-header bg-default">
+                                                <div class="card-header-profile-picture text-center">
+                                                    <h4 class="font-weight-semibold mt-3"> Quarter-4 (OCT - DEC)</h4>
+                                                </div>
+                                            </header>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-4">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            Miles <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                            Gallons <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                            MPG <label class="ifta-label pull-right">0</label></p>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <p class="mb-1 text-dark"><i
+                                                                class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                            Amount(TAX)
+                                                            <label class="ifta-label pull-right">0.00</label>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-12 text-center">
+                                                        <a href="new-ifta-return-details.php"
+                                                            class="btn btn-default btn-sm font-weight-semibold"> IFTA
+                                                            Return Details</a>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-12 text-center">
+                                        <button class="btn btn-default btn-sm font-weight-semibold">Load More
+                                            Quarters...</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+
+
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- new section -->
+        <section role="main" class="content-body pl-0 pt-0">
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">IFTA Quarter Reports</h4>
+                    </div>
+                    
+                    <div class="col-md-8  col-lg-8 text-right pr-1">
+                    </div>
+                </div>
+            </header>
+            <div class="row ml-3 pt-2 text-dark">
+                <div class="col-lg-12">
+                    <h3 class="font-weight-bold mb-3">Tax Year 2020</h3>
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <section class="card card-border">
+                        <header class="card-header p-0 newbgifta">
+                            <div class="card-header-profile-picture pl-4">
+                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-1 ( JAN - MAR )</h4>
+                            </div>
+                        </header>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12 text-4">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i> Miles
+                                        <label class="ifta-label pull-right">5000</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i> Gallons <label
+                                            class="ifta-label pull-right">6000</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i> MPG <label
+                                            class="ifta-label pull-right">00.83</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i> Amount(TAX)
+                                        <label class="ifta-label pull-right">8.67</label>
+                                    </p>
+                                </div>
+                                <div class="col-lg-12 mt-2 text-right">
+                                    <a [routerLink]="['/compliance','ifta','return-details']"
+                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                        Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12">
+                    <section class="card card-border">
+                        <header class="card-header p-0 newbgifta">
+                            <div class="card-header-profile-picture pl-4">
+                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-2 ( APR - JUN )</h4>
+                            </div>
+                        </header>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12 text-4">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i> Miles
+                                        <label class="ifta-label pull-right">5000</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i> Gallons <label
+                                            class="ifta-label pull-right">6000</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i> MPG <label
+                                            class="ifta-label pull-right">00.83</label></p>
+                                </div>
+                                <div class="col-lg-12 text-4">
+                                    <hr class="solid mt-2 mb-3">
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="mb-1 text-dark"><i
+                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i> Amount(TAX)
+                                        <label class="ifta-label pull-right">8.67</label>
+                                    </p>
+                                </div>
+                                <div class="col-lg-12 mt-2 text-right">
+                                    <a [routerLink]="['/compliance', 'ifta', 'mileage']"
+                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                        Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="row ml-3 pt-2 text-dark">
+                <div class="col-lg-12 mb-4 mb-lg-0">
+                    <!-- <div class="accordion" id="accordion1">
+                        <div class="card card-default mb-4">
+                            <div class="card-header bg-light" id="collapse1HeadingOne">
+                                <h4 class="card-title m-0">
+                                    <a class="accordion-toggle carcursor font-weight-bold text-4 text-dark"
+                                        data-toggle="collapse" data-target="#collapse1One" aria-expanded="true"
+                                        aria-controls="collapse1One">
+                                        Tax Year 2019
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapse1One" class="collapse" aria-labelledby="collapse1HeadingOne">
+                                <div class="card-body">
+                                    <div class="row ml-3 pt-2 text-dark">
+                                        <div class="col-lg-3 col-md-6 col-12">
+                                            <section class="card card-border">
+                                                <header class="card-header p-0 newbgifta">
+                                                    <div class="card-header-profile-picture pl-4">
+                                                        <h4 class="font-weight-semibold text-light mt-3"> Quarter-1 (JAN
+                                                            - MAR)</h4>
+                                                    </div>
+                                                </header>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-4">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                Miles <label class="ifta-label pull-right">5000</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                                Gallons <label
+                                                                    class="ifta-label pull-right">6000</label></p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                MPG <label class="ifta-label pull-right">00.83</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                                Amount(TAX)
+                                                                <label class="ifta-label pull-right">8.67</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-2 text-right">
+                                                            <a href="new-ifta-list.php"
+                                                                class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                                                Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-12">
+                                            <section class="card card-border">
+                                                <header class="card-header p-0 newbgifta">
+                                                    <div class="card-header-profile-picture pl-4">
+                                                        <h4 class="font-weight-semibold text-light mt-3"> Quarter-2 (APR
+                                                            - JUN)</h4>
+                                                    </div>
+                                                </header>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-4">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                Miles <label class="ifta-label pull-right">5000</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                                Gallons <label
+                                                                    class="ifta-label pull-right">6000</label></p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                MPG <label class="ifta-label pull-right">00.83</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                                Amount(TAX)
+                                                                <label class="ifta-label pull-right">8.67</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-2 text-right">
+                                                            <a href="new-ifta-list.php"
+                                                                class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                                                Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-12">
+                                            <section class="card card-border">
+                                                <header class="card-header p-0 newbgifta">
+                                                    <div class="card-header-profile-picture pl-4">
+                                                        <h4 class="font-weight-semibold text-light mt-3"> Quarter-3 (JUL
+                                                            - SEP)</h4>
+                                                    </div>
+                                                </header>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-4">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                Miles <label class="ifta-label pull-right">5000</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                                Gallons <label
+                                                                    class="ifta-label pull-right">6000</label></p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                MPG <label class="ifta-label pull-right">00.83</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                                Amount(TAX)
+                                                                <label class="ifta-label pull-right">8.67</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-2 text-right">
+                                                            <a href="new-ifta-list.php"
+                                                                class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                                                Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-6 col-12">
+                                            <section class="card card-border">
+                                                <header class="card-header p-0 newbgifta">
+                                                    <div class="card-header-profile-picture pl-4">
+                                                        <h4 class="font-weight-semibold text-light mt-3"> Quarter-4 (OCT
+                                                            - DEC)</h4>
+                                                    </div>
+                                                </header>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 text-4">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                Miles <label class="ifta-label pull-right">5000</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                                Gallons <label
+                                                                    class="ifta-label pull-right">6000</label></p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                                MPG <label class="ifta-label pull-right">00.83</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 text-4">
+                                                            <hr class="solid mt-2 mb-3">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <p class="mb-1 text-dark"><i
+                                                                    class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                                Amount(TAX)
+                                                                <label class="ifta-label pull-right">8.67</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-lg-12 mt-2 text-right">
+                                                            <a href="new-ifta-list.php"
+                                                                class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md font-weight-semibold">
+                                                                Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div> -->
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                               <mat-panel-title>
+                               <span class="text-4 text-dark font-weight-bold"> Tax Year 2019</span>
+                                 
+                               </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="row ml-3 pt-2 text-dark">
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    <section class="card card-border">
+                                        <header class="card-header p-0 newbgifta">
+                                            <div class="card-header-profile-picture pl-4">
+                                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-1 ( JAN - MAR )</h4>
+                                            </div>
+                                        </header>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 text-4">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        Miles <label class="ifta-label pull-right">5000</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                        Gallons <label
+                                                            class="ifta-label pull-right">6000</label></p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        MPG <label class="ifta-label pull-right">00.83</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                        Amount(TAX)
+                                                        <label class="ifta-label pull-right">8.67</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 mt-2 text-right">
+                                                    <a href="new-ifta-list.php"
+                                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md">
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+    
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    <section class="card card-border">
+                                        <header class="card-header p-0 newbgifta">
+                                            <div class="card-header-profile-picture pl-4">
+                                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-2 ( APR - JUN )</h4>
+                                            </div>
+                                        </header>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 text-4">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        Miles <label class="ifta-label pull-right">5000</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                        Gallons <label
+                                                            class="ifta-label pull-right">6000</label></p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        MPG <label class="ifta-label pull-right">00.83</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                        Amount(TAX)
+                                                        <label class="ifta-label pull-right">8.67</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 mt-2 text-right">
+                                                    <a href="new-ifta-list.php"
+                                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md">
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+    
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    <section class="card card-border">
+                                        <header class="card-header p-0 newbgifta">
+                                            <div class="card-header-profile-picture pl-4">
+                                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-3 ( JUL - SEP )</h4>
+                                            </div>
+                                        </header>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 text-4">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        Miles <label class="ifta-label pull-right">5000</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                        Gallons <label
+                                                            class="ifta-label pull-right">6000</label></p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        MPG <label class="ifta-label pull-right">00.83</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                        Amount(TAX)
+                                                        <label class="ifta-label pull-right">8.67</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 mt-2 text-right">
+                                                    <a href="new-ifta-list.php"
+                                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md">
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+    
+                                <div class="col-lg-3 col-md-6 col-12">
+                                    <section class="card card-border">
+                                        <header class="card-header p-0 newbgifta">
+                                            <div class="card-header-profile-picture pl-4">
+                                                <h4 class="font-weight-semibold text-light mt-3"> Quarter-4 ( OCT - DEC )</h4>
+                                            </div>
+                                        </header>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-lg-12 text-4">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-map-marked-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        Miles <label class="ifta-label pull-right">5000</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-gas-pump mr-2 text-dark ifta-icon-size"></i>
+                                                        Gallons <label
+                                                            class="ifta-label pull-right">6000</label></p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-tachometer-alt text-dark mr-2 ifta-icon-size"></i>
+                                                        MPG <label class="ifta-label pull-right">00.83</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 text-4">
+                                                    <hr class="solid mt-2 mb-3">
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <p class="mb-1 text-dark"><i
+                                                            class="fas fa-money-bill text-dark mr-2 ifta-icon-size"></i>
+                                                        Amount(TAX)
+                                                        <label class="ifta-label pull-right">8.67</label>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-12 mt-2 text-right">
+                                                    <a href="new-ifta-list.php"
+                                                        class="btn btn-secondary btnifta pl-4 pr-4 btnround40 btn-md">
+                                                        Details</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+    
+                            </div>
+                           
+                         </mat-expansion-panel>
+                    </mat-accordion>
+                    
+                </div>
+            </div>
+
+        </section>
+    </div>
+</section>

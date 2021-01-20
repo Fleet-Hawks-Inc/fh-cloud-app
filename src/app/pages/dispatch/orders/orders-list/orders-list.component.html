@@ -1,0 +1,219 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body p-0">
+            <header class="page-header pr-5">
+                <form class="form-horizontal" method="get">
+
+                    <div class="row pr-1 mr-1" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" class="form-control" name="searchValue"
+                                    [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3">
+                            <div class="input-daterange input-group" data-plugin-datepicker>
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
+                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
+                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <div class="btn-group flex-wrap" style="min-width:190px;">
+                                <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle togglecolor" data-toggle="dropdown" id="categorySelect">Search by Category<span
+                                        class="caret"></span></button>
+                                <div class="dropdown-menu dutystatwd" role="menu">
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('All')">All</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Company')">Company</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Customer')">Customer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Driver')">Driver</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Vehicle')">Vehicle</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Trailer')">Trailer</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Vendor')">Vendor</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Broker')">Broker</a>
+                                    <a class="dropdown-item text-1" href="javascript:;"
+                                        (click)="selectCategory('Location')">Location</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-3"
+                                (click)="filterOrders()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
+                        </div>
+                        <div class="col-md-3 col-lg-3 text-right pr-1">
+
+                            <div class="btn-group flex-wrap mr-2">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false">Actions<span
+                                        class="caret"></span></button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                    <a class="dropdown-item text-1" href="">Import</a>
+                                    <a class="dropdown-item text-1" href="">Export</a>
+                                </div>
+                            </div>
+                            <a routerLink="/dispatch/orders/add" href="javascript:;"
+                                class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Order </a>
+
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <section class="card mt-0 mb-4">
+                <div class="card-body pt-3">
+                    <div class="m-2">
+                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active navtabs" id="allOrders-tab"
+                                    (click)="fetchTabData('all')">All</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="confirmed-tab"
+                                    (click)="fetchTabData('confirmed')">Confirmed : {{ confirmedOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="dispatched-tab"
+                                    (click)="fetchTabData('dispatched')">Dispatched : {{ dispatchedOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="delivered-tab"
+                                    (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="cancelledDispatch-tab"
+                                    (click)="fetchTabData('cancelled')">Cancelled Dispatch :
+                                    {{ cancelledOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="quoted-tab" (click)="fetchTabData('quoted')">Quoted :
+                                    {{ quotedOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="invoiced-tab"
+                                    (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrdersCount }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link navtabs" id="partiallyPaid-tab"
+                                    (click)="fetchTabData('partiallyPaid')">Partially Paid :
+                                    {{ partiallyPaidOrdersCount }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                        <div class="tab-pane show active" id="allOrders" role="tabpanel"
+                            aria-labelledby="allOrders-tab">
+
+                            <!-- <table class="table table-bordered table-responsive-lg table-striped mb-0"> -->
+                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                class="row-border hover table table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Type</th>
+                                        <th>Pickup</th>
+                                        <th>Deliver</th>
+                                        <th>Commodity</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
+                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                            {{ order.orderNumber }}</td>
+                                        <td>{{order.orderMode}}</td>
+                                        <td>
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
+                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
+                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
+                                            <!-- Rate:- -->
+                                        </td>
+                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
+                                            <!-- <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
+                                            Location: {{order.shipperInfo[i].pickupLocation}}</td>
+                                        <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
+                                            Location: {{order.receiverInfo[i].dropOffLocation}}</td>
+                                        <td>Name: {{order.freightDetails.commodity}}<br>
+                                            Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
+                                            Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
+                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
+                                            Received: 0<br>
+                                            Balance: 0
+                                        </td>
+                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <tbody *ngIf="orders.length === 0">
+                                    <tr>
+                                        <td colspan="8" class="no-data-available">No record(s) found</td>
+                                    </tr>
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>

@@ -1,0 +1,569 @@
+<form class="form form-horizontal form-bordered" method="get" name="form" #accountForm="ngForm" (ngSubmit)="showValue(accountForm)">
+<section class="body" style="background:white;" [ngClass]="{'showDiv':  activeTab == 1, 'hideDiv':  activeTab != 1 }">
+    <div class="">
+
+        <section role="main" class="account-body m-0">
+            <div class="row py-4">
+                <div class="col text-center">
+                    <h1 class="text-dark font-weight-bold">
+                        <img src="./assets/img/logologin.png" alt="FH Admin" />
+                        FLEET HAWKS Inc.</h1>
+                </div>
+            </div>
+            <div class="row text-dark mt-4">
+                <div class="col">
+                    <section class="card" style="align-items: center;">
+                        <div class="row">
+                            <div class="col-lg-2 offset-lg-2">
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <span class="font-weight-bold"
+                                            style="border: 1px solid  black;padding: 3px;padding-left: 10px;padding-right: 10px;font-size: x-large;box-shadow: 2px 4px 6px #333;">Contact</span>
+                                        <p class="mt-4">Contact us for queries!</p>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12">
+                                        <h4 class="font-weight-bold text-underline">Call Us</h4>
+                                        <ul>
+                                            <li>(306)-914-6104</li>
+                                            <li>(403)-667-6620</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-lg-12">
+                                        <h4 class="font-weight-bold text-underline">Email Us</h4>
+                                        <ul>
+                                            <li>support@fleethawks.com</li>
+                                            <li>sales@fleethawks.com</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card-body" style="box-shadow: 3px 3px 6px #334;width: 100%;">
+                                    
+                                        <div class="row text-center">
+
+                                            <div class="col-lg-12">
+                                                <h3 class=""> Create Your Fleet Hawks Account</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row ">
+                                            <div class="col-lg-10 offset-lg-2">
+                                                <label
+                                                    class="control-label  font-weight-bold text-lg-right text-dark text-5 pt-2">Share
+                                                    About Your Business</label>
+                                            </div>
+                                            <div class="col-lg-4 offset-lg-2">
+                                                <div class=" row">
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input type="text" class="form-control" [(ngModel)]="accountData.basic.firstName" name="firstName">
+
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input type="text" class="form-control" [(ngModel)]="accountData.basic.lastName" name="lasttName">
+
+                                                    </div>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input type="text" class="form-control"  [(ngModel)]="accountData.basic.phone" name="phone">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class=" row">
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Business
+                                                            Name</label>
+                                                        <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierName" name="carrierName">
+                                                    </div>
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierEmail" name="carrierEmail">
+                                                    </div>
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-10">
+                                                        <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">How
+                                                            did you find us?</label>
+                                                        <select data-plugin-selecttwo="" class="form-control populate" [(ngModel)]="accountData.basic.findingWay" name="findingWay" >
+                                                            <optgroup label="">
+                                                                <option value="1" data-select2-id="3">Email</option>
+                                                                <option value="2">Internet</option>
+                                                                <option value="2">Advertisement</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-11 offset-lg-2">
+                                                <label class="control-label text-lg-right text-dark text-5 pt-2">Set
+                                                    password</label>
+                                            </div>                                          
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-lg-4 offset-lg-2">
+                                                <div class=" row">
+                                                   <div class="col-lg-10 form-group">
+                                                      <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Password</label>
+                                                      <input type="password"  class="form-control" #passwordControl=ngModel  [(ngModel)]="accountData.basic.password" name="password">
+                                                   </div>
+                                                </div>
+                                          </div>
+                                          <div class="col-lg-4">
+                                                <div class=" row">
+                                                   <div class="col-lg-2"></div>
+                                                   <div class="col-lg-10 form-group">
+                                                      <label
+                                                            class="control-label  font-weight-bold text-lg-right pt-2">Confirm
+                                                            Password</label>
+                                                      <input type="password"  class="form-control" name="confirmPassword" appConfirmEqualValidator="password" #confirmPasswordControl=ngModel [(ngModel)]="confirmPassword">
+                                                      <span class="text-danger"  *ngIf="confirmPasswordControl.touched && confirmPasswordControl.errors?.notEqual">
+                                                          Passwords Do not match!
+                                                      </span>
+                                                   </div>
+                                                </div>
+                                             
+                                          </div>
+                                       </div>
+                                        <div class=" row mt-4">
+                                            <div class="col-md-10 col-lg-10 text-right">
+                                                <button type="reset" class="btn btn-default mr-1">Reset</button>
+                                                <button type="button" class="btn btn-success" (click)="next()">Next</button>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<section class="body" style="background:white;"  [ngClass]="{'showDiv':  activeTab != 1 , 'hideDiv':  activeTab === 1}">
+    <div class="pt-5">
+       <section role="main" class="account-body">
+          <div class="row text-dark">
+             <div class="col">
+                <section class="card" style="align-items: center;">
+                   <div class="card-body" style="
+                      box-shadow: 3px 3px 6px #334;
+                      width: 70%;min-height:780px;
+                      ">
+                         <div class="row text-center">
+                            <div class="col-lg-12">
+                               <h1 class="">
+                                <img src="./assets/img/logologin.png" alt="FH Admin" />
+                                 Add Company Information</h1>
+                            </div>
+                         </div>
+                         <div class="row mt-4">
+                            <div class="col-lg-10 offset-lg-1">
+                               <div class="m-2">
+                                  <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                                     <!-- <li class="nav-item">
+                                        <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Details</a>
+                                     </li> -->
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(2)" [ngClass]="{'active': activeTab == 2}">Basic Details</a> </li>
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(3)" [ngClass]="{'active': activeTab == 3}">Address</a> </li>
+                                     <li class="nav-item"> <a class="nav-link" [routerLink]="" (click)="changeTab(4)" [ngClass]="{'active': activeTab == 4}">Bank Details</a> </li>
+
+                                     <!-- <li class="nav-item">
+                                        <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
+                                     </li>
+                                     <li class="nav-item">
+                                        <a class="nav-link" id="bankDetails-tab" data-toggle="tab" href="#bankDetails" role="tab" aria-controls="bankDetails" aria-selected="false">Bank Details</a>
+                                     </li> -->
+                                  </ul>
+                               </div>
+                               <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                                  <div class="tab-pane" [ngClass]="{'show active': activeTab == 2}" id="basic" role="tabpanel" aria-labelledby="basic-tab">                                   
+                                         <div class="row">
+                                           <div class="col-lg-10">
+                                              <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
+                                                 >Basic Details</label>
+                                           </div>
+                                           <div class="col-lg-5 offset-lg-1">
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Name/Numbered Company</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierName" name="carrierName">
+                                                 </div>
+                                              </div>
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Number of Fleets</label>
+                                                    <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.totalFleets" name="totalFleets">
+                                                 </div>
+                                              </div>
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <div class="row">
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Truck(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trucks" name="trucks">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Trailer(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.trailers" name="trailers">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Reefer(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.reefers" name="reefers">
+                                                      </div>
+                                                    </div>
+                                                 </div>
+                                               
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-lg-10">
+                                                   <div class="row">
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Dry Van(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.dryVans" name="dryVans">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Flatbed(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.flatbed" name="flatbed">
+                                                      </div>
+                                                      <div class="col-lg-4">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >CurtainSide(s)</label>
+                                                         <input type="number" class="form-control"  [(ngModel)]="accountData.basic.fleets.curtainSide" name="curtainSide">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                
+                                              </div>
+                                              <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2" >Contract Period</label>
+                                                   <div class="row">
+                                                      <div class="col-lg-4">
+                                                         <input type="number" class="form-control" (change)="setCarrierContractPeriod()" [(ngModel)]="contractNumber" name="contractNumber">
+                                                      </div>
+                                                      <div class="col-lg-8">
+                                                         <select data-plugin-selectTwo class="form-control populate"  (change)="setCarrierContractPeriod()" [(ngModel)]="contractType" name="contractType">
+                                                            <optgroup label="Select">
+                                                               <option value="month(s)">Month(s)</option>
+                                                               <option value="day(s)">Day(s)</option>
+                                                               <option value="year(s)">Year(s)</option>
+                                                            </optgroup>
+                                                         </select>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>   
+                                             <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2" >Pay Period</label>
+                                                   <select data-plugin-selectTwo class="form-control populate"  [(ngModel)]="accountData.basic.carrierPayPeriod" name="carrierPayPeriod">
+                                                      <optgroup>
+                                                         <option value="Weekly(52 pay periods a year)">Weekly(52 pay periods a year)</option>
+                                                         <option value="Weekly(53 pay periods a year)">Weekly(53 pay periods a year)</option>
+                                                         <option value="Biweekly(26 pay periods a year)">Biweekly(26 pay periods a year)</option>
+                                                         <option value="Biweekly(27 pay periods a year)">Biweekly(27 pay periods a year)</option>
+                                                         <option value="Semi-monthly(24 pay periods a year)">Semi-monthly(24 pay periods a year)</option>
+                                                         <option value="Monthly(12 pay periods a year)">Monthly(12 pay periods a year)</option>
+                                                         <option value="Quaterly(4 pay periods a year)">Quaterly(4 pay periods a year)</option>
+                                                         <option value="Semi-annually(2 pay periods a year)">Semi-annually(2 pay periods a year)</option>
+                                                         <option value="Annually(1 pay period a year)">Annually(1 pay period a year)</option>
+                                                      </optgroup>
+                                                   </select>
+                                                </div>
+                                             </div>
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Attach Logo</label>
+                                                    <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
+                                                   </div>
+                                               </div>
+                                           </div>
+                                           <div class="col-lg-5 offset-lg-1">
+                                               <div class="row">
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >DBA Name</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.DBAName" name="DBAName">
+                                                 </div>
+                                             
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >EIN</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.EIN" name="EIN">                                                              
+                                                 </div>
+                                              </div>
+                                              <div class="row">
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >MC#</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.MC" name="MC">                                                              
+                                                 </div>
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >DOT#</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.DOT" name="DOT">                                                              
+                                                 </div>
+                                              </div>
+                                              <div class="row">
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >CCC</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.CCC" name="CCC">                                                              
+                                                 </div>
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >SCAC</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.SCAC" name="SCAC">                                                              
+                                                 </div>
+                                              </div>
+                                               <div class="row">
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Liability Insurance#</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.liabilityInsurance" name="liabilityInsurance">                                                              
+                                                 </div>
+                                                 <div class="col-lg-5">
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2" >Cargo Insurance#</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.basic.cargoInsurance" name="cargoInsurance">                                                              
+                                                 </div>
+                                               </div>   
+                                            
+                                             <div class="row">
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2" >Payment Type</label>
+                                                   <ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)]="accountData.basic.carrierPaymentType" name="carrierPaymentType">                                                         
+                                                         <ng-option value="">Select Payment Type</ng-option>
+                                                         <ng-option value="payPerMile">Pay Per Mile</ng-option>
+                                                         <ng-option value="payPerHour">Pay Per Hour</ng-option>
+                                                         <ng-option value="payPercentage">Percentage</ng-option>
+                                                         <ng-option value="payFlat">Flat</ng-option>                                                         
+                                                   </ng-select>
+                                                </div>
+                                             </div>
+                                             <div class="row">
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payPerMile'">
+                                                   <div class="row">
+                                                      <div class="col-lg-6">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Loaded Miles Rate</label>
+                                                         <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierLoadedMilesRate" name="carrierLoadedMilesRate">
+                                                      </div>
+                                                      <div class="col-lg-6">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Empty Miles Rate</label>
+                                                         <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierEmptyMilesRate" name="carrierEmptyMilesRate">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                <div class="col-lg-10 pt-2"  *ngIf = "accountData.basic.carrierPaymentType === 'payPerHour'">
+                                                   <div class="row">
+                                                      <div class="col-lg-6">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Rate Per Hour</label>
+                                                         <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierPerHourRate" name="carrierPerHourRate">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payPercentage'">
+                                                   <div class="row">
+                                                      <div class="col-lg-6">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Percentage</label>
+                                                         <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierPercentageRate" name="carrierPercentageRate">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                                <div class="col-lg-10 pt-2" *ngIf = "accountData.basic.carrierPaymentType === 'payFlat'">
+                                                   <div class="row">
+                                                      <div class="col-lg-6">
+                                                         <label class="control-label font-weight-bold text-lg-right pt-2" >Flat Rate</label>
+                                                         <input type="text" class="form-control"  [(ngModel)]="accountData.basic.carrierFlatRate" name="carrierFlatRate">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>                                             
+                                           </div>
+                                        </div> 
+                                  
+                                  </div>
+                                  <!-- ADDRESS -->
+                                  <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 3}" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                     <div>
+                                        <div class="row">
+                                           <div class="col-lg-10">
+                                              <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
+                                                 >Address Details</label>
+                                           </div>                                                
+                                           <div class="col-lg-3 offset-lg-1 pt-4">
+                                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                 >Select Country</label>
+                                              <ng-select placeholder="Select Country" [(ngModel)]="accountData.address.countryID" name="countryID" (change)="getStates()">                             
+                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option> 
+                                             </ng-select>
+                                           </div>
+                                           <div class="col-lg-6 pt-4">
+                                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                 >Start typing your location, we'll pull
+                                              address automatically from Map</label>
+                                              <input type="text" class="form-control" 
+                                                 placeholder="Type Address">
+                                              <div class="checkbox-custom pt-2">
+                                                 <input type="checkbox" name="terms" id="w1-terms" (click)="showAddressControls()" [(ngModel)]="showAddress" name="showAddress">
+                                                 <label for="w1-terms">Type Manually</label>
+                                              </div>
+                                           </div>
+                                           <div class="col-lg-1 mar-top-37 text-right pt-4">
+                                              <button class="btn btn-dark" type="submit"
+                                                 style="width: 100px;">Clear</button>
+                                           </div>
+                                           <div class="col-lg-5 offset-lg-1 pt-3">
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                       >Select State</label>
+                                                    <ng-select placeholder="Select State" [(ngModel)]="accountData.address.stateID" name="stateID" (change)="getCities()" [disabled]="!showAddress">                                                     
+                                                       <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>                                                     
+                                                    </ng-select>
+                                                 </div>
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                       >Select City</label>
+                                                    <ng-select  placeholder="Select City" name="cityID" [(ngModel)]="accountData.address.cityID" [disabled]="!showAddress">
+                                                       <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>                                                     
+                                                    </ng-select>
+                                                 </div>
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                       >Zip Code</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.zipCode" name="zipCode" [disabled]="!showAddress">
+                                                 </div>
+                                              </div>
+                                           </div>
+                                           <div class="col-lg-5 offset-lg-1 pt-4">
+                                              <div class="row">
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                       >Address 1</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address1" name="address1" [disabled]="!showAddress">
+                                                 </div>
+                                                 <div class="col-lg-10">
+                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
+                                                       >Address 2</label>
+                                                    <input type="text" class="form-control"  [(ngModel)]="accountData.address.address2" name="address2" [disabled]="!showAddress">
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                                  <!-- Bank Details -->
+                                  <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 4}" id="bankDetails" role="tabpanel" aria-labelledby="bankDetails-tab">
+                                     <div class="row">
+                                        <div class="col-lg-10">
+                                           <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
+                                              >Bank Account Details</label>
+                                        </div>
+                                        <div class="col-lg-5 offset-lg-1">
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Bank Name</label>											
+                                                 <input type="text" class="form-control"  [(ngModel)]="accountData.bank.bankName" name="bankName">
+                                              </div>
+                                           </div>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Account Number</label>											
+                                                 <input type="text" class="form-control"  [(ngModel)]="accountData.bank.accountNumber" name="accountNumber">
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-5 offset-lg-1">
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Routing/Transit Number</label>											
+                                                 <input type="text" class="form-control"  [(ngModel)]="accountData.bank.routingNumber" name="routingNumber">
+                                              </div>
+                                           </div>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Institutional Number</label>											
+                                                 <input type="text" class="form-control"  [(ngModel)]="accountData.bank.institutionalNumber" name="institutionalNumber">
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                     <div class="row">
+                                        <div class="col-lg-10">
+                                           <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2"
+                                              >Bank Address</label>
+                                        </div>
+                                        <div class="col-lg-5 offset-lg-1">
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Address</label>											
+                                                 <input type="text" class="form-control" [(ngModel)]="accountData.bank.bankAddress" name="bankAddress">
+                                              </div>
+                                           </div>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Country</label>		
+                                                 <ng-select placeholder="Select Country" [(ngModel)]="accountData.bank.countryID" name="countryID" (change)="getBankStates()">                             
+                                                   <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option> 
+                                                </ng-select>
+                                              </div>
+                                           </div>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >State/Province</label>	
+                                                 <ng-select placeholder="Select State" [(ngModel)]="accountData.bank.stateID" name="stateID" (change)="getBankCities()">                                                     
+                                                   <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>                                                     
+                                                </ng-select>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-5 offset-lg-1">
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >City</label>	
+                                                 <ng-select  placeholder="Select City"  [(ngModel)]="accountData.bank.cityID" name="cityID">
+                                                   <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>                                                     
+                                                </ng-select>
+                                              </div>
+                                           </div>
+                                           <div class="row">
+                                              <div class="col-lg-10">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Zip Code</label>											
+                                                 <input type="text" class="form-control"  [(ngModel)]="accountData.bank.zipCode" name="zipCode">
+                                              </div>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>                             
+                               </div>
+                            </div>
+                         </div>
+                         <div class="row mt-4">
+                            <div class="col-lg-10 text-right">
+                               <button type="button" (click)="previous()" class="btn btn-default mr-2">Previous</button>
+                               <a *ngIf="activeTab != 4" [routerLink]="" (click)="next()" class="btn btn-success">Next</a>
+                                <a *ngIf="activeTab == 4" [routerLink]="" (click)="addAccount()" class="btn btn-success">Submit</a>
+                            </div>
+                         </div>
+                      
+                   </div>
+                </section>
+             </div>
+          </div>
+       </section>
+    </div>
+ </section>
+</form>

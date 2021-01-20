@@ -1,0 +1,269 @@
+<style>
+    #map_view {
+        display: inline-block;
+        height: 450px;
+        width: 100%;
+    }
+</style>
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+                <div class="row pr-5 " style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                        Incident Details
+                    </div>
+                    <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
+
+                        <a href="javascript:;" routerLink = "/safety/incidents" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Incident
+                            List</a>
+                        <div class="btn-group flex-wrap mr-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="javascript:;" routerLink="/safety/incidents/edit-incident/{{eventID}}">Edit</a>
+                                <a class="modal-with-form dropdown-item text-1" href="javascript:;"
+                                data-toggle="modal" data-target="#deleteModal">Delete</a>
+                            </div>
+                        </div>
+                        <a href="javascript:;" routerLink="/safety/incidents/add-incident" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                            Incident</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="safety-deails">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row cmaindiv mb-3">
+                           <div class="col cerbor ">
+                              <div class="text-center p-4 ">
+                              <i class="fa fa-user text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.driverName }}</p>
+                              <p class="mb-0">DRIVER NAME</p>
+                              </div>
+                           </div>
+
+                           <div class="col cerbor">
+                              <div class="text-center p-4">
+                              <i class="far fa-calendar-check text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.location }}</p>
+                              <p class="mb-0">Location</p>
+                              </div>
+                           </div>
+
+                           <div class="col cerbor">
+                              <div class="text-center p-4">
+                              <i class="far fa-calendar-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.vehicleName }}</p>
+                              <p class="mb-0">Vehicle</p>
+                              </div>
+                           </div>
+
+                           <div class="col cerbor">
+                              <div class="text-center p-4">
+                              <i class="fas fa-map-marker-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.eventDate }}, {{ event.eventTime }}</p>
+                              <p class="mb-0">Date &amp; Time</p>
+                              </div>
+                           </div>
+                           <div class="col cerbor">
+                              <div class="text-center p-4">
+                              <i class="fas fa-map-marker-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.severity }}</p>
+                              <p class="mb-0">Serverity</p>
+                              </div>
+                           </div>
+                           <div class="col cerbor">
+                              <div class="text-center p-4">
+                              <i class="fas fa-map-marker-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.AsigneeName }}</p>
+                              <p class="mb-0">Assigned</p>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="text-center p-4">
+                              <i class="fas fa-map-marker-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.tripNo }}</p>
+                              <p class="mb-0">Trip ID</p>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="row my-4">
+                             <div class="col-md-6">
+                                <div class="safety-deails__map">
+                                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/y4lX98Ch-gI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray" width="30%">Driver Name:</td>
+                                                <td style="border:none!important;">John Smith</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Location:</td>
+                                                <td>Alberta</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Vehicle:</td>
+                                                <td>06123</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Date & Time:</td>
+                                                <td>June 23, 2020 12:00 PM</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Serverity:</td>
+                                                <td>Rolling Stop</td>
+                                            </tr>
+                                           
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Assigned:</td>
+                                                <td>Chris Parker</td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="font-weight-bold text-4 text-left back-color-gray">Trip ID:</td>
+                                                <td>524</td>
+                                            </tr>
+                                    </tbody>
+                                </table>
+                            </div> -->
+                            <div class="col-md-6">
+                                 <div class="safety-deails__map">
+                                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/xRiUfQi8gaE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mapclass" id="map_view">
+                                    <div id="map" class=""></div>
+                                </div>
+                            </div>
+                            <div class="col-6 pl-1">
+                                <div class="bg-white ">
+                                 <p class="mb-2 text-4 font-weight-bold text-dark">Safety Manager Internal Notes</p>
+                                 <div class="timeline dispatch-timeline timeline-simple changelog pb-3" style="max-height: 370px;overflow-x: auto;">
+                                    <div class="tm-body text-dark py-0">
+                                       <ol class="tm-items">
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:10 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                      <b class="text-success">Mike</b> is on the way.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:16 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                     <b class="text-success">Mike</b> reached at the spot.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:40 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                      <b class="text-success">Mike</b> Solved the case.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:10 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                      <b class="text-success">Mike</b> is on the way.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:16 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                     <b class="text-success">Mike</b> reached at the spot.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+                                          <li>
+                                             <div class="tm-box">
+                                                <span class="release-date">31 Aug 2020 04:40 PM</span>
+                                                <ul class="list-unstyled">
+                                                   <li>
+                                                      <b class="text-success">Mike</b> Solved the case.
+                                                   </li>
+                                                </ul>
+                                             </div>
+                                          </li>
+                                          
+                                       </ol>
+                                    </div>
+                                 </div>
+                                 <div class="send-field d-flex">
+                                    <input type="text" class="form-control" placeholder="Enter your message" name="">
+                                    <a href="javascript:;" class="btn btn-success btn-sm">Send</a>
+                                 </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Confirm Action</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this record?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="deleteEvent()">Delete</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+</div>

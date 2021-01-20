@@ -1,0 +1,873 @@
+  /* WHOLE BODY CLASSES */
+  .black_color{
+    color: #000!important;
+  }
+  
+  /* safety page classes */
+  .border_bottom
+  {
+   border-bottom: 1px solid #777;
+  }
+  .border_top
+  {
+   border-top: 1px solid #777;
+  }
+  .font_1rem
+  {
+   font-size: 1rem;
+  }
+  .pad_0
+  {
+     padding: 0px !important;
+  }
+  .alert_icon_safety
+  {
+     height: 25px;
+     width: 25px;
+     line-height: 25px;
+     background-color: #777;
+     border-radius: 50%;
+     color: white;
+  }
+  
+  .safety_icon_size
+  {
+     font-size: 20px;
+  }
+  .height_70p
+  {
+     height: 70px;
+  }
+  
+  .safety_card_height
+  {
+     max-height: 380px !important;
+     overflow: scroll;
+  }
+  
+  /* cycle table cell width */
+  .cell_width
+  {
+    min-width:350px;
+  }
+  
+  /* ADD NEW VEHICLE TOP NAV BAR */
+  
+  .addv_topnav{float: left; margin-top: 20px; padding: 0px;}
+  .addv_topnav ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+  /* .addv_topnav ul li{float: left;} */
+  .addv_topnav ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+  .addv_topnav ul li:hover{color: #000; background: #fff;; text-decoration: none;}
+  .addv_topnav ul li.active{color: #000; background: #fff;; text-decoration: none;}
+  
+  .add_topnav{float: left; margin-top: 20px; padding: 0px;}
+  .add_topnav ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+  /* .addv_topnav ul li{float: left;} */
+  .add_topnav ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+  .add_topnav ul li:hover{color: #000; background: #fff;; text-decoration: none;}
+  .add_topnav ul li.active{color: #000; background: #fff;; text-decoration: none;}
+  
+  .add_topnav_vehicle{float: left;padding: 0px;}
+  .add_topnav_vehicle ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+  /* .addv_topnav ul li{float: left;} */
+  .add_topnav_vehicle ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0px;}
+  .add_topnav_vehicle ul li:hover{color: #fff; background: #aaa; text-decoration: none;}
+  .add_topnav_vehicle ul li.active{color: #fff; background: #aaa;; text-decoration: none;}
+  
+  /* ADD VEHICLE INFORMATION */
+  #vehicle_new_details
+  {
+   display: block;
+  }
+  #vehicle_new_lifecycle,
+  #vehicle_new_specifications,
+  #vehicle_new_wheels,
+  #vehicle_new_engine,
+  #vehicle_new_settings,
+  #vehicle_new_fluids
+  {
+  display: none;
+  }
+  
+  .sub-heading-new-vehicle
+  {
+  font-size: 1rem;
+  color: black;
+  }
+  
+  /* Stock Quantity */
+  .table-stock-qty-td
+  {
+   vertical-align: middle!important;
+  }
+  
+  /* Stock Assignment Add button setting */
+  .mar-top-asg-stock-btn
+  {
+      margin-top: 37px;
+  }
+  
+  .mar-top-30
+  {
+      margin-top: 30px;
+  }
+  .mar-top-37
+  {
+      margin-top: 37px;
+  }
+  /* CURSOR POINTER */
+  .cursor_pointer{
+    cursor: pointer;
+  }
+  
+  
+  /* BUSINESS PAGE CSS */
+   .business_image_style{
+     height: 250px;
+     width: 250px;
+     border-radius: 5%;
+   }
+   .margin_50
+   {
+     margin-top: 50px;
+   }
+  
+   /* TEXT UNDERLINE */
+   .text-underline{
+     text-decoration: underline;
+   }
+  
+  .businessmaps{width: 200px;position: absolute;right: 20px;top: 10px;}
+  
+  .wizard-tabs ul > li.active .badge {
+   background-color: #000!important;
+  }
+  
+  .business-radio-box
+  {
+   border: 0.5px solid;
+     padding: inherit;
+  }
+  
+  .account-body{
+   margin: 20px;
+   margin-left: 50px;
+   margin-right: 50px;
+  }
+  
+  /* PRICE PLAN */
+  .price-plan{
+   margin: 0;
+   padding: 0;
+   text-align: center;
+  }
+  .price-card{
+   border: 1px solid #AAA;
+   border-radius: 5px;
+   color: #444;
+   font-family: auto;
+   transition: transform 0.4s;
+  
+  }
+  .price-card:hover{
+   transform: scale(1.1);
+  }
+  .price-card:active{
+   transform: scale(1.05);
+  }
+  .price-card-header, .price-card-footer
+  {
+   font-size: 25px;
+   height: 50px;
+   background: #aaa;
+   font-weight: bolder;
+   padding-top: 10px;
+  
+  }
+  .price-card-body{
+   height: fit-content;
+   text-align: center;
+   margin: 15px;;
+  }
+  .price-tag{
+   height: 150px;
+   width: 150px;
+   border-radius: 50%;
+   /* background-color: #f96f52; */
+   text-align: center;
+   font-size: 25px;
+   font-weight: bold;
+   margin: auto;
+   color: white;
+   display: flex;
+   align-items: center;
+  }
+  .price-button{
+   height: 30px;
+   width: 150px;
+   /* background-color: orange; */
+   margin:auto;
+   font-weight: bold;
+   font-size: 18px;
+   padding: 5px;
+   border-radius: 5px;
+   margin-top: 10px;
+   color: white;
+  }
+  .contact-price{
+   font-size: 22px;
+  }
+  
+  .owner-color{
+   background-color: #F96F52;
+  }
+  .small-color{
+   background-color:#41A18A;
+  }
+  .medium-color{
+   background-color: #CF73A9;
+  }
+  .large-color{
+   background-color: #4E8DD3;
+  }
+  
+  /* IFTA PAGE */
+  .ifta-tabs{
+   font-size: 15px;
+  }
+  .ifta-tabs ul{
+   margin: 5px;
+  }
+  .ifta-tabs ul li{
+   display: inline;
+   padding: 7px;
+   font-weight: bold;
+   cursor: pointer;
+  }
+  
+  /* .active , .ifta-tabs ul li:hover{
+  color: black;
+  text-decoration: underline;
+  } */
+  .ifta-tabs ul li:hover{
+    color: black;
+    text-decoration: underline;
+    }
+  
+   #summary-div
+   {
+     display: block;
+   }
+   #trip-reports-div
+   {
+     display: none;
+   }
+   #fuel-purchases-div
+   {
+     display: none;
+   }
+  
+   .margin-left-35{
+     margin-left: 35px;
+   }
+  
+  
+   /* DOCUMENTS PAGE */
+   .document_box{
+     height: 300px;
+     width: auto;
+     border-radius: 5px;
+     border: 1px solid #aaa;
+     box-shadow: 2px 2px 1px #aaa;
+     text-align: center;
+     margin: 10px;
+   }
+   .document_box_title
+   {
+     font-weight: bold;
+     font-size: 20px;
+     padding: 10px;
+     font-family: inherit;
+   }
+  
+   .document-top-box
+   {
+     border: 0.5px solid #aaa;
+     border-radius: 5px;
+     box-shadow: 2px 2px 1px #aaa;
+     padding: 30px;
+     margin: 10px;
+     margin-bottom: 20px;
+   }
+   .document-type-image{
+     height: 40px;
+     width: 40px;
+   }
+  
+   .social-icons
+   {
+     height: 25px;
+     width: 25px;
+   }
+  
+  
+   .ifta-label
+   {
+     width: 50px;
+     border: 0.4px solid #ddd;
+     border-radius: 10%;
+     text-align: center;
+   }
+  
+   .ifta-icon-size
+   {
+     font-size: 25px;
+   }
+  
+   .card-border
+   {
+     border: 0.4px solid #ddd;
+   }
+  
+   .label_style
+   {
+     height: 50px;
+     width: 50px;
+     background-color: #000;
+     color: white;
+     font-weight: bold;
+     font-size: 35px;
+     padding: 10px;
+     padding-top: 13px;
+   }
+  
+   /* SETTINGS PAGE */
+   .settings_icon
+   {
+     font-size: 60px;
+   }
+   .settings_icon:hover{
+     color: #777;
+   }
+  
+  
+   /* DISPATCH SCHEDULE */
+   .dispatch_row_height{
+     height: 130px;
+   }
+   .green-dot
+   {
+     height: 10px;
+     width: 10px;
+     background-color:#32a852;
+     border-radius: 50%;
+     display: inline-block;
+   }
+   .blue-dot
+   {
+     height: 10px;
+     width: 10px;
+     background-color:#03cafc;
+     border-radius: 50%;
+     display: inline-block;
+   }
+   .orange-dot
+   {
+     height: 10px;
+     width: 10px;
+     background-color: orange;
+     border-radius: 50%;
+     display: inline-block;
+   }
+   .grey-dot
+   {
+     height: 10px;
+     width: 10px;
+     background-color: grey;
+     border-radius: 50%;
+     display: inline-block;
+   }
+  
+   .label_calender_active
+   {
+     background-color: #aaa;
+     font-weight: bold;
+   }
+   /* FONT BOLD */
+   .font-bold{
+     font-weight: bold;
+   }
+  
+  .box-height{
+   height: 155px !important;
+  }
+  .overflow-scroll{
+   overflow: scroll;
+  }
+  
+  /* DISPATCH SCHEDULE */
+  .loadID{
+   cursor: pointer;
+  }
+  .loadID .loadInformation
+  {
+   display: none;
+   position: absolute;
+   z-index: 1;
+   background-color: white;
+   width: 280px;
+   padding: 15px;
+   left: -50%;
+   border: 1px solid #777;
+   border-radius: 10px;
+    box-shadow: 10px 10px 5px  grey; 
+  }
+  
+  .loadID:hover .loadInformation
+  {
+   display: block;
+  }
+  
+  
+  
+  .driver-sign-box{
+   height: 110px;
+   width: 100%;
+   border: 1px solid #eee;
+   /* text-align: center; */
+   /* margin: auto; */
+   padding: 20px;
+   padding-top: 40px;
+  }
+  
+  /* VEHICLE DETAIL PAGE */
+  #vehicle-sidebar{
+    background-color: #fff;
+    height: 550px;
+    border: 0.5px solid #eee;
+  }
+  #vehicle-sidebar ul{
+    list-style-type: none;
+    padding: 0px;
+  }
+  #vehicle-sidebar ul li {
+    padding: 5px;
+  }
+  /* .active,#vehicle-sidebar ul li:hover{
+    background-color: #eee;
+   
+  } */
+  
+  
+  .vehicle-common-box{
+    border: 0.5px solid #ddd;
+  }
+  
+  .vehicle-photo-box{
+    border: 0.5px solid #eee;
+    padding:10px;
+  }
+  .font-size-12{
+    font-size: 12px;
+  }
+  /* 
+  VEHICLE MAIN PAGE */
+  /*dashboard drive list classes*/
+  
+  .vehiclemain{position: relative;}
+  
+  
+  .vehicleDetailMap{float: left; background: #f5f5f5; width: 100%;
+    border-bottom: 1px solid #bec8d1;}
+  
+  .vehicleDetailMap a{display: block; height: 115px; text-decoration:none; padding:10px 10px;}
+  .vehicleDetailMap a:hover{background: #fff; text-decoration:none;}
+  .driverstatus{width: 100%; float: left; padding: 5px;}
+  .vehicleminilist{
+    position: absolute; width: 300px;
+    background: #f5f5f5; height: 100%;
+    position: fixed;
+    right:0px; top: 110px; 
+  }
+  .vehicleRmini{position: absolute;
+    right:245px; 
+    top: 370px;
+    }
+  
+    .vehicleRmini a{background: #fff; padding: 10px;}
+    .vehicleRmini a{background: #ebebeb;}
+  
+    .vehicleLmini{position: absolute;
+      right:-5px; 
+      top: 370px;
+      }
+    
+      .vehicleLmini a{background: #fff; padding: 10px;}
+      .vehicleLmini a{background: #ebebeb;}
+  
+      .driver-sign-box{
+        height: 110px;
+        width: 100%;
+        border: 1px solid #eee;
+        /* text-align: center; */
+        /* margin: auto; */
+        padding: 20px;
+        padding-top: 40px;
+      }
+  
+      .hidden_input{
+        opacity: 0;
+        top: 0;
+        right: 0;
+        position: absolute;
+      }
+  
+      .hidden_input1{
+        opacity: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+      }
+  
+      /* DATATABLES LENGTH */
+      .dataTables_length {
+        display: none;
+    }
+  
+    /* Vehicle Map Locations */
+    .vehicle_moving{
+    font-size: 20px;
+    text-align: center;
+    color: #1f8d3c;
+    line-height: 20px;
+    }
+  
+    .vehicle_moving a{
+      color: #1f8d3c !important;
+    }
+  
+    .vehicle_moving a:hover{
+      color: #1f8d3c !important;
+    }
+  
+  
+  
+  
+    #vehicleLoc1
+    {
+      position: absolute;
+      right:700px; 
+      top: 370px;
+    }
+    #vehicleLoc2
+    {
+      position: absolute;
+      right:600px; 
+      top: 200px;
+    }
+    #vehicleLoc3
+    {
+      position: absolute;
+      right:250px; 
+      top: 280px;
+    }
+    #vehicleLoc4
+    {
+      position: absolute;
+      right:900px; 
+      top: 100px;
+    }
+    #vehicleLoc5
+    {
+      position: absolute;
+      right:600px; 
+      top: 500px;
+    }
+  
+    /* VEHICLE MAP LOCATION IDLE */
+    .vehicle_idle{
+   
+      font-size: 20px;
+      color: #f7cb3a;
+      line-height: 20px;
+      }
+      #vehicleIdleLoc1
+      {
+        position: absolute;
+        right:720px; 
+        top: 230px;
+      }
+      #vehicleIdleLoc2
+      {
+        position: absolute;
+        right:620px; 
+        top: 250px;
+      }
+      #vehicleIdleLoc3
+      {
+        position: absolute;
+        right:320px; 
+        top: 180px;
+      }
+      #vehicleIdleLoc4
+      {
+        position: absolute;
+        right:520px; 
+        top: 620px;
+      }
+      /* VEHICLE MAP STOP */
+      .vehicle_stop{
+   
+        font-size: 20px;
+        color: #ff0000;
+        line-height: 20px;
+       
+        }
+        #vehicleStopLoc1
+        {
+          position: absolute;
+          right:750px; 
+          top: 330px;
+        }
+        #vehicleStopLoc2
+        {
+          position: absolute;
+          right:650px; 
+          top: 250px;
+        }
+        #vehicleStopLoc3
+        {
+          position: absolute;
+          right:650px; 
+          top: 650px;
+        }
+    .map_collapse_sidebar{
+      background-color: white;
+      width: 250px;
+      padding: 5px;
+  
+    }
+    .map_collapse_sidebar_header{
+      padding: 5px;
+    }
+        #map_collapse_sidebar{
+          position: absolute;
+          top:9px; left: 22px;
+        }
+        
+    .entire_fleet_map{
+      position: absolute;
+          top:20px; left: 15px;
+    }
+  
+  
+        .csbtn{min-width: 150px;}
+  
+        /* Sensors Temperature Tabs */
+        .sensor_temp{min-width: 11%; float: left;}
+  
+        /* HOS PAGE */
+        .hos_top_box{border:solid 1px #dedede; float: left; width: 100%; padding: 3%;    box-shadow: 3px 3px 5px #dedede;}
+        .box_active,.hos_top_box:hover{border:solid 1px black; box-shadow: 3px 3px 5px black;}
+  
+  
+  /* hos summary near violation table width */
+  
+  .width5{width: 5% !important;}
+  .width15{width: 15% !important;}
+  .width20{width: 20% !important;}
+  
+  /* REPORTS Classes */
+  .reports_small_div{
+    border: 1px solid #dedede;
+  }
+  
+  
+  .reports_tabs{float: left; margin-top: 20px; padding: 0px;}
+  .reports_tabs ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+  /* .addv_topnav ul li{float: left;} */
+  .reports_tabs ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+  .reports_tabs ul li:hover{color: #000; background: #fff;; text-decoration: none;}
+  .reports_tabs ul li.active{color: #000; background: #fff;; text-decoration: none;}
+  
+  
+  /* Live Chat  Classes */
+  .dchat{
+    width: 280px; height: 800px;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 50px; bottom: 0px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  }
+  
+  
+  
+  /* The popup chat - hidden by default */
+  .chat-popUp {
+  display: none;
+    bottom: 0px;
+   right: 50px;
+  
+  }
+  /* chat inside divs */
+  .chat-menu1{float: left;width: 100%; border-bottom: 1px solid #eee; padding-bottom: 5px;}
+  .chat-icon1 {
+      display: block;
+      transition: all .2s;
+      opacity: 1; float: left;
+      width: 20%;
+  }
+  
+  .chat-icon1 img {
+    border-radius: 50px !important ;  
+    width: 44px;
+    height: 44px;
+  }
+  
+  .chat-name1 {
+    display: block;
+    float:  right;
+    width: 78%;
+  }
+  
+  .chat-name1 p{margin-bottom: 0px; font-weight: 600; line-height: 14px; color: #000;}
+  .chat-name1 span{margin:0px 0 2px 0; font-size: 0.8em; line-height: 10px; color: #a8a8a8;}
+  .dchatHead{
+  background: #333; width: 100%;
+  height: 50px; border-radius:7px 7px 0 0;}
+  
+  
+  /* chat input of all chat boxes */
+  .chatinputbox{
+    width: 73% !important;
+    margin-left: 17%;
+    border-radius: 60px;}
+  
+  
+  
+  
+  /* chat box 1*/
+  .dchatbroadbox{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 331px; bottom: 60px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  
+  }
+  
+  .chathead{
+    background:#2e353e; width: 100%;
+    height: 50px; border-radius:7px 7px 0 0;}
+  
+  
+    /* chat box 2*/
+  .dchatalldriverbox{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 615px; bottom: 60px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  
+  }
+  
+  
+  
+  
+      /* chat box 3*/
+  .driverchatbox1{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 897px; bottom: 60px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  
+  }
+  
+  
+  
+     /* chat box 4*/
+  .driverchatbox2{
+    width: 280px; height: 460px; display: none;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 1179px; bottom: 60px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  
+  }
+     /* chat box 4*/
+     .driverchatbox3{
+      width: 280px; height: 460px; display: none;
+      position: absolute; background: #fff; border-radius:7px 7px 0 0;
+      right: 1461px; bottom: 60px; z-index: 99999 !important;
+      box-shadow: -5px -5px 10px 5px #aaa;
+  
+    }
+   /* HOS UMAMRY PAGE DRIVER DETAIL TABS */
+   .top-tabs.nav-tabs li {
+    padding: 0
+  }
+  .nav-tabs{
+    border-bottom: none !important;
+  }
+  .top-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 50px;
+    border: 0.5px solid #aaa;
+    margin: 0 4px;
+    background: transparent;
+  }
+  .top-tabs.nav-tabs .nav-link.active, 
+  .top-tabs.nav-tabs .nav-link:hover,
+  .top-tabs.nav-tabs .nav-link.active:hover,
+  .top-tabs.nav-tabs .nav-link.active:focus {
+    color: #fff;
+    background: #aaa;
+    border: none;
+    text-decoration: none;
+    border: 0.5px solid #aaa;
+  }
+  .tab-pane.active{
+    text-decoration: none !important;
+  }
+  #top-tabs li.active {
+    text-decoration: none;
+  }
+  
+  /* FEEDBACK CLASSES */
+  .feedbackBox{
+    width: 360px; height: 362px;
+    position: absolute; background: #fff; border-radius:7px 7px 0 0;
+    right: 58px; top: 100px; z-index: 99999 !important;
+    box-shadow: -5px -5px 10px 5px #aaa;
+  }
+  
+  /* Sidebar Classes */ 
+  html.sidebar-light:not(.dark) ul.nav-main > li.nav-active > a {
+    color: #fff;
+   background-color:#aaa !important;  
+  }
+
+  /* Datatable Pagination Style */
+  /* .dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding: 0px!important;
+  } */
+  
+  
+  /* BORDER CLASS */
+  .bor_half{
+    border: 0.5px solid #ddd;
+  }
+  
+  /* SOCIAL ICONS ON DRIVER PROFILE */
+  .social-icons-list a{
+    background-color: #000 !important;
+  }
+  /* daljit */
+  .page-header {
+    margin: 0px ;
+  }
+  .header .logo {
+    width: 270px;
+    margin: 0;
+    padding: 15px 15px 0px;
+  }
+  /* daljit ends */

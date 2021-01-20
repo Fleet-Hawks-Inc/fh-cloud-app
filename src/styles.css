@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
 
 .nav-active {
   background-color: #EAEAEA;
 }
+.sidebar-left {
+  height: 100%;
+}
+.H_ib_content {
+  min-width: 12em;
+}
+html, body { height: 100%; }
+body { margin: 0;}

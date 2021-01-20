@@ -1,0 +1,299 @@
+<!-- <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> -->
+<style>
+   .extra {
+      display: none;
+   }
+</style>
+<section class="body">
+  
+  <div class="inner-wrapper">
+    
+    <section role="main" class="content-body pl-1 pt-0 pr-0">
+      <header class="page-header pr-5">
+         <form class="form-horizontal" method="get">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               <div class="col-md-2 col-lg-2">
+                  <div class="input-group input-group-md mb-3">
+                     <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
+                   </div>
+                   
+                  <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
+                     <ul>
+                        <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;" (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)"
+                        > {{ suggestedAsset.assetIdentification }}</li>
+                     </ul>
+                  </div>
+               </div>
+               
+               <div class="col-md-2 col-lg-2">
+                  <ng-select
+                     [(ngModel)]="currentStatus" 
+                     name="currentStatus"
+                     placeholder="Select Type"
+                     class="form-control populate">
+                     <ng-option  *ngFor="let item of allAssetTypes;" value="{{item.code}}">
+                        <div title="{{item.description}}"> {{item.description}}</div>
+                    </ng-option>
+                  </ng-select>
+               </div>
+
+               <div class="col-md-2 col-lg-2">
+                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+               </div>
+
+               <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons">
+                  <div class="btn-group flex-wrap" style="min-width:190px;">
+                     <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                     <div class="dropdown-menu dutystatwd" role="menu">
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.assetName"
+                           name="assetName" (change)="hideShowColumn()"> Asset Name/Number </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.type"
+                           name="type" (change)="hideShowColumn()"> Type </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.plateNo"
+                           name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.lastLocation"
+                           name="lastLocation" (change)="hideShowColumn()"> last Known Location </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.year"
+                           name="year" (change)="hideShowColumn()"> Year </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.make"
+                           name="make" (change)="hideShowColumn()"> Make </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.model"
+                           name="model" (change)="hideShowColumn()"> Model </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.ownership"
+                           name="ownership" (change)="hideShowColumn()"> Ownership </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                           name="status" (change)="hideShowColumn()"> Status </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.group"
+                              name="group" (change)="hideShowColumn()"> Group </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.aceID"
+                              name="aceID" (change)="hideShowColumn()"> ACE ID </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.aciID"
+                              name="aciID" (change)="hideShowColumn()"> ACI ID</label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.gvwr"
+                              name="gvwr" (change)="hideShowColumn()"> GVWR </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.gawr"
+                              name="gawr" (change)="hideShowColumn()"> GAWR </label>
+                        </a>
+                     </div>
+                  </div>
+                  <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
+                  <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
+                  <div class="btn-group flex-wrap mr-2">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                        <a class="dropdown-item text-1" href="javascript:;">Export</a>
+                     </div>
+                  </div>
+                  <a routerLink="/fleet/assets/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Asset</a>
+               </div>
+            </div>
+         </form>
+      </header>
+      <!-- MAP VIEW OF ASSETS -->
+      <div class="mapclass vehiclemain" id="map_view" *ngIf="mapView">
+         <div id="map" class="" style="height: calc(100vh - 110px);"></div>
+         <div class="vehicleRmini" *ngIf="visible" id="arrowRvehicle">
+            <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+         </div>
+         <div class="vehicleLmini" *ngIf="!visible" id="arrowLvehicle">
+            <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+         </div>
+         <div class="vehicleminilist" *ngIf="visible" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="vehicleMiniList">
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Tracker</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Gateway</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Tracker</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 1</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 2</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 3</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 4</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K 1Y3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 5</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 6</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 7</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 8</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 9</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
+               </a>
+            </div>
+            <div class="vehicleDetailMap">
+               <a href="asset1_details.php">
+                  <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 10</p>
+                  <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
+               </a>
+            </div>
+         </div>
+      </div>
+      <!-- LIST VIEW OF ASSETS  -->
+      <div id="list_view" *ngIf="listView">
+         <div class="p-2">
+            <div class="table-responsive">
+               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                  <thead>
+                     <tr>
+                        <th class="col1">Asset Name/Number</th>
+                        <th class="col2">Type</th>                                          
+                        <th class="col3">Plate Number</th>
+                        <th class="col4">Last Known Location</th>                                          
+                        <th class="col5">Year</th>
+                        <th class="col6">Make</th>
+                        <th class="col7">Model</th>
+                        <th class="col8">Ownership</th>
+                        <th class="col9">Status</th>
+                        <th class="col10 extra">Group</th>
+                        <th class="col11 extra">ACE ID</th>
+                        <th class="col12 extra">ACI ID</th>
+                        <th class="col13 extra">GVWR</th>
+                        <th class="col14 extra">GAWR</th>
+                        <th>Actions</th>
+                     </tr> 
+                  </thead>
+
+
+                  <tbody *ngIf="allData.length > 0">
+                     <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+
+
+                        <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
+                        <td *ngIf="hideShow.type">{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
+                        <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
+                        <td *ngIf="hideShow.lastLocation" >Live Location</td>
+                        <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
+                        <td *ngIf="hideShow.make" >{{manufacturersObjects[item.assetDetails.manufacturer]}}</td>
+                        <td *ngIf="hideShow.model" >{{modelsObjects[item.assetDetails.model]}}</td>
+                        <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
+                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
+                        <!-- extra columns -->
+                        <td *ngIf="hideShow.group" >{{groupsList[item.groupID]}}</td>
+                        <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID}}</td>
+                        <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID}}</td>
+                        <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
+                        <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
+
+                        <td>
+                           <div class="dropdown dropright">
+                              <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                 <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
+                                 <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+                  <tbody *ngIf="allData.length === 0">
+                     <tr>
+                        <td colspan="15" class="no-data-available">No records found.</td>
+                     </tr>
+               <tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </section>
+</div>
+</section>
+
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="confirmModalLabel">Are you sure you want to delete this asset?</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         <button type="button" (click)="deleteAsset()" class="btn btn-primary">Yes</button>
+       </div>
+     </div>
+   </div>
+ </div>

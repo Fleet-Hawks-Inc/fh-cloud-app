@@ -1,0 +1,416 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+    <section role="main" class="content-body">
+        <header class="page-header pr-5">
+        <h2>ACE Details</h2>
+        <div class="right-wrapper text-right pt-2 pr-2">
+            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default mr-1 btn-sm"><i
+                        class="fas fa-list"></i> ACE Manifests</a>
+           
+            <div class="btn-group btn-group1 flex-wrap mr-1">
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Cancelled Manifest')">Cancelled Manifest</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Transmitted to CBP')">Transmitted to CBP</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Preliminary Manifest on File with CBP')">Preliminary Manifest On File with CBP</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'CBP Returned Error')">CBP Returned Error</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Complete Manifest On File with CBP')">Complete Manifest On File with CBP</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Complete Manifest and Entry Numbers On File with CBP')">Complete Manifest and Entry Numbers On File with CBP</a>                        
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Truck Arrived at Border')">Truck Arrived at Border</a>
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Truck Released at Border')">Truck Released at Border</a>
+                </div>
+            </div>
+            <div class="btn-group btn-group1 flex-wrap mr-1">
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="dropdown-item text-1">Edit</a>
+                    <a class="dropdown-item text-1" href="">Print</a>
+                    <a class="dropdown-item text-1" href="">Fax</a>
+                    <a class="dropdown-item text-1" href="">Email</a>
+                    <a class="dropdown-item text-1" href="">Export</a>
+                </div>
+            </div>
+            <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" (click)="sendCBPFn()"> Send to CBP</a>
+        </div>
+        </header>
+        <div class="ace-main__wrapper p-4 bg-white">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2">
+                            <h4 class="m-0">Trip Number<b> {{tripNumber}}</b></h4>
+                        </div>
+                        <div class="card-body border">
+                           <div class="row">
+                            <div class="col-lg-6">
+                                <table class="table table-bordered m-0">
+                               <tbody>
+                                   <tr>
+                                       <th width="40%" class="back-color-gray">Port of Arrival:</th>
+                                       <td>{{usPortOfArrival}}</td>
+                                   </tr>
+                                   <tr>
+                                       <th width="40%"class="back-color-gray">Estimated Arrival Date:</th>
+                                       <td>{{estimatedArrivalDateTime}}</td>
+                                   </tr>                             
+
+                               </tbody>
+                              </table>
+                          </div>
+                          <div class="col-lg-6">
+                           <table class="table table-bordered m-0">
+                          <tbody>
+                              <tr>
+                                  <th width="40%" class="back-color-gray">Current Status:</th>
+                                  <td>{{currentStatus}}</td>
+                              </tr>                        
+                              <tr>
+                                <th width="40%" class="back-color-gray">Last Edited:</th>
+                                <td>{{timeModified}} By Demo User</td>
+                            </tr>
+                          </tbody>
+                         </table>
+                         </div>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">ACE eManifest History</h4>
+                            <div class=" pull-right">
+                                <button type="button" data-toggle="modal" data-target="#statusModal" class="btn btn-sm btn-success">View All History</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>History/Status Messages</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>1/05/2020</td>
+                                        <td>10:30 PM</td>
+                                        <td>Trip <b>#7465765</b> by <b>John Smith</b></td>
+                                    </tr>
+                                    <tr>
+                                    <td>2.</td>
+                                    <td>1/06/2020</td>
+                                    <td>02:40 PM</td>
+                                    <td>Trip <b>#7465765</b> by <b>Mike William</b></td>
+                                </tr>
+                                </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Truck on<b>{{tripNumber}}</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"> Set IIT Status</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                       
+                                        <th>Truck Number</th>
+                                        <th>VIN Number</th>
+                                        <th>Type</th>
+                                        <th>Licence Plate(s)</th>
+                                        <th>DOT Number</th>
+                                        <th>Seal Numbers</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                       
+                                        <td>{{truck.number}}</td>
+                                        <td>{{truck.vinNumber}}</td>
+                                        <td>{{truck.type}}</td>
+                                        <td><span *ngFor = "let license of truck.licensePlates;">{{license.number}}</span></td>
+                                        <td>{{truck.dotNumber}}</td>
+                                        <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Trailers on <b>{{tripNumber}}</b></h4>
+                            <div class=" pull-right">
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm mr-1"> Set IIT Status</a>
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                      
+                                        <th>Trailer Number</th>
+                                        <th>Trailer Type</th>
+                                        <th>Licence Plates</th>
+                                        <th>Licence State/Province</th>                                       
+                                        <th>Seal Numbers</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor = "let trailer of trailers">                                        
+                                        <td>{{trailer.number}}</td>
+                                        <td>{{trailer.type}}</td>
+                                        <td><span *ngFor = "let license of trailer.licensePlates;">{{license.number}}</span></td>
+                                        <td><span *ngFor = "let license of trailer.licensePlates;">{{license.stateProvince}}</span></td>
+                                        <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Driver, Passengers and Team Drivers</h4>
+                            <div class=" pull-right">
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Sub Driver</a>
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>                                       
+                                        <th>Name</th>
+                                        <th>Driver Number</th>
+                                        <th>Fast Id</th>
+                                        <th>Travel Documents</th>
+                                        <th>Type</th>
+                                        <!-- <th>Address</th> -->
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor = "let driver of drivers">
+                                      
+                                        <td>{{driver.firstName}}{{driver.lastName}}</td>
+                                        <td>{{driver.driverNumber}}</td>
+                                        <td>{{driver.fastCardNumber}}</td>
+                                        <td><span *ngFor= "let document of driver.travelDocuments">{{document.number}},</span></td>
+                                        <td>Driver</td>
+                                        <!-- <td>Address</td> -->
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor = "let passenger of passengers">
+                                       
+                                        <td>{{passenger.firstName}}{{passenger.lastName}}</td>
+                                        <td>56</td>
+                                        <td>{{passenger.fastCardNumber}}</td>
+                                        <td><span *ngFor= "let document of passenger.travelDocuments">{{document.number}},</span></td>
+                                        <td>Passenger</td>
+                                        <!-- <td>Address</td> -->
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">ACE Shipments on <b>{{tripNumber}}</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm mr-1"> Set Shipment Status</button>
+                                <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
+                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create New Shipment</a>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                     
+                                        <th>Shipment Number</th>
+                                        <th>Entry Status</th>
+                                        <th>Type</th>
+                                        <th>Shipper</th>
+                                        <th>Consignee</th>
+                                        <th>Total Commodities</th>
+                                        <th>Total Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   <tr *ngFor = "let shipment of shipments">
+                                        
+                                        <td>{{shipment.shipmentControlNumber}}</td>
+                                        <td></td>
+                                        <td>{{shipment.type}}</td>
+                                        <td>
+                                           {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}} {{shipment.shipper.address.city}} {{shipment.shipper.address.stateProvince}} {{shipment.shipper.address.postalCode}}
+                                        </td>
+                                        <td>
+                                            {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}} {{shipment.consignee.address.city}} {{shipment.consignee.address.stateProvince}} {{shipment.consignee.address.postalCode}}
+
+                                        </td>
+                                        <td>{{shipment.commodities.length}}</td>
+                                        <td><span *ngFor = "let commodity of shipment.commodities">{{commodity.quantity}}{{commodity.packagingUnit}},</span></td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
+                                            <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
+                            <h4 class="m-0 ">Comments about ACE eManifest <b> #1234984545</b></h4>
+                            <div class=" pull-right">
+                                <button class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Comment</button>
+                            </div>
+                        </div>
+                        <div class="card-body border">
+                            <table class="table  table-responsive-md table-bordered table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.</th>
+                                        <th>Comments</th>
+                                        <th>Poster</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1.</td>
+                                        <td>This shipment is meant for the person who is really sweet.</td>
+                                        <td>Demo User</td>
+                                        <td>Jun 2,2020</td>
+                                        
+                                        <td class="actions">
+                                            <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                            <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div> -->
+        </div>
+    </section>
+</div>
+</section>
+<div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="statusModalLabel">ACI eManifest Status Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body text-dark">
+            <form>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table  table-responsive-md table-bordered table-striped mb-0" id="">
+                            <thead>
+                                <tr>
+                                    <th>Sr.</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>History/Status Messages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1.</td>
+                                    <td>1/05/2020</td>
+                                    <td>10:30 PM</td>
+                                    <td>Trip <b>#7465765</b> by <b>John Smith</b></td>
+                                </tr>
+                                <tr>
+                                <td>2.</td>
+                                <td>1/06/2020</td>
+                                <td>02:40 PM</td>
+                                <td>CBSA Notice: 1 Shipment [74RAPARS000208] Not Matched with trade data</td>
+                            </tr>
+                            </tbody>
+                    </table>
+                    </div>
+    
+                </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>

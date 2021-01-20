@@ -194,10 +194,12 @@ float:  left;
   }
 
 
-    
+
+  /*
 .input-group-prepend {
   position: absolute; top: 5px; left: 5px;
 }
+*/
 
 .chat-messagebar .chatinput-group .input-group-prepend a {
   font-size: 20px;
@@ -231,13 +233,17 @@ float:  left;
 .topnav ul li a:hover{color: #000; background: #fff;; text-decoration: none;}
 .topnav ul li a.active{color: #000; background: #fff;; text-decoration: none;}
 
-.colorgrey{color:#555555;}
 
-/* Violation classes */
+
+/* Violation classes and Dispatch Schedule circle */
 
 .cirred{background:#cc0019; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
 .ciryel{background:#ffce0c; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
 .cirgrn{background:#47a447; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
+.cirblue{background:#2a9aff; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
+.cirorg{background:#fd9000; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
+.cirltgrey{background:#dddddd; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
+.cirltblk{background:#000; margin-top: 5px; margin-right: 5px; float: left; border-radius: 50px; width: 12px;  height: 12px;}
 
 
 /* duty status classes */
@@ -536,15 +542,21 @@ float:  left;
   .gmainbox2{float: left; overflow-x:scroll; width:420px;}
 }
 
+/* DVIR */
+.dvirChk{min-width: 5%; float: left;}
+.dvirFields{min-width: 13%; float: left;}
 
-
-
+/* GeoFence Description Page */
+.geofields{min-width: 15%; float: left;}
+.geofieldsdesc{min-width: 50%; float: left;}
 
 /* hos report class*/
 .hosvalue{min-width: 14%; float: left;}
 
+
+
 .hoshvalue{background: #c4c4c4; min-height: 40px;
-  line-height: 40px;
+  /* line-height: 40px; */
   margin-bottom: 0px;}
 
 
@@ -560,24 +572,30 @@ float:  left;
 
 .drivermain{position: relative;}
 .drivelist{
-  position: absolute; width: 417px;
+  position: absolute; width: 518px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
-  position: fixed;  z-index: 99999;
-  right:0px; top: 110px; 
+  position: fixed;  z-index: 999;
+  right:50px; top: 110px; 
 }
 
-.driverdetail{float: left; background: #fff; width: 100%;
-  border-bottom: 1px solid #bec8d1;}
+.driverdetail{float: left; background: #fff; width: 100%; padding:10px 10px;border-top: 2px solid white;border-left: 2px solid white;border-right: 2px solid white;
+  border-bottom: 2px solid #bec8d1;
+  }
+.driverdetail:hover{
+  border: 2px solid black;
+}
 
-.driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
-.driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;}
+
+
+/* .driverdetail a{display: block; height: 425px; text-decoration:none; border: solid 3px #fff; padding:10px 10px;}
+.driverdetail a:hover{background: #f0f0f0; text-decoration:none; border: solid 3px #000;} */
 .driverstatus{width: 100%;}
 .curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:417px; 
-  top: 370px;
+  right:515px; 
+  top: 350px;
   }
 
   .iconR a{background: #fff; padding: 10px;}
@@ -596,15 +614,67 @@ float:  left;
     .driverdetail2{float: left; background: #f5f5f5; width: 100%;
       border-bottom: 1px solid #bec8d1; padding:10px 10px;}
  
-.vinfo{background: :#fff; border:solid 1px #dcdcdc;
-min-height:200px; border-radius:6px; margin-top:20px;
-margin-bottom:20px;
+      .vinfo{background:#fff; border:solid 1px #dcdcdc;
+        min-height:200px; border-radius:6px; margin-top:20px;
+        margin-bottom:20px;}
+        .vinfo .vdetail{padding: 10px;}
+/* PICK UP BUTTON CLASS */
+.pickup
+{
+  background: crimson;
+  border-radius: 50px;
+  font-size: 10px;
+  padding: 2px 5px;
+  text-align: center;
+  color: #fff;
 }
-.vinfo .vdetail{padding: 10px;}
 
+/* DROP OFF BUTTON CLASS */
+.dropoff
+{
+  background: gray;
+  border-radius: 50px;
+  font-size: 10px;
+  padding: 2px 5px;
+  text-align: center;
+  color: #fff;
+}
+
+
+/*dashboard driver list classes*/
+
+.drivermain{position: relative;}
+.driverminilist{
+  position: absolute; width: 300px;
+  background: #f5f5f5; height: 100%;
+  position: fixed;
+  right:48px; top: 110px; 
+}
+.iconRmini{position: absolute;
+  right:293px; 
+  top: 370px;
+  }
+
+  .iconRmini a{background: #fff; padding: 10px;}
+  .iconRmini a{background: #ebebeb;}
+
+  .iconLmini{position: absolute;
+    right:-5px; 
+    top: 370px;
+    }
+  
+    .iconLmini a{background: #fff; padding: 10px;}
+    .iconLmini a{background: #ebebeb;}
+.driverdetailMap{float: left; background: #f5f5f5; width: 100%;
+  border-bottom: 1px solid #bec8d1;}
+
+.driverdetailMap a{display: block; height: 165px; text-decoration:none; padding:10px 10px;}
+.driverdetailMap a:hover{background: #fff; text-decoration:none;}
+.driverstatus{width: 100%; float: left; padding: 5px;}
+.curtime{width: 120px; margin-right: 10px; float: left; border-right:solid 1px #333;}
+.curcycle{width: 130px; float: left;  }
 
 /* trip  info*/
-
 .tripscrolbar{height: 150px; margin-top: 0px; position: relative;}
 
 .tripbar{width:500px; height: 5px; background: #727272;
@@ -665,10 +735,9 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripdot6{width: 12px; height: 12px; border-radius: 50%;
             background: #ff0000; z-index: 999; position: absolute;
             left: 472px; top: 55px;}
-
 /* trip info date time */
 
-.tripdt1{z-index: 999; width: 50px; position: absolute;left: -10px  ; top: 10px; text-align: center;}
+.tripdt1{z-index: 999; width: 50px; position: absolute;left: -7px  ; top: 10px; text-align: center;}
 .tripdt2{z-index: 999; width: 50px; position: absolute;left: 80px; top: 10px; text-align: center;}
 .tripdt3{z-index: 999; width: 50px; position: absolute;left: 180px; top: 10px; text-align: center;}
 .tripdt4{z-index: 999; width: 50px; position: absolute;left: 280px; top: 10px; text-align: center;}
@@ -689,10 +758,32 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
 .tripsmain{height:130px; width: 100%; margin-top: 0px; position: relative;}
 
-.tripvertibar{width:2px; height:110px; border: dashed 1px #000;
-  position: absolute; left: 4px; top:0px; z-index: 500;}
-.tripvertifinish{width:2px; height:80px; background: #0fd50a;
+.tripvertibar{width:6px; height:50px; background: #000;
+  float: left; margin-left: 10px; position: relative;
+  }
+.triptimemile{position: absolute; left: 34px; top: 10px;
+  min-width: 200px; font-size: 16px;}
+
+
+.tripcirlce{width: 100%; float: left; margin-bottom: 0px;}
+.tripcirlce a{width:25px; height:25px; border-radius: 50%; float: left;
+background: #646464; color: #fff; text-decoration: none; text-align: center;}
+
+.tripvet-scrollbar {
+	position: relative;
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.tripvet-scroll-y {
+	display: block;
+}
+
+.tripvertifinish{width:4px; height:80px; background: #0fd50a;
     position: absolute; left: 4px; top:0px; z-index: 500; }
+
+
 
 .tripvertiyellow{width:2px; height:80px; background: #ffa800;
       position: absolute; left: 4px; top:0px; z-index: 500; }
@@ -700,7 +791,8 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 .tripvertired{width:2px; height:30px; background: #ff0000;
         position: absolute; left: 4px; top:10px; z-index: 500; }
 
-.tripcirlce{width:10px; height:10px; border-radius: 50%;background: #141414;}
+
+
 
 .trip1{z-index:999; width: 100%;  position: absolute; left: 0; top: 30px;}
 .trip1 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
@@ -723,7 +815,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
   }
   .dioffduty{border: solid 2px #fc3142; float: left;
     width: 100%; padding:2% 5%; font-size: 20px; color:#fc3142;
-    }
+  }
 
 /* HOS driver insight classes di mean drive insite rejected end */
 
@@ -907,18 +999,28 @@ right: 20px; top: 10px;
     border: solid 1px #C10000;
   }
   
-  .red {
-    color:#C10000;
-  }
+ 
   
   /* Mapbox CSS */
   
         #map {
+          /* height:100vh;
+          top: 10;
+          bottom: 0; */
+          width: 100%;
+        }
+        /* #map1 {
           height:800px;
           top: 10;
           bottom: 0;
           width: 100%;
         }
+        #map2 {
+          height:800px;
+          top: 10;
+          bottom: 0;
+          width: 100%;
+        } */
         .match-parent {
           width: 100%;
           height: 100%;
@@ -968,7 +1070,7 @@ right: 20px; top: 10px;
         }
   
         .filter-group input[type="checkbox"]:checked + label:before {
-          content: "✔";
+          content: "âœ”";
           margin-right: 5px;
         }    
     
@@ -1027,7 +1129,7 @@ right: 20px; top: 10px;
 
 /* load board classes start */
 
-td.loadid a{color:#ff0000 !important;}
+td.loadid a{color:#000 !important;}
 
 .delload{background: #ffd3d3 !important;}
 .compload{background: #e6ffe8 !important;}
@@ -1039,4 +1141,804 @@ td.loadid a{color:#ff0000 !important;}
 .widgetload{background: #fff;}
 .widgettbload{background: #f6f6f6; width: 100%; float: left; padding:0px   10px;}
 .widgetlinfo{float: left; width: 100%; background: #fff;
-  min-height:240px; padding: 10px;}
+   padding: 10px;}
+
+.dsnumber{width: 50px; float: right; font-weight: 700;}
+
+.lbwheading{font-size: 30px; float: left; color: #000;
+  padding-top: 10px; font-weight: 600;}
+
+.LTLload{background: #2b2b2b; color: #fff; float: left; padding:0 0.3em; border-radius: 3px; margin-right: 4px;}
+.FTLload{background: #47a447; color: #fff; float: left; padding:0 0.3em; border-radius: 3px; margin-right: 4px;}
+
+
+
+
+/* dispatch  page */
+.disbox{float: left; width: 25%; padding: 1%;}
+.disbar{float: left; width: 100%;}
+.maindisbox{position: relative;}
+.disbtmpart{position: absolute; bottom: 0px;}
+
+
+
+/* create load  page */
+.labelmt{margin-top: 6px !important;}
+.labelalign{text-align: right; padding-right: 0px;}
+
+@media screen and (max-width: 991px)
+{
+  .labelalign{text-align: left;}
+}
+
+
+.divderrel{position: relative;}
+.midledriver{background: #dcdcdc; width: 1px; height: 700px; left: 48%; position: absolute;}
+.midleicon{left: 47%; top: 42%; position: absolute;}
+
+
+
+
+
+
+/*****************  har classes start  *********************************/
+
+
+/* safety page classes */
+.border_bottom
+{
+  border-bottom: 1px solid #777;
+}
+.border_top
+{
+  border-top: 1px solid #777;
+}
+.font_1rem
+{
+  font-size: 1rem;
+}
+.pad_0
+{
+    padding: 0px !important;
+}
+.alert_icon_safety
+{
+    height: 25px;
+    width: 25px;
+    line-height: 25px;
+    background-color: #777;
+    border-radius: 50%;
+    color: white;
+}
+
+.safety_icon_size
+{
+    font-size: 20px;
+}
+.height_70p
+{
+    height: 70px;
+}
+
+.safety_card_height
+{
+    max-height: 380px !important;
+    overflow: scroll;
+}
+
+/* cycle table cell width */
+.cell_width
+{
+   min-width:350px;
+}
+
+/* ADD NEW VEHICLE TOP NAV BAR */
+
+.addv_topnav{float: left; margin-top: 20px; padding: 0px;}
+.addv_topnav ul{list-style-type: none; float: left; margin: 0; padding: 0;}
+/* .addv_topnav ul li{float: left;} */
+.addv_topnav ul li {float: left;color: #2e353e; text-decoration: none; font-weight: 600; padding:6px 15px; border-radius: 50px; margin: 0 4px;}
+.addv_topnav ul li:hover{color: #000; background: #fff;; text-decoration: none;}
+.addv_topnav ul li.active{color: #000; background: #fff;; text-decoration: none;}
+
+/* ADD VEHICLE INFORMATION */
+#vehicle_new_details
+{
+  display: block;
+}
+#vehicle_new_lifecycle,
+#vehicle_new_specifications,
+#vehicle_new_wheels,
+#vehicle_new_engine,
+#vehicle_new_settings,
+#vehicle_new_fluids
+{
+display: none;
+}
+
+.sub-heading-new-vehicle
+{
+font-size: 1rem;
+color: black;
+}
+
+/* Stock Quantity */
+.table-stock-qty-td
+{
+  vertical-align: middle!important;
+}
+
+/* Stock Assignment Add button setting */
+.mar-top-asg-stock-btn
+{
+     margin-top: 37px;
+}
+
+.mar-top-30
+{
+     margin-top: 30px;
+}
+.mar-top-37
+{
+     margin-top: 37px;
+}
+
+
+
+/* BUSINESS PAGE CSS */
+  .business_image_style{
+    height: 250px;
+    width: 250px;
+    border-radius: 5%;
+  }
+  .margin_50
+  {
+    margin-top: 50px;
+  }
+
+  /* TEXT UNDERLINE */
+  .text-underline{
+    text-decoration: underline;
+  }
+
+.businessmaps{width: 200px;position: absolute;right: 20px;top: 10px;}
+
+.wizard-tabs ul > li.active .badge {
+  background-color: #000!important;
+}
+
+.business-radio-box
+{
+  border: 0.5px solid;
+    padding: inherit;
+}
+
+.account-body{
+  margin: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* PRICE PLAN */
+.price-plan{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.price-card{
+  border: 1px solid #AAA;
+  border-radius: 5px;
+  color: #444;
+  font-family: auto;
+  transition: transform 0.4s;
+
+}
+.price-card:hover{
+  transform: scale(1.1);
+}
+.price-card:active{
+  transform: scale(1.05);
+}
+.price-card-header, .price-card-footer
+{
+  font-size: 25px;
+  height: 50px;
+  background: #aaa;
+  font-weight: bolder;
+  padding-top: 10px;
+
+}
+.price-card-body{
+  height: fit-content;
+  text-align: center;
+  margin: 15px;;
+}
+.price-tag{
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  /* background-color: #f96f52; */
+  text-align: center;
+  font-size: 25px;
+  font-weight: bold;
+  margin: auto;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+.price-button{
+  height: 30px;
+  width: 150px;
+  /* background-color: orange; */
+  margin:auto;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+}
+.contact-price{
+  font-size: 22px;
+}
+
+.owner-color{
+  background-color: #F96F52;
+}
+.small-color{
+  background-color:#41A18A;
+}
+.medium-color{
+  background-color: #CF73A9;
+}
+.large-color{
+  background-color: #4E8DD3;
+}
+
+/* IFTA PAGE */
+.ifta-tabs{
+  font-size: 15px;
+}
+.ifta-tabs ul{
+  margin: 5px;
+}
+.ifta-tabs ul li{
+  display: inline;
+  padding: 7px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.ifta-tabs ul li:hover{
+color: black;
+text-decoration: underline;
+}
+.ifta-tabs ul li:active{
+  color: black;
+  text-decoration: underline;
+  }
+
+  #summary-div
+  {
+    display: block;
+  }
+  #trip-reports-div
+  {
+    display: none;
+  }
+  #fuel-purchases-div
+  {
+    display: none;
+  }
+
+  .margin-left-35{
+    margin-left: 35px;
+  }
+
+
+  /* DOCUMENTS PAGE */
+  .document_box{
+    height: 300px;
+    width: auto;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    box-shadow: 2px 2px 1px #aaa;
+    text-align: center;
+    margin: 10px;
+  }
+  .document_box_title
+  {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    font-family: inherit;
+  }
+
+  .document-top-box
+  {
+    border: 0.5px solid #aaa;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px #aaa;
+    padding: 30px;
+    margin: 10px;
+    margin-bottom: 20px;
+  }
+  .document-type-image{
+    height: 40px;
+    width: 40px;
+  }
+
+  .social-icons
+  {
+    height: 25px;
+    width: 25px;
+  }
+
+
+  .ifta-label
+  {
+    width: 50px;
+    border: 0.4px solid #ddd;
+    border-radius: 10%;
+    text-align: center;
+  }
+
+  .ifta-icon-size
+  {
+    font-size: 25px;
+  }
+
+  .card-border
+  {
+    border: 0.4px solid #ddd;
+  }
+
+
+
+/*****************  har classes end  *********************************/
+
+.temp_graph{
+  cursor: pointer;
+}
+/* temp dashboard */
+
+.dashboard{
+  position: absolute; width:1082px;
+  background: #f5f5f5; padding-bottom: 10px;
+  position: fixed;  z-index: 9;
+  bottom:0px; left: 270px; 
+}
+#hawk-btn
+{
+  position: absolute;
+  bottom:-200px; left: 1%;
+  z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+#cam-btn{
+  position: absolute;
+  bottom:0px; left: 44%; 
+  position: fixed;  z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+#cam-close-btn,#cam-close-btn2{
+  position: relative;
+  bottom:28px; left: 50%; 
+   z-index: 99999;
+  background-color: white;
+  color: #000;
+  padding: 10px;
+}
+.iconT{position: absolute;
+  bottom:118px; 
+  left: 1100px;
+  }
+
+  .iconT a{background: #fff; padding: 10px;}
+  .iconT a{background: #ebebeb;}
+
+  .iconB{position: absolute;
+    bottom:320px; 
+    left: 570px;
+    }
+  
+.iconB a{background: #fff; padding: 10px;}
+.iconB a{background: #ebebeb;}
+
+
+
+
+
+
+  /*****************  common classes  *********************************/
+
+  /* border solid */
+  .bordall{border: solid 1px #dddddd;}
+  .bordleft{border-left: solid 1px #dddddd;}
+  .bordright{border-right: solid 1px #dddddd;}
+  .bordtop{border-top: solid 1px #dddddd;}
+  .bordbtm{border-bottom: solid 1px #dddddd;}
+
+  /* border dashed */
+  .bordtopdas{border-top: dashed 1px #aaa;}
+
+  /* box */
+  .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
+
+  /* width */
+  .w100{width: 100%;}
+  .w150px{width: 150px;}
+
+  /* color */
+  .blue1{color: #1c79c8;}
+  .colorgrey{color:#555555;}
+
+  .red{ color:#C10000;}
+  .red1{ color:#fe4e37;}
+
+  .green1{color: #1eb54f;}
+
+
+  /* bg color */
+  .bgcol1{background: #f0f0f0;}
+  .bgcol2{background: #dcdcdc;}
+
+  /* line height */
+  .LH16{line-height: 16px !important;}
+
+  /* cursor */
+  .cursorpoint{cursor: pointer;}
+
+
+  .divcenter{display: flex; justify-content: center;}
+
+.profile-heading
+{
+  background: #777;
+  height: 30px;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  padding-top: 3px;
+  border-radius: 5px;
+}
+
+/* TABLE ROW HOVER */
+/* table tbody tr:hover{
+  background-color: #ccc;
+} */
+
+
+/*  Driver profile Page  */
+.summary_box
+{
+ 
+  padding: 20px;
+}
+
+
+
+#photoDiv{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: white;
+}
+
+.back-color-gray{
+  background-color: #eee;
+  border: 0.5px solid #ddd;
+}
+.border-box{
+  border: 0.5px solid #ddd;
+}
+
+
+/* Daljit Classes Starts here */
+
+.f-40 {
+  font-size: 40px !important;
+}
+
+
+/*--Incidents Css--*/
+.incident-tabs.nav-tabs li {
+    padding: 0
+}
+.incident-tabs.nav-tabs li .nav-link {
+    color: #2e353e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 50px;
+    border: none;
+    margin: 0;
+    background: transparent;
+}
+.incident-tabs.nav-tabs .nav-link.active, 
+.incident-tabs.nav-tabs .nav-link:hover,
+.incident-tabs.nav-tabs .nav-link.active:hover,
+.incident-tabs.nav-tabs .nav-link.active:focus {
+    color: #000;
+    background: #fff;
+    border: none;
+    text-decoration: none;
+}
+.tab-pane.active{
+    text-decoration: none !important;
+}
+#incident-tabs li.active {
+    text-decoration: none;
+}
+#hos-list,#incidents-list,#scorecard-list {
+    display: none;
+}
+.safety-overview__main .maindriverbox {
+    cursor: pointer;
+}
+.maindriverbox.active {
+    background-color: #ecedf0;
+}
+.dataTables_length {
+    display: none;
+}
+
+/* Safety Details css*/
+.safety-deails__map {
+    width: 100%;
+    height: 400px;
+}
+.back-color-gray {
+    background-color: #eee;
+    border: 0.5px solid #ddd;
+}
+
+/*--Add Alert--*/
+.add-alert__listing {
+    list-style: none;
+    padding: 0;
+}
+.add-alert__listing li {
+    margin: 10px 10px 0 0;
+    text-align: center;
+}
+.add-alert__listing li a {
+    padding: 5px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    border: 1px solid #dcdcdc;
+    position: relative;
+    font-size: 14px;
+}
+.add-alert__listing li a.active {
+    background: #343434;
+    color: #fff;
+    border-color: #343434;
+}
+.add-alert__listing li .check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.alert-container {
+    border: 2px solid #dcdcdc;
+    padding: 30px;  
+}
+.lh-normal {
+    line-height: normal;
+}
+.driver-vehicle__main .nav-tabs li .nav-link {
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    color: #678;
+}
+.driver-vehicle__main .nav-tabs .nav-link.active {
+    text-decoration: none;
+    border-bottom: 1px solid #787;
+}
+.alert-container {
+    display: none;
+}
+.alert-container.active {
+    display: block;
+    text-decoration: none;
+}
+
+/*--Reports--*/
+.reports-sidebar,
+.reports-tabs__content {
+    border: 1px solid #e6e6e6;
+}
+.reports-sidebar ul{
+    list-style: none;
+}
+.reports-sidebar ul li a{
+    border-bottom: 1px solid #e6e6e6;
+    padding: 10px 15px;
+    float: left;
+    margin-left: -2px;
+    border-radius: 0; 
+    position: relative;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+.reports-sidebar ul li a.active,
+.reports-sidebar ul li a:hover{
+    text-decoration: none !important;
+    color: #000 !important;
+    border-left: 1px solid #424242;
+    border-right: 1px solid #424242;
+    background-color: #efefef !important;
+}
+/* .reports-sidebar ul li a.active::after {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    content: "\f054";
+} */
+.reports-sidebar ul li:last-child a{
+    border-bottom: none;
+}
+.active{
+    text-decoration: none !important; 
+}
+
+html.fixed .reports-wrapper {
+    padding-top: 60px;
+}
+.reports-search {
+    max-width: 65%;
+    margin: 0 auto;
+}
+.reports-listing a {
+    padding: 10px 15px;
+    display: block;
+    line-height: normal;
+    text-decoration: none !important;
+    border-bottom: 1px solid #e6e6e6;
+    transition: all 0.3s linear 0s;
+    position: relative;
+}
+.reports-listing a:last-child {
+    border: none;
+}
+/* .reports-listing a::after {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    content: "\f054";
+    color: #d2d2d2;
+} */
+.reports-listing a:hover{
+    background-color: #f7f4f4;
+    text-decoration: underline!important;
+}
+.reports-listing h4 {
+    font-size: 13px;
+}
+.reports-listing span {
+    font-size: 0.8rem;
+    color: #607587;
+}
+.report-dtl__content .card{
+  border: 1px solid #DADADA;
+}
+.report-dtl__content .card-header {
+  background-color: #343434;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.dataTables_empty {
+  display: none;
+}
+
+.no-data-available {
+  text-align: center;
+}
+
+
+.table-scroll-y {
+  display: block;
+}
+
+.table-scrollplan {
+  position: relative;
+  height: 650px;
+  overflow: auto;
+}
+
+
+.notespr {
+width: 90%;
+height: 50px;
+overflow: auto;
+}
+
+
+/* new IFTA look page */
+
+.newbgifta{background:#767676 !important;}
+.btnround40{border-radius:40px;}
+.btnifta{background:#464646 !important; border: none !important;}
+.btnifta:hover{background:#161616 !important;}
+
+
+
+
+
+/* new classes update after tester rashmi testing */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover
+{
+border: 1px solid #e9ecef !important;
+border-radius: 0.25rem !important;
+background: #e9ecef !important;
+}
+
+.dutystatwd{min-width: 11.5rem !important;}
+
+
+
+table.dataTable thead th, table.dataTable thead td {
+  padding: 10px 10px !important;
+}
+
+/*top padding should be equal of vehicle table between numbering and count*/
+.dataTables_wrapper .dataTables_info{padding-top: 1.5em !important;}
+
+
+.dropdown-menu{z-index:1010 !important;}
+
+.checkboxalign{vertical-align: middle !important;}
+
+/*drop down icon for common pages*/
+.togglecolor::after{color:#999;}
+
+/*drop down icon on asset page*/
+.toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}
+
+
+/* Page body colro ligh grey class */
+.pagebody{background: #ecedf0 !important;}
+
+/* placeholder classes */
+::-webkit-input-placeholder { /* Edge */
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+
+::placeholder {
+  color: e1e1e1 !important;
+  font-size: 12px !important;
+}
+/* Optional label color */
+.optional-label-color {
+  color: e1e1e1 !important;
+}
+
+.suggestionClass {
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  z-index: 99999;
+  padding-left: 5px;
+}
+.suggestionClass:hover{
+  background-color: #e1e1e1;
+
+}

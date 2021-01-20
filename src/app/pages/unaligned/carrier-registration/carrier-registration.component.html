@@ -1,0 +1,256 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header">
+                <h2>{{ title }}</h2>
+
+                <div class="right-wrapper text-right">
+                    <ol class="breadcrumbs pr-3">
+                        <li>
+                            <a routerLink="/">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="/Carriers-List">
+                                Carrier List
+                            </a>
+                        </li>
+                        <li>
+                            <span>{{ title }}</span>
+                        </li>
+                    </ol>
+                </div>
+            </header>
+
+            <div class="row">
+                <div class="col">
+                    <section class="card mb-3">
+                        <div class="addv_topnav">
+
+                        </div>
+                    </section>
+                    <form
+                            class="form-horizontal form-bordered"
+                            method="get"
+                            name="form"
+                            id="form_"
+                    >
+                        <div class="card-body" id="company_settings">
+                            <header class="card-header">
+                                <h2 class="card-title">Carrier Registration</h2>
+                            </header>
+                            <div class="form-horizontal form-bordered">
+                                <div class="form-group row">
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="carrierInput"
+                                        >Carrier Name</label
+                                        >
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="carrierName"
+                                                id="carrierInput"
+                                                [(ngModel)]="carrierName"
+                                        />
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+
+                                        >Email</label
+                                        >
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="carrierEmail"
+                                                id="carrierEmail"
+                                                [(ngModel)]="carrierEmail"
+                                        />
+                                    </div>
+
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label
+                                                class="control-label text-lg-right text-4 pt-2"
+                                        >Address</label
+                                        >
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="streetInput"
+                                        >Street No</label
+                                        >
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="address.streetNo"
+                                                id="streetInput"
+                                                [(ngModel)]="address.streetNo"
+                                        />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="streetNameInput"
+                                        >Street Name</label
+                                        >
+                                        <input
+                                                type="text"
+                                                class="form-control"
+                                                name="address.streetName"
+                                                id="streetNameInput"
+                                                [(ngModel)]="address.streetName"
+                                        />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="countryInput"
+                                        >Country</label
+                                        >
+                                        <select
+                                                data-plugin-selectTwo
+                                                class="form-control populate"
+                                                name="address.countryID"
+                                                id="countryInput"
+                                                [(ngModel)]="address.countryID"
+                                                (change)="getStates()"
+                                        >
+                                            <optgroup label="">
+                                                <option
+                                                        *ngFor="let country of countries"
+                                                        value="{{ country.countryID }}"
+                                                >{{ country.countryName }}</option
+                                                >
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="stateInput"
+                                        >State</label
+                                        >
+                                        <select
+                                                data-plugin-selectTwo
+                                                class="form-control populate"
+                                                name="address.stateID"
+                                                [(ngModel)]="address.stateID"
+                                                (change)="getCities()"
+                                                id="stateInput"
+                                        >
+                                            <optgroup label="">
+                                                <option
+                                                        *ngFor="let state of states"
+                                                        value="{{ state.stateID }}"
+                                                >{{ state.stateName }}</option
+                                                >
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="cityInput"
+                                        >City</label
+                                        >
+                                        <select
+                                                data-plugin-selectTwo
+                                                class="form-control populate"
+                                                name="address.cityID"
+                                                [(ngModel)]="address.cityID"
+                                                id="cityInput"
+                                        >
+                                            <optgroup label="">
+                                                <option
+                                                        *ngFor="let city of cities"
+                                                        value="{{ city.cityID }}"
+                                                >{{ city.cityName }}</option
+                                                >
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="zipInput"
+                                        >Zip Code</label
+                                        >
+                                        <input
+                                                type="number"
+                                                class="form-control"
+                                                name="address.zipCode"
+                                                id="zipInput"
+                                                min="1"
+                                                maxlength="100"
+                                                [(ngModel)]="address.zipCode"
+                                        />
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label
+                                                class="control-label text-lg-right pt-2"
+                                                for="zipInput"
+                                        >Log Time</label
+                                        >
+                                        <input
+                                                type="number"
+                                                class="form-control"
+                                                name="logTime"
+                                                id="zipInput"
+                                                min="1"
+                                                maxlength="100"
+                                                [(ngModel)]="logTime"
+                                        />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <button
+                                        class="btn btn-dark mt-4 modal-confirm"
+                                        (click)="addCarrier()"
+                                >
+                                    Submit
+                                </button>
+                                <button class="btn btn-default mt-4 modal-confirm">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <!-- <p class="text text-danger" *ngIf="hasError">{{ Error }}</p> -->
+                                <p class="text text-success" *ngIf="hasSuccess">
+                                    {{ Success }}
+                                </p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

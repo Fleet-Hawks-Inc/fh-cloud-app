@@ -1,0 +1,154 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+        <section role="main" class="content-body">
+            <header class="page-header pr-5">
+                <div class="row px-4" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="filterValue.driverName" name="searchedDriverName"
+                            (input)="getSuggestions($event.target.value)" placeholder="Search Driver Name">
+                        </div>
+                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
+                            {{ data.name }}
+                        </div>
+                    </div>
+                    <div class="col-md-2  col-lg-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <!-- <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date"> -->
+                            <input 
+                                [(ngModel)]="filterValue.date" name="date" 
+                                type="text" 
+                                placeholder="Search By Incident Date"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off" (ngModelChange)="searchFilter($event)"> 
+                        </div>
+                    </div>
+
+                    <div class="col-md-2  col-lg-2">
+                        <a href="javascript:;" (click)="searchEvent()"
+                            class="btn btn-success btn-sm mr-1" style="color:white;"> Search
+                        </a>
+                        <a href="javascript:;" (click)="resetFilter()"
+                            class="btn btn-success btn-sm" style="color:white;"> Reset
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-6  col-lg-6 text-right">
+                        <a href="javascript:;" routerLink="/safety/incidents/add-incident"
+                            class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add
+                            Incident</a>
+
+                        <div class="btn-group flex-wrap">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="">Import</a>
+                                <a class="dropdown-item text-1" href="">Export</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <section class="card">
+                        <div class="card-body" style="display: block;">
+                            <div class="mb-3">
+                                <ul class="nav nav-tabs top-tabs incident-tabs" id="incident-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active navtabs" id="allSafetyIncidents-tab" href="javascript:;" 
+                                        (click)="fetchTabData('all')">All</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link navtabs" id="assigned-tab" href="javascript:;" (click)="fetchTabData('assigned')">Assigned</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('underReview')">Under-review</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Resolved</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content border-0 p-0" id="myTabContent">
+                                <div class="tab-pane fade show active" id="allSafetyIncidents" role="tabpanel"
+                                    aria-labelledby="allSafetyIncidents-tab">
+                                    <div class="">
+                                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                            class="row-border hover table table-bordered table-striped mb-0 ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Driver Name</th>
+                                                    <th>Date &amp; Time</th>
+                                                    <th>Location</th>
+                                                    <th>Vehicle</th>
+                                                    <th>Severity</th>
+                                                    <th>Assigned</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngIf="events.length > 0">
+                                                <tr *ngFor="let data of events; let i= index">
+                                                    <td
+                                                        routerLink="/safety/incidents/incident-details/{{data.eventID}}">
+                                                        {{ driversObject[data.driverUsername] }}</td>
+                                                    <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>
+                                                    <td>{{ data.location }}</td>
+                                                    <td>{{ vehiclesObject[data.vehicleID] }}</td>
+                                                    <td>{{ data.severity }}</td>
+                                                    <td>{{ usersObject[data.username] }}</td>
+                                                    <td>
+                                                        <select class="form-control" name="coachingStatus"
+                                                            [(ngModel)]="data.coachingStatus"
+                                                            (change)="changeCoachingStatus($event, data.eventID)">
+                                                            <option *ngFor="let stat of coachingStatus"
+                                                                value="{{ stat.value }}">{{ stat.name }}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/safety/incidents/edit-incident/{{data.eventID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deleteEvent(data.eventID)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tbody *ngIf="events.length == 0">
+                                                <tr>
+                                                    <td colspan="8" class="no-data-available">No record(s) found</td>
+                                                </tr>
+                                            <tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

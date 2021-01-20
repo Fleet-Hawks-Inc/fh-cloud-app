@@ -1,0 +1,601 @@
+<style>
+    .extra {
+       display: none;
+    }
+ </style>
+
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+
+
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header pr-5">
+                <form class="form-horizontal" method="get">
+                    <div class="row px-2" style="padding-top: 10px">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
+                                    [(ngModel)]="vehicleIdentification" class="form-control"
+                                    (input)="getSuggestions($event.target.value)" />
+                            </div>
+                            <div *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer" (click)="
+                                setVehicle(
+                                    suggestedVehicle.vehicleID,
+                                    suggestedVehicle.vehicleIdentification
+                                )
+                                ">
+                                {{ suggestedVehicle.vehicleIdentification }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <select data-plugin-selectTwo [(ngModel)]="currentStatus" name="currentStatus" placeholder="Select Type"
+                                class="form-control populate">
+                                <optgroup label="Select Status">
+                                    <option value="">All</option>
+                                    <option value="active">Active</option>
+                                    <option value="inActive">Inactive</option>
+                                    <option value="sold">Sold</option>
+                                    <option value="outOfService">Out of Service</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2 pl-2">
+                            <button type="submit" (click)="searchFilter()"
+                                class="btn btn-sm btn-success mr-2">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                        </div>
+                        <div class="col-md-6 col-lg-6 text-right pr-3 page-buttons">
+                            <div class="btn-group flex-wrap" style="min-width:190px;">
+                                <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                                <div class="dropdown-menu dutystatwd" role="menu">
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.vin"
+                                      name="vin" (change)="hideShowColumn()"> VIN </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.vehicleName"
+                                      name="vehicleName" (change)="hideShowColumn()"> Vehicle Name </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.vehicleType"
+                                      name="vehicleType" (change)="hideShowColumn()"> Vehicle Type </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.make"
+                                      name="make" (change)="hideShowColumn()"> Make </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.model"
+                                      name="model" (change)="hideShowColumn()"> Modal </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.lastLocation"
+                                      name="lastLocation" (change)="hideShowColumn()"> Last Location </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.trip"
+                                      name="trip" (change)="hideShowColumn()"> Trip </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.plateNo"
+                                      name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.fuelType"
+                                      name="fuelType" (change)="hideShowColumn()"> Fuel Type </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                                         name="status" (change)="hideShowColumn()"> Status </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.group"
+                                         name="group" (change)="hideShowColumn()"> Group </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.ownership"
+                                         name="ownership" (change)="hideShowColumn()"> Ownership </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.driver"
+                                         name="driver" (change)="hideShowColumn()"> Assigned Driver </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.serviceProgram"
+                                         name="serviceProgram" (change)="hideShowColumn()"> Service Program </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.serviceDate"
+                                         name="serviceDate" (change)="hideShowColumn()"> In Service Date </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.insuranceVendor"
+                                         name="insuranceVendor" (change)="hideShowColumn()"> Insurance Vendor </label>
+                                   </a>
+                                   <a class="dropdown-item text-1" href="javascript:;">
+                                      <label><input type="checkbox" [(ngModel)]="hideShow.insuranceAmount"
+                                         name="insuranceAmount" (change)="hideShowColumn()"> Insurance Amount </label>
+                                   </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.engineSummary" name="engineSummary"
+                                                (change)="hideShowColumn()"> Engine Summary </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.primaryMeter" name="primaryMeter"
+                                                (change)="hideShowColumn()"> Primary Meter </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.fuelUnit" name="fuelUnit"
+                                                (change)="hideShowColumn()"> Fuel Unit </label>
+                                    </a>
+                                </div>
+                             </div>
+                            <button type="button" id="map_view_btn"
+                                [ngClass]="(currentView=='map')?'btn-success':'btn-default'" class="btn btn-sm mr-2"
+                                (click)="changeView()">
+                                Map View
+                            </button>
+                            <button type="button" id="list_view_btn"
+                                [ngClass]="(currentView=='list')?'btn-success':'btn-default'" class="btn btn-sm mr-2"
+                                (click)="changeView()">
+                                List View
+                            </button>
+                            <div class="btn-group btn-group1 flex-wrap mr-2">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false">
+                                    Actions<span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                                    position: absolute;
+                                    will-change: transform;
+                                    top: 0px;
+                                    left: 0px;
+                                    transform: translate3d(0px, 38px, 0px);
+                                ">
+                                    <a class="dropdown-item text-1" [routerLink]="">Import</a>
+                                    <a class="dropdown-item text-1" (click)="export()">Export</a>
+                                </div>
+                            </div>
+                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm mx-2"
+                                style="color: white"><i class="fas fa-plus"></i> Add Vehicle</a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div id="list_view" *ngIf="currentView == 'list'">
+                <div class="row">
+                    <div class="col">
+                        <section class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                        class="row-border hover table table-bordered table-striped mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="col1">VIN</th>
+                                                <th class="col2">Vehicle Name</th>
+                                                <th class="col3">Vehicle Type</th>
+                                                <th class="col4">Make</th>
+                                                <th class="col5">Modal</th>
+                                                <th class="col6">Last Location</th>
+                                                <th class="col7">Trip</th>
+                                                <th class="col8">Plate Number</th>
+                                                <th class="col9">Fuel Type</th>
+                                                <th class="col10">Current Status</th>
+                                                <th class="col11">Group</th>
+                                                <th class="col12">Ownership</th>
+                                                <th class="col13 extra">Assigned Driver</th>
+                                                <th class="col14 extra">Service Program</th>
+                                                <th class="col15 extra">In Service Date</th>
+                                                <th class="col16 extra">Insurance Vendor</th>
+                                                <th class="col17 extra">Insurance Amount</th>
+                                                <th class="col18 extra">Engine Summary</th>
+                                                <th class="col19 extra">Primary Meter</th>
+                                                <th class="col20 extra">Fuel Unit</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="vehicles.length > 0">
+                                            <tr *ngFor="let vehicle of vehicles; let i = index">
+                                                <td  *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ vehicle.VIN }}
+                                                </td>
+                                                <td  *ngIf="hideShow.vehicleName" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ vehicle.vehicleIdentification }}
+                                                </td>
+                                                <td  *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ vehicle.vehicleType }}
+                                                </td>
+                                                <td  *ngIf="hideShow.make" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicleManufacturersList[vehicle.manufacturerID]}}
+                                                </td>
+                                                <td  *ngIf="hideShow.model" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicleModelList[vehicle.modelID]}}
+                                                </td>
+                                                <td  *ngIf="hideShow.lastLocation" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    Ontario
+                                                </td>
+                                                <td  *ngIf="hideShow.trip" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    111
+                                                </td>
+                                                <td  *ngIf="hideShow.plateNo" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.plateNumber}}
+                                                </td>
+                                                <td  *ngIf="hideShow.fuelType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.fluid.fuelType}}
+                                                </td>
+                                                <td  *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.currentStatus}}
+                                                </td>
+                                                <td  *ngIf="hideShow.group" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{groupsList[vehicle.groupID]}}
+                                                </td>
+                                                <td  *ngIf="hideShow.ownership" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.ownership}}
+                                                </td>
+
+                                                <!-- extra columns -->
+                                                <td  *ngIf="hideShow.driver" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ driversList[vehicle.driverID] }}
+                                                </td>
+                                                <td  *ngIf="hideShow.serviceProgram" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ serviceProgramsList[vehicle.serviceProgramID] }}
+                                                </td>
+                                                <td  *ngIf="hideShow.serviceDate" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.lifeCycle.inServiceDate | date:'dd-MM-yyyy'}}
+                                                </td>
+                                                <td  *ngIf="hideShow.insuranceVendor" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vendorsList[vehicle.insurance.vendorID]}}
+                                                </td>
+                                                <td  *ngIf="hideShow.insuranceAmount" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.insurance.amount}}
+                                                </td>
+                                                <td  *ngIf="hideShow.engineSummary" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.engine.engineSummary}}
+                                                </td>
+                                                <td  *ngIf="hideShow.primaryMeter" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.settings.primaryMeter}}
+                                                </td>
+                                                <td  *ngIf="hideShow.fuelUnit" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{vehicle.settings.fuelUnit}}
+                                                </td>
+                                                
+                                                <td>
+                                                    <div class="dropdown dropright">
+                                                        <button class="bg-transparent border-0" type="button"
+                                                            id="dropdownMenuButton-{{ i }}" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false" [routerLink]="">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu"
+                                                            attr.aria-labelledby="dropdownMenuButton-{{ i }}">
+                                                            <a class="dropdown-item" routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}">Edit</a>
+                                                            <a class="dropdown-item" href="javascript:;"
+                                                                (click)="deleteVehicle(vehicle.vehicleID)">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody *ngIf="vehicles.length === 0">
+                                            <tr>
+                                                <td colspan="13" class="no-data-available">No records found</td>
+                                            </tr>
+                                        <tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!--Map view-->
+            <div class="mapclass vehiclemain" id="map_view" *ngIf="currentView == 'map'">
+                <div id="map" class="" style="height: calc(100vh - 110px);"></div>
+
+                <div class="vehicleRmini" id="arrowRvehicle">
+                    <a href="#"><i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="vehicleLmini" id="arrowLvehicle" style="display: none">
+                    <a href="#"><i class="fas fa-arrow-left"></i></a>
+                </div>
+                <!-- ENTIRE FLEET DROP DOWN ON MAP -->
+                <div class="entire_fleet_map">
+                    <div class="form-group row">
+                        <div class="col-lg-12">
+                            <div class="input-group input-group-select-append">
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-sitemap"></i>
+                                    </span>
+                                </span>
+                                <select class="form-control" multiple="multiple" data-plugin-multiselect=""
+                                    data-plugin-options="{ &quot;maxHeight&quot;: 200, &quot;enableCaseInsensitiveFiltering&quot;: true }"
+                                    id="ms_example6" style="display: none;">
+                                    <optgroup label="Group1">
+                                        <option value="analysis" selected=""> Entire Fleet</option>
+                                        <option value="algebra">Linear</option>
+                                        <option value="discrete">Discrete</option>
+                                        <option value="numerical">Numerical</option>
+                                        <option value="probability">Probability</option>
+                                    </optgroup>
+                                    <optgroup label="Group2">
+                                        <option value="programming">Name 1</option>
+                                        <option value="automata">Automata Theory</option>
+                                        <option value="complexity">Complexity Theory</option>
+                                        <option value="software">Software Engineering</option>
+                                    </optgroup>
+                                </select>
+                                <div class="btn-group"><button type="button"
+                                        class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown"
+                                        title=" Entire Fleet"><span class="multiselect-selected-text"> Entire
+                                            Fleet</span> <b class="caret"></b></button>
+                                    <ul class="multiselect-container dropdown-menu"
+                                        style="max-height: 200px; overflow: hidden auto;">
+                                        <div class="input-group"><span class="input-group-prepend"><span
+                                                    class="input-group-text"><i
+                                                        class="fas fa-search"></i></span></span><input
+                                                class="form-control multiselect-search" type="text"
+                                                placeholder="Search"></div>
+                                        <li class="multiselect-item multiselect-group"><label>Group1</label></li>
+                                        <li class="active"><a class="dropdown-item" tabindex="0"><label
+                                                    style="display: block;" class="checkbox"><input type="checkbox"
+                                                        value="analysis"> Entire Fleet</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="algebra">
+                                                    Linear</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="discrete">
+                                                    Discrete</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="numerical">
+                                                    Numerical</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="probability">
+                                                    Probability</label></a></li>
+                                        <li class="multiselect-item multiselect-group"><label>Group2</label></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="programming"> Name
+                                                    1</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="automata"> Automata
+                                                    Theory</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="complexity">
+                                                    Complexity Theory</label></a></li>
+                                        <li><a class="dropdown-item" tabindex="0"><label style="display: block;"
+                                                    class="checkbox"><input type="checkbox" value="software"> Software
+                                                    Engineering</label></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="vehicleminilist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
+                    id="vehicleMiniList">
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Prius</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Kingston,
+                                Toronto, ON K7L 5K4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">ON ROAD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Big Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON
+                                L6Z 3G4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">PARKED<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Small Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave
+                                Regina SK S4S 0S4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">YARD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Prius</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Kingston,
+                                Toronto, ON K7L 5K4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">ON ROAD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Big Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON
+                                L6Z 3G4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">PARKED<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Small Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave
+                                Regina SK S4S 0S4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">YARD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Prius</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Kingston,
+                                Toronto, ON K7L 5K4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">ON ROAD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Big Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON
+                                L6Z 3G4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">PARKED<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Small Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave
+                                Regina SK S4S 0S4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">YARD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Prius</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Kingston,
+                                Toronto, ON K7L 5K4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">ON ROAD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Big Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON
+                                L6Z 3G4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">PARKED<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Small Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave
+                                Regina SK S4S 0S4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">YARD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Prius</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Kingston,
+                                Toronto, ON K7L 5K4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">ON ROAD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Big Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> Crt Brampton ON
+                                L6Z 3G4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">PARKED<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                    <div class="vehicleDetailMap">
+                        <a href="vehicle-details2.php">
+                            <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Vehicle"></i> Small Truck</p>
+                            <span class="driverstatus"><i class="fas fa-map-marker-alt" data-toggle="tooltip"
+                                    data-placement="bottom" title="" data-original-title="Loation"></i> McCallum Ave
+                                Regina SK S4S 0S4</span>
+                            <span class="driverstatus">Current Status: <span class="badge badge-pills badge-dark p-1"
+                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                    data-original-title="Current Status">YARD<span></span>
+                                </span></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

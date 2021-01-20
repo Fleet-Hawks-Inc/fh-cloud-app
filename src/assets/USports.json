@@ -1,0 +1,1806 @@
+[
+	{
+		"code": "0101",
+		"portOfEntry": "Portland, ME"
+	},
+	{
+		"code": "0102",
+		"portOfEntry": "Bangor, ME"
+	},
+	{
+		"code": "0103",
+		"portOfEntry": "Eastport, ME"
+	},
+	{
+		"code": "0104",
+		"portOfEntry": "Jackman, ME"
+	},
+	{
+		"code": "0105",
+		"portOfEntry": "Vanceboro, ME"
+	},
+	{
+		"code": "0106",
+		"portOfEntry": "Houlton, ME"
+	},
+	{
+		"code": "0107",
+		"portOfEntry": "Fort Fairfield, ME"
+	},
+	{
+		"code": "0108",
+		"portOfEntry": "Van Buren, ME"
+	},
+	{
+		"code": "0109",
+		"portOfEntry": "Madawaska, ME"
+	},
+	{
+		"code": "0110",
+		"portOfEntry": "Fort Kent, ME"
+	},
+	{
+		"code": "0111",
+		"portOfEntry": "Bath, ME"
+	},
+	{
+		"code": "0112",
+		"portOfEntry": "Bar Harbor, ME"
+	},
+	{
+		"code": "0115",
+		"portOfEntry": "Calais, ME"
+	},
+	{
+		"code": "0118",
+		"portOfEntry": "Limestone, ME"
+	},
+	{
+		"code": "0121",
+		"portOfEntry": "Rockland, ME"
+	},
+	{
+		"code": "0122",
+		"portOfEntry": "Jonesport, ME"
+	},
+	{
+		"code": "0127",
+		"portOfEntry": "Bridgewater, ME"
+	},
+	{
+		"code": "0131",
+		"portOfEntry": "Portsmouth, NH"
+	},
+	{
+		"code": "0132",
+		"portOfEntry": "Belfast, ME"
+	},
+	{
+		"code": "0182",
+		"portOfEntry": "Manchester, NH"
+	},
+	{
+		"code": "0201",
+		"portOfEntry": "St. Albans, VT"
+	},
+	{
+		"code": "0203",
+		"portOfEntry": "Richford, VT"
+	},
+	{
+		"code": "0206",
+		"portOfEntry": "Beecher Falls, VT"
+	},
+	{
+		"code": "0207",
+		"portOfEntry": "Burlington International Airport"
+	},
+	{
+		"code": "0209",
+		"portOfEntry": "Derby Line, VT"
+	},
+	{
+		"code": "0211",
+		"portOfEntry": "Norton, VT"
+	},
+	{
+		"code": "0212",
+		"portOfEntry": "Highgate Springs, VT"
+	},
+	{
+		"code": "0214",
+		"portOfEntry": "Swanton, VT"
+	},
+	{
+		"code": "0401",
+		"portOfEntry": "Boston, MA"
+	},
+	{
+		"code": "0402",
+		"portOfEntry": "Springfield, MA"
+	},
+	{
+		"code": "0403",
+		"portOfEntry": "Worcester, MA"
+	},
+	{
+		"code": "0404",
+		"portOfEntry": "Gloucester, MA"
+	},
+	{
+		"code": "0405",
+		"portOfEntry": "New Bedford, MA"
+	},
+	{
+		"code": "0406",
+		"portOfEntry": "Plymouth, MA"
+	},
+	{
+		"code": "0407",
+		"portOfEntry": "Fall River, MA"
+	},
+	{
+		"code": "0408",
+		"portOfEntry": "Salem, MA"
+	},
+	{
+		"code": "0410",
+		"portOfEntry": "Bridgeport, CT"
+	},
+	{
+		"code": "0411",
+		"portOfEntry": "Hartford, CT"
+	},
+	{
+		"code": "0412",
+		"portOfEntry": "New Haven, CT"
+	},
+	{
+		"code": "0413",
+		"portOfEntry": "New London, CT"
+	},
+	{
+		"code": "0416",
+		"portOfEntry": "Lawrence, MA"
+	},
+	{
+		"code": "0417",
+		"portOfEntry": "Logan Airport"
+	},
+	{
+		"code": "0481",
+		"portOfEntry": "Hanscom User Fee Airport, Bedford, MA"
+	},
+	{
+		"code": "0501",
+		"portOfEntry": "Newport, RI"
+	},
+	{
+		"code": "0502",
+		"portOfEntry": "Providence, RI"
+	},
+	{
+		"code": "0606",
+		"portOfEntry": "Plymouth, MA"
+	},
+	{
+		"code": "0701",
+		"portOfEntry": "Ogdensburg, NY"
+	},
+	{
+		"code": "0704",
+		"portOfEntry": "Massena, NY"
+	},
+	{
+		"code": "0706",
+		"portOfEntry": "Cape Vincent, NY"
+	},
+	{
+		"code": "0708",
+		"portOfEntry": "Alexandria Bay, NY"
+	},
+	{
+		"code": "0712",
+		"portOfEntry": "Champlain, NY"
+	},
+	{
+		"code": "0715",
+		"portOfEntry": "Trout River, NY"
+	},
+	{
+		"code": "0901",
+		"portOfEntry": "Buffalo, NY"
+	},
+	{
+		"code": "0903",
+		"portOfEntry": "Rochester, NY"
+	},
+	{
+		"code": "0904",
+		"portOfEntry": "Oswego, NY"
+	},
+	{
+		"code": "0905",
+		"portOfEntry": "Sodus Point, NY"
+	},
+	{
+		"code": "0906",
+		"portOfEntry": "Syracuse, NY"
+	},
+	{
+		"code": "0907",
+		"portOfEntry": "Utica, NY"
+	},
+	{
+		"code": "0981",
+		"portOfEntry": "Binghamton, NY"
+	},
+	{
+		"code": "0982",
+		"portOfEntry": "Rome, NY"
+	},
+	{
+		"code": "1001",
+		"portOfEntry": "New York, NY"
+	},
+	{
+		"code": "1002",
+		"portOfEntry": "Albany, NY"
+	},
+	{
+		"code": "1101",
+		"portOfEntry": "Philadelphia, PA"
+	},
+	{
+		"code": "1102",
+		"portOfEntry": "Chester, PA"
+	},
+	{
+		"code": "1103",
+		"portOfEntry": "Wilmington, DE"
+	},
+	{
+		"code": "1104",
+		"portOfEntry": "Pittsburgh, PA"
+	},
+	{
+		"code": "1106",
+		"portOfEntry": "Wilkes-Barre Scranton, PA"
+	},
+	{
+		"code": "1107",
+		"portOfEntry": "Camden, NJ"
+	},
+	{
+		"code": "1108",
+		"portOfEntry": "Philadelphia International Airport"
+	},
+	{
+		"code": "1109",
+		"portOfEntry": "Harrisburg, PA"
+	},
+	{
+		"code": "1119",
+		"portOfEntry": "Allentown, PA"
+	},
+	{
+		"code": "1182",
+		"portOfEntry": "Atlantic City User Fee Airport, NJ"
+	},
+	{
+		"code": "1183",
+		"portOfEntry": "Trenton/Mercer Country User Fee Airport, NJ"
+	},
+	{
+		"code": "1195",
+		"portOfEntry": "UPS Courier Hub Facility, PA"
+	},
+	{
+		"code": "1303",
+		"portOfEntry": "Baltimore, MD"
+	},
+	{
+		"code": "1305",
+		"portOfEntry": "Balitmore- Washington International Airport, MD"
+	},
+	{
+		"code": "1401",
+		"portOfEntry": "Norfolk, VA"
+	},
+	{
+		"code": "1402",
+		"portOfEntry": "Newport News, VA"
+	},
+	{
+		"code": "1404",
+		"portOfEntry": "Richmond-Petersburg, VA"
+	},
+	{
+		"code": "1406",
+		"portOfEntry": "Cape Charles, VA"
+	},
+	{
+		"code": "1409",
+		"portOfEntry": "Charleston, WV"
+	},
+	{
+		"code": "1410",
+		"portOfEntry": "Front Royal, VA"
+	},
+	{
+		"code": "1412",
+		"portOfEntry": "New River Valley Airport, VA"
+	},
+	{
+		"code": "1481",
+		"portOfEntry": "New River Valley Airport"
+	},
+	{
+		"code": "1501",
+		"portOfEntry": "Wilmington, NC"
+	},
+	{
+		"code": "1502",
+		"portOfEntry": "Winston-Salem, NC"
+	},
+	{
+		"code": "1503",
+		"portOfEntry": "Raleigh-Durham, NC"
+	},
+	{
+		"code": "1511",
+		"portOfEntry": "Morehead City, NC"
+	},
+	{
+		"code": "1512",
+		"portOfEntry": "Charlotte, NC"
+	},
+	{
+		"code": "1601",
+		"portOfEntry": "Charleston, SC"
+	},
+	{
+		"code": "1602",
+		"portOfEntry": "Georgetown, SC"
+	},
+	{
+		"code": "1603",
+		"portOfEntry": "Greenville-Spartanburg, SC"
+	},
+	{
+		"code": "1604",
+		"portOfEntry": "Columbia, SC"
+	},
+	{
+		"code": "1681",
+		"portOfEntry": "Myrtle Beach International Airport, SC"
+	},
+	{
+		"code": "1701",
+		"portOfEntry": "Brunswick, GA"
+	},
+	{
+		"code": "1703",
+		"portOfEntry": "Savannah, GA"
+	},
+	{
+		"code": "1704",
+		"portOfEntry": "Atlanta, GA"
+	},
+	{
+		"code": "1801",
+		"portOfEntry": "Tampa, FL"
+	},
+	{
+		"code": "1803",
+		"portOfEntry": "Jacksonville, FL"
+	},
+	{
+		"code": "1805",
+		"portOfEntry": "Fernandina Beach, FL"
+	},
+	{
+		"code": "1806",
+		"portOfEntry": "Carrabelle, FL"
+	},
+	{
+		"code": "1807",
+		"portOfEntry": "Boca Grande, FL"
+	},
+	{
+		"code": "1808",
+		"portOfEntry": "Orlando, FL"
+	},
+	{
+		"code": "1809",
+		"portOfEntry": "Sanford, FL"
+	},
+	{
+		"code": "1814",
+		"portOfEntry": "St. Petersburg, FL"
+	},
+	{
+		"code": "1816",
+		"portOfEntry": "Cape Canaveral, FL"
+	},
+	{
+		"code": "1817",
+		"portOfEntry": "Apalachicola, FL"
+	},
+	{
+		"code": "1818",
+		"portOfEntry": "Panama City"
+	},
+	{
+		"code": "1819",
+		"portOfEntry": "Pensacola, FL"
+	},
+	{
+		"code": "1820",
+		"portOfEntry": "Port St. Joe, FL"
+	},
+	{
+		"code": "1821",
+		"portOfEntry": "Port Manatee, FL"
+	},
+	{
+		"code": "1822",
+		"portOfEntry": "Fort Myers, FL"
+	},
+	{
+		"code": "1880",
+		"portOfEntry": "Naples, FL"
+	},
+	{
+		"code": "1881",
+		"portOfEntry": "Lakeland Linder Airport, FL"
+	},
+	{
+		"code": "1883",
+		"portOfEntry": "Sarasota, FL"
+	},
+	{
+		"code": "1884",
+		"portOfEntry": "Daytona Beach, FL"
+	},
+	{
+		"code": "1885",
+		"portOfEntry": "Melbourne, FL"
+	},
+	{
+		"code": "1887",
+		"portOfEntry": "Leesburg International Airport (UFA), FL"
+	},
+	{
+		"code": "1888",
+		"portOfEntry": "Orlando Executive Airport (UFA), FL"
+	},
+	{
+		"code": "1889",
+		"portOfEntry": "St. Augustine, FL"
+	},
+	{
+		"code": "1901",
+		"portOfEntry": "Mobile, AL"
+	},
+	{
+		"code": "1902",
+		"portOfEntry": "Gulfport, MS"
+	},
+	{
+		"code": "1903",
+		"portOfEntry": "Pascagoula, MS"
+	},
+	{
+		"code": "1904",
+		"portOfEntry": "Birmingham, AL"
+	},
+	{
+		"code": "1910",
+		"portOfEntry": "Huntsville, AL"
+	},
+	{
+		"code": "2001",
+		"portOfEntry": "Morgan City, LA"
+	},
+	{
+		"code": "2002",
+		"portOfEntry": "New Orleans, LA"
+	},
+	{
+		"code": "2003",
+		"portOfEntry": "Little Rock, AR"
+	},
+	{
+		"code": "2004",
+		"portOfEntry": "Baton Rouge, LA"
+	},
+	{
+		"code": "2006",
+		"portOfEntry": "Memphis, TN"
+	},
+	{
+		"code": "2007",
+		"portOfEntry": "Nashville, TN"
+	},
+	{
+		"code": "2008",
+		"portOfEntry": "Chattanooga, TN"
+	},
+	{
+		"code": "2010",
+		"portOfEntry": "Gramercy, LA"
+	},
+	{
+		"code": "2011",
+		"portOfEntry": "Greenville, MS"
+	},
+	{
+		"code": "2015",
+		"portOfEntry": "Vicksburg, MS"
+	},
+	{
+		"code": "2016",
+		"portOfEntry": "Knoxville, TN"
+	},
+	{
+		"code": "2017",
+		"portOfEntry": "Lake Charles, LA"
+	},
+	{
+		"code": "2018",
+		"portOfEntry": "Shreveport, LA"
+	},
+	{
+		"code": "2020",
+		"portOfEntry": "Lake Charles, LA"
+	},
+	{
+		"code": "2027",
+		"portOfEntry": "Tri-City User Fee Airport, Blountville, TN"
+	},
+	{
+		"code": "2081",
+		"portOfEntry": "Jackson Airport, Jackson, MS"
+	},
+	{
+		"code": "2082",
+		"portOfEntry": "Tri-City Airport, TN"
+	},
+	{
+		"code": "2084",
+		"portOfEntry": "Rogers Municipal Airport/Carter, Rogers, AR"
+	},
+	{
+		"code": "2095",
+		"portOfEntry": "Federal Express Courier, Memphis, TN"
+	},
+	{
+		"code": "2101",
+		"portOfEntry": "Port Arthur, TX"
+	},
+	{
+		"code": "2102",
+		"portOfEntry": "Sabine, TX"
+	},
+	{
+		"code": "2104",
+		"portOfEntry": "Beaumont, TX"
+	},
+	{
+		"code": "2301",
+		"portOfEntry": "Brownsville/Los Indios, TX"
+	},
+	{
+		"code": "2302",
+		"portOfEntry": "Del Rio, TX"
+	},
+	{
+		"code": "2303",
+		"portOfEntry": "Eagle Pass, TX"
+	},
+	{
+		"code": "2304",
+		"portOfEntry": "Laredo, TX"
+	},
+	{
+		"code": "2305",
+		"portOfEntry": "Hidalgo/Pharr, TX"
+	},
+	{
+		"code": "2307",
+		"portOfEntry": "Rio Grande City/Los Ebanos, TX"
+	},
+	{
+		"code": "2309",
+		"portOfEntry": "Progreso, TX"
+	},
+	{
+		"code": "2310",
+		"portOfEntry": "Roma/ Falcon Dam, TX"
+	},
+	{
+		"code": "2383",
+		"portOfEntry": "Harlingen Valley International Airport, TX"
+	},
+	{
+		"code": "2401",
+		"portOfEntry": "Ysleta, TX"
+	},
+	{
+		"code": "2402",
+		"portOfEntry": "El Paso, TX"
+	},
+	{
+		"code": "2403",
+		"portOfEntry": "Presidio, TX"
+	},
+	{
+		"code": "2404",
+		"portOfEntry": "Fabens, TX"
+	},
+	{
+		"code": "2406",
+		"portOfEntry": "Columbus, NM"
+	},
+	{
+		"code": "2407",
+		"portOfEntry": "Albuquerque, NM"
+	},
+	{
+		"code": "2408",
+		"portOfEntry": "Santa Teresa, NM"
+	},
+	{
+		"code": "2482",
+		"portOfEntry": "Roswell Industrial Airport, Roswell, NM"
+	},
+	{
+		"code": "2501",
+		"portOfEntry": "San Diego, CA"
+	},
+	{
+		"code": "2502",
+		"portOfEntry": "Winterhaven, CA"
+	},
+	{
+		"code": "2503",
+		"portOfEntry": "Calexico West, CA"
+	},
+	{
+		"code": "2504",
+		"portOfEntry": "San Ysidro, CA"
+	},
+	{
+		"code": "2505",
+		"portOfEntry": "Tecate, CA"
+	},
+	{
+		"code": "2506",
+		"portOfEntry": "Otay Mesa, CA"
+	},
+	{
+		"code": "2507",
+		"portOfEntry": "Calexico East, CA"
+	},
+	{
+		"code": "2581",
+		"portOfEntry": "Palomar Airport, CA"
+	},
+	{
+		"code": "2601",
+		"portOfEntry": "Douglas, AZ"
+	},
+	{
+		"code": "2602",
+		"portOfEntry": "Lukeville, AZ"
+	},
+	{
+		"code": "2603",
+		"portOfEntry": "Naco, AZ"
+	},
+	{
+		"code": "2604",
+		"portOfEntry": "Nogales, AZ"
+	},
+	{
+		"code": "2605",
+		"portOfEntry": "Phoenix, AZ"
+	},
+	{
+		"code": "2606",
+		"portOfEntry": "Sasabe, AZ"
+	},
+	{
+		"code": "2608",
+		"portOfEntry": "San Luis, AZ"
+	},
+	{
+		"code": "2609",
+		"portOfEntry": "Tucson, AZ"
+	},
+	{
+		"code": "2681",
+		"portOfEntry": "Scottsdale, AZ"
+	},
+	{
+		"code": "2682",
+		"portOfEntry": "Mesa, AZ"
+	},
+	{
+		"code": "2704",
+		"portOfEntry": "Los Angeles, CA"
+	},
+	{
+		"code": "2707",
+		"portOfEntry": "Port San Luis, CA"
+	},
+	{
+		"code": "2709",
+		"portOfEntry": "Long Beach, CA"
+	},
+	{
+		"code": "2713",
+		"portOfEntry": "Port Hueneme, CA"
+	},
+	{
+		"code": "2720",
+		"portOfEntry": "Los Angeles, CA"
+	},
+	{
+		"code": "2721",
+		"portOfEntry": "Ontario, CA"
+	},
+	{
+		"code": "2722",
+		"portOfEntry": "Las Vegas, NV"
+	},
+	{
+		"code": "2774",
+		"portOfEntry": "Virgin Atlantic Cargo, Los Angeles, CA"
+	},
+	{
+		"code": "2775",
+		"portOfEntry": "TNT Express Worldwide, Los Angeles, CA"
+	},
+	{
+		"code": "2776",
+		"portOfEntry": "IBC PACIFIC, CA"
+	},
+	{
+		"code": "2781",
+		"portOfEntry": "Palm Springs, CA"
+	},
+	{
+		"code": "2782",
+		"portOfEntry": "San Bernardino International Airport, CA"
+	},
+	{
+		"code": "2783",
+		"portOfEntry": "Victorville, CA"
+	},
+	{
+		"code": "2786",
+		"portOfEntry": "MEADOWS FIELD AIRPORT, BAKERSFIELD, CA"
+	},
+	{
+		"code": "2791",
+		"portOfEntry": "DHL-HUB LOS ANGELES, CA"
+	},
+	{
+		"code": "2795",
+		"portOfEntry": "UPS, ONTARIO, CA"
+	},
+	{
+		"code": "2801",
+		"portOfEntry": "San Francisco, CA"
+	},
+	{
+		"code": "2802",
+		"portOfEntry": "Eureka, CA"
+	},
+	{
+		"code": "2803",
+		"portOfEntry": "Fresno, CA"
+	},
+	{
+		"code": "2805",
+		"portOfEntry": "Monterey, CA"
+	},
+	{
+		"code": "2809",
+		"portOfEntry": "San Francisco, CA"
+	},
+	{
+		"code": "2810",
+		"portOfEntry": "Stockton, CA"
+	},
+	{
+		"code": "2811",
+		"portOfEntry": "Oakland, CA"
+	},
+	{
+		"code": "2812",
+		"portOfEntry": "Richmond, CA"
+	},
+	{
+		"code": "2815",
+		"portOfEntry": "CROCKETT, CA"
+	},
+	{
+		"code": "2816",
+		"portOfEntry": "Sacramento, CA"
+	},
+	{
+		"code": "2820",
+		"portOfEntry": "MARTINEZ, CA"
+	},
+	{
+		"code": "2821",
+		"portOfEntry": "REDWOOD CITY, CA"
+	},
+	{
+		"code": "2827",
+		"portOfEntry": "SELBY, CA"
+	},
+	{
+		"code": "2828",
+		"portOfEntry": "SAN JUAQUIN RIVER, CA"
+	},
+	{
+		"code": "2829",
+		"portOfEntry": "SAN PABLO BAY, CA"
+	},
+	{
+		"code": "2830",
+		"portOfEntry": "CARQUINEZ STRAIT, CA"
+	},
+	{
+		"code": "2833",
+		"portOfEntry": "Reno, NV"
+	},
+	{
+		"code": "2834",
+		"portOfEntry": "San Jose, CA"
+	},
+	{
+		"code": "2835",
+		"portOfEntry": "SACRAMENTO INTL AIRPORT, CA"
+	},
+	{
+		"code": "2895",
+		"portOfEntry": "FEDERAL EXPRESS, OAKLAND, CA"
+	},
+	{
+		"code": "2901",
+		"portOfEntry": "Astoria, OR"
+	},
+	{
+		"code": "2902",
+		"portOfEntry": "Newport, OR"
+	},
+	{
+		"code": "2903",
+		"portOfEntry": "Coos Bay, OR"
+	},
+	{
+		"code": "2904",
+		"portOfEntry": "Portland, OR"
+	},
+	{
+		"code": "2905",
+		"portOfEntry": "Longview, WA"
+	},
+	{
+		"code": "2907",
+		"portOfEntry": "Boise, ID"
+	},
+	{
+		"code": "2908",
+		"portOfEntry": "Vancouver, WA"
+	},
+	{
+		"code": "2909",
+		"portOfEntry": "KALAMA, WA"
+	},
+	{
+		"code": "2910",
+		"portOfEntry": "Portland International Airport, Portland, WA"
+	},
+	{
+		"code": "2921",
+		"portOfEntry": "Natrona County Airport"
+	},
+	{
+		"code": "3001",
+		"portOfEntry": "Seattle, WA"
+	},
+	{
+		"code": "3002",
+		"portOfEntry": "Tacoma, WA"
+	},
+	{
+		"code": "3003",
+		"portOfEntry": "Aberdeen, WA"
+	},
+	{
+		"code": "3004",
+		"portOfEntry": "Blaine, WA"
+	},
+	{
+		"code": "3005",
+		"portOfEntry": "Bellingham, WA"
+	},
+	{
+		"code": "3006",
+		"portOfEntry": "Everett, WA"
+	},
+	{
+		"code": "3007",
+		"portOfEntry": "Port Angeles, WA"
+	},
+	{
+		"code": "3008",
+		"portOfEntry": "Port Townsend, WA"
+	},
+	{
+		"code": "3009",
+		"portOfEntry": "Sumas, WA"
+	},
+	{
+		"code": "3010",
+		"portOfEntry": "Anacortes, WA"
+	},
+	{
+		"code": "3011",
+		"portOfEntry": "Nighthawk, WA"
+	},
+	{
+		"code": "3012",
+		"portOfEntry": "Danville, WA"
+	},
+	{
+		"code": "3013",
+		"portOfEntry": "FERRY, WA"
+	},
+	{
+		"code": "3014",
+		"portOfEntry": "Friday Harbor, WA"
+	},
+	{
+		"code": "3015",
+		"portOfEntry": "BOUNDARY, WA"
+	},
+	{
+		"code": "3016",
+		"portOfEntry": "Laurier, WA"
+	},
+	{
+		"code": "3017",
+		"portOfEntry": "Point Roberts, WA"
+	},
+	{
+		"code": "3019",
+		"portOfEntry": "Oroville Area Port, WA"
+	},
+	{
+		"code": "3020",
+		"portOfEntry": "Frontier, WA"
+	},
+	{
+		"code": "3022",
+		"portOfEntry": "Spokane, WA"
+	},
+	{
+		"code": "3023",
+		"portOfEntry": "Lynden, WA"
+	},
+	{
+		"code": "3025",
+		"portOfEntry": "Metaline Falls, WA"
+	},
+	{
+		"code": "3026",
+		"portOfEntry": "OLYMPIA, WA"
+	},
+	{
+		"code": "3029",
+		"portOfEntry": "Tacoma International Airport, Seattle, WA"
+	},
+	{
+		"code": "3071",
+		"portOfEntry": "UPS, SEATTLE, WA"
+	},
+	{
+		"code": "3082",
+		"portOfEntry": "Grant County Airport, Moses Lake, WA"
+	},
+	{
+		"code": "3101",
+		"portOfEntry": "Juneau, AK"
+	},
+	{
+		"code": "3102",
+		"portOfEntry": "Ketchikan, AK"
+	},
+	{
+		"code": "3103",
+		"portOfEntry": "Skagway, AK"
+	},
+	{
+		"code": "3104",
+		"portOfEntry": "Alcan, AK"
+	},
+	{
+		"code": "3105",
+		"portOfEntry": "Wrangell, AK"
+	},
+	{
+		"code": "3106",
+		"portOfEntry": "Dalton Cache, AK"
+	},
+	{
+		"code": "3107",
+		"portOfEntry": "Valdez, AK"
+	},
+	{
+		"code": "3111",
+		"portOfEntry": "Fairbanks, AK"
+	},
+	{
+		"code": "3115",
+		"portOfEntry": "Sitka, AK"
+	},
+	{
+		"code": "3126",
+		"portOfEntry": "Anchorage, AK"
+	},
+	{
+		"code": "3127",
+		"portOfEntry": "Kodiak, AK"
+	},
+	{
+		"code": "3195",
+		"portOfEntry": "FEDERAL EXPRESS, ANCHORAGE, AK"
+	},
+	{
+		"code": "3196",
+		"portOfEntry": "UPS Courier, Anchorage, AK"
+	},
+	{
+		"code": "3201",
+		"portOfEntry": "Honolulu, HI"
+	},
+	{
+		"code": "3202",
+		"portOfEntry": "Hilo, HI"
+	},
+	{
+		"code": "3203",
+		"portOfEntry": "Kahului, HI"
+	},
+	{
+		"code": "3204",
+		"portOfEntry": "Nawiliwili-Port Allen"
+	},
+	{
+		"code": "3205",
+		"portOfEntry": "Honolulu International Airport, HI"
+	},
+	{
+		"code": "3206",
+		"portOfEntry": "KAILUA-KONA, HI"
+	},
+	{
+		"code": "3301",
+		"portOfEntry": "Raymond, MT"
+	},
+	{
+		"code": "3302",
+		"portOfEntry": "Eastport, ID"
+	},
+	{
+		"code": "3303",
+		"portOfEntry": "Salt Lake City, UT"
+	},
+	{
+		"code": "3304",
+		"portOfEntry": "Great Falls, MT"
+	},
+	{
+		"code": "3305",
+		"portOfEntry": "Butte Airport, MT"
+	},
+	{
+		"code": "3306",
+		"portOfEntry": "Turner, MT"
+	},
+	{
+		"code": "3307",
+		"portOfEntry": "Denver, CO"
+	},
+	{
+		"code": "3308",
+		"portOfEntry": "Porthill, ID"
+	},
+	{
+		"code": "3309",
+		"portOfEntry": "Scobey, MT"
+	},
+	{
+		"code": "3310",
+		"portOfEntry": "Sweetgrass, MT"
+	},
+	{
+		"code": "3316",
+		"portOfEntry": "Piegan, MT"
+	},
+	{
+		"code": "3317",
+		"portOfEntry": "Opheim, MT"
+	},
+	{
+		"code": "3318",
+		"portOfEntry": "Roosville, MT"
+	},
+	{
+		"code": "3319",
+		"portOfEntry": "Morgan, MT"
+	},
+	{
+		"code": "3321",
+		"portOfEntry": "Whitlash, MT"
+	},
+	{
+		"code": "3322",
+		"portOfEntry": "Del Bonita, MT"
+	},
+	{
+		"code": "3323",
+		"portOfEntry": "Wild Horse, MT"
+	},
+	{
+		"code": "3324",
+		"portOfEntry": "Kalispell, MT"
+	},
+	{
+		"code": "3325",
+		"portOfEntry": "Willow Creek, MT"
+	},
+	{
+		"code": "3383",
+		"portOfEntry": "Broomfield, CO"
+	},
+	{
+		"code": "3384",
+		"portOfEntry": "Englewood, CO"
+	},
+	{
+		"code": "3385",
+		"portOfEntry": "Gypsum, CO"
+	},
+	{
+		"code": "3386",
+		"portOfEntry": "Bozeman Yellowstone User Fee Airport, MT"
+	},
+	{
+		"code": "3401",
+		"portOfEntry": "Pembina, ND"
+	},
+	{
+		"code": "3402",
+		"portOfEntry": "Noyes, MN"
+	},
+	{
+		"code": "3403",
+		"portOfEntry": "Portal, ND"
+	},
+	{
+		"code": "3404",
+		"portOfEntry": "Neche, ND"
+	},
+	{
+		"code": "3405",
+		"portOfEntry": "St. John, ND"
+	},
+	{
+		"code": "3406",
+		"portOfEntry": "Northgate, ND"
+	},
+	{
+		"code": "3407",
+		"portOfEntry": "Walhalla, ND"
+	},
+	{
+		"code": "3408",
+		"portOfEntry": "Hannah, ND"
+	},
+	{
+		"code": "3409",
+		"portOfEntry": "Sarles, ND"
+	},
+	{
+		"code": "3410",
+		"portOfEntry": "Ambrose, ND"
+	},
+	{
+		"code": "3411",
+		"portOfEntry": "Fargo-Hector International Airport, ND"
+	},
+	{
+		"code": "3413",
+		"portOfEntry": "Antler, ND"
+	},
+	{
+		"code": "3414",
+		"portOfEntry": "Sherwood, ND"
+	},
+	{
+		"code": "3415",
+		"portOfEntry": "Hansboro, ND"
+	},
+	{
+		"code": "3416",
+		"portOfEntry": "Maida, ND"
+	},
+	{
+		"code": "3417",
+		"portOfEntry": "Fortuna, ND"
+	},
+	{
+		"code": "3419",
+		"portOfEntry": "Westhope, ND"
+	},
+	{
+		"code": "3420",
+		"portOfEntry": "Noonan, ND"
+	},
+	{
+		"code": "3421",
+		"portOfEntry": "Carbury, ND"
+	},
+	{
+		"code": "3422",
+		"portOfEntry": "Dunseith, ND"
+	},
+	{
+		"code": "3423",
+		"portOfEntry": "Warroad, MN"
+	},
+	{
+		"code": "3424",
+		"portOfEntry": "Baudette, MN"
+	},
+	{
+		"code": "3425",
+		"portOfEntry": "Pinecreek, MN"
+	},
+	{
+		"code": "3426",
+		"portOfEntry": "Roseau, MN"
+	},
+	{
+		"code": "3427",
+		"portOfEntry": "Grand Forks, ND"
+	},
+	{
+		"code": "3428",
+		"portOfEntry": "Winnipeg International Airport"
+	},
+	{
+		"code": "3430",
+		"portOfEntry": "Lancaster, MN"
+	},
+	{
+		"code": "3433",
+		"portOfEntry": "Williston-Sloulin Field International Airport, ND"
+	},
+	{
+		"code": "3434",
+		"portOfEntry": "Minot International Airport, ND"
+	},
+	{
+		"code": "3450",
+		"portOfEntry": "Border Patrol Sector, Grand Forks, ND"
+	},
+	{
+		"code": "3501",
+		"portOfEntry": "Minneapolis, MN"
+	},
+	{
+		"code": "3502",
+		"portOfEntry": "Sioux Falls, SD"
+	},
+	{
+		"code": "3510",
+		"portOfEntry": "Duluth, MN"
+	},
+	{
+		"code": "3512",
+		"portOfEntry": "Omaha, NE"
+	},
+	{
+		"code": "3513",
+		"portOfEntry": "Des Moines, IA"
+	},
+	{
+		"code": "3581",
+		"portOfEntry": "Rochester, MN"
+	},
+	{
+		"code": "3602",
+		"portOfEntry": "Ashland, WI"
+	},
+	{
+		"code": "3604",
+		"portOfEntry": "International Falls, MN"
+	},
+	{
+		"code": "3613",
+		"portOfEntry": "Grand Portage, MN"
+	},
+	{
+		"code": "3701",
+		"portOfEntry": "Milwaukee, WI"
+	},
+	{
+		"code": "3702",
+		"portOfEntry": "Marinette, WI"
+	},
+	{
+		"code": "3703",
+		"portOfEntry": "Green Bay, WI"
+	},
+	{
+		"code": "3706",
+		"portOfEntry": "Manitowoc, WI"
+	},
+	{
+		"code": "3707",
+		"portOfEntry": "Sheboygan, WI"
+	},
+	{
+		"code": "3708",
+		"portOfEntry": "Racine, WI"
+	},
+	{
+		"code": "3781",
+		"portOfEntry": "Appleton International Airport, WI"
+	},
+	{
+		"code": "3801",
+		"portOfEntry": "Detroit, MI"
+	},
+	{
+		"code": "3802",
+		"portOfEntry": "Port Huron, MI"
+	},
+	{
+		"code": "3803",
+		"portOfEntry": "Sault Sainte Marie, MI"
+	},
+	{
+		"code": "3804",
+		"portOfEntry": "Saginaw/Bay City/Flint, MI"
+	},
+	{
+		"code": "3805",
+		"portOfEntry": "Battle Creek, MI"
+	},
+	{
+		"code": "3806",
+		"portOfEntry": "Grand Rapids, MI"
+	},
+	{
+		"code": "3807",
+		"portOfEntry": "Detroit Metro Airport"
+	},
+	{
+		"code": "3808",
+		"portOfEntry": "Escanaba, MI"
+	},
+	{
+		"code": "3815",
+		"portOfEntry": "Muskegon, MI"
+	},
+	{
+		"code": "3819",
+		"portOfEntry": "Detour City, MI"
+	},
+	{
+		"code": "3881",
+		"portOfEntry": "Oakland-Pontiac Airport Waterford, MI"
+	},
+	{
+		"code": "3882",
+		"portOfEntry": "Willow Run Airport Ypsilanti, MI"
+	},
+	{
+		"code": "3883",
+		"portOfEntry": "Capital Region International Airport Lansing, MI"
+	},
+	{
+		"code": "3901",
+		"portOfEntry": "Chicago, IL"
+	},
+	{
+		"code": "3902",
+		"portOfEntry": "Peoria, IL"
+	},
+	{
+		"code": "3908",
+		"portOfEntry": "Davenport, IA"
+	},
+	{
+		"code": "3909",
+		"portOfEntry": "Rockford, IL"
+	},
+	{
+		"code": "3910",
+		"portOfEntry": "Midway International Airport, Chicago, IL"
+	},
+	{
+		"code": "3971",
+		"portOfEntry": "TNT EXPRESS CONSIGNMENT, CHICAGO, IL"
+	},
+	{
+		"code": "3981",
+		"portOfEntry": "Waukegan, IL"
+	},
+	{
+		"code": "3983",
+		"portOfEntry": "Wheeling Airport"
+	},
+	{
+		"code": "3984",
+		"portOfEntry": "West Chicago Airport"
+	},
+	{
+		"code": "3985",
+		"portOfEntry": "Decatur Airport"
+	},
+	{
+		"code": "3991",
+		"portOfEntry": "Nippon Courier Hub, Chicago, IL"
+	},
+	{
+		"code": "4101",
+		"portOfEntry": "Clevland, OH"
+	},
+	{
+		"code": "4102",
+		"portOfEntry": "Cincinnati, OH"
+	},
+	{
+		"code": "4103",
+		"portOfEntry": "Columbus, OH"
+	},
+	{
+		"code": "4104",
+		"portOfEntry": "Dayton, OH"
+	},
+	{
+		"code": "4105",
+		"portOfEntry": "Toledo-Sandusky, OH"
+	},
+	{
+		"code": "4106",
+		"portOfEntry": "Erie, PA"
+	},
+	{
+		"code": "4110",
+		"portOfEntry": "Indianapolis, IN"
+	},
+	{
+		"code": "4115",
+		"portOfEntry": "Louisville, KY"
+	},
+	{
+		"code": "4116",
+		"portOfEntry": "Evansville, IN"
+	},
+	{
+		"code": "4122",
+		"portOfEntry": "Ashtabula, OH"
+	},
+	{
+		"code": "4170",
+		"portOfEntry": "Burlington Air Express, Toledo, OH"
+	},
+	{
+		"code": "4181",
+		"portOfEntry": "Wilmington, OH"
+	},
+	{
+		"code": "4182",
+		"portOfEntry": "Rickenbacker Airport, Columbus, OH"
+	},
+	{
+		"code": "4183",
+		"portOfEntry": "Fort Wayne, IN"
+	},
+	{
+		"code": "4184",
+		"portOfEntry": "Lexington, KY"
+	},
+	{
+		"code": "4185",
+		"portOfEntry": "Hulman Regional Airport, Terre Haute, IN"
+	},
+	{
+		"code": "4195",
+		"portOfEntry": "Emery Courier, Vandalia, OH"
+	},
+	{
+		"code": "4196",
+		"portOfEntry": "UPS Courier, Louisville, KY"
+	},
+	{
+		"code": "4197",
+		"portOfEntry": "DHL Courier, Cincinnati, OH"
+	},
+	{
+		"code": "4198",
+		"portOfEntry": "Federal Express Hub, Indianapolis, IN"
+	},
+	{
+		"code": "4501",
+		"portOfEntry": "Kansas City"
+	},
+	{
+		"code": "4503",
+		"portOfEntry": "St. Louis, MO"
+	},
+	{
+		"code": "4504",
+		"portOfEntry": "Wichita, KS"
+	},
+	{
+		"code": "4505",
+		"portOfEntry": "Springfield, MO"
+	},
+	{
+		"code": "4506",
+		"portOfEntry": "Spirit of St.Louis Aiport"
+	},
+	{
+		"code": "4581",
+		"portOfEntry": "Mascoutah Airport"
+	},
+	{
+		"code": "4601",
+		"portOfEntry": "Newark, NJ"
+	},
+	{
+		"code": "4602",
+		"portOfEntry": "Perth Amboy, NJ"
+	},
+	{
+		"code": "4681",
+		"portOfEntry": "Morristown Airport, NJ"
+	},
+	{
+		"code": "4701",
+		"portOfEntry": "John F Kennedy International Airport, NY"
+	},
+	{
+		"code": "4771",
+		"portOfEntry": "NYACC, Jamaica, NY"
+	},
+	{
+		"code": "4772",
+		"portOfEntry": "DHL Airways, Jamaica, NY"
+	},
+	{
+		"code": "4773",
+		"portOfEntry": "Emery Worldwide, Jamaica, NY"
+	},
+	{
+		"code": "4774",
+		"portOfEntry": "Air France, Jamaica, NY"
+	},
+	{
+		"code": "4778",
+		"portOfEntry": "TNT Skypak, Jamaica, NY"
+	},
+	{
+		"code": "4901",
+		"portOfEntry": "Aguadilla, PR"
+	},
+	{
+		"code": "4904",
+		"portOfEntry": "Fajardo, PR"
+	},
+	{
+		"code": "4906",
+		"portOfEntry": "Humacao, PR"
+	},
+	{
+		"code": "4907",
+		"portOfEntry": "Mayaguez, PR"
+	},
+	{
+		"code": "4908",
+		"portOfEntry": "Ponce, PR"
+	},
+	{
+		"code": "4909",
+		"portOfEntry": "San Juan, PR"
+	},
+	{
+		"code": "4913",
+		"portOfEntry": "Luis Munoz Marin International Airport"
+	},
+	{
+		"code": "5101",
+		"portOfEntry": "Port Charlotte, VI"
+	},
+	{
+		"code": "5102",
+		"portOfEntry": "Cruz Bay, VI"
+	},
+	{
+		"code": "5104",
+		"portOfEntry": "Saint Croix, VI"
+	},
+	{
+		"code": "5201",
+		"portOfEntry": "Miami Seaport, FL"
+	},
+	{
+		"code": "5202",
+		"portOfEntry": "Key West, FL"
+	},
+	{
+		"code": "5203",
+		"portOfEntry": "Fort Lauderdale, FL"
+	},
+	{
+		"code": "5204",
+		"portOfEntry": "West Palm Beach"
+	},
+	{
+		"code": "5205",
+		"portOfEntry": "Fort Pierce, FL"
+	},
+	{
+		"code": "5206",
+		"portOfEntry": "Miami International Airport, FL"
+	},
+	{
+		"code": "5210",
+		"portOfEntry": "Fort Lauderdale International Airport, FL"
+	},
+	{
+		"code": "5270",
+		"portOfEntry": "International Courier Association, Miami, FL"
+	},
+	{
+		"code": "5295",
+		"portOfEntry": "UPS Miami International Airport, Miami, FL"
+	},
+	{
+		"code": "5296",
+		"portOfEntry": "DHL WORLDWIDE EXPRESS, MIAMI, FL"
+	},
+	{
+		"code": "5297",
+		"portOfEntry": "Fedex Courier Hub, Miami, FL"
+	},
+	{
+		"code": "5298",
+		"portOfEntry": "IBC Courier Hub, Miami, FL"
+	},
+	{
+		"code": "5301",
+		"portOfEntry": "Houston, TX"
+	},
+	{
+		"code": "5306",
+		"portOfEntry": "Texas City, TX"
+	},
+	{
+		"code": "5309",
+		"portOfEntry": "Houston Intercontinental Airport, TX"
+	},
+	{
+		"code": "5310",
+		"portOfEntry": "Galveston, TX"
+	},
+	{
+		"code": "5311",
+		"portOfEntry": "Freeport, TX"
+	},
+	{
+		"code": "5312",
+		"portOfEntry": "Corpus Christi, TX"
+	},
+	{
+		"code": "5313",
+		"portOfEntry": "Port Lavaca/Point Comfort, TX"
+	},
+	{
+		"code": "5381",
+		"portOfEntry": "Sugar Land, TX"
+	},
+	{
+		"code": "5382",
+		"portOfEntry": "Conroe, TX"
+	},
+	{
+		"code": "5401",
+		"portOfEntry": "Sterling, VA"
+	},
+	{
+		"code": "5402",
+		"portOfEntry": "Alexandria, VI"
+	},
+	{
+		"code": "5501",
+		"portOfEntry": "Dallas/Fort Worth, TX"
+	},
+	{
+		"code": "5502",
+		"portOfEntry": "Amarillo, TX"
+	},
+	{
+		"code": "5503",
+		"portOfEntry": "Lubbock, TX"
+	},
+	{
+		"code": "5504",
+		"portOfEntry": "Oklahoma City, OK"
+	},
+	{
+		"code": "5505",
+		"portOfEntry": "Tulsa, OK"
+	},
+	{
+		"code": "5506",
+		"portOfEntry": "Austin, TX"
+	},
+	{
+		"code": "5507",
+		"portOfEntry": "San Antonio, TX"
+	},
+	{
+		"code": "5582",
+		"portOfEntry": "Midland, TX"
+	},
+	{
+		"code": "5583",
+		"portOfEntry": "Alliance Airport, TX"
+	},
+	{
+		"code": "5584",
+		"portOfEntry": "Addison Airport, TX"
+	},
+	{
+		"code": "5585",
+		"portOfEntry": "Mckinney, TX"
+	},
+	{
+		"code": "7404",
+		"portOfEntry": "CBP St. Croix Preclearance, St. Croix, Virgin Islands"
+	},
+	{
+		"code": "7421",
+		"portOfEntry": "CBP Bermuda Preclearance, Washington, DC"
+	},
+	{
+		"code": "7422",
+		"portOfEntry": "CBP Freeport Preclearance, Washington, DC"
+	},
+	{
+		"code": "9900",
+		"portOfEntry": "Customs HQ"
+	},
+	{
+		"code": "9997",
+		"portOfEntry": "Unknown Port Location"
+	},
+	{
+		"code": "9999",
+		"portOfEntry": "ZZZZZZZZZZZ"
+	}
+]

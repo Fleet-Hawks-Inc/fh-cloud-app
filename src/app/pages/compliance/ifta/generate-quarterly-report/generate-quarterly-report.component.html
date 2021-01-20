@@ -1,0 +1,260 @@
+<section class="body">
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+  
+    <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+  
+      <section role="main" class="content-body">
+        <header class="page-header">
+            <div class="row  pl-3 pr-5" style="padding-top:10px;">
+                <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> IFTA Calculations </div>
+                <div class="col-md-8  col-lg-8 text-right pr-4">
+                    <!-- <a href="new-ifta-list.php" class="btn btn-default btn-sm">Vehicles List</a> --></div>
+            </div>
+        </header>
+        <div class="row text-dark">
+          <div class="col">
+            <section class="card">
+                <div class="card-body">
+                    <div class="row text-dark">
+                   <div class="col-xl-6 col-12 mb-3">
+                      <div class="widgetload">
+                         <div class="widgettbload">
+                            <span class="pull-right text-5 mt-2 text-dark">
+                            <!-- <a href="#" class="mb-1 pull-right btn-xs mt-1 mr-2 btn btn-default"><i class="far fa-edit"></i> Edit</a> -->
+                            </span>
+                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">Fleet Hawks</h2>
+                         </div>
+                         <div class="widgetlinfo border">
+                         <div class="w100">
+                            <label class="font-weight-bold">125 Z Main St. Hill, MQ 25380 </label>
+                         </div>
+                         <div class="w100">
+                            <label class="font-weight-bold">EIN: 12-56895419779082535</label>
+                         </div>
+                         <div class="w100">
+                            <label class="font-weight-bold">Tax Period: </label> <span class="pull-right">
+                            <input type="text" class="font-weight-bold" style="border:none;" value="4th Qtr(Oct-Dec 2020)"></span>
+                         </div>
+                         </div>
+                      </div>
+                   </div>
+
+
+                   <div class="col-xl-6 col-12 mb-3">
+                      <div class="widgetload">
+                         <div class="widgettbload">
+                            <span class="pull-right text-5 mt-2 text-dark">
+                            <button type="button" data-toggle="modal" data-target="#addIftaAccount" class="mb-1 pull-right btn-xs mt-1 mr-2 btn btn-default modal-with-form"><i class="far fa-edit"></i> Edit</button>
+                            </span>
+                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">IFTA Details</h2>
+                         </div>
+                         <div class="widgetlinfo border">
+                         <div class="w100">
+                            <label class="font-weight-bold">Base Jurisdiction: </label> <span class="pull-right">
+                            <input type="text" class="font-weight-bold" style="border:none;" value="South Carolina(SC)"></span>
+                         </div>
+                         <div class="w100">
+                            <label class="font-weight-bold">IFTA Account Number: </label> <span class="pull-right">
+                            <input type="text" class="font-weight-bold" style="border:none;" value="465465"></span>
+                         </div>
+                         <div class="w100">
+                            <label class="font-weight-bold">Tax Period: </label> <span class="pull-right">
+                            <input type="text" class="font-weight-bold" style="border:none;" value="4th Qtr(Oct-Dec 2020)"></span>
+                         </div>
+                         </div>
+                      </div>
+                   </div>                 
+                   
+                </div>
+                        <div class="row">
+                            <div class="col-lg-5 offset-lg-1">
+                                <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Amount(Based on miles &amp; fuel purchase)</label>
+                                        <div class="row">
+                                            <div class="col-lg-5 pr-0">
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-5 pl-0">
+                                                <select  class="form-control populate" >
+                                                    <optgroup label="">
+                                                       <option value="taxDue">Tax Due</option>
+                                                       <option value="credit">Credit</option>
+                                                    </optgroup>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Balance From Previous Return</label>
+                                        <div class="row">
+                                            <div class="col-lg-5 pr-0">
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-5 pl-0">
+                                                <select  class="form-control populate" >
+                                                    <optgroup label="">
+                                                       <option value="balanceDue">Balance Due</option>
+                                                       <option value="creditDue">Credit Due</option>
+                                                    </optgroup>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-lg-5 offset-lg-1">
+                                <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Base State/Province Interest</label>
+                                        <div class="row">
+                                            <div class="col-lg-5 pr-0">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-lg-5 pl-0">
+                                                <select  class="form-control populate" >
+                                                    <optgroup label="">
+                                                       <option value="CAD">CAD</option>
+                                                       <option value="USD">USD</option>
+                                                    </optgroup>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Late Fee</label>
+                                        <div class="row">
+                                            <div class="col-lg-5 pr-0">
+                                                <input type="text" class="form-control"> </div>
+                                            <div class="col-lg-5 pl-0">
+                                                <select  class="form-control populate" >
+                                                    <optgroup label="">
+                                                       <option value="CAD">CAD</option>
+                                                       <option value="USD">USD</option>
+                                                    </optgroup>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-10 offset-lg-1">
+                                <table>
+                                    <tbody><tr>
+                                        <td>
+                                            <label class="control-label font-weight-bold text-lg-right pt-2">Total Amount</label>
+                                        </td>
+                                        <td><span class="font-weight-bold text-6">123.23 USD</span></td>
+                                   </tr>
+                               </tbody></table>
+                          </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-lg-12">
+                                <button type="button" class="btn btn-default"  (click)="cancel()" >Back</button> 
+                                <a [routerLink] = "['/compliance','ifta', 'report-history']" class="btn btn-success text-light pull-right">Next</a>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+  <!-- IFTA ACCOUNT MODAL -->
+  <div class="modal fade" id="addIftaAccount" tabindex="-1" role="dialog" aria-labelledby="addIftaAccountLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addIftaAccountLabel">Add IFTA Account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form  method="get"  name="form" id="form_">
+        <div class="modal-body">
+          
+                      <div class="form-group row text-dark">
+                                      <div class="col-lg-6">
+                                          <label class="control-label text-4 font-weight-bold text-lg-right pt-2"> IFTA Account Details </label>
+                                      </div>
+                                      <div class="col-lg-6">
+                                          <label class="control-label text-4 font-weight-bold text-lg-right pt-2"> IFTA Signing Authority </label>
+                                      </div>
+                                      <div class="col-lg-5 offset-lg-1">
+                                          <div class="row">
+                                              <div class="col-lg-10">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
+                          <select data-plugin-selectTwo class="form-control populate" name="baseCountry" [(ngModel)]="baseCountry" (change)="getStates()">
+                            <optgroup label="Select Country">
+                              <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                            </optgroup>
+                           </select> 
+                                              </div>
+                      </div>
+                      <div class="row mt-2">
+                                              <div class="col-lg-10">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Base State/Province</label>
+                          <select data-plugin-selectTwo class="form-control populate" name="baseState"
+                          [(ngModel)]="baseState" >
+                           <optgroup label="">
+                             <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                            </optgroup>
+                          </select> 
+                                              </div>
+                                          </div>
+                                          <div class="row mt-2">
+                                              <div class="col-lg-5">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Account Number</label>
+                                                  <input type="text" class="form-control" [(ngModel)] = "accountNumber" name = "accountNumber">
+                                              </div>
+                                      
+                                              <div class="col-lg-5">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
+                                                  <input type="text" class="form-control">
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-lg-5 offset-lg-1">
+                                          <div class="row">
+                                              <div class="col-lg-10">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
+                                                  <input type="text" class="form-control" name="signingAuthority.name" [(ngModel)]="signingAuthority.name">
+                                              </div>
+                                          </div>
+                                          <div class="row mt-2">
+                                              <div class="col-lg-10">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Phone Number</label>
+                                                  <input type="text" class="form-control"  name="signingAuthority.phone" [(ngModel)]="signingAuthority.phone">
+                                              </div>
+                                          </div>
+                                          <div class="row mt-2">
+                                              <div class="col-lg-10">
+                                                  <label class="control-label font-weight-bold text-lg-right pt-2">Title</label>
+                                                  <input type="text" class="form-control"  name="signingAuthority.title" [(ngModel)]="signingAuthority.title">
+                                              </div>
+                                          </div>
+                                      </div>
+                      </div>
+                  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success" (click)="addIftaAccount()">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  

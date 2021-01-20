@@ -1,0 +1,98 @@
+<section class="body">
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
+
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          
+          <div class="col-md-2 col-lg-2">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Unidentified Miles</h4>
+          </div>
+          
+          <div class="col-lg-3 col-md-3">
+            <div class="input-daterange input-group" data-plugin-datepicker="">
+              <span class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="start date"
+                name="start"
+              />
+              <span
+                class="input-group-text border-left-0 border-right-0 rounded-0"
+              >
+                to
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="end date"
+                name="end"
+              />
+            </div>
+          </div>
+
+          <div class="col-lg-1 col-md-1">
+            <button class="btn btn-success btn-sm">Search</button>
+          </div>
+
+          <div class="col-md-6 col-lg-6 text-right pr-1"></div>
+        </div>
+        
+      </header>
+
+      <div class="row">
+        <div class="col pr-0">
+          <section class="card">
+            <div class="card-body">
+              <table
+                class="table table-bordered table-striped mb-0 simple-table"
+              >
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" /></th>
+                    <th>Date/Time</th>
+                    <th>Vehicle</th>
+                    <th>Distance</th>
+                    <th>Duration</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let log of logs">
+                    <td><input type="checkbox" /></td>
+                    <td>28/04/2020 - 09:15AM</td>
+                    <td>Vehicle 745</td>
+                    <td>15 mi</td>
+                    <td>45:00</td>
+                    <td>2345 King Street,Palace Town,Royal City,345667</td>
+                    <td>2345 King Street,Palace Town,Royal City,345667</td>
+                    <td>
+                      <a
+                        href="#milesAssignModal"
+                        class="btn btn-sm btn-success modal-with-form"
+                        ><i class="fas fa-check"></i> Assign</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

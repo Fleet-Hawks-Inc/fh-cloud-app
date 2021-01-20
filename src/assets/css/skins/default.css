@@ -1,17 +1,17 @@
 a {
-	color: #0088cc;
+	color: #000;
 }
 
 a:hover {
-	color: #0099e6;
+	color: #333;
 }
 
 a:focus {
-	color: #0099e6;
+	color: #000;
 }
 
 a:active {
-	color: #0077b3;
+	color: #000;
 }
 
 html .heading-primary,
@@ -82,7 +82,7 @@ html .heading-dark,
 html .lnk-dark,
 html .text-color-dark,
 html .text-dark {
-	color: #2e353e !important;
+	color: #000 !important;
 }
 
 html .heading.heading-dark h1,
@@ -352,7 +352,7 @@ html.no-overflowscrolling .nano > .nano-pane > .nano-slider {
 }
 
 .body-sign .card-sign .card-body {
-	border-top-color: #0088cc;
+	border-top-color: #000000;
 }
 
 .body-locked .current-user .user-image {
@@ -432,15 +432,15 @@ body .btn-primary.dropdown-toggle {
 }
 
 html .btn-primary {
-	background-color: #0088cc;
-	border-color: #0088cc #0088cc #006699;
+	background-color: #343434;
+	border-color: #343434 #343434 #343434;
 	color: #ffffff;
 }
 
 html .btn-primary:hover,
 html .btn-primary.hover {
-	background-color: #00a1f2;
-	border-color: #00aaff #00aaff #0088cc;
+	background-color: #2ecc71;
+	border-color: #2ecc71 #2ecc71 #2ecc71;
 	color: #ffffff;
 }
 
@@ -535,11 +535,11 @@ html .btn-secondary:disabled {
 html .btn-secondary:active,
 html .btn-secondary.active,
 .show > html .btn-secondary.dropdown-toggle {
-	background-color: #dd4238 !important;
-	background-image: none !important;
-	border-color: #dc372d #dc372d #b7281f !important;
-	-webkit-box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0.5) !important;
-	        box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0.5) !important;
+	background-color: #3d3d3d !important;
+    background-image: none !important;
+    border-color: #3d3d3d #3d3d3d #3d3d3d !important;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0) !important;
+    box-shadow: 0 0 0 0.2rem rgba(227, 97, 89, 0) !important;
 }
 
 html .btn-secondary-scale-2 {
@@ -903,8 +903,8 @@ html .show > .btn-light.dropdown-toggle {
 .pagination > .active > a:focus,
 .pagination > .active > span:focus,
 .pagination .page-item.active .page-link {
-	background-color: #0088cc !important;
-	border-color: #0088cc;
+	background-color: #1b1b1b !important;
+	border-color: #1b1b1b;
 }
 
 body.dark .pagination > li > a,
@@ -913,7 +913,7 @@ body.dark .pagination > li > a:hover,
 body.dark .pagination > li > span:hover,
 body.dark .pagination > li > a:focus,
 body.dark .pagination > li > span:focus {
-	color: #0088cc;
+	color: #1b1b1b;
 }
 
 body.dark .pagination > .active > a,
@@ -1486,20 +1486,20 @@ html body .tabs .nav-tabs .nav-link,
 html.dark body .tabs .nav-tabs .nav-link,
 html body .tabs .nav-tabs .nav-link:hover,
 html.dark body .tabs .nav-tabs .nav-link:hover {
-	color: #0088cc;
+	color: #000;
 }
 
 html body .tabs .nav-tabs .nav-link:hover,
 html.dark body .tabs .nav-tabs .nav-link:hover,
 html body .tabs .nav-tabs .nav-link:focus,
 html.dark body .tabs .nav-tabs .nav-link:focus {
-	border-top-color: #0088cc;
+	border-top-color: #2e353e;
 }
 
 html body .tabs .nav-tabs li.active .nav-link,
 html.dark body .tabs .nav-tabs li.active .nav-link {
-	border-top-color: #0088cc;
-	color: #0088cc;
+	border-top-color: #5d5d5d;
+	color: #5d5d5d;
 }
 
 html body .tabs .nav-tabs.nav-justified .nav-link:hover,
@@ -1528,7 +1528,7 @@ html body .tabs.tabs-vertical.tabs-left .nav-tabs li.active .nav-link:hover,
 html.dark body .tabs.tabs-vertical.tabs-left .nav-tabs li.active .nav-link:hover,
 html body .tabs.tabs-vertical.tabs-left .nav-tabs li.active .nav-link:focus,
 html.dark body .tabs.tabs-vertical.tabs-left .nav-tabs li.active .nav-link:focus {
-	border-left-color: #0088cc;
+	border-left-color: #5d5d5d;
 }
 
 html body .tabs.tabs-vertical.tabs-right .nav-tabs li .nav-link:hover,
@@ -2285,15 +2285,15 @@ html.dark .radio-primary input[type="radio"]:checked + label:after,
 .datepicker .datepicker-switch:hover,
 .datepicker .prev:hover,
 .datepicker .next:hover {
-	background: #0088cc;
+	background: #000;
 }
 
 .datepicker table tbody tr td.day:hover {
-	background: #0088cc;
+	background: #000;
 }
 
 .datepicker table tbody tr td.day.active {
-	background: #006699;
+	background: #333;
 }
 
 html:not(.sidebar-light) .datepicker.datepicker-dark {

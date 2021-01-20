@@ -1,0 +1,261 @@
+<section class="body">
+
+   <!-- start: header -->
+   <app-header></app-header>
+   <!-- end: header -->
+
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <app-sidebar></app-sidebar>
+      <!-- end: sidebar -->
+
+      <section role="main" class="content-body pr-0 pl-0 pt-0">
+         <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  Edit Incident
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <a href="javascript:;" routerLink="/safety/incidents" class="btn btn-default btn-sm"><i
+                        class="fas fa-list"></i> Incident List</a>
+               </div>
+            </div>
+         </header>
+         <div class="add-incident__main">
+            <div class="card pr-0">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col pr-0">
+                        <form class="form-horizontal form-bordered text-dark">
+                           <div class="form-group row">
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Date</label>
+                                       <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
+                                          placeholder="Enter event date" (click)="d.toggle()" ngbDatepicker
+                                          #d="ngbDatepicker" class="form-control" readonly>
+
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Time</label>
+                                       <input type="text" class="form-control" [ngxTimepicker]="timep" [format]="24"
+                                          readonly [(ngModel)]="event.eventTime" name="eventTime"
+                                          placeholder="Enter event time">
+                                       <ngx-material-timepicker #timep></ngx-material-timepicker>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Location</label>
+                                       <input type="text" class="form-control" [(ngModel)]="event.location"
+                                          name="location" placeholder="Start typing to get location suggestions"
+                                          autocomplete="off" (keyup)="searchTerm.next($event);">
+
+                                       <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
+                                          <li *ngFor="let item of searchResults;">
+                                             <a href="javascript:;" (click)="assignLocation(item.address.label)"
+                                                title="{{item.address.label}}">{{item.address.label}}</a>
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Driver Name
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.driverUsername" name="driverUsername"
+                                          placeholder="Select driver name">
+                                          <ng-option class="text-capitalize" *ngFor="let data of drivers"
+                                             value="{{data.userName}}">{{data.fullName}}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.vehicleID" name="vehicleID"
+                                          placeholder="Select vehicle">
+                                          <ng-option class="text-capitalize" *ngFor="let vehicle of vehicles"
+                                             value="{{ vehicle.vehicleID }}">{{
+                                             vehicle.vehicleIdentification }}
+                                          </ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Severity
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.severity" name="severity"
+                                          placeholder="Select Severity">
+                                          <ng-option class="text-capitalize" *ngFor="let data of severity"
+                                             value="{{ data.value }}">{{ data.name }}
+                                          </ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Incident
+                                          Type
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.criticalityType" name="criticalityType"
+                                          placeholder="Select Incident Type">
+                                          <ng-option class="text-capitalize" *ngFor="let data of incidentType"
+                                             value="{{ data.value }}">
+                                             {{ data.name }}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Trip
+                                          ID
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.tripID" name="tripID" placeholder="Select trip ID">
+                                          <ng-option class="text-capitalize" *ngFor="let data of trips"
+                                             value="{{ data.tripID }}">{{ data.tripNo }}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Assigned
+                                          To
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <ng-select [(ngModel)]="event.assignedUsername" name="assignedUsername"
+                                          placeholder="Select assigned user">
+                                          <ng-option class="text-capitalize" *ngFor="let data of users"
+                                             value="{{ data.userName }}">{{ data.fullName }}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Upload
+                                          Documents
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <input type="file" class="form-control p-0" name="upload-doc"
+                                          (change)="selectDocuments($event, 'uploadedDocs')">
+
+                                          <div class="row mt-2" *ngIf="eventDocs?.length">
+                                             <div class="col-lg-12">
+                                                <div class="vehicle-common-box p-3">
+                                                   <div class="row">
+                                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label></div>
+                                                      <div class="col-lg-6 text-right">
+                                                      </div>
+                                                   </div>
+                                                   <hr class="solid mt-2">
+                                                   <div class="row mb-1" *ngFor="let doc of eventDocs;let d= index">
+                                                      <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a> </div>
+                                                      <div class="col-lg-3 text-right">
+                                                         <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                            data-target="#viewDocModal"></i>
+                                                         <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
+                                                               class="fas fa-times text-danger"></i></a>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Add
+                                          Incident Video
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <input type="file" class="form-control p-0" name="add_vid"
+                                          (change)="selectDocuments($event, 'uploadedVideos')">
+
+                                       <div class="row mt-2" *ngIf="eventVideos?.length">
+                                          <div class="col-lg-12">
+                                             <div class="vehicle-common-box p-3">
+                                                <div class="row">
+                                                   <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Video(s)</label></div>
+                                                   <div class="col-lg-6 text-right">
+                                                   </div>
+                                                </div>
+                                                <hr class="solid mt-2">
+                                                <div class="row mb-1" *ngFor="let doc of eventVideos;let d= index">
+                                                   <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Video {{d+1}}</a> </div>
+                                                   <div class="col-lg-3 text-right">
+                                                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                         data-target="#viewDocModal"></i>
+                                                      <a href="javascript:;" (click)="delete('video',doc.name)" class="modal-with-form"><i
+                                                            class="fas fa-times text-danger"></i></a>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Remarks
+                                          &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                       </label>
+                                       <textarea class="form-control" rows="3" placeholder="Enter Remarks"
+                                          name="remarks" [(ngModel)]="event.remarks"></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-11 text-right">
+                                 <button type="button" class="btn btn-default mt-4 mr-3"
+                                    routerLink="/safety/incidents">Cancel</button>
+                                 <a href="javascript:;" (click)="updateEvent()"
+                                    class="btn btn-success mt-4 modal-confirm">Submit</a>
+                              </div>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </div>
+</section>
+
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="form-row">
+               <div class="form-group col-md-12">
+                  <div>
+                     <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
+   </div>
+</div>

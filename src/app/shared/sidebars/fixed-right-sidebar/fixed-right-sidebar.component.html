@@ -1,0 +1,26 @@
+
+<div class="prtsidebar text-dark">
+    <a href="#" data-toggle="tooltip" data-placement="left" title="" data-original-title="Settings">
+        <img src="./assets/img/icon-set.png">
+    </a>
+    <a href="#" data-toggle="tooltip" data-placement="left" title="" data-original-title="Help">
+        <img src="./assets/img/icon-q.png">
+    </a>
+    <a href="#" data-toggle="tooltip" data-placement="left" title="" onclick="openAnnouncementMainBox()"
+        data-original-title="Announcements"> <i class="fas fa-bullhorn text-dark" style="font-size:18px;"></i> </a>
+    <a href="#" onclick="openOldStickyNotes()" data-toggle="tooltip" data-placement="left" title=""
+        data-original-title="Open Sticky Note"> <i class="far fa-sticky-note text-dark" style="font-size:18px;"></i>
+    </a>
+    <a href="#" data-toggle="tooltip" data-placement="left" title="" data-original-title="Turn on Night Mode"> <i
+            class="far fa-moon text-dark" style="font-size:18px;"></i> </a>
+    <a href="#" onclick="openfeedback()" data-toggle="tooltip" data-placement="left" title=""
+        data-original-title="Send Feedback"> <i class="far fa-comment-alt text-dark" style="font-size:18px;"></i> </a>
+    <div class="prtsidebara">
+        <a href="#" onclick="openChat()" data-toggle="tooltip" data-placement="left" title=""
+            data-original-title="Live Chat"> <i class="far fa-comment-dots text-dark" style="font-size:18px;"></i> </a>
+        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal" (click)="showContactsModal()" class="modal-with-form" title="Address Book"> <i class="far fa-address-book text-dark" style="font-size:18px;"></i>
+        </a>
+    </div>
+</div>
+
+<app-address-book></app-address-book>

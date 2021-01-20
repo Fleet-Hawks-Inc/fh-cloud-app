@@ -1,0 +1,1004 @@
+<section class="body">
+
+    <!-- start: header -->
+    <app-header></app-header>
+    <!-- end: header -->
+
+
+
+    <div class="inner-wrapper">
+        <!-- start: sidebar -->
+        <app-sidebar></app-sidebar>
+        <!-- end: sidebar -->
+        <section role="main" class="content-body">
+            <header class="page-header">
+               <h2>Create Dispatch</h2>
+               <div class="right-wrapper text-right">
+                  <ol class="breadcrumbs pr-3">
+                     <li>
+                        <a href="index.html">
+                        <i class="fas fa-home"></i>
+                        </a>
+                     </li>
+                     <li><span>Create Dispatch</span></li>
+                  </ol>
+               </div>
+            </header>
+            <div class="row">
+               <div class="col">
+                  <section class="card">
+                     <div class="card-body">
+                        <form class="form-horizontal form-bordered" method="get">
+                           <div class="form-group row">
+                              <div class="col-lg-12 text-right">
+                                 <p class="mb-0"><a href="#" class="blue1 font-weight-bold"><i class="fas fa-tools"></i> Dispatch Setting</a></p>
+                              </div>
+                              <div class="col-lg-4">
+                                 <div class="row">
+                                    <div class="col-lg-5 col-sm-12 col-xs-12 col-12 labelalign">
+                                       <label class="control-label font-weight-semibold mb-0 text-3 text-dark" for="inputDefault">Dispatch Number</label>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6 col-xs-6 col-6">
+                                      <p>Auto Generated On Save.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-4">
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Dispatch Date</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="input-group">
+                                          <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <div class="col-lg-4">
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Dispatch Time</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="hour:minute" id="timepicker">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                           </div>
+                          
+
+                           <div class="form-group row">
+                              <div class="col-lg-12">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Customer/Carrier/Broker</h4>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault"></label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="radio-custom">
+                                          <input type="radio" id="Customer" name="Customer" checked>
+                                          <label for="Customer">Customer</label>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="radio-custom">
+                                          <input type="radio" id="Carrier" name="Carrier">
+                                          <label for="Carrier">Carrier</label>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="radio-custom">
+                                          <input type="radio" id="Broker" name="Broker">
+                                          <label for="Broker">Broker</label>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Customer</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control">
+                                          <optgroup label="">
+                                             <option value="1">Kristof</option>
+                                             <option value="2">Harry</option>
+                                             <option value="2">Brista</option>
+                                             <option value="2">Carry</option>
+                                             <option value="2">Laila</option>
+                                             <option value="2">Manjot</option>
+                                             <option value="2">Heera</option>
+                                             <option value="2">Sagar</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Account No</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="checkboxExample1">
+                                          <label for="checkboxExample1">CSA Eligible Load</label>
+                                       </div>
+                                       <p class="text-1 mb-0">
+                                          (Customs Self Assessment Program For Canadian Cross Border)
+                                       </p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">CSA</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       &nbsp;
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                       <p class="mb-0">A unique number for an order.</p>
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">C-TPAT</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+
+                           
+
+                           <div class="form-group row divderrel">
+                              <div class="midledriver">
+                              </div>
+                              <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
+
+                              <div class="col-lg-6">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Shipper</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control">
+                                          <optgroup label="">
+                                             <option value="2">Manjot</option>
+                                             <option value="2">Heera</option>
+                                             <option value="2">Sagar</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Location</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <select data-plugin-selectTwo class="form-control">
+                                          <optgroup label="">
+                                             <option value="2">Calgary, Alberta</option>
+                                             <option value="2">Delta, BC</option>
+                                             <option value="2">Winnipeg, Manitoba</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Date/Time</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <div class="input-group">
+                                          <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="hour:minute" id="timepicker2">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Instruction</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <textarea class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at PickUp</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">BOL</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="fileupload fileupload-new" data-provides="fileupload">
+                                          <div class="input-append">
+                                             <div class="uneditable-input">
+                                             <i class="fas fa-file fileupload-exists"></i>
+                                             <span class="fileupload-preview"></span>
+                                             </div>
+                                             <span class="btn btn-default btn-file">
+                                             <span class="fileupload-exists">Change</span>
+                                             <span class="fileupload-new">Select file</span>
+                                             <input type="file">
+                                             </span>
+                                             <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                             </div>
+                                          </div>
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                
+                              
+                                 <div class="divcenter mt-2">
+                                    <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
+                                    <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save and Add Another</a></p>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                                 <div class="row">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Receiver</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control">
+                                          <optgroup label="">
+                                             <option value="2">Manjot</option>
+                                             <option value="2">Heera</option>
+                                             <option value="2">Sagar</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Drop Off Location</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <select data-plugin-selectTwo class="form-control">
+                                          <optgroup label="">
+                                             <option value="2">Calgary, Alberta</option>
+                                             <option value="2">Delta, BC</option>
+                                             <option value="2">Winnipeg, Manitoba</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Date/Time</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <div class="input-group">
+                                          <input type="text" data-plugin-datepicker="" placeholder="day/month/year" class="form-control">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <div class="input-group">
+                                          <input type="text" class="form-control" placeholder="hour:minute" id="timepicker2">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Instruction</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <textarea class="form-control" rows="3" id="textareaDefault" style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Contact Person at Delivery</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Phone</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Reference</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Notes</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <input type="text" class="form-control" id="inputDefault">
+                                    </div>
+                                    <div class="col-lg-3 mt-1">
+                                    </div>
+                                 </div>
+
+
+
+                               
+
+                                 <div class="divcenter mt-2">
+                                    <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
+                                    <p class="mb-1"><a href="#" class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save and Add Another</a></p>
+                                 </div>
+                              </div>
+                           </div>
+
+                           <!-- Shipper and reciver end -->
+
+                           <div class="form-group row">
+                             
+                              <div class="col-lg-12">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Freight Details</h4>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-2">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Description</label>
+                                       <input type="text" class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Estimated Weight Required</label>
+                                       <input type="text" class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Quantity</label>
+                                       <input type="text" class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">L x W x H</label>
+                                       <input type="text" class="form-control">
+                                    </div>
+
+                                    <div class="col-lg-1">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">FC</label>
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="2">Na</option>
+                                             <option value="2">50</option>
+                                             <option value="2">55</option>
+                                             <option value="2">60</option>
+                                             <option value="2">65</option>
+                                             <option value="2">70</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+
+                                    <div class="col-lg-1s">
+                                       <label class="control-label font-weight-semibold labelmt text-2 text-dark" for="inputDefault">Point of Contact</label>
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="2">Yes</option>
+                                             <option value="2">No</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Cargo Value</label>
+                                       <div class="input-group mb-3">
+                                          <span class="input-group-prepend positionsta">
+                                          <span class="input-group-text pt-0 pb-0">$</span>
+                                          </span>
+                                          <input type="text" class="form-control" placeholder="Username">
+                                       </div>
+                                    </div>
+                                    
+                                 </div>
+
+                                 <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
+                              </div>
+                              
+                           </div>
+
+
+                           <div class="form-group row">
+                             
+                              <div class="col-lg-6">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
+
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="droptrailer">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
+                                       </div>
+                                   
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Cargo Type</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="1">Ford F-650</option>
+                                             <option value="2">Peterbilt 386</option>
+                                             <option value="2">G-3 Resources LLC Truck</option>
+                                             <option value="2">7400 SBA Dump Truck</option>
+                                             <option value="2">Kenworth T660</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Trailer Group</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="2">VAN</option>
+                                             <option value="2">FLAT</option>
+                                             <option value="2">DUBL</option>
+                                             <option value="1">LOWB</option>
+                                             <option value="2">STEP</option>
+                                             <option value="2">CONT</option>
+                                             <option value="2">REFR</option>
+                                             <option value="2">EXPD</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                          <option value="2">Individual</option>
+                                          <option value="2">Group</option>
+                                          </optgroup>
+                                          </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load Type</label>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="HazMat">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">HazMat</label>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="Load">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Load">Oversize Load</label>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="Reefer">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Reefer">Reefer</label>
+                                       </div>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="Tanker">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Tanker">Tanker</label>
+                                       </div>
+                                    </div>
+
+                                    
+                                 </div>
+
+                                 
+                              </div>
+                              <div class="col-lg-6">
+                                 
+                              </div>
+                           </div>
+
+
+                           <div class="form-group row">
+                             
+                              <div class="col-lg-8">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
+
+                                 
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Hauling Fee</label>
+                                    </div>
+                                    <div class="col-lg-3 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="1">Flat Fee</option>
+                                             <option value="2">Per Mile</option>
+                                             <option value="2">Per Ton</option>
+                                             <option value="2">Per Hundred Wt.</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="input-group mb-3">
+                                          <span class="input-group-prepend positionsta">
+                                          <span class="input-group-text pt-0 pb-0">$</span>
+                                          </span>
+                                          <input type="text" class="form-control" placeholder="0.00">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Fuel Surcharge</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="2">Flat Fee</option>
+                                             <option value="2">Percent</option>
+                                             <option value="2">Per Mile</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="input-group mb-3">
+                                          <span class="input-group-prepend positionsta">
+                                          <span class="input-group-text pt-0 pb-0">$</span>
+                                          </span>
+                                          <input type="text" class="form-control" placeholder="0.00">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Fee</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                          <option value="2">Stop Off</option>
+                                          <option value="2">Lumper</option>
+                                          <option value="2">Detention</option>
+                                          <option value="2">Tarp</option>
+                                          </optgroup>
+                                          </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="input-group mb-3">
+                                          <span class="input-group-prepend positionsta">
+                                          <span class="input-group-text pt-0 pb-0">$</span>
+                                          </span>
+                                          <input type="text" class="form-control" placeholder="0.00">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+                                 <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Fee</a>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Deduction</label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                          <option value="2">Stop Off</option>
+                                          <option value="2">Lumper</option>
+                                          <option value="2">Detention</option>
+                                          <option value="2">Tarp</option>
+                                          </optgroup>
+                                          </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                       <div class="input-group mb-3">
+                                          <span class="input-group-prepend positionsta">
+                                          <span class="input-group-text pt-0 pb-0">$</span>
+                                          </span>
+                                          <input type="text" class="form-control" placeholder="0.00">
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+                                 <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Deduction</a>
+                                
+                                 <div class="row mt-3">
+                                    
+                                    <div class="col-lg-9 bordtop pt-1">
+                                       <h5 class="text-right font-weight-semibold text-4 text-dark">Sub Total</h5>
+                                    </div>
+                                    <div class="col-lg-3 bordtop pt-1">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+
+                                 <div class="row mt-3">
+                                    
+                                    <div class="col-lg-9 pt-1 bordtop text-right">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Amount</a>
+                                    </div>
+                                    <div class="col-lg-3 bordtop pt-1">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+
+                                 <div class="row mt-3">
+                                    
+                                    <div class="col-lg-9 bordtop pt-1">
+                                       <h5 class="text-right font-weight-semibold text-4 text-dark">Total Amount</h5>
+                                    </div>
+                                    <div class="col-lg-3 bordtop pt-1">
+                                       <p class="text-right">$0.00</p>
+                                    </div>
+                                 </div>
+
+                                 
+                              </div>
+
+                              <div class="col-lg-4">
+
+                                 <div class="col-lg-12 bordall">
+                                    <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>
+                                 <h5 class="text-4 text-dark mb-3">Calculated Using</h5>
+
+                                 
+                                 <div class="col-lg-12 mb-3">
+                                    <div class="radio-custom">
+                                       <input type="radio" id="gmaps" name="Customer" checked="">
+                                       <label for="radioExample1">Google Maps</label>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-12 mb-3">
+                                    <div class="radio-custom">
+                                       <input type="radio" id="Pcmiles" name="Customer" checked="">
+                                       <label for="radioExample1">Pcmiles</label>
+                                    </div>
+                                 </div>
+
+                                 <div class="col-lg-12 mb-3">
+                                    <div class="radio-custom">
+                                       <input type="radio" id="manual" name="Customer" checked="">
+                                       <label for="radioExample1">Manual</label>
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-12 mb-3">
+                                    <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Total Miles</label>
+                                    <input type="text" class="form-control">
+                                 </div>
+                                 </div>
+
+                                 <div class="col-lg-12 pl-0 mt-3">
+                                    <label class="control-label font-weight-bold text-4 text-dark" for="inputDefault">Remarks</label>
+                                  <textarea class="form-control" rows="10" id="textareaDefault"></textarea>
+                                  </div>
+
+                                 
+
+                              </div>
+
+                              
+                           </div>
+
+
+                           <div class="form-group row">
+                              
+                              <div class="col-lg-6">
+                                 <div class="col-lg-12 bgcol1 pt-1 pb-2">
+                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Assign Driver & Equipment</h4>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Driver</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="1">Select Driver</option>
+                                             <option value="2">Driver Name1</option>
+                                             <option value="2">Driver Name2</option>
+                                             <option value="2">Driver Name3</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                   
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+
+                                 </div>
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="HazMat">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify driver by email</label>
+                                       </div>
+                                    </div>
+                                   
+                                    <div class="col-lg-3">
+                                       
+                                    </div>
+
+                                 </div>
+
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="HazMat">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify driver by text message</label>
+                                       </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                    </div>
+                                 </div>
+
+                                 
+                                 <div class="row mt-3">
+                                    <div class="col-lg-12 labelalign">
+                                       <a class="btn btn-success btn-sm mr-2" href="#"><i class="fas fa-plus"></i> Add Additional Driver</a>   
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+
+                              <div class="col-lg-6">
+                              </div>
+                           
+                           </div>
+
+
+                           <div class="form-group row">
+                             
+                              <div class="col-lg-6">
+                                 <div class="col-lg-12 bgcol1 pt-1 pb-2">
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Truck</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="1">Select Driver</option>
+                                             <option value="2">702</option>
+                                             <option value="2">950</option>
+                                             <option value="2">1111</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                   
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+
+                                 </div>
+                           
+                                 <div class="row mt-3">
+                                    <div class="col-lg-12 labelalign">
+                                       <a class="btn btn-default btn-sm" href="#"> Dispatch Schedule</a>   
+                                       <a class="btn btn-success btn-sm mr-3" href="#"><i class="fas fa-plus"></i> Add Additional Driver</a>   
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+
+                              <div class="col-lg-6">
+                                 <div class="col-lg-12 bgcol1  pt-1">
+                                 <div class="row mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Trailer</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <select data-plugin-selectTwo class="form-control populate">
+                                          <optgroup label="">
+                                             <option value="1">Select Driver</option>
+                                             <option value="2">A223</option>
+                                             <option value="2">A555</option>
+                                          </optgroup>
+                                       </select>
+                                    </div>
+                                   
+                                    <div class="col-lg-3">
+                                       <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i></a>
+                                    </div>
+
+                                 </div>
+                           
+                                 <div class="row  mt-3">
+                                    <div class="col-lg-3 labelalign">
+                                       <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
+                                    </div>
+                                    <div class="col-lg-6 col-md-12">
+                                       <div class="checkbox-custom checkbox-default">
+                                          <input type="checkbox" id="HazMat">
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">Notify driver by email</label>
+                                       </div>
+                                    </div>
+                                   
+                                    <div class="col-lg-3">
+                                       
+                                    </div>
+
+                                 </div>
+                              </div>
+
+                              </div>
+                           </div>
+
+                
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a> <button class="btn btn-dark mt-1 modal-confirm">Create Dispatch</button>
+                           </div>
+                        </div>
+                        </form>
+                     </div>
+                  </section>
+               </div>
+            </div>
+         </section>
+    </div>
+
+
+
+</section>
+
+
+
+
+
+
