@@ -400,13 +400,13 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers['BOL'] = '';
     this.shippersReceivers[i].shippers['reference'] = '';
     this.shippersReceivers[i].shippers['notes'] = '';
-    // this.shippersReceivers[i].shippers['commodity'].forEach( item => {
-    //   item.name = '',
-    //   item.quantity = ''
-    //   item.quantityUnit = ''
-    //   item.weight = ''
-    //   item.weightUnit = ''
-    // });
+    this.shippersReceivers[i].shippers['commodity'].forEach( item => {
+      item.name = '',
+      item.quantity = ''
+      item.quantityUnit = ''
+      item.weight = ''
+      item.weightUnit = ''
+    });
     this.shippersReceivers[i].shippers['minTempratureUnit'] = '';
     this.shippersReceivers[i].shippers['maxTemprature'] = '';
     this.shippersReceivers[i].shippers['maxTempratureUnit'] = '';
@@ -423,13 +423,13 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers['phone'] = '';
     this.shippersReceivers[i].receivers['reference'] = '';
     this.shippersReceivers[i].receivers['notes'] = '';
-    // this.shippersReceivers[i].receivers['commodity'].forEach( item => {
-    //   item.name = '',
-    //   item.quantity = ''
-    //   item.quantityUnit = ''
-    //   item.weight = ''
-    //   item.weightUnit = ''
-    // });
+    this.shippersReceivers[i].receivers['commodity'].forEach( item => {
+      item.name = '',
+      item.quantity = ''
+      item.quantityUnit = ''
+      item.weight = ''
+      item.weightUnit = ''
+    });
     this.shippersReceivers[i].receivers['minTempratureUnit'] = '';
     this.shippersReceivers[i].receivers['maxTemprature'] = '';
     this.shippersReceivers[i].receivers['maxTempratureUnit'] = '';
@@ -606,30 +606,33 @@ export class AddOrdersComponent implements OnInit {
     
     this.hideErrors();
     
-    this.apiService.postData('orders', this.orderData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.label] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+    this.apiService.postData('orders', this.orderData).subscribe({
+      complete: () => { },
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.Success = '';
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
          
           this.toastr.success('Order added successfully');
           
-          this.router.navigateByUrl('/dispatch/orders');
+         // this.router.navigateByUrl('/dispatch/orders');
         }
       });
     
@@ -637,11 +640,12 @@ export class AddOrdersComponent implements OnInit {
   }
 
   throwErrors() {
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+          .addClass('error');
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -716,15 +720,14 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
-  getLoadTypes(i, event) {
-    var index = this.loadTypeData.indexOf(event.target.value);
+  getLoadTypes(value) {
+    var index = this.loadTypeData.indexOf(value);
     if(index === -1){
-      this.loadTypeData.push(event.target.value);
+      this.loadTypeData.push(value);
     }else{
       this.loadTypeData.splice(index,1);
     }
     this.orderData.additionalDetails['loadType'] = this.loadTypeData;
-    
   }
 
   removeList(elem, parentIndex, i) {
