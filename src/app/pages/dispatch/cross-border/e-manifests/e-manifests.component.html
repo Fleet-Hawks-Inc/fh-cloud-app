@@ -119,10 +119,10 @@
             <div id="list_view">
                <ul class="nav nav-tabs top-tabs p-2" id="eManifests-tabs" role="tablist">
                   <li class="nav-item">
-                     <a class="nav-link active" id="ace-emanifest-tab"  (click)="ACEEntries()" data-toggle="tab" href="#ace-emanifest" role="tab" aria-controls="ace-emanifest" aria-selected="true">ACE eManifest</a>
+                     <a class="nav-link {{ aceClass }}" id="ace-emanifest-tab" (click)="changeTab('ace')" role="tab" aria-controls="ace-emanifest" aria-selected="true">ACE eManifest</a>
                   </li>
                   <li class="nav-item">
-                     <a class="nav-link" id="aci-emanifest-tab"  (click)= "ACIEntries()" data-toggle="tab" href="#aci-emanifest" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
+                     <a class="nav-link {{ aciClass }}" id="aci-emanifest-tab" (click)= "changeTab('aci')" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
                   </li>
                </ul>
             <div class="row">
@@ -131,7 +131,7 @@
                      <div class="card-body">
                          <div class="tab-content p-0">
                            <div class="tab-pane show active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
-                              <table class="table table-bordered table-responsive-lg table-striped mb-0"  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="ace">
                                  <thead>
                                     <tr> 
                                        <th>Trip</th>
@@ -150,7 +150,7 @@
                                     <tr *ngFor = "let aceManifest of ACEList;">                                       
                                        <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
+                                       <td routerLink="/dispatch/cross-b order/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
                                           {{vehiclesList[aceManifest.truck.truckID]}}
                                        </td>
@@ -176,7 +176,7 @@
                               </table>                              
                            </div>
                            <div class="tab-pane" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
-                               <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptionsACI" [dtTrigger]="dtTriggerACI">
+                               <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptionsACI" [dtTrigger]="dtTriggerACI" id="aci">
                                  <thead>
                                     <tr>                                 
                                        
