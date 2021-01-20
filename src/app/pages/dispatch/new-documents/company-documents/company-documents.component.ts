@@ -11,14 +11,15 @@ import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-company-documents',
   templateUrl: './company-documents.component.html',
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnInit {
-
+  Asseturl = this.apiService.AssetUrl;
+  
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
 
@@ -30,7 +31,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   form;
   image;
   ifEdit = false;
-  modalTitle: string = 'Add Document';
+  modalTitle: string = 'Add';
   docs: SafeResourceUrl;
   public documentsDocs = [];
   selectedFiles: FileList;
@@ -47,8 +48,12 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   errors = {};
   carrierID: any;
   documentData = {
-    category: 'company',
-    uploadedDocs: []
+    categoryType: 'company',
+    tripID: '',
+    documentNumber: '',
+    docType: '',
+    documentName: '',
+    description: '',    
   };
   totalRecords = 20;
   pageLength = 10;
@@ -64,13 +69,16 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   lastEvaluatedKey = '';
   suggestions = [];
 
-  currentUser: any;
-  
+  currentID: string;
+  uploadeddoc = [];
+  newDoc: any;
+  tripsObjects: any = {};
+
   constructor(
     private apiService: ApiService,
-    private router: Router,
     private domSanitizer: DomSanitizer,
-    private awsUS: AwsUploadService
+    private awsUS: AwsUploadService,
+    private toastr: ToastrService,
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -78,16 +86,23 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   ngOnInit() {
     this.fetchDocuments();
     this.fetchTrips();
+    this.fetchTripsByIDs();
     this.initDataTable();
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
   }
+  selectDoc(event) {
+    console.log('edd', event);
+    let files = [...event.target.files];
+    this.uploadeddoc = [];
+    this.uploadeddoc.push(files[0])
+  }
 
   fetchDocuments = () => {
     // this.spinner.show(); // loader init
     this.totalRecords = 0;
-    this.apiService.getData('documents').subscribe({
+    this.apiService.getData('documents?categoryType=company').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -106,8 +121,18 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   
   addDocument() {
     console.log("documentData", this.documentData);
-    return;
-    this.apiService.postData('documents', this.documentData).
+    this.hideErrors();
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadeddoc.length; i++){
+      formData.append('uploadedDocs', this.uploadeddoc[i]);
+    }
+    //append other fields
+    formData.append('data', JSON.stringify(this.documentData));
+
+    this.apiService.postData('documents', formData, true).
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -127,33 +152,52 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       },
         next: (res) => {
-          this.Success = 'Document Added successfully';
-          
+          this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
-          // setTimeout(() => {
-          //   this.fetchDocuments();
-          //   this.dtTrigger.next();
-          // }, 1000);
+          this.rerender();
+          this.documentData.documentNumber = '';
+          this.documentData.docType = '';
+          this.documentData.tripID = '';
+          this.documentData.documentName = '';
+          this.documentData.description = ''
         }
       });
   }
+  
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
-    this.selectedFiles = event.target.files;
-    console.log(this.selectedFiles)
-    for (let i = 0; i <= this.selectedFiles.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      this.documentData.uploadedDocs.push(fileName);
-    }
-  }
+  // selectDocuments(event) {
+  //   this.selectedFiles = event.target.files;
+  //   console.log(this.selectedFiles)
+  //   for (let i = 0; i <= this.selectedFiles.length; i++) {
+  //     const randomFileGenerate = this.selectedFiles[i].name.split('.');
+  //     const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+  //     this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+  //     this.documentData.uploadedDocs.push(fileName);
+  //   }
+  // }
   /*
    * Uploading files which selected
    */
@@ -171,7 +215,15 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
       this.trips = result.Items;
-      console.log('trips', this.trips);
+    });
+  }
+
+   /*
+   * Get all trips from api
+   */
+  fetchTripsByIDs() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripsObjects = result;
     });
   }
 
@@ -179,27 +231,41 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     * Fetch Document details before updating
     */
   editDocument(id: any) {
+    this.currentID = id;
+    console.log('currentID', this.currentID);
     this.ifEdit = true;
-    this.modalTitle = 'Edit Document';
-    $('#addDocumentModal').modal('show');
+    this.modalTitle = 'Edit';
+    this.newDoc = '';
     this.apiService
-      .getData('documents/' + id)
+      .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        result = result.Items[0];
-        this.getImages(result);
         console.log(result);
-        this.documentData['docID'] = result.docID;
-        this.documentData['documentNumber'] = result.documentNumber;
-        this.documentData['documentName'] = result.documentName;
-        this.documentData['docType'] = result.docType;
-        this.documentData['description'] = result.description;
+        result = result.Items[0];
+       
+        this.documentData.tripID = result.tripID;
+        this.documentData.documentNumber = result.documentNumber;
+        this.documentData.documentName = result.documentName;
+        this.documentData.docType = result.docType;
+        this.documentData.description = result.description;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
-        this.documentData['tripID'] = result.tripID;
+        this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
+    $('#addDocumentModal').modal('show');
   }
 
   updateDocument() {
-    this.apiService.putData('documents', this.documentData).
+    this.documentData['docID'] = this.currentID;
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadeddoc.length; i++){
+      formData.append('uploadedDocs', this.uploadeddoc[i]);
+    }
+    //append other fields
+    formData.append('data', JSON.stringify(this.documentData));
+
+    this.apiService.putData('documents', formData, true).
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -219,22 +285,18 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       },
         next: (res) => {
-          this.Success = 'Document Updated successfully';
+          this.toastr.success('Document Updated successfully');
           
           $('#addDocumentModal').modal('hide');
-          setTimeout(() => {
-            this.fetchDocuments();
-            this.dtTrigger.next();
-          }, 1000);
+          this.documentData.documentNumber = '';
+          this.documentData.docType = '';
+          this.documentData.tripID = '';
+          this.documentData.documentName = '';
+          this.documentData.description = '',
+          // this.documentData.uploadedDocs = '';
+          this.rerender();
         }
       });
-  }
-
-  getImages = async (result) => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.image = this.domSanitizer.bypassSecurityTrustUrl(
-      await this.awsUS.getFiles(this.carrierID, result.uploadedDocs[0]));
-    this.documentsDocs = this.image;
   }
 
   deactivateAsset(value, docID) {
@@ -242,7 +304,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       this.apiService
         .getData(`documents/isDeleted/${docID}/${value}`)
         .subscribe((result: any) => {
-          this.fetchDocuments();
+          this.rerender();
         });
     }
   }
@@ -299,14 +361,10 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           targets: 7,
           "orderable": false
         },
-        {
-          targets: 8,
-          "orderable": false
-        },
       ],
       dom: 'Bfrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluatedKey +
+        current.apiService.getDatatablePostData('documents/fetch-records?categoryType=company&value1=' + current.lastEvaluatedKey +
           '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +
           "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
             current.documents = resp['Items'];
@@ -325,11 +383,6 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       }
     };
-  }
-
-  getCurrentuser = async () => {
-    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
   }
 
   ngAfterViewInit(): void {
