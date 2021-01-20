@@ -241,8 +241,10 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10" data-select2-id="14">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
-                                   <ng-select [items]="inventory" [(ngModel)]="selectedParts" name="selectedParts" bindLabel="name"   placeholder="Select service part"
-                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;"></ng-select>
+                                   <ng-select [(ngModel)]="selectedParts" name="selectedParts" bindLabel="name"   placeholder="Select service part"
+                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;">
+                                    <ng-option *ngFor="let item of inventory" value={{item.itemID}}>{{item.itemName}}</ng-option>
+                                    </ng-select>
                                    
                                 </div>
                              </div>
