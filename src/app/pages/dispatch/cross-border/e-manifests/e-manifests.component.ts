@@ -380,19 +380,4 @@ ACIEntries() {
       $("#aci-emanifest").show();
     }
   }
-   
-  changeTab(tabType) {
-    this.activeDiv = tabType;
-    if(tabType == 'ace') {
-      this.aceClass = 'active';
-      this.aciClass = '';
-      $("#ace-emanifest").show();
-      $("#aci-emanifest").hide();
-    } else if(tabType == 'aci'){    
-      this.aceClass = '';
-      this.aciClass = 'active';
-      $("#ace-emanifest").hide();
-      $("#aci-emanifest").show();
-    }
-  }
 }
