@@ -5,9 +5,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "buildPreprod": "ng build",
+    "buildPreprod": "ng build --configuration=preprod --base-href . ",
     "buildDev": "ng build",
-    "buildProd": "ng build --prod --base-href . ",
+    "buildProd": "ng build configuration=prod --base-href . ",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
