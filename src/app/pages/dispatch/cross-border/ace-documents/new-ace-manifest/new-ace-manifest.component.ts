@@ -154,7 +154,7 @@ export class NewAceManifestComponent implements OnInit {
   passengerDocStates = [];
   shipments = [
     {
-      type: '',
+      shipmentType: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -397,7 +397,7 @@ deleteTrailer(i: number) {
 }
   addShipment() {
     this.shipments.push({
-      type: '',
+      shipmentType: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -668,6 +668,33 @@ deleteTrailer(i: number) {
   }
   updateACEManifest() {
     this.hideErrors();
+    if(this.shipments.length == 0){ // to show error on empty US address
+      if(this.usAddress.state == ''){
+        this.errorClassState = true; 
+      }
+      else{
+        this.errorClassState = false; 
+      }
+      if(this.usAddress.city == ''){
+        this.errorClassCity = true; 
+      }else{
+        this.errorClassCity = false;
+      }
+      if(this.usAddress.addressLine == ''){
+        this.errorClassAddress = true; 
+      }else{
+        this.errorClassAddress = false; 
+      }
+      if(this.usAddress.zipCode == ''){
+        this.errorClassZip = true; 
+      }else{
+        this.errorClassZip = false; 
+      }
+      if(this.usAddress.state !== '' && this.usAddress.city !== '' && this.usAddress.addressLine !== '' && this.usAddress.zipCode !== ''){
+        this.address = true;
+      }
+    }
+    if(this.shipments.length > 0 || this.address){  
     const data = {
       entryID: this.entryID,
       timeCreated: this.timeCreated,
@@ -685,6 +712,7 @@ deleteTrailer(i: number) {
       currentStatus: this.currentStatus,
       usAddress: this.usAddress
     };
+    console.log('ata',data);
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -712,4 +740,5 @@ deleteTrailer(i: number) {
       },
     });
   }
+}
 }
