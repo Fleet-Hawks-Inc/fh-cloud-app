@@ -147,7 +147,7 @@ export class NewAciManifestComponent implements OnInit {
     cargoExemptions: []
   };
   driverArray = []; 
-  assetsArray = [
+  trailers = [
     {
       assetID: '',
       sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
@@ -314,7 +314,7 @@ export class NewAciManifestComponent implements OnInit {
         this.loadingCities = result.Items;
       });
   }
-  getAccetanceCities(s) {
+  getAcceptanceCities(s) {
     let stateID = this.shipments[s].cityOfAcceptance.stateProvince;
     this.apiService.getData('cities/state/'+ stateID)
       .subscribe((result: any) => {
@@ -352,7 +352,7 @@ export class NewAciManifestComponent implements OnInit {
   // TRUCK DATA
   addTruckSeal(){
     this.truck.sealNumbers.push({sealNumber: ''});
-    if(this.truck.sealNumbers.length <= 20){
+    if(this.truck.sealNumbers.length <= 19){
       this.addTruckSealBtn = true;
     } 
     else  {
@@ -398,14 +398,14 @@ export class NewAciManifestComponent implements OnInit {
   }
   // trailer data
   addTrailer() {
-    this.assetsArray.push({
+    this.trailers.push({
       assetID: '',
       cargoExemptions: [],
       sealNumbers: [{sealNumber: ''}],
     });
     this.addTrailerBtn = true;
 
-    if (this.assetsArray.length >= 3) {
+    if (this.trailers.length >= 3) {
       this.addTrailerBtn = false;
     }
     else {
@@ -413,13 +413,13 @@ export class NewAciManifestComponent implements OnInit {
     }
   }
   addTrailerSeal(i){
-    if(this.assetsArray[i].sealNumbers.length <= 19) {
-      this.assetsArray[i].sealNumbers.push({sealNumber: ''});
+    if(this.trailers[i].sealNumbers.length <= 19) {
+      this.trailers[i].sealNumbers.push({sealNumber: ''});
     }
          
   }
   deleteTrailer(i: number) {
-    this.assetsArray.splice(i, 1);
+    this.trailers.splice(i, 1);
     this.addTrailerBtn = true;
   }
   addMorePassenger() {
@@ -632,7 +632,7 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTime: this.estimatedArrivalTime,
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
-       trailers: this.assetsArray,
+       trailers: this.trailers,
        drivers: this.driverArray,
        passengers: this.passengers,
        containers: this.containers,
@@ -646,7 +646,7 @@ export class NewAciManifestComponent implements OnInit {
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -661,7 +661,7 @@ export class NewAciManifestComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest added successfully');
-        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+        this.location.back(); // <-- go back to previous location
 
       },
     });
@@ -705,7 +705,7 @@ export class NewAciManifestComponent implements OnInit {
           this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
           this.truck = result.truck,
           this.driverArray = result.drivers,
-          this.assetsArray = result.trailers,
+          this.trailers = result.trailers,
           this.containers = result.containers,
           this.passengers = result.passengers,
           this.shipments = result.shipments,
@@ -728,7 +728,7 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTime: this.estimatedArrivalTime,
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
-       trailers: this.assetsArray,
+       trailers: this.trailers,
        drivers: this.driverArray,
        passengers: this.passengers,
        containers: this.containers,
@@ -743,7 +743,7 @@ export class NewAciManifestComponent implements OnInit {
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -758,7 +758,7 @@ export class NewAciManifestComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest Updated Successfully');
-        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+        this.location.back(); // <-- go back to previous location
       },
     });
   }
