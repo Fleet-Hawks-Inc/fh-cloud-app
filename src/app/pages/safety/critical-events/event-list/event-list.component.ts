@@ -7,7 +7,6 @@ import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import * as moment from "moment";
-import { assertNotNull } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-event-list',
