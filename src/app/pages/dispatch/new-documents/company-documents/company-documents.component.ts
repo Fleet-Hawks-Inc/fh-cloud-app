@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services/api.service';
-import { Router } from '@angular/router';
+import { ApiService } from '../../../../services';
 import { map } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
-import { AwsUploadService } from '../../../../services/aws-upload.service';
-import { v4 as uuidv4 } from 'uuid';
+import { AwsUploadService } from '../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
@@ -12,6 +10,7 @@ import { DataTableDirective } from 'angular-datatables';
 import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-company-documents',
   templateUrl: './company-documents.component.html',
@@ -19,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnInit {
   Asseturl = this.apiService.AssetUrl;
-  
+
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
 
@@ -31,7 +30,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   form;
   image;
   ifEdit = false;
-  modalTitle: string = 'Add';
+  modalTitle = 'Add';
   docs: SafeResourceUrl;
   public documentsDocs = [];
   selectedFiles: FileList;
@@ -41,10 +40,10 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   documentSequence: string;
   allOptions: any = {};
   response: any = '';
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = '';
-  Success: string = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
   errors = {};
   carrierID: any;
   documentData = {
@@ -53,7 +52,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     documentNumber: '',
     docType: '',
     documentName: '',
-    description: '',    
+    description: '',
   };
   totalRecords = 20;
   pageLength = 10;
@@ -69,10 +68,13 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   lastEvaluatedKey = '';
   suggestions = [];
 
+
   currentID: string;
   uploadeddoc = [];
   newDoc: any;
   tripsObjects: any = {};
+  currentUser;
+
 
   constructor(
     private apiService: ApiService,
@@ -118,9 +120,9 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       this.documentData['documentNumber'] = prefixCode;
     }
   }
-  
+
   addDocument() {
-    console.log("documentData", this.documentData);
+
     this.hideErrors();
     // create form data instance
     const formData = new FormData();
@@ -133,6 +135,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     formData.append('data', JSON.stringify(this.documentData));
 
     this.apiService.postData('documents', formData, true).
+
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -152,6 +155,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       },
         next: (res) => {
+
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
           this.rerender();
@@ -160,10 +164,11 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           this.documentData.tripID = '';
           this.documentData.documentName = '';
           this.documentData.description = ''
+
         }
       });
   }
-  
+
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -241,7 +246,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       .subscribe((result: any) => {
         console.log(result);
         result = result.Items[0];
-       
+
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
         this.documentData.documentName = result.documentName;
@@ -254,6 +259,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
   updateDocument() {
+
     this.documentData['docID'] = this.currentID;
     // create form data instance
     const formData = new FormData();
@@ -266,6 +272,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     formData.append('data', JSON.stringify(this.documentData));
 
     this.apiService.putData('documents', formData, true).
+
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -285,8 +292,10 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           });
       },
         next: (res) => {
+
           this.toastr.success('Document Updated successfully');
-          
+
+
           $('#addDocumentModal').modal('hide');
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
@@ -385,6 +394,11 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     };
   }
 
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+  }
+
   ngAfterViewInit(): void {
     this.dtTrigger.next();
   }
@@ -456,7 +470,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           this.suggestions = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             let obj = {
               id: element.docID,
               name: element.documentNumber
@@ -465,7 +479,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           }
         }
       })
-    }    
+    }
   }
 
   searchSelectedRoute(document) {

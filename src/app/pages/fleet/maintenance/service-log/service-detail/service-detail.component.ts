@@ -6,6 +6,7 @@ import { HereMapService } from "../../../../../services/here-map.service";
 import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 
+
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
