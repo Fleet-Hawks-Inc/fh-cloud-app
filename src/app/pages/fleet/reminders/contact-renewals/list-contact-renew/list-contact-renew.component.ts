@@ -23,7 +23,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
 
   public remindersData: any = [];
   contacts: [];
-  contactList: any = {};
+  driverList: any = {};
   tasksList: any = {};
   allRemindersData = [];
   subcribersArray = [];
@@ -77,8 +77,8 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
     });
   }
   fetchContactList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.contactList = result;
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   setFilterStatus(val) {
@@ -91,7 +91,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   }
   getSuggestions(value) {
     this.apiService
-      .getData(`contacts/suggestion/${value}`)
+      .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedContacts = result.Items;
         if (this.suggestedContacts.length === 0) {
@@ -135,21 +135,12 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
     else if (this.filterStatus === Constants.DUE_SOON) {
       this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
     }
-    else {
+    else if (this.filterStatus === Constants.ALL){
       this.remindersData = this.remindersData;
     }
 
   }
 
-  // deleteRenewal(entryID) {
-  //   this.apiService
-  //     .deleteData('reminders/' + entryID)
-  //     .subscribe((result: any) => {
-  //       this.fetchRenewals();
-  //       this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
-
-  //     });
-  // }
 
   getReminders() {
     this.apiService
@@ -180,7 +171,6 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.allRemindersData = resp['Items'];
           current.fetchRenewals();
-          // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
 
