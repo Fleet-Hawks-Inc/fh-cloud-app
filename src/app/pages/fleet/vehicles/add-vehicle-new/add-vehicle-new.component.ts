@@ -1038,4 +1038,9 @@ vehicles= [];
       this.modalImage = slide;
       $('#imageModal').modal('show');
     }
+
+    deleteImage(index){
+      this.slides.splice(index, 1);
+      this.existingPhotos.splice(index, 1);
+    }
 }
