@@ -122,9 +122,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
     for (let j = 0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
        this.apiService.getData('serviceLogs/reminder/'+ this.allRemindersData[j].reminderID).subscribe((result: any) => { // to fetch the last completion date and odometer of particular reminder
-         if(result === null)
-        {
-         lastCompleted =  moment().subtract(7, 'd').format('DD/MM/YYYY');
+         if(result == null || Object.keys(result).length === 0)
+        {          
+         lastCompleted =  moment().format('DD/MM/YYYY');
            serviceOdometer = this.allRemindersData[j].reminderTasks.odometer; 
            this.currentOdometer = +serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer/2);
           const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
@@ -157,12 +157,12 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
         else if (this.filterStatus === Constants.DUE_SOON) {
           this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
-        else {
+        else if (this.filterStatus === Constants.ALL) {
           this.remindersData = this.remindersData;
         }
         }
         else {
-          lastCompleted = result.completionDate;
+          lastCompleted =  result.completionDate;
           serviceOdometer = +result.odometer;
           this.currentOdometer = +result.odometer + (this.allRemindersData[j].reminderTasks.odometer/2);
          
@@ -196,15 +196,11 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
           else if (this.filterStatus === Constants.DUE_SOON) {
             this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
           }
-          else {
+          else if (this.filterStatus === Constants.ALL) {
             this.remindersData = this.remindersData;
           }
         }
       });
-     
-
-    
-      
     }
   
   }

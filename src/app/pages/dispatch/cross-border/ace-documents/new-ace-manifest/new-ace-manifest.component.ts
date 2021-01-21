@@ -527,7 +527,7 @@ deleteTrailer(i: number) {
     this.shipments[s].commodities.splice(i, 1);
   }
  addThirdParty(p){
-   if(this.shipments[p].thirdParties.length <= 21){
+   if(this.shipments[p].thirdParties.length <= 20){
    this.shipments[p].thirdParties.push({
     type: '',
     name:'',
@@ -588,8 +588,7 @@ deleteTrailer(i: number) {
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'Draft'
-    }; 
-    console.log('data',data); 
+    };  
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
