@@ -160,7 +160,7 @@
                               {{itemGroups[item.categoryID]}}
                             </td>
                             <td *ngIf="hideShow.vendor" routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                              {{vendors[item.preferredVendorID]}}
+                              {{vendors[item.warehouseVendorID]}}
                             </td>
                             <td *ngIf="hideShow.quantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
                               {{item.quantity}}
