@@ -48,7 +48,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   Success: string = '';
   errors = {};
   carrierID: any;
-  documentData = {=
+  documentData = {
     categoryType: 'company',
     tripID: '',
     documentNumber: '',
