@@ -200,6 +200,9 @@ export class AddOrdersComponent implements OnInit {
 
   stateShipperIndex: any;
   stateReceiverIndex: number;
+
+  uploadedDocs = [];
+
   constructor(
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
@@ -486,6 +489,18 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
+  /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
+    console.log('evebt', event.target.files);
+    let files = [...event.target.files];
+    
+    this.uploadedDocs = files;
+    
+    console.log('uploadedDocs', this.uploadedDocs);
+  }
+
   getTimeFormat(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -498,6 +513,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async getMiles(value) {
+    
     this.orderData.milesInfo['calculateBy'] = value;
     
     if (this.mergedArray !== undefined) {
@@ -508,18 +524,21 @@ export class AddOrdersComponent implements OnInit {
       
       if (value === 'google') {
         this.mergedArray.forEach(element => {
-          this.googleCords.push(`${element.position.lat},${element.position.lng}`);
+          this.googleCords.push({lat: element.position.lat ,lng: element.position.lng});
         });
+        this.origin = this.googleCords[0];
+        this.googleCords.shift();
+        this.destination = this.googleCords;
+        
+        // if (this.googleCords.length === 2) {
+        //   this.origin = this.googleCords[0];
+        //   this.destination = this.googleCords[1];
+        // } else {
+        //   this.origin = this.googleCords[0];
+        //   this.destination = this.googleCords.shift();
+        // }
 
-        if (this.googleCords.length === 2) {
-          this.origin = this.googleCords[0];
-          this.destination = this.googleCords[1];
-        } else {
-          this.origin = this.googleCords[0];
-          this.destination = this.googleCords.shift();
-        }
-
-        this.orderData.milesInfo['totalMiles'] = await this.google.googleDistance([this.origin], [this.googleCords.join('|')]);
+        this.orderData.milesInfo['totalMiles'] = await this.google.googleDistance([this.origin], this.destination);
       } else if (value === 'pcmiles') {
         this.google.pcMiles.next(true);
         this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
@@ -601,12 +620,22 @@ export class AddOrdersComponent implements OnInit {
 
 
   onSubmit() {
-    
+    this.hideErrors();
+
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     
-    this.hideErrors();
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.orderData));
     
-    this.apiService.postData('orders', this.orderData).subscribe({
+    this.apiService.postData('orders', formData, true).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
@@ -629,10 +658,8 @@ export class AddOrdersComponent implements OnInit {
           });
       },
         next: (res) => {
-         
-          this.toastr.success('Order added successfully');
-          
-         // this.router.navigateByUrl('/dispatch/orders');
+         this.toastr.success('Order added successfully');
+         this.router.navigateByUrl('/dispatch/orders');
         }
       });
     

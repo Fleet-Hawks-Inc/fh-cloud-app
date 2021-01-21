@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 declare var $: any;
@@ -11,6 +12,7 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   orderID: string;
   orderData;
   shipperReceiversInfo = [];
@@ -46,7 +48,10 @@ export class OrderDetailComponent implements OnInit {
     'assets/img/invoice.png'
   ]
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  orderDocs = [];
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
+  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
@@ -105,7 +110,10 @@ export class OrderDetailComponent implements OnInit {
           this.taxesData = this.orderData[0].taxesInfo;
           this.totalAmount = this.orderData[0].totalAmount;
 
-
+          if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
+            this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
+          }
+          console.log('othis.orderDocs', this.orderDocs);
         }
       }, (err) => {
         console.log('order detail', err);
@@ -164,4 +172,21 @@ export class OrderDetailComponent implements OnInit {
     }, 500);
   }
 
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchOrder();
+    });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
 }

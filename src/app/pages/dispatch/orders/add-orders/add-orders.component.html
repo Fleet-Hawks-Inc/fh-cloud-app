@@ -1138,8 +1138,8 @@
                                  class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
                            </div>
                            <div class="col-lg-6 col-md-12">
-                              <input [(ngModel)]="orderData.additionalDetails.attachments" name="attachments"
-                                 type="file" class="form-control border-0 p-0">
+                              <input [(ngModel)]="orderData.additionalDetails.uploadedDocs" name="uploadedDocs"
+                                 type="file" (change)="selectDocuments($event)" multiple class="form-control border-0 p-0">
                            </div>
                            <div class="col-lg-3"> </div>
                         </div>
