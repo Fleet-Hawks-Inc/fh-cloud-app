@@ -611,7 +611,7 @@ deleteTrailer(i: number) {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest added successfully');
+        this.toastr.success('Manifest added successfully.');
         this.location.back(); // <-- go back to previous location
 
       },
@@ -734,7 +734,7 @@ deleteTrailer(i: number) {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest Updated successfully');
+        this.toastr.success('Manifest Updated successfully.');
         this.router.navigateByUrl('/dispatch/cross-border/eManifests');
 
       },
