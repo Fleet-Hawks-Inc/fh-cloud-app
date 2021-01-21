@@ -617,7 +617,9 @@ export class AddTripComponent implements OnInit {
                 // check all
                 $('input[name="ftlOrderIds"]').each(function () {
                     $(this).prop('checked', true);
-                    current.temporaryOrderIDs.push(this.value);
+                    // current.temporaryOrderIDs.push(this.value);
+                    current.temporaryOrderIDs.push(this.id);
+                    current.temporaryOrderNumber.push(this.value);
                 });
             }
 
@@ -631,7 +633,9 @@ export class AddTripComponent implements OnInit {
                 // check all
                 $('input[name="ltlOrderIds"]').each(function () {
                     $(this).prop('checked', true);
-                    current.temporaryOrderIDs.push(this.value);
+                    // current.temporaryOrderIDs.push(this.value);
+                    current.temporaryOrderIDs.push(this.id);
+                    current.temporaryOrderNumber.push(this.value);
                 });
             }
         }

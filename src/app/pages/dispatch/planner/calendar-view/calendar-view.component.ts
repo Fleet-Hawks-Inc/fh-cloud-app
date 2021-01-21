@@ -3,10 +3,11 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { from, forkJoin  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
+import * as moment from "moment";
 declare var $: any;
 
 
@@ -50,13 +51,14 @@ export class CalendarViewComponent implements OnInit {
   statesObject: any = {};
   countriesObject: any = {};
   citiesObject: any = {};
+  orders = [];
+  customersArr = [];
+  customersObjects = [];
 
   ngOnInit() {
-    this.fetchAllCitiesIDs();
-    this.fetchAllCountriesIDs();
-    this.fetchAllStatesIDs();
-
+    // this.fetchAllOrder();
     this.fetchTrips();
+    this.fetchCustomers();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -102,26 +104,16 @@ export class CalendarViewComponent implements OnInit {
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
         this.drivers = result.Items;
-        console.log('this.drivers');
-        console.log(this.drivers);
         this.codrivers = result.Items;
       })
   }
 
   fetchCoDriver(driverID) {
-    this.apiService.getData('drivers')
-      .subscribe((result: any) => {
-        this.assetDataCoDriverUsername = ''; //reset the codriver selected
-        let newDrivers = [];
-        let allDrivers = result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        for (let i = 0; i < allDrivers.length; i++) {
-          const element = allDrivers[i];
-          if (element.driverID !== driverID) {
-            newDrivers.push(element);
-          }
-        }
-        this.codrivers = newDrivers;
-      })
+    this.codrivers = this.drivers.filter(function (obj) {
+      if (obj.driverID !== driverID) {
+          return obj;
+      }
+    });
   }
 
   vehicleChange($event, type) {
@@ -188,9 +180,7 @@ export class CalendarViewComponent implements OnInit {
       $(".assetClass").removeClass('td_border');
     } else {
       if (type === 'change') {
-        console.log('asset change $event');
         this.tempTextFieldValues.trailer = [];
-        // console.log(this.informationAsset);
 
         $(".assetClass").removeClass('td_border');
         let arayy = [];
@@ -227,57 +217,62 @@ export class CalendarViewComponent implements OnInit {
 
   saveAssetModalData() {
 
-    if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
-      this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
+    // if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
+    //   this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
 
-        this.toastr.error('Please select all the assignment values');
-        return false;
-    }
+    //     this.toastr.error('Please select all the assignment values');
+    //     return false;
+    // }
 
-    let planData = this.tripData.tripPlanning;
-    
-    for (let i = 0; i < planData.length; i++) {
-      this.tripData.tripPlanning[i].codriverUsername = this.tempTextFieldValues.coDriverUsername;
-      this.tripData.tripPlanning[i].driverUsername = this.tempTextFieldValues.driverUsername;
-      this.tripData.tripPlanning[i].vehicleID = this.tempTextFieldValues.vehicleID;
+    if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
+      this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.trailer.length != 0) {
+      let planData = this.tripData.tripPlanning;
+      
+      for (let i = 0; i < planData.length; i++) {
+        this.tripData.tripPlanning[i].codriverUsername = this.tempTextFieldValues.coDriverUsername;
+        this.tripData.tripPlanning[i].driverUsername = this.tempTextFieldValues.driverUsername;
+        this.tripData.tripPlanning[i].vehicleID = this.tempTextFieldValues.vehicleID;
 
-      this.tripData.tripPlanning[i].assetID = [];
-      for (let j = 0; j < this.tempTextFieldValues.trailer.length; j++) {
-        const element2 = this.tempTextFieldValues.trailer[j];
-        this.tripData.tripPlanning[i].assetID.push(element2.id)
+        this.tripData.tripPlanning[i].assetID = [];
+        for (let j = 0; j < this.tempTextFieldValues.trailer.length; j++) {
+          const element2 = this.tempTextFieldValues.trailer[j];
+          this.tripData.tripPlanning[i].assetID.push(element2.id)
+        }
       }
-    }
 
-    this.apiService.putData('trips', this.tripData).subscribe({
-      complete: () => {
-      },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide();
-              this.throwErrors();
-            },
-            error: () => {
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        this.updateTripStatus(this.tripData.tripID)
-      },
-    });
+      this.apiService.putData('trips', this.tripData).subscribe({
+        complete: () => {
+        },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                const path = val.path;
+                // We Can Use This Method
+                const key = val.message.match(/"([^']+)"/)[1];
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide();
+                this.throwErrors();
+              },
+              error: () => {
+              },
+              next: () => {
+              },
+            });
+        },
+        next: (res) => {
+          this.updateTripStatus(this.tripData.tripID)
+        },
+      });
+    } else {
+      $("#assetModal").modal('hide');
+      return false;
+    }
   }
 
   showAssignModal(tripID) {
@@ -292,7 +287,6 @@ export class CalendarViewComponent implements OnInit {
         delete result.timeModified;
         this.tripData = result;
         
-
         if(this.tripData.tripPlanning.length === 0) { 
           this.toastr.error('Trip plan for selected trip is empty. Please create one to assign');
           this.spinner.hide();
@@ -301,7 +295,6 @@ export class CalendarViewComponent implements OnInit {
 
         if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'planned') {
           $("#assetModal").modal('show');
-          console.log(this.tripData)
           this.spinner.hide();
         } else {
           this.toastr.error('Assignment is already done. Please refer edit trip to change the previous assignment');
@@ -312,53 +305,18 @@ export class CalendarViewComponent implements OnInit {
 
   fetchTrips() {
     this.spinner.show();
-    this.apiService.getData('trips').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.spinner.hide();
-        // console.log(result);
-        // let eventArr = [];
-        for (let i = 0; i < result.Items.length; i++) {
-          let element = result.Items[i];
-          //if (result.Items[i].isDeleted == '0' && result.Items[i].tripStatus == 'pending') {
-          if (element.isDeleted == '0') {
-            this.trips.push(element);
 
-            let tripObj = {
-              assetID: '1',
-              assetName: 'Imperial trucking Co.',
-              assetShortName: "IT",
-              pickupLocation: '',
-              pickupCityID: '',
-              pickupStateID: '',
-              pickupCountryID: '',
-              // pickupCity: '',
-              // pickupState: '',
-              // pickupCountry: '',
-              deliveryLocation: '',
-              deliveryCountryID: '',
-              deliveryStateID: '',
-              deliveryCityID: '',
-              // deliveryCountry: '',
-              // deliveryState: '',
-              // deliveryCity: '',
-              tripID: element.tripID,
-              tripNo: element.tripNo,
-              date: '-',
-              time: '-',
-              tripPlan: element.tripPlanning,
-            }
-            this.tempTrips.push(tripObj);
-          }
-        }
-        this.getTripsData(this.tempTrips);
-      }
-    })
+    const tripResponse = this.apiService.getData('trips');
+    const orderResponse = this.apiService.getData('orders');
+    const observables = forkJoin([tripResponse, orderResponse]);
+    observables.subscribe(
+      value => this.orderTripValues(value),
+      err => {}
+    );
+    this.spinner.hide();
   }
 
   throwErrors() {
-    // console.log(this.errors);
     this.form.showErrors(this.errors);
   }
 
@@ -370,37 +328,21 @@ export class CalendarViewComponent implements OnInit {
 
       if (element.tripPlan.length > 0) {
         pickup = element.tripPlan[0].location;
-
-        element.pickupCityID = pickup.cityID;
-        element.pickupStateID = pickup.stateID;
-        element.pickupCountryID = pickup.countryID;
-
-        // this.fetchCountryName(pickup.countryID, i, 'pickup');
-        // this.fetchStateDetail(pickup.stateID, i, 'pickup');
-        // this.fetchCityDetail(pickup.cityID, i, 'pickup');
-        element.pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
-        element.date = element.tripPlan[0].date;
-        element.time = element.tripPlan[0].time;
+        element.pickupLocation = pickup;
+        // element.date = element.date;
+        element.time = element.tripPlan[0].pickupTime;
 
         //calendar data
         let eventObj = {
           title: '#' + element.tripNo,
-          date: element.date
+          date:  moment(element.date,'DD-MM-YYYY').format('YYYY-MM-DD')
         };
         this.events.push(eventObj);
 
         if (element.tripPlan.length >= 2) {
           let lastloc = element.tripPlan.length - 1
           drop = element.tripPlan[lastloc].location;
-
-          element.dropCityID = drop.cityID;
-          element.dropStateID = drop.stateID;
-          element.dropCountryID = drop.countryID;
-          
-          // this.fetchCountryName(drop.countryID, i, 'drop');
-          // this.fetchStateDetail(drop.stateID, i, 'drop');
-          // this.fetchCityDetail(drop.cityID, i, 'drop');
-          element.deliveryLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
+          element.deliveryLocation = drop;
         }
       }
     }
@@ -417,7 +359,6 @@ export class CalendarViewComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -442,24 +383,108 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
+  fetchAllOrder() {
+    this.apiService.getData('orders')
       .subscribe((result: any) => {
-        this.statesObject = result;
+        this.orders = result.Items;
+        for (let i = 0; i < this.tempTrips.length; i++) {
+          const element = this.tempTrips[i];
+
+          if(element.orders.length > 0){
+            for (let k = 0; k < element.orders.length; k++) {
+              const element1 = element.orders[k];
+    
+              this.orders.filter(function (obj) {
+                if (obj.orderID !== element1) {
+                  let cusObj = {
+                    customerId : obj.customerID,
+                    name: '',
+                    icon: ''
+                  }
+                  element.customersArr.push(cusObj);
+                }
+              });
+            }
+          }
+        }
       });
   }
 
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
+  orderTripValues(val) {
+    let fetchedTrip = val[0];
+    let fetchedOrder = val[1];
+
+    for (let i = 0; i < fetchedTrip.Items.length; i++) {
+      let element = fetchedTrip.Items[i];
+      if (element.isDeleted == 0) {
+        let tripDate = element.dateCreated;
+        if(tripDate != '' && tripDate != undefined) {
+          tripDate = moment(tripDate,'YYYY-MM-DD').format('DD-MM-YYYY')
+        }
+        let tripObj = {
+          pickupLocation: '',
+          deliveryLocation: '',
+          tripID: element.tripID,
+          tripNo: element.tripNo,
+          date: tripDate,
+          time: '-',
+          tripPlan: element.tripPlanning,
+          orders: element.orderId,
+          customersArr: []
+        }
+
+        for (let k = 0; k < element.orderId.length; k++) {
+          const element1 = element.orderId[k];
+
+          fetchedOrder.Items.filter(function (obj) {
+            if (obj.orderID == element1) {
+              let cusObj = {
+                customerId : obj.customerID,
+                name: '',
+                icon: ''
+              }
+              tripObj.customersArr.push(cusObj);
+
+              //for unique customer-id in array 
+              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>
+                [item['customerId'], item])).values()];
+            }
+          });
+        }
+        this.tempTrips.push(tripObj);
+      }
+    }
+    this.getTripsData(this.tempTrips);
   }
 
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
+  /*
+    * Get all customers
+   */
+  fetchCustomers() {
+    this.apiService.getData('customers').subscribe((result: any) => {
+        for (let p = 0; p < this.tempTrips.length; p++) {
+          const element = this.tempTrips[p];
+          if(element.customersArr.length > 0) {
+            for (let w = 0; w < element.customersArr.length; w++) {
+              const elementp = element.customersArr[w];
+  
+              result.Items.filter(function (obj) {
+                if (obj.customerID == elementp.customerId) {
+                  elementp.name = obj.companyName;
+  
+                  let custName = obj.companyName.split(' ');
+                  if(custName[0] != undefined) {
+                    elementp.icon = custName[0].charAt(0).toUpperCase();
+                  }
+  
+                  if(custName[1] != undefined) {
+                    elementp.icon += custName[1].charAt(0).toUpperCase();
+                  }
+                }
+              });
+            }
+          }
+        }
+    });
   }
 }

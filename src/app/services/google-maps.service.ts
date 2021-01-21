@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import {} from "googlemaps";
+import { parse } from 'ts-node';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,18 +15,24 @@ export class GoogleMapsService {
   
   constructor(private http: HttpClient) { }
 
+
 googleDistance(origin, destination) {
   const matrix = new google.maps.DistanceMatrixService();
  
   return new Promise((resolve, reject) => {matrix.getDistanceMatrix({
-    origins: [new google.maps.LatLng(25.7694708, -80.259947)],
-    destinations: [new google.maps.LatLng(25.768915, -80.254659)],
+    origins: origin,
+    destinations: destination,
     travelMode: google.maps.TravelMode.DRIVING,
   }, function(response, status) {
-    console.log(response);
-    resolve(response);
+    let totalMeters = 0;
+    response.rows[0].elements.forEach(item => {
+      totalMeters += item.distance.value;
+    })
+    let totalMiles = totalMeters * 0.000621371192;
+    resolve(totalMiles.toFixed(2));
   })});
 }
+
 
   pcMilesDistance(stops){
     let headers = new HttpHeaders({

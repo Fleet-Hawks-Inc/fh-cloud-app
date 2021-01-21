@@ -39,7 +39,16 @@
                     <a class="dropdown-item text-1" href="">Export</a>
                 </div>
             </div>
-            <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" (click)="sendCBPFn()"> Send to CBP</a>
+            <div class="btn-group btn-group1 flex-wrap mr-1">
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Send To CBP<span class="caret"></span></button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBPFn()">Send Complete eManifest</a>
+                    <a class="dropdown-item text-1" routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" >Amend Completed eManifest</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Cancel Completed eManifest</a>
+                </div>
+            </div>
+            <!-- <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" (click)="sendCBPFn()"> Send to CBP</a> -->
         </div>
         </header>
         <div class="ace-main__wrapper p-4 bg-white">
@@ -299,7 +308,7 @@
                                         
                                         <td>{{shipment.shipmentControlNumber}}</td>
                                         <td></td>
-                                        <td>{{shipment.type}}</td>
+                                        <td>{{shipment.shipmentType}}</td>
                                         <td>
                                            {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}} {{shipment.shipper.address.city}} {{shipment.shipper.address.stateProvince}} {{shipment.shipper.address.postalCode}}
                                         </td>

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { from, forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
+import * as moment from "moment";
 declare var $: any;
 
 @Component({
@@ -48,6 +49,7 @@ export class MapViewComponent implements OnInit {
   ngOnInit() {
     this.mapShow();
     this.fetchTrips();
+    this.fetchCustomers();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -97,26 +99,16 @@ export class MapViewComponent implements OnInit {
       .subscribe((result: any) => {
         result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
         this.drivers = result.Items;
-        console.log('this.drivers');
-        console.log(this.drivers);
         this.codrivers = result.Items;
       })
   }
 
   fetchCoDriver(driverID) {
-    this.apiService.getData('drivers')
-      .subscribe((result: any) => {
-        this.assetDataCoDriverUsername = ''; //reset the codriver selected
-        let newDrivers = [];
-        let allDrivers = result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        for (let i = 0; i < allDrivers.length; i++) {
-          const element = allDrivers[i];
-          if (element.driverID !== driverID) {
-            newDrivers.push(element);
-          }
-        }
-        this.codrivers = newDrivers;
-      })
+    this.codrivers = this.drivers.filter(function (obj) {
+      if (obj.driverID !== driverID) {
+          return obj;
+      }
+    });
   }
 
   vehicleChange($event, type) {
@@ -183,9 +175,7 @@ export class MapViewComponent implements OnInit {
       $(".assetClass").removeClass('td_border');
     } else {
       if (type === 'change') {
-        console.log('asset change $event');
         this.tempTextFieldValues.trailer = [];
-        console.log(this.informationAsset);
 
         $(".assetClass").removeClass('td_border');
         let arayy = [];
@@ -253,7 +243,6 @@ export class MapViewComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -277,8 +266,7 @@ export class MapViewComponent implements OnInit {
 
   showAssignModal(tripID) {
     this.emptyAssetModalFields();
-    // let tripAssgn = '0';
-
+    
     this.spinner.show();
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
@@ -295,7 +283,6 @@ export class MapViewComponent implements OnInit {
 
         if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'planned') {
           $("#assetModal").modal('show');
-          console.log(this.tripData)
           this.spinner.hide();
         } else {
           this.toastr.error('Assignment is already done. Please refer edit trip to change the previous assignment');
@@ -306,47 +293,65 @@ export class MapViewComponent implements OnInit {
 
   fetchTrips() {
     this.spinner.show();
-    this.apiService.getData('trips').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.spinner.hide();
-        // console.log(result);
-        // let eventArr = [];
-        for (let i = 0; i < result.Items.length; i++) {
-          let element = result.Items[i];
-          //if (result.Items[i].isDeleted == '0' && result.Items[i].tripStatus == 'pending') {
-          if (element.isDeleted == '0') {
-            this.trips.push(element);
 
-            let tripObj = {
-              assetID: '1',
-              assetName: 'Imperial trucking Co.',
-              assetShortName: "IT",
-              pickupLocation: '',
-              pickupCity: '',
-              pickupState: '',
-              pickupCountry: '',
-              deliveryLocation: '',
-              deliveryCountry: '',
-              deliveryState: '',
-              deliveryCity: '',
-              tripID: element.tripID,
-              tripNo: element.tripNo,
-              date: '-',
-              time: '-',
-              tripPlan: element.tripPlanning,
-            }
-            this.tempTrips.push(tripObj);
-          }
+    const tripResponse = this.apiService.getData('trips');
+    const orderResponse = this.apiService.getData('orders');
+    const observables = forkJoin([tripResponse, orderResponse]);
+    observables.subscribe(
+      value => this.orderTripValues(value),
+      err => {}
+    );
+    this.spinner.hide();
+  }
+
+  orderTripValues(val) {
+    let fetchedTrip = val[0];
+    let fetchedOrder = val[1];
+
+    for (let i = 0; i < fetchedTrip.Items.length; i++) {
+      let element = fetchedTrip.Items[i];
+      if (element.isDeleted == 0) {
+        let tripDate = element.dateCreated;
+        if(tripDate != '' && tripDate != undefined) {
+          tripDate = moment(tripDate,'YYYY-MM-DD').format('DD-MM-YYYY')
         }
-        this.getTripsData(this.tempTrips);
+        let tripObj = {
+          pickupLocation: '',
+          deliveryLocation: '',
+          tripID: element.tripID,
+          tripNo: element.tripNo,
+          date: tripDate,
+          time: '-',
+          tripPlan: element.tripPlanning,
+          orders: element.orderId,
+          customersArr: []
+        }
+
+        for (let k = 0; k < element.orderId.length; k++) {
+          const element1 = element.orderId[k];
+
+          fetchedOrder.Items.filter(function (obj) {
+            if (obj.orderID == element1) {
+              let cusObj = {
+                customerId : obj.customerID,
+                name: '',
+                icon: ''
+              }
+              tripObj.customersArr.push(cusObj);
+
+              //for unique customer-id in array 
+              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>
+                [item['customerId'], item])).values()];
+            }
+          });
+        }
+        this.tempTrips.push(tripObj);
       }
-    })
+    }
+    this.getTripsData(this.tempTrips);
   }
 
   throwErrors() {
-    // console.log(this.errors);
     this.form.showErrors(this.errors);
   }
 
@@ -358,73 +363,54 @@ export class MapViewComponent implements OnInit {
 
       if (element.tripPlan.length > 0) {
         pickup = element.tripPlan[0].location;
-        this.fetchCountryName(pickup.countryID, i, 'pickup');
-        this.fetchStateDetail(pickup.stateID, i, 'pickup');
-        this.fetchCityDetail(pickup.cityID, i, 'pickup');
-        element.pickupLocation = pickup.address1 + ', ' + pickup.address2 + ', ' + pickup.zipcode;
-        element.date = element.tripPlan[0].date;
-        element.time = element.tripPlan[0].time;
+        element.pickupLocation = pickup;
+        element.time = element.tripPlan[0].pickupTime;
 
         //calendar data
         let eventObj = {
           title: '#' + element.tripNo,
-          date: element.date
+          date:  moment(element.date,'DD-MM-YYYY').format('YYYY-MM-DD')
         };
         this.events.push(eventObj);
-
 
         if (element.tripPlan.length >= 2) {
           let lastloc = element.tripPlan.length - 1
           drop = element.tripPlan[lastloc].location;
-          this.fetchCountryName(drop.countryID, i, 'drop');
-          this.fetchStateDetail(drop.stateID, i, 'drop');
-          this.fetchCityDetail(drop.cityID, i, 'drop');
-          element.deliveryLocation = drop.address1 + ', ' + drop.address2 + ', ' + drop.zipcode;
+          element.deliveryLocation = drop;
         }
       }
     }
   }
 
-  fetchCountryName(countryID, index, type) {
-    this.apiService.getData('countries/' + countryID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].countryName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupCountry = result.Items[0].countryName;
-          } else {
-            this.tempTrips[index].deliveryCountry = result.Items[0].countryName;
+  /*
+    * Get all customers
+   */
+  fetchCustomers() {
+    this.apiService.getData('customers').subscribe((result: any) => {
+        for (let p = 0; p < this.tempTrips.length; p++) {
+          const element = this.tempTrips[p];
+          if(element.customersArr.length > 0) {
+            for (let w = 0; w < element.customersArr.length; w++) {
+              const elementp = element.customersArr[w];
+  
+              result.Items.filter(function (obj) {
+                if (obj.customerID == elementp.customerId) {
+                  elementp.name = obj.companyName;
+  
+                  let custName = obj.companyName.split(' ');
+                  if(custName[0] != undefined) {
+                    elementp.icon = custName[0].charAt(0).toUpperCase();
+                  }
+  
+                  if(custName[1] != undefined) {
+                    elementp.icon += custName[1].charAt(0).toUpperCase();
+                  }
+                }
+              });
+            }
           }
         }
-      })
-  }
-
-  fetchStateDetail(stateID, index, type) {
-    this.apiService.getData('states/' + stateID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].stateName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupState = result.Items[0].stateName;
-          } else {
-            this.tempTrips[index].deliveryState = result.Items[0].stateName;
-          }
-        }
-      })
-  }
-
-  fetchCityDetail(cityID, index, type) {
-    this.apiService.getData('cities/' + cityID)
-      .subscribe((result: any) => {
-        // console.log(result.Items[0]);
-        if (result.Items[0].cityName != undefined) {
-          if (type === 'pickup') {
-            this.tempTrips[index].pickupCity = result.Items[0].cityName;
-          } else {
-            this.tempTrips[index].deliveryCity = result.Items[0].cityName;
-          }
-        }
-      })
+    });
   }
 
   updateTripStatus(tripId) {
@@ -438,7 +424,6 @@ export class MapViewComponent implements OnInit {
               const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
-              // console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[key] = val.message;
             })
@@ -458,7 +443,7 @@ export class MapViewComponent implements OnInit {
         this.spinner.hide();
         this.response = res;
         $('#assetModal').modal('hide');
-        this.toastr.success('Assignment done successfully');
+        this.toastr.success('Assignment done successfully.');
       },
     });
   }
