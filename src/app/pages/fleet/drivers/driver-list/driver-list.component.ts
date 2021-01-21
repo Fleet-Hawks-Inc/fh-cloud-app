@@ -318,8 +318,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
               element.address = result['Items'][0];
             });
           }
-          console.log('element')
-          console.log(current.drivers)
           
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;

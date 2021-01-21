@@ -420,6 +420,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0])
+    
     if(this.uploadedPhotos.length > 0) {
       this.profileTitle = 'Change';
     } 

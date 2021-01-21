@@ -302,6 +302,7 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
+        console.log('result', result);
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['groupID'] = result.groupID;
@@ -309,7 +310,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
         this.assetsData['assetDetails']['year'] = result.assetDetails.year;
         this.assetsData['assetDetails']['manufacturer'] = result.assetDetails.manufacturer;
-        // this.getModels();
+        this.getModels(result.assetDetails.manufacturer);
         this.assetsData['assetDetails']['model'] = result.assetDetails.model;
         this.assetsData['assetDetails']['length'] = result.assetDetails.length;
         this.assetsData['assetDetails']['lengthUnit'] = result.assetDetails.lengthUnit;
@@ -321,6 +322,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
         this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
         this.assetsData['assetDetails']['licenceCountryID'] = result.assetDetails.licenceCountryID;
+        this.getStates(result.assetDetails.licenceCountryID);
         this.assetsData['assetDetails']['licenceStateID'] = result.assetDetails.licenceStateID;
         this.assetsData['assetDetails']['licencePlateNumber'] = result.assetDetails.licencePlateNumber;
         this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
@@ -560,10 +562,10 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  getStates() {
+  getStates(id) {
     this.spinner.show(); // loader init
-    const countryID = this.assetsData.assetDetails['licenceCountryID'];
-    this.apiService.getData('states/country/' + countryID)
+    // const countryID = this.assetsData.assetDetails['licenceCountryID'];
+    this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
