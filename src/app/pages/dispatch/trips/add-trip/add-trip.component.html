@@ -670,7 +670,9 @@
                                                         <td class="loadid"><span class="LTLload">LTL</span><br>
                                                             <a href="javascript:;">{{ order.orderNumber }}</a>
                                                         </td>
-                                                        <td>{{ order.customer }}</td>
+
+                                                        <td>{{ customersObjects[order.customerID] }}</td>
+
                                                         <td>
                                                             <div [innerHTML]="order.pickupLocations"></div>
                                                         </td>

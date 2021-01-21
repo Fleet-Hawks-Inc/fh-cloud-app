@@ -165,11 +165,16 @@
                                   <div class="col-lg-5 offset-lg-1">
                                      <div class="row" >
                                         <div class="col-lg-10  text-center">
-                                          <div id="male_photo" style="display: block;">
-                                              <img class="business_image_style" [src]="driverProfileSrc"  id="male_photo">
+                                          <div id="male_photo" class="business_image_style position-relative mx-auto" style="display: block;">
+                                              <img [src]="driverProfileSrc"  id="male_photo" class="w-100 h-100" style="object-fit: cover;">
+                                              <span class="text-danger profile-cross" 
+                                                (click)="removeProfile()" *ngIf="uploadedPhotos != ''"
+                                                >
+                                                <i class="fa fa-times"></i>
+                                             </span>
                                           </div>
                                           <div class="mt-2">
-                                              <div class="btn btn-sm btn-success overflow-hidden position-relative"><i class="fas fa-plus"></i> Add Photo
+                                              <div class="btn btn-sm btn-success overflow-hidden position-relative"><i class="fas fa-plus"></i> {{profileTitle}} Photo
                                                  <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                                                  name="driverImage" type="file" class="hidden_input1 w-100" />
                                               </div>
@@ -567,7 +572,7 @@
                                      <div class="row" id="payPerHourForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
                                         <div class="col-lg-5">
                                            <label class="control-label font-weight-bold text-lg-right pt-2" >Rate ($)</label>
-                                           <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="number" class="form-control" placeholder="eg. 30,35 etc.">
+                                           <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text" class="form-control" placeholder="eg. 30,35 etc.">
                                         </div>
                                      </div>
                                      <div class="row" id="payPercentageForm"  *ngIf="driverData.paymentDetails.paymentType == 'Percentage'">

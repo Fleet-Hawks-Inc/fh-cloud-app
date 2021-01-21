@@ -7,9 +7,9 @@
 .show-search__result .map-search__results {
     display: block !important;
 }
-/* .address-inner {
-    display: none;
+.profile-cross {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 20px;
 }
-.address-item.open .address-inner {
-    display: block;
-} */

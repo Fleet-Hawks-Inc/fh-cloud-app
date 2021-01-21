@@ -4,6 +4,9 @@ import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from "../../../../../services/here-map.service";
 import * as moment from 'moment';
+import { DomSanitizer } from '@angular/platform-browser';
+
+
 @Component({
   selector: 'app-service-detail',
   templateUrl: './service-detail.component.html',
@@ -47,11 +50,15 @@ export class ServiceDetailComponent implements OnInit {
 
   photos: any = [];
   docs: any = [];
+
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   constructor(
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
       private route: ActivatedRoute,
-      private hereMap: HereMapService
+      private hereMap: HereMapService,
+      private domSanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {
@@ -101,8 +108,19 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.photos = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+          this.photos = result.uploadedPhotos.map(x => ({
+            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+            name: x,
+          }));
         }
+
+        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+          this.docs = result.uploadedDocs.map(x => ({
+            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+            name: x,
+          }));
+        }
+        console.log('photos', this.photos)
 
       },
     });
@@ -126,6 +144,7 @@ export class ServiceDetailComponent implements OnInit {
     this.apiService.getData('issues/get/list')
       .subscribe((result: any) => {
         this.issuesObject = result;
+        console.log('fetchAllIssuesIDs', this.issuesObject)
       });
   }
 
@@ -134,5 +153,23 @@ export class ServiceDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.assetsObject = result;
       });
+  }
+
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchProgramByID();
+    });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
   }
 }

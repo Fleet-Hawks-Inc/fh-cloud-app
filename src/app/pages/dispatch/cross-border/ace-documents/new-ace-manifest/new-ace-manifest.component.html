@@ -263,7 +263,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Shipment
                                              Type</label>
-                                          <ng-select [attr.name]="'shipments['+s+'].type'" [(ngModel)]="shipment.type" [ngModelOptions]="{standalone: true}">
+                                          <ng-select [attr.name]="'shipments['+s+'].shipmentType'" [(ngModel)]="shipment.shipmentType" [ngModelOptions]="{standalone: true}">
                                              <ng-option *ngFor="let shipment of shipmentTypeList"
                                                 [value]="shipment.code">
                                                 {{shipment.description}}</ng-option>
@@ -301,14 +301,14 @@
                                                 {{state.stateName}}</ng-option>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
+                                       <div class="col-lg-10" *ngIf="shipment.shipmentType === 'GOODS_ASTRAY'">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray
                                              Date of Exit</label>
                                           <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
                                              [ngModelOptions]="{standalone: true}"  [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'"
                                              [(ngModel)]="shipment.goodsAstrayDateOfExit">
                                        </div>
-                                       <div class="col-lg-10" *ngIf="shipment.type === 'IN_BOND'">
+                                       <div class="col-lg-10" *ngIf="shipment.shipmentType === 'IN_BOND'">
                                           <div class="row">
                                              <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">In-Bond
@@ -568,7 +568,7 @@
                                        </div>
                                     </div>
                                     <div class="row"
-                                       *ngIf="shipment.type === 'BRASS' || shipment.type === 'BRASS_MULTIPLE'">
+                                       *ngIf="shipment.shipmentType === 'BRASS' || shipment.shipmentType === 'BRASS_MULTIPLE'">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">C4 Line
                                              Release
@@ -579,7 +579,7 @@
                                        </div>
                                     </div>
                                     <div class="row"
-                                       *ngIf="shipment.type === 'IN_BOND' || shipment.type === 'SECTION_321' || shipment.type === 'SECTION_321_FDA'">
+                                       *ngIf="shipment.shipmentType === 'IN_BOND' || shipment.shipmentType === 'SECTION_321' || shipment.shipmentType === 'SECTION_321_FDA'">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Commodity
                                              Value in USD</label>
@@ -587,7 +587,7 @@
                                              maxlength="9" [(ngModel)]="commodity.value">
                                        </div>
                                     </div>
-                                    <div class="row" *ngIf="shipment.type === 'IN_BOND'">
+                                    <div class="row" *ngIf="shipment.shipmentType === 'IN_BOND'">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Harmonized
                                              Code

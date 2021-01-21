@@ -200,6 +200,7 @@ export class AddOrdersComponent implements OnInit {
 
   stateShipperIndex: any;
   stateReceiverIndex: number;
+  uploadedDocs = [];
   constructor(
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
@@ -385,6 +386,7 @@ export class AddOrdersComponent implements OnInit {
     
     this.mergedArray.sort((a, b) => {
      return new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf();
+
     });
     
   }
@@ -400,18 +402,19 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers['BOL'] = '';
     this.shippersReceivers[i].shippers['reference'] = '';
     this.shippersReceivers[i].shippers['notes'] = '';
-    // this.shippersReceivers[i].shippers['commodity'].forEach( item => {
-    //   item.name = '',
-    //   item.quantity = ''
-    //   item.quantityUnit = ''
-    //   item.weight = ''
-    //   item.weightUnit = ''
-    // });
+    this.shippersReceivers[i].shippers['commodity'].forEach( item => {
+      item.name = '',
+      item.quantity = ''
+      item.quantityUnit = ''
+      item.weight = ''
+      item.weightUnit = ''
+    });
     this.shippersReceivers[i].shippers['minTempratureUnit'] = '';
     this.shippersReceivers[i].shippers['maxTemprature'] = '';
     this.shippersReceivers[i].shippers['maxTempratureUnit'] = '';
     this.shippersReceivers[i].shippers['driverLoad'] = '';
   }
+
 
   emptyReceiver(i) {
     this.shippersReceivers[i].receivers['receiverID'] = '';
@@ -423,13 +426,15 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers['phone'] = '';
     this.shippersReceivers[i].receivers['reference'] = '';
     this.shippersReceivers[i].receivers['notes'] = '';
-    // this.shippersReceivers[i].receivers['commodity'].forEach( item => {
-    //   item.name = '',
-    //   item.quantity = ''
-    //   item.quantityUnit = ''
-    //   item.weight = ''
-    //   item.weightUnit = ''
-    // });
+
+    this.shippersReceivers[i].receivers['commodity'].forEach( item => {
+      item.name = '',
+      item.quantity = ''
+      item.quantityUnit = ''
+      item.weight = ''
+      item.weightUnit = ''
+    });
+
     this.shippersReceivers[i].receivers['minTempratureUnit'] = '';
     this.shippersReceivers[i].receivers['maxTemprature'] = '';
     this.shippersReceivers[i].receivers['maxTempratureUnit'] = '';
@@ -486,6 +491,20 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
+
+  /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
+    console.log('evebt', event.target.files);
+    let files = [...event.target.files];
+    
+    this.uploadedDocs = files;
+    
+    console.log('uploadedDocs', this.uploadedDocs);
+  }
+
+
   getTimeFormat(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -497,7 +516,10 @@ export class AddOrdersComponent implements OnInit {
     return strTime;
   }
 
-  getMiles(value) {
+
+  async getMiles(value) {
+    
+
     this.orderData.milesInfo['calculateBy'] = value;
     
     if (this.mergedArray !== undefined) {
@@ -508,21 +530,23 @@ export class AddOrdersComponent implements OnInit {
       
       if (value === 'google') {
         this.mergedArray.forEach(element => {
-          this.googleCords.push(`${element.position.lat},${element.position.lng}`);
-        });
 
-        if (this.googleCords.length === 2) {
-          this.origin = this.googleCords[0];
-          this.destination = this.googleCords[1];
-        } else {
-          this.origin = this.googleCords[0];
-          this.destination = this.googleCords.shift();
-        }
-
-        this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
-          
-          this.orderData.milesInfo['totalMiles'] = res;
+          this.googleCords.push({lat: element.position.lat ,lng: element.position.lng});
         });
+        this.origin = this.googleCords[0];
+        this.googleCords.shift();
+        this.destination = this.googleCords;
+        
+        // if (this.googleCords.length === 2) {
+        //   this.origin = this.googleCords[0];
+        //   this.destination = this.googleCords[1];
+        // } else {
+        //   this.origin = this.googleCords[0];
+        //   this.destination = this.googleCords.shift();
+        // }
+
+        this.orderData.milesInfo['totalMiles'] = await this.google.googleDistance([this.origin], this.destination);
+
       } else if (value === 'pcmiles') {
         this.google.pcMiles.next(true);
         this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
@@ -604,35 +628,48 @@ export class AddOrdersComponent implements OnInit {
 
 
   onSubmit() {
-    
+
+    this.hideErrors();
+
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     
-    this.hideErrors();
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.orderData));
     
-    this.apiService.postData('orders', this.orderData).
-      subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.label] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+    this.apiService.postData('orders', formData, true).subscribe({
+      complete: () => { },
+      error: (err) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.Success = '';
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
-         
-          this.toastr.success('Order added successfully');
-          
-          this.router.navigateByUrl('/dispatch/orders');
+         this.toastr.success('Order added successfully');
+         this.router.navigateByUrl('/dispatch/orders');
+
         }
       });
     
@@ -640,11 +677,12 @@ export class AddOrdersComponent implements OnInit {
   }
 
   throwErrors() {
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+          .addClass('error');
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -719,15 +757,17 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
-  getLoadTypes(i, event) {
-    var index = this.loadTypeData.indexOf(event.target.value);
+
+  getLoadTypes(value) {
+    var index = this.loadTypeData.indexOf(value);
     if(index === -1){
-      this.loadTypeData.push(event.target.value);
+      this.loadTypeData.push(value);
+
     }else{
       this.loadTypeData.splice(index,1);
     }
     this.orderData.additionalDetails['loadType'] = this.loadTypeData;
-    
+
   }
 
   removeList(elem, parentIndex, i) {
@@ -1028,9 +1068,11 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
+
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
   }
+
 
   addAccessFee(value: string) {
     if (value === 'accessFee') {
@@ -1049,6 +1091,7 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
+
   accordianChange() {
     setTimeout(() => {
       this.timpickerInit();
@@ -1063,6 +1106,7 @@ export class AddOrdersComponent implements OnInit {
     this.accessFeesInfo.accessFees.forEach(item => {
       item.currency = value;
     });
+
 
     this.accessorialDeductionInfo.accessDeductions.forEach(item => {
       item.currency = value;

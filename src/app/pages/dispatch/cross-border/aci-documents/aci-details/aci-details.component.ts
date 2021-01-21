@@ -20,7 +20,13 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDateTime: string;
   estimatedArrivalTimeZone: string;
-  truck:any = {};
+  truck:any = {
+    number: '',
+    licensePlate:{
+      number: '',
+      stateProvince: ''},
+      sealNumbers: []
+};
   drivers = [];
   shipmentType: string;
   tripNumber: string;

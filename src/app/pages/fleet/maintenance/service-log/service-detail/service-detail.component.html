@@ -45,7 +45,9 @@
                                           </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Start Date</td>
-                                            <td>{{startDate | date:'dd-MM-yyyy'}}</td>
+
+                                            <td>{{startDate ? (startDate | date:'dd-MM-yyyy') : '-'}}</td>
+
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Completion Date</td>
@@ -55,19 +57,22 @@
                                             <td class="back-color-gray font-weight-bold">Odometer</td>
                                             <td>{{odometer ? odometer : '-'}} miles</td>
                                          </tr>
-                                         <tr *ngIf="logsData?.selectedIssues">
+
+                                         <tr *ngIf="logsData?.selectedIssues?.length > 0 && logsData?.selectedIssues !== undefined">
                                             <td class="back-color-gray font-weight-bold">Resolved Issues</td>
                                             <td>
-                                               <a *ngFor="let item of logsData.selectedIssues" routerLink="/fleet/maintenance/issues/add">{{item}}</a>
+                                               <a *ngFor="let item of logsData.selectedIssues" 
+                                                routerLink="/fleet/maintenance/issues/add">{{item ? issuesObject[item] : '-'}}</a>
+
                                              </td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Vendor</td>
-                                            <td>{{vendorsObject[vendorID]}}</td>
+                                            <td>{{vendorID ? vendorsObject[vendorID] : '-'}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Reference</td>
-                                            <td>{{reference}}</td>
+                                            <td>{{reference ? reference : '-'}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Notes</td>
@@ -186,24 +191,22 @@
                                       </div> -->
                                       <hr class="solid mt-3">
                                       <div class="row" *ngIf="photos?.length > 0">
-                                         <div class="col-lg-6" *ngFor="let photo of photos;">
-                                            <div class="vehicle-photo-box">
-                                               <img src="{{photo}}" height="180px" width="330px">
-                                               <hr class="m-3">
-                                               <div class="row">
-                                                  <div class="col-lg-8">Name of the Image</div>
-                                                  <div class="col-lg-4 text-right">
-                                                     <div class="btn-group flex-wrap mx-2">
-                                                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                           <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
-                                                           <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
-                                                           <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                                        </div>
-                                                     </div>
-                                                  </div>
-                                               </div>
-                                            </div>
+
+                                         <div class="col-lg-6" *ngFor="let photo of photos;  let i = index;">
+                                          <div class="vehicle-photo-box"> 
+                                             <img [src]="photo.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                             <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                                             <hr class="m-3">
+                                             <div class="row">
+                                                <div class="col-lg-8"> Image {{i+1}}</div>
+                                                <div class="col-lg-4 text-right">
+                                                   <a href="javascript:;" (click)="delete('image',photo.name)" class="modal-with-form">
+                                                      <i class="fas fa-times text-danger"></i>
+                                                   </a>
+                                                </div>
+                                             </div>
+                                          </div>
+
                                          </div>
                                       </div>
                                    </div>
@@ -215,22 +218,21 @@
                                    <div class="vehicle-common-box p-3">
                                       <div class="row">
                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
-                                         <div class="col-lg-6 text-right">
+                                         <!-- <div class="col-lg-6 text-right">
                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div>
-                                         </div>
+                                         </div> -->
                                       </div>
                                       <hr class="solid mt-3">
-                                      <div class="row" *ngFor="let doc of logsData.uploadedDocs;">
-                                         <div class="col-lg-9">{{doc}}</div>
-                                         <div class="col-lg-3 text-right">
-                                            <div class="btn-group flex-wrap mx-2">
-                                               <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                               <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                  <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                               </div>
-                                            </div>
-                                         </div>
-                                      </div>
+                                      <div class="row mb-1" *ngFor="let doc of docs;let d= index">
+                                          <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                                (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
+                                          <div class="col-lg-3 text-right">
+                                             <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                data-target="#viewDocModal"></i>
+                                             <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
+                                                   class="fas fa-times text-danger"></i></a>
+                                          </div>
+                                       </div>
                                    </div>
                                 </div>
                              </div>
@@ -322,4 +324,32 @@
        
    </div>
  </section>
- 
+ <!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+   <div class="modal-content">
+      <div class="modal-header">
+         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+         <button type="button" (click)="setSrcValue()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+      <div class="modal-body">
+         <div class="form-row">
+            <div class="form-group col-md-12">
+               <div>
+                  <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+
+               </div>
+            </div>
+         </div>
+
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" (click)="setSrcValue()"
+            data-dismiss="modal">Cancel</button>
+      </div>
+   </div>
+</div>
+</div>

@@ -601,3 +601,12 @@ html.fixed .content-body {
     width: auto;
     height: auto;
 }
+.document_modal-width {
+    max-width: 600px;
+    margin: 0 auto;
+    background: none !important;
+}
+.document_modal-width .modal-dialog {
+    margin: 0;
+
+}

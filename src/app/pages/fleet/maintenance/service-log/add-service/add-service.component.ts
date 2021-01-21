@@ -166,7 +166,7 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.toastr.success('Log added successfully');
-        this.router.navigateByUrl('/fleet/maintenance/service-log/list');
+        // this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });
     if(this.serviceData.selectedIssues.length > 0){
@@ -303,7 +303,6 @@ export class AddServiceComponent implements OnInit {
     this.apiService.getData('items').subscribe((result: any) => {
       result = result.Items;
       this.inventory = result;
-      
     });
   }
   
@@ -361,7 +360,9 @@ export class AddServiceComponent implements OnInit {
   addParts() {
     
     this.inventory.forEach(element => {
-      if (element.name === this.selectedParts[this.selectedParts.length - 1].name) {
+      console.log('element.itemName', element);
+      console.log('this.selectedParts', this.selectedParts);
+      if (element.itemID === this.selectedParts[this.selectedParts.length - 1]) {
         this.serviceData.allServiceParts.servicePartsList.push({
           partID: element.itemID,
           partNumber: element.partNumber,
@@ -380,7 +381,7 @@ export class AddServiceComponent implements OnInit {
       
       if (remind.reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1].taskID) {
         remindID = remind.reminderID;
-        newSchedule = `Every ${remind.reminderTasks.odometer} Miles`;
+        newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
         remindID = ' ';
         newSchedule = ' ';
