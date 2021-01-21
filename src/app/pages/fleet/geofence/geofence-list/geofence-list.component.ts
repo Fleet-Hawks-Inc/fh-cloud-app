@@ -77,10 +77,10 @@ export class GeofenceListComponent implements OnInit {
   }
 
   onItemSelect(item: any) {
-    console.log(item);
+    
   }
   onSelectAll(items: any) {
-    console.log(items);
+    
   }
 
   toggleAccordian(ind, cords) {
@@ -103,9 +103,7 @@ export class GeofenceListComponent implements OnInit {
           this.map.fitBounds(poly.getBounds());
         },
           100);
-      } else {
-        console.log('geofence not found!')
-      }
+      } 
      
     }
   }
