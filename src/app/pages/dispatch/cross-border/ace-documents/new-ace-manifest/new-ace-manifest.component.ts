@@ -588,8 +588,7 @@ deleteTrailer(i: number) {
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'Draft'
-    }; 
-    console.log('data',data); 
+    };  
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
