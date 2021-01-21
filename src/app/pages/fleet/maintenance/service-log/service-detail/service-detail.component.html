@@ -45,7 +45,9 @@
                                           </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Start Date</td>
+
                                             <td>{{startDate ? (startDate | date:'dd-MM-yyyy') : '-'}}</td>
+
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Completion Date</td>
@@ -55,11 +57,13 @@
                                             <td class="back-color-gray font-weight-bold">Odometer</td>
                                             <td>{{odometer ? odometer : '-'}} miles</td>
                                          </tr>
+
                                          <tr *ngIf="logsData?.selectedIssues?.length > 0 && logsData?.selectedIssues !== undefined">
                                             <td class="back-color-gray font-weight-bold">Resolved Issues</td>
                                             <td>
                                                <a *ngFor="let item of logsData.selectedIssues" 
                                                 routerLink="/fleet/maintenance/issues/add">{{item ? issuesObject[item] : '-'}}</a>
+
                                              </td>
                                          </tr>
                                          <tr>
@@ -187,6 +191,7 @@
                                       </div> -->
                                       <hr class="solid mt-3">
                                       <div class="row" *ngIf="photos?.length > 0">
+
                                          <div class="col-lg-6" *ngFor="let photo of photos;  let i = index;">
                                           <div class="vehicle-photo-box"> 
                                              <img [src]="photo.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
@@ -201,6 +206,7 @@
                                                 </div>
                                              </div>
                                           </div>
+
                                          </div>
                                       </div>
                                    </div>

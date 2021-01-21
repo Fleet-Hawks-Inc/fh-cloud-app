@@ -493,7 +493,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   async onSubmit() {
-   
     // this.hasError = false;
     // this.hasSuccess = false;
     // this.register();
