@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services/api.service';
-import { Router } from '@angular/router';
+import { ApiService } from '../../../../services';
 import { map } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
-import { AwsUploadService } from '../../../../services/aws-upload.service';
-import { v4 as uuidv4 } from 'uuid';
+import { AwsUploadService } from '../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
@@ -20,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnInit {
   Asseturl = this.apiService.AssetUrl;
-  
+
   @ViewChild(DataTableDirective, { static: false })
   dtElement: DataTableDirective;
 
@@ -32,7 +30,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   form;
   image;
   ifEdit = false;
-  modalTitle: string = 'Add';
+  modalTitle = 'Add';
   docs: SafeResourceUrl;
   public documentsDocs = [];
   selectedFiles: FileList;
@@ -42,10 +40,10 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   documentSequence: string;
   allOptions: any = {};
   response: any = '';
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = '';
-  Success: string = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
   errors = {};
   carrierID: any;
   documentData = {
@@ -54,7 +52,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     documentNumber: '',
     docType: '',
     documentName: '',
-    description: '', 
+    description: '',
   };
   totalRecords = 20;
   pageLength = 10;
@@ -75,6 +73,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   uploadeddoc = [];
   newDoc: any;
   tripsObjects: any = {};
+  currentUser;
 
 
   constructor(
@@ -121,7 +120,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       this.documentData['documentNumber'] = prefixCode;
     }
   }
-  
+
   addDocument() {
 
     this.hideErrors();
@@ -169,7 +168,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
         }
       });
   }
-  
+
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -247,7 +246,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
       .subscribe((result: any) => {
         console.log(result);
         result = result.Items[0];
-       
+
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
         this.documentData.documentName = result.documentName;
@@ -296,7 +295,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
 
           this.toastr.success('Document Updated successfully');
 
-          
+
           $('#addDocumentModal').modal('hide');
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
@@ -471,7 +470,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           this.suggestions = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             let obj = {
               id: element.docID,
               name: element.documentNumber
@@ -480,7 +479,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           }
         }
       })
-    }    
+    }
   }
 
   searchSelectedRoute(document) {
