@@ -729,8 +729,6 @@ vehicles= [];
         };
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
-        console.log('result.uploadedPhotos', result.uploadedPhotos)
-        console.log('result.existingDocs', result.existingDocs)
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
         }
@@ -1037,5 +1035,10 @@ vehicles= [];
     openImageModal(slide){
       this.modalImage = slide;
       $('#imageModal').modal('show');
+    }
+
+    deleteImage(index){
+      this.slides.splice(index, 1);
+      this.existingPhotos.splice(index, 1);
     }
 }

@@ -7,6 +7,8 @@ import { Subject,timer } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { QueryList, ViewChildren } from '@angular/core';
+import * as moment from 'moment';
+
 declare var $: any;
 @Component({
   selector: 'app-e-manifests',
@@ -20,6 +22,9 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   dtOptions: any = {};
   dtTrigger: Subject<any> = new Subject();
+
+  dtElementACI: DataTableDirective;
+
   dtOptionsACI: any = {};
   dtTriggerACI: Subject<any> = new Subject()
 
@@ -27,6 +32,8 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
  countries = [];
  ACEList = [];
  ACIList = [];
+ aceSearch: string = '';
+ aciSearch: string = '';
  vehicleID: string ='';
  vehicleIdentification: string;
  currentStatus = '';
@@ -93,7 +100,6 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   setVehicleACI(vehicleID, vehicleIdentification) {
     this.vehicleIdentificationACI = vehicleIdentification;
     this.vehicleIDACI = vehicleID;
-
     this.suggestedVehiclesACI = [];
   }
   fetchVehiclesList() {
@@ -133,7 +139,8 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-
+fromDate: string= '';
+toDate: string = '';
   initDataTable() {
     let current = this;
     this.dtOptions = { // All list options
@@ -147,7 +154,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('ACEeManifest/fetchRecords?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('ACEeManifest/fetchRecords?vehicleID='+this.vehicleID+'&aceSearch='+this.aceSearch+'&fromDate='+this.fromDate+'&toDate='+this.toDate+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.ACEList= resp['Items'];
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
@@ -182,41 +189,27 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  rerender(status=''): void {
+  startDate: string = '';
+  endDate: string = '';
+  aciStartDate: string = '';
+  aciEndDate: string = '';
+  aciFromDate: string = '';
+  aciToDate: string = '';
+  searchACEFilter() {     
+    if (this.vehicleID !== ''  || this.aceSearch !== '' || this.startDate !== '' || this.endDate !== '') {
+      if(this.startDate !== ''){
+        this.fromDate = moment(this.startDate,'DD-MM-YYYY').format('YYYY-MM-DD');       
+       }
+       else{
+         this.fromDate = this.startDate;
+       }
+       if(this.endDate !== ''){
+        this.toDate = moment(this.endDate,'DD-MM-YYYY').format('YYYY-MM-DD');
+       }
+       else{
+         this.toDate = this.endDate;
+       }
 
-    this.dtElement.forEach((dtElement: DataTableDirective) => {
-      dtElement.dtInstance.then((dtInstance: any) => {
-        let tableId = dtInstance.table().node().id;
-        if(this.activeDiv == tableId) { 
-          if(tableId == 'ace') { 
-            // Destroy the table first
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptions.pageLength = this.totalRecords;
-            } else {
-              this.dtOptions.pageLength = 10;
-            }
-            // Call the dtTrigger to rerender again
-            this.dtTrigger.next();
-          } else {
-            // Destroy the table first
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsACI.pageLength = this.totalACIRecords;
-            } else {
-              this.dtOptionsACI.pageLength = 10;
-            }
-            // Call the dtTrigger to rerender again
-            this.dtTriggerACI.next();
-          }
-        }
-        
-      });
-    });
-  }
-
-  searchACEFilter() {
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
       this.rerender('reset');
     } else {
       return false;
@@ -224,11 +217,15 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   resetACEFilter() {
-    console.log('in rst')
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
+    if (this.vehicleID !== ''  || this.aceSearch !== '' || this.startDate !== '' || this.endDate !== '') {
       this.vehicleID = '';
       this.vehicleIdentification = '';
       this.currentStatus = '';
+      this.aceSearch = '';
+      this.startDate = '';
+      this.endDate = '';
+      this.fromDate = '';
+      this.toDate = '';
       this.rerender();
     } else {
       return false;
@@ -245,21 +242,52 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     }
 }
 
-// ACI operations
-  ACIEntries() {
-    // this.activeDiv = 'aci';
-    this.spinner.show(); // loader init
-    this.apiService.getData('ACIeManifest').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-       // this.ACIList = result.Items;
-       this.totalACIRecords = result.Count;
-      },
+rerender(status=''): void {
+  this.dtElement.forEach((dtElement: DataTableDirective) => {
+    dtElement.dtInstance.then((dtInstance: any) => {
+      let tableId = dtInstance.table().node().id;
+      if(this.activeDiv == tableId) { 
+        if(tableId == 'ace') { 
+          // Destroy the table first
+          dtInstance.destroy();
+          if (status === 'reset') {
+            this.dtOptions.pageLength = this.totalRecords;
+          } else {
+            this.dtOptions.pageLength = 10;
+          }
+          // Call the dtTrigger to rerender again
+          this.dtTrigger.next();
+        } else {
+          // Destroy the table first
+          dtInstance.destroy();
+          if (status === 'reset') {
+            this.dtOptionsACI.pageLength = this.totalACIRecords;
+          } else {
+            this.dtOptionsACI.pageLength = 10;
+          }
+          // Call the dtTrigger to rerender again
+          this.dtTriggerACI.next();
+        }
+      }
+      
     });
-  }
+  });
+}
+
+// ACI operations
+ACIEntries() {
+  // this.activeDiv = 'aci';
+  this.spinner.show(); // loader init
+  this.apiService.getData('ACIeManifest').subscribe({
+    complete: () => { },
+    error: () => { },
+    next: (result: any) => {
+     // this.ACIList = result.Items;
+     this.totalACIRecords = result.Count;
+    },
+  });
+}
   initDataTableACI() { 
-    console.log('in tbl')
     let current = this;
     this.dtOptionsACI = { // All list options
       pagingType: 'full_numbers',
@@ -272,7 +300,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       ],
       dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('ACIeManifest/fetchRecords?vehicleID='+this.vehicleIDACI+'&status='+this.currentStatusACI + '&lastKey=' + this.lastEvaluatedKeyACI, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('ACIeManifest/fetchRecords?vehicleID='+this.vehicleIDACI+'&aciSearch='+this.aciSearch +'&fromDate='+this.aciFromDate+'&toDate='+this.aciToDate+'&lastKey=' + this.lastEvaluatedKeyACI, dataTablesParameters).subscribe(resp => {
           current.ACIList= resp['Items'];
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKeyACI = resp['LastEvaluatedKey'].entryID;
@@ -291,7 +319,20 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     };
   }
   searchACIFilter() {
-    if (this.vehicleIDACI !== '' || this.currentStatusACI !== '') {
+    if (this.vehicleIDACI !== '' || this.aciSearch !== '' ||  this.aciStartDate !== '' || this.aciEndDate !== '') {
+      if(this.aciStartDate !== ''){
+        this.aciFromDate = moment(this.aciStartDate,'DD-MM-YYYY').format('YYYY-MM-DD');       
+       }
+       else{
+         this.aciFromDate = this.aciStartDate;
+       }
+       if(this.aciEndDate !== ''){
+        this.aciToDate = moment(this.aciEndDate,'DD-MM-YYYY').format('YYYY-MM-DD');
+       }
+       else{
+         this.aciToDate = this.aciEndDate;
+       }
+
       this.rerender('reset');
     } else {
       return false;
@@ -299,10 +340,15 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   resetACIFilter() {
-    if (this.vehicleIDACI !== '' || this.currentStatusACI !== '') {
+    if (this.vehicleIDACI !== ''  || this.aciSearch !== '' || this.aciStartDate !== '' || this.aciEndDate !== '') {
       this.vehicleIDACI = '';
       this.vehicleIdentificationACI = '';
-      this.currentStatusACI = '';
+      this.aciSearch = '';
+      this.aciStartDate = '';
+      this.aciEndDate = '';
+      this.aciFromDate = '';
+      this.aciToDate = '';
+
       this.rerender();
     } else {
       return false;
