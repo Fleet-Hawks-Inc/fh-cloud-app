@@ -173,6 +173,9 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('vehicles/fetch-records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.vehicles = resp['Items'];
@@ -218,6 +221,8 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if (this.vehicleID !== '' || this.currentStatus !== '') {
+      this.vehicles = [];
+      this.fetchVehicles();
       this.rerender('reset');
     } else {
       return false;
@@ -229,6 +234,8 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleID = '';
       this.vehicleIdentification = '';
       this.currentStatus = '';
+      this.vehicles = [];
+      this.fetchVehicles();
       this.rerender();
     } else {
       return false;
@@ -240,6 +247,9 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
       .getData(`vehicles/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+
+        this.vehicles = [];
+        this.fetchVehicles();
         this.rerender();
         this.toastr.success('Vehicle Deleted Successfully!');
       });

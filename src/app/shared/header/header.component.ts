@@ -12,6 +12,8 @@ export class HeaderComponent implements OnInit {
 
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';
+  currentUser:any = '';
+  userRole:any = '';
   constructor(private sharedService: SharedServiceService,
               public router: Router) {
     this.sharedService.activeParentNav.subscribe((val) => {
@@ -20,6 +22,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getCurrentuser()
   }
 
   onNavSelected(nav: string) { 
@@ -34,6 +37,12 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('user');
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
+  }
+
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.userRole = this.currentUser.userType;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
   }
 
 }
