@@ -22,7 +22,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   title = 'Issues List';
   issues = [];
-  contactList: any = {};
+  driverList: any = {};
   vehicleList: any = {};
   assetList: any = {};
   vehicleName: string;
@@ -44,7 +44,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit() {
     this.fetchIssues();
     this.fetchVehicleList();
-    this.fetchContactList();
+    this.fetchDriverList();
     this.fetchAssetList();
     this.initDataTable();
     $(document).ready(() => {
@@ -98,9 +98,9 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleList = result;
     });
   }
-  fetchContactList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.contactList = result;
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   fetchAssetList() {

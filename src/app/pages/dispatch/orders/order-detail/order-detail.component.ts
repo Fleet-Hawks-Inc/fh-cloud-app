@@ -12,6 +12,7 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+
   Asseturl = this.apiService.AssetUrl;
   orderID: string;
   orderData;
@@ -110,13 +111,13 @@ export class OrderDetailComponent implements OnInit {
           this.taxesData = this.orderData[0].taxesInfo;
           this.totalAmount = this.orderData[0].totalAmount;
 
+
           if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
             this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
-          }
-          console.log('othis.orderDocs', this.orderDocs);
+          }     
+
         }
-      }, (err) => {
-        console.log('order detail', err);
+      }, (err) => {        
       });
   }
 

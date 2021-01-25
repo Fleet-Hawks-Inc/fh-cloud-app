@@ -563,7 +563,6 @@ export class NewAciManifestComponent implements OnInit {
         handlingInstructions: '',
       }
     });
-    // console.log('commodity', this.commodities); 
   }
   deleteCommodity(i: number, s: number) {
     this.shipments[s].commodities.splice(i, 1);
@@ -660,7 +659,7 @@ export class NewAciManifestComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest added successfully');
+        this.toastr.success('Manifest added successfully.');
         this.location.back(); // <-- go back to previous location
 
       },
@@ -691,7 +690,6 @@ export class NewAciManifestComponent implements OnInit {
     this.apiService
       .getData('ACIeManifest/' + this.entryID)
       .subscribe((result: any) => {
-        console.log('result',result.Items[0]);
         result = result.Items[0];
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
@@ -757,7 +755,7 @@ export class NewAciManifestComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest Updated Successfully');
+        this.toastr.success('Manifest Updated Successfully.');
         this.location.back(); // <-- go back to previous location
       },
     });

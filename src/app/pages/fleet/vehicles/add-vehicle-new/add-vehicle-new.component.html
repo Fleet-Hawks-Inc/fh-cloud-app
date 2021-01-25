@@ -170,7 +170,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <!-- <div class="col-lg-5 offset-lg-1">
+                               <div *ngIf="!vehicleID" class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                      <div class="col-lg-7 text-center">
                                         <ngx-slick-carousel class="carousel"
@@ -188,19 +188,19 @@
                                         </div>
                                      </div>
                                   </div>
-                               </div> -->
-                               <div class="col-lg-5 offset-lg-1">
+                               </div>
+                               <div *ngIf="vehicleID" class="col-lg-5 offset-lg-1">
                                  <div class="row mt-4">                                    
                                    <div class="col-lg-10">
-                                   <div width="80%" style="overflow-y: scroll;overflow-x:hidden;height:437px">                               
+                                    <div width="80%"  style="overflow-y: scroll;overflow-x:hidden; min-height:auto;max-height:437px">                                
                                      <div class="row">
-                                         <div class="col-lg-6" *ngFor="let slide of slides">
+                                         <div class="col-lg-6" *ngFor="let slide of slides; let i = index">
                                              <div class="vehicle-photo-box mb-1">
                                                  <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1" style="cursor:pointer;height:138px!important;width:100%;" src="{{slide}}" alt="img"></a>
                                                  <hr class="m-3">
                                                  <div class="row">
                                                      <div class="col-lg-10">Image</div>
-                                                     <div class="col-lg-2 text-right"> <i class="fas fa-times text-danger"></i> </div>
+                                                     <div class="col-lg-2 text-right"> <i (click)=deleteImage(i) class="fas fa-times text-danger"></i> </div>
                                                  </div>
                                              </div>
                                          </div>
@@ -211,8 +211,9 @@
                                     <div class="row">
                                        <div class="col-lg-10 text-center">
                                           <div class="mt-3">
-                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
+                                             <div class="btn btn-sm btn-success position-relative overflow-hidden">
+                                                <i class="fas fa-plus"></i> Add Photo
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100" name="uploadedPhotos" type="file" multiple >
                                              </div>
                                           </div>
                                        </div>
@@ -437,7 +438,7 @@
                                              data-placement="top" title="Date vehicle entered fleet service."></i>
                                        </label>
 
-                                       <input type="date" class="form-control" name="inServiceDate"
+                                       <input type="date" class="form-control" name="lifeCycle.inServiceDate"
                                           [(ngModel)]="lifeCycle.inServiceDate">
                                     </div>
                                  </div>
@@ -452,7 +453,7 @@
                                              data-placement="top"
                                              title="Odometer reading on in-service date."></i></label>
 
-                                       <input type="number" class="form-control" name="inServiceOdometer"
+                                       <input type="number" class="form-control" name="lifeCycle.inServiceOdometer"
                                           [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500">
                                     </div>
                                  </div>
@@ -562,7 +563,7 @@
                                           class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="height"
+                                             <input type="number" class="form-control" name="specifications.height"
                                                 [(ngModel)]="specifications.height">
                                           </div>
                                           <div class="col-lg-6 pl-0">
@@ -583,7 +584,7 @@
                                           class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="length"
+                                             <input type="number" class="form-control" name="specifications.length"
                                                 [(ngModel)]="specifications.length">
                                           </div>
                                           <div class="col-lg-6 pl-0">
@@ -607,7 +608,7 @@
                                                 [(ngModel)]="specifications.width">
                                           </div>
                                           <div class="col-lg-6 pl-0">
-                                             <ng-select class="form-control populate" name="widthUnit"
+                                             <ng-select class="form-control populate" name="specifications.widthUnit"
                                                 [(ngModel)]="specifications.widthUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -709,12 +710,12 @@
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" class="form-control"
-                                                name="groundClearnce"
+                                                name="specifications..groundClearnce"
                                                 [(ngModel)]="specifications.groundClearnce">
                                           </div>
                                           <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate"
-                                                name="groundClearnceUnit"
+                                                name="specifications..groundClearnceUnit"
                                                 [(ngModel)]="specifications.groundClearnceUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -884,7 +885,7 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                           Issue</label>
-                                       <input type="date" class="form-control" name="dateOfIssue"
+                                       <input type="date" class="form-control" name="insurance.dateOfIssue"
                                           [(ngModel)]="insurance.dateOfIssue">
                                     </div>
                                     <div class="col-lg-5">
@@ -892,7 +893,7 @@
                                           Amount</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="premiumAmount"
+                                             <input type="number" class="form-control" name="insurance.premiumAmount"
                                                 [(ngModel)]="insurance.premiumAmount" placeholder="eg. 100,200 etc.">
                                           </div>
                                           <div class="col-lg-6">
@@ -933,7 +934,7 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                           Expiry</label>
-                                       <input type="date" class="form-control" name="dateOfExpiry"
+                                       <input type="date" class="form-control" name="insurance.dateOfExpiry"
                                           [(ngModel)]="insurance.dateOfExpiry">
                                     </div>
                                     <div class="col-lg-5">
@@ -963,7 +964,7 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
                                           Policy#</label>
-                                       <input type="text" class="form-control" name="policyNumber"
+                                       <input type="text" class="form-control" name="insurance.policyNumber"
                                           [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757 etc.">
                                     </div>
                                     <div class="col-lg-5">
@@ -972,11 +973,11 @@
                                        <div class="row">
                                           <div class="col-lg-6">
 
-                                             <input type="number" class="form-control" name="amount"
+                                             <input type="number" class="form-control" name="insurance.amount"
                                                 [(ngModel)]="insurance.amount" placeholder="eg. 45000.50000 etc.">
                                           </div>
                                           <div class="col-lg-6">
-                                             <ng-select class="form-control populate" name="amountCurrency"
+                                             <ng-select class="form-control populate" name="insurance.amountCurrency"
                                                 [(ngModel)]="insurance.amountCurrency" placeholder="Select currency">
                                                 <optgroup label="">
                                                    <ng-option value="USD">USD</ng-option>
@@ -1006,7 +1007,7 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel
                                         Type</label>
-                                     <ng-select class="form-control populate" name="fuelType"
+                                     <ng-select class="form-control populate" name="fluid.fuelType"
                                         [(ngModel)]="fluid.fuelType" placeholder="Select fuel type">
                                         <optgroup label="">
                                            <ng-option value="CNG">CNG</ng-option>
@@ -1018,7 +1019,7 @@
                                   </div>
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                                     <ng-select class="form-control populate" name="fuelQuality"
+                                     <ng-select class="form-control populate" name="fluid.fuelQuality"
                                         [(ngModel)]="fluid.fuelQuality" placeholder="Select fuel quality">
                                         <optgroup label="">
                                            <ng-option value="Regular">Regular</ng-option>
@@ -1040,14 +1041,14 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                                         Capacity</label>
-                                     <input type="number" class="form-control" name="fuelTankOneCapacity"
+                                     <input type="number" class="form-control" name="fluid.fuelTankOneCapacity"
                                         [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 etc.">
                                   </div>
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2
                                         Capacity&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-                                     <input type="number" class="form-control" name="fuelTankTwoCapacity"
+                                     <input type="number" class="form-control" name="fluid.fuelTankTwoCapacity"
                                         [(ngModel)]="fluid.fuelTankTwoCapacity" placeholder="eg. 100,200 etc.">
                                   </div>
                                </div>
@@ -1063,7 +1064,7 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Oil
                                         Capacity</label>
-                                     <input type="number" class="form-control" name="oilCapacity"
+                                     <input type="number" class="form-control" name="fluid.oilCapacity"
                                         [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200 etc.">
                                   </div>
                                </div>
@@ -1087,7 +1088,7 @@
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Number of
                                         Tires <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Number of tires"></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                     <input type="number" class="form-control" name="numberOfTyres"
+                                     <input type="number" class="form-control" name="wheelsAndTyres.numberOfTyres"
                                         [(ngModel)]="wheelsAndTyres.numberOfTyres" placeholder="eg. 16,18 etc.">
                                   </div>
                                   <div class="col-lg-5">

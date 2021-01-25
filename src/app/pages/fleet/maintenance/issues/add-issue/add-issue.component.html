@@ -111,7 +111,7 @@
                                                 By</label>
                                             <ng-select [(ngModel)]="reportedBy" name="reportedBy" placeholder="Select Contact">
                                               
-                                                    <ng-option *ngFor="let contact of contacts" value="{{contact.contactID}}">{{contact.firstName}}</ng-option>
+                                                    <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
                                                    
                                             </ng-select>
                                         </div>

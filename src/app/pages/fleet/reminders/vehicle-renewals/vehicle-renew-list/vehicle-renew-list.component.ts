@@ -99,63 +99,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  // fetchRenewals = async () => {
-  //   this.remindersData = [];
-  //   this.apiService.getData(`reminders?reminderIdentification=${this.vehicleID}&serviceTask=${this.searchServiceTask}`).subscribe({
-  //     complete: () => {this.initDataTable(); },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       this.allRemindersData = result.Items;
-  //       for(let j=0; j < this.allRemindersData.length; j++) {
-  //         let reminderStatus: string;
-  //         if (this.allRemindersData[j].reminderType === 'vehicle') {
-  //           const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
-  //           const remainingDays = convertedDate.diff(this.currentDate, 'days');
-  //           if (remainingDays < 0 ) {
-  //             reminderStatus = 'OVERDUE';
-  //           }
-  //           else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
-  //             reminderStatus = 'DUE SOON';
-  //           }
-  //           const data = {
-  //             reminderID: this.allRemindersData[j].reminderID,
-  //             reminderIdentification: this.allRemindersData[j].reminderIdentification,
-  //             reminderTasks: {
-  //               task: this.allRemindersData[j].reminderTasks.task,
-  //               remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-  //               reminderStatus: reminderStatus,
-  //               remainingDays: remainingDays,
-  //               dueDate: this.allRemindersData[j].reminderTasks.dueDate,
-  //             },
-  //             subscribers : this.allRemindersData[j].subscribers,
-  //            };
-  //            this.remindersData.push(data); 
-  //         }
-  //       }
-  //       if (this.filterStatus === Constants.OVERDUE) {
-  //         this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-  //       }
-  //       else if (this.filterStatus === Constants.DUE_SOON) {
-  //         this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-  //       }
-  //       else {
-  //         this.remindersData = this.remindersData;
-  //       }
-  //     },
-  //   });
-  // }
-  // deleteRenewal(entryID) {
-  //   this.apiService
-  //     .deleteData('reminders/' + entryID)
-  //     .subscribe((result: any) => {
-  //       this.fetchRenewals();
-  //       this.toastr.success('Vehicle Renewal Deleted Successfully!');
-               
-  //     });
-  // }
-
-  fetchRenewals = async () => {
-    
+  
+  fetchRenewals = async () => {    
     this.remindersData = [];
     for(let j=0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
@@ -187,7 +132,7 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
     else if (this.filterStatus === Constants.DUE_SOON) {
       this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
     }
-    else {
+    else if (this.filterStatus === Constants.ALL) {
       this.remindersData = this.remindersData;
     }
   }

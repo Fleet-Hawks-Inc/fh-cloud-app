@@ -38,6 +38,7 @@ export class AddIssueComponent implements OnInit {
   vehicles = [];
   assets = [];
   contacts = [];
+  drivers = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -76,7 +77,7 @@ export class AddIssueComponent implements OnInit {
   ngOnInit() {
     this.fetchVehicles();
     this.fetchAssets();
-    this.fetchContacts();
+    this.fetchDrivers();
     this.issueID = this.route.snapshot.params['issueID'];
     if (this.issueID) {
       this.title = 'Edit Issue';
@@ -100,9 +101,9 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
-    fetchContacts() {
-      this.apiService.getData('contacts').subscribe((result: any) => {
-        this.contacts = result.Items;
+    fetchDrivers() {
+      this.apiService.getData('drivers').subscribe((result: any) => {
+        this.drivers = result.Items;
       });
     }
     getToday(): string {
