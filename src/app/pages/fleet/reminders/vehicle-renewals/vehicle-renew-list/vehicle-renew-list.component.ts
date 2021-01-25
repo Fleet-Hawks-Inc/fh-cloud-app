@@ -143,6 +143,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         // console.log('result', result);
+        this.remindersData = [];
+        this.getReminders()
         this.rerender();
         this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
       });
@@ -192,6 +194,9 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
         {"targets": [5],"orderable": false},
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification='+this.vehicleID+'&serviceTask='+this.searchServiceTask+'&reminderType=vehicle'+'&lastKey='+this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
             current.allRemindersData = resp['Items'];
@@ -240,6 +245,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   searchFilter() {
     if(this.vehicleID !== '' || this.searchServiceTask !== ''  && this.searchServiceTask !== null && this.searchServiceTask !== undefined
     || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.remindersData = [];
+      this.getReminders()
       this.rerender('reset');
     } else {
       return false;
@@ -253,6 +260,9 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       this.vehicleIdentification = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
+
+      this.remindersData = [];
+      this.getReminders()
       this.rerender();
     } else {
       return false;

@@ -481,7 +481,7 @@
                                                                             placeholder="Notes" name="stopNotes_{{i}}"
                                                                             [(ngModel)]="routeData.stops[i].stopNotes">
                                                                     </td>
-                                                                    <td *ngIf="i >= 2"><span (click)="removeStops(i)"
+                                                                    <td *ngIf="i >= 1 && i < routeData.stops?.length-1"><span (click)="removeStops(i)"
                                                                             class="fas fa-trash-alt pt-2"></span></td>
                                                                 </tr>
                                                             </thead>
