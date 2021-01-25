@@ -101,7 +101,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ChartsModule,
     SharedModule,
     TooltipModule.forRoot(),
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot({preventDuplicates: true}), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
     SlickCarouselModule,
