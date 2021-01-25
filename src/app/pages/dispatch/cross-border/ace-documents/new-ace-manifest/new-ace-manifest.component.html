@@ -31,14 +31,7 @@
                                  <div class="col-lg-3 pr-0">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number</label>
                                     <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
-                                       <ng-option value="SAVL">SAVL</ng-option>
-                                       <ng-option value="SXTF">SXTF</ng-option>
-                                       <ng-option value="THXL">THXL</ng-option>
-                                       <ng-option value="MLCM">MLCM</ng-option>
-                                       <ng-option value="BYTM">BYTM</ng-option>
-                                       <ng-option value="SWRR">SWRR</ng-option>
-                                       <ng-option value="CAYR">CAYR</ng-option>
-                                       <ng-option value="HYLD">HYLD</ng-option>
+                                       <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">{{carrier.SCAC}}</ng-option>
                                     </ng-select>
                                  </div>
                                  <div class="col-lg-7 pl-0">
@@ -275,14 +268,7 @@
                                           <div class="row">
                                              <div class="col-lg-4 pr-0">
                                                 <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC" [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC" [ngModelOptions]="{standalone: true}">
-                                                   <ng-option value="SAVL">SAVL</ng-option>
-                                                   <ng-option value="SXTF">SXTF</ng-option>
-                                                   <ng-option value="THXL">THXL</ng-option>
-                                                   <ng-option value="MLCM">MLCM</ng-option>
-                                                   <ng-option value="BYTM">BYTM</ng-option>
-                                                   <ng-option value="SWRR">SWRR</ng-option>
-                                                   <ng-option value="CAYR">CAYR</ng-option>
-                                                   <ng-option value="HYLD">HYLD</ng-option>
+                                                   <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">{{carrier.SCAC}}</ng-option>
                                                 </ng-select>
                                              </div>
                                              <div class="col-lg-8 pl-0">
