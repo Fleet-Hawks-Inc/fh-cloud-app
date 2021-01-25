@@ -440,7 +440,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(this.uploadedPhotos.length > 0) {
       this.profileTitle = 'Change';
     }
-    console.log('this.uploadedPhotos', this.uploadedPhotos)
+    
   }
 
   removeProfile() {
@@ -535,7 +535,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       }
     }
     
-    console.log('address', this.driverData)
+    
     // create form data instance
     const formData = new FormData();
 
@@ -624,8 +624,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       result.address.street = '';
     }
     // this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
-    console.log('result', result)
-    console.log('address', this.driverData.address)
+    
   }
 
   async fetchCountriesByName(name: string, i) {
@@ -711,7 +710,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log('result', result);
+        
         this.driverData['driverType'] = result.driverType;
         this.driverData['employeeId'] = result.employeeId;
         this.driverData['companyId'] = result.companyId;
@@ -998,7 +997,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.paymentDetails['waitingPayUnit'];
       delete this.driverData.paymentDetails['waitingHourAfter'];
     }
-    console.log('data', this.driverData);
+    
   }
 
   concatArray(path) {
