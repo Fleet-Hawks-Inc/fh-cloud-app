@@ -8,6 +8,7 @@ import {MultiSidebarComponents} from './sidebars/multi-sidebar.component';
 import {HeaderComponent} from './header/header.component';
 import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
 import {AddressBookComponent} from './popups/address-book/address-book.component';
+import { SharedModalsComponent} from './popups/shared-modals/shared-modals.component';
 import {DriverComponent} from './popups/driver/driver.component';
 import {VehicleComponent} from './popups/vehicle/vehicle.component';
 // DataTable
@@ -38,7 +39,9 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
     DriverComponent,
     VehicleComponent,
     AddDriverComponent,
-    AddVehicleNewComponent
+    AddVehicleNewComponent,
+    SharedModalsComponent
+    
   ],
   exports: [
     CommonModule,
