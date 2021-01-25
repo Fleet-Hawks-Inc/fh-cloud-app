@@ -42,9 +42,9 @@
 
 /* overivew new layout with vertical trip info */
 .driverleftmain{
-  width: 87%; float: left;
-  border-right: solid 1px #cfcfcf;
-  padding-right: 3%;
+  width: 100%; float: left;
+  /* border-right: solid 1px #cfcfcf;
+  padding-right: 3%; */
 
 }
 

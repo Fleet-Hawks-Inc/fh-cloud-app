@@ -110,6 +110,7 @@ export class NewAceManifestComponent implements OnInit {
   thirdPartiesList : any = [];
   thirdPartyStates: any  = [];
   thirdPartyCities: any = [];
+  carriers: any = [];
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
@@ -235,6 +236,7 @@ address:boolean = false;
     this.fetchBrokers();
     this.getStates();
     this.getUSStates();
+    this.fetchCarrier();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -345,6 +347,12 @@ getThirdPartyStates(s,p){
         this.countries = result.Items;
       });
   }
+  fetchCarrier(){
+    this.apiService.getData('carriers/getCarrier')
+    .subscribe((result: any) => {
+      this.carriers = result.Items;
+    });    
+  }v
   fetchShippers(){
   this.apiService.getData('shippers').subscribe((result:any)=> {
     this.shippers = result.Items;
