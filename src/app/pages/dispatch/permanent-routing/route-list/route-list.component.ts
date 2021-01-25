@@ -39,6 +39,7 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+  routesLength = 0;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -85,6 +86,9 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
         {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluatedKey+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
           
@@ -99,6 +103,8 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
             }
             return i;
           });
+
+          this.routesLength = this.routes.length;
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].routeID
           } else {

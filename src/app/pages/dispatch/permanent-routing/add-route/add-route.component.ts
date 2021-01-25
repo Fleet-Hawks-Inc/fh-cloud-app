@@ -155,7 +155,7 @@ export class AddRouteComponent implements OnInit {
    * pass trips coords to show on the map
    * @param data
    */
-  async getCoords(data) {
+  async getCoords(data) { 
     this.spinner.show();
     await Promise.all(data.map(async item => {
       let result = await this.hereMap.geoCode(item.stopName);
@@ -288,6 +288,9 @@ export class AddRouteComponent implements OnInit {
   }
 
   async assignLocation(elem, label, index='') {
+    console.log(elem)
+    console.log(label)
+    console.log(index)
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
     const item = {
@@ -363,6 +366,7 @@ export class AddRouteComponent implements OnInit {
       this.routeData.stops.splice(1, 1);
       this.routeData.stops.splice(1, 0, item);
     } else {
+      
       this.routeData.stops[index]['stopName'] = label;
     }
     this.searchResults = false;

@@ -167,6 +167,9 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
         { "targets": [5], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.allRemindersData = resp['Items'];
@@ -214,6 +217,8 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   searchFilter() {
     if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.remindersData = [];
+      this.getReminders()
       this.rerender('reset');
     } else {
       return false;
@@ -227,6 +232,9 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       this.firstName = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
+
+      this.remindersData = [];
+      this.getReminders()
       this.rerender();
     } else {
       return false;
@@ -239,6 +247,9 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         // console.log('result', result);
+
+        this.remindersData = [];
+        this.getReminders()
         this.rerender();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });
