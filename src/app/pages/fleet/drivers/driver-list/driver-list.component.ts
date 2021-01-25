@@ -195,6 +195,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       error: () => { },
       next: (result: any) => {
+
         this.totalRecords = result.Count;
       },
     });

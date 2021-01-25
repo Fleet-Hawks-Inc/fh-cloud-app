@@ -143,7 +143,7 @@ export class DriverDetailComponent implements OnInit {
       .subscribe(async (result: any) => {
         if (result) {
           this.driverData = await result['Items'][0];
-          console.log('this.driverData', this.driverData);
+          
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.workEmail = this.driverData.workEmail;
