@@ -31,7 +31,7 @@
                      name="currentStatus"
                      placeholder="Select Type"
                      class="form-control populate">
-                     <ng-option  *ngFor="let item of allAssetTypes;" value="{{item.code}}">
+                     <ng-option *ngFor="let item of allAssetTypes;" value="{{item.code}}">
                         <div title="{{item.description}}"> {{item.description}}</div>
                     </ng-option>
                   </ng-select>

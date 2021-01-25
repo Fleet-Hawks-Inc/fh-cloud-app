@@ -109,7 +109,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
-      this.fetchManufacturesByIDs();
+      this.fetchModalsByIDs();
   }
 
   getSuggestions(value) {

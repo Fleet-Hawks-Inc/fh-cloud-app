@@ -212,7 +212,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceTasks.discountPercent" name="discountPercent" type="text" value="0.00" (blur)="calculateTasks()" class="form-control" >
+                                   <input [disabled]="selectedTasks.length == 0" [(ngModel)]="serviceData.allServiceTasks.discountPercent" name="discountPercent" type="text" value="0.00" (blur)="calculateTasks()" class="form-control" >
                                 </div>
                              </div>
                              <div class="row">
@@ -220,7 +220,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" value="0.00" class="form-control" (blur)="calculateTasks()">
+                                   <input [disabled]="selectedTasks.length == 0" [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" value="0.00" class="form-control" (blur)="calculateTasks()">
                                 </div>
                              </div>
                              <div class="row">
@@ -228,7 +228,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total($)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceTasks.total" name="total" type="text" class="form-control" >
+                                   <input readonly [(ngModel)]="serviceData.allServiceTasks.total" name="total" type="text" class="form-control" >
                                 </div>
                              </div>
                           </div>
@@ -252,7 +252,7 @@
                           <div class="col-lg-5 offset-lg-1">
                              <div class="row pt-2">
                                 <div class="col-lg-10 text-right">
-                                   <a href="#partModal" class="modal-with-form"><label class="btn btn-dark text-3 pt-2">Part Missing, Click Here To Request</label></a>
+                                   <a href="javascript:;" class="modal-with-form"><label class="btn btn-dark text-3 pt-2">Part Missing, Click Here To Request</label></a>
                                 </div>
                              </div>
                           </div>
@@ -300,7 +300,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.discountPercent" name="parts-discountPercent" type="text" value="0.00" (blur)="calculateParts()" class="form-control" >
+                                   <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.discountPercent" name="parts-discountPercent" type="text" value="0.00" (blur)="calculateParts()" class="form-control" >
                                 </div>
                              </div>
                              <div class="row">
@@ -308,7 +308,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
+                                   <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
                                 </div>
                              </div>
                              <div class="row">
@@ -316,7 +316,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>                                           
                                 </div>
                                 <div class="col-lg-1">
-                                   <input [(ngModel)]="serviceData.allServiceParts.total" name="parts-total" type="text" class="form-control" >
+                                   <input readonly [(ngModel)]="serviceData.allServiceParts.total" name="parts-total" type="text" class="form-control" >
                                 </div>
                              </div>
                           </div>
@@ -388,7 +388,7 @@
                      </td>
                      <td width="20%" class="text-right">
                         <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks(reminder)" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
-                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-plus text-white"></i> Remove</a>
+                        <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
                      </td>
                   </tr>
                   <tr *ngIf="!reminders?.length > 0">
