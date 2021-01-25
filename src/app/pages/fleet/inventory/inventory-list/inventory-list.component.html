@@ -47,7 +47,7 @@
                     placeholder="Search items by category" />
             </div>
             <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
-                (click)="setItemGroup(suggestedItemGroup.itemGroupID, suggestedItemGroup.groupName)">
+                (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)">
                 {{ suggestedItemGroup.groupName }}
             </div>
           </div>
@@ -160,7 +160,7 @@
                               {{itemGroups[item.categoryID]}}
                             </td>
                             <td *ngIf="hideShow.vendor" routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                              {{vendors[item.preferredVendorID]}}
+                              {{vendors[item.warehouseVendorID]}}
                             </td>
                             <td *ngIf="hideShow.quantity" routerLink="/fleet/inventory/detail/{{item.itemID}}">
                               {{item.quantity}}
