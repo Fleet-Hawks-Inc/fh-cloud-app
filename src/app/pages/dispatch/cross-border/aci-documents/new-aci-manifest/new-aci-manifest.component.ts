@@ -96,6 +96,7 @@ export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
 export class NewAciManifestComponent implements OnInit {
   public entryID;
   title = 'Add ACI e-Manifest';
+  modalTitle = 'Add';
   errors = {};
   form;
   response: any = '';
@@ -103,6 +104,7 @@ export class NewAciManifestComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
+  carriers = [];
   timeCreated: string;
   countries: any = [];
   stateID: string;
@@ -153,31 +155,8 @@ export class NewAciManifestComponent implements OnInit {
       sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
       cargoExemptions: []
     }];
-  passengers = [{
-    firstName: '',
-    lastName: '',
-    gender: '',
-    dateOfBirth: '',
-    citizenshipCountry: '',
-    fastCardNumber: '',
-    travelDocuments: [{
-      type: '',
-      number: '',
-      country: '',
-      stateProvince: ''
-    }]
-  }];
-  containers = [
-    {
-      loadedOn: {
-        type: '',
-        number: ''
-      },
-      number: '',
-      cargoExemptions: [],
-      sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
-    }
-  ];
+  passengers = [];
+  containers = [];
 
   passengerDocStates = [];
   shipments = [
@@ -247,6 +226,7 @@ export class NewAciManifestComponent implements OnInit {
     this.entryID = this.route.snapshot.params['entryID'];
     if (this.entryID) {
       this.title = 'Edit ACI e-Manifest';
+      this.modalTitle = 'Edit';
       this.fetchACIEntry();
       this.getDocStates();
       this.fetchCities();
@@ -254,6 +234,7 @@ export class NewAciManifestComponent implements OnInit {
       this.getDeliveryDestinationStatesCities();
     } else {
       this.title = 'Add ACI e-Manifest';
+      this.modalTitle = 'Add';
     }
     this.fetchShippers();
     this.fetchConsignees();
@@ -263,6 +244,7 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchCountries();
     this.fetchUSStates();
     this.fetchCities();   
+    this.fetchCarrier();
     this.httpClient.get('assets/canadianPorts.json').subscribe(data => {
       this.CANPorts = data;
     });
@@ -306,6 +288,12 @@ export class NewAciManifestComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+  }
+  fetchCarrier(){
+    this.apiService.getData('carriers/getCarrier')
+    .subscribe((result: any) => {
+      this.carriers = result.Items;
+    });    
   }
   getLoadingCities(s) {
     let stateID = this.shipments[s].cityOfLoading.stateProvince;
