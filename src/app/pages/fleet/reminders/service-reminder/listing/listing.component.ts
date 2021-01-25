@@ -226,6 +226,8 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         // console.log('result', result);
+        this.remindersData = [];
+        this.getReminders()
         this.rerender();
         this.toastr.success('Service Renewal Reminder Deleted Successfully!');
       });
@@ -234,7 +236,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getReminders() {
     this.apiService
-      .getData('reminders/get-reminders/service')
+      .getData('reminders/get-reminders/service?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service')
       .subscribe((result) => {
         // this.suggestedVehicles = result.Items;
         this.totalRecords = result.Count;
@@ -258,6 +260,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [5], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.allRemindersData = resp['Items'];
@@ -306,6 +311,8 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
   searchFilter() {
     if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.remindersData = [];
+      this.getReminders()
       this.rerender('reset');
     } else {
       return false;
@@ -319,6 +326,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleIdentification = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
+
+      this.remindersData = [];
+      this.getReminders()
       this.rerender();
     } else {
       return false;
