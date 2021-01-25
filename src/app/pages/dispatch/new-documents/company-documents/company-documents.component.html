@@ -56,7 +56,9 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
+
                             <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
+
                                 class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
                             <!-- <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
@@ -114,6 +116,7 @@
                                             </div>
                                         </td>
                                     </tr>
+
                                     
                                 </tbody>
                                 <!-- <tr *ngIf="documents.length === 0">
@@ -201,10 +204,12 @@
                         <div class="form-group col-lg-12">
                             <label for="">Document Type</label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
+
                                 <ng-option value="BOL">BOL</ng-option>
                                 <ng-option value="POD">POD</ng-option>
                                 <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
+
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">

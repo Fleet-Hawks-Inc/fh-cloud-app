@@ -267,7 +267,7 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
 												Country</label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
-												name="assetDetails.licenceCountryID" (change)="getStates()" placeholder="Select country"
+												name="assetDetails.licenceCountryID" (change)="getStates($event)" placeholder="Select country"
 												class="form-control populate">
 												<ng-option *ngFor="let country of countries"
 													value="{{country.countryID}}">

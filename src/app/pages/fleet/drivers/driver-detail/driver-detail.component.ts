@@ -129,7 +129,12 @@ export class DriverDetailComponent implements OnInit {
           this.workPhone = this.driverData.workPhone;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
           this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
-          this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
+          if(this.driverData.driverImage != '') {
+            this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
+          } else {
+            this.profile = 'assets/img/driver/driver.png';
+          }
+          
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeId;
           this.companyId = this.driverData.companyId;

@@ -52,7 +52,7 @@
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{workEmail}}</div>
+                                <div class="col-lg-6 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
 
                              </div>
                           </div>
@@ -828,27 +828,27 @@
                             <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.address1}} {{item.address2}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.address1 ? item.address1 : '-'}} {{item.address2}}</div>
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.addressType}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.addressType ? item.addressType : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">City:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.cityName}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.cityName ? item.cityName : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.zipCode}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.zipCode ? item.zipCode : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">State:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.stateName}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.stateName ? item.stateName : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.countryName}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{item.countryName ? item.countryName : '-'}}</div>
                                 </div>
                             </div>
                         </div>
@@ -870,7 +870,7 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.issuingAuthority}}</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.issuingAuthority ? item.issuingAuthority : '-'}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
@@ -886,7 +886,7 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.expiryDate}}</div>
+                                            <div class="col-lg-6 p-2 bor_half">{{item.expiryDate ? item.expiryDate : '-'}}</div>
                                         </div>
                                         <div *ngFor="let doc of item.uploadedDocs; let i = index;" >
                                           <a href="{{Asseturl}}/{{carrierID}}/{{doc}}" target="_blank">Doc-{{i + 1}}</a>
@@ -972,11 +972,11 @@
                                       </div>
                                       <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Local Tax:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{localTax}}</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{localTax ? localTax : '-'}}</div>
                                        </div>
                                        <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Federal Tax:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{federalTax}}</div>
+                                          <div class="col-lg-6 p-2 bor_half">{{federalTax ? federalTax : '-'}}</div>
                                        </div>
                                        <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
