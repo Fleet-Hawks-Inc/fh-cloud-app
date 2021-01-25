@@ -195,7 +195,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        
+
         this.totalRecords = result.Count;
       },
     });
@@ -285,6 +285,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
+
+          this.drivers = [];
+          this.fetchDrivers();
           this.rerender();
           this.toastr.success('Driver deleted successfully!');
           // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
@@ -306,6 +309,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];
@@ -337,6 +343,8 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
+      this.drivers = [];
+      this.fetchDrivers();
       this.rerender('reset');
     } else {
       return false;
@@ -349,6 +357,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
+
+      this.drivers = [];
+      this.fetchDrivers();
       this.rerender();
       // this.spinner.hide();
     } else {

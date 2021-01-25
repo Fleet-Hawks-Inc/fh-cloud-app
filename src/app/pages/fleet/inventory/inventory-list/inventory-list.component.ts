@@ -129,7 +129,14 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   
   
   resetFilter(){
-    this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+      this.fetchItems();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
+    }
   }
 
   fetchVendors(){
@@ -150,7 +157,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   fetchItems(){
-    this.apiService.getData('items').subscribe((result) => {
+    this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
       // this.items = result.Items;
       this.totalRecords = result.Count;
     })
@@ -167,6 +174,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.apiService
       .getData(`items/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.items = [];
+        this.fetchItems();
         this.rerender();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
@@ -185,8 +194,11 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
         { "targets": [0,1,2,3,4,5,6,7,8,9,10,11], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('items/fetch-records?lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('items/fetch-records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           //record number
           if(dataTablesParameters.start >=2) {
             current.partNo = [];
@@ -317,6 +329,16 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     } else { 
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
+    }
+  }
+
+  searchFilter() {
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.fetchItems();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
     }
   }
 }
