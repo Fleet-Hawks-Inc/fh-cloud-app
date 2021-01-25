@@ -8,3 +8,4 @@ export * from './shared-service.service';
 export * from './http-loading.service';
 export * from './leaflet-map.service';
 export * from './event-activities.service';
+export * from './list.service';
