@@ -47,7 +47,7 @@
                     placeholder="Search items by category" />
             </div>
             <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
-                (click)="setItemGroup(suggestedItemGroup.itemGroupID, suggestedItemGroup.groupName)">
+                (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)">
                 {{ suggestedItemGroup.groupName }}
             </div>
           </div>
