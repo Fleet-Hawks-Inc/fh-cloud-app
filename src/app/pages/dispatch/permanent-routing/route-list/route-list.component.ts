@@ -39,6 +39,7 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+  routesLength = 0;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -60,13 +61,14 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   deleteRoute(routeID) {
     this.spinner.show();
-    this.apiService.getData('routes/delete/' + routeID + '/1').subscribe({
+    this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.rerender();
         this.spinner.hide();
         this.hasSuccess = true;
+        this.toastr.success('Route deleted successfully.');
       }
     })
   }
@@ -84,6 +86,9 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
         {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluatedKey+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
           
@@ -98,6 +103,8 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
             }
             return i;
           });
+
+          this.routesLength = this.routes.length;
           if(resp['LastEvaluatedKey'] !== undefined){
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].routeID
           } else {
@@ -139,8 +146,6 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.searchedRouteId = route.id;
     this.searchedRouteName = route.name;
     this.suggestedRoutes = [];
-
-    this.rerender('reset');
   }
 
   ngAfterViewInit(): void {
@@ -164,6 +169,13 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  searchFilter() {
+    if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
+      this.rerender('reset');
+    }
+    return false;
   }
 
   resetFilter() {

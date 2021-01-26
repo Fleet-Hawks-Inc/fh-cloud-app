@@ -33,9 +33,11 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   toDate: any = '';
   entryId = '';
   vehicles = [];
-  vehicleList: any;
-  tripList: any;
-  assetList: any;
+  vehicleList: any = {};
+  tripList: any = {};
+  assetList: any = {};
+  driverList: any  = {};
+  vendorList: any  = {};
   countries = [];
   checked = false;
   isChecked = false;
@@ -46,7 +48,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList = [];
-  // dtOptions: any = {};
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
@@ -72,7 +73,8 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.fetchAssetList();
     this.fetchCountries();
     this.fetchTripList();
-    this.initDataTable()
+    this.fetchDriverList();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -118,6 +120,11 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
         this.unitID = '';
       }
   }
+  fetchVendorList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendorList = result;
+    });
+  }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -128,14 +135,24 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.assetList = result;
     });
   }
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
+    });
+  }
   fetchTripList() {
     this.apiService.getData('trips/get/list').subscribe((result: any) => {
       this.tripList = result;
     });
   }
+  fetchCountries() {
+    this.apiService.getData('countries').subscribe((result: any) => {
+      this.countries = result.Items;
+    });
+  }
   fuelEntries() {
     this.spinner.show(); // loader init
-    this.apiService.getData(`fuelEntries`).subscribe({
+    this.apiService.getData('fuelEntries?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
       complete: () => {},
       error: () => { },
       next: (result: any) => {
@@ -145,18 +162,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       },
     });
     this.unitID = '';
-  }
-  getVehicleName(ID) {
-    const vehicleName: any = this.vehicles.filter( (el) => {
-      return el.vehicleID === ID;
-    });
-    return vehicleName.vehicleName;
-  }
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
+  } 
   showTopValues() {
 
     const data = {
@@ -171,6 +177,9 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.apiService
       .getData(`fuelEntries/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+
+        this.fuelList = [];
+        this.fuelEntries();
         this.rerender();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
@@ -186,9 +195,12 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32], "orderable": false },
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.fuelList = resp['Items'];
@@ -240,6 +252,9 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       if(this.toDate !== '') {
         this.end = this.toDate.split('-').reverse().join('-');
       }
+
+      this.fuelList = [];
+      this.fuelEntries();
       this.rerender('reset');
     } else {
       return false;
@@ -254,6 +269,9 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.unitName = '';
       this.start = '';
       this.end = '';
+      
+      this.fuelList = [];
+      this.fuelEntries();
       this.rerender();
     } else {
       return false;

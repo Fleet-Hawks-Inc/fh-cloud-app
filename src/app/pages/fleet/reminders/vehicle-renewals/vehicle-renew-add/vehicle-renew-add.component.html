@@ -32,7 +32,7 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
-                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  class="form-control populate">
+                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  placeholder="Select vehicle">
                                       
                                           <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</ng-option>
                                       
@@ -46,9 +46,10 @@
                              
                               <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
+                                       class="text-1 optional-label-color">(optional)</span></label>
 
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;">         
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;" placeholder="Select user(s)/group(s) to send email">         
                                        <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</ng-option>
                                        <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
 
@@ -71,7 +72,7 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;">
+                                    name="task" style="width: 100%;" placeholder="Select renewal type">
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                        </ng-option>
@@ -88,7 +89,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
                                     <input
                                     class="form-control"
-                                    placeholder="dd-mm-yyyy"
+                                    placeholder="Enter due date"
                                     name="dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                   />
                                  </div>
@@ -143,14 +144,15 @@
                   <label
                   class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
                <input [(ngModel)]="serviceTask.taskName"
-                  name="taskName" type="text" class="form-control">
+                  name="taskName" type="text" class="form-control" placeholder="Enter renewal type name">
                 </div>
              </div>
              <div class="row mt-2">
                <div class="col-lg-12">
                  <label
-                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description</label>              
-                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
+                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description&nbsp;<span
+                 class="text-1 optional-label-color">(optional)</span></label>              
+                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description" placeholder="Enter description of the renewal type"></textarea>
                </div>
             </div>
            </form>
@@ -178,13 +180,14 @@
                <div class="form-row">
                  <div class="form-group col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
-                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"> 
+                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Add group name"> 
                  </div>
                </div>
                <div class="form-row">
                   <div class="form-group col-lg-12">
-                    <label class="control-label font-weight-bold">Group Members</label>
-                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
+                    <label class="control-label font-weight-bold">Group Members&nbsp;<span
+                     class="text-1 optional-label-color">(optional)</span></label>
+                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Add users in the group"
                     style="width: 100%;">
                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
                     </ng-option>
@@ -195,8 +198,8 @@
                  <div class="form-group col-lg-12">
                    <div class="row">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment"></textarea>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span class="text-1 optional-label-color">(optional)</span></label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Add description"></textarea>
                      </div>
                    </div>
                  </div>

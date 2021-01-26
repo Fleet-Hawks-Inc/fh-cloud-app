@@ -1,10 +1,4 @@
-<style>
-    table{
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-</style>
+
 <section class="body">
     <!-- start: header -->
     <app-header></app-header>
@@ -128,14 +122,12 @@
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <div class="tab-pane show active" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab">
+                        <div class="tab-pane show active table-responsive" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
                                 class="row-border hover table table-bordered table-striped mb-0"
                                  id="allTripsDT">
                                 <thead>
                                     <tr>
-                                        <!-- <th width="5%"><input type="checkbox"></th> -->
-
                                         <th>Trip</th>
                                         <th>Type</th>
                                         <th>Order No.</th>
@@ -165,9 +157,9 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}, {{ citiesObject[trip.pickupCity] }}, {{ statesObject[trip.pickupState] }}, {{ countriesObject[trip.pickupCountry] }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
                                         <td>
-                                            {{ trip.dropLocation }}, {{ citiesObject[trip.dropCity] }}, {{ statesObject[trip.dropState] }}, {{ countriesObject[trip.dropCountry] }}
+                                            {{ trip.dropLocation }}
                                         </td>
                                         <td>{{ trip.pickupTime }}</td>
                                         <td>{{ trip.dropTime }}</td>
@@ -203,7 +195,7 @@
 
                                 <tbody *ngIf="trips.length === 0">
                                     <tr>
-                                      <td colspan="14" class="no-data-available">No record(s) found</td>
+                                      <td colspan="14" class="no-data-available">No records found</td>
                                     </tr>
                                 <tbody>
                             </table>

@@ -90,14 +90,16 @@
                                     <li class=" mb-2 border" *ngFor="let trip of tempTrips">
                                        <div class="fc-event-main">
                                           <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
-                                             <div class="d-inline-block">
-                                                <span class="name-short">{{ trip.assetShortName }}</span>
-                                                {{ trip.assetName }}
+
+                                             <div class="d-inline-block" *ngFor="let customer of trip.customersArr">
+                                                <span class="name-short">{{ customer.icon }}</span>
+                                                {{ customer.name }}
                                              </div>
+
                                              <a href="javascript:;" (click)="showAssignModal(trip.tripID)" class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
                                           </h5>
-                                          <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}, {{ citiesObject[trip.pickupCityID] }}, {{ statesObject[trip.pickupStateID] }}, {{ countriesObject[trip.pickupCountryID] }}</p>
-                                          <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{ trip.deliveryLocation }}, {{ citiesObject[trip.dropCityID] }}, {{ statesObject[trip.dropStateID] }}, {{ countriesObject[trip.dropCountryID] }}</p>
+                                          <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}</p>
+                                          <p class="mb-1" *ngIf="trip.deliveryLocation != '' else locBlock "><b>D/L:</b> {{ trip.deliveryLocation }}</p>
                                           <ng-template #locBlock>
                                             <p class="mb-1"><b>D/L:</b>- </p>
                                           </ng-template>

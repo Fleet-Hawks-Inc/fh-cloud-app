@@ -15,11 +15,11 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="firstName" [(ngModel)]="firstName"
-                                class="form-control" (input)="getSuggestions($event.target.value)" />
+                                class="form-control" (input)="getSuggestions($event.target.value)"  placeholder="Search by contact"/>
                         </div>
-                        <div *ngFor="let suggestedContact of suggestedContacts" style="cursor: pointer" (click)="
+                        <div *ngFor="let suggestedContact of suggestedContacts" class="suggestionClass" (click)="
                             setContact(
-                              suggestedContact.contactID,
+                              suggestedContact.driverID,
                               suggestedContact.firstName
                             )
                           ">
@@ -29,7 +29,7 @@
 
                     <div class="col-lg-2 col-md-2">
                         <ng-select placeholder="Search By Renewal Type" [(ngModel)]="searchServiceTask"
-                            name="searchServiceTask" style="width: 100%;">
+                            name="searchServiceTask" style="width: 100%;">                      
                             <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                             </ng-option>
                         </ng-select>
@@ -84,58 +84,60 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body pt-1">
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Contact</th>
-                                        <th>Contact Renewal Type</th>
-                                        <th>Send Reminder </th>
-                                        <th>Licence Exp.</th>
-                                        <th>Subscribers</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="remindersData.length > 0">
-                                    <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                        <td>{{contactList[item.reminderIdentification]}}</td>
-                                        <td> <span class="text-warning font-weight-bold font-size-12"
-                                                *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
-                                            <span class="text-danger font-weight-bold font-size-12"
-                                                *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
-                                            <span class="font-weight-bold"
-                                                title="Task">{{tasksList[item.reminderTasks.task]}}</span>
-                                        </td>
-                                        <td><span class="font-size-12">{{item.reminderTasks.remindByDays}} Days
-                                                Before</span></td>
-                                        <td><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
-                                        <td><span *ngFor="let s of item.subscribers">
-                                                <span
-                                                    *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
-                                                <span
-                                                    *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
-                                            </span></td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="btn p-0" data-toggle="dropdown"><i
-                                                        class="fas fa-ellipsis-v"></i></button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item text-1" href="#">Send Notifications</a>
-                                                    <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}"
-                                                        class="dropdown-item text-1">Edit</a>
-                                                    <a href="javascript:;" class="dropdown-item text-1"
-                                                        (click)="deleteRenewal(item.reminderID)">Delete</a>
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Contact</th>
+                                            <th>Contact Renewal Type</th>
+                                            <th>Send Reminder </th>
+                                            <th>Licence Exp.</th>
+                                            <th>Subscribers</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="remindersData.length > 0">
+                                        <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
+                                            <td>{{driverList[item.reminderIdentification]}}</td>
+                                            <td> <span class="text-warning font-weight-bold font-size-12"
+                                                    *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                <span class="text-danger font-weight-bold font-size-12"
+                                                    *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                <span class="font-weight-bold"
+                                                    title="Task">{{tasksList[item.reminderTasks.task]}}</span>
+                                            </td>
+                                            <td><span class="font-size-12">{{item.reminderTasks.remindByDays}} Days
+                                                    Before</span></td>
+                                            <td><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
+                                            <td><span *ngFor="let s of item.subscribers">
+                                                    <span
+                                                        *ngIf="s.subscriberType === 'user'">{{s.subscriberIdentification}},</span>
+                                                    <span
+                                                        *ngIf="s.subscriberType === 'group'">{{groups[s.subscriberIdentification]}},</span>
+                                                </span></td>
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="btn p-0" data-toggle="dropdown"><i
+                                                            class="fas fa-ellipsis-v"></i></button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
+                                                        <a routerLink="/fleet/reminders/contact-renewals/edit/{{item.reminderID }}"
+                                                            class="dropdown-item text-1">Edit</a>
+                                                        <a href="javascript:;" class="dropdown-item text-1"
+                                                            (click)="deleteRenewal(item.reminderID)">Delete</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody *ngIf="remindersData.length === 0">
-                                    <tr>
-                                        <td colspan="10" class="no-data-available">No records found</td>
-                                    </tr>
-                                <tbody>
-                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="remindersData.length === 0">
+                                        <tr>
+                                            <td colspan="10" class="no-data-available">No records found</td>
+                                        </tr>
+                                    <tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

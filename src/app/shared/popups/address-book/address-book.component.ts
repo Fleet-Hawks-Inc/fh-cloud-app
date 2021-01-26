@@ -8,6 +8,7 @@ import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Console } from 'console';
+import { ListService } from '../../../services';
 
 declare var $: any;
 @Component({
@@ -229,11 +230,15 @@ export class AddressBookComponent implements OnInit {
   private destroy$ = new Subject();
   errors = {};
   newAddress = [];
+
+  showDriverModal: boolean = false;
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
             private modalService: NgbModal,
-            private HereMap: HereMapService)
+            private HereMap: HereMapService,
+            private listService: ListService
+            )
   { }
 
   ngOnInit() {
@@ -584,6 +589,8 @@ export class AddressBookComponent implements OnInit {
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
+          this.listService.fetchVendors();
+
         }
       });
   }

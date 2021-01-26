@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable   } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-boo
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import  Constants  from '../../constants'
+import { ListService } from '../../../../services';
+
 declare var $: any;
 
 @Component({
@@ -19,9 +21,13 @@ declare var $: any;
   styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
+  showDriverModal: boolean = false
   title = 'Add Vehicle';
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
+  modalImage = '';
+
+
   /**
    * Quantum prop
    */
@@ -49,6 +55,7 @@ vehicles= [];
   manufacturerID = '';
   modelID = '';
   plateNumber = '';
+  countryID = '';
   stateID = '';
   driverID = '';
   teamDriverID = '';
@@ -56,11 +63,14 @@ vehicles= [];
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
+  annualSafetyDate = '';
   currentStatus = '';
   ownership = '';
+  ownerOperator = '';
   groupID = '';
   aceID = '';
   aciID = '';
+  iftaReporting = false;
   vehicleColor = '';
   bodyType = '';
   bodySubType = '';
@@ -68,42 +78,44 @@ vehicles= [];
   inspectionFormID = '';
   lifeCycle = {
     inServiceDate: '',
-    inServiceOdometer: 0,
-    estimatedServiceMonths: 0,
-    estimatedServiceMiles: 0,
+    startDate: '',
+    inServiceOdometer: '',
+    estimatedServiceYears: '',
+    estimatedServiceMonths: '',
+    estimatedServiceMiles: '',
     estimatedResaleValue: '',
     outOfServiceDate: '',
-    outOfServiceOdometer: 0,
+    outOfServiceOdometer: '',
   };
   specifications = {
-    height: 0,
+    height: '',
     heightUnit: '',
-    length: 0,
+    length: '',
     lengthUnit: '',
-    width: 0,
+    width: '',
     widthUnit: '',
     interiorVolume: '',
     passangerVolume: '',
-    groundClearnce: 0,
+    groundClearnce: '',
     groundClearnceUnit: '',
-    bedLength: 0,
+    bedLength: '',
     bedLengthUnit: '',
     cargoVolume: '',
-    curbWeight: '',
+    tareWeight: '',
     grossVehicleWeightRating: '',
-    iftaReporting: false,
     towingCapacity: '',
     maxPayload: '',
-    EPACity: 0,
-    EPACombined: 0,
-    EPAHighway: 0,
+    EPACity: '',
+    EPACombined: '',
+    EPAHighway: '',
   };
   insurance = {
     dateOfIssue: '',
-    premiumAmount: 0,
+    premiumAmount: '',
     premiumCurrency: '',
     vendorID: '',
     dateOfExpiry: '',
+    reminder: '',
     remiderEvery: '',
     policyNumber: '',
     amount: 0,
@@ -111,13 +123,18 @@ vehicles= [];
   };
   fluid = {
     fuelType: '',
-    fuelTankOneCapacity: 0,
+    fuelTankOneCapacity: '',
+    fuelTankOneType: '',
     fuelQuality: '',
-    fuelTankTwoCapacity: 0,
-    oilCapacity: 0,
+    fuelTankTwoCapacity: '',
+    fuelTankTwoType: '',
+    oilCapacity: '',
+    oilCapacityType: '',
+    def: '',
+    defType: ''
   };
   wheelsAndTyres = {
-    numberOfTyres: 0,
+    numberOfTyres: '',
     driveType: '',
     brakeSystem: '',
     wheelbase: '',
@@ -136,7 +153,7 @@ vehicles= [];
     engineBrand: '',
     aspiration: '',
     blockType: '',
-    bore: 0,
+    bore: '',
     camType: '',
     stroke: '',
     valves: '',
@@ -171,6 +188,7 @@ vehicles= [];
     downPayment: '',
     dateOfLoan: '',
     monthlyPayment: '',
+    monthlyPaymentCurrency: '',
     firstPaymentDate: '',
     numberOfPayments: '',
     loadEndDate: '',
@@ -187,7 +205,6 @@ vehicles= [];
     measurmentUnit: 'imperial',
   };
 
-  countryID = '';
   servicePrograms = [];
   inspectionForms = [];
   manufacturers = [];
@@ -204,7 +221,7 @@ vehicles= [];
     existingDocs = [];
     carrierID;
     programs = [];
-    vendors = [];
+    vendors: any = [];
     timeCreated: '';
   errors = {};
   vehicleForm;
@@ -214,7 +231,7 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = ['assets/img/truck.jpg' , 'assets/img/truck.jpg'];
+  slides = ['assets/img/truck.jpg'];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -224,7 +241,9 @@ vehicles= [];
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient,) {
+  vendorModalStatus = false;
+
+  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -233,22 +252,26 @@ vehicles= [];
   }
 
   ngOnInit() {
+    this.fetchServicePrograms();
+    this.fetchInspectionForms();
+    this.fetchManufacturers();
+    this.fetchCountries();
+    //this.fetchVendors();
+    this.fetchGroups();
+    this.fetchDrivers();
+    this.fetchVehicles();
+    this.listService.fetchVendors();
+
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
+      // this.fetchStates();
+      // this.fetchModels();
       this.title = 'Edit Vehicle';
       this.fetchVehicleByID();
     } else {
       this.title = 'Add Vehicle';
     }
-    this.fetchServicePrograms();
-    this.fetchInspectionForms();
-    this.fetchManufacturers();
-    this.fetchCountries();
-    this.fetchStates();
-    this.fetchVendors();
-    this.fetchGroups();
-    this.fetchDrivers();
-    this.fetchVehicles();
+    
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
@@ -263,9 +286,11 @@ vehicles= [];
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-
-
+   this.vendors = this.listService.vendorList;
+    console.log(this.vendors);
   }
+
+  
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
@@ -345,12 +370,15 @@ vehicles= [];
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
+      countryID: this.countryID,
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
+      annualSafetyDate: this.annualSafetyDate,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
+      ownerOperator: this.ownerOperator,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,
@@ -361,7 +389,9 @@ vehicles= [];
       inspectionFormID: this.inspectionFormID,
       lifeCycle: {
         inServiceDate: this.lifeCycle.inServiceDate,
+        startDate: this.lifeCycle.startDate,
         inServiceOdometer: this.lifeCycle.inServiceOdometer,
+        estimatedServiceYears: this.lifeCycle.estimatedServiceYears,
         estimatedServiceMonths: this.lifeCycle.estimatedServiceMonths,
         estimatedServiceMiles: this.lifeCycle.estimatedServiceMiles,
         estimatedResaleValue: this.lifeCycle.estimatedResaleValue,
@@ -382,9 +412,8 @@ vehicles= [];
         bedLength: this.specifications.bedLength,
         bedLengthUnit: this.specifications.bedLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
-        curbWeight: this.specifications.curbWeight,
+        tareWeight: this.specifications.tareWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
-        iftaReporting: this.specifications.iftaReporting,
         towingCapacity: this.specifications.towingCapacity,
         maxPayload: this.specifications.maxPayload,
         EPACity: this.specifications.EPACity,
@@ -397,6 +426,7 @@ vehicles= [];
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
+        reminder: this.insurance.reminder,
         remiderEvery: this.insurance.remiderEvery,
         policyNumber: this.insurance.policyNumber,
         amount: this.insurance.amount,
@@ -405,9 +435,14 @@ vehicles= [];
       fluid: {
         fuelType: this.fluid.fuelType,
         fuelTankOneCapacity: this.fluid.fuelTankOneCapacity,
+        fuelTankOneType: this.fluid.fuelTankOneType,
         fuelQuality: this.fluid.fuelQuality,
         fuelTankTwoCapacity: this.fluid.fuelTankTwoCapacity,
+        fuelTankTwoType: this.fluid.fuelTankOneType,
         oilCapacity: this.fluid.oilCapacity,
+        oilCapacityType: this.fluid.oilCapacityType,
+        def: this.fluid.def,
+        defType: this.fluid.defType
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
@@ -464,6 +499,7 @@ vehicles= [];
         downPayment: this.loan.downPayment,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
+        monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,
         firstPaymentDate: this.loan.firstPaymentDate,
         numberOfPayments: this.loan.numberOfPayments,
         loadEndDate: this.loan.loadEndDate,
@@ -510,8 +546,10 @@ vehicles= [];
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
             },
-            error: () => { },
+            error: () => {},
             next: () => { },
           });
       },
@@ -564,7 +602,6 @@ vehicles= [];
           this.uploadedPhotos.push(files[i])
       }
     }
-    console.log("photo", this.uploadedPhotos)
   }
   /*
    * Uploading files which selected
@@ -590,15 +627,19 @@ vehicles= [];
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
+        this.countryID = result.countryID
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.serviceProgramID;
+        this.annualSafetyDate = result.annualSafetyDate,
         this.currentStatus = result.currentStatus;
         this.ownership = result.ownership;
+        this.ownerOperator = this.ownerOperator;
         this.groupID = result.groupID;
         this.aceID = result.aceID;
         this.aciID = result.aciID;
+        this.iftaReporting = result.iftaReporting,
         this.vehicleColor = result.vehicleColor;
         this.bodyType = result.bodyType;
         this.bodySubType = result.bodySubType;
@@ -607,6 +648,8 @@ vehicles= [];
         this.lifeCycle =  {
           inServiceDate: result.lifeCycle.inServiceDate,
           inServiceOdometer: result.lifeCycle.inServiceOdometer,
+          startDate: result.lifeCycle.startDate,
+          estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
           estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
           estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
           estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
@@ -627,9 +670,8 @@ vehicles= [];
           bedLength: result.specifications.bedLength,
           bedLengthUnit: result.specifications.bedLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
-          curbWeight: result.specifications.curbWeight,
+          tareWeight: result.specifications.tareWeight,
           grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
-          iftaReporting: result.specifications.iftaReporting,
           towingCapacity: result.specifications.towingCapacity,
           maxPayload: result.specifications.maxPayload,
           EPACity: result.specifications.EPACity,
@@ -642,6 +684,7 @@ vehicles= [];
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
+          reminder: result.insurance.reminder,
           remiderEvery: result.insurance.remiderEvery,
           policyNumber: result.insurance.policyNumber,
           amount: result.insurance.amount,
@@ -650,9 +693,14 @@ vehicles= [];
         this.fluid = {
           fuelType: result.fluid.fuelType,
           fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
+          fuelTankOneType:result.fluid.fuelTankOneType,
           fuelQuality: result.fluid.fuelQuality,
           fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
-          oilCapacity: result.fluid.oilCapacity
+          fuelTankTwoType: result.fluid.fuelTankTwoType,
+          oilCapacity: result.fluid.oilCapacity,
+          oilCapacityType: result.fluid.oilCapacityType,
+          def: result.fluid.def,
+          defType: result.fluid.defType
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
@@ -709,6 +757,7 @@ vehicles= [];
           downPayment: result.loan.downPayment,
           dateOfLoan: result.loan.dateOfLoan,
           monthlyPayment: result.loan.monthlyPayment,
+          monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
           firstPaymentDate: result.loan.firstPaymentDate,
           numberOfPayments: result.loan.numberOfPayments,
           loadEndDate: result.loan.loadEndDate,
@@ -726,7 +775,6 @@ vehicles= [];
         };
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
-
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
         }
@@ -742,9 +790,10 @@ vehicles= [];
         $('#turningParametersValue').html(
           this.settings.turningParams
         );
-        setTimeout(() => {
-          this.getModels(); 
-        }, 1000);
+       
+        this.getModels();
+        this.getStates(); 
+       
       });
 
   }
@@ -762,15 +811,19 @@ vehicles= [];
       manufacturerID: this.manufacturerID,
       modelID: this.modelID,
       plateNumber: this.plateNumber,
+      countryID: this.countryID,
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
+      annualSafetyDate: this.annualSafetyDate,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
+      ownerOperator: this.ownerOperator,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,
+      iftaReporting: this.iftaReporting,
       vehicleColor: this.vehicleColor,
       bodyType: this.bodyType,
       bodySubType: this.bodySubType,
@@ -778,7 +831,9 @@ vehicles= [];
       inspectionFormID: this.inspectionFormID,
       lifeCycle: {
         inServiceDate: this.lifeCycle.inServiceDate,
+        startDate: this.lifeCycle.startDate,
         inServiceOdometer: this.lifeCycle.inServiceOdometer,
+        estimatedServiceYears: this.lifeCycle.estimatedServiceYears,
         estimatedServiceMonths: this.lifeCycle.estimatedServiceMonths,
         estimatedServiceMiles: this.lifeCycle.estimatedServiceMiles,
         estimatedResaleValue: this.lifeCycle.estimatedResaleValue,
@@ -799,9 +854,8 @@ vehicles= [];
         bedLength: this.specifications.bedLength,
         bedLengthUnit: this.specifications.bedLengthUnit,
         cargoVolume: this.specifications.cargoVolume,
-        curbWeight: this.specifications.curbWeight,
+        tareWeight: this.specifications.tareWeight,
         grossVehicleWeightRating: this.specifications.grossVehicleWeightRating,
-        iftaReporting: this.specifications.iftaReporting,
         towingCapacity: this.specifications.towingCapacity,
         maxPayload: this.specifications.maxPayload,
         EPACity: this.specifications.EPACity,
@@ -814,6 +868,7 @@ vehicles= [];
         premiumCurrency: this.insurance.premiumCurrency,
         vendorID: this.insurance.vendorID,
         dateOfExpiry: this.insurance.dateOfExpiry,
+        reminder: this.insurance.reminder,
         remiderEvery: this.insurance.remiderEvery,
         policyNumber: this.insurance.policyNumber,
         amount: this.insurance.amount,
@@ -822,9 +877,14 @@ vehicles= [];
       fluid: {
         fuelType: this.fluid.fuelType,
         fuelTankOneCapacity: this.fluid.fuelTankOneCapacity,
+        fuelTankOneType: this.fluid.fuelTankOneType,
         fuelQuality: this.fluid.fuelQuality,
         fuelTankTwoCapacity: this.fluid.fuelTankTwoCapacity,
+        fuelTankTwoType: this.fluid.fuelTankTwoType,
         oilCapacity: this.fluid.oilCapacity,
+        oilCapacityType: this.fluid.oilCapacityType,
+        def: this.fluid.def,
+        defType: this.fluid.defType
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
@@ -881,6 +941,7 @@ vehicles= [];
         downPayment: this.loan.downPayment,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
+        monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,
         firstPaymentDate: this.loan.firstPaymentDate,
         numberOfPayments: this.loan.numberOfPayments,
         loadEndDate: this.loan.loadEndDate,
@@ -1029,4 +1090,14 @@ vehicles= [];
           },
         });
       }
+
+    openImageModal(slide){
+      this.modalImage = slide;
+      $('#imageModal').modal('show');
+    }
+
+    deleteImage(index){
+      this.slides.splice(index, 1);
+      this.existingPhotos.splice(index, 1);
+    }
 }

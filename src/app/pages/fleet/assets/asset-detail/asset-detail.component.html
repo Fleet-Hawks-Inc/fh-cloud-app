@@ -1,20 +1,17 @@
 <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-  
+      
       <section role="main" class="content-body pl-0 pr-0 pt-0">
         <header class="page-header">
            <div class="row pr-5 " style="padding-top:10px;">
               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                  Asset Details                    
               </div>
+              <div class="col-md-8  col-lg-8 text-right pr-5">
+               <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Assets List</a>
+            </div>
            </div>
         </header>
         <div class="row">
@@ -56,7 +53,7 @@
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                             <td class="text-capitalize">{{year}} {{manufacturer}} &amp; {{model}}</td>
+                                             <td class="text-capitalize">{{year}}, {{manufacturersObjects[manufacturer]}} &amp; {{modelsObjects[model]}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Length</td>
@@ -76,7 +73,7 @@
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Ownership</td>
-                                             <td class="text-capitalize">{{ownerShip}}</td>
+                                             <td class="text-capitalize">{{ownerShip ? ownerShip : '-'}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">
@@ -233,34 +230,28 @@
                            </div>
                            <div class="row">
                              
-                              <div class="col-lg-12">
-                                 <div class="vehicle-common-box p-3">
+                              <div class="col-lg-12" *ngIf="assetsImages?.length > 0">
+                                 <div class="vehicle-common-box p-3 mb-3">
                                     <div class="row">
                                        <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
                                     </div>
                                     <hr class="solid mt-3">
                                     <div class="row">
-                                       <div class="col-lg-6" *ngFor="let item of assetsImages;">
-                                          <div class="vehicle-photo-box">
-                                             <img [src]="item" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                       <div class="col-lg-6" *ngFor="let item of assetsImages; let i=index;">
+                                          <div class="vehicle-photo-box"> 
+                                             <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
                                              <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                                              <hr class="m-3">
                                              <div class="row">
-                                                <div class="col-lg-8">Name of the Image</div>
+                                                <div class="col-lg-8"> Image {{i+1}}</div>
                                                 <div class="col-lg-4 text-right">
-                                                   <div class="btn-group flex-wrap mx-2">
-                                                      <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                         <a class="dropdown-item text-1" href="">Crop/Rotate Image</a>
-                                                         <a class="modal-with-form dropdown-item text-1" href="#editPhoto">Edit</a>
-                                                         <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                                      </div>
-                                                   </div>
+                                                   <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
+                                                      <i class="fas fa-times text-danger" (click)="delete('image',item.name)"></i>
+                                                   </a>
                                                 </div>
                                              </div>
                                           </div>
                                        </div>
-                                       
                                     </div>
                                  </div>
                               </div>
@@ -281,22 +272,21 @@
                                     <label class="control-label font-weight-bold text-3">Map Location:</label>
                                     <div id="map" style="height: 400px;width: 100%;"></div>
                               </div>
-                              <div class="col-lg-12">
+                              <div class="col-lg-12 mt-3" *ngIf="assetsDocs?.length > 0">
                                  <div class="vehicle-common-box p-3">
                                     <div class="row">
                                        <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
                                        <!-- <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_issue_document_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Documents</button></div> -->
                                     </div>
                                     <hr class="solid mt-3">
-                                    <div class="row">
-                                       <div class="col-lg-9">Name of the Document</div>
+                                    <div class="row mb-1" *ngFor="let doc of assetsDocs;let d= index">
+                                       <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                             (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
                                        <div class="col-lg-3 text-right">
-                                          <div class="btn-group flex-wrap mx-2">
-                                             <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                                <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                                             </div>
-                                          </div>
+                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                             data-target="#viewDocModal"></i>
+                                          <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
+                                                class="fas fa-times text-danger"></i></a>
                                        </div>
                                     </div>
                                  </div>
@@ -351,3 +341,33 @@
          </div>
       </div>
   </div>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<div>
+							<iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" 
+					data-dismiss="modal">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -87,62 +87,15 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       repeatByTimeUnit: '',
       repeatByOdometer: '',
     })
-    console.log(this.serviceData)
+    
   }
   addServiceProgram() {
-    console.log('service program', this.serviceData);
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
+    
     this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
-        complete : () => {},
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/"([^']+)"/)[1];
-                console.log(key);
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.Success = '';
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          // this.programName = '';
-          // this.repeatByTime = '';
-          // this.repeatByOdometer = '';
-          // this.description = '';
-          this.response = res;
-          this.hasSuccess = true;
-          // this.Success = 'Service Program Added successfully';
-          this.toastr.success('Service added successfully');
-          this.router.navigateByUrl('/fleet/maintenance/service-program/list');
-
-        }
-      });
-  }
-
-  addServiceTask() {
-    console.log('taskData', this.taskData);
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.hideErrors();
-    this.apiService.postData('tasks', this.taskData).subscribe({
       complete: () => { },
       error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -158,13 +111,37 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           });
       },
         next: (res) => {
-          // this.programName = '';
-          // this.repeatByTime = '';
-          // this.repeatByOdometer = '';
-          // this.description = '';
           this.response = res;
-          this.hasSuccess = true;
-          // this.Success = 'Service Program Added successfully';
+          this.toastr.success('Service added successfully');
+          this.router.navigateByUrl('/fleet/maintenance/service-program/list');
+
+        }
+      });
+  }
+
+  addServiceTask() {
+   
+    this.hideErrors();
+    this.apiService.postData('tasks', this.taskData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+        next: (res) => {
+          
           this.toastr.success('Service Task added successfully');
           $('#addServiceTaskModal').modal('hide');
           this.taskData['taskName'] = '';
@@ -177,7 +154,6 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.apiService.getData('vehicles').subscribe({
       error: () => {},
       next: (result: any) => {
-        console.log(result);
         this.vehicles = result.Items;
       },
     });
@@ -193,18 +169,16 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           this.tasks.push(element);
         }
        });
-       console.log('this.tasks', this.tasks);
       },
     });
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          .addClass('error')
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -226,7 +200,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       .getData('servicePrograms/' + this.programID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
+        
         this.serviceData['programID'] = this.programID;
         this.serviceData['programName'] = result.programName;
         this.serviceData['description'] = result.description;
@@ -251,7 +225,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
  updateServiceProgram() {
   this.hasError = false;
   this.hasSuccess = false;
-  console.log('service program', this.serviceData);
+  
   this.apiService.putData('servicePrograms', this.serviceData).subscribe({
     complete: () => { },
     error: (err) => {
@@ -261,7 +235,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
             const path = val.path;
             // We Can Use This Method
             const key = val.message.match(/'([^']+)'/)[1];
-            console.log(key);
+            
             val.message = val.message.replace(/'.*'/, 'This Field');
             this.errors[key] = val.message;
           })

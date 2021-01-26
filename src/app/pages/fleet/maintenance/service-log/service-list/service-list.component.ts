@@ -34,6 +34,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
   issuesObject: any = {};
   assetsObject: any = {};
 
+  tasks = [];
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -47,11 +48,13 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchLogs();
+    this.fetchTasks();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.initDataTable();
+    
   }
 
   getSuggestions(value) {
@@ -98,9 +101,19 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
+  /*
+   * Get all tasks from api
+   */
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      console.log('tasks', result);
+      this.tasks = result.Items;
+    });
+  }
+
   fetchLogs() {
     this.spinner.show(); // loader init
-    this.apiService.getData('serviceLogs').subscribe({
+    this.apiService.getData('serviceLogs?vehicleID='+this.vehicleID).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -123,6 +136,9 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0,1,2,3,4], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('serviceLogs/fetch-records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.logs = resp['Items'];
@@ -168,6 +184,8 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if (this.vehicleID !== '') {
+      this.logs = [];
+      this.fetchLogs();
       this.rerender('reset');
     } else {
       return false;
@@ -178,6 +196,8 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.vehicleID !== '') {
       this.vehicleID = '';
       this.vehicleIdentification = '';
+      this.logs = [];
+      this.fetchLogs();
       this.rerender();
     } else {
       return false;
@@ -189,6 +209,8 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
       .getData(`serviceLogs/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.logs = [];
+        this.fetchLogs();
         this.rerender();
         this.toastr.success('Service Log Deleted Successfully!');
       });

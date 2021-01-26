@@ -16,6 +16,7 @@ declare var $: any;
   styleUrls: ['./asset-detail.component.css']
 })
 export class AssetDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   image;
   docs: SafeResourceUrl;
   public assetsImages = [];
@@ -57,6 +58,9 @@ export class AssetDetailComponent implements OnInit {
   errors = {};
 
   statesObject: any = {};
+  uploadedDocs = [];
+  uploadedPhotos = [];
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustUrl('');
 
   messageStatus: boolean = true;
   // Charts
@@ -108,6 +112,10 @@ export class AssetDetailComponent implements OnInit {
       borderWidth: 1,
     }
   ];
+
+  manufacturersObjects: any = {};
+  modelsObjects: any = {};
+
   constructor(public hereMap: HereMapService, private toastr: ToastrService,
               private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
               private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
@@ -118,6 +126,20 @@ export class AssetDetailComponent implements OnInit {
     this.fetchAsset();
     this.fetchDeviceInfo();
     this.fetchAllStatesIDs();
+    this.fetchManufacturesByIDs();
+    this.fetchModalsByIDs();
+  }
+
+  fetchManufacturesByIDs() {
+    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+      this.manufacturersObjects = result;
+    });
+  }
+
+  fetchModalsByIDs() {
+    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+      this.modelsObjects = result;
+    });
   }
 
   /**
@@ -133,6 +155,7 @@ export class AssetDetailComponent implements OnInit {
           if (!this.assetData.hasOwnProperty('devices')) {
             this.assetData['devices'] = [];
           }
+          
           this.fetchDevicesByID();
           this.assetIdentification = this.assetData.assetIdentification;
           this.VIN = this.assetData.VIN;
@@ -188,8 +211,16 @@ export class AssetDetailComponent implements OnInit {
             this.vendor = this.assetData.insuranceDetails.vendor;
           }                           
           
+          if(this.assetData.uploadedPhotos != undefined && this.assetData.uploadedPhotos.length > 0){
+            this.assetsImages = this.assetData.uploadedPhotos.map(x => ({
+              path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, 
+              name: x,
+            }));
+          }
           
-          // this.getImages();
+          if(this.assetData.uploadedDocs != undefined && this.assetData.uploadedDocs.length > 0){
+            this.assetsDocs = this.assetData.uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.assetData.carrierID}/${x}`, name: x}));
+          }
           this.spinner.hide(); // loader hide
         }
       }, (err) => {});
@@ -201,6 +232,7 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.deviceData = result['Items'];
+          console.log("this.deviceData", this.deviceData);
         }
       }, (err) => {});
   }
@@ -256,6 +288,7 @@ export class AssetDetailComponent implements OnInit {
   addDevice() {
     delete this.assetData.carrierID;
     delete this.assetData.timeModified;
+    console.log('this.assetData', this.assetData);
     this.apiService.postData('assets/' + this.assetID, this.assetData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -308,4 +341,21 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchAsset();
+    });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
 }

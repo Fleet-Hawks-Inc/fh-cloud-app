@@ -20,6 +20,12 @@ import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component'
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
 import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
 import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
+
+import {ErrorComponent} from './error/error.component';
+import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
+import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
@@ -70,11 +76,15 @@ const routes: Routes = [
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false }
   },
-
   { path: 'Left-Bar', component: LeftBarComponent },
-
-
-
+  {                             
+    path: "404",
+    component: ErrorComponent
+  },
+  {                             
+      path: "**",
+      redirectTo: '/404'
+  }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes,
@@ -83,12 +93,16 @@ const routes: Routes = [
     }
     )],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
+  entryComponents: [
+    UnsavedChangesComponent,
+  ]
 })
 @NgModule({
   declarations: [],
   imports: [CommonModule,
   ChartsModule],
+  
 })
 export class AppRoutingModule {}
 

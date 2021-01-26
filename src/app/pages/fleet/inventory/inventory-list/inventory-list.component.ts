@@ -33,10 +33,38 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   warehouseID1 :any = '';
   warehouseID2 :any = '';
 
+  hideShow = {
+    part: true,
+    name: true,
+    category: true,
+    vendor: true,
+    quantity: true,
+    onHand: true,
+    unitCost: true,
+    warehouse: true,
+    warranty: false,
+    reorderPoint: false,
+    reorderQuantity: false,
+    preferredVendor: false,
+  }
+
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
   partNo = [1,2,3,4,5,6,7,8,9,10];
+
+  /**
+   * search props
+   */
+  itemID = '';
+  itemName = '';
+  itemGroupID = '';
+  groupName = '';
+  vendorID = ''
+  companyName = '';
+  suggestedVendors = [];
+  suggestedItems = [];
+  suggestedItemGroups = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
@@ -48,6 +76,68 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.initDataTable();
   }
 
+  getVendorSuggestions(value) {
+    this.apiService
+      .getData(`vendors/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVendors = result.Items;
+        if(this.suggestedVendors.length == 0){
+          this.vendorID = '';
+        }
+      });
+  }
+
+  setVendor (vendorID, companyName) {
+    this.companyName = companyName;
+    this.vendorID = vendorID;
+    this.suggestedVendors = [];
+  }
+
+  getItemSuggestions(value) {
+    this.apiService
+      .getData(`items/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedItems = result.Items;
+        if(this.suggestedItems.length == 0){
+          this.itemID = '';
+        }
+      });
+  }
+
+  setItem (itemID, itemName) {
+    this.itemName = itemName;
+    this.itemID = itemID;
+    this.suggestedItems = [];
+  }
+
+  getItemGroupSuggestions(value) {
+    this.apiService
+      .getData(`itemGroups/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedItemGroups = result.Items;
+        if(this.suggestedItemGroups.length == 0){
+          this.itemGroupID = '';
+        }
+      });
+  }
+
+  setItemGroup (itemGroupID, groupName) {
+    this.groupName = groupName;
+    this.itemGroupID = itemGroupID;
+    this.suggestedItemGroups = [];
+  }
+  
+  
+  resetFilter(){
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+      this.fetchItems();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
+    }
+  }
 
   fetchVendors(){
     this.apiService.getData(`vendors/get/list`).subscribe((result) => {
@@ -67,7 +157,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   fetchItems(){
-    this.apiService.getData('items').subscribe((result) => {
+    this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
       // this.items = result.Items;
       this.totalRecords = result.Count;
     })
@@ -84,6 +174,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.apiService
       .getData(`items/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.items = [];
+        this.fetchItems();
         this.rerender();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
@@ -99,11 +191,14 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8], "orderable": false },
+        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('items/fetch-records?lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('items/fetch-records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           //record number
           if(dataTablesParameters.start >=2) {
             current.partNo = [];
@@ -155,5 +250,95 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  hideShowColumn() {
+    //for headers
+    if(this.hideShow.part == false) {
+      $('.col1').css('display','none');
+    } else {
+      $('.col1').css('display','');
+    }
+
+    if(this.hideShow.name == false) {
+      $('.col2').css('display','none');
+    } else {
+      $('.col2').css('display','');
+    }
+
+    if(this.hideShow.category == false) {
+      $('.col3').css('display','none');
+    } else {
+      $('.col3').css('display','');
+    }
+
+    if(this.hideShow.vendor == false) {
+      $('.col4').css('display','none');
+    } else {
+      $('.col4').css('display','');
+    }
+
+    if(this.hideShow.quantity == false) {
+      $('.col5').css('display','none');
+    } else {
+      $('.col5').css('display','');
+    }
+
+    if(this.hideShow.onHand == false) {
+      $('.col6').css('display','none');
+    } else {
+      $('.col6').css('display','');
+    }
+
+    if(this.hideShow.unitCost == false) {
+      $('.col7').css('display','none');
+    } else {
+      $('.col7').css('display','');
+    }
+
+    if(this.hideShow.warehouse == false) {
+      $('.col8').css('display','none');
+    } else {
+      $('.col8').css('display','');
+    }
+
+    //extra columns
+    if(this.hideShow.warranty == false) {
+      $('.col9').css('display','none');
+    } else { 
+      $('.col9').removeClass('extra');
+      $('.col9').css('display','');
+    }
+
+    if(this.hideShow.reorderPoint == false) {
+      $('.col10').css('display','none');
+    } else { 
+      $('.col10').removeClass('extra');
+      $('.col10').css('display','');
+    }
+
+    if(this.hideShow.reorderQuantity == false) {
+      $('.col11').css('display','none');
+    } else { 
+      $('.col11').removeClass('extra');
+      $('.col11').css('display','');
+    }
+    
+    if(this.hideShow.preferredVendor == false) {
+      $('.col12').css('display','none');
+    } else { 
+      $('.col12').removeClass('extra');
+      $('.col12').css('display','');
+    }
+  }
+
+  searchFilter() {
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.fetchItems();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
+    }
   }
 }

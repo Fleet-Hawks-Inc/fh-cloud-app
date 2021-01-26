@@ -1,28 +1,44 @@
+<style>
+   .extra {
+      display: none;
+   }
+</style>
 <section class="body">
-   <!-- start: header -->
-   <app-header></app-header>
-   <!-- end: header -->
-
+   
    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
+      
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header pr-5">
             <form class="form-horizontal" method="get">
                <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-2 col-lg-2">
-                     <div class="input-group input-group-md mb-3">
+                  <div class="col-md-2 col-lg-3">
+                     <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
-                           class="form-control" (input)="getSuggestions($event.target.value)">
+                          placeholder="Search Driver" class="form-control" (input)="getSuggestions($event.target.value)">
                      </div>
-                     <div *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
-                        (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)">
-                        {{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}
+                     <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
+                        <ul>
+                           <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
+                           (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
+                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}</li>
+                        </ul>
                      </div>
                   </div>
-                  <div class="col-md-3 col-lg-3">
-                     <div class="btn-group flex-wrap" style="min-width:190px;">
+                  <div class="col-md-2 col-lg-2">
+                     <ng-select
+                        [(ngModel)]="currentStatus" 
+                        name="currentStatus"
+                        placeholder="Select Type"
+                        class="form-control populate">
+                       
+                        <ng-option value="All">All</ng-option>
+                        <ng-option value="On Duty">On Duty</ng-option>
+                        <ng-option value="Off Duty">Off Duty</ng-option>
+                        <ng-option value="Sleeper">Sleeper</ng-option>
+                        <ng-option value="Driving">Driving</ng-option>
+                        
+                  </ng-select>
+                     <!-- <div class="btn-group flex-wrap" style="min-width:190px;">
                         <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
                            <a class="dropdown-item text-1" [routerLink]="">All</a>
@@ -31,7 +47,7 @@
                            <a class="dropdown-item text-1" [routerLink]="">Sleeper</a>
                            <a class="dropdown-item text-1" [routerLink]="">Driving</a>
                         </div>
-                     </div>
+                     </div> -->
                   </div>
 
                   <div class="col-md-2  col-lg-2">
@@ -40,6 +56,83 @@
                   </div>
 
                   <div class="col-md-5 col-lg-5 pr-1 text-right page-buttons">
+                     <div class="btn-group flex-wrap" style="min-width:190px;">
+                        <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                        <div class="dropdown-menu dutystatwd" role="menu">
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.name"
+                              name="name" (change)="hideShowColumn()"> Name </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.dutyStatus"
+                              name="dutyStatus" (change)="hideShowColumn()"> Duty Status </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.location"
+                              name="location" (change)="hideShowColumn()"> Location </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.currCycle"
+                              name="currCycle" (change)="hideShowColumn()"> Current Cycle </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.currVehicle"
+                              name="currVehicle" (change)="hideShowColumn()"> Current Vehicle </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.assets"
+                              name="assets" (change)="hideShowColumn()"> Assets </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.contact"
+                              name="contact" (change)="hideShowColumn()"> Contact </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.dl"
+                              name="dl" (change)="hideShowColumn()"> DL </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.document"
+                              name="document" (change)="hideShowColumn()"> Document </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                              name="status" (change)="hideShowColumn()"> Status </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.groupID"
+                                 name="groupID" (change)="hideShowColumn()"> Group Id </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.citizenship"
+                                 name="citizenship" (change)="hideShowColumn()"> Citizenship </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.address"
+                                 name="address" (change)="hideShowColumn()"> Address </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.paymentType"
+                                 name="paymentType" (change)="hideShowColumn()"> Payment Type </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.sin"
+                                 name="sin" (change)="hideShowColumn()"> SIN Number </label>
+                           </a>
+                           <!-- <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.contractStart"
+                                 name="contractStart" (change)="hideShowColumn()"> Contract Start Date </label>
+                           </a>
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.homeTerminal"
+                                 name="homeTerminal" (change)="hideShowColumn()"> Home Terminal </label>
+                           </a> -->
+                           <a class="dropdown-item text-1" href="javascript:;">
+                              <label><input type="checkbox" [(ngModel)]="hideShow.fastNumber"
+                                 name="fastNumber" (change)="hideShowColumn()"> Fast Number </label>
+                           </a>
+                        </div>
+                     </div>
                      <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
                      <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
 
@@ -370,75 +463,89 @@
                <div class="col">
                   <section class="card">
                      <div class="card-body">
+                        <div class="table-responsive">
+                           <table datatable [dtOptions]="dtOptions" id="diverTbl" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                              <thead>
+                                 <tr>
+                                    <!-- <th><input type="checkbox"></th> -->
 
-                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                                    <th width="8%" class="col1">Name</th>
+                                    <th width="8%" class="col2">Duty Status</th>
+                                    <th class="col18" width="14%" >Location</th>
+                                    <th class="col11">Current Cycle</th>
+                                    <th class="col12">Current Vehicle</th>
+                                    <th class="col13">Assets</th>
+                                    <th class="col14">Contact</th>
+                                    <th class="col15">DL</th>
+                                    <th class="col16">Document</th>
+                                    <th class="col3 extra">Group</th>
+                                    <th class="col4 extra">Citizenship</th>
+                                    <th class="col5 extra">Address</th>
+                                    <th class="col6 extra">Payment Type</th>
+                                    <th class="col7 extra">SIN Number</th>
+                                    
+                                    <th class="col10 extra">Fast Number</th>
+                                    <th class="col17">Status</th>
+                                    <th width="50">Actions</th>
+                                 </tr>
+                              </thead>
+                              <tbody *ngIf="drivers.length > 0">
+                                 <tr *ngFor="let driver of drivers;let i = index;">
+                                    <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
+                                       <span class="font-weight-bold line-height-lg text-capitalize">{{driver.firstName}}
+                                          {{driver.lastName}}</span>
+                                    </td>
+                                    <td *ngIf="hideShow.dutyStatus">Live Status</td>
 
-                           <thead>
-                              <tr>
-                                 <!-- <th><input type="checkbox"></th> -->
+                                    <td *ngIf="hideShow.location">Live Address</td>
+                                    <td *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
+                                    <td *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
+                                    <td *ngIf="hideShow.assets">Live Status</td>
+                                    <td *ngIf="hideShow.contact"><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span
+                                          class="font-weight-bold">E-mail: </span>{{driver.workEmail ? driver.workEmail : '-'}}</td>
+                                    <td *ngIf="hideShow.dl"><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}}
+                                       <br><span class="font-weight-bold">DL State:
+                                       </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>
+                                    <td *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
+                                       </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
+                                          class="font-weight-bold">Issue State:
+                                       </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
+                                    
+                                    <td *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
+                                    <td *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
+                                    <td *ngIf="hideShow.address">{{ driver.address.address1 }} {{ driver.address.address2}}, {{ driver.address.cityName }}, {{ driver.address.stateName }}, {{ driver.address.countryName }}</td>
+                                    <td *ngIf="hideShow.paymentType">{{driver.paymentDetails.paymentType}}</td>
+                                    <td *ngIf="hideShow.sin">{{driver.paymentDetails.SIN_Number}}</td>
+                                    <!-- <td *ngIf="hideShow.contractStart">{{driver.licenceDetails.contractStart}}</td>
+                                    <td *ngIf="hideShow.homeTerminal">Home TErminal</td> -->
+                                    <td *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
 
-                                 <th width="8%">Name</th>
-                                 <th width="8%">Duty Status</th>
-                                 <th width="14%">Location</th>
-
-                                 <th>Cur. Cycle</th>
-                                 <th>Cur. Vehicle</th>
-                                 <th>Assets</th>
-                                 <th>Contact</th>
-                                 <th>DL</th>
-                                 <th>Document</th>
-                                 <th>Status</th>
-                                 <th width="50">Actions</th>
-                              </tr>
-                           </thead>
-                           <tbody *ngIf="drivers.length > 0">
-                              <tr *ngFor="let driver of drivers;let i = index;">
-                                 <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
-                                 <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
-                                    <span class="font-weight-bold line-height-lg">{{driver.firstName}}
-                                       {{driver.lastName}}</span>
-                                 </td>
-                                 <td>Live Status</td>
-                                 <td>Live Address</td>
-                                 <td>{{cyclesObject[driver.hosDetails.hosCycle]}}</td>
-                                 <td>{{vehiclesObject[driver.assignedVehicle]}}</td>
-                                 <td>Live Status</td>
-                                 <td><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span
-                                       class="font-weight-bold">E-mail: </span>{{driver.workEmail}}</td>
-                                 <td><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}}
-                                    <br><span class="font-weight-bold">DL State:
-                                    </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>
-                                 <td><span class="font-weight-bold">Type#:
-                                    </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
-                                       class="font-weight-bold">Issue State:
-                                    </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
-
-                                 <td>{{driver.driverStatus}}</td>
-                                 <td class="border-0">
-                                    <div class="dropdown dropright">
-                                       <button class="bg-transparent border-0" type="button"
-                                          id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
-                                          aria-expanded="false">
-                                          <i class="fas fa-ellipsis-v"></i>
-                                       </button>
-                                       <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                          <a class="dropdown-item"
-                                             routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
-                                          <a href="javascript:;" class="dropdown-item"
-                                             (click)="deactivateDriver(driver, driver.driverID)">Delete</a>
+                                    <td *ngIf="hideShow.status">{{driver.driverStatus}}</td>
+                                    <td class="border-0">
+                                       <div class="dropdown dropright">
+                                          <button class="bg-transparent border-0" type="button"
+                                             id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                             aria-expanded="false">
+                                             <i class="fas fa-ellipsis-v"></i>
+                                          </button>
+                                          <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                             <a class="dropdown-item"
+                                                routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
+                                             <a href="javascript:;" class="dropdown-item"
+                                                (click)="deactivateDriver(driver, driver.driverID)">Deactivate</a>
+                                          </div>
                                        </div>
-                                    </div>
-                                 </td>
-                              </tr>
+                                    </td>
+                                 </tr>
 
-                           </tbody>
-                           <tbody *ngIf="drivers.length === 0">
-                              <tr>
-                                 <td colspan="11" class="no-data-available">No records found</td>
-                              </tr>
-                           <tbody>
-                        </table>
-                        
+                              </tbody>
+                              <tbody *ngIf="drivers.length === 0">
+                                 <tr>
+                                    <td colspan="12" class="no-data-available">No records found</td>
+                                 </tr>
+                              <tbody>
+                           </table>
+                        </div>
                      </div>
                   </section>
                </div>

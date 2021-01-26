@@ -68,6 +68,13 @@
                             </div>
                         </div>
 
+                        <a data-toggle="modal" data-target="#addDocumentModal" href="javascript:;"
+                            class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
+                                class="fas fa-plus"></i> Add Document</a>
+                        <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
+                                class="fas fa-download"></i> Download</button>
+                        <!-- <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-envelope"></i> Email</a> -->
+
 
                     </div>
                 </div>
@@ -77,90 +84,57 @@
                 </div>
             </header>
             <div class="row text-dark">
-                <div class="col">
-                    <section class="card">
 
-                        <div class="card-body">
+               <div class="col">
+                  <section class="card">
+                     
+                     <div class="card-body">
+                         
 
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">Document#</th>
-                                        <th width="10%">Trip ID</th>
-                                        <th width="10%">Type</th>
-                                        <th width="10%">Document Name</th>
-                                        <th>Uploaded By</th>
-                                        <th width="15%">Uploaded On</th>
-                                        <th width="22%">Description</th>
-                                        <th width="10%">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="documents.length > 0">
-                                    <tr *ngFor="let document of documents;let i = index;">
-                                        <td>{{document.documentNumber}}</td>
-                                        <td>{{document.tripID}}</td>
-                                        <td>{{document.docType}}</td>
-                                        <td>{{document.documentName}}</td>
-                                        <td>{{currentUser}}</td>
-                                        <td>{{document.timeCreated  | date: 'dd-MM-yyyy'}}</td>
-                                        <td>{{document.description}}</td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        (click)="editDocument(document.docID)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
-                                                    <a class="dropdown-item" href="javascript:;">Download File</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <!-- <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>674</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/png.png" class="document-type-image"></td>                                                <td>document1</td>
-                                             <td>document1.png</td>
-                                             <td>05/27/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr>
+                        <table datatable [dtOptions]="dtOptions"  class="table table-bordered table-responsive-lg table-striped mb-0">
+                                     <thead>
                                          <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>356</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/pdf.png" class="document-type-image"></td>                                                <td>document-3</td>
-                                             <td>document3.pdf</td>
-                                             <td>05/4/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr>
-                                         <tr>
-                                             <td><input type="checkbox"></td>
-                                             <td>34</td>
-                                             <td>#5434</td>
-                                             <td class="p-0"><img src="assets/img/documents/jpg.png" class="document-type-image"></td>                                                <td>byhyh </td>
-                                             <td>hfhfhf.jpg</td>
-                                             <td>05/2/2020 02:49 AM</td>
-                                             <td>This document was uploaded......</td>
-                                            
-                                         </tr> -->
-                                </tbody>
-                                <tbody *ngIf="documents.length === 0">
-                                    <tr>
-                                      <td colspan="9" class="no-data-available">No records found</td>
-                                    </tr>
-                                <tbody>
-                            </table>
+                                             <th width="10%">Document#</th>
+                                             <th width="10%">Trip ID</th>
+                                             <th width="10%">Type</th>
+                                             <th width="10%">Document Name</th>
+                                             <th width="10%">Uploaded By</th>
+                                             <th width="10%">Uploaded On</th>
+                                             <th width="20%">Description</th>
+                                             <th width="5%">Actions</th>
 
+
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                         <tr *ngFor="let document of documents;let i = index;">
+                                            <td>{{document.documentNumber}}</td>
+                                            <td>{{tripsObjects[document.tripID]}}</td>
+                                            <td>{{document.docType}}</td>
+                                            <td>{{document.documentName}}</td>
+                                            <td>{{document.uploadedBy}}</td>
+                                            <td>{{document.timeCreated | date: 'dd-MM-yyyy'}}</td>
+                                            <td>{{document.description ? document.description : '-'}}</td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                   <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                      <i class="fas fa-ellipsis-v"></i>
+                                                   </button>
+
+                                                   <div class="dropdown-menu"
+                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                        <a class="dropdown-item"
+                                                            (click)="editDocument(document.docID)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            (click)="deactivateDoc(document.isDeleted, document.docID)">Delete</a>
+                                                        <a class="dropdown-item" href="javascript:;">Download File</a>
+                                                    </div>
+
+                                                 </div>
+                                             </td>
+                                         </tr>
+                                         </tbody> 
+</table>
 
                             <!-- email modal Form -->
                             <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
@@ -229,51 +203,55 @@
             <div class="modal-body">
                 <form>
                     <div class="form-row">
-                        <div class="form-group col-lg-6 col-md-12">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop"
-                                    onclick="show_manual_sequence()">
-                                    <input id="multiplePickupRadio" name="routeType" type="radio"> Manual </label>
-                                <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard"
-                                    onclick="show_automatic_sequence()">
-                                    <input id="permanentRouteRadio" name="routeType" type="radio"> Automatic</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-12 col-md-12" id="manualDiv">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Document number must be entered manually for each new
-                                        Document.</small></div>
-                            </div>
-
-                        </div>
-                        <div class="form-group col-lg-12 col-md-12" id="automaticDiv" style="display: none;">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-5"><input type="text" class="form-control" value="Prefix"></div>
-                                <div class="col-lg-1">-</div>
-                                <div class="col-lg-5"> <input type="text" class="form-control" value="Sequence"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric
-                                        characters.</small></div>
-                                <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for
-                                        each new "Document".</small></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
+                        
+                          <div class="form-group col-lg-6 col-md-12">
+                                <div class="btn-group-toggle" data-toggle="buttons">
+                                    <!-- <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop">
+                                        <input value="manual" name="mode" type="radio"> Manual </label>
+                                        <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard">
+                                        <input value="auto" name="mode" type="radio"> Automatic</label> -->
+                                    
+                                </div>
+                                <label>
+                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Manual">Manual
+                                </label>
+                                <label>
+                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Automatic">Automatic
+                                </label>
+                          </div>
+                       </div>
+                       <div class="form-row">
+                            <div *ngIf="documentMode == 'Manual'" class="form-group col-lg-12 col-md-12" id="manualDiv"
+                            >
+                             <label
+                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>                         
+                                <div class="row">
+                                  <div class="col-lg-12"><small>Document number must be entered manually for each new Document.</small></div>
+                                </div>
+                           
+                          </div>
+                          <div *ngIf="documentMode == 'Automatic'" class="form-group col-lg-12 col-md-12" id="automaticDiv">
+                             <label
+                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>
+                                <div class="row">
+                                  <div class="col-lg-5"><input type="text" name="prefix" [(ngModel)]="documentPrefix" value="" class="form-control" placeholder="Prefix"></div>
+                                  <div class="col-lg-1">-</div>
+                                  <div class="col-lg-5"> <input type="text" name="sequence" [(ngModel)]="documentSequence" value="" class="form-control" placeholder="Sequence"></div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric characters.</small></div>
+                                  <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for each new "Document".</small></div>
+                                </div>
+                           
+                          </div>
+                       </div>
+                    </form>
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" data-toggle="modal" data-target="#addDocumentModal" type="button"
-                    class="btn btn-success">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button (click)="saveDocumentMode()" data-dismiss="modal" data-toggle="modal" data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
+            
         </div>
     </div>
 </div>
@@ -292,20 +270,24 @@
                 <form class="form-horizontal" method="get" name="form" id="form_">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
-                            <label for="">Select Trip ID</label>
-                            <select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
-                                <option>#7876</option>
-                                <option>#7877</option>
-                                <option>#7878</option>
-                                <option>#7879</option>
-                                <option>#7880</option>
-                                <option>#7881</option>
-                            </select>
+                            <label for="">Document#</label>
+                            <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
+                                name="documentNumber" type="text" class="form-control">
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document#</label>
-                            <input [(ngModel)]="documentData.documentNumber" name="documentNumber" type="text"
-                                class="form-control">
+                            <label for="">Select Trip ID</label>
+                            <ng-select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
+                                <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="">Document Type</label>
+                            <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
+                                <ng-option value="BOL">BOL</ng-option>
+                                <ng-option value="POD">POD</ng-option>
+                                <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
+                                <ng-option value="Load Confirmation">Load Confirmation</ng-option>
+                            </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
                             <label for="">Document Name</label>
@@ -329,8 +311,9 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button (click)="addDocument()" class="btn btn-success modal-confirm">Submit</button>
-                <button class="btn btn-default modal-dismiss">Cancel</button>
+                <button *ngIf="ifEdit" (click)="updateDocument()" class="btn btn-success modal-confirm">Update</button>
+                <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm">Save</button>
+                <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
             </div>
         </div>
     </div>

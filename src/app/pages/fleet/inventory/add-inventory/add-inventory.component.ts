@@ -3,6 +3,8 @@ import { ApiService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { map } from "rxjs/operators";
 import { from } from "rxjs";
+import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -11,6 +13,7 @@ declare var $: any;
   styleUrls: ["./add-inventory.component.css"],
 })
 export class AddInventoryComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   /**
    * form props
    */
@@ -20,7 +23,7 @@ export class AddInventoryComponent implements OnInit {
   cost = "";
   costUnit = "";
   quantity = "";
-  name = "";
+  itemName = "";
   description = "";
   categoryID = "";
   warehouseID = "";
@@ -45,7 +48,8 @@ export class AddInventoryComponent implements OnInit {
   existingDocs = [];
   uploadedPhotos = [];
   uploadedDocs = [];
-
+  public inventoryDocs = [];
+  public inventoryImages = [];
   /**
    * group props
    */
@@ -67,7 +71,7 @@ export class AddInventoryComponent implements OnInit {
   warehoseForm = "";
   hasWarehouseSuccess = false;
   warehouseSuccess: string = "";
-
+  pdfSrc: any;
   countries = [];
   states = [];
   cities = [];
@@ -83,7 +87,9 @@ export class AddInventoryComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private domSanitizer: DomSanitizer,
+    private toastr: ToastrService,
   ) {
     this.itemID = this.route.snapshot.params["itemID"];
     console.log(this.itemID);
@@ -126,7 +132,7 @@ export class AddInventoryComponent implements OnInit {
       this.cost = result.cost;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
-      this.name = result.name;
+      this.itemName = result.itemName;
       this.description = result.description;
       this.categoryID = result.categoryID;
       this.warehouseID = result.warehouseID;
@@ -144,9 +150,23 @@ export class AddInventoryComponent implements OnInit {
       this.notes = result.notes;
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
+      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+       // this.allImages = result.uploadedPhotos;
+        this.inventoryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
+
+      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+       // this.alldocs = result.uploadedDocs;
+        this.inventoryDocs = result.uploadedDocs.map(x => ({path:`${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+      }
     });
   }
-
+  /*Delete upload */
+  delete(type: string,name: string){
+    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
+      this.getInventory();
+    });
+  }
   ngOnInit() {
     this.fetchVendors();
     this.fetchItemGroups();
@@ -212,7 +232,7 @@ export class AddInventoryComponent implements OnInit {
       cost: this.cost,
       costUnit: this.costUnit,
       quantity: this.quantity,
-      name: this.name,
+      itemName: this.itemName,
       description: this.description,
       categoryID: this.categoryID,
       warehouseID: this.warehouseID,
@@ -271,7 +291,7 @@ export class AddInventoryComponent implements OnInit {
         this.cost = "";
         this.costUnit = "";
         this.quantity = "";
-        this.name = "";
+        this.itemName = "";
         this.description = "";
         this.categoryID = "";
         this.warehouseID = "";
@@ -288,6 +308,8 @@ export class AddInventoryComponent implements OnInit {
         this.time = "";
         this.notes = "";
         this.Success = "Inventory Added successfully";
+        this.toastr.success('Inventory Added Successfully');
+        this.router.navigateByUrl('/fleet/inventory/list');
       },
     });
   }
@@ -354,6 +376,8 @@ export class AddInventoryComponent implements OnInit {
         this.groupName = "";
         this.groupDescription = "";
         this.fetchItemGroups();
+        $("#categoryModal").modal("hide");
+        this.toastr.success('Category Added successfully');
       },
     });
   }
@@ -369,7 +393,7 @@ export class AddInventoryComponent implements OnInit {
       cost: this.cost,
       costUnit: this.costUnit,
       quantity: this.quantity,
-      name: this.name,
+      itemName: this.itemName,
       description: this.description,
       categoryID: this.categoryID,
       warehouseID: this.warehouseID,
@@ -413,8 +437,8 @@ export class AddInventoryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.hasSuccess = true;
-        this.Success = "Inventory updated successfully";
+        this.toastr.success('Inventory Updated Successfully');
+        this.router.navigateByUrl('/fleet/inventory/list');
       },
     });
   }
@@ -461,7 +485,23 @@ export class AddInventoryComponent implements OnInit {
         this.zipCode = "";
         this.address = "";
         this.fetchWarehouses();
+        $("#warehouseModal").modal("hide");
+        this.toastr.success('Warehouse Added successfully');
       },
     });
+  }
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+  
+  setSrcValue(){
+    this.pdfSrc = '';
   }
 }

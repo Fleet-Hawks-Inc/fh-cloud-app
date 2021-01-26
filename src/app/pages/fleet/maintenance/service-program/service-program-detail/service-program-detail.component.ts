@@ -20,12 +20,14 @@ export class ServiceProgramDetailComponent implements OnInit {
   private vehicles;
   private programID;
   private tasks;
+  allTasks = [];
   programData = {};
   vehicleData = [];
   errors: any;
   form;
   vehiclesObject: any = {};
-
+  tasksObjects: any = {};
+  taskEdit: boolean = false;
   constructor(
     private spinner: NgxSpinnerService,
     private apiService: ApiService,
@@ -38,7 +40,8 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
     this.fetchAllVehicles();
-
+    this.fetchTasks();
+    this.fetchTasksByIDs();
     $(document).ready(() => {
       this.form = $('#vehicleForm, #taskForm').validate();
     });
@@ -50,10 +53,10 @@ export class ServiceProgramDetailComponent implements OnInit {
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log(result);
         this.programs = result.Items;
         this.vehicles = this.programs[0]['vehicles'];
         this.tasks = this.programs[0]['serviceScheduleDetails'];
+        console.log("tasks", this.programs);
         this.spinner.hide(); // loader hide
       },
     });
@@ -78,11 +81,10 @@ export class ServiceProgramDetailComponent implements OnInit {
    * Update Service Program
   */
   updateServiceProgram() {
-      // console.log('this.programs', this.programs);
+      
       let newProgram = Object.assign({}, ...this.programs);
       delete newProgram.carrierID;
       delete newProgram.timeModified;
-      // console.log('newProgram', newProgram);
       
       this.apiService.putData('servicePrograms', newProgram).subscribe({
         complete: () => { },
@@ -93,7 +95,7 @@ export class ServiceProgramDetailComponent implements OnInit {
                 const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/'([^']+)'/)[1];
-                console.log(key);
+                
                 val.message = val.message.replace(/'.*'/, 'This Field');
                 this.errors[key] = val.message;
               })
@@ -108,7 +110,9 @@ export class ServiceProgramDetailComponent implements OnInit {
         },
         next: (res) => {
           this.toastr.success('Service Updated Successfully');
+          this.programData = {}
           $('#editServiceScheduleModal').modal('hide');
+          this.taskEdit = true;
         },
       });
   
@@ -116,7 +120,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -138,17 +142,16 @@ export class ServiceProgramDetailComponent implements OnInit {
   }
   
   editTask(task, i) {
-    console.log('edittask', task);
     this.Title = 'Edit';
     $('#editServiceScheduleModal').modal('show');
-
-    console.log('programs', this.programs);
+    
     this.programData['serviceTask'] = task.serviceTask;
     this.programData['repeatByTime'] = task.repeatByTime;
     this.programData['repeatByTimeUnit'] = task.repeatByTimeUnit;
     this.programData['repeatByOdometer'] = task.repeatByOdometer;
 
     this.programs[0].serviceScheduleDetails[i] = this.programData;
+    this.taskEdit = true;
   }
 
   fetchAllVehiclesIDs() {
@@ -162,30 +165,32 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.allVehicles = [];
-        this.updateVehicles(result.Items, this.programs[0].vehicles);
-        // console.log('allVehicle', this.allVehicles);
+        if(this.vehicles) {
+          this.updateVehicles(result.Items, this.programs[0].vehicles);
+        }
       });
   }
 
   updateVehicles(vehiclesArr, serviceArr) {
     vehiclesArr.filter(element => {
       if (!serviceArr.includes(element.vehicleID)) {
-        // console.log('not includes');
+        
         this.allVehicles.push(element);
       }
     });
   }
   addServiceProgram() {
-    // console.log('prog', this.programData);
+    
     this.programs[0].serviceScheduleDetails.push(this.programData);
     this.updateServiceProgram();
     $('#editServiceScheduleModal').modal('hide');
+    this.taskEdit = false;
   }
 
   addVehicle() {
     this.vehicleData.filter(element => {
       if (!this.programs[0].vehicles.includes(element)) {
-        // console.log('element', element);
+        
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();
@@ -194,4 +199,23 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.vehicleData = [];
     this.updateServiceProgram();
   }
+
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       this.allTasks = result.Items;
+      },
+    });
+  }
+
+  fetchTasksByIDs() {
+    this.apiService.getData('tasks/get/list').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       this.tasksObjects = result;
+      },
+    });
+  }
+
 }

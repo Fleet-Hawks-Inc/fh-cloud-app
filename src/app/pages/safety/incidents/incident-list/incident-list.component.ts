@@ -103,7 +103,7 @@ export class IncidentListComponent implements OnInit {
   getEventDetail(arrValues) {
     this.events = [];
     for (let i = 0; i < arrValues.length; i++) {
-      const element = arrValues[i];
+      const element = arrValues[i]; 
 
       element.driverName = '';
       element.vehicleName = '';
@@ -204,16 +204,22 @@ export class IncidentListComponent implements OnInit {
 
   searchFilter(event) {
     if(this.filterValue.date !== '') {
-      // this.filterValue.filterDate = this.filterValue.date.split("-").reverse().join("-");
-      this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
-      this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
+      let date = this.filterValue.date;
+      let newdate = date.split('-').reverse().join('-');
+      this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
+      this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
       this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
       this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
 
       $(".navtabs").removeClass('active');
       $("#allSafetyIncidents-tab").addClass('active');
     }
-    this.rerender('reset');
+  }
+
+  searchEvent() {
+    if(this.filterValue.date !== '' || this.filterValue.driverName !== '') {
+      this.rerender('reset');
+    }
   }
 
   fetchevents() {
@@ -275,8 +281,6 @@ export class IncidentListComponent implements OnInit {
     this.filterValue.driverID = data.userName;
     this.filterValue.driverName = data.name;
     this.suggestions = [];
-
-    this.rerender('reset');
   }
 
   resetFilter() {

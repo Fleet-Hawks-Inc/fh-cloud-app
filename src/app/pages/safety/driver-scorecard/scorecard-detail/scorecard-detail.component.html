@@ -95,7 +95,9 @@
                         <div class="row ">
                             <div class="col-lg-3 col-xl-3 mb-xl-0">
                                 <div class="thumb-info">
-                                    <img src="img/pp.jpg" class="rounded img-fluid mb-3 pb-2" alt="{{ eventData.driver.fullName }}">
+
+                                    <img [src]="eventData.driver.driverImage" class="rounded img-fluid" alt="{{ eventData.driver.fullName }}">
+
                                     <div class="thumb-info-title">
                                         <span class="thumb-info-inner">{{ eventData.driver.fullName }}</span>
                                     </div>

@@ -4,13 +4,9 @@
 
 export const environment = {
   production: false,
-
-    BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
-
-    // BaseUrl: 'http://localhost:3000/api/v1/',
+  BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+ // BaseUrl: 'http://localhost:3000/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
-
-
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -34,8 +30,8 @@ export const environment = {
     region: 'us-east-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
-  PORT : 9001,
-  MQTTPATH : '/',
+  PORT: 9001,
+  MQTTPATH: '/',
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },

@@ -23,16 +23,23 @@
                     </div>
                     <div class="col-md-2  col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date">
+                            <!-- <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date"> -->
+                            <input 
+                                [(ngModel)]="filterValue.date" name="date" 
+                                type="text" 
+                                placeholder="Search By Incident Date"
+                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off" (ngModelChange)="searchFilter($event)"> 
                         </div>
                     </div>
 
                     <div class="col-md-2  col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <a href="javascript:;" (click)="resetFilter()"
-                            class="btn btn-success btn-sm" style="color:white;"> Reset Filter
+                        <a href="javascript:;" (click)="searchEvent()"
+                            class="btn btn-success btn-sm mr-1" style="color:white;"> Search
                         </a>
-                        </div>
+                        <a href="javascript:;" (click)="resetFilter()"
+                            class="btn btn-success btn-sm" style="color:white;"> Reset
+                        </a>
                     </div>
                     
                     <div class="col-md-6 col-lg-6 text-right pr-1">

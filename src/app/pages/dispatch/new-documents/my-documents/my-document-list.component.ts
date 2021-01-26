@@ -11,7 +11,7 @@ declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import * as moment from "moment";
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-my-document-list',
@@ -49,7 +49,13 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   errors = {};
   carrierID: any;
   documentData = {
-    uploadedDocs: []
+    categoryType: 'user',
+    tripID: '',
+    documentNumber: '',
+    docType: '',
+    documentName: '',
+    description: '',    
+    uploadedDocs: ''
   };
 
   totalRecords = 20;
@@ -65,19 +71,22 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   };
   lastEvaluatedKey = '';
   suggestions = [];
+  tripsObjects: any = {};
 
   constructor(
     private apiService: ApiService,
     private router: Router,
     private domSanitizer: DomSanitizer,
-    private awsUS: AwsUploadService
+    private awsUS: AwsUploadService,
+    private toastr: ToastrService
   ) {
     this.selectedFileNames = new Map<any, any>();
    }
 
   ngOnInit() {
     this.fetchDocuments();
-    this.getCurrentuser();
+    this.fetchTrips();
+    this.fetchTripsByIDs();
     this.initDataTable();
     $(document).ready(() => {
       this.form = $('#form_').validate();
@@ -91,33 +100,74 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       complete: () => {},
       error: () => {},
       next: (result: any) => {
+        console.log('result', result);
         for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].isDeleted === 0) {
-            // this.documents.push(result.Items[i]);
             this.totalRecords += 1 ;
-          }
         }
         // this.spinner.hide(); // loader hide
         
         }
       });
   };
+
+  
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(status=''): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      if(status === 'reset') {
+        this.dtOptions.pageLength = this.totalRecords;
+      } else {
+        this.dtOptions.pageLength = 10;
+      }
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
+  }
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-    console.log(this.currentUser)
+  }
+
+  /*
+   * Get all trips from api
+   */
+  fetchTrips() {
+    this.apiService.getData('trips').subscribe((result: any) => {
+      this.trips = result.Items;
+    });
+  }
+
+   /*
+   * Get all trips from api
+   */
+  fetchTripsByIDs() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripsObjects = result;
+    });
   }
 
   addDocument() {
+    console.log("documentData", this.documentData);
+    this.hideErrors();
     this.apiService.postData('documents', this.documentData).
     subscribe({
-      complete : () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -128,29 +178,53 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
             next: () => { },
           });
       },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Document Added successfully';
-      }
-    });
+        next: (res) => {
+          this.toastr.success('Document Added successfully');
+          $('#addDocumentModal').modal('hide');
+          this.rerender();
+          this.documentData.documentNumber = '';
+          this.documentData.docType = '';
+          this.documentData.tripID = '';
+          this.documentData.documentName = '';
+          this.documentData.description = '',
+          this.documentData.uploadedDocs = '';
+          
+        }
+      });
   }
   throwErrors() {
-    this.form.showErrors(this.errors);
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error')
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
+
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
   }
 
   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
-    this.selectedFiles = event.target.files;
-    for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      this.documentData.uploadedDocs.push(fileName);
-    }
-  }
+  // selectDocuments(event) {
+  //   this.selectedFiles = event.target.files;
+  //   for (let i = 0; i <= this.selectedFiles.item.length; i++) {
+  //     const randomFileGenerate = this.selectedFiles[i].name.split('.');
+  //     const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+  //     this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+  //     this.documentData.uploadedDocs.push(fileName);
+  //   }
+  // }
   /*
    * Uploading files which selected
    */
@@ -158,16 +232,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     this.carrierID = await this.apiService.getCarrierID();
     this.selectedFileNames.forEach((fileData: any, fileName: string) => {
       this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
-
-  /*
-   * Get all trips from api
-   */
-  fetchTrips() {
-    this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
-      console.log('trips', this.trips);
     });
   }
 
@@ -182,7 +246,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
         .getData('documents/' + id)
         .subscribe((result: any) => {
           result = result.Items[0];
-          this.getImages(result);
           console.log(result);
           this.documentData['docID'] = result.docID;
           this.documentData['documentNumber'] = result.documentNumber;
@@ -197,57 +260,37 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   updateDocument() {
     this.apiService.putData('documents', this.documentData).
     subscribe({
-      complete : () => {},
-      error: (err) => {
+      complete: () => { },
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              console.log(key);
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
             next: () => { },
           });
       },
       next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.Success = 'Document Updated successfully';
+        this.toastr.success('Document Updated successfully');
         $('#addDocumentModal').modal('hide');
-        setTimeout(() => {
-          this.fetchDocuments();
-          this.dtTrigger.next();
-        }, 1000);
+       this.rerender();
       }
     });
   }
 
-  getImages = async (result) => {
-    this.carrierID = await this.apiService.getCarrierID();
-    console.log("dfdf", result.uploadedDocs[0]);
-    this.image = this.domSanitizer.bypassSecurityTrustUrl(
-      await this.awsUS.getFiles(this.carrierID, result.uploadedDocs[0]));
-      console.log('this.documentsDocs', this.image);
-      this.documentsDocs = this.image;
-  }
-
-  deactivateAsset(value, docID) {
+  deactivateDoc(value, docID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
       .getData(`documents/isDeleted/${docID}/${value}`)
       .subscribe((result: any) => {
-        console.log('result', result);
-        this.fetchDocuments();
+        this.rerender();
       });
     }
   }
@@ -307,10 +350,11 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       ],
       dom: 'Bfrtip',
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('documents/fetch-records?value1=' + current.lastEvaluatedKey +
+        current.apiService.getDatatablePostData('documents/fetch-records?categoryType=user&value1=' + current.lastEvaluatedKey +
           '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start + 
           "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
             current.documents = resp['Items'];
+            console.log('documents', current.documents)
             // console.log(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
               current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
@@ -328,28 +372,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     };
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
 
   searchFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {

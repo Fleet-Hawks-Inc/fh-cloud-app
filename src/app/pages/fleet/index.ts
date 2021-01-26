@@ -1,5 +1,7 @@
-export * from './vehicles/add-vehicle-new/add-vehicle-new.component';
-export * from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
+
+// export * from './vehicles/add-vehicle-new/add-vehicle-new.component';
+// export * from './vehicles/edit-vehicle-new/edit-vehicle-new.component';
+
 export * from './vehicles/vehicle-list/vehicle-list.component';
 
 export * from './fleet-manager/user-list/user-list.component';
@@ -7,29 +9,22 @@ export * from './fleet-manager/add-user/add-user.component';
 export * from './fleet-manager/edit-user/edit-user.component';
 
 export * from './drivers/add-driver/add-driver.component';
-export * from './drivers/edit-driver/edit-driver.component';
 export * from './drivers/driver-list/driver-list.component';
 export * from './drivers/driver-detail/driver-detail.component';
 
 export * from './assets/add-assets/add-assets.component';
 export * from './assets/asset-list/asset-list.component';
-export * from './assets/edit-asset/edit-asset.component';
 export * from './assets/asset-detail/asset-detail.component';
 
 
 export * from './expenses/fuel-entry/add-fuel-entry/add-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-list/fuel-entry-list.component';
-export * from './expenses/fuel-entry/edit-fuel-entry/edit-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.component';
-export * from './expenses/tickets/add-ticket/add-ticket.component';
-export * from './expenses/tickets/edit-ticket/edit-ticket.component';
-export * from './expenses/tickets/tickets/tickets.component';
 export * from './expenses/types/add-expense-type/add-expense-type.component';
 export * from './expenses/types/edit-expense-type/edit-expense-type.component';
 export * from './expenses/types/expense-type-list/expense-type-list.component';
 
 export * from './geofence/add-geofence/add-geofence.component';
-export * from './geofence/edit-geofence/edit-geofence.component';
 export * from './geofence/geofence-list/geofence-list.component';
 
 export * from './graphs/graph/graph.component';

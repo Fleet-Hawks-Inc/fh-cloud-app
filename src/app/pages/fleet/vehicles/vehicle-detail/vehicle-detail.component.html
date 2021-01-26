@@ -15,6 +15,15 @@
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
+            <div class="btn-group flex-wrap">
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                 aria-expanded="false">Actions<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                 <a class="dropdown-item text-1" routerLink="/fleet/vehicles/edit/{{vehicleID }}" href="javascript:;">Edit</a>
+                 <a class="modal-with-form dropdown-item text-1"(click)="deleteVehicle()" href="javascript:;">Delete</a>
+              </div>
+           </div>
           </div>
         </div>
       </header>
@@ -134,7 +143,7 @@
                             >Loan/Lease</a
                           >
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                           <a
                             class="nav-link"
                             id="vehicle-setting-tab"
@@ -145,7 +154,7 @@
                             aria-selected="true"
                             >Setting</a
                           >
-                        </li>
+                        </li> -->
                       </ul>
                     </div>
                   </section>
@@ -1386,8 +1395,8 @@
                             Bed Length:
                           </div>
                           <div class="col-lg-7 p-2 border-box">
-                            {{ specifications.badLength }}
-                            {{ specifications.badLengthUnit }}
+                            {{ specifications.bedLength }}
+                            {{ specifications.bedLengthUnit }}
                           </div>
                         </div>
                       </div>
@@ -1502,7 +1511,7 @@
                             Insurance Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ insurance.vendorID }}
+                            {{ vendors[insurance.vendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2020,7 +2029,7 @@
                             Purchase Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ purchase.purchaseVendorID }}
+                            {{ vendors[purchase.purchaseVendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2111,7 +2120,7 @@
                             Loan Vendor:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ loan.loanVendorID }}
+                            {{ vendors[loan.loanVendorID] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -5154,7 +5163,7 @@
               </div>
             </div>
             <!-- VEHICLE SETTINGS AREA -->
-            <div
+            <!-- <div
               class="col-lg-10"
               id="vehicle-settings-area"
               style="display: none"
@@ -5374,7 +5383,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </form>

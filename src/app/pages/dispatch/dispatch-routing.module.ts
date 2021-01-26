@@ -4,16 +4,9 @@ import { Routes, RouterModule } from '@angular/router';
 import {LoadBoardComponent} from './load-board/load-board.component';
 import {LoadDetailComponent} from './load-detail/load-detail.component';
 import {CreateLoadNewComponent} from './create-load-new/create-load-new.component';
-
-import { AceManifestComponent } from './cross-border/ace-manifest/ace-manifest.component';
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
-import { AceShipmentComponent } from './cross-border/ace-documents/ace-shipment/ace-shipment.component';
-import { AceCommodityComponent } from './cross-border/ace-documents/ace-commodity/ace-commodity.component';
 
-import { AciEmanifestComponent } from './cross-border/aci-emanifest/aci-emanifest.component';
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
-import { AciShipmentComponent } from './cross-border/aci-documents/aci-shipment/aci-shipment.component';
-import { AciCommodityComponent } from './cross-border/aci-documents/aci-commodity/aci-commodity.component';
 
 import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
@@ -84,19 +77,13 @@ const routes: Routes = [
     path: 'cross-border',
     children: [
       {path: 'eManifests', component: EManifestsComponent},
-      {path: 'ACE-eManifest', component: AceManifestComponent},
       {path: 'ACE-new-eManifest', component: NewAceManifestComponent},
       {path: 'ACE-edit-eManifest/:entryID', component: NewAceManifestComponent},
       {path: 'ACE-details/:entryID', component: AceDetailsComponent},
-      {path: 'ACE-shipment', component: AceShipmentComponent},
-      {path: 'ACE-commodity', component: AceCommodityComponent},
 
-      {path: 'ACI-eManifest', component: AciEmanifestComponent},
       {path: 'ACI-new-eManifest', component: NewAciManifestComponent},
       {path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent},
       {path: 'ACI-details/:entryID', component: AciDetailsComponent},
-      {path: 'ACI-shipment', component: AciShipmentComponent},
-      {path: 'ACI-commodity', component: AciCommodityComponent}
     ]
   },
   {
@@ -141,10 +128,10 @@ const routes: Routes = [
   {
     path: 'routes',
     children: [
-      { path: 'route-list', component: RouteListComponent},
-      { path: 'add-route', component: AddRouteComponent },
-      { path: 'edit-route/:routeID', component: EditRouteComponent},
-      { path: 'route-detail/:routeID', component: RouteDetailComponent},
+      { path: 'list', component: RouteListComponent},
+      { path: 'add', component: AddRouteComponent },
+      { path: 'edit/:routeID', component: AddRouteComponent},
+      { path: 'detail/:routeID', component: RouteDetailComponent},
     ]
   },
   {
@@ -153,7 +140,7 @@ const routes: Routes = [
       { path: 'trip-list', component: TripListComponent},
       { path: 'add-trip', component: AddTripComponent},
       { path: 'trip-details/:tripID', component: TripDetailComponent},
-      { path: 'edit-trip/:tripID', component: EditTripComponent},
+      { path: 'edit-trip/:tripID', component: AddTripComponent},
 
     ]
   },

@@ -83,7 +83,7 @@
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
+                            <a routerLink="/dispatch/orders/add" href="javascript:;"
                                 class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Order </a>
 
                         </div>
@@ -149,19 +149,30 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="orders.length > 0">
+                                <tbody>
                                     <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
-                                        <td>Date: -<br>
-                                            Location: -</td>
-                                        <td>Date:-<br>
-                                            Location: -</td>
-                                        <td>Name: -<br>
-                                            Qty:-<br>
-                                            Rate:-</td>
-                                        <td>T Amt: CAD -<br>
+                                        <td>
+                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
+                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
+                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
+                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
+                                                +{{order.shippersReceiversInfo?.length - 1}}
+                                            </span>
+                                        </td>
+                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
+                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
+                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
+                                            <!-- Rate:- -->
+                                        </td>
+                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
                                             <!-- <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
                                             Location: {{order.shipperInfo[i].pickupLocation}}</td>
                                         <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
@@ -170,10 +181,10 @@
                                             Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
                                             Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
                                         <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
-                                            Received: CAD 1200.00<br>
-                                            Balance: CAD 300.00
+                                            Received: 0<br>
+                                            Balance: 0
                                         </td>
-                                        <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
@@ -186,7 +197,7 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateAsset(order.orderID)">Delete</a>
+                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -206,66 +217,3 @@
         </section>
     </div>
 </section>
-
-<!-- Modal -->
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 600px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addSequenceModalLabel">Sequence</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-row mb-2 mt-2">
-                        <div class="form-group col-lg-6 col-md-12">
-                            <div class="btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop"
-                                    onclick="show_manual_sequence()">
-                                    <input id="multiplePickupRadio" name="routeType" type="radio"> Manual </label>
-                                <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard"
-                                    onclick="show_automatic_sequence()">
-                                    <input id="permanentRouteRadio" name="routeType" type="radio"> Automatic</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-12 col-md-12 mb-0" id="manualDiv">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Document number must be entered manually for each new
-                                        Document.</small></div>
-                            </div>
-
-                        </div>
-                        <div class="form-group col-lg-12 col-md-12" id="automaticDiv" style="display: none;">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Document
-                                Number</label>
-                            <div class="row">
-                                <div class="col-lg-5"><input type="text" class="form-control" value="Prefix"></div>
-                                <div class="col-lg-1">-</div>
-                                <div class="col-lg-5"> <input type="text" class="form-control" value="Sequence"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric
-                                        characters.</small></div>
-                                <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for
-                                        each new "Document".</small></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button data-dismiss="modal" routerLink="/dispatch/orders/add" type="button"
-                    class="btn btn-success">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>

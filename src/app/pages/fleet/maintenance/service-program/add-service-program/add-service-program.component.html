@@ -1,13 +1,7 @@
 <section class="body">
-   <!-- start: header -->
-   <app-header></app-header>
-   <!-- end: header -->
-
+   
    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-
+     
       <section role="main" class="content-body pt-0 pr-0 pl-0">
          <header class="page-header pr-5">
             <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -48,7 +42,8 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label
-                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
+                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
+                                    class="text-1 optional-label-color">(optional)</span></label>
                                  <textarea [(ngModel)]="serviceData.description" name="description"
                                     class="form-control" rows="3"></textarea>
                               </div>
@@ -70,9 +65,11 @@
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                           Service Tasks</label>
                                        <ng-select [(ngModel)]="task.serviceTask"
-                                          name="task.serviceTask{{i}}" style="width: 100%;">
+                                          [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'" [ngModelOptions]="{standalone: true}"  style="width: 100%;"
+                                          >
                                           <ng-option *ngFor="let task of tasks;" value="{{task.taskID}}">{{task.taskName}}</ng-option>
                                        </ng-select>
+                                       
                                     </div>
                                     <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
                                        <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
@@ -88,20 +85,20 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
                                                 By Time </label>
                                              <div class="row">
-                                                <div class="col-lg-6">
+                                                <div class="col-lg-5 pr-0">
                                                    <input [(ngModel)]="task.repeatByTime"
-                                                   name="task.repeatByTime{{i}}" type="text" class="form-control">
+                                                   [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                                 </div>
-                                                <div class="col-lg-6 pl-0">
-                                                   <select [(ngModel)]="task.repeatByTimeUnit"
-                                                      name="task.repeatByTimeUnit{{i}}" data-plugin-selectTwo
+                                                <div class="col-lg-7 pl-0 pr-0">
+                                                   <ng-select [(ngModel)]="task.repeatByTimeUnit"
+                                                   [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'" [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
                                                       class="form-control populate">
-                                                      <optgroup label="">
-                                                         <option value="Days">Days</option>
-                                                         <option value="Weeks">Weeks</option>
-                                                         <option value="Months">Months</option>
-                                                      </optgroup>
-                                                   </select>
+                                                   
+                                                         <ng-option value="Days">Days</ng-option>
+                                                         <ng-option value="Weeks">Weeks</ng-option>
+                                                         <ng-option value="Months">Months</ng-option>
+                                                   
+                                                   </ng-select>
                                                 </div>
                                              </div>
                                           </div>
@@ -110,7 +107,7 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
                                                 By Odometer Miles</label>
                                              <input [(ngModel)]="task.repeatByOdometer"
-                                             name="task.repeatByOdometer{{i}}" type="text" class="form-control">
+                                             [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                           </div>
                                           <div class="col-lg-3 pt-4 mt-2">
                                              <button *ngIf="i == 0"(click)="addDocument()" class="btn btn-success add-more">Add More</button>
@@ -140,7 +137,8 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                    Vehicle for Service Program</label>
+                                    Vehicle for Service Program&nbsp; <span
+												class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="serviceData.vehicles"
                                     name="vehicles" style="width: 100%;">
                                     <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
@@ -158,8 +156,8 @@
                      <div class="form-group row">
                         <div class="col-lg-12 text-right">
                            <a href="" class="btn btn-default mr-2" id="">Cancel</a>
-                           <a *ngIf="!programID" (click)="addServiceProgram()" class="btn btn-success" id="nextBtn">Save</a>
-                           <a *ngIf="programID" (click)="updateServiceProgram()" class="btn btn-success">Update</a>
+                           <a *ngIf="!programID" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</a>
+                           <a *ngIf="programID" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</a>
                         </div>
                      </div>
                   </form>
@@ -187,7 +185,7 @@
                   <div class="form-group col-lg-12">
                      <label class="control-label font-weight-bold">Service Task Name</label>
                      <input [(ngModel)]="taskData.taskName"
-                     name="taskName" type="text" class="form-control">
+                     name="taskName" type="text" class="form-control" placeholder="Enter service task name">
                   </div>
                  
                </div>
@@ -195,9 +193,10 @@
                   <div class="form-group col-lg-12">
                      <div class="row">
                         <div class="col-lg-12">
-                           <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
-                           <textarea [(ngModel)]="taskData.description"
-                           name="description" class="form-control" rows="2"></textarea>
+                           <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                           <textarea [(ngModel)]="taskData.description" name="description" class="form-control" rows="2" placeholder="Enter the description of the service task"></textarea>
+
                         </div>
                      </div>
                   </div>

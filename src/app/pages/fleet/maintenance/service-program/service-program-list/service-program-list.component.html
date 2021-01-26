@@ -1,13 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
+    
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-  
+        
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header pr-5 service-program-header">
                 <form class="form-horizontal" method="get">
@@ -24,7 +18,7 @@
                                 class="btn btn-sm btn-success mr-2">Search</button>
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
-                        <div class="col-md-6  col-lg-6 text-right pr-4">
+                        <div class="col-md-6  col-lg-6 text-right pr-2 offset-1">
 
             
                             <div class="btn-group flex-wrap mr-2">
@@ -32,8 +26,8 @@
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="">Import</a>
-                                    <a class="dropdown-item text-1" href="">Export</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Import</a>
+                                    <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
                             <a  routerLink="/fleet/maintenance/service-program/add" class="btn btn-success btn-sm" style="color:white;"><i
@@ -62,45 +56,50 @@
                                 <div class="tab-pane fade show active" id="service-prog" role="tabpanel" aria-labelledby="service-prog-tab">
                                     <div class="row">
                                         <div class="col pr-0">
-                                           <section class="card">
-                                            
-                                              <div class="card-body p-0">
-                                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                                    class="row-border hover table table-bordered table-striped mb-0">
-                                                    <thead>
-                                                       <tr>
-                                                          <th width="25%">Service Program Name</th>
-                                                          <th width="60%">Description</th> 
-                                                          <th width="15%">Actions</th>
-                                                       </tr>
-                                                    </thead>
-
-                                                    <tbody *ngIf="programs.length > 0">
-                                                       <tr class="cursorpoint" *ngFor="let program of programs; let i = index;">
-
-                                                          <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">{{program.programName}}</td>
-                                                          <td>{{program.description}}</td>                                   
-                                                          <td>
-                                                            <div class="dropdown dropright">
-                                                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                   <i class="fas fa-ellipsis-v"></i>
-                                                                </button>
-                                                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                   <a class="dropdown-item" routerLink="/fleet/maintenance/service-program/edit/{{program.programID}}">Edit</a>
-                                                                   <a class="dropdown-item" href="javascript:;" (click)="deleteProgram(program.programID)">Delete</a>
-                                                                </div>
-                                                              </div>
-                                                          </td>
-                                                       </tr>
-                                                    </tbody>
-                                                    <tbody *ngIf="programs.length === 0">
-                                                        <tr>
-                                                            <td colspan="3" class="no-data-available">No records found</td>
-                                                        </tr>
-                                                    <tbody>
-                                                 </table>
-                                              </div>
-                                           </section>
+                                            <section class="card">
+                                                <div class="card-body p-0">
+                                                    <div class="table-responsive">
+                                                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                                            class="row-border hover table table-bordered table-striped mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th width="25%">Service Program Name</th>
+                                                                    <th width="60%">Description</th>
+                                                                    <th width="15%">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                        
+                                                            <tbody *ngIf="programs.length > 0">
+                                                                <tr class="cursorpoint" *ngFor="let program of programs; let i = index;">
+                                        
+                                                                    <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">
+                                                                        {{program.programName}}</td>
+                                                                    <td>{{program.description ? program.description : '-'}}</td>
+                                                                    <td>
+                                                                        <div class="dropdown dropright">
+                                                                            <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
+                                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <i class="fas fa-ellipsis-v"></i>
+                                                                            </button>
+                                                                            <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                                <a class="dropdown-item"
+                                                                                    routerLink="/fleet/maintenance/service-program/edit/{{program.programID}}">Edit</a>
+                                                                                <a class="dropdown-item" href="javascript:;"
+                                                                                    (click)="deleteProgram(program.programID)">Delete</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                            <tbody *ngIf="programs.length === 0">
+                                                                <tr>
+                                                                    <td colspan="3" class="no-data-available">No records found</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </section>
                                         </div>
                                      </div>
                                 </div>

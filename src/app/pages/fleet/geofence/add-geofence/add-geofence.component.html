@@ -1,14 +1,7 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-
-  <!-- end: header -->
-
+  
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
+    
     <section role="main" class="content-body pl-0 pt-0">
       <header class="page-header pr-5">
          <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -47,7 +40,7 @@
                         <div class="row">
                            <div class="col-lg-12">
                               <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofence.type"
-                              name="type" hidden>
+                              name="geofence.type" hidden>
                            </div>
                         </div>
                      </div>
@@ -63,13 +56,13 @@
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right pt-2"
                                 >Geo-Fence Name</label>
-                             <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName"
+                             <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName" placeholder="Enter geofence name eg. parking yard etc."
                              name="geofenceName">
                           </div>
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right pt-2"
                                 >Location</label>
-                             <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location">
+                             <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="Enter location">
                           </div>
                        </div>
                     </div>
@@ -82,23 +75,24 @@
                              <div class="row">
                                 <div class="col-lg-11">
                                    <ng-select
+                                      placeholder="Select geofence type"
                                       class="form-control populate" name="geofenceType" [(ngModel)]="geofenceData.geofenceType">
-                                      <ng-option *ngFor="let item of geofenceTypes;" 
-                                             value="{{item.typeID}}"
-                                         > {{item.geofenceType}}
-
+                                       <ng-option *ngFor="let item of geofenceTypes;" 
+                                          value="{{item.typeID}}"
+                                       > {{item.geofenceType}}
                                        </ng-option>
-                                    </ng-select>
+                                   </ng-select>
                                 </div>
                                 <div class="col-lg-1 pl-0">
-                                   <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                   <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn btn-sm text-light btn-success"><i class="fas fa-plus"></i></a>
                                 </div>
                              </div>
                           </div>
                           <div class="col-lg-12">
                              <label
                                 class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                >Description</label>
+                                >Description&nbsp; <span
+                                class="text-1 optional-label-color">(optional)</span></label>
                              <textarea class="form-control"  [(ngModel)]="geofenceData.description"
                              name="description" rows="3"></textarea>
                           </div>
@@ -108,7 +102,7 @@
                  <div class="form-group row">
                     <div class="col-lg-11 text-right">
                        <button class="btn btn-default mr-2">Cancel</button>
-                       <button *ngIf="!getGeofenceID" class="btn btn-success" (click)="addGeofence()">Submit</button>
+                       <button *ngIf="!getGeofenceID" class="btn btn-success" (click)="addGeofence()">Save</button>
                        <button *ngIf="getGeofenceID" class="btn btn-success" (click)="updateGeofence()">Update</button>
 
                     </div>
@@ -144,15 +138,16 @@
                <div class="form-row">
                   <div class="form-group col-md-12">
                      <label class="font-weight-bold control-label">Geofence Type</label>
-                     <input [(ngModel)]="geofenceTypeData.geofenceType"
-                     name="geofenceType" type="text" class="form-control">
+                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="Enter name of geofence type">
+
                   </div>
                </div>
                <div class="form-row">
                   <div class="form-group col-md-12">
-                     <label class="font-weight-bold control-label">Description</label>
+                     <label class="font-weight-bold control-label">Description&nbsp; <span
+                        class="text-1 optional-label-color">(optional)</span></label>
                      <textarea [(ngModel)]="geofenceTypeData.description"
-                     name="description" class="form-control" row="3"></textarea>
+                     name="description" class="form-control" row="3" placeholder="Enter description of the geofence type"></textarea>
                   </div>
                </div>
             </form>

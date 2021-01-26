@@ -1,49 +1,35 @@
 
 <section class="body">
 
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
-
-
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
+    
     <section role="main" class="content-body pt-0" style="padding-left: 15px;">
       <header class="page-header pr-5">
         <form>
          <div class="row pr-1 mr-1" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2">
                <div class="input-group input-group-md mb-3">
-                  <input type="text" autocomplete="off" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
+                  <input type="text" autocomplete="off" placeholder="Search Geofence" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
                 </div>
-                <div *ngFor="let suggestedGeofence of suggestedGeofences" style="cursor: pointer;" (click)="setGeofence(suggestedGeofence.geofenceID, suggestedGeofence.geofenceName)">
-                  {{ suggestedGeofence.geofenceName }}
+                <div *ngIf="suggestedGeofences?.length > 0" class="result-suggestions">
+                  <ul>
+                     <li *ngFor="let suggestedGeofence of suggestedGeofences" style="cursor: pointer;" (click)="setGeofence(suggestedGeofence.geofenceID, suggestedGeofence.geofenceName)"
+                     >{{ suggestedGeofence.geofenceName }}</li>
+                  </ul>
                </div>
+               
               </div>
               <div class="col-md-2 col-lg-2">
-                 <select
-                    data-plugin-selectTwo
+                 <ng-select
                     [(ngModel)]="type" 
                     name="type"
+                    placeholder="Select Type"
                     class="form-control populate">
-                    <optgroup label="Select Type">
-                        <option value="Uncategorized">Uncategorized</option>
-                        <option value="Fuel Station">Fuel Station</option>
-                        <option value="Job Site">Job Site</option>
-                        <option value="Maintenance Facility">Maintenance Facility</option>
-                        <option value="Receiver/Consignee">Receiver/Consignee</option>
-                        <option value="Restricted Location">Restricted Location</option>
-                        <option value="Shipper">Shipper</option>
-                        <option value="Shipper/Receiver">Shipper/Receiver</option>
-                        <option value="Terminal/Yard">Terminal/Yard</option>
-                        <option value="Truck Stop/Rest Area">Truck Stop/Rest Area</option>
-                        <option value="Weigh Station/Scale">Weigh Station/Scale</option>
-                    </optgroup>
-                 </select>
+                    <ng-option *ngFor="let item of geofenceTypes;" 
+                        value="{{item.typeID}}"
+                     > {{item.geofenceType}}
+                     </ng-option>
+                 </ng-select>
               </div>
               
               <div class="col-md-1 col-lg-1">
@@ -86,14 +72,15 @@
                   </div>
               </div>
               
-                <div *ngFor="let geofence of geofences;let i = index" class="" (click)="toggleAccordian(i, geofence.geofence.cords)">
+
+                <div *ngFor="let geofence of geofences;let i = index" class="">
                   <table class="table m-0 text-left" style="cursor: pointer;">
                      <tbody>
                         <tr class="border_bottom">
-                           <td style="width: 20%;" class="border-0 text-left">{{geofence.geofenceName}}</td>
-                           <td style="width: 20%;" class="border-0">{{geofence.location}}</td>
-                           <td style="width: 20%;" class="border-0">{{geofencesTypes[geofence.geofenceType]}}</td>
-                           <td style="width: 30%;" class="border-0">{{geofence.description}}</td>
+                           <td style="width: 20%;" class="border-0 text-left" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.geofenceName}}</td>
+                           <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.location}}</td>
+                           <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofencesTypes[geofence.geofenceType]}}</td>
+                           <td style="width: 30%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.description}}</td>
                            <td style="width: 10%;" class="border-0 text-right">
                               <div class="dropdown dropright">
                                  <button class="bg-transparent border-0" style="position: absolute;z-index: 9999;right: 5px;" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -121,43 +108,7 @@
            </section>
         </div>
      </div>
-      <!-- <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-
-
-              <h2 class="card-title">Geofence List</h2>
-            </header>
-            <div class="card-body">
-              <table class="table table-bordered table-striped mb-0" #FhDataTable id="datatable-default">
-                <thead>
-                <tr>
-                  <th>Fence Name</th>
-                  <th>Location</th>
-                  <th>Description</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let geofence of geofences">
-                  <td>{{geofence.fenceName}}</td>
-                  <td>{{geofence.location}}</td>
-                  <td>{{geofence.description}}</td>
-                  <td><a routerLink="/fleet/geofence/Edit-Geofence/{{geofence.geofenceID}}">Edit</a></td>
-                  <td><a [routerLink]="" (click)="deleteGeofence(geofence.geofenceID)" >Delete</a></td>
-                 >
-                </tr>
-
-
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div> -->
-
+      
     </section>
   </div>
 

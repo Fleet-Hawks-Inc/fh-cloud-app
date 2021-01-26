@@ -15,9 +15,9 @@
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
                                 class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search Issues by Vehicle / Unit" />
+                                placeholder="Search issues by vehicle/asset" />
                         </div>
-                        <div *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer"
+                        <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
                             (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
                             {{ suggestedUnit.unitName }}
                         </div>
@@ -29,11 +29,19 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-2">
+                        <ng-select placeholder="Search issue by status" name="issueStatus" [(ngModel)]="issueStatus">                                               
+                            <ng-option value="OPEN">OPEN</ng-option>
+                            <ng-option value="RESOLVED">RESOLVED</ng-option>
+                            <ng-option value="CLOSED">CLOSED</ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 col-lg-2 pl-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                    <div class="col-md-6 col-lg-6 text-right pr-5 page-buttons">
+                  
+                    <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
                         <div class="btn-group flex-wrap">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
@@ -59,69 +67,70 @@
                 <div class="col pr-0">
                     <section class="card">
                         <div class="card-body">
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Unit Type</th>
-                                        <th>Vehicle/Assets</th>
-                                        <th>Issue</th>
-                                        <th>Reported On</th>
-                                        <th>Reported By</th>
-                                        <th>Assigned To</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody *ngIf="issues.length > 0">
-                                    <tr *ngFor="let issue of issues" style="cursor: pointer;">
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            {{ issue.unitType }}
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            <span *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
-                                            <span
-                                                *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            {{ issue.issueName }}
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            {{issue.reportedDate}}
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            {{contactList[issue.reportedBy]}}
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            {{ issue.assignedTo }}
-                                        </td>
-                                        <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                            <span class="badge badge-dark p-1">
-                                                {{issue.currentStatus | uppercase}}</span>
-                                        </td>
-                                        <td>
-                                            <div class="btn-group flex-wrap">
-                                                <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</a>
-                                                    <button type="button" class="dropdown-item text-1"
-                                                        (click)="deleteIssue(issue.issueID)">
-                                                        Delete
+                            <div class="table-responsive">
+                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                                    class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Unit Type</th>
+                                            <th>Vehicle/Assets</th>
+                                            <th>Issue</th>
+                                            <th>Reported On</th>
+                                            <th>Reported By</th>
+                                            <th>Assigned To</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="issues?.length > 0">
+                                        <tr *ngFor="let issue of issues" style="cursor: pointer;">
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                {{ issue.unitType }}
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                <span *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
+                                                <span
+                                                    *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                {{ issue.issueName }}
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                {{issue.reportedDate}}
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                {{driverList[issue.reportedBy]}}
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                {{ issue.assignedTo }}
+                                            </td>
+                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                <span class="badge badge-dark p-1">
+                                                    {{issue.currentStatus | uppercase}}</span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group flex-wrap">
+                                                    <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown">
+                                                        <i class="fas fa-ellipsis-v"></i>
                                                     </button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</a>
+                                                        <button type="button" class="dropdown-item text-1"
+                                                            (click)="deleteIssue(issue.issueID)">
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                                <tbody *ngIf="issues.length === 0">
-									<tr>
-										<td colspan="8" class="no-data-available">No records found</td>
-									</tr>
-								<tbody>
-                            </table>
-
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody *ngIf="issues?.length == 0">
+                                        <tr>
+                                            <td colspan="8" class="no-data-available">No records found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </section>
                 </div>

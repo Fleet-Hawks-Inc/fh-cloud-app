@@ -10,11 +10,7 @@ import {
   AssetDetailComponent,
   AddFuelEntryComponent,
   FuelEntryListComponent,
-  EditFuelEntryComponent,
   FuelEntryDetailsComponent,
-  AddTicketComponent,
-  TicketsComponent,
-  EditTicketComponent,
   AddExpenseTypeComponent,
   ExpenseTypeListComponent,
   EditExpenseTypeComponent,
@@ -28,11 +24,9 @@ import {
   AddContactRenewComponent,
   ContactRenewDetailComponent,
   AddGeofenceComponent,
-  EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
 
   AddInventoryComponent,
   InventoryListComponent,
@@ -50,11 +44,7 @@ const COMPONENTS = [
   AssetDetailComponent,
   AddFuelEntryComponent,
   FuelEntryListComponent,
-  EditFuelEntryComponent,
   FuelEntryDetailsComponent,
-  AddTicketComponent,
-  TicketsComponent,
-  EditTicketComponent,
   AddExpenseTypeComponent,
   ExpenseTypeListComponent,
   EditExpenseTypeComponent,
@@ -68,11 +58,9 @@ const COMPONENTS = [
   AddContactRenewComponent,
   ContactRenewDetailComponent,
   AddGeofenceComponent,
-  EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
-  EditAssetComponent,
 
 
   AddInventoryComponent,
@@ -131,24 +119,7 @@ const routes: Routes = [
           },
           
         ],
-      },
-      {
-        path: 'tickets',
-        children: [
-          {
-            path: 'Add-Ticket',
-            component: AddTicketComponent,
-          },
-          {
-            path: 'Tickets-List',
-            component: TicketsComponent,
-          },
-          {
-            path: 'Edit-Ticket/:ticketID',
-            component: EditTicketComponent,
-          },
-        ],
-      },
+      },      
       {
         path: 'types',
         children: [

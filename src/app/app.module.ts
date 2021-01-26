@@ -53,6 +53,9 @@ import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component'
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
 import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
 import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
+import { ErrorComponent } from './error/error.component';
+import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
+import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -77,7 +80,9 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddAlertComponent,
     AlertDetailComponent,
     AlertListComponent,
-    AlertTypeDetailComponent
+    AlertTypeDetailComponent,
+    ErrorComponent,
+    UnsavedChangesComponent,   
   ],
   imports: [
     AmplifyAngularModule,
@@ -94,7 +99,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ChartsModule,
     SharedModule,
     TooltipModule.forRoot(),
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot({preventDuplicates: true}), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
     SlickCarouselModule,

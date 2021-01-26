@@ -5,7 +5,7 @@
 
     <div class="inner-wrapper">
         <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
+        <app-sidebar></app-sidebar> 
         <!-- end: sidebar -->
 
         <section role="main" class="content-body pl-0 pt-0 pr-0">
@@ -17,7 +17,7 @@
                     </div>
                     
                     <div class="col-md-8  col-lg-8 text-right pr-1">
-                        <a href="javascript:;" routerLink="/dispatch/routes/route-list" class="btn btn-default"><i class="fas fa-list"></i> All Routes</a>
+                        <a href="javascript:;" routerLink="/dispatch/routes/list" class="btn btn-default"><i class="fas fa-list"></i> All Routes</a>
                     </div>
                 </div>
             </header>
@@ -30,87 +30,80 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route
-                                                    #</label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route#</label>
                                                 <input type="text" class="form-control" name="routeNo"
-                                                    [(ngModel)]="routeData.routeNo"> </div>
+                                                    [(ngModel)]="routeData.routeNo" placeholder="Enter route#"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route
                                                     Name</label>
                                                 <input type="text" class="form-control" name="routeName"
-                                                    [(ngModel)]="routeData.routeName"> </div>
+                                                    [(ngModel)]="routeData.routeName" placeholder="Enter route name"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                    Notes &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
                                                 <textarea class="form-control" rows="3" name="notes"
-                                                    [(ngModel)]="routeData.notes"></textarea>
+                                                    [(ngModel)]="routeData.notes" placeholder="Enter notes"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                    Vehicle</label>
-                                                <select class="form-control" name="VehicleID"
-                                                    [(ngModel)]="routeData.VehicleID">
-                                                    <option *ngFor="let vehicle of vehicles"
-                                                        value="{{ vehicle.vehicleID }}">
-                                                        {{ vehicle.vehicleIdentification }}</option>
-                                                </select>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.VehicleID" name="VehicleID" placeholder="Select vehicle">
+                                                    <ng-option *ngFor = "let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+                                                </ng-select>
                                             </div>
                                             <div class="col-lg-2">
                                                 <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                    href="#addVehicleModal"><i class="fas fa-plus"></i></a>
+                                                data-toggle="modal" data-target="#addDriverVehicleModal" href="javascript:;"><i class="fas fa-plus"></i></a>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                    Asset</label>
-                                                <select class="form-control" name="AssetID"
-                                                    [(ngModel)]="routeData.AssetID">
-                                                    <option *ngFor="let asset of assets" value="{{ asset.assetID }}">
-                                                        {{ asset.assetIdentification }}</option>
-                                                </select>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.AssetID" name="AssetID" placeholder="Select asset">
+                                                    <ng-option *ngFor = "let asset of assets;" value="{{ asset.assetID }}">{{ asset.assetIdentification }}</ng-option>
+                                                </ng-select>
                                             </div>
-                                            <div class="col-lg-2"> <a
-                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                    href="#addAssetModal"><i class="fas fa-plus"></i></a> </div>
+                                            <div class="col-lg-2"> 
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" href="javascript:;"><i class="fas fa-plus"></i></a> 
+                                            </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                    Driver</label>
-                                                <select class="form-control" name="driverUserName"
-                                                    [(ngModel)]="routeData.driverUserName" (change)="resetCodrivers($event)">
-                                                    <option *ngFor="let driver of drivers"
-                                                        value="{{ driver.userName }}">{{ driver.firstName }}
-                                                        {{ driver.lastName }}</option>
-                                                </select>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Driver
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.driverUserName" name="driverUserName" placeholder="Select driver" (change)="resetCodrivers($event)">
+                                                    <ng-option *ngFor = "let driver of drivers;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                                                </ng-select>
                                             </div>
-                                            <div class="col-lg-2"> <a
-                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                    href="#addDriverModal"><i class="fas fa-plus"></i></a> </div>
+                                            <div class="col-lg-2"> 
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" href="javascript:;"><i class="fas fa-plus"></i></a> 
+                                            </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                    Co-Driver</label>
-                                                <select class="form-control" name="coDriverUserName"
-                                                    [(ngModel)]="routeData.coDriverUserName" id="codrvr">
-                                                    <option *ngFor="let driver of coDrivers"
-                                                        value="{{ driver.userName }}">{{ driver.firstName }}
-                                                        {{ driver.lastName }}</option>
-                                                </select>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Co-Driver
+                                                    &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <ng-select [(ngModel)]="routeData.coDriverUserName" id="codrvr" name="coDriverUserName" placeholder="Select co-driver">
+                                                    <ng-option *ngFor = "let driver of coDrivers;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                                                </ng-select>
                                             </div>
                                             <div class="col-lg-2"> <a
                                                     class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                    href="#addDriverModal"><i class="fas fa-plus"></i></a> </div>
+                                                    href="javascript:;"><i class="fas fa-plus"></i></a> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -118,28 +111,15 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Source
+                                                <label class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Source
                                                     Location</label>
                                             </div>
-                                            <!-- <div class="col-lg-10 position-relative">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Source</label>
-                                                
-                                                <select class="form-control" [(ngModel)]="routeData.sourceInformation.sourceLocationID"
-                                                name="sourceLocationID">
-                                                <option value=''>Select Source Location</option>
-                                                <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
-                                                </select>
-                                            </div> -->
-                                            <!-- <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div> -->
-
+                                            
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
-                                                <!-- <input type="text" class="form-control" name="sourceAddress" [(ngModel)]="routeData.sourceInformation.sourceAddress">  -->
+                                                <label class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter source address">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -155,38 +135,27 @@
                                                     Country</label>
                                                 <input name="sourceInformation.sourceCountry"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCountry"
-                                                    class="form-control">
-                                                <!-- <select class="form-control countrySelect" name="sourceCountryID"
-                                                [(ngModel)]="routeData.sourceInformation.sourceCountryID" type="source">
-                                                <option class="text-capitalize" *ngFor="let country of countries" value="{{ country.countryID }}">{{ country.countryName }}</option>
-                                                </select> -->
+                                                    class="form-control"  placeholder="Enter source country">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     State</label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
-                                                    class="form-control">
-                                                <!-- <select class="form-control stateSelect" name="sourceStateID" 
-                                                [(ngModel)]="routeData.sourceInformation.sourceStateID" type="source">
-                                                    <option class="text-capitalize" *ngFor="let state of sourceStates" value="{{ state.stateID }}" >{{ state.stateName }}</option>
-                                                </select> -->
+                                                    class="form-control" placeholder="Enter source state">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City</label>
                                                 <input name="sourceInformation.sourceCity"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCity"
-                                                    class="form-control">
-                                                <!-- <select class="form-control" name="sourceCityID" [(ngModel)]="routeData.sourceInformation.sourceCityID">
-                                                    <option class="text-capitalize" *ngFor="let city of sourceCities" value="{{ city.cityID }}">{{ city.cityName }}</option>
-                                                </select> -->
+                                                    class="form-control" placeholder="Enter source city">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code</label>
                                                 <input type="text" class="form-control" name="sourceInformation.sourceZipCode"
-                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode">
+                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="off" placeholder="Enter source zip code">
                                             </div>
                                         </div>
                                     </div>
@@ -197,21 +166,13 @@
                                                     class="control-label font-weight-bold text-4 text-lg-right pt-2 text-underline">Destination
                                                     Location</label>
                                             </div>
-                                            <!-- <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Select Destination</label>
-                                                <select class="form-control" [(ngModel)]="routeData.destinationInformation.destinationLocationID" name="destinationLocationID"> 
-                                                <option value=''>Select Destination Location</option>
-                                                <option *ngFor="let location of locations" value="{{ location.locationID }}">{{ location.locationName }}</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-lg-2"> <a href="#addLocationModal" class="btn btn-sm btn-success mar-top-37 modal-with-form"><i class="fas fa-plus"></i></a> </div> -->
-
+                                            
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter destination address">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -227,39 +188,27 @@
                                                     Country</label>
                                                 <input name="destinationInformation.destinationCountry"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCountry"
-                                                    class="form-control">
-                                                <!-- <select class="form-control countrySelect" name="destinationCountryID"
-                                                [(ngModel)]="routeData.destinationInformation.destinationCountryID" type="destination">
-                                                    <option class="text-capitalize" *ngFor="let country of countries" value="{{ country.countryID }}">{{ country.countryName }}</option>
-                                                </select> -->
+                                                    class="form-control" placeholder="Enter destination country">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     State</label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
-                                                    class="form-control">
-                                                <!-- <select class="form-control stateSelect" name="destinationStateID"
-                                                [(ngModel)]="routeData.destinationInformation.destinationStateID" type="destination">
-                                                <option class="text-capitalize" *ngFor="let state of destinationStates" value="{{ state.stateID }}" >{{ state.stateName }}</option>
-                                                </select> -->
+                                                    class="form-control" placeholder="Enter destination state">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City</label>
                                                 <input name="destinationInformation.destinationCity"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCity"
-                                                    class="form-control">
-                                                <!-- <select class="form-control" name="destinationCityID"
-                                                [(ngModel)]="routeData.destinationInformation.destinationCityID">
-                                                <option class="text-capitalize" *ngFor="let city of destinationCities" value="{{ city.cityID }}">{{ city.cityName }}</option>
-                                                </select> -->
+                                                    class="form-control" placeholder="Enter destination city">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code</label>
                                                 <input type="text" class="form-control" name="destinationInformation.destinationZipCode"
-                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode">
+                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code">
                                             </div>
                                         </div>
                                     </div>
@@ -273,7 +222,9 @@
                                                         name="recurring.recurringRoute"
                                                         [(ngModel)]="routeData.recurring.recurringRoute" value="yes">
                                                     <label class="control-label font-weight-bold"
-                                                        for="recurringBtn">Recurring Route?</label>
+                                                        for="recurringBtn">Recurring Route?
+                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    </label>
                                                 </div>
                                             </div>
                                             <div class="col-lg-10" id="recurringRadioDiv" style="display: none;">
@@ -281,33 +232,32 @@
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="dailyRecurringRadioBtn"
-                                                                class="btn btn-LTL active font-weight-bold reccRoute "
+                                                                class="btn btn-LTL active font-weight-bold reccRoute {{ dailyClass }}" 
                                                                 style="width:120px;">
                                                                 <input type="radio" checked="" hidden=""
                                                                     [(ngModel)]="routeData.recurring.recurringType"
-                                                                    name="recurringType" id="dailyRecurringRadioBtn"
+                                                                    name="recurringType" id="dailyRecurringRadioBtn" (click)="selectRecurring($event)"
                                                                     value="daily">Daily</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="weeklyRecurringRadioBtn"
-                                                                class="btn btn-LTL font-weight-bold reccRoute "
+                                                                class="btn btn-LTL font-weight-bold reccRoute {{ weekClass }}"
                                                                 style="width:120px;">
                                                                 <input type="radio" hidden=""
                                                                     [(ngModel)]="routeData.recurring.recurringType"
-                                                                    name="recurringType" id="weeklyRecurringRadioBtn"
+                                                                    name="recurringType" id="weeklyRecurringRadioBtn" (click)="selectRecurring($event)"
                                                                     value="weekly">Weekly</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-4">
                                                         <div class="radio">
                                                             <label for="biweeklyRecurringRadioBtn"
-                                                                class="btn btn-LTL font-weight-bold reccRoute "
-                                                                style="width:120px;">
+                                                                class="btn btn-LTL font-weight-bold reccRoute {{ biClass }}"                                                               style="width:120px;">
                                                                 <input type="radio" hidden=""
                                                                     [(ngModel)]="routeData.recurring.recurringType"
-                                                                    name="recurringType" id="biweeklyRecurringRadioBtn"
+                                                                    name="recurringType" id="biweeklyRecurringRadioBtn" (click)="selectRecurring($event)"
                                                                     value="biweekly">Biweekly</label>
                                                         </div>
                                                     </div>
@@ -322,7 +272,7 @@
                                                             Date</label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
-                                                            placeholder="DD-MM-YYYY" (click)="d.toggle()" ngbDatepicker
+                                                            placeholder="Enter recurring date" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control">
                                                     </div>
                                                 </div>
@@ -338,7 +288,7 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="monday" name="recurringDay"
+                                                            <input type="checkbox" id="monday" name="monday"
                                                                 [(ngModel)]="routeData.recurring.monday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -348,7 +298,7 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="tuesday" name="recurringDay"
+                                                            <input type="checkbox" id="tuesday" name="tuesday"
                                                                 [(ngModel)]="routeData.recurring.tuesday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -358,7 +308,7 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="wednesday" name="recurringDay"
+                                                            <input type="checkbox" id="wednesday" name="wednesday"
                                                                 [(ngModel)]="routeData.recurring.wednesday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -371,7 +321,7 @@
                                                 <div class="row mt-2">
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="thursday" name="recurringDay"
+                                                            <input type="checkbox" id="thursday" name="thursday"
                                                                 [(ngModel)]="routeData.recurring.thursday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -381,7 +331,7 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="friday" name="recurringDay"
+                                                            <input type="checkbox" id="friday" name="friday"
                                                                 [(ngModel)]="routeData.recurring.friday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -391,7 +341,7 @@
                                                     </div>
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="saturday" name="recurringDay"
+                                                            <input type="checkbox" id="saturday" name="saturday"
                                                                 [(ngModel)]="routeData.recurring.saturday"
                                                                 class="daysChecked" ng-true-value="yes"
                                                                 ng-false-value="no">
@@ -407,7 +357,8 @@
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" (change)="eventCheck($event)" value="yes">
+                                                    <input type="checkbox" name="destinationStop" 
+                                                    [(ngModel)]="destinationStop" (change)="eventCheck($event)" value="yes">
                                                     <label class="control-label font-weight-bold"
                                                         for="routeCheckBtn">Add Stop(s)</label>
                                                 </div>
@@ -436,7 +387,7 @@
                                                     </div>
                                                     <div class="col-lg-4 text-center pt-3">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00
+                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">{{ routeData.miles }}
                                                             Miles</p>
                                                     </div>
                                                     <div class="col-lg-4 text-center">
@@ -511,7 +462,17 @@
                                                                             <div class="col-lg-10">
                                                                                 <input name="stopName_{{i}}"
                                                                                     [(ngModel)]="routeData.stops[i].stopName"
+                                                                                    (keyup)="searchTerm.next($event);"
                                                                                     class="form-control">
+
+                                                                                    <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                                                    *ngIf="searchResults">
+                                                                                    <li *ngFor="let item of searchResults;">
+                                                                                        <a href="javascript:;"
+                                                                                            (click)="assignLocation('stops', item.address.label, i)"
+                                                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                    </li>
+                                                                                </ul>
                                                                             </div>
                                                                         </div>
                                                                     </td>
@@ -520,7 +481,7 @@
                                                                             placeholder="Notes" name="stopNotes_{{i}}"
                                                                             [(ngModel)]="routeData.stops[i].stopNotes">
                                                                     </td>
-                                                                    <td *ngIf="i >= 2"><span (click)="removeStops(i)"
+                                                                    <td *ngIf="i >= 1 && i < routeData.stops?.length-1"><span (click)="removeStops(i)"
                                                                             class="fas fa-trash-alt pt-2"></span></td>
                                                                 </tr>
                                                             </thead>
@@ -541,8 +502,10 @@
                                 <div class="row text-right">
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
-                                            routerLink="/dispatch/routes/route-list">Cancel</a>
-                                        <a href="javascript:;" (click)="addRoute()" class="btn btn-success mt-1">Create Route</a> </div>
+                                            routerLink="/dispatch/routes/list">Cancel</a>
+                                        <a *ngIf="!routeID" href="javascript:;" (click)="addRoute()" class="btn btn-success mt-1">Create Route</a>
+                                        <a *ngIf="routeID" href="javascript:;" (click)="updateRoute()" class="btn btn-success mt-1">Update Route</a> 
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -552,3 +515,20 @@
         </section>
     </div>
 </section>
+
+<!-- add vehicle modal -->
+<div class="modal fade" id="addDriverVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addDriverVehicleModal" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 98%;" role="document">
+         <div class="modal-content">
+         <div class="modal-header">
+               <h5 class="modal-title">Add Vehicle</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+               </button>
+         </div>
+         <!-- <div class="modal-body text-dark">
+            <app-add-vehicle-new></app-add-vehicle-new>
+         </div> -->
+      </div>
+   </div>
+</div>

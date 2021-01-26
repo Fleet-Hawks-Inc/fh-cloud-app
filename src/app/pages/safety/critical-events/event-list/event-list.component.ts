@@ -54,8 +54,8 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     driverID: '',
     filterDateStart: <any> '',
     filterDateEnd: <any> '',
-    vehicleID: '',
-    driverName: ''
+    driverName: '',
+    vehicleID:null
   };
   suggestions = [];
   vehiclesObject: any = {};
@@ -195,18 +195,23 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.filterValue.vehicleID = vehicleID;
       
       $("#searchVehicle").text(event.target.innerText);
-    } else if(type === 'date') {
+    } 
+    if(type === 'date') {
       if(this.filterValue.date !== '') {
-        this.filterValue.filterDateStart = moment(this.filterValue.date+' 00:00:01').format("X");
-        this.filterValue.filterDateEnd = moment(this.filterValue.date+' 23:59:59').format("X");
-        // console.log('this.filterValue')
-        // console.log(this.filterValue)
-
+        let date = this.filterValue.date;
+        let newdate = date.split('-').reverse().join('-');
+        this.filterValue.filterDateStart = moment(newdate+' 00:00:01').format("X");
+        this.filterValue.filterDateEnd = moment(newdate+' 23:59:59').format("X");
         this.filterValue.filterDateStart = this.filterValue.filterDateStart*1000;
         this.filterValue.filterDateEnd = this.filterValue.filterDateEnd*1000;
       }
     }
-    this.rerender('reset');
+  }
+
+  searchEvents() {
+    if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
+      this.rerender('reset');
+    }
   }
 
   fetchevents() {
@@ -218,6 +223,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getSuggestions(searchvalue='') {
     if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
       this.apiService.getData('drivers/get/suggestions/'+searchvalue).subscribe({
         complete: () => {},
         error: () => { },
@@ -241,8 +247,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.filterValue.driverID = data.userName;
     this.filterValue.driverName = data.name;
     this.suggestions = [];
-
-    this.rerender('reset');
   }
 
   resetFilter() {
@@ -253,7 +257,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
         driverID: '',
         filterDateStart: '',
         filterDateEnd: '',
-        vehicleID: '',
+        vehicleID: null,
         driverName: ''
       };
       this.suggestions = [];
@@ -274,7 +278,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/list')
+    this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
       });

@@ -18,9 +18,10 @@
     <div class="prtsidebara">
         <a href="#" onclick="openChat()" data-toggle="tooltip" data-placement="left" title=""
             data-original-title="Live Chat"> <i class="far fa-comment-dots text-dark" style="font-size:18px;"></i> </a>
-        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal" class="modal-with-form" title="Address Book"> <i class="far fa-address-book text-dark" style="font-size:18px;"></i>
+        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal" (click)="showContactsModal()" class="modal-with-form" title="Address Book"> <i class="far fa-address-book text-dark" style="font-size:18px;"></i>
         </a>
     </div>
 </div>
 
 <app-address-book></app-address-book>
+<app-shared-modals></app-shared-modals>

@@ -3,6 +3,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from "../../../../../services/here-map.service";
+import * as moment from 'moment';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-service-detail',
@@ -10,6 +13,8 @@ import { HereMapService } from "../../../../../services/here-map.service";
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
+
   private logID;
   programs;
   logsData: any;
@@ -18,6 +23,7 @@ export class ServiceDetailComponent implements OnInit {
   vehicle: any;
   assetID: any;
   completionDate: any;
+  startDate: any;
   odometer: any;
   reference: any;
   vendorID: any;
@@ -42,11 +48,17 @@ export class ServiceDetailComponent implements OnInit {
   partsTaxPercent: number;
   partsTotal: number;
 
+  photos: any = [];
+  docs: any = [];
+
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   constructor(
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
       private route: ActivatedRoute,
-      private hereMap: HereMapService
+      private hereMap: HereMapService,
+      private domSanitizer: DomSanitizer,
   ) { }
 
   ngOnInit() {
@@ -65,7 +77,8 @@ export class ServiceDetailComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.logsData = result.Items;
+        this.logsData = result.Items[0];
+       
         result = result.Items[0];
         
         this.vehicle = result.vehicleID;
@@ -75,6 +88,7 @@ export class ServiceDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reference = result.reference;
         this.description = result.description;
+        this.startDate = result.timeCreated;
         this.allServiceTasks = result.allServiceTasks.serviceTaskList;
         this.allServiceParts = result.allServiceParts.servicePartsList;
 
@@ -92,7 +106,22 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTaxAmount = result.allServiceParts.taxAmount;
         this.partsTaxPercent = result.allServiceParts.taxPercent;
         this.partsTotal = result.allServiceParts.total;
-        this.spinner.hide(); // loader hide
+        
+        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          this.photos = result.uploadedPhotos.map(x => ({
+            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+            name: x,
+          }));
+        }
+
+        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+          this.docs = result.uploadedDocs.map(x => ({
+            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+            name: x,
+          }));
+        }
+        console.log('photos', this.photos)
+
       },
     });
   }
@@ -115,6 +144,7 @@ export class ServiceDetailComponent implements OnInit {
     this.apiService.getData('issues/get/list')
       .subscribe((result: any) => {
         this.issuesObject = result;
+        console.log('fetchAllIssuesIDs', this.issuesObject)
       });
   }
 
@@ -123,5 +153,23 @@ export class ServiceDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.assetsObject = result;
       });
+  }
+
+  // delete uploaded images and documents 
+  delete(type: string,name: string){
+    this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchProgramByID();
+    });
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
   }
 }
