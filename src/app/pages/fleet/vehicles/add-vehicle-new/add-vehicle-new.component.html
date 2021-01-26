@@ -1658,7 +1658,7 @@
                                      </ng-select>
                                   </div>
                                   <div class="col-lg-2  mar-top-37">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" (click)="changeVendorModalStatus()"
                                     class="btn btn-sm btn-success modal-with-form"><i
                                        class="fas fa-plus"></i></a>
                                   </div>
@@ -1746,7 +1746,7 @@
                                           Vendor&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>                                      
                                         <ng-select  placeholder="Select Vendor"  name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">                               
-                                           <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>                                       
+                                           <ng-option *ngFor = "let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>                                       
                                       </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
