@@ -38,7 +38,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   pageLength = 10;
   lastEvaluatedKey = '';
 
-  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
+  // constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
 
 
   ngOnInit() {
@@ -95,7 +95,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedVehicles = [];
   }
 
-
+/*
   deleteVehicle(vehicleId) {
     this.apiService
       .deleteData('vehicles/' + vehicleId)
@@ -104,6 +104,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.fetchVehicles();
       });
   }
+  */
 
 
   /**

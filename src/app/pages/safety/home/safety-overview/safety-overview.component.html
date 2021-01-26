@@ -10,14 +10,20 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body p-0">
-            <div class="page-header">
-                <h2>Overview</h2>
+            <div class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-12 col-lg-12">
+                       <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Overview</h4>
+                    </div>
+                    
+                 </div>
+                
             </div>
 
             <div class="card">
                 <div class="safety-overview__main ">
                     <div class="">
-                        <div class="row py-4 bg-white">
+                        <div class="row pt-3 bg-white">
                             <div class="col-lg-5 col-md-12">
                                 <div class="d-flex flex-wrap">
                                     <div class="col-lg-6 col-md-12 pr-1 mb-2">
@@ -135,7 +141,7 @@
                         </div>
                     </div>
 
-                    <div class="row my-2">
+                    <div class="row p-2">
                         <div class="col-lg-7 col-md-12  pr-0">
                             <div class="bg-white p-2">
                                 <p class="mb-2 text-4 font-weight-bold text-dark">Trends</p>
@@ -318,7 +324,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let data of eventData; let i=index;"
+                                        <tr class="cursorpoint" *ngFor="let data of eventData; let i=index;"
                                             routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
                                             <td>{{ i+1 }}</td>
                                             <td>{{ data.driverName }}</td>

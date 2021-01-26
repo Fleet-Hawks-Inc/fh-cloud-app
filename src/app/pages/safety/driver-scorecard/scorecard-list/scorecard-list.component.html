@@ -10,12 +10,12 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header">
-                <div class="row px-3" style="padding-top:10px;">
-                    <div class="col-lg-1 col-md-1 pr-0 pt-1">
-                        <label class="control-label font-weight-bold text-dark">Distance</label>
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-lg-1 col-md-1">
+                        <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Distance</h4>
                     </div>
-                    <div class="col-lg-1 col-md-1 pl-0">
+                    <div class="col-lg-1 col-md-1">
                         <div class="input-group input-group-sm mb-3">
                             <input type="number" class="form-control" min="0" placeholder="From" name="from" [(ngModel)]="filterData.fromDistance">
                         </div>
@@ -40,7 +40,7 @@
                         <button class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
                         <button class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset Filters</button>
                     </div>
-                    <div class="col-md-7 col-lg-7 text-right pr-5">
+                    <div class="col-md-3 col-lg-3 text-right pr-1">
 
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                                         </tr>
                                     </thead>
                                     <tbody *ngIf="eventData.length > 0">
-                                        <tr *ngFor="let data of eventData; let i=index;" routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
+                                        <tr class="cursorpoint" *ngFor="let data of eventData; let i=index;" routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
                                             <td>{{ i+1 }}</td>
                                             <td>{{ data.driverName }}</td>
                                             <td>{{ data.compliance }}</td>

@@ -10,11 +10,15 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
-            <div class="page-header">
-                <h2>Scorecard Detail</h2>
-                <div class="right-wrapper text-right">
-
-                </div>
+            <div class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4">
+                       <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Scorecard Detail</h4>
+                    </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                       <a href="drivers.php" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers List</a>
+                    </div>
+                 </div>
             </div>
 
             <div class="safety-deails m-2">
@@ -27,7 +31,7 @@
                                     <i class="far fa-calendar-check text-7"></i>
                                     <br>
                                     <p class="mb-0 text-5 font-weight-bold text-dark">{{ rank }}</p>
-                                    <p class="mb-0 text-uppercase">Rank</p>
+                                    <p class="mb-0 text-dark text-uppercase">Rank</p>
                                 </div>
                             </div>
                             <div class="col cerbor">
@@ -78,7 +82,7 @@
                                     <i class="fas fa-map-marker-alt text-7"></i>
                                     <br>
                                     <p class="mb-0 text-5 font-weight-bold text-dark">{{ eventData.fuelIdling }}</p>
-                                    <p class="mb-0 text-uppercase">Idling</p>
+                                    <p class="mb-0 text-dark text-uppercase">Idling</p>
                                 </div>
                             </div>
 
@@ -87,11 +91,11 @@
                     </div>
                 </div>
                 <div class="card mt-0">
-                    <div class="card-body">
+                    <div class="card-body pt-0">
                         <div class="row ">
-                            <div class="col-lg-3 col-xl-3  mb-xl-0 pr-1">
+                            <div class="col-lg-3 col-xl-3 mb-xl-0">
                                 <div class="thumb-info">
-                                    <img src="img/pp.jpg" class="rounded img-fluid" alt="{{ eventData.driver.fullName }}">
+                                    <img src="img/pp.jpg" class="rounded img-fluid mb-3 pb-2" alt="{{ eventData.driver.fullName }}">
                                     <div class="thumb-info-title">
                                         <span class="thumb-info-inner">{{ eventData.driver.fullName }}</span>
                                     </div>
@@ -133,7 +137,8 @@
                                      </div>
                                   </div> -->
                             </div>
-                            <div class="col-lg-2 pr-1">
+
+                            <div class="col-lg-2 text-center">
                                 <p class="mb-2 text-4 font-weight-bold text-dark">Safety Score</p>
                                 <div class="circle-wrap">
                                     <div class="circle">
@@ -164,7 +169,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-lg-7 col-md-12  pr-1">
+                            <div class="col-lg-7 col-md-12">
                                 <div class="bg-white">
                                     <p class="mb-2 text-4 font-weight-bold text-dark">Trends</p>
                                     <ul class="nav nav-tabs top-tabs" role="tablist">
