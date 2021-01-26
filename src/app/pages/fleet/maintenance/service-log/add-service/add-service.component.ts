@@ -166,7 +166,7 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.toastr.success('Log added successfully');
-        // this.router.navigateByUrl('/fleet/maintenance/service-log/list');
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });
     if(this.serviceData.selectedIssues.length > 0){

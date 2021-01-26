@@ -61,14 +61,14 @@
                                            <ng-option *ngFor = "let vehicle of vehicleTypeList" [value]="vehicle.code">{{vehicle.name}}</ng-option>                                      
                                            </ng-select>
                                      </div>
-                                     <div class="col-lg-5">
+                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">VIN</label>
                                         <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN" placeholder="VIN or Serial Number">
                                      </div>
-                                     <div class="col-lg-5">
+                                     <!-- <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
                                         <input type="text" class="form-control" name="DOT" [(ngModel)]="DOT"  placeholder="DOT Number of the Vehicle"> 
-                                     </div>
+                                     </div> -->
                                      <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Year</label>
                                         <ng-select class="form-control" name="year" [(ngModel)]="year" placeholder="Select model year">
@@ -118,6 +118,10 @@
                                         </ng-select>
                                      </div>
                                      <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number</label>
+                                       <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber" placeholder="Enter plate number eg. XYZ12">
+                                    </div>
+                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
                                         <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID" (change)="getModels()" placeholder="Select vehicle make">
                                            <optgroup label="">
@@ -125,26 +129,42 @@
                                            </optgroup>
                                         </ng-select>
                                      </div>
-                                     <div class="col-lg-5">
+                                     <div class="col-lg-2  mar-top-37">
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
                                         <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID" placeholder="Select vehcile model">
                                            <optgroup label="">
                                               <ng-option *ngFor="let model of models" value="{{model.modelID}}">{{model.name}}</ng-option>
                                            </optgroup>
                                         </ng-select>
-                                     </div>
-                                     <div class="col-lg-5">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number</label>
-                                        <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber" placeholder="Enter plate number eg. XYZ12">
-                                     </div>
-                                     <div class="col-lg-10">
+                                    </div>
+                                    <div class="col-lg-2  mar-top-37">
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                       <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="getStates()">
+                                          <optgroup label="">
+                                             <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                          </optgroup>
+                                       </ng-select>
+                                   </div>
+                                   <div class="col-lg-2  mar-top-37">
+                                      <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                   </div>
+                                    <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
                                         <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID" placeholder="Select state">
                                            <optgroup label="">
                                               <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
-                                     </div>
+                                    </div>
+                                    <div class="col-lg-2  mar-top-37">
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                    </div>
  
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -170,7 +190,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <!-- <div class="col-lg-5 offset-lg-1">
+                               <div *ngIf="!vehicleID" class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                      <div class="col-lg-7 text-center">
                                         <ngx-slick-carousel class="carousel"
@@ -188,19 +208,19 @@
                                         </div>
                                      </div>
                                   </div>
-                               </div> -->
-                               <div class="col-lg-5 offset-lg-1">
+                               </div>
+                               <div *ngIf="vehicleID" class="col-lg-5 offset-lg-1">
                                  <div class="row mt-4">                                    
                                    <div class="col-lg-10">
-                                   <div width="80%" style="overflow-y: scroll;overflow-x:hidden;height:437px">                               
+                                    <div width="80%"  style="overflow-y: scroll;overflow-x:hidden; min-height:auto;max-height:437px">                                
                                      <div class="row">
-                                         <div class="col-lg-6" *ngFor="let slide of slides">
+                                         <div class="col-lg-6" *ngFor="let slide of slides; let i = index">
                                              <div class="vehicle-photo-box mb-1">
                                                  <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1" style="cursor:pointer;height:138px!important;width:100%;" src="{{slide}}" alt="img"></a>
                                                  <hr class="m-3">
                                                  <div class="row">
                                                      <div class="col-lg-10">Image</div>
-                                                     <div class="col-lg-2 text-right"> <i class="fas fa-times text-danger"></i> </div>
+                                                     <div class="col-lg-2 text-right"> <i (click)=deleteImage(i) class="fas fa-times text-danger"></i> </div>
                                                  </div>
                                              </div>
                                          </div>
@@ -211,8 +231,9 @@
                                     <div class="row">
                                        <div class="col-lg-10 text-center">
                                           <div class="mt-3">
-                                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
+                                             <div class="btn btn-sm btn-success position-relative overflow-hidden">
+                                                <i class="fas fa-plus"></i> Add Photo
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100" name="uploadedPhotos" type="file" multiple >
                                              </div>
                                           </div>
                                        </div>
@@ -232,8 +253,19 @@
                                     
                                         </ng-select>
                                      </div>
+                                     <div class="col-lg-2  mar-top-37">
+                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                    </div>
                                   </div>
                                </div>
+                               <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                       <div class="col-lg-10">
+                                              <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set Reminder)</label>
+                                              <input type="date" name="annualSafetyDate" [(ngModel)]="annualSafetyDate" class="form-control"> 
+                                       </div>
+                                 </div>
+                              </div>
                                <div class="col-lg-5 offset-lg-1">
                                   <!-- <div class="row pt-2">
                                      <div class="col-lg-10">
@@ -313,10 +345,15 @@
                                            </optgroup>
                                         </ng-select>
                                      </div>
+                                     <div class="col-lg-10" *ngIf="ownership == 'Owned'">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator&nbsp; <span
+                                         class="text-1 optional-label-color"></span></label>
+                                         <input type="text" class="form-control" name="ownerOperator" [(ngModel)]="ownerOperator" placeholder="eg. XYZ etc">
+                                    </div>
                                   </div>
                                </div>
                             </div>
-                            <div class="row pt-3">
+                            <!-- <div class="row pt-3">
                                <div class="col-lg-10">
                                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Cross Border</label>
                                </div>
@@ -338,13 +375,20 @@
                                      </div>
                                   </div>
                                </div>
-                            </div>
+                            </div> -->
                             <div class="row pt-3">
                                <div class="col-lg-10">
                                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Additional Details</label>
                                </div>
                                <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
+                                    <div class="checkbox mt-2 pl-3">
+                                       <label>
+                                          <input type="checkbox" value="" name="iftaReporting"
+                                          [(ngModel)]="iftaReporting">
+                                       Enable IFTA Reporting
+                                       </label>
+                                    </div>
                                      <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
                                           Color&nbsp;<span
@@ -369,7 +413,8 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Body
-                                          Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          Type&nbsp;   <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                          data-placement="top" title="Body Type of Vehicle"></i>&nbsp;  <span class="text-1 optional-label-color">(optional)</span></label>
                                        <ng-select class="form-control populate" name="bodyType" [(ngModel)]="bodyType" placeholder="Select vehicle body type">                                         
                                              <ng-option value="Conventional">Conventional</ng-option>
                                              <ng-option value="Full Size">Full Size</ng-option>
@@ -437,8 +482,15 @@
                                              data-placement="top" title="Date vehicle entered fleet service."></i>
                                        </label>
 
-                                       <input type="date" class="form-control" name="inServiceDate"
+                                       <input type="date" class="form-control" name="lifeCycle.inServiceDate"
                                           [(ngModel)]="lifeCycle.inServiceDate">
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Start Date</label>
+                                       <input type="date" class="form-control" name="lifeCycle.startDate"
+                                       [(ngModel)]="lifeCycle.startDate">
                                     </div>
                                  </div>
                               </div>
@@ -452,7 +504,7 @@
                                              data-placement="top"
                                              title="Odometer reading on in-service date."></i></label>
 
-                                       <input type="number" class="form-control" name="inServiceOdometer"
+                                       <input type="number" class="form-control" name="lifeCycle.inServiceOdometer"
                                           [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500">
                                     </div>
                                  </div>
@@ -465,8 +517,19 @@
                                <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Est Ser Life
-                                          in Months
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Years
+                                          <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                             data-placement="top"
+                                             title="Estimated service life in years - Number of years vehicle is expected to be in fleet service."></i>&nbsp;<span
+                                             class="text-1 optional-label-color">(optional)</span></label>
+
+                                       <input type="number" class="form-control"
+                                          name="lifeCycle.estimatedServiceYears"
+                                          [(ngModel)]="lifeCycle.estimatedServiceYears"
+                                          placeholder="eg. 1,40 etc.">
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Months
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top"
                                              title="Estimated service life in months - Number of months vehicle is expected to be in fleet service."></i>&nbsp;<span
@@ -475,26 +538,14 @@
                                        <input type="number" class="form-control"
                                           name="lifeCycle.estimatedServiceMonths"
                                           [(ngModel)]="lifeCycle.estimatedServiceMonths"
-                                          placeholder="eg. 30,40 etc.">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Est Ser Life
-                                          in Miles
-                                          <i class="fas fa-exclamation-circle" data-toggle="tooltip"
-                                             data-placement="top"
-                                             title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."></i>&nbsp;
-                                          <span class="text-1 optional-label-color">(optional)</span></label>
-
-                                       <input type="number" class="form-control"
-                                          name="lifeCycle.estimatedServiceMiles"
-                                          [(ngModel)]="lifeCycle.estimatedServiceMiles" placeholder="eg. 100000">
+                                          placeholder="eg. 1,40 etc.">
                                     </div>
                                   </div>
                                </div>
                                <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Estimated
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Resale Value
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top"
@@ -506,6 +557,21 @@
                                     </div>
                                   </div>
                                </div>
+                               <div class="col-lg-5 offset-lg-1">
+                                 <div class="row">
+                                    <div class="col-lg-5">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Miles
+                                       <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                          data-placement="top"
+                                          title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."></i>&nbsp;
+                                       <span class="text-1 optional-label-color">(optional)</span></label>
+
+                                    <input type="number" class="form-control"
+                                       name="lifeCycle.estimatedServiceMiles"
+                                       [(ngModel)]="lifeCycle.estimatedServiceMiles" placeholder="eg. 100000">
+                                       </div>
+                                 </div>
+                              </div>
                             </div>
                             <div class="row pt-3">
                                <div class="col-lg-10">
@@ -562,7 +628,7 @@
                                           class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="height"
+                                             <input type="number" class="form-control" name="specifications.height"
                                                 [(ngModel)]="specifications.height">
                                           </div>
                                           <div class="col-lg-6 pl-0">
@@ -577,13 +643,15 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="col-lg-5">
+                                  </div>
+                               </div>
+                                    <!-- <div class="col-lg-5">
                                        <label
                                           class="control-label font-weight-bold text-lg-right pt-2">Length&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="length"
+                                             <input type="number" class="form-control" name="specifications.length"
                                                 [(ngModel)]="specifications.length">
                                           </div>
                                           <div class="col-lg-6 pl-0">
@@ -607,7 +675,7 @@
                                                 [(ngModel)]="specifications.width">
                                           </div>
                                           <div class="col-lg-6 pl-0">
-                                             <ng-select class="form-control populate" name="widthUnit"
+                                             <ng-select class="form-control populate" name="specifications.widthUnit"
                                                 [(ngModel)]="specifications.widthUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -701,7 +769,9 @@
                                              </span>
                                           </span>
                                        </div>
-                                    </div>
+                                    </div> -->
+                                    <div class="col-lg-5 offset-lg-1">
+                                       <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Ground
                                           Clearnce&nbsp; <span
@@ -709,12 +779,12 @@
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" class="form-control"
-                                                name="groundClearnce"
+                                                name="specifications..groundClearnce"
                                                 [(ngModel)]="specifications.groundClearnce">
                                           </div>
                                           <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate"
-                                                name="groundClearnceUnit"
+                                                name="specifications..groundClearnceUnit"
                                                 [(ngModel)]="specifications.groundClearnceUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
@@ -734,14 +804,14 @@
                                <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Curb Weight
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Tare Weight
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top" title="Weight of vehicle with std options including single driver and fuel"></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
 
                                        <div class="input-group">
-                                          <input type="text" class="form-control" name="specifications.curbWeight"
-                                             [(ngModel)]="specifications.curbWeight"
+                                          <input type="text" class="form-control" name="specifications.tareWeight"
+                                             [(ngModel)]="specifications.tareWeight"
                                              placeholder="Enter curb weight">
                                           <span class="input-group-append">
                                              <span class="input-group-text pt-0 pb-0">
@@ -750,13 +820,6 @@
                                           </span>
                                        </div>
                                     </div>
-                                 </div>
-                                 <div class="checkbox mt-4">
-                                    <label>
-                                       <input type="checkbox" value="" name="specifications.iftaReporting"
-                                          [(ngModel)]="specifications.iftaReporting">
-                                       Enable IFTA Reporting
-                                    </label>
                                  </div>
                               </div>
                               <div class="col-lg-5 offset-lg-1">
@@ -827,7 +890,7 @@
                                  </div>
                               </div>
                             </div>
-                            <div class="row pt-3">
+                            <!-- <div class="row pt-3">
                                <div class="col-lg-10">
                                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Fuel Economy</label>
                                </div>
@@ -869,7 +932,7 @@
                                     </div>
                                  </div>
                               </div>
-                            </div>
+                            </div> -->
                          </div>
                       </div>
                       <!-- insurance -->
@@ -884,7 +947,7 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                           Issue</label>
-                                       <input type="date" class="form-control" name="dateOfIssue"
+                                       <input type="date" class="form-control" name="insurance.dateOfIssue"
                                           [(ngModel)]="insurance.dateOfIssue">
                                     </div>
                                     <div class="col-lg-5">
@@ -892,7 +955,7 @@
                                           Amount</label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input type="number" class="form-control" name="premiumAmount"
+                                             <input type="number" class="form-control" name="insurance.premiumAmount"
                                                 [(ngModel)]="insurance.premiumAmount" placeholder="eg. 100,200 etc.">
                                           </div>
                                           <div class="col-lg-6">
@@ -933,24 +996,24 @@
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                           Expiry</label>
-                                       <input type="date" class="form-control" name="dateOfExpiry"
+                                       <input type="date" class="form-control" name="insurance.dateOfExpiry"
                                           [(ngModel)]="insurance.dateOfExpiry">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Reminder
                                           Every</label>
                                        <div class="row">
-                                          <div class="col-lg-12">
+                                          <div class="col-lg-6">
+                                             <input type="number" class="form-control" name="insurance.reminder"
+                                             [(ngModel)]="insurance.reminder">
+                                          </div>
+                                          <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate" name="insurance.remiderEvery"
                                                 [(ngModel)]="insurance.remiderEvery" placeholder="Reminder time">
                                                 <optgroup label="">
-                                                   <ng-option value="Weekly">Weekly</ng-option>
-                                                   <ng-option value="2 Weeks">2 Weeks</ng-option>
-                                                   <ng-option value="Monthly">Monthly</ng-option>
-                                                   <ng-option value="Quarterly">Quarterly</ng-option>
-                                                   <ng-option value="Half Yearly">Half Yearly</ng-option>
-                                                   <ng-option value="Yearly">Yearly</ng-option>
-                                                   <ng-option value="Custom">Custom</ng-option>
+                                                   <ng-option value="Weekly">Day(s)</ng-option>
+                                                   <ng-option value="2 Weeks">Week(s)</ng-option>
+                                                   <ng-option value="Monthly">Month(s)</ng-option>
                                                 </optgroup>
                                              </ng-select>
                                           </div>
@@ -958,12 +1021,12 @@
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-lg-5 offset-lg-1">
+                              <!-- <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
                                           Policy#</label>
-                                       <input type="text" class="form-control" name="policyNumber"
+                                       <input type="text" class="form-control" name="insurance.policyNumber"
                                           [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757 etc.">
                                     </div>
                                     <div class="col-lg-5">
@@ -972,11 +1035,11 @@
                                        <div class="row">
                                           <div class="col-lg-6">
 
-                                             <input type="number" class="form-control" name="amount"
+                                             <input type="number" class="form-control" name="insurance.amount"
                                                 [(ngModel)]="insurance.amount" placeholder="eg. 45000.50000 etc.">
                                           </div>
                                           <div class="col-lg-6">
-                                             <ng-select class="form-control populate" name="amountCurrency"
+                                             <ng-select class="form-control populate" name="insurance.amountCurrency"
                                                 [(ngModel)]="insurance.amountCurrency" placeholder="Select currency">
                                                 <optgroup label="">
                                                    <ng-option value="USD">USD</ng-option>
@@ -988,7 +1051,7 @@
 
                                     </div>
                                  </div>
-                              </div>
+                              </div> -->
                             </div>
                          </div>
                       </div>
@@ -1006,19 +1069,19 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel
                                         Type</label>
-                                     <ng-select class="form-control populate" name="fuelType"
+                                     <ng-select class="form-control populate" name="fluid.fuelType"
                                         [(ngModel)]="fluid.fuelType" placeholder="Select fuel type">
                                         <optgroup label="">
                                            <ng-option value="CNG">CNG</ng-option>
-                                           <ng-option value="Diesal">Diesal</ng-option>
+                                           <ng-option value="Diesel">Diesel</ng-option>
                                            <ng-option value="Gasoline">Gasoline</ng-option>
                                            <ng-option value="Propane">Propane</ng-option>
                                         </optgroup>
                                      </ng-select>
                                   </div>
-                                  <div class="col-lg-10">
+                                  <!-- <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
-                                     <ng-select class="form-control populate" name="fuelQuality"
+                                     <ng-select class="form-control populate" name="fluid.fuelQuality"
                                         [(ngModel)]="fluid.fuelQuality" placeholder="Select fuel quality">
                                         <optgroup label="">
                                            <ng-option value="Regular">Regular</ng-option>
@@ -1032,7 +1095,7 @@
                                            <ng-option value="V-Power">V-Power</ng-option>
                                         </optgroup>
                                      </ng-select>
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
@@ -1040,15 +1103,42 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 1
                                         Capacity</label>
-                                     <input type="number" class="form-control" name="fuelTankOneCapacity"
-                                        [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 etc.">
+                                        <div class="row">
+                                          <div class="col-lg-6">
+                                             <input type="number" class="form-control" name="fluid.fuelTankOneCapacity"
+                                                [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 etc.">
+                                          </div>
+                                          <div class="col-lg-6 pl-0">
+                                             <ng-select class="form-control populate" name="fluid.fuelTankOneType"
+                                               [(ngModel)]="fluid.fuelTankOneType" placeholder="Select fuel type">
+                                               <optgroup label="">
+                                                  <ng-option value="Gallons">Gallons</ng-option>
+                                                  <ng-option value="Litres">Litres</ng-option>
+                                               </optgroup>
+                                            </ng-select>
+                                         </div>
+                                        </div>
+                                     
                                   </div>
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Tank 2
                                         Capacity&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-                                     <input type="number" class="form-control" name="fuelTankTwoCapacity"
-                                        [(ngModel)]="fluid.fuelTankTwoCapacity" placeholder="eg. 100,200 etc.">
+                                           <div class="row">
+                                             <div class="col-lg-6">
+                                                <input type="number" class="form-control" name="fluid.fuelTankTwoCapacity"
+                                                 [(ngModel)]="fluid.fuelTankTwoCapacity" placeholder="eg. 100,200 etc.">
+                                             </div>
+                                             <div class="col-lg-6 pl-0">
+                                                <ng-select class="form-control populate" name="fluid.fuelTankTwoType"
+                                                [(ngModel)]="fluid.fuelTankTwoType" placeholder="Select fuel type">
+                                                <optgroup label="">
+                                                   <ng-option value="Gallons">Gallons</ng-option>
+                                                   <ng-option value="Litres">Litres</ng-option>
+                                                </optgroup>
+                                                </ng-select>
+                                            </div>
+                                          </div>
                                   </div>
                                </div>
                             </div>
@@ -1063,11 +1153,46 @@
                                   <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Oil
                                         Capacity</label>
-                                     <input type="number" class="form-control" name="oilCapacity"
-                                        [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200 etc.">
+                                       <div class="row">
+                                          <div class="col-lg-6">
+                                             <input type="number" class="form-control" name="fluid.oilCapacity"
+                                             [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200 etc.">
+                                          </div>
+                                          <div class="col-lg-6 pl-0">
+                                             <ng-select class="form-control populate" name="fluid.oilCapacityType"
+                                             [(ngModel)]="fluid.oilCapacityType" placeholder="Select fuel type">
+                                             <optgroup label="">
+                                                <ng-option value="Gallons">Gallons</ng-option>
+                                                <ng-option value="Litres">Litres</ng-option>
+                                             </optgroup>
+                                             </ng-select>
+                                         </div>
+                                       </div>
                                   </div>
                                </div>
                             </div>
+                            <div class="col-lg-5 offset-lg-1">
+                              <div class="row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust Fluid) Capacity</label>
+                                      <div class="row">
+                                         <div class="col-lg-6">
+                                            <input type="number" class="form-control" name="fluid.def"
+                                            [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc.">
+                                         </div>
+                                         <div class="col-lg-6 pl-0">
+                                            <ng-select class="form-control populate" name="fluid.defType"
+                                            [(ngModel)]="fluid.defType" placeholder="Select fuel type">
+                                            <optgroup label="">
+                                               <ng-option value="Gallons">Gallons</ng-option>
+                                               <ng-option value="Litres">Litres</ng-option>
+                                            </optgroup>
+                                            </ng-select>
+                                        </div>
+                                      </div>
+                                 </div>
+                              </div>
+                           </div>
                          </div>
                          <!-- </form> -->
                       </div>
@@ -1087,10 +1212,10 @@
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Number of
                                         Tires <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Number of tires"></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                     <input type="number" class="form-control" name="numberOfTyres"
+                                     <input type="number" class="form-control" name="wheelsAndTyres.numberOfTyres"
                                         [(ngModel)]="wheelsAndTyres.numberOfTyres" placeholder="eg. 16,18 etc.">
                                   </div>
-                                  <div class="col-lg-5">
+                                  <!-- <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type <i
                                            class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Wheels powered by engine"></i>&nbsp; <span
@@ -1128,12 +1253,28 @@
                                         &nbsp; <span class="text-1 optional-label-color">(optional)</span> </label>
                                      <input type="text" class="form-control" name="wheelsAndTyres.rearAxle"
                                         [(ngModel)]="wheelsAndTyres.rearAxle">
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
                                <div class="row">
+                                    <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Drive Type <i
+                                           class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                           data-placement="top" title="Wheels powered by engine"></i>&nbsp; <span
+                                           class="text-1 optional-label-color">(optional)</span></label>
+                                     <input type="text" class="form-control" name="wheelsAndTyres.driveType"
+                                        [(ngModel)]="wheelsAndTyres.driveType" placeholder="eg. 4x4">
+                                  </div>
                                   <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Brake System
+                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                           data-placement="top" title="Brake Type"></i>&nbsp; <span
+                                           class="text-1 optional-label-color">(optional)</span></label>
+                                     <input type="text" class="form-control" name="wheelsAndTyres.brakeSystem"
+                                        [(ngModel)]="wheelsAndTyres.brakeSystem" placeholder="eg. Hydraulic, Air">
+                                  </div>
+                                  <!-- <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Front Tyre
                                         Type<i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Front tyre information"></i>&nbsp; <span
@@ -1210,7 +1351,7 @@
 
                                      <input type="number" class="form-control" name="wheelsAndTyres.rearTyrePSI"
                                         [(ngModel)]="wheelsAndTyres.rearTyrePSI" placeholder="eg. 50,60 etc.">
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                          </div>
@@ -1246,7 +1387,7 @@
                                      <input type="text" class="form-control" name="engine.engineBrand"
                                         [(ngModel)]="engine.engineBrand" placeholder="eg. Cummins etc.">
                                   </div>
-                                  <div class="col-lg-5">
+                                  <!-- <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Aspiration
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top"
@@ -1313,12 +1454,44 @@
 
                                      <input type="number" class="form-control" name="engine.valves"
                                         [(ngModel)]="engine.valves" placeholder="eg. 14,16 etc">
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
                                <div class="row">
-                                  <div class="col-lg-5">
+                                    <div class="col-lg-5">
+                                     <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders
+                                        <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                           data-placement="top"
+                                           title="Number of cylinders in the engine."></i>&nbsp; <span
+                                           class="text-1 optional-label-color">(optional)</span></label>
+
+                                     <input type="number" class="form-control" name="engine.cylinders"
+                                        [(ngModel)]="engine.cylinders" placeholder="eg. 4,8 etc.">
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Stroke
+  
+                                          <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                             data-placement="top"
+                                             title="Piston distance during combustion cycle."></i>&nbsp; <span
+                                             class="text-1 optional-label-color">(optional)</span></label>
+  
+                                       <input type="number" class="form-control" name="engine.stroke"
+                                          [(ngModel)]="engine.stroke" placeholder="eg. 3.45">
+                                    </div>
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Valves
+  
+                                          <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                             data-placement="top"
+                                             title="Total number of valves in the engine."></i>&nbsp; <span
+                                             class="text-1 optional-label-color">(optional)</span></label>
+  
+                                       <input type="number" class="form-control" name="engine.valves"
+                                          [(ngModel)]="engine.valves" placeholder="eg. 14,16 etc">
+                                    </div> 
+                                  <!-- <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Compression
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Compression ratio."></i>&nbsp; <span
@@ -1326,8 +1499,8 @@
 
                                      <input type="number" class="form-control" name="engine.compression"
                                         [(ngModel)]="engine.compression" placeholder=" eg.10.5">
-                                  </div>
-                                  <div class="col-lg-5">
+                                  </div> -->
+                                  <!-- <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Cylinders
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top"
@@ -1397,7 +1570,7 @@
 
                                      <input type="text" class="form-control" name="engine.readlineRPM"
                                         [(ngModel)]="engine.readlineRPM" placeholder="eg. 5000.6000 etc.">
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                          </div>
@@ -1419,7 +1592,7 @@
                                         [(ngModel)]="engine.transmissionSummary"
                                         placeholder="eg. 6-Speed Shiftable Automatic">
                                   </div>
-                                  <div class="col-lg-10">
+                                  <!-- <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Transmission
                                         Brand
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
@@ -1429,7 +1602,7 @@
 
                                      <input type="text" class="form-control" name="engine.transmissonBrand"
                                         [(ngModel)]="engine.transmissonBrand" placeholder="eg. XYZ">
-                                  </div>
+                                  </div> -->
                                </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
@@ -1480,7 +1653,7 @@
                                      </ng-select>
                                   </div>
                                   <div class="col-lg-2  mar-top-37">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" (click)="changeVendorModalStatus()"
                                     class="btn btn-sm btn-success modal-with-form"><i
                                        class="fas fa-plus"></i></a>
                                   </div>
@@ -1568,7 +1741,7 @@
                                           Vendor&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>                                      
                                         <ng-select  placeholder="Select Vendor"  name="loan.loanVendorID" [(ngModel)]="loan.loanVendorID">                               
-                                           <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>                                       
+                                           <ng-option *ngFor = "let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>                                       
                                       </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
@@ -1584,12 +1757,12 @@
                                           class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" class="form-control" name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan" placeholder="Enter loan amount">
                                      </div>
-                                     <div class="col-lg-5">
+                                     <!-- <div class="col-lg-5">
                                        <label
                                        class="control-label font-weight-bold text-lg-right pt-2">Aspiration&nbsp; <span
                                        class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" class="form-control" name="loan.aspiration" [(ngModel)]="loan.aspiration" placeholder="Enter aspiration">
-                                     </div>
+                                     </div> -->
                                      <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Annual
                                           % Rate&nbsp; <span
@@ -1608,7 +1781,7 @@
                                           class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="date" class="form-control" name="loan.dateOfLoan" [(ngModel)]="loan.dateOfLoan">
                                      </div>
-                                     <div class="col-lg-5">
+                                     <!-- <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Monthly
                                           Payment&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
@@ -1619,6 +1792,12 @@
                                           Date&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="date" class="form-control" name="loan.firstPaymentDate" [(ngModel)]="loan.firstPaymentDate">
+                                     </div> -->
+                                     <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Loan End
+                                          Date&nbsp; <span
+                                          class="text-1 optional-label-color">(optional)</span></label>
+                                        <input type="date" class="form-control" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate">
                                      </div>
                                   </div>
                                </div>
@@ -1631,12 +1810,26 @@
                                         <input type="text" class="form-control" name="loan.numberOfPayments" [(ngModel)]="loan.numberOfPayments" placeholder="enter total loan payments">
                                      </div>
                                      <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Loan End
-                                          Date&nbsp; <span
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Monthly
+                                          Payment&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="date" class="form-control" name="loan.loadEndDate" [(ngModel)]="loan.loadEndDate">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <input type="text" class="form-control" name="loan.monthlyPayment" [(ngModel)]="loan.monthlyPayment" placeholder="Enter monthly payment">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                name="loan.monthlyPaymentCurrency"
+                                                [(ngModel)]="loan.monthlyPaymentCurrency" placeholder="Select currency">
+                                                <optgroup label="">
+                                                   <ng-option value="USD">USD</ng-option>
+                                                   <ng-option value="CAD">CAD</ng-option>
+                                                </optgroup>
+                                             </ng-select>
+                                             </div>
+                                          </div>
                                      </div>
-                                     <div class="col-lg-5">
+                                     <!-- <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account
                                           Number&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
@@ -1647,7 +1840,7 @@
                                           Expenses&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" class="form-control" name="loan.generateExpenses" [(ngModel)]="loan.generateExpenses" >
-                                     </div>
+                                     </div> -->
                                      <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Notes&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>

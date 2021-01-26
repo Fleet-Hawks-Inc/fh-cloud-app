@@ -60,7 +60,7 @@ export class AssetDetailComponent implements OnInit {
   statesObject: any = {};
   uploadedDocs = [];
   uploadedPhotos = [];
-  pdfSrc:any = '';
+  pdfSrc:any = this.domSanitizer.bypassSecurityTrustUrl('');
 
   messageStatus: boolean = true;
   // Charts

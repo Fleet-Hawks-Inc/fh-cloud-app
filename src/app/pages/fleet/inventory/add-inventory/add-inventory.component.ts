@@ -376,6 +376,8 @@ export class AddInventoryComponent implements OnInit {
         this.groupName = "";
         this.groupDescription = "";
         this.fetchItemGroups();
+        $("#categoryModal").modal("hide");
+        this.toastr.success('Category Added successfully');
       },
     });
   }
@@ -483,6 +485,8 @@ export class AddInventoryComponent implements OnInit {
         this.zipCode = "";
         this.address = "";
         this.fetchWarehouses();
+        $("#warehouseModal").modal("hide");
+        this.toastr.success('Warehouse Added successfully');
       },
     });
   }

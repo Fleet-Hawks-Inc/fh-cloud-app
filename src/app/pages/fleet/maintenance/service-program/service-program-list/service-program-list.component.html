@@ -74,7 +74,7 @@
                                         
                                                                     <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">
                                                                         {{program.programName}}</td>
-                                                                    <td>{{program.description}}</td>
+                                                                    <td>{{program.description ? program.description : '-'}}</td>
                                                                     <td>
                                                                         <div class="dropdown dropright">
                                                                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
@@ -95,7 +95,7 @@
                                                                 <tr>
                                                                     <td colspan="3" class="no-data-available">No records found</td>
                                                                 </tr>
-                                                            <tbody>
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>

@@ -1,0 +1,105 @@
+<!-- add state modal -->
+<div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-labelledby="addStateModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add State</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+            <section class="card form-wizard" id="w1">
+                <div class="card-body card-body-nopadding">                  
+                    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="stateForm">
+                        <div class="row pt-3">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Country                                   </label>
+                                        <ng-select [(ngModel)]="stateData.countryID"
+                                        name="countryID" class="form-control populate">
+                                     
+                                                <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}</ng-option>
+                                          
+                                        </ng-select>
+                                     </div>
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">State Name
+                                            Number</label>
+                                        <input [(ngModel)]="stateData.stateName"
+                                        name="stateName" type="text" class="form-control"> </div>
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">State Code</label>
+                                        <input [(ngModel)]="stateData.stateCode"
+                                        name="stateCode"  type="text" class="form-control"> </div>                                           
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addState()">Save</a>
+          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateState()">Update</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- add city modal -->
+<div class="modal fade" id="addCityModal" tabindex="-1" role="dialog" aria-labelledby="addCityModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add City</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+            <section class="card form-wizard" id="w1">
+                <div class="card-body card-body-nopadding">                  
+                    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="cityForm">
+                        <div class="row pt-3">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
+                                        <ng-select [(ngModel)]="cityData.countryID" (change)="getStates(cityData.countryID)"
+                                        name="countryID" class="form-control populate">
+                                     
+                                                <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}</ng-option>
+                                          
+                                        </ng-select>
+                                     </div>
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select State </label>
+                                        <ng-select [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">                                     
+                                                <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
+                                          
+                                        </ng-select>
+                                     </div>
+                                    <div class="col-lg-12">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">City Name</label>
+                                        <input [(ngModel)]="cityData.cityName"
+                                        name="cityName"  type="text" class="form-control"> </div>                                           
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </section>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addCity()">Save</a>
+          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateCity()">Update</a>
+        </div>
+      </div>
+    </div>
+</div>

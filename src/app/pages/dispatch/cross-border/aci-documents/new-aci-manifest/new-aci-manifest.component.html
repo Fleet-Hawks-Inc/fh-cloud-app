@@ -37,10 +37,7 @@
                                     <div class="row">
                                        <div class="col-lg-4 pr-0">
                                           <ng-select name="CCC" [(ngModel)]="CCC" placeholder="CCC code">
-                                             <ng-option value="1234">1234</ng-option>
-                                             <ng-option value="2342">2342</ng-option>
-                                             <ng-option value="9879">9879</ng-option>
-                                             <ng-option value="8765">8765</ng-option>
+                                             <ng-option *ngFor="let carrier of carriers" [value]="carrier.CCC">{{carrier.CCC}}</ng-option>
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-8 pl-0">
@@ -160,12 +157,12 @@
                                  <div class="col-lg-5">
                                
                                     <button type="button" data-toggle="modal" data-target="#passengerModal"
-                                       class="btn btn-sm btn-success">Add/Edit Passenger(s)</button>
+                                       class="btn btn-sm btn-success">{{modalTitle}} Passenger(s)</button>
                                  </div>
 
                                  <div class="col-lg-5 text-right">
                                     <button type="button" data-toggle="modal" data-target="#containerModal"
-                                       class="btn btn-sm btn-success">Add/Edit Container(s)</button>
+                                       class="btn btn-sm btn-success">{{modalTitle}} Container(s)</button>
                                  </div>
                                  <div class="col-lg-2 mar-top-37">
                                  </div>
@@ -322,10 +319,7 @@
                                                 <div class="row">
                                                    <div class="col-lg-4 pr-0">
                                                       <ng-select [ngModelOptions]="{standalone: true}"  [attr.name]="'shipments['+s+'].CCC'" [(ngModel)]="shipment.CCC" placeholder="Select CCC">
-                                                         <ng-option value="1234">1234</ng-option>
-                                                         <ng-option value="2342">2342</ng-option>
-                                                         <ng-option value="9879">9879</ng-option>
-                                                         <ng-option value="8765">8765</ng-option>
+                                                         <ng-option *ngFor="let carrier of carriers" [value]="carrier.CCC">{{carrier.CCC}}</ng-option>
                                                       </ng-select>
                                                    </div>
                                                    <div class="col-lg-8 pl-0">

@@ -73,11 +73,11 @@
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.currCycle"
-                              name="currCycle" (change)="hideShowColumn()"> Cur. Cycle </label>
+                              name="currCycle" (change)="hideShowColumn()"> Current Cycle </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.currVehicle"
-                              name="currVehicle" (change)="hideShowColumn()"> Cur. Vehicle </label>
+                              name="currVehicle" (change)="hideShowColumn()"> Current Vehicle </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.assets"
@@ -472,8 +472,8 @@
                                     <th width="8%" class="col1">Name</th>
                                     <th width="8%" class="col2">Duty Status</th>
                                     <th class="col18" width="14%" >Location</th>
-                                    <th class="col11">Cur. Cycle</th>
-                                    <th class="col12">Cur. Vehicle</th>
+                                    <th class="col11">Current Cycle</th>
+                                    <th class="col12">Current Vehicle</th>
                                     <th class="col13">Assets</th>
                                     <th class="col14">Contact</th>
                                     <th class="col15">DL</th>
@@ -483,8 +483,7 @@
                                     <th class="col5 extra">Address</th>
                                     <th class="col6 extra">Payment Type</th>
                                     <th class="col7 extra">SIN Number</th>
-                                    <!-- <th class="col8 extra">Contract Start Date</th>
-                                    <th class="col9 extra">Home Terminal</th> -->
+                                    
                                     <th class="col10 extra">Fast Number</th>
                                     <th class="col17">Status</th>
                                     <th width="50">Actions</th>
@@ -492,9 +491,8 @@
                               </thead>
                               <tbody *ngIf="drivers.length > 0">
                                  <tr *ngFor="let driver of drivers;let i = index;">
-                                    <!-- <td><input [checked]="isChecked" [(ngModel)]="driver.checked" (ngModelChange)="checkboxCount()" value="{{driver.assetIdentification}}" type="checkbox"></td> -->
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
-                                       <span class="font-weight-bold line-height-lg">{{driver.firstName}}
+                                       <span class="font-weight-bold line-height-lg text-capitalize">{{driver.firstName}}
                                           {{driver.lastName}}</span>
                                     </td>
                                     <td *ngIf="hideShow.dutyStatus">Live Status</td>
@@ -513,14 +511,14 @@
                                           class="font-weight-bold">Issue State:
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                                     
-                                    <td *ngIf="hideShow.groupID">{{ groupssObject[driver.groupID] }}</td>
-                                    <td *ngIf="hideShow.citizenship">{{ countriesObject[driver.citizenship] }}</td>
-                                    <td *ngIf="hideShow.address">{{ driver.address.address1 }}, {{ driver.address.cityName }}, {{ driver.address.stateName }}, {{ driver.address.countryName }}</td>
+                                    <td *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
+                                    <td *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
+                                    <td *ngIf="hideShow.address">{{ driver.address.address1 }} {{ driver.address.address2}}, {{ driver.address.cityName }}, {{ driver.address.stateName }}, {{ driver.address.countryName }}</td>
                                     <td *ngIf="hideShow.paymentType">{{driver.paymentDetails.paymentType}}</td>
                                     <td *ngIf="hideShow.sin">{{driver.paymentDetails.SIN_Number}}</td>
                                     <!-- <td *ngIf="hideShow.contractStart">{{driver.licenceDetails.contractStart}}</td>
                                     <td *ngIf="hideShow.homeTerminal">Home TErminal</td> -->
-                                    <td *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID}}</td>
+                                    <td *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
 
                                     <td *ngIf="hideShow.status">{{driver.driverStatus}}</td>
                                     <td class="border-0">
@@ -534,7 +532,7 @@
                                              <a class="dropdown-item"
                                                 routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
                                              <a href="javascript:;" class="dropdown-item"
-                                                (click)="deactivateDriver(driver, driver.driverID)">Delete</a>
+                                                (click)="deactivateDriver(driver, driver.driverID)">Deactivate</a>
                                           </div>
                                        </div>
                                     </td>

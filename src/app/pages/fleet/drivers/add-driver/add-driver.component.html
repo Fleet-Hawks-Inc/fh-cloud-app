@@ -2,9 +2,16 @@
     <div class="inner-wrapper">
       
       <section role="main" class="content-body pt-0 pr-0 pl-0">
-          <header class="page-header">
-             <h2>{{pageTitle}}</h2>
-          </header>
+         <header class="page-header">
+            <div class="row pr-4 pl-2" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4">
+                <h4 class="text-4 mt-0 mb-0 text-dark">{{pageTitle}}</h4>
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-5">
+                  <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers List</a>
+               </div>
+            </div>
+         </header>
           <div class="row text-dark">
              <div class="col pr-0 pb-3">
                 <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" (ngSubmit)="onSubmit(driverForm)" >
@@ -23,13 +30,16 @@
                             <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)" [routerLink]="">Cross Border</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)" [routerLink]="">Payment & licence Details</a>
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)" [routerLink]="">Licence Details</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)" [routerLink]="">HOS Compliance</a>
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)" [routerLink]="">Payments</a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)" [routerLink]="">HOS Compliance</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)" [routerLink]="">Emergency Contact</a>
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 8}" (click)="tabChange(8)" [routerLink]="">Emergency Contact</a>
                          </li>
                       </ul>
                    </div>
@@ -90,10 +100,14 @@
                                               >Company ID</label>
                                            <input [(ngModel)]="driverData.companyId" name="companyId" type="text" class="form-control" placeholder="Enter companyID">
                                         </div>
-  
+                                        <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3"
+                                             >Company Name</label>
+                                          <input [(ngModel)]="driverData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter company Name">
+                                       </div>
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Driver Status</label>
+                                              >Status</label>
                                            <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control" placeholder="Select driver status">
                                               <ng-option value="Active">Active</ng-option>
                                               <ng-option value="InActive">InActive</ng-option>
@@ -107,21 +121,53 @@
                                         <div class="col-lg-10">
                                            <div class="row">
                                               <div class="col-lg-6">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Driver First Name</label>
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First Name</label>
                                                  <input [(ngModel)]="driverData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter first name of the driver">
                                               </div>
                                               <div class="col-lg-6">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Driver Last Name</label>
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last Name</label>
                                                  <input [(ngModel)]="driverData.lastName" name="lastName" type="text" class="form-control" placeholder="Enter the last name of the driver">
                                               </div>
                                            </div>
                                         </div>
-  
+                                        <div class="col-lg-10" *ngIf="driverData.driverType != 'contractor'">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Start Date</label>
+                                                <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text" data-plugin-datepicker=""
+                                                   class="form-control" placeholder="Select Date">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date&nbsp; <span
+                                                   class="text-1 optional-label-color">(optional)</span></label>
+                                                <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker" [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text" data-plugin-datepicker=""
+                                                   class="form-control" placeholder="Select Date">
+                                             </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="col-lg-10" *ngIf="driverData.driverType === 'contractor'">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Contract Start Date</label>
+                                                <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart" type="text" data-plugin-datepicker=""
+                                                   class="form-control" placeholder="Select Date">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Contract End Date&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
+                                                <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text" data-plugin-datepicker=""
+                                                   class="form-control" placeholder="Select Date">
+                                             </div>
+                                          </div>
+                                       </div>
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold text-lg-right pt-2"
                                               >Citizenship</label>
                                            <ng-select [(ngModel)]="driverData.citizenship" name="citizenship" placeholder="Select the citizenship country of driver">
-                                              <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                              <ng-option class="text-capitalize" *ngFor="let country of allCountries" value="{{country.name}}">{{country.name}}</ng-option>
                                            </ng-select>
                                         </div>
                                         <div class="col-lg-10">
@@ -183,7 +229,7 @@
                                         <div class="col-lg-12 pt-3">
                                            <div class="row">
                                               <div class="col-lg-3">
-                                                 <label class="control-label font-weight-bold text-lg-right">Driver Gender:</label>
+                                                 <label class="control-label font-weight-bold text-lg-right">Gender:</label>
                                               </div>
                                               <div class="col-lg-2 px-0">
                                                  <div class="radio">
@@ -203,6 +249,12 @@
                                               </div>
                                            </div>
                                         </div>
+                                        <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"
+                                             >Birth Date</label>
+                                          <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB" type="text" data-plugin-datepicker=""
+                                             class="form-control" placeholder="Select Date">
+                                       </div>
                                         <div class="col-lg-10">
                                            <label class="control-label font-weight-bold text-lg-right pt-2"
                                               >Work Phone</label>
@@ -270,7 +322,7 @@
                                      </div>
                                    </div>
                                    <div class="col-lg-2 mar-top-37">
-                                      <a class="btn btn-dark mr-2" (click)="clearUserLocation(i);">Clear</a> 
+                                      <a class="btn btn-dark mr-2" href="javascript:;" (click)="clearUserLocation(i);">Clear</a> 
                                       <!-- <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
                                          ><i class="fa fa-plus fa-fw"></i></a> -->
                                       <a *ngIf="i != 0;" (click)="remove('address', i)" class="btn btn-success" href="javascript:;"
@@ -377,7 +429,7 @@
                                               <input [(ngModel)]="document.issuingAuthority" [attr.name]="'documentDetails['+i+'].issuingAuthority'" [ngModelOptions]="{standalone: true}"  type="text" class="form-control" placeholder="Select licence issuing authority">
                                            </div>
                                            <div class="col-lg-1">
-                                              <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success">Add Document</a>
+                                              <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success">Add Another Document</a>
                                               <a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)" class="btn btn-success"><i class="fa fa-minus"></i></a>
                                            </div>
                                           </div>
@@ -533,215 +585,298 @@
                                </div>
                             </div>
                          </div>
+                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 5}" id="licence" role="tabpanel" aria-labelledby="payment-tab">
+                           <div class="form-group row">
+                              <div class="col-lg-6">
+                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+                                    >Licence Details</label>
+                              </div>
+                              <div class="col-lg-6">
+                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+                                          >WCB Details</label>
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 <div class="row align-items-center">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >CDL Number</label>
+                                       <input [(ngModel)]="driverData.licenceDetails.CDL_Number" name="licenceDetails.CDL_Number" type="text" class="form-control" placeholder="Enter CDL(Commercial Driving Licence) number">
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >Licence Expiration</label>
+                                       <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry" type="text" data-plugin-datepicker=""
+                                          class="form-control" placeholder="Select Date">
+                                    </div>
+                                    <div class="col-lg-10 pt-2">
+                                       <input type="checkbox" [(ngModel)]="driverData.licenceDetails.licenceNotification" name="licenceDetails.licenceNotification" > Send notification (Before 30 days of expiration)
+
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-lg-5">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >Issued Country</label>
+                                       <ng-select
+                                           (change)="getStates($event, 0)"
+                                           [(ngModel)]="driverData.licenceDetails.issuedCountry"
+                                           placeholder="Select country"
+                                           name="licenceDetails.issuedCountry"
+                                           class="form-control populate">
+                                          
+                                            <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                          
+                                       </ng-select>
+                                    </div>
+                                    <div class="col-lg-5">
+                                      <label class="control-label font-weight-bold text-lg-right pt-2"
+                                         >Issued State</label>
+                                      <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState" placeholder="Select state">
+                                         
+                                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                         
+                                      </ng-select>
+                                   </div>
+                                    
+                                   
+                                    
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >Select Vehicle Type&nbsp; <span
+                                          class="text-1 optional-label-color">(optional)</span></label>
+                                       <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType" placeholder="Select licence type of driver">
+                                          
+                                             <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
+                                             <ng-option value="Light Vehicle">Light Vehicle</ng-option>
+                                          
+                                       </ng-select>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-5 offset-lg-1">
+                                 
+                                 <div class="row">
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">WCB#&nbsp; <span
+                                          class="text-1 optional-label-color">(optional)</span></label>
+                                       <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text" class="form-control" placeholder="Enter WCB(Workers Compensation Board) number of driver">
+                                    </div>
+                                    <div class="col-lg-10">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2"
+                                          >Medical Card Renewal&nbsp; <span
+                                          class="text-1 optional-label-color">(optional)</span></label>
+                                       <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.medicalCardRenewal" name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
+                                          class="form-control" placeholder="Select Date">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#&nbsp; <span
+                                         class="text-1 optional-label-color">(optional)</span></label>
+                                      <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare" type="text" class="form-control" placeholder="Enter health care number of the driver">
+                                   </div>
+                                    
+                                 </div>
+                              </div>
+                           </div>
+                         </div>
                          <!-- Payment -->
-                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 5}" id="payment" role="tabpanel" aria-labelledby="payment-tab">
-                            <div>
-                              <div class="form-group row">
-                                  <div class="col-lg-10">
-                                     <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                        >Payment Details</label>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                     <div class="row">
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Default Payment Type</label>
-                                           <ng-select (click)="changePaymentModeForm($event.target.value)" [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
-                                           placeholder="Select the payment type" id="paymentTypeForm">
-                                              
-                                                 <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
-                                                 <ng-option value="Percentage">Percentage</ng-option> 
-                                                 <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
-                                              
-                                           </ng-select>
-                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >SIN Number</label>
-                                           <input [(ngModel)]="driverData.paymentDetails.SIN_Number" name="paymentDetails.SIN_Number" type="text" class="form-control" placeholder="Enter the SIN (Social Insurance Number)">
-                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Federal Tax&nbsp; <span
-                                              class="text-1 optional-label-color">(optional)</span></label>
-                                           <input [(ngModel)]="driverData.paymentDetails.federalTax" name="paymentDetails.federalTax" type="text" class="form-control" placeholder="Enter local tax number of the driver">
-                                        </div>
-                                     </div>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                     <div class="row" id="payPerHourForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
-                                        <div class="col-lg-5">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2" >Rate ($)</label>
-                                           <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text" class="form-control" placeholder="eg. 30,35 etc.">
-                                        </div>
-                                     </div>
-                                     <div class="row" id="payPercentageForm"  *ngIf="driverData.paymentDetails.paymentType == 'Percentage'">
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Load Pay Percent</label>
-                                           <div class="row">
-                                              <div class="col-lg-2">
-                                                 <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage" name="paymentDetails.loadPayPercentage" type="number" class="form-control" placeholder="eg. 5,6 etc.">
-                                              </div>
-                                              <div class="col-lg-2 px-0">
-                                                 <label class="font-weight-bold">%</label>
-                                                 <label class="font-weight-bold pull-right">of</label>
-                                              </div>
-                                              <div class="col-lg-8">
-                                                 <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf" name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of">
-                                                    
-                                                       <ng-option value="Freight Fees">Freight Fees</ng-option>
-                                                       <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
-                                                       <ng-option value="Total Income">Total Income</ng-option>
-                                                    
-                                                 </ng-select>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
-                                     <div>
-                                            <div class="row" id="payPerMileForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Mile'" style="display: flex;">
-                                              <div class="col-lg-5">
-                                                  <label class="control-label font-weight-bold text-lg-right pt-2"
-                                                  >Loaded Miles ($)</label>
-                                                  <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control"  placeholder="Loaded miles rate">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label class="control-label font-weight-bold text-lg-right pt-2"
-                                                  >Empty Miles ($)</label>
-                                                  <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" placeholder="Empty miles rate">
-                                              </div>
-                                              <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2"
-                                                >Calculate Empty Miles for a Dispatch After</label>
-                                                <input [(ngModel)]="driverData.paymentDetails.calculateMiles" name="paymentDetails.calculateMiles" type="text" class="form-control" placeholder="After which empty miles will be calculated">
-                                            </div>
-                                          </div>
-                                           <div class="row">
-                                           <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2"
-                                                 >Local Tax&nbsp; <span
-                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                              <input [(ngModel)]="driverData.paymentDetails.localTax" name="paymentDetails.localTax" type="text" class="form-control" placeholder="Enter local tax number of the driver">
-                                           </div>
-                                           <div class="col-lg-10">
-                                              <label class="control-label font-weight-bold text-lg-right pt-2"
-                                                 >Pay Period</label>
-                                              <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod" placeholder="Select pay period of the driver">
-                                                 
-                                                    <ng-option value="Weekly (52 pay periods a year)">Weekly (52 pay periods a year)</ng-option>
-                                                    <ng-option value="Weekly (53 pay periods a year)">Weekly (53 pay periods a year)</ng-option>
-                                                    <ng-option value="Biweekly (26 pay periods a year)">Biweekly (26 pay periods a year)</ng-option>
-                                                    <ng-option value="Biweekly (27 pay periods a year)">Biweekly (27 pay periods a year)</ng-option>
-                                                    <ng-option value="Monthly (12 pay periods a year)">Monthly (12 pay periods a year)</ng-option>
-                                                    <ng-option value="Quaterly (4 pay periods a year)">Quaterly (4 pay periods a year)</ng-option>
-                                                    <ng-option value="Semi-Annually (2 pay periods a year)">Semi-Annually (2 pay periods a year)</ng-option>
-                                                    <ng-option value="Annually (1 pay periods a year)">Annually (1 pay periods a year)</ng-option>
-                                                 
-                                              </ng-select>
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                               <div class="form-group row">
-                                  <div class="col-lg-10">
-                                     <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                                        >Licence Details</label>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                     <div class="row">
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >CDL Number</label>
-                                           <input [(ngModel)]="driverData.licenceDetails.CDL_Number" name="licenceDetails.CDL_Number" type="text" class="form-control" placeholder="Enter CDL(Commercial Driving Licence) number">
-                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Licence Expiration</label>
-                                           <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry" type="text" data-plugin-datepicker=""
-                                              class="form-control" placeholder="Select Date">
-                                        </div>
-                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2">WCB#&nbsp; <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
-                                          <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text" class="form-control" placeholder="Enter WCB(Workers Compensation Board) number of driver">
-                                       </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Contract Start Date</label>
-                                           <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.contractStart" name="licenceDetails.contractStart" type="text" data-plugin-datepicker=""
-                                              class="form-control" placeholder="Select Date">
-                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Select Vehicle Type&nbsp; <span
-                                              class="text-1 optional-label-color">(optional)</span></label>
-                                           <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType" placeholder="Select licence type of driver">
-                                              
-                                                 <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
-                                                 <ng-option value="Light Vehicle">Light Vehicle</ng-option>
-                                              
-                                           </ng-select>
-                                        </div>
-                                     </div>
-                                  </div>
-                                  <div class="col-lg-5 offset-lg-1">
-                                     <div class="row">
-                                        <div class="col-lg-5">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Issued Country</label>
-                                           <ng-select
-                                               (change)="getStates($event, 0)"
-                                               [(ngModel)]="driverData.licenceDetails.issuedCountry"
-                                               placeholder="Select country"
-                                               name="licenceDetails.issuedCountry"
-                                               class="form-control populate">
-                                              
-                                                <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
-                                              
-                                           </ng-select>
-                                        </div>
-                                        <div class="col-lg-5">
+                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 6}" id="payment" role="tabpanel" aria-labelledby="payment-tab">
+                           <div>
+                             <div class="form-group row">
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
+                                       >Payment Details</label>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row">
+                                       <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                             >Issued State</label>
-                                          <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState" placeholder="Select state">
+                                             >Default Payment Type</label>
+                                          <ng-select (change)="changePaymentModeForm($event)" [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
+                                          placeholder="Select the payment type" id="paymentTypeForm">
                                              
-                                              <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
-                                             
+                                                <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
+                                                <ng-option value="Percentage">Percentage</ng-option> 
+                                                <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
+                                                <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                                           </ng-select>
                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Medical Card Renewal&nbsp; <span
-                                              class="text-1 optional-label-color">(optional)</span></label>
-                                           <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.medicalCardRenewal" name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
-                                              class="form-control" placeholder="Select Date">
-                                        </div>
-                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#&nbsp; <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
-                                          <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare" type="text" class="form-control" placeholder="Enter health care number of the driver">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"
+                                             >SIN Number</label>
+                                          <input [(ngModel)]="driverData.paymentDetails.SIN_Number" name="paymentDetails.SIN_Number" type="text" class="form-control" placeholder="Enter the SIN (Social Insurance Number)">
                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Contract End Date&nbsp; <span
-                                              class="text-1 optional-label-color">(optional)</span></label>
-                                           <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.contractEnd" name="licenceDetails.contractEnd" type="text" data-plugin-datepicker=""
-                                              class="form-control" placeholder="Select Date">
-                                        </div>
-                                        <div class="col-lg-10">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                              >Birth Date</label>
-                                           <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.licenceDetails.DOB" name="licenceDetails.DOB" type="text" data-plugin-datepicker=""
-                                              class="form-control" placeholder="Select Date">
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 6}" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
+                                       <!-- <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"
+                                             >Federal Tax&nbsp; <span
+                                             class="text-1 optional-label-color">(optional)</span></label>
+                                          <input [(ngModel)]="driverData.paymentDetails.federalTax" name="paymentDetails.federalTax" type="text" class="form-control" placeholder="Enter local tax number of the driver">
+                                       </div> -->
+                                    </div>
+                                 </div>
+                                 <div class="col-lg-5 offset-lg-1">
+                                    <div class="row" id="payPerHourForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Hour'">
+                                       <div class="col-lg-4">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Rate ($)</label>
+                                          <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text" class="form-control" placeholder="eg. 30,35 etc.">
+                                       </div>
+                                       <div class="col-lg-6">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                             ></label>
+                                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" name="paymentDetails.rateUnit" placeholder="Select Currency">
+                                             
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
+                                          </ng-select>
+                                       </div>
+                                       <div class="col-lg-4">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Waiting period Pay ($)</label>
+                                          <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay" type="text" class="form-control" placeholder="eg. 30,35 etc.">
+                                       </div>
+                                       <div class="col-lg-6">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                             ></label>
+                                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" name="paymentDetails.waitingPayUnit" placeholder="Select Currency">
+                                             
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
+                                          </ng-select>
+                                       </div>
+                                       <div class="col-lg-4">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Waiting hour start after</label>
+                                          <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter" name="paymentDetails.waitingHourAfter" type="text" class="form-control" placeholder="eg. 2, 3 or 4 etc.">
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="row" id="payPerHourForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Delivery'">
+                                       <div class="col-lg-4">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2" >Delivery Rate ($)</label>
+                                          <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate" type="text" class="form-control" placeholder="eg. 30,35 etc.">
+                                       </div>
+                                       <div class="col-lg-6">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                             ></label>
+                                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit" name="paymentDetails.deliveryRateUnit" placeholder="Select Currency">
+                                             
+                                                <ng-option value="CAD">CAD</ng-option>
+                                                <ng-option value="USD">USD</ng-option>
+                                          </ng-select>
+                                       </div>
+                                    </div>
+                                    <div class="row" id="payPercentageForm"  *ngIf="driverData.paymentDetails.paymentType == 'Percentage'">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"
+                                             >Load Pay Percent</label>
+                                          <div class="row">
+                                             <div class="col-lg-3">
+                                                <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage" name="paymentDetails.loadPayPercentage" type="text" class="form-control" placeholder="eg. 5,6 etc.">
+                                             </div>
+                                             <div class="col-lg-2 px-0">
+                                                <label class="font-weight-bold">%</label>
+                                                <label class="font-weight-bold pull-right">of</label>
+                                             </div>
+                                             <div class="col-lg-7">
+                                                <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf" name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of">
+                                                   
+                                                      <ng-option value="Freight Fees">Freight Fees</ng-option>
+                                                      <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
+                                                      <ng-option value="Total Income">Total Income</ng-option>
+                                                   
+                                                </ng-select>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div>
+                                           <div class="row" id="payPerMileForm" *ngIf="driverData.paymentDetails.paymentType == 'Pay Per Mile'" style="display: flex;">
+                                             <div class="col-lg-3 pr-0">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                 >Loaded Miles</label>
+                                                 <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles" type="text" class="form-control"  placeholder="Loaded miles rate">
+                                             </div>
+                                             <div class="col-lg-2 ">
+                                               <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                                  ></label>
+                                               <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit" name="paymentDetails.loadedMilesUnit" placeholder="Select Currency">
+                                                  
+                                                     <ng-option value="CAD">CAD</ng-option>
+                                                     <ng-option value="USD">USD</ng-option>
+                                               </ng-select>
+                                            </div>
+                                             <div class="col-lg-3 pr-0">
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                 >Empty Miles</label>
+                                                 <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles" type="text" class="form-control" placeholder="Empty miles rate">
+                                             </div>
+                                             <div class="col-lg-2 ">
+                                               <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                                  ></label>
+                                               <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" name="paymentDetails.emptyMilesUnit" placeholder="Select Currency">
+                                                     
+                                                     <ng-option value="CAD">CAD</ng-option>
+                                                     <ng-option value="USD">USD</ng-option>
+                                               </ng-select>
+                                             </div>
+
+                                             <div class="col-lg-3 pr-0">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Loaded Miles (Team) </label>
+                                                <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam" name="paymentDetails.loadedMilesTeam" type="text" class="form-control"  placeholder="Loaded miles rate">
+                                            </div>
+                                            <div class="col-lg-2">
+                                              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                                 ></label>
+                                              <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit" name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency">
+                                                 
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
+                                              </ng-select>
+                                           </div>
+                                            <div class="col-lg-3 pr-0">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Empty Miles (Team)</label>
+                                                <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam" name="paymentDetails.emptyMilesTeam" type="text" class="form-control" placeholder="Empty miles rate">
+                                            </div>
+                                            <div class="col-lg-2">
+                                              <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
+                                                 ></label>
+                                              <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit" name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency">
+                                                    
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
+                                              </ng-select>
+                                            </div>
+                                             <!-- <div class="col-lg-10">
+                                               <label class="control-label font-weight-bold text-lg-right pt-2"
+                                               >Calculate Empty Miles for a Dispatch After</label>
+                                               <input [(ngModel)]="driverData.paymentDetails.calculateMiles" name="paymentDetails.calculateMiles" type="text" class="form-control" placeholder="After which empty miles will be calculated">
+                                           </div> -->
+                                         </div>
+                                          <div class="row">
+                                          <!-- <div class="col-lg-10">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Local Tax&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
+                                             <input [(ngModel)]="driverData.paymentDetails.localTax" name="paymentDetails.localTax" type="text" class="form-control" placeholder="Enter local tax number of the driver">
+                                          </div> -->
+                                          <div class="col-lg-10">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2"
+                                                >Pay Period</label>
+                                             <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod" placeholder="Select pay period of the driver">
+                                                
+                                                   <ng-option value="Weekly">Weekly</ng-option>
+                                                   <ng-option value="Biweekly">Biweekly</ng-option>
+                                                   <ng-option value="Monthly">Monthly</ng-option>
+                                                   <ng-option value="Quaterly">Quaterly</ng-option>
+                                                   <ng-option value="Annually">Annually</ng-option>
+                                             </ng-select>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 7}" id="Driverhos" role="tabpanel" aria-labelledby="Driverhos-tab">
                             <div>
                                <div class="form-group row">
                                   <div class="col-lg-10">
@@ -755,7 +890,7 @@
                                               class="control-label font-weight-bold font-weight-bold text-lg-right pt-2"
                                               >Status</label>
                                            <ng-select
-                                               [(ngModel)]="driverData.hosDetails.hosStatus" name="hosDetails.hosStatus"
+                                               [(ngModel)]="driverData.hosDetails.hosStatus" (change)="complianceChange($event)" name="hosDetails.hosStatus"
                                               class="form-control populate" placeholder="Select exemption status of the driver">
                                              
                                                  <ng-option value="Non Exempted">Non Exempted</ng-option>
@@ -767,14 +902,14 @@
                                            <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks if driver is Exempted.</label>
                                            <textarea [(ngModel)]="driverData.hosDetails.hosRemarks" name="hosDetails.hosRemarks" class="form-control" rows="4" placeholder=" Enter remarks for the exempted driver"></textarea>
                                         </div>
-                                        <div class="col-lg-5 pt-3">
+                                        <div class="col-lg-5 pt-3" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
                                            <div class="checkbox-custom">
                                               <input [(ngModel)]="driverData.hosDetails.pcAllowed" name="hosDetails.pcAllowed" type="checkbox">
                                               <label
                                               class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
                                            </div>
                                         </div>
-                                        <div class="col-lg-5 pt-3">
+                                        <div class="col-lg-5 pt-3" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
                                            <div class="checkbox-custom">
                                               <input [(ngModel)]="driverData.hosDetails.ymAllowed" name="hosDetails.ymAllowed" type="checkbox">
                                               <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
@@ -793,12 +928,12 @@
                                                [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                                              placeholder="Select the record keeping type">
                                               
-                                                 <ng-option value="ELD">ELD</ng-option>
-                                                 <ng-option value="Log Book">Log Book</ng-option>
+                                                 <ng-option *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'" value="ELD">ELD</ng-option>
+                                                 <ng-option *ngIf="driverData.hosDetails.hosStatus == 'Exempted'" value="Log Book">Log Book</ng-option>
                                               
                                            </ng-select>
                                         </div>
-                                        <div class="col-lg-10">
+                                        <div class="col-lg-10" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
                                            <label
                                               class="control-label font-weight-bold text-lg-right pt-2">Cycle</label>
                                            <ng-select
@@ -826,7 +961,7 @@
                                </div>
                             </div>
                          </div>
-                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 7}" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
+                         <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 8}" id="emergency" role="tabpanel" aria-labelledby="emergency-tab">
                             <div>
                                <div class="form-group row">
                                   <div class="col-lg-10">
@@ -878,13 +1013,14 @@
   
                       </div>
                    </div>
+                   
                    <div class="form-group row mt-3">
                       <div class="col-lg-12 text-right pb-4 pr-5">
                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
                          <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
-                         <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 7" class="btn btn-success btnNext">Next</a>
-                         <button type="submit" *ngIf="currentTab == 7 && !driverID" class="btn btn-success">Submit</button>
-                         <a href="javascript:;" *ngIf="currentTab == 7 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
+                         <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 8" class="btn btn-success btnNext">Next</a>
+                         <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Submit</button>
+                         <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
   
                       </div>
                    </div>
@@ -920,7 +1056,7 @@
              </div>
              <div class="modal-body text-dark">
                  <div class="card-body p-0">
-                     <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+                     <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form">
                         <div class="form-row">
                            <div class="form-group col-lg-12 mb-0">
                               <label class="control-label font-weight-bold">Group Name</label>
@@ -940,7 +1076,7 @@
                                  <div class="col-lg-12">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
                                        class="text-1 optional-label-color">(optional)</span></label>
-                                    <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter group description"></textarea>
+                                    <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" placeholder="Enter group description"></textarea>
                                  </div>
                               </div>
                            </div>

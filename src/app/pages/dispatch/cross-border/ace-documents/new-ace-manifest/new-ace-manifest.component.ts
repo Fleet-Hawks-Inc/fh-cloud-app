@@ -110,6 +110,7 @@ export class NewAceManifestComponent implements OnInit {
   thirdPartiesList : any = [];
   thirdPartyStates: any  = [];
   thirdPartyCities: any = [];
+  carriers: any = [];
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
@@ -235,6 +236,7 @@ address:boolean = false;
     this.fetchBrokers();
     this.getStates();
     this.getUSStates();
+    this.fetchCarrier();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -345,6 +347,12 @@ getThirdPartyStates(s,p){
         this.countries = result.Items;
       });
   }
+  fetchCarrier(){
+    this.apiService.getData('carriers/getCarrier')
+    .subscribe((result: any) => {
+      this.carriers = result.Items;
+    });    
+  }v
   fetchShippers(){
   this.apiService.getData('shippers').subscribe((result:any)=> {
     this.shippers = result.Items;
@@ -527,7 +535,7 @@ deleteTrailer(i: number) {
     this.shipments[s].commodities.splice(i, 1);
   }
  addThirdParty(p){
-   if(this.shipments[p].thirdParties.length <= 21){
+   if(this.shipments[p].thirdParties.length <= 20){
    this.shipments[p].thirdParties.push({
     type: '',
     name:'',
@@ -588,8 +596,7 @@ deleteTrailer(i: number) {
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'Draft'
-    }; 
-    console.log('data',data); 
+    };  
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -611,7 +618,7 @@ deleteTrailer(i: number) {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest added successfully');
+        this.toastr.success('Manifest added successfully.');
         this.location.back(); // <-- go back to previous location
 
       },
@@ -734,7 +741,7 @@ deleteTrailer(i: number) {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Manifest Updated successfully');
+        this.toastr.success('Manifest Updated successfully.');
         this.router.navigateByUrl('/dispatch/cross-border/eManifests');
 
       },
