@@ -85,13 +85,17 @@
 											<th>Card Number</th>
 											<th>Unit#</th>
 											<th>Unit Type</th>
+											<th>Trip #</th>
 											<th>Driver Name</th>											
 											<th>Vendor</th>
-											<th>Odometer Miles</th>
-											<th>Trip #</th>
-											<th>Invoice</th>
-											<th>Total Invoice</th>
-											<th>Amount Billed</th>
+											<th>Odometer</th>
+											<th>Fuel Amount</th>
+											<th>Fuel Units</th>
+											<th>Fuel Type</th>
+											<th>Fuel Cost</th>
+											<th>Invoice Total</th>
+											<th>Retail Total</th>
+											<th>Cost Per Mile</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -109,21 +113,25 @@
 													*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
 											</td>
 											<td>{{fuelEntry.unitType}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												tripList[fuelEntry.tripID]}}</td>
 											<td>{{driverList[fuelEntry.paidBy]}}</td>
 											<td>{{vendorList[fuelEntry.vendorID]}}</td>										
 										
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
 												fuelEntry.additionalDetails.odometer }}</td>
-											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												tripList[fuelEntry.tripID]}}</td>
-											<td>Invoice</td>
-											<td>Total Invoice</td>
-											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.amountPaid}}</td>
+											
+												<td>Fuel Amount</td>
+												<td>{{fuelEntry.totalGallons}} gal</td>
+												<td>{{fuelEntry.fuelType}}</td>
+												<td>{{fuelEntry.costPerGallon}} {{currency}}</td>
+												<td>{{fuelEntry.amountPaid}}</td>
+												<td>Retail Total</td>
+												<td>Cost Per Mile</td>
 											<td>
 												<div class="btn-group flex-wrap">
 													<button type="button" class="mb-1 mt-1 mr-1 btn"
-														data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+														data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
 													<div class="dropdown-menu" role="menu">
 														<a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}"
 															class="dropdown-item text-1">Edit</a>

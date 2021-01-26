@@ -114,6 +114,7 @@
                                               <ng-option value="2018">2018</ng-option>
                                               <ng-option value="2019">2019</ng-option>
                                               <ng-option value="2020">2020</ng-option>
+                                              <ng-option value="2021">2021</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
@@ -125,24 +126,29 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
                                         <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID" (change)="getModels()" placeholder="Select vehicle make">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let manufacturer of manufacturers" value="{{manufacturer.manufacturerID}}">{{manufacturer.name}}</ng-option>
+                                              <ng-option *ngFor="let manufacturer of manufacturers" value="{{manufacturer.manufacturerID}}">{{manufacturer.manufacturerName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
-                                    </div>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
+                                                                          </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
                                         <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID" placeholder="Select vehcile model">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let model of models" value="{{model.modelID}}">{{model.name}}</ng-option>
+                                              <ng-option *ngFor="let model of models" value="{{model.modelID}}">{{model.modelName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
                                     </div>
+                                   
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                        <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="getStates()">
@@ -150,9 +156,6 @@
                                              <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                           </optgroup>
                                        </ng-select>
-                                   </div>
-                                   <div class="col-lg-2  mar-top-37">
-                                      <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
                                    </div>
                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
@@ -163,7 +166,9 @@
                                         </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
                                     </div>
  
                                      <div class="col-lg-10">
