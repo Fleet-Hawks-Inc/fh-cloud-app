@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable   } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-boo
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import  Constants  from '../../constants'
+import { ListService } from '../../../../services';
+
 declare var $: any;
 
 @Component({
@@ -24,6 +26,8 @@ export class AddVehicleNewComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
   modalImage = '';
+
+
   /**
    * Quantum prop
    */
@@ -217,7 +221,7 @@ vehicles= [];
     existingDocs = [];
     carrierID;
     programs = [];
-    vendors = [];
+    vendors: any = [];
     timeCreated: '';
   errors = {};
   vehicleForm;
@@ -237,7 +241,9 @@ vehicles= [];
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient,) {
+  vendorModalStatus = false;
+
+  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -250,10 +256,11 @@ vehicles= [];
     this.fetchInspectionForms();
     this.fetchManufacturers();
     this.fetchCountries();
-    this.fetchVendors();
+    //this.fetchVendors();
     this.fetchGroups();
     this.fetchDrivers();
     this.fetchVehicles();
+    this.listService.fetchVendors();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -279,9 +286,11 @@ vehicles= [];
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-
-
+   this.vendors = this.listService.vendorList;
+    console.log(this.vendors);
   }
+
+  
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
