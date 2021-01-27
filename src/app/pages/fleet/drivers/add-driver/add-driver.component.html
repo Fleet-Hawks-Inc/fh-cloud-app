@@ -272,6 +272,36 @@
                                                    class="hidden_input1 w-100" />
                                              </div>
                                           </div>
+                                        </div>
+                                        <div class="col-lg-12 pt-3">
+                                           <div class="row">
+                                              <div class="col-lg-3">
+                                                 <label class="control-label font-weight-bold text-lg-right">Gender:</label>
+                                              </div>
+                                              <div class="col-lg-2 px-0">
+                                                 <div class="radio">
+                                                    <label>
+                                                      <input [(ngModel)]="driverData.gender" name="gender" type="radio" id="driver_male" checked="" value="M">
+                                                    Male
+                                                    </label>
+                                                 </div>
+                                              </div>
+                                              <div class="col-lg-3  pr-0">
+                                                 <div class="radio">
+                                                    <label>
+                                                    <input [(ngModel)]="driverData.gender" name="gender" type="radio" id="driver_female" value="F">
+                                                    Female
+                                                    </label>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2"
+                                             >Birth Date</label>
+                                          <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB" type="text" data-plugin-datepicker=""
+                                             class="form-control" placeholder="Select Date">
+
                                        </div>
                                        <div class="col-lg-12 pt-3">
                                           <div class="row">
@@ -597,13 +627,11 @@
                                                 </div>
                                              </div>
                                           </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-lg-5 offset-lg-1">
-                                    <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document"
-                                       class="btn btn-success">Add Another Document</a>
-                                 </div>
+
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-5 offset-lg-1"></div>
+                                  
 
                               </div>
                               <!-- <div class="col-lg-5 offset-lg-1">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable   } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
@@ -10,7 +10,11 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import  Constants  from '../../constants';
+
+import  Constants  from '../../constants'
+import { ListService } from '../../../../services';
+
+
 declare var $: any;
 
 @Component({
@@ -24,6 +28,8 @@ export class AddVehicleNewComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
   modalImage = '';
+
+
   /**
    * Quantum prop
    */
@@ -60,6 +66,7 @@ vehicles= [];
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
   annualSafetyDate = '';
+  annualSafetyReminder = false;
   currentStatus = '';
   ownership = '';
   ownerOperator = '';
@@ -203,10 +210,10 @@ vehicles= [];
 
   servicePrograms = [];
   inspectionForms = [];
-  manufacturers = [];
-  models = [];
-  countries = [];
-  states = [];
+  manufacturers: any = [];
+  models: any = [];
+  countries: any = [];
+  states: any = [];
   groups = [];
   drivers = [];
   selectedFiles: FileList;
@@ -217,7 +224,7 @@ vehicles= [];
     existingDocs = [];
     carrierID;
     programs = [];
-    vendors = [];
+    vendors: any = [];
     timeCreated: '';
   errors = {};
   vehicleForm;
@@ -237,7 +244,9 @@ vehicles= [];
     autoplaySpeed: 1500,
   };
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient,) {
+  vendorModalStatus = false;
+
+  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -248,12 +257,15 @@ vehicles= [];
   ngOnInit() {
     this.fetchServicePrograms();
     this.fetchInspectionForms();
-    this.fetchManufacturers();
-    this.fetchCountries();
-    this.fetchVendors();
+    //this.fetchVendors();
     this.fetchGroups();
     this.fetchDrivers();
     this.fetchVehicles();
+    this.listService.fetchVendors();
+    this.listService.fetchManufacturers()
+    this.listService.fetchCountries();
+    this.listService.fetchModels();
+    this.listService.fetchStates();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -279,18 +291,28 @@ vehicles= [];
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-
-
+   this.vendors = this.listService.vendorList;
+   this.manufacturers = this.listService.manufacturerList;
+   this.countries = this.listService.countryList;
+   this.models = this.listService.modelList;
+   this.states = this.listService.stateList;
   }
-  fetchVendors() {
-    this.apiService.getData('vendors').subscribe((result: any) => {
-      this.vendors = result.Items;
-    });
-  } 
+
+
   fetchDrivers(){
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
     });
+  }
+
+  resetState(){
+    this.stateID = '';
+    $('#stateSelect').val('');
+  }
+
+  resetModel(){
+    this.modelID = '';
+    $('#vehicleSelect').val('');
   }
 
   fetchServicePrograms() {
@@ -299,32 +321,6 @@ vehicles= [];
     });
   }
 
-  fetchManufacturers() {
-    this.apiService.getData('manufacturers').subscribe((result: any) => {
-      this.manufacturers = result.Items;
-    });
-  }
-
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
-  }
-  getStates() {
-    this.apiService
-      .getData('states/country/' + this.countryID)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-
-  fetchStates() {
-    this.apiService
-      .getData('states')
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
@@ -332,13 +328,6 @@ vehicles= [];
     this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
-  }
-  getModels() {
-    this.apiService
-      .getData(`vehicleModels/manufacturer/${this.manufacturerID}`)
-      .subscribe((result: any) => {
-        this.models = result.Items;
-      });
   }
 
   fetchInspectionForms() {
@@ -367,6 +356,7 @@ vehicles= [];
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
+      annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
       ownerOperator: this.ownerOperator,
@@ -377,6 +367,7 @@ vehicles= [];
       bodyType: this.bodyType,
       bodySubType: this.bodySubType,
       msrp: this.msrp,
+      iftaReporting: this.iftaReporting,
       inspectionFormID: this.inspectionFormID,
       lifeCycle: {
         inServiceDate: this.lifeCycle.inServiceDate,
@@ -624,6 +615,7 @@ vehicles= [];
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.serviceProgramID;
         this.annualSafetyDate = result.annualSafetyDate,
+        this.annualSafetyReminder = result.annualSafetyReminder,
         this.currentStatus = result.currentStatus;
         this.ownership = result.ownership;
         this.ownerOperator = this.ownerOperator;
@@ -781,10 +773,6 @@ vehicles= [];
         $('#turningParametersValue').html(
           this.settings.turningParams
         );
-       
-        this.getModels();
-        this.getStates(); 
-       
       });
 
   }
@@ -808,6 +796,7 @@ vehicles= [];
       teamDriverID: this.teamDriverID,
       serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
+      annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
       ownerOperator: this.ownerOperator,
