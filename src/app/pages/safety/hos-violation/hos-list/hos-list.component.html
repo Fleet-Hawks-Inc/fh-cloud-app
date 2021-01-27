@@ -10,9 +10,13 @@
         <!-- end: sidebar -->
 
         <section role="main" class="content-body">
-            <header class="page-header">
-                <div class="row px-2 pt-2">
-                    <h2 class="pull-left line-height-xl">HOS Violations</h2> 
+
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2">
+                        <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Violations</h4>
+                    </div>
+
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" class="form-control" [(ngModel)]="filterData.driverName" name="searchedDriverName"
@@ -22,6 +26,7 @@
                             {{ data.name }}
                         </div>
                     </div>
+
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="filterData.severity" name="severity"
                             placeholder="Search by severity">
@@ -30,6 +35,7 @@
                             <ng-option class="text-capitalize" value="low">Low severity</ng-option>
                         </ng-select>
                     </div>
+
                     <div class="col-md-3 col-lg-3">
                         <div class="input-daterange input-group" data-plugin-datepicker="">
                             <span class="input-group-prepend">
@@ -56,7 +62,8 @@
                                 class="form-control" autocomplete="off"> 
                         </div>
                     </div>
-                    <div class="col-md-3 col-lg-3">
+
+                    <div class="col-md-3 col-lg-3 text-right pr-1">
                         <a href="javascript:;" (click)="filterSearch()"
                             class="btn btn-success btn-sm mr-2" style="color:white;"> Search
                         </a>
@@ -87,7 +94,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody *ngIf="events.length > 0">
-                                                <tr *ngFor="let data of events">
+                                                <tr class="cursorpoint" *ngFor="let data of events">
                                                     <td routerLink="/safety/hos-violations/details/{{data.eventID}}">{{ driverIDsObject[data.driverUsername] }}</td>
                                                     <td>{{ driversObject[data.driverUsername] }}</td>
                                                     <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>

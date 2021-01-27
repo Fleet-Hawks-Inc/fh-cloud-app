@@ -9,7 +9,8 @@
         <section role="main" class="content-body p-0">
             <header class="page-header pr-5">
                 <form>
-                    <div class="row px-2 pt-2">
+                    <div class="row pr-1 mr-1" style="padding-top:10px;">
+                       
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
@@ -19,6 +20,7 @@
                                 {{ data.name }}
                             </div>
                         </div>
+
                         <div class="col-lg-3 col-md-3">
                             <div class="input-daterange input-group">
                                 <span class="input-group-prepend">
@@ -39,14 +41,23 @@
                                 <!-- <input data-plugin-datepicker="" type="text" class="form-control" name="end"> -->
                             </div>
                         </div>
+
                         <div class="col-md-2 col-lg-2">
                             <button type="button" (click)="searchFilter()"
                                 class="btn btn-sm btn-success mr-2">Search</button>
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
+
                         <div class="col-lg-5 text-right">
-                            <div class="btn-group flex-wrap pull-right mt-1">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle "
+                           
+                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;" class="modal-with-form btn btn-success btn-sm pull-right"><i
+                                    class="fas fa-plus"></i> Add Document</a>
+                            <button type="button" class="mr-2 btn btn-success pull-right btn-sm"><i
+                                    class="fas fa-download"></i> Download</button>
+                            <!-- <a href="#emailForm" class="modal-with-form mb-1 btn-sm mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a> -->
+
+                            <div class="btn-group flex-wrap pull-right">
+                                <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
                                     data-toggle="dropdown" aria-expanded="false">Actions<span
                                         class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -57,13 +68,16 @@
                                 </div>
                             </div>
 
+
                             <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
 
                                 class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
+                      
                             <!-- <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
                                     class="fas fa-download"></i> Download</button> -->
                             <!-- <a href="#emailForm" class="modal-with-form mb-1 btn-sm mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a> -->
+
                         </div>
                     </div>
                 </form>

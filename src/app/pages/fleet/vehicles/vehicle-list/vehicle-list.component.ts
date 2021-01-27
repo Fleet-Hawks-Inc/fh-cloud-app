@@ -39,6 +39,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   pageLength = 10;
   lastEvaluatedKey = '';
 
+
   hideShow = {
     vin: true,
     vehicleName: true,
@@ -61,6 +62,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     primaryMeter: false,
     fuelUnit: false,
   }
+
 
   constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
 
