@@ -114,6 +114,7 @@
                                               <ng-option value="2018">2018</ng-option>
                                               <ng-option value="2019">2019</ng-option>
                                               <ng-option value="2020">2020</ng-option>
+                                              <ng-option value="2021">2021</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
@@ -123,47 +124,55 @@
                                     </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Make</label>
-                                        <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID" (change)="getModels()" placeholder="Select vehicle make">
+                                        <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID"  placeholder="Select vehicle make" (change)="resetModel()">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let manufacturer of manufacturers" value="{{manufacturer.manufacturerID}}">{{manufacturer.name}}</ng-option>
+                                              <ng-option *ngFor="let manufacturer of manufacturers | async" value="{{manufacturer.manufacturerID}}">{{manufacturer.manufacturerName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
-                                    </div>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
+                                                                          </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Model</label>
-                                        <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID" placeholder="Select vehcile model">
+                                        <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID" placeholder="Select vehicle model" id="vehicleSelect">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let model of models" value="{{model.modelID}}">{{model.name}}</ng-option>
+                                              <ng-container *ngFor="let model of models | async">
+                                                <ng-option *ngIf="model.manufacturerID == manufacturerID"  value="{{model.modelID}}">{{model.modelName}}</ng-option>
+                                              </ng-container>
                                            </optgroup>
                                         </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
                                     </div>
+                                   
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
-                                       <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="getStates()">
+                                       <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
                                           <optgroup label="">
-                                             <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                             <ng-option *ngFor="let country of countries | async" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                           </optgroup>
                                        </ng-select>
                                    </div>
-                                   <div class="col-lg-2  mar-top-37">
-                                      <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
-                                   </div>
                                     <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
-                                        <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID" placeholder="Select state">
+                                        <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID" placeholder="Select state" id="stateSelect">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                              <ng-container *ngFor="let state of states | async">
+                                                <ng-option *ngIf="state.countryID == countryID"  value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                              </ng-container>
                                            </optgroup>
                                         </ng-select>
                                     </div>
                                     <div class="col-lg-2  mar-top-37">
-                                       <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                       <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                       class="btn btn-sm btn-success modal-with-form"><i
+                                          class="fas fa-plus"></i></a> 
                                     </div>
  
                                      <div class="col-lg-10">
@@ -175,7 +184,7 @@
                                         </ng-select>
                                      </div>
                                      <div class="col-lg-2  mar-top-37">
-                                        <button type="button"  class="btn btn-sm btn-success"><i class="fas fa-plus"></i></button>
+                                          <a data-toggle="modal" data-target="#addVehicleDriverModal"  href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                      </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team <small>(If any)</small></label>
@@ -264,6 +273,14 @@
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set Reminder)</label>
                                               <input type="date" name="annualSafetyDate" [(ngModel)]="annualSafetyDate" class="form-control"> 
                                        </div>
+                                       <div class="col-lg-10">
+                                          <div class="checkbox mt-1">
+                                             <label>
+                                                <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder" value="true">
+                                                Set Reminder
+                                             </label>
+                                          </div>
+                                       </div>
                                  </div>
                               </div>
                                <div class="col-lg-5 offset-lg-1">
@@ -341,11 +358,12 @@
                                               <ng-option value="Owned">Owned</ng-option>
                                               <ng-option value="Leased">Leased</ng-option>
                                               <ng-option value="Rented">Rented</ng-option>
-                                              <ng-option value="Customer">Customer</ng-option>
+                                              <ng-option value="Owner Operator">Owner Operator</ng-option>
+
                                            </optgroup>
                                         </ng-select>
                                      </div>
-                                     <div class="col-lg-10" *ngIf="ownership == 'Owned'">
+                                     <div class="col-lg-10" *ngIf="ownership == 'Owner Operator'">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator&nbsp; <span
                                          class="text-1 optional-label-color"></span></label>
                                          <input type="text" class="form-control" name="ownerOperator" [(ngModel)]="ownerOperator" placeholder="eg. XYZ etc">
@@ -384,7 +402,7 @@
                                   <div class="row">
                                     <div class="checkbox mt-2 pl-3">
                                        <label>
-                                          <input type="checkbox" value="" name="iftaReporting"
+                                          <input type="checkbox" value="true" name="iftaReporting"
                                           [(ngModel)]="iftaReporting">
                                        Enable IFTA Reporting
                                        </label>
@@ -546,7 +564,7 @@
                                   <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">
-                                          Resale Value
+                                          Depreciation Value
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top"
                                              title="Amount expected to be recuperated after retirement and sale/disposal"></i>&nbsp;
@@ -978,7 +996,7 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>                                      
                                         <ng-select  placeholder="Select Vendor" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
                                
-                                           <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
+                                           <ng-option *ngFor = "let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                        
                                       </ng-select>
                                      </div>
@@ -1647,7 +1665,7 @@
                                      <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID"
                                         [(ngModel)]="purchase.purchaseVendorID" placeholder="Select purchase vendor">
 
-                                        <ng-option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">
+                                        <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">
                                            {{vendor.companyName}}</ng-option>
 
                                      </ng-select>
@@ -2086,3 +2104,21 @@
       <!--/.Content-->
    </div>
 </div>
+
+
+
+<!-- <div class="modal fade" id="addVehicleDriverModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleDriverModal" aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 98%;" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+              <h5 class="modal-title">Add Driver</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+              </button>
+        </div>
+        <div class="modal-body text-dark">
+           <app-add-driver></app-add-driver>
+        </div>
+     </div>
+  </div>
+</div> -->

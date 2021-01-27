@@ -1,105 +1,282 @@
 <!-- add state modal -->
-<div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-labelledby="addStateModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add State</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-          </button>
-        </div>
-        <div class="modal-body text-dark">
-            <section class="card form-wizard" id="w1">
-                <div class="card-body card-body-nopadding">                  
-                    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="stateForm">
-                        <div class="row pt-3">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Country                                   </label>
-                                        <ng-select [(ngModel)]="stateData.countryID"
-                                        name="countryID" class="form-control populate">
-                                     
-                                                <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}</ng-option>
-                                          
-                                        </ng-select>
-                                     </div>
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">State Name
-                                            Number</label>
-                                        <input [(ngModel)]="stateData.stateName"
-                                        name="stateName" type="text" class="form-control"> </div>
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">State Code</label>
-                                        <input [(ngModel)]="stateData.stateCode"
-                                        name="stateCode"  type="text" class="form-control"> </div>                                           
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+<div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-labelledby="addStateModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add State</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard" id="w1">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="stateForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country </label>
+                  <ng-select [(ngModel)]="stateData.countryID" name="countryID" class="form-control populate">
 
-            </section>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addState()">Save</a>
-          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateState()">Update</a>
-        </div>
+                    <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}
+                    </ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter State Name</label>
+                  <input [(ngModel)]="stateData.stateName" placeholder="Enter state name" name="stateName" type="text"
+                    class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter State Code</label>
+                  <input [(ngModel)]="stateData.stateCode" placeholder="Enter state code" name="stateCode" type="text"
+                    class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addState()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateState()">Update</a>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- add city modal -->
 <div class="modal fade" id="addCityModal" tabindex="-1" role="dialog" aria-labelledby="addCityModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add City</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-          </button>
-        </div>
-        <div class="modal-body text-dark">
-            <section class="card form-wizard" id="w1">
-                <div class="card-body card-body-nopadding">                  
-                    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="cityForm">
-                        <div class="row pt-3">
-                            <div class="col-lg-12">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
-                                        <ng-select [(ngModel)]="cityData.countryID" (change)="getStates(cityData.countryID)"
-                                        name="countryID" class="form-control populate">
-                                     
-                                                <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}</ng-option>
-                                          
-                                        </ng-select>
-                                     </div>
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select State </label>
-                                        <ng-select [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">                                     
-                                                <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
-                                          
-                                        </ng-select>
-                                     </div>
-                                    <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">City Name</label>
-                                        <input [(ngModel)]="cityData.cityName"
-                                        name="cityName"  type="text" class="form-control"> </div>                                           
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add City</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard" id="w1">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="cityForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
+                  <ng-select [(ngModel)]="cityData.countryID" (change)="getStates(cityData.countryID)" name="countryID"
+                    class="form-control populate">
 
-            </section>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addCity()">Save</a>
-          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateCity()">Update</a>
-        </div>
+                    <ng-option *ngFor="let country of countries" [value]="country.countryID">{{country.countryName}}
+                    </ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select State </label>
+                  <ng-select [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">
+                    <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter City Name</label>
+                  <input [(ngModel)]="cityData.cityName" placeholder="Enter city name" name="cityName" type="text"
+                    class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addCity()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateCity()">Update</a>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- add vehicle make modal -->
+<div class="modal fade" id="addVehicleMakeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleMakeModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Vehicle Make</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleMakeForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Make/Manufacturer
+                    Name</label>
+                  <input [(ngModel)]="vehicleMakeData.manufacturerName" name="manufacturerName" type="text"
+                    class="form-control" placeholder="Enter make of the vehicle">
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+          (click)="addVehicleMake()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateVehicleMake()">Update</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add vehicle model modal -->
+<div class="modal fade" id="addVehicleModelModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleModelModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Vehicle Model</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleModelForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle
+                    Make/Manufacturer</label>
+                  <ng-select [(ngModel)]="vehicleModelData.manufacturerID" name="manufacturerID"
+                    class="form-control populate" placeholder="Enter make of the vehicle">
+
+                    <ng-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.manufacturerID">
+                      {{manufacturer.manufacturerName}}</ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Model Name</label>
+                  <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" class="form-control">
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+          (click)="addVehicleModel()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateVehicleModel()">Update</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add asset make modal -->
+<div class="modal fade" id="addAssetMakeModal" tabindex="-1" role="dialog" aria-labelledby="addAssetMakeModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Asset Make</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetMakeForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Make Name</label>
+                  <input [(ngModel)]="assetMakeData.manufacturerName" name="manufacturerName" type="text"
+                    class="form-control" placeholder="Enter make of the asset">
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+          (click)="addAssetMake()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateAssetMake()">Update</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- add asset model -->
+<div class="modal fade" id="addAssetModelModal" tabindex="-1" role="dialog" aria-labelledby="addAssetModelModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Asset Model</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <section class="card form-wizard">
+          <div class="card-body card-body-nopadding">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset Make</label>
+                  <ng-select [(ngModel)]="assetModelData.manufacturerID" name="manufacturerID"
+                    class="form-control populate" placeholder="Enter make of the asset">
+                    <ng-option *ngFor="let manufacturer of assetManufacturers" [value]="manufacturer.manufacturerID">
+                      {{manufacturer.manufacturerName}}</ng-option>
+
+                  </ng-select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Model Name</label>
+                  <input [(ngModel)]="assetModelData.modelName" name="modelName" type="text" class="form-control"
+                    placeholder="Enter model of the asset">
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+          (click)="addAssetModel()">Save</a>
+        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
+          (click)="updateAssetModel()">Update</a>
+      </div>
+    </div>
+  </div>
 </div>
