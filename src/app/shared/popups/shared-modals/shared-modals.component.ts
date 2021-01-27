@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { ListService } from '../../../services';
+
 declare var $: any;
 @Component({
   selector: 'app-shared-modals',
@@ -26,7 +28,7 @@ export class SharedModalsComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
-  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient) { }
+  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService) { }
 stateData = {
   countryID : '',
   stateName: '',
@@ -143,6 +145,7 @@ test: any = [];
           this.hasSuccess = true;
           $('#addStateModal').modal('hide');
           this.toastr.success('State Added Successfully.');
+          this.listService.fetchStates();
         }
       });
   }
@@ -223,6 +226,7 @@ test: any = [];
           this.hasSuccess = true;
           $('#addVehicleMakeModal').modal('hide');
           this.toastr.success('Vehicle Make Added Successfully.');
+          this.listService.fetchManufacturers();
         }
       });
   }
@@ -256,6 +260,7 @@ test: any = [];
           this.hasSuccess = true;
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
+          this.listService.fetchModels();
         }
       });
   }
