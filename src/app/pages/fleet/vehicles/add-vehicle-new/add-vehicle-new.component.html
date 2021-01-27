@@ -1982,7 +1982,7 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 pr-5 text-right pb-4">
                      <button *ngIf="activeTab != 1" type="button" (click)="previous()" class="btn btn-default mr-2 mt-4">Previous</button>
-                     <a *ngIf="activeTab != 9" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Next</a>
+                     <a *ngIf="activeTab != 9" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Save & Next</a>
                      <button type="button" *ngIf="activeTab == 9" class="btn btn-default mr-2 mt-4"  (click)="cancel()" >Cancel</button> 
                       <a *ngIf="activeTab == 9 && !vehicleID" [routerLink]="" (click)="addVehicle()" class="btn btn-success mt-4">Save</a>
                       <a *ngIf="activeTab == 9 && vehicleID" [routerLink]="" (click)="updateVehicle()" class="btn btn-success mt-4">Update</a>
