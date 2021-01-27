@@ -365,9 +365,9 @@ html.fixed .content-body {
 
 /*--circle progress css*/
 .circle-wrap {
-  margin: 50px auto;
-  width: 150px;
-  height: 150px;
+  margin: 36px auto;
+  width: 140px;
+  height: 140px;
   background: #e6e2e7;
   border-radius: 50%;
 }

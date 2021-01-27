@@ -153,7 +153,9 @@
                                    
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+
                                        <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
+
                                           <optgroup label="">
                                              <ng-option *ngFor="let country of countries | async" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                           </optgroup>
@@ -341,7 +343,7 @@
                                         <optgroup>
                                      </ng-select>
                                      </div>
-                                     <div class="col-lg-1 pl-0 mar-top-37">
+                                     <div class="col-lg-2 mar-top-37">
                                         <button type="button" data-toggle="modal" data-target="#addGroupModal"
                                         class="modal-with-form btn btn-sm btn-success text-light"><i
                                            class="fas fa-plus"></i></button>

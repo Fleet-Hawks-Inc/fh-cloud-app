@@ -9,9 +9,11 @@
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
 
-        <section role="main" class="content-body pr-0 pt-0 pl-0"> 
-            <header class="page-header">
-                <div class="row px-4" style="padding-top:10px;">
+
+        <section role="main" class="content-body pr-0 pt-0 pl-0">
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input 
@@ -38,6 +40,15 @@
                                 value="{{ vehicle.vehicleID }}">{{ vehicle.vehicleIdentification }}</ng-option>
                         </ng-select>
                     </div>
+
+                    <div class="col-md-6 col-lg-6 pr-1 text-right">
+                        <!-- <div class="d-inline-flex flex-wrap align-items-center">
+                            <button type="button" class="mr-1 btn btn-sm btn-default px-2 py-1"><i
+                                    class="fas fa-chevron-left"></i></button>
+                            <p class="b-0 mx-2 my-0">June 24, 2020</p>
+                            <button type="button" class="ml-1 btn btn-sm btn-default px-2 py-1"><i
+                                    class="fas fa-chevron-right"></i></button>
+
 
                     <div class="col-md-2  col-lg-2">
                         <a href="javascript:;" (click)="searchEvents()"
@@ -87,7 +98,7 @@
                                             </tr>
                                         </thead>
                                         <tbody *ngIf="events.length > 0">
-                                            <tr *ngFor="let data of events; let i= index">
+                                            <tr class="cursorpoint" *ngFor="let data of events; let i= index">
                                                 <td routerLink="/safety/critical-events/event-details/{{data.eventID}}">{{ driversObject[data.driverUsername] }}</td>
                                                 <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>
                                                 <td>{{ data.location }}</td>
