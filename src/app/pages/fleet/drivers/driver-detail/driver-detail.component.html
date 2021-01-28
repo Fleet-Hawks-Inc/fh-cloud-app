@@ -43,7 +43,7 @@
                                 </div> -->
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{yardsObjects[homeTerminal]}}</div>
+                                <div class="col-lg-6 p-2 bor_half">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
@@ -754,7 +754,7 @@
                                 <div class="col-6">
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{driverType}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}}</div>
                                     </div>
                                     <div class="row m-0" *ngIf="driverType == 'employee'">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
@@ -766,12 +766,12 @@
                                     </div>
                                     <div class="row m-0" *ngIf="driverType != 'employee'">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company Name:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{companyName}}</div>
+                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{companyName}}</div>
                                    </div>
                                     
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{driverStatus}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
@@ -779,11 +779,11 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{driverName}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverName}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Gender:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{gender}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{gender}}</div>
                                     </div>
                                     <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Birth:</div>
@@ -805,7 +805,27 @@
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End:</div>
                                     <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
                                  </div>
-                                   
+                                   <div class="row" *ngIf="absDocs.length > 0">
+                                    <div class="col-lg-12 mt-2">
+                                       <div class="vehicle-common-box p-3">
+                                          <div class="row">
+                                             <div class="col-lg-6"><label
+                                                   class="control-label font-weight-bold text-3">Abstract History Document(s)</label></div>
+                                             <div class="col-lg-6 text-right">
+                                             </div>
+                                          </div>
+                                          <hr class="solid mt-2">
+                                          <div class="row mb-1" *ngFor="let item of absDocs;let d= index">
+                                             <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div> 
+                                             <div class="col-lg-3 text-right">
+                                                   <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                                <a href="javascript:;" (click)="delete('abs',item.name, i)" class="modal-with-form"><i
+                                                      class="fas fa-times text-danger"></i></a>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                   </div>
                                     
                                 </div>
                                 <div class="col-6">
@@ -819,7 +839,7 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{citizenship}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[citizenship]}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
@@ -835,7 +855,7 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{groupsObjects[group]}}</div>
+                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{group ? groupsObjects[group] : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
@@ -856,27 +876,27 @@
                             <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.address1 ? item.address1 : '-'}} {{item.address2}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.address1 ? item.address1 : '-'}} {{item.address2}}</div>
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.addressType ? item.addressType : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.addressType ? item.addressType : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">City:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.cityName ? item.cityName : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.cityName ? item.cityName : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Zipcode:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.zipCode ? item.zipCode : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.zipCode ? item.zipCode : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">State:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.stateName ? item.stateName : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.stateName ? item.stateName : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{item.countryName ? item.countryName : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.countryName ? item.countryName : '-'}}</div>
                                 </div>
                             </div>
                         </div>
@@ -890,31 +910,31 @@
                                         
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.documentType}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.documentType}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Number:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.document}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.document}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Authority:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.issuingAuthority ? item.issuingAuthority : '-'}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingAuthority ? item.issuingAuthority : '-'}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{countriesObject[item.issuingCountry]}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[item.issuingCountry]}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing State:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{statesObject[item.issuingState]}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[item.issuingState]}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.issueDate}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issueDate}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{item.expiryDate ? item.expiryDate : '-'}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.expiryDate ? item.expiryDate : '-'}}</div>
                                         </div>
                                        <div class="row m-0" *ngIf="assetsDocs[i]">
                                           <div class="col-lg-12 p-0 mt-2" >
@@ -950,19 +970,19 @@
                                      </div>
                                      <div class="row  m-0">
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Region:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{statesObject[liceIssueSate]}}, {{countriesObject[liceIssueCountry]}}</div>
+                                         <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[liceIssueSate]}}, {{countriesObject[liceIssueCountry]}}</div>
                                      </div>
                                      <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{liceWCB ? liceWCB : '-'}}</div>
+                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceWCB ? liceWCB : '-'}}</div>
                                    </div>
                                    <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Health Care:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{liceHealthCare ? liceHealthCare : '-'}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceHealthCare ? liceHealthCare : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{liceVehicleType ? liceVehicleType : '-'}}</div>
+                                       <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceVehicleType ? liceVehicleType : '-'}}</div>
                                  </div>
                                      <div class="row  m-0">
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
@@ -995,31 +1015,31 @@
                                         </div>
                                         <div class="row m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Default Payment Type:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{paymentType}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{paymentType}}</div>
                                         </div>
                                         <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{loadedMiles}} {{loadedMilesUnit}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMiles}} {{loadedMilesUnit}}</div>
                                         </div>
                                         <div class="row  m-0"*ngIf="paymentType === 'Pay Per Mile'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Loaded Miles (Team):</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{loadedMilesTeam}} {{loadedMilesTeamUnit}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadedMilesTeam}} {{loadedMilesTeamUnit}}</div>
                                       </div>
                                         <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles:</div>
-                                            <div class="col-lg-6 p-2 bor_half">{{emptyMiles}} {{emptyMilesUnit}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMiles}} {{emptyMilesUnit}}</div>
                                         </div>
                                         <div class="row  m-0" *ngIf="paymentType === 'Pay Per Mile'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Empty Miles (Team):</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{emptyMilesTeam}} {{emptyMilesTeamUnit}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{emptyMilesTeam}} {{emptyMilesTeamUnit}}</div>
                                       </div>
                                         <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{loadPayPercentage}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentage}}</div>
                                       </div>
                                       <div class="row  m-0" *ngIf="paymentType === 'Percentage'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Load Pay Percentage Of:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{loadPayPercentageOf}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{loadPayPercentageOf}}</div>
                                     </div>
                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Rate:</div>
@@ -1027,11 +1047,11 @@
                                        </div>
                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting period Pay ($):</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{waitingPay}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingPay}}</div>
                                        </div>
                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Hour'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Waiting hour start after:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{waitingHourAfter}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{waitingHourAfter}}</div>
                                        </div>
                                        <div class="row  m-0" *ngIf="paymentType === 'Pay Per Delivery'">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Delivery Rate:</div>
@@ -1052,7 +1072,7 @@
                                        </div> -->
                                        <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
-                                          <div class="col-lg-6 p-2 bor_half">{{payPeriod}}</div>
+                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{payPeriod}}</div>
                                        </div>
                                        
                                        
@@ -1072,32 +1092,32 @@
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosStatus}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosStatus}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosRemarks ? hosRemarks : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosRemarks ? hosRemarks : '-'}}</div>
                                 </div>
                                 <div class="row  m-0" *ngIf="hosPcAllowed">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosPcAllowed}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosPcAllowed}}</div>
                                 </div>
                                 <div class="row  m-0" *ngIf="hosYmAllowed">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosYmAllowed}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosYmAllowed}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{hosType}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosType}}</div>
                                 </div>
                                 
                              <div class="row  m-0">
                               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Hos Cycle:</div>
-                              <div class="col-lg-6 p-2 bor_half">{{cycleObjects[hosCycle]}}</div>
+                              <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosCycle ? cycleObjects[hosCycle] : '-'}}</div>
                           </div>
                           <div class="row  m-0">
                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                           <div class="col-lg-6 p-2 bor_half">{{yardsObjects[homeTerminal]}}</div>
+                           <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
                        </div>
                                 
                                 
@@ -1111,23 +1131,23 @@
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Name:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{emerName ? emerName : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerName ? emerName : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Relationship:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{emerRelationship ? emerRelationship : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerRelationship ? emerRelationship : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{emerPhone ? emerPhone : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerPhone ? emerPhone : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Email:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{emerEmail ? emerEmail : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emerEmail ? emerEmail : '-'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{emergencyAddress ? emergencyAddress : '-'}} </div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{emergencyAddress ? emergencyAddress : '-'}} </div>
                                 </div>
                             </div>
                         </div>
