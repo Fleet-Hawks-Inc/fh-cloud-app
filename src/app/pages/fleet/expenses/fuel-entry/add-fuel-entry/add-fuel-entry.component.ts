@@ -280,8 +280,8 @@ export class AddFuelEntryComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.toaster.success('Fuel Entry Added successfully');
-        this.router.navigateByUrl('/fleet/expenses/fuel/list');
+        this.toaster.success('Fuel Entry Added Successfully.');
+        this.location.back();
       },
     });
   }

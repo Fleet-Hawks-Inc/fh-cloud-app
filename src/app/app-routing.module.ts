@@ -76,6 +76,10 @@ const routes: Routes = [
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false }
   },
+  {
+    path: 'manage',
+    loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false }
+  },
   { path: 'Left-Bar', component: LeftBarComponent },
   {                             
     path: "404",

@@ -37,6 +37,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   tripList: any = {};
   assetList: any = {};
   driverList: any  = {};
+  vendorList: any  = {};
   countries = [];
   checked = false;
   isChecked = false;
@@ -118,6 +119,11 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       if(this.suggestedUnits.length == 0){
         this.unitID = '';
       }
+  }
+  fetchVendorList() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendorList = result;
+    });
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {

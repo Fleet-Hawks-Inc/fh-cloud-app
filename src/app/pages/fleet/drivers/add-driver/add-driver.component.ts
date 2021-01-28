@@ -307,7 +307,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       manual: false
     });
   }
-
   fetchCycles() {
     this.apiService.getData('cycles')
       .subscribe((result: any) => {
@@ -550,9 +549,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         let file = this.uploadedDocs[j][k];
         formData.append(`uploadedDocs-${j}`, file);
       }
-
     }
-
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
     
@@ -623,8 +620,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (result.address.street === undefined) {
       result.address.street = '';
     }
-    // this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
-    
+    // this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;    
   }
 
   async fetchCountriesByName(name: string, i) {
@@ -758,7 +754,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               manual: result.address[i].manual
             })
           } else {
-
             let newUserAddress = `${result.address[i].address1} ${result.address[i].address2}, ${result.address[i].cityName}, ${result.address[i].stateName}, ${result.address[i].countryName} ${result.address[i].zipCode}`;
             this.newAddress.push({
               addressType: result.address[i].addressType,
