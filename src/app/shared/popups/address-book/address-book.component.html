@@ -14,20 +14,24 @@
                             <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu" role="menu"> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="updateButton = false;" href="javascript:;">Customer</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="showDriverModal = true;" href="javascript:;">Driver</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="updateButton = false;" href="javascript:;">Broker</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="updateButton = false;" href="javascript:;">Vendor</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="updateButton = false;" href="javascript:;">Carrier</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="updateButton = false;" href="javascript:;">Shipper</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="updateButton = false;" href="javascript:;">Consignee</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="updateButton = false;" href="javascript:;">Factoring Company</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="updateButton = false;" href="javascript:;">Staff</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="resetModal('driver')" href="javascript:;">Driver</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="resetModal('broker')" href="javascript:;">Broker</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="resetModal('carrier')" href="javascript:;">Carrier</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addOwnerOperatorModal" (click)="resetModal('operator')" href="javascript:;">Owner Operator</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Shipper</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Staff</a> 
                         </div>
                     </div>
                     <div class="btn-group flex-wrap pull-right mr-2">
                         <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu"> <a class="modal-with-form dropdown-item text-1" href="#importExcelForm">Import from Excel</a> <a href="" class="dropdown-item text-1 pull-right" id="excelbtn">Export to Excel</a> <a class="modal-with-form dropdown-item text-1" href="">Edit</a> <a class="modal-with-form dropdown-item text-1" href="">Delete</a> </div>
+                        <div class="dropdown-menu" role="menu"> 
+                            <a class="modal-with-form dropdown-item text-1" href="#importExcelForm">Import from Excel</a> 
+                            <a href="" class="dropdown-item text-1 pull-right" id="excelbtn">Export to Excel</a> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,6 +47,7 @@
                             <li class="nav-item"> <a class="nav-link" id="broker-tab" data-toggle="tab" href="#broker" role="tab" aria-controls="broker" aria-selected="false">Broker</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false">Vendor</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="carrier-tab" data-toggle="tab" href="#carrier" role="tab" aria-controls="carrier" aria-selected="false">Carrier</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator" role="tab" aria-controls="ownerOperator" aria-selected="true">Owner Operator</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false">Shipper</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false">Consignee</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false">Staff</a> </li>
@@ -67,7 +72,7 @@
                                 <tbody>
                                     <tr *ngFor="let item of allData;let i = index;">
                                         <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" 
-                                            title="{{item.entityType}}">{{item.entityType}}</span></td>
+                                            title="{{item.userType}}">{{item.userTypeTitle}}</span></td>
                                         <td>{{item.firstName}} {{item.lastName}}</td>
                                         <td>{{item.workEmail}}</td>
                                         <td>{{item.workPhone}}</td>
@@ -122,7 +127,7 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer)">Edit</a>
+                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer, i)">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deactivateCustomer(customer, customer.customerID)">Delete</a>
                                                 </div>
                                              </div>
@@ -306,6 +311,54 @@
                                 No data Found
                             </div>
                         </div>
+
+                        <div class="tab-pane fade" id="ownerOperator" role="tabpanel" aria-labelledby="carrier-tab">
+                            <table datatable [dtOptions]="dtOptions" 
+                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
+                                *ngIf="ownerOperatorss?.length > 0">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Type</th>
+                                        <th width="15%">Contact Name</th>
+                                        <th width="20%">Email Address</th>
+                                        <th width="15%">Phone Number</th>
+                                        <th width="45%">Address</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let operator of ownerOperatorss;let i = index;">
+                                        <td><span class="badge badge-dark badge-pill p-1" data-toggle="tooltip" data-placement="bottom" title="Owner Operator">OP</span></td>
+                                        <td (click)="openDetail(content, carrier)">{{operator.firstName}} {{operator.lastName}}</td>
+                                        <td>{{operator.workEmail}}</td>
+                                        <td>{{operator.workPhone}}</td>
+                                        <td>{{operator.address[0].address1}} {{operator.address[0].address2}},
+                                            {{operator.address[0].cityName}}, {{operator.address[0].stateName}}, 
+                                            {{operator.address[0].countryName}}. {{operator.address[0].zipCode}}</td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                   data-toggle="dropdown" aria-haspopup="true"
+                                                   aria-expanded="false">
+                                                   <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(operator.entityType, operator)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateOperator(operator, operator.operatorID)">Delete</a>
+
+                                                   <!-- <a class="dropdown-item" href="javascript:;" (click)="editUser()">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deleteUser()">Delete</a> -->
+                                                </div>
+                                             </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div *ngIf="!ownerOperatorss?.length > 0" class="alert alert-info">
+                                No data Found
+                            </div>
+                        </div>
+
                         <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
                             <table datatable [dtOptions]="dtOptions" 
                                 class="table table-responsive-lg table-bordered table-striped mb-0 simple-table"
@@ -492,13 +545,11 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="showMainModal()">Close</button>
         </div>
       </div>
     </div>
 </div>
-
-
 
 <!-- Add Vendor Modal -->
 <div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" aria-hidden="true">
@@ -506,7 +557,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Vendor</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
             <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
           </button>
         </div>
@@ -515,17 +566,17 @@
                 <div class="card-body card-body-nopadding">
                     <div class="">
                         <ul class="nav top-tabs nav-tabs">
-                            <li class="nav-item active"> <a href="#basicDetails" data-toggle="tab" class="nav-link text-center active">
+                            <li class="nav-item active"> <a href="javascript:;" [ngClass]="{'active': custCurrentTab == 1}" role="tab" (click)="tabChange(1)" class="nav-link text-center active">
                                     Basic Details
                                 </a> </li>
-                            <li class="nav-item"> <a href="#addressDetails" data-toggle="tab" class="nav-link text-center">
+                            <li class="nav-item"> <a href="javascript:;" [ngClass]="{'active': custCurrentTab == 2}" role="tab" (click)="tabChange(2)" class="nav-link text-center">
                                     Address
                                 </a> </li>
                         </ul>
                     </div>
                     <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vendorForm">
                         <div class="tab-content">
-                            <div id="basicDetails" class="tab-pane p-3 active">
+                            <div id="basicDetails" [ngClass]="{'active show': custCurrentTab == 1}" class="tab-pane p-3 active">
                                 <div class="row pt-3">
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
@@ -533,32 +584,32 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                     Name</label>
                                                 <input [(ngModel)]="vendorData.companyName"
-                                                name="companyName" type="text" class="form-control"> </div>
+                                                name="companyName" type="text" class="form-control" placeholder="Enter Company Name"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Account
                                                     Number</label>
                                                 <input [(ngModel)]="vendorData.accountNumber"
-                                                name="accountNumber" type="text" class="form-control"> </div>
+                                                name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                     First Name</label>
                                                 <input [(ngModel)]="vendorData.firstName"
-                                                name="firstName"  type="text" class="form-control"> </div>
+                                                name="firstName"  type="text" class="form-control" placeholder="Enter Vendor First Name"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                     Last Name</label>
                                                 <input [(ngModel)]="vendorData.lastName"
-                                                name="lastName"  type="text" class="form-control"> </div>
+                                                name="lastName"  type="text" class="form-control" placeholder="Enter Vendor Last Name"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email</label>
                                                 <input [(ngModel)]="vendorData.workEmail"
-                                                name="workEmail" type="text" class="form-control"> </div>
+                                                name="workEmail" type="text" class="form-control" placeholder="Enter Email"> </div>
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
                                                 <input [(ngModel)]="vendorData.workPhone"
-                                                name="workPhone" type="text" class="form-control">
+                                                name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
                                                 
                                             </div>
                                             <div class="col-lg-12 pt-2">
@@ -573,34 +624,29 @@
                                     <div class="col-lg-5">
                                         <div class="row  mar-top-37">
                                             <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
-                                                    class="business_image_style" src="assets/img\driver\driver.png" />
+                                                    class="business_image_style" [src]="profilePath" />
                                                 <div class="mt-3">
-                                                    <input [(ngModel)]="vendorData.ProfileImg"
-                                                    name="ProfileImg" type="file" hidden="hidden">
-                                                    <button class="btn btn-dark">Add Picture</button>
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input"> 
+                                                    <button class="btn btn-dark">{{ imageText }}</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="addressDetails" class="tab-pane p-3">
+                            <div id="addressDetails" [ngClass]="{'active show': custCurrentTab == 2}" class="tab-pane p-3">
                                 <div class="row pt-3"  *ngFor="let item of vendorData.address;let i = index;">
                                     <div class="col-lg-4 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Address
-                                                    Type</label>
-                                                <select [(ngModel)]="item.addressType"
-                                                name="addressType" class="form-control populate">
-                                                    <optgroup label="Select Address">
-                                                        <option value="Billing Address">Billing Address</option>
-                                                        <option value="Shipping Address">Shipping Address</option>
-                                                        <option value="Office">Office</option>
-                                                        <option value="Other">Other</option>
-                                                    </optgroup>
-                                                </select>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address Type</label>
+                                                <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                                                    placeholder="Select Address Type">
+                                                    <ng-option value="Billing Address">Billing Address</ng-option>
+                                                    <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                    <ng-option value="Office">Office</ng-option>
+                                                    <ng-option value="Other">Other</ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                     </div>
@@ -633,41 +679,37 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
-                                                    name="countryID{{i}}" data-plugin-selectTwo class="form-control populate address_country">
-                                                        <optgroup label="Select Country">
-                                                            <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-                                                            {{country}}
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getStates($event)" [(ngModel)]="item.countryID"
+                                                        name="countryID{{i}}" class="form-control populate address_country"
+                                                            placeholder="Select Country">
+                                                            <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         State</label>
-                                                    <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
-                                                    name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
-                                                        <optgroup label="Select State">
-                                                            <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getCities($event)" [(ngModel)]="item.stateID"
+                                                    name="stateID{{i}}" class="form-control populate address_state"
+                                                        placeholder="Select State">
+                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <select [(ngModel)]="item.cityID"
-                                                    name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
-                                                        <optgroup label="Select City">
-                                                            <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select [(ngModel)]="item.cityID"
+                                                    name="cityID{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
                                                     <input [(ngModel)]="item.zipCode"
-                                                    name="zipCode{{i}}" type="text" class="form-control address_zip"> 
+                                                    name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
                                                 </div>
                                             </div>
                                             
@@ -680,22 +722,15 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1"
-                                                    name="address1{{i}}" type="text" class="form-control address_one"> 
+                                                    name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2"
-                                                    name="address2{{i}}" type="text" class="form-control"> 
+                                                    name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2"> 
                                                 </div>  
-                                                <!-- <div class="col-lg-12 pt-3">
-                                                    <div class="checkbox-custom">
-                                                        <input [(ngModel)]="item.saveAsLocation"
-                                                        name="saveAsLocation{{i}}" type="checkbox" name="terms">
-                                                        <label for="w1-terms">Also Save as Location?</label>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -708,9 +743,12 @@
             </section>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addVendor()">Submit</a>
-          <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateVendor()">Update</a>
+            <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+            <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 2" class="btn btn-success btnNext">Next</a>
+
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="showMainModal()">Close</button>
+            <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 1" (click)="addVendor()">Submit</a>
+            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 1" (click)="updateVendor()">Update</a>
         </div>
       </div>
     </div>
@@ -723,7 +761,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Customer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -734,17 +772,17 @@
                             <form id="customerForm" class="form-horizontal form-bordered bg-white" method="get" name="form" >
                                 <ul class="nav nav-tabs top-tabs" id="myTab" role="tablist">
                                     <li class="nav-item">
-                                      <a class="nav-link active" id="customerBasic-tab" data-toggle="tab" href="#customerBasic" role="tab" aria-controls="customerBasic" aria-selected="true">Basic details</a>
+                                      <a class="nav-link" [ngClass]="{'active': custCurrentTab == 1}" id="customerBasic-tab" (click)="tabChange(1)" role="tab" aria-controls="customerBasic" aria-selected="true">Basic details</a>
                                     </li>
                                     <li class="nav-item">
-                                      <a class="nav-link" id="customerAddress-tab" data-toggle="tab" href="#customerAddress" role="tab" aria-controls="customerAddress" aria-selected="false">Address</a>
+                                      <a class="nav-link" [ngClass]="{'active': custCurrentTab == 2}" id="customerAddress-tab" (click)="tabChange(2)" role="tab" aria-controls="customerAddress" aria-selected="false">Address</a>
                                     </li>
                                     <li class="nav-item">
-                                      <a class="nav-link" id="customerContact-tab" data-toggle="tab" href="#customerContact" role="tab" aria-controls="customerContact" aria-selected="false">Additional Contact</a>
+                                      <a class="nav-link" [ngClass]="{'active': custCurrentTab == 3}" id="customerContact-tab" (click)="tabChange(3)" role="tab" aria-controls="customerContact" aria-selected="false">Additional Contact</a>
                                     </li>
                                   </ul>
                                   <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="customerBasic" role="tabpanel" aria-labelledby="customerBasic-tab">
+                                    <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 1}" id="customerBasic" role="tabpanel" aria-labelledby="customerBasic-tab">
                                         <div class="row pt-3">
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row">
@@ -754,7 +792,7 @@
                                                             Name
                                                         </label>
                                                         <input [(ngModel)]="customerData.companyName"
-                                                        name="companyName" type="text" class="form-control"> 
+                                                        name="companyName" type="text" class="form-control" placeholder="Enter Company Name" > 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -762,7 +800,7 @@
                                                             Name
                                                         </label>
                                                         <input [(ngModel)]="customerData.dbaName"
-                                                        name="dbaName" type="text" class="form-control"> 
+                                                        name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -770,7 +808,7 @@
                                                             First Name
                                                         </label>
                                                         <input [(ngModel)]="customerData.firstName"
-                                                        name="firstName" type="text" class="form-control"> 
+                                                        name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -778,34 +816,34 @@
                                                             Last Name
                                                         </label>
                                                         <input [(ngModel)]="customerData.lastName"
-                                                        name="lastName" type="text" class="form-control"> 
+                                                        name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
                                                         <input [(ngModel)]="customerData.ein"
-                                                        name="ein" type="text" class="form-control"> 
+                                                        name="ein" type="text" class="form-control" placeholder="Enter EIN"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Account
                                                             Number</label>
                                                         <input [(ngModel)]="customerData.accountNumber"
-                                                        name="accountNumber" type="text" class="form-control"> 
+                                                        name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Work
                                                             Phone</label>
                                                         <input [(ngModel)]="customerData.workPhone"
-                                                        name="workPhone" type="text" class="form-control">
+                                                        name="workPhone" type="text" class="form-control" placeholder="Enter Work Phone">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Work
                                                             Email</label>
                                                         <input [(ngModel)]="customerData.workEmail"
-                                                        name="workEmail" type="text" class="form-control">
+                                                        name="workEmail" type="text" class="form-control" placeholder="Enter Work Email">
                                                     </div>
                                                 </div>
                                             </div>
@@ -813,29 +851,28 @@
                                                 <div class="row  mb-5">
                                                     <div class="col-lg-7 offset-lg-4 text-center mb-4"> 
                                                         <img
-                                                        [src]="customerProfileSrc" height="150px" width="150px"><br>
+                                                        [src]="profilePath" height="150px" width="150px"><br>
                                                         <div class="mt-3 btn btn-dark btn-sm">
-                                                            <input (change)="uploadDriverImg($event)" [(ngModel)]="customerData.ProfileImg"
-                                                            name="ProfileImg" type="file" class="hidden_input"> Add Picture 
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input"> {{ imageText }}
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right">MC</label>
                                                         <input [(ngModel)]="customerData.mc"
-                                                        name="mc" type="text" class="form-control"> 
+                                                        name="mc" type="text" class="form-control" placeholder="Enter MC"> 
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right">DOT</label>
                                                         <input [(ngModel)]="customerData.dot"
-                                                        name="dot" type="text" class="form-control"> 
+                                                        name="dot" type="text" class="form-control" placeholder="Enter DOT"> 
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Fast</label>
                                                         <input [(ngModel)]="customerData.fast"
-                                                        name="fast" type="text" class="form-control"> 
+                                                        name="fast" type="text" class="form-control" placeholder="Enter Fast"> 
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
@@ -843,24 +880,23 @@
                                                             Expiry</label>
                                                         <input [(ngModel)]="customerData.fastExpiry"
                                                         name="fastExpiry" type="text" data-plugin-datepicker=""
-                                                            class="form-control"> 
+                                                            class="form-control" placeholder="Enter Fast Expiry"> 
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Trailer
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Trailer
                                                             Preference</label>
-                                                        <select [(ngModel)]="customerData.trailerPreference"
-                                                        name="trailerPreference" class="form-control">
-                                                            <option>20 ft. sea container (closed top)</option>
-                                                            <option>20 ft. sea container (open top)</option>
-                                                            <option>40 ft. sea container (closed top)</option>
-                                                            <option>40 ft. sea container (open top)</option>
-                                                            <option>Auto carrier trailer</option>
-                                                            <option>Beverage rack trailer</option>
-                                                            <option>Chassis</option>
-                                                            <option>Container (closed top)</option>
-                                                            <option>Drop back trailer</option>
-                                                        </select>
+                                                        <ng-select [(ngModel)]="customerData.trailerPreference" name="trailerPreference" class="form-control"
+                                                            placeholder="Select Trailer Preference">
+                                                            <ng-option value="20 ft. sea container (closed top)">20 ft. sea container (closed top)</ng-option>
+                                                            <ng-option value="20 ft. sea container (open top)">20 ft. sea container (open top)</ng-option>
+                                                            <ng-option value="40 ft. sea container (closed top)">40 ft. sea container (closed top)</ng-option>
+                                                            <ng-option value="40 ft. sea container (open top)">40 ft. sea container (open top)</ng-option>
+                                                            <ng-option value="Auto carrier trailer">Auto carrier trailer</ng-option>
+                                                            <ng-option value="Beverage rack trailer">Beverage rack trailer</ng-option>
+                                                            <ng-option value="Chassis">Chassis</ng-option>
+                                                            <ng-option value="Container (closed top)">Container (closed top)</ng-option>
+                                                            <ng-option value="Drop back trailer">Drop back trailer</ng-option>
+                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-12 d-flex justify-content-between mar-top-37">
                                                         <div class="checkbox-custom pt-2">
@@ -883,23 +919,20 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="customerAddress" role="tabpanel" aria-labelledby="customerAddress-tab">
+                                    <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 2}" id="customerAddress" role="tabpanel" aria-labelledby="customerAddress-tab">
                                         <div class="row pt-3" *ngFor="let item of customerData.address;let i = index;">
                                             <div class="col-lg-3 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
-                                                            Type</label>
-                                                        <select [(ngModel)]="item.addressType"
-                                                        name="addressType{{i}}" class="form-control populate">
-                                                            <optgroup label="Select Address">
-                                                                <option value="Billing Address">Billing Address</option>
-                                                                <option value="Shipping Address">Shipping Address</option>
-                                                                <option value="Office">Office</option>
-                                                                <option value="Other">Other</option>
-                                                            </optgroup>
-                                                        </select>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address Type</label>
+
+                                                        <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                                                            placeholder="Select Address">
+                                                            <ng-option value="Billing Address">Billing Address</ng-option>
+                                                            <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                            <ng-option value="Office">Office</ng-option>
+                                                            <ng-option value="Other">Other</ng-option>
+                                                        </ng-select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -907,7 +940,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location</label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
-                                                <div class="map-search__results bg-white">
+                                                <div class="map-search__results bg-white" *ngIf="searchResults">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
                                                         <a href="javascript:;" (click)="userAddress(customerData, i, item)">{{item.address.label}}</a>
@@ -920,7 +953,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 mar-top-37 ">
-                                                <a class="btn btn-dark" href="javascript:;">Clear</a>
+                                                <a class="btn btn-dark mr-2" href="javascript:;">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(customerData);" class="btn btn-success" href="javascript:;"
                                                 ><i class="fa fa-plus fa-fw"></i></a>
                                                 <a *ngIf="i != 0;" (click)="remove(customerData,  i)" class="btn btn-success" href="javascript:;"
@@ -965,7 +998,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip"> 
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
                                                         </div>
                                                     </div>
                                                     
@@ -1004,7 +1037,7 @@
                                             
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="customerContact" role="tabpanel" aria-labelledby="customerContact-tab">
+                                    <div class="tab-pane fade"  [ngClass]="{'active show': custCurrentTab == 3}" id="customerContact" role="tabpanel" aria-labelledby="customerContact-tab">
                                         <div class="row">
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row">
@@ -1013,20 +1046,20 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control"> 
+                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name</label>
                                                         <input [(ngModel)]="customerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control"> 
+                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
                                                         <input [(ngModel)]="customerData.additionalContact.phone"
-                                                        name="phone" type="text" class="form-control"> 
+                                                        name="phone" type="text" class="form-control" placeholder="Enter Designation"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -1036,32 +1069,33 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
                                                         <input [(ngModel)]="customerData.additionalContact.email"
-                                                        name="email" type="text" class="form-control"> 
+                                                        name="email" type="text" class="form-control" placeholder="Enter Phone"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email</label>
                                                         <input [(ngModel)]="customerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control"> 
+                                                        name="designation" type="text" class="form-control" placeholder="Enter Email"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
                                                         <input [(ngModel)]="customerData.additionalContact.fax"
-                                                        name="fax" type="text" class="form-control"> 
+                                                        name="fax" type="text" class="form-control" placeholder="Enter Fax"> 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div> 
                                     </div>
                                     <div class="col-lg-12 text-right pb-4 pr-5 mt-3">
-                                        <button type="button" class="btn btn-default">Cancel</button>
-                                        <a href="javascript:;" *ngIf="!updateButton" (click)="addCustomer()" class="btn btn-success">Submit</a>
-                                        <a href="javascript:;" *ngIf="updateButton" (click)="updateCustomer()" class="btn btn-success">Update</a>
+                                        <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+                                        <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
+
+                                        <button type="button" class="btn btn-default mr-2" *ngIf="custCurrentTab > 2" data-dismiss="modal" (click)="showMainModal()">Cancel</button>
+                                        <a href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addCustomer()" class="btn btn-success">Submit</a>
+                                        <a href="javascript:;" *ngIf="updateButton && custCurrentTab > 2" (click)="updateCustomer()" class="btn btn-success">Update</a>
                                      </div>
                                   </div>
-                                
-
                             </form>
                         </div>
 
@@ -1079,7 +1113,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Driver</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1097,7 +1131,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Broker</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1108,20 +1142,19 @@
                             <div class="">
                                 <ul class="nav top-tabs nav-tabs">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="brokerBasic-tab" data-toggle="tab" href="#brokerBasic" role="tab" aria-controls="brokerBasic" aria-selected="true">Basic details</a>
+                                        <a class="nav-link active" id="brokerBasic-tab" [ngClass]="{'active': custCurrentTab == 1}" role="tab" (click)="tabChange(1)" aria-controls="brokerBasic" aria-selected="true">Basic details</a>
                                       </li>
                                       <li class="nav-item">
-                                        <a class="nav-link" id="brokerAddress-tab" data-toggle="tab" href="#brokerAddress" role="tab" aria-controls="brokerAddress" aria-selected="false">Address</a>
+                                        <a class="nav-link" id="brokerAddress-tab" [ngClass]="{'active': custCurrentTab == 2}" role="tab" (click)="tabChange(2)" aria-controls="brokerAddress" aria-selected="false">Address</a>
                                       </li>
                                       <li class="nav-item">
-                                        <a class="nav-link" id="brokerContact-tab" data-toggle="tab" href="#brokerContact" role="tab" aria-controls="brokerContact" aria-selected="false">Additional Contact</a>
-                                      </li>
-                                    
+                                        <a class="nav-link" id="brokerContact-tab" [ngClass]="{'active': custCurrentTab == 3}" role="tab" (click)="tabChange(3)" aria-controls="brokerContact" aria-selected="false">Additional Contact</a>
+                                    </li>
                                 </ul>
                             </div>
                             <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="brokerForm">
                                 <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="brokerBasic" role="tabpanel" aria-labelledby="brokerBasic-tab">
+                                    <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 1}"  id="brokerBasic" role="tabpanel" aria-labelledby="brokerBasic-tab">
                                         <div class="row pt-3">
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row">
@@ -1134,16 +1167,16 @@
                                                             <div class="col-lg-3 px-0">
                                                                 <div class="radio">
                                                                     <label>
-                                                                        <input [(ngModel)]="brokerData.brokerType"
-                                                                        name="brokerType" type="radio" name="brokerType" value="company">
+                                                                        <input [(ngModel)]="brokerData.brokerType" type="radio"
+                                                                            name="brokerType" value="company" checked>
                                                                         Company </label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4  pr-0">
                                                                 <div class="radio">
                                                                     <label>
-                                                                        <input [(ngModel)]="brokerData.brokerType"
-                                                                        name="brokerType" type="radio" name="brokerType" value="individual">
+                                                                        <input [(ngModel)]="brokerData.brokerType" type="radio"
+                                                                            name="brokerType" value="individual">
                                                                         Individual </label>
                                                                 </div>
                                                             </div>
@@ -1152,71 +1185,65 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.companyName"
-                                                        name="companyName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.dbaName"
-                                                        name="dbaName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name</label>
-                                                        <input [(ngModel)]="brokerData.firstName"
-                                                        name="firstName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             Last Name</label>
-                                                        <input [(ngModel)]="brokerData.lastName"
-                                                        name="lastName" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">EIN</label>
-                                                        <input [(ngModel)]="brokerData.ein"
-                                                        name="ein" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Enter EIN">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">MC
                                                             Number</label>
-                                                        <input [(ngModel)]="brokerData.mc"
-                                                        name="mc" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
                                                             Number</label>
-                                                        <input [(ngModel)]="brokerData.dot"
-                                                        name="dot" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                        <input [(ngModel)]="brokerData.workEmail"
-                                                        name="workEmail" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="Enter Email">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <div class="row  mar-top-37">
-                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img
-                                                            class="business_image_style" src="assets/img/driver/driver.png" />
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="business_image_style"
+                                                            [src]="profilePath" />
                                                         <div class="mt-3">
-                                                            <input [(ngModel)]="brokerData.ProfileImg"
-                                                            name="ProfileImg"  type="file" hidden="hidden">
-                                                            <button class="btn btn-dark">Add Picture</button>
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input"> {{ imageText }}
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12 mt-1">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Account
                                                             Number</label>
-                                                        <input [(ngModel)]="brokerData.accountNumber"
-                                                        name="accountNumber" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                        <input [(ngModel)]="brokerData.workPhone"
-                                                        name="workPhone" type="text" class="form-control">
-                                                        <!-- <span class="far fa-plus-square"></span>
-                                                    <i data-toggle="" class="far fa-plus-square text-dark h5 m-0" style="cursor: pointer;">
-                                                    </i> -->
+                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="brokerAddress" role="tabpanel" aria-labelledby="brokerAddress-tab">
+                                    <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 2}"  id="brokerAddress" role="tabpanel" aria-labelledby="brokerAddress-tab">
                                         <div class="row pt-3"  *ngFor="let item of brokerData.address;let i = index;">
                                             <div class="col-lg-3 offset-lg-1">
                                                 <div class="row">
@@ -1224,7 +1251,7 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type</label>
-                                                        <select [(ngModel)]="item.addressType"
+                                                        <!-- <select [(ngModel)]="item.addressType"
                                                         name="addressType" class="form-control populate">
                                                             <optgroup label="Select Address">
                                                                 <option value="Billing Address">Billing Address</option>
@@ -1232,7 +1259,14 @@
                                                                 <option value="Office">Office</option>
                                                                 <option value="Other">Other</option>
                                                             </optgroup>
-                                                        </select>
+                                                        </select> -->
+                                                        <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                                                            placeholder="Select Address Type">
+                                                            <ng-option value="Billing Address">Billing Address</ng-option>
+                                                            <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                            <ng-option value="Office">Office</ng-option>
+                                                            <ng-option value="Other">Other</ng-option>
+                                                        </ng-select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1253,7 +1287,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 mar-top-37">
-                                                <a href="javascript:;" class="btn btn-dark">Clear</a>
+                                                <a href="javascript:;" class="btn btn-dark mr-2">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(brokerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
                                                 <a *ngIf="i != 0;" (click)="remove(brokerData,  i)" class="btn btn-success" href="javascript:;"><i
@@ -1265,41 +1299,58 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
+                                                            <!-- <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
                                                             name="countryID{{i}}" data-plugin-selectTwo class="form-control populate address_country">
                                                                 <optgroup label="Select Country">
                                                                     <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
                                                                     {{country}}
                                                                 </optgroup>
-                                                            </select>
+                                                            </select> -->
+
+                                                            <ng-select (change)= "getStates($event)" [(ngModel)]="item.countryID"
+                                                            name="countryID{{i}}" class="form-control populate address_country"
+                                                                placeholder="Select Country">
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                            </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 State</label>
-                                                            <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
+                                                            <!-- <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
                                                             name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
                                                                 <optgroup label="Select State">
                                                                     <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
                                                                 </optgroup>
-                                                            </select>
+                                                            </select> -->
+
+                                                            <ng-select (change)= "getCities($event)" [(ngModel)]="item.stateID"
+                                                            name="stateID{{i}}" class="form-control populate address_state"
+                                                                placeholder="Select State">
+                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                            </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
-                                                            <select [(ngModel)]="item.cityID"
-                                                            name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
+                                                            <!-- <select [(ngModel)]="item.cityID" name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
                                                                 <optgroup label="Select City">
                                                                     <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
                                                                 </optgroup>
-                                                            </select>
+                                                            </select> -->
+
+                                                            <ng-select [(ngModel)]="item.cityID"
+                                                            name="cityID{{i}}" class="form-control populate address_city"
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                            </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip"> 
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
                                                         </div>
                                                     </div>
                                                     
@@ -1312,14 +1363,14 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one"> 
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control"> 
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2"> 
                                                         </div>  
                                                         <!-- <div class="col-lg-12 pt-3">
                                                             <div class="checkbox-custom">
@@ -1334,50 +1385,57 @@
                                         </div>
                                         
                                     </div>
-                                    <div class="tab-pane fade" id="brokerContact" role="tabpanel" aria-labelledby="brokerContact-tab">
+                                    <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}"  id="brokerContact" role="tabpanel" aria-labelledby="brokerContact-tab">
                                         <div class="row">
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.additionalContact.firstName" name="firstName1" type="text"
+                                                            class="form-control" placeholder="Enter First Name">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.additionalContact.lastName" name="lastName1" type="text"
+                                                            class="form-control" placeholder="Enter Last Name">
+                                                    </div>
                                                     <div class="col-lg-12">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control"> </div>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <input [(ngModel)]="brokerData.additionalContact.designation" name="designation" type="text"
+                                                            class="form-control" placeholder="Enter Designation">
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.phone"
-                                                        name="phone" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.additionalContact.phone" name="phone" type="text"
+                                                            class="form-control" placeholder="Enter Phone">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.email"
-                                                        name="email" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.additionalContact.email" name="email" type="text"
+                                                            class="form-control" placeholder="Enter Email">
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.fax"
-                                                        name="fax" type="text" class="form-control"> </div>
+                                                        <input [(ngModel)]="brokerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="Enter Fax">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-12 text-right pr-5">
-                                            <button class="btn btn-default modal-dismiss">Cancel</button>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton" (click)="addBroker()">Submit</a>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton" (click)="updateBroker()">Update</a>
+                                            <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+                                            <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
+
+                                            <button class="btn btn-default modal-dismiss mr-2" *ngIf="custCurrentTab > 2" (click)="showMainModal()" data-dismiss="modal" (click)="showMainModal()">Cancel</button>
+                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 2" (click)="addBroker()">Submit</a>
+                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 2" (click)="updateBroker()">Update</a>
                                             
                                         </div>
                                     </div>
@@ -1399,7 +1457,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Carrier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1792,6 +1850,349 @@
     </div>
 </div>
 
+<!-- ADD owner operator MODAL -->
+<div class="modal fade" id="addOwnerOperatorModal" tabindex="-1" role="dialog" aria-labelledby="addOwnerOperatorModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Owner Operator</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <section class="card form-wizard" id="w1">
+                        <div class="card-body card-body-nopadding">
+                            <div class="">
+                                <ul class="nav top-tabs nav-tabs">
+                                    <li class="nav-item active"> 
+                                        <a [ngClass]="{'active': custCurrentTab == 1}" (click)="tabChange(1)" href="javascript:;" data-toggle="tab" class="nav-link text-center active">
+                                            Basic Details
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item active"> 
+                                        <a [ngClass]="{'active': custCurrentTab == 2}" (click)="tabChange(2)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
+                                            Payment
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a [ngClass]="{'active': custCurrentTab == 3}" (click)="tabChange(3)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
+                                            Address
+                                        </a> 
+                                    </li>
+                                    <li class="nav-item"> 
+                                        <a [ngClass]="{'active': custCurrentTab == 4}" (click)="tabChange(4)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
+                                            Additional Contact
+                                        </a> 
+                                    </li>
+                            
+                                </ul>
+                            </div>
+                            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="operatorForm">
+                                <div class="tab-content">
+                                    <div id="ownerBasic" [ngClass]="{'active show': custCurrentTab == 1}" class="tab-pane p-3 active">
+                                        <div class="row pt-3">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row text-dark">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator Company Name</label>
+                                                        <input [(ngModel)]="ownerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Owner Operator Company Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            First Name</label>
+                                                        <input [(ngModel)]="ownerData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                                            Last Name</label>
+                                                        <input [(ngModel)]="ownerData.lastName" name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input [(ngModel)]="ownerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input [(ngModel)]="ownerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="Enter Email">
+                                                    </div>
+                                                    <div class="col-lg-12 d-flex justify-content-between mt-2">
+                                                        <div class="checkbox-custom pt-2">
+                                                            <input [(ngModel)]="ownerData.csa" name="csa" type="checkbox" name="csa">
+                                                            <label for="csa">CSA</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row  mar-top-37">
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="business_image_style"
+                                                            [src]="profilePath" />
+                                                        <div class="mt-3">
+                                                            <input (change)="uploadDriverImg($event)" type="file" class="hidden_input"> 
+                                                            <button class="btn btn-dark">{{ imageText }}</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="ownerPaymentDetails" [ngClass]="{'active show': custCurrentTab == 2}" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fast</label>
+                                                        <input [(ngModel)]="ownerData.paymentDetails.fast" name="fast" type="text" class="form-control"
+                                                            placeholder="Enter Fast">
+                                                    </div>
+                                    
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                            Expiry</label>
+                                                        <input 
+                                                            [(ngModel)]="ownerData.paymentDetails.fastExpiry" name="fastExpiry" 
+                                                            type="text" 
+                                                            placeholder="Enter Fast Expiry"
+                                                            (click)="fastexp.toggle()" ngbDatepicker #fastexp="ngbDatepicker"
+                                                            class="form-control" autocomplete="off"> 
+                                                    </div>
+                                    
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                            Payroll Type</label>
+                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.payrollType" class="form-control" name="payrollType" placeholder="Select Payroll Type">
+                                                            <ng-option value="Pay Per Mile" selected=true>Pay Per Mile</ng-option>
+                                                            <ng-option value="Percentage">Percentage</ng-option>
+                                                            <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
+                                                        </ng-select>
+                                                    </div>
+                                    
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">SIN #</label>
+                                                        <input [(ngModel)]="ownerData.paymentDetails.sin" name="sin" type="text" class="form-control"
+                                                            placeholder="Enter SIN #">
+                                                    </div>
+                                    
+                                                    <div class="col-lg-6">
+                                                        <div class="row" id="payPerHourForm" *ngIf="ownerData.paymentDetails.payrollType == 'Pay Per Hour'">
+                                                            <div class="col-lg-5">
+                                                                <label class="control-label font-weight-bold text-lg-right pt-2">Rate ($)</label>
+                                                                <input type="number" class="form-control" [(ngModel)]="ownerData.paymentDetails.payrollRate" name="payrollRate">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="payPercentageForm" *ngIf="ownerData.paymentDetails.payrollType == 'Percentage'">
+                                                            <div class="col-lg-10">
+                                                                <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
+                                                                <div class="row">
+                                                                    <div class="col-lg-2 pr-0">
+                                                                        <input type="number" class="form-control" [(ngModel)]="ownerData.paymentDetails.payrollPercent" name="payrollPercent">
+                                                                    </div>
+                                                                    <div class="col-lg-2 px-0">
+                                                                        <label class="font-weight-bold">% of</label>
+                                                                    </div>
+                                                                    <div class="col-lg-8 px-0">
+                                                                        <ng-select [(ngModel)]="ownerData.paymentDetails.percentType" class="form-control" name="percentType" placeholder="Select Percent Type">
+                                                                            <ng-option value="Freight Fees" selected=true>Freight Fees</ng-option>
+                                                                            <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
+                                                                            <ng-option value="Total Income">Total Income</ng-option>
+                                                                        </ng-select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div class="row" id="payPerMileForm" *ngIf="ownerData.paymentDetails.payrollType == 'Pay Per Mile'">
+                                                                <div class="col-lg-5">
+                                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles
+                                                                        ($)</label>
+                                                                    <input type="number" [(ngModel)]="ownerData.paymentDetails.loadedMiles" name="loadedMiles"
+                                                                        class="form-control" placeholder="Enter Loaded Miles ($)">
+                                                                </div>
+                                                                <div class="col-lg-5">
+                                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles ($)</label>
+                                                                    <input type="number" [(ngModel)]="ownerData.paymentDetails.emptyMiles" name="emptyMiles"
+                                                                        class="form-control" placeholder="Enter Empty Miles ($)">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="ownerAddressDetails" [ngClass]="{'active show': custCurrentTab == 3}" class="tab-pane p-3">
+                                        <div class="row pt-3"  *ngFor="let item of ownerData.address;let i = index;">
+                                            <div class="col-lg-3 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                            Type</label>
+                                                        <ng-select [(ngModel)]="item.addressType" class="form-control" name="addressType{{i}}" placeholder="Select Address Type">
+                                                            <ng-option value="Billing Address">Billing Address</ng-option>
+                                                            <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                            <ng-option value="Office">Office</ng-option>
+                                                            <ng-option value="Other">Other</ng-option>
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 offset-lg-1">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                                                    Your Location</label>
+                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
+                                                <div class="map-search__results bg-white">
+                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults">
+                                                      <li *ngFor="let item of searchResults;">
+                                                        <a href="javascript:;" (click)="userAddress(ownerData, i, item)">{{item.address.label}}</a>
+                                                      </li>
+                                                    </ul>
+                                                  </div>
+                                                <div class="checkbox-custom pt-2">
+                                                    <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1">
+                                                    <label for="w1-terms1">Type Manually</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2 mar-top-37">
+                                                <a href="javascript:;" class="btn btn-dark mr-2">Clear</a>
+                                                <a *ngIf="i == 0;" (click)="addAddress(ownerData);" class="btn btn-success" href="javascript:;"><i
+                                                        class="fa fa-plus fa-fw"></i></a>
+                                                <a *ngIf="i != 0;" (click)="remove(ownerData,  i)" class="btn btn-success" href="javascript:;"><i
+                                                        class="fa fa-minus fa-fw"></i></a>
+                                            </div>
+                                            <div *ngIf="manualAddress1" class="row">
+                                                <div class="col-lg-4 offset-lg-1 pt-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-5">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                                Country</label>
+                                                            <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
+                                                            name="countryID{{i}}" data-plugin-selectTwo class="form-control populate address_country">
+                                                                <optgroup label="Select Country">
+                                                                    <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
+                                                                    {{country}}
+                                                                </optgroup>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                                State</label>
+                                                            <select (change)= "getCities($event.target.value)" [(ngModel)]="item.stateID"
+                                                            name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
+                                                                <optgroup label="Select State">
+                                                                    <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
+                                                                </optgroup>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                                City</label>
+                                                            <select [(ngModel)]="item.cityID"
+                                                            name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
+                                                                <optgroup label="Select City">
+                                                                    <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
+                                                                </optgroup>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-lg-5">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                                Code</label>
+                                                            <input [(ngModel)]="item.zipCode"
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                
+                                                <div class="col-lg-5 pt-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                                1</label>
+                                                            <input [(ngModel)]="item.address1"
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <label
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                                2</label>
+                                                            <input [(ngModel)]="item.address2"
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2"> 
+                                                        </div>  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="ownerAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane p-3">
+                                        <div class="row">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">First
+                                                            Name</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.firstName"
+                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Last
+                                                            Name</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.lastName"
+                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name"> 
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.designation"
+                                                        name="designation" type="text" class="form-control" placeholder="Enter Designation">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.phone" name="phone1" type="text" class="form-control" placeholder="Enter Phone">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.email" name="email1" type="text" class="form-control" placeholder="Enter Email">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                        <input [(ngModel)]="ownerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="Enter Fax">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-lg-12 text-right pr-5">
+                                            <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+                                            <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext">Next</a>
+
+                                            <button class="btn btn-default modal-dismiss mr-2" *ngIf="custCurrentTab > 3" data-dismiss="modal" (click)="showMainModal()">Cancel</button>
+                                            <a class="btn btn-success modal-dismiss" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()">Submit</a>
+                                            <a class="btn btn-success modal-dismiss" href="javascript:;" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()">Update</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ADD SHIPPER MODAL -->
 <div class="modal fade" id="addShipperModal" tabindex="-1" role="dialog" aria-labelledby="addShipperModal"
     aria-hidden="true">
@@ -1799,7 +2200,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Shipper</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -1807,22 +2208,22 @@
                 <div class="card-body text-dark">
                     <div class="my-1">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                            <li class="nav-item"> <a class="nav-link active" id="shipperBasicDetails-tab"
-                                    data-toggle="tab" href="#shipperBasicDetails" role="tab"
-                                    aria-controls="shipperBasicDetails" aria-selected="true">Basic</a> </li>
+                            <li class="nav-item"> <a class="nav-link active" id="shipperBasicDetails-tab" data-toggle="tab"
+                                [ngClass]="{'active': custCurrentTab == 1}" role="tab" (click)="tabChange(1)" aria-controls="shipperBasicDetails"
+                                    aria-selected="true">Basic</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="shipperAddress-tab" data-toggle="tab"
-                                    href="#shipperAddress" role="tab" aria-controls="shipperAddress"
+                                [ngClass]="{'active': custCurrentTab == 2}" role="tab" (click)="tabChange(2)" aria-controls="shipperAddress"
                                     aria-selected="false">Address</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="shipperAdditionalContact-tab"
-                                    data-toggle="tab" href="#shipperAdditionalContact" role="tab"
-                                    aria-controls="shipperAdditionalContact" aria-selected="false">Additional
+                            <li class="nav-item"> <a class="nav-link" id="shipperAdditionalContact-tab" data-toggle="tab"
+                                [ngClass]="{'active': custCurrentTab == 3}" role="tab" (click)="tabChange(3)" aria-controls="shipperAdditionalContact"
+                                    aria-selected="false">Additional
                                     Contact</a> </li>
                             <!-- <li class="nav-item"> <a class="nav-link" id="shipperAdditionalDetails-tab" data-toggle="tab" href="#shipperAdditionalDetails" role="tab" aria-controls="shipperAdditionalDetails" aria-selected="false">Additional Information</a> </li> -->
                         </ul>
                     </div>
                     <form class="form-horizontal" novalidate="novalidate">
                         <div class="tab-content p-0" style="box-shadow:none;border:none;">
-                            <div class="tab-pane show active" id="shipperBasicDetails" role="tabpanel"
+                            <div class="tab-pane" [ngClass]="{'active show': custCurrentTab == 1}" id="shipperBasicDetails" role="tabpanel"
                                 aria-labelledby="shipperBasicDetails-tab">
                                 <div class="row pt-3">
                                     <div class="col-lg-12">
@@ -1834,85 +2235,86 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Shipper
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.companyName"
-                                                name="companyName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.companyName" name="companyName" type="text"
+                                                    class="form-control" placeholder="Enter Shipper Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name</label>
-                                                <input [(ngModel)]="shipperData.firstName"
-                                                name="firstName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.firstName" name="firstName" type="text"
+                                                    class="form-control" placeholder="Enter Contact First Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     Last Name</label>
-                                                <input [(ngModel)]="shipperData.lastName"
-                                                name="lastName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.lastName" name="lastName" type="text"
+                                                    class="form-control" placeholder="Enter Contact Last Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">MC
                                                     Number</label>
-                                                <input [(ngModel)]="shipperData.mc"
-                                                name="mc" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
                                                     Number</label>
-                                                <input [(ngModel)]="shipperData.dot"
-                                                name="dot" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="shipperData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row ">
                                             <div class="col-lg-12 text-center"> <img height="150px" width="150px"
-                                                    src="assets/img\driver\driver.png" /></div>
+                                                [src]="profilePath" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
-                                                    <input [(ngModel)]="shipperData.ProfileImg"
-                                                    name="ProfileImg"  type="file" class="hidden_input"> Add Picture </div>
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input">{{ imageText }}
+                                                </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-2">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="shipperData.workPhone"
-                                                name="workPhone" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input [(ngModel)]="shipperData.workPhone" name="workPhone" type="text"
+                                                    class="form-control" placeholder="Enter Phone">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="shipperData.workEmail"
-                                                name="workEmail" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input [(ngModel)]="shipperData.workEmail" name="workEmail" type="text"
+                                                    class="form-control" placeholder="Enter Email">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="shipperAddress" role="tabpanel"
-                                aria-labelledby="shipperAddress-tab">
-                                <div class="row pt-3"  *ngFor="let item of shipperData.address;let i = index;">
+                            <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 2}" id="shipperAddress" role="tabpanel" aria-labelledby="shipperAddress-tab">
+                                <div class="row pt-3" *ngFor="let item of shipperData.address;let i = index;">
                                     <div class="col-lg-3 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                     Type</label>
-                                                <select [(ngModel)]="item.addressType"
-                                                name="addressType" class="form-control populate">
-                                                    <optgroup label="Select Address">
-                                                        <option value="Billing Address">Billing Address</option>
-                                                        <option value="Shipping Address">Shipping Address</option>
-                                                        <option value="Office">Office</option>
-                                                        <option value="Other">Other</option>
-                                                    </optgroup>
-                                                </select>
+                                                <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                                                    placeholder="Select Address Type">
+                                                    <ng-option value="Billing Address">Billing Address</ng-option>
+                                                    <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                    <ng-option value="Office">Office</ng-option>
+                                                    <ng-option value="Other">Other</ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 offset-lg-1">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                             Your Location</label>
-                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
+                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
+                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
                                         <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
-                                              <li *ngFor="let item of searchResults;">
-                                                <a href="javascript:;" (click)="userAddress(shipperData, i, item)">{{item.address.label}}</a>
-                                              </li>
+                                                <li *ngFor="let item of searchResults;">
+                                                    <a href="javascript:;"
+                                                        (click)="userAddress(shipperData, i, item)">{{item.address.label}}</a>
+                                                </li>
                                             </ul>
-                                          </div>
+                                        </div>
                                         <div class="checkbox-custom pt-2">
                                             <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1">
                                             <label for="w1-terms1">Type Manually</label>
@@ -1920,10 +2322,10 @@
                                     </div>
                                     <div class="col-lg-2 mar-top-37">
                                         <a href="javascript:;" class="btn btn-dark">Clear</a>
-                                        <a *ngIf="i == 0;" (click)="addAddress(shipperData);" class="btn btn-success" href="javascript:;"><i
-                                                class="fa fa-plus fa-fw"></i></a>
-                                        <a *ngIf="i != 0;" (click)="remove(shipperData,  i)" class="btn btn-success" href="javascript:;"><i
-                                                class="fa fa-minus fa-fw"></i></a>
+                                        <a *ngIf="i == 0;" (click)="addAddress(shipperData);" class="btn btn-success"
+                                            href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
+                                        <a *ngIf="i != 0;" (click)="remove(shipperData,  i)" class="btn btn-success"
+                                            href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                     <div *ngIf="manualAddress1" class="row">
                                         <div class="col-lg-4 offset-lg-1 pt-4">
@@ -1931,75 +2333,60 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
-                                                    name="countryID{{i}}" data-plugin-selectTwo class="form-control populate address_country">
-                                                        <optgroup label="Select Country">
-                                                            <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-                                                            {{country}}
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getStates($event)" [(ngModel)]="item.countryID"
+                                                    name="countryID{{i}}" class="form-control populate address_country"
+                                                        placeholder="Select Country">
+                                                        <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         State</label>
-                                                    <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
-                                                    name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
-                                                        <optgroup label="Select State">
-                                                            <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getCities($event)" [(ngModel)]="item.stateID"
+                                                    name="stateID{{i}}" class="form-control populate address_state"
+                                                        placeholder="Select State">
+                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <select [(ngModel)]="item.cityID"
-                                                    name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
-                                                        <optgroup label="Select City">
-                                                            <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select [(ngModel)]="item.cityID"
+                                                    name="cityID{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
-                                                    <input [(ngModel)]="item.zipCode"
-                                                    name="zipCode{{i}}" type="text" class="form-control address_zip"> 
+                                                    <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
+                                                        class="form-control address_zip" placeholder="Enter Zip Code">
                                                 </div>
                                             </div>
-                                            
+            
                                         </div>
-                                        
+            
                                         <div class="col-lg-5 pt-4">
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
-                                                    <input [(ngModel)]="item.address1"
-                                                    name="address1{{i}}" type="text" class="form-control address_one"> 
+                                                    <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
+                                                        class="form-control address_one" placeholder="Enter Address 1">
                                                 </div>
                                                 <div class="col-lg-12">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
-                                                    <input [(ngModel)]="item.address2"
-                                                    name="address2{{i}}" type="text" class="form-control"> 
-                                                </div>  
-                                                <!-- <div class="col-lg-12 pt-3">
-                                                    <div class="checkbox-custom">
-                                                        <input [(ngModel)]="item.saveAsLocation"
-                                                        name="saveAsLocation{{i}}" type="checkbox" name="terms">
-                                                        <label for="w1-terms">Also Save as Location?</label>
-                                                    </div>
-                                                </div> -->
+                                                    <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
+                                                        class="form-control" placeholder="Enter Address 2">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="shipperAdditionalContact" role="tabpanel"
+                            <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}" id="shipperAdditionalContact" role="tabpanel"
                                 aria-labelledby="shipperAdditionalContact-tab">
                                 <div class="row">
                                     <div class="col-lg-5 offset-lg-1">
@@ -2007,40 +2394,39 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.firstName"
-                                                name="firstName1" type="text" class="form-control"> 
+                                                <input [(ngModel)]="shipperData.additionalContact.firstName" name="firstName1"
+                                                    type="text" class="form-control" placeholder="Enter First Name">
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.lastName"
-                                                name="lastName" type="text" class="form-control"> 
+                                                <input [(ngModel)]="shipperData.additionalContact.lastName" name="lastName1"
+                                                    type="text" class="form-control" placeholder="Enter Last Name">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.designation"
-                                                name="designation" type="text" class="form-control">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                <input [(ngModel)]="shipperData.additionalContact.designation" name="designation"
+                                                    type="text" class="form-control" placeholder="Enter Designation">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.phone"
-                                                name="phone1" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input [(ngModel)]="shipperData.additionalContact.phone" name="phone1" type="text"
+                                                    class="form-control" placeholder="Enter Phone">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.email"
-                                                name="email1" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input [(ngModel)]="shipperData.additionalContact.email" name="email1" type="text"
+                                                    class="form-control" placeholder="Enter Email">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
-                                                <input [(ngModel)]="shipperData.additionalContact.fax"
-                                                name="fax" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                <input [(ngModel)]="shipperData.additionalContact.fax" name="fax" type="text"
+                                                    class="form-control" placeholder="Enter Fax">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2048,9 +2434,12 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right pr-5">
-                                <button class="btn btn-default modal-dismiss">Cancel</button>
-                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addShipper()">Submit</a>
-                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton" (click)="updateShipper()">Update</a>
+                                <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+                                <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext mr-2">Next</a>
+
+                                <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal" (click)="showMainModal()">Cancel</button>
+                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addShipper()">Submit</a>
+                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2" (click)="updateShipper()">Update</a>
                             </div>
                         </div>
                     </form>
@@ -2067,7 +2456,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Consignee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2075,22 +2464,19 @@
                 <div class="card-body text-dark">
                     <div class="my-1">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                            <li class="nav-item"> <a class="nav-link active" id="consigneeBasicDetails-tab"
-                                    data-toggle="tab" href="#consigneeBasicDetails" role="tab"
-                                    aria-controls="consigneeBasicDetails" aria-selected="true">Basic</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="consigneeAddress-tab" data-toggle="tab"
-                                    href="#consigneeAddress" role="tab" aria-controls="consigneeAddress"
+                            <li class="nav-item"> <a class="nav-link active" id="consigneeBasicDetails-tab" [ngClass]="{'active': custCurrentTab == 1}" role="tab" (click)="tabChange(1)" aria-controls="consigneeBasicDetails"
+                                    aria-selected="true">Basic</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="consigneeAddress-tab" [ngClass]="{'active': custCurrentTab == 2}" role="tab" (click)="tabChange(2)" aria-controls="consigneeAddress"
                                     aria-selected="false">Address</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="consigneeAdditionalContact-tab"
-                                    data-toggle="tab" href="#consigneeAdditionalContact" role="tab"
-                                    aria-controls="consigneeAdditionalContact" aria-selected="false">Additional
+                            <li class="nav-item"> <a class="nav-link" id="consigneeAdditionalContact-tab" [ngClass]="{'active': custCurrentTab == 3}" role="tab" (click)="tabChange(3)" aria-controls="consigneeAdditionalContact"
+                                    aria-selected="false">Additional
                                     Contact</a> </li>
                             <!-- <li class="nav-item"> <a class="nav-link" id="consigneeAdditionalDetails-tab" data-toggle="tab" href="#consigneeAdditionalDetails" role="tab" aria-controls="consigneeAdditionalDetails" aria-selected="false">Additional Information</a> </li> -->
                         </ul>
                     </div>
                     <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="consigneeForm">
                         <div class="tab-content p-0" style="box-shadow:none;border:none;">
-                            <div class="tab-pane show active" id="consigneeBasicDetails" role="tabpanel"
+                            <div class="tab-pane" [ngClass]="{'active show': custCurrentTab == 1}" id="consigneeBasicDetails" role="tabpanel"
                                 aria-labelledby="consigneeBasicDetails-tab">
                                 <div class="row pt-3">
                                     <div class="col-lg-12">
@@ -2100,88 +2486,88 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Consignee
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Consignee
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.companyName"
-                                                name="companyName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.companyName" name="companyName" type="text"
+                                                    class="form-control" placeholder="Enter Consignee Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name</label>
-                                                <input [(ngModel)]="consigneeData.firstName"
-                                                name="firstName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.firstName" name="firstName" type="text"
+                                                    class="form-control" placeholder="Enter Contact First Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     Last Name</label>
-                                                <input [(ngModel)]="consigneeData.lastName"
-                                                name="lastName" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.lastName" name="lastName" type="text"
+                                                    class="form-control" placeholder="Enter Contact Last Name">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">MC
                                                     Number</label>
-                                                <input [(ngModel)]="consigneeData.mc"
-                                                name="mc" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                            </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
                                                     Number</label>
-                                                <input [(ngModel)]="consigneeData.dot"
-                                                name="dot" type="text" class="form-control"> </div>
+                                                <input [(ngModel)]="consigneeData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row ">
                                             <div class="col-lg-12 text-center"> <img height="150px" width="150px"
-                                                    src="assets/img/driver/driver.png" /></div>
+                                                [src]="profilePath" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="mt-3 btn btn-dark btn-sm" style="position:relative;">
-                                                    <input [(ngModel)]="consigneeData.ProfileImg"
-                                                    name="ProfileImg" type="file" class="hidden_input"> Add Picture </div>
+                                                    <input (change)="uploadDriverImg($event)" type="file" class="hidden_input"> {{ imageText }}
+                                                </div>
                                             </div>
                                             <div class="col-lg-12 pt-1 mt-2">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="consigneeData.workPhone"
-                                                name="workPhone" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input [(ngModel)]="consigneeData.workPhone" name="workPhone" type="text"
+                                                    class="form-control" placeholder="Enter Phone">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="consigneeData.workEmail"
-                                                name="workEmail" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input [(ngModel)]="consigneeData.workEmail" name="workEmail" type="text"
+                                                    class="form-control" placeholder="Enter Email">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="consigneeAddress" role="tabpanel"
-                                aria-labelledby="consigneeAddress-tab">
-                                <div class="row pt-3"  *ngFor="let item of consigneeData.address;let i = index;">
+                            <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 2}" id="consigneeAddress" role="tabpanel" aria-labelledby="consigneeAddress-tab">
+                                <div class="row pt-3" *ngFor="let item of consigneeData.address;let i = index;">
                                     <div class="col-lg-3 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                     Type</label>
-                                                <select [(ngModel)]="item.addressType"
-                                                name="addressType" class="form-control populate">
-                                                    <optgroup label="Select Address">
-                                                        <option value="Billing Address">Billing Address</option>
-                                                        <option value="Shipping Address">Shipping Address</option>
-                                                        <option value="Office">Office</option>
-                                                        <option value="Other">Other</option>
-                                                    </optgroup>
-                                                </select>
+                                                <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                                                    placeholder="Select Address Type">
+                                                    <ng-option value="Billing Address">Billing Address</ng-option>
+                                                    <ng-option value="Shipping Address">Shipping Address</ng-option>
+                                                    <ng-option value="Office">Office</ng-option>
+                                                    <ng-option value="Other">Other</ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 offset-lg-1">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                             Your Location</label>
-                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
+                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
+                                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
                                         <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
-                                              <li *ngFor="let item of searchResults;">
-                                                <a href="javascript:;" (click)="userAddress(consigneeData, i, item)">{{item.address.label}}</a>
-                                              </li>
+                                                <li *ngFor="let item of searchResults;">
+                                                    <a href="javascript:;"
+                                                        (click)="userAddress(consigneeData, i, item)">{{item.address.label}}</a>
+                                                </li>
                                             </ul>
-                                          </div>
+                                        </div>
                                         <div class="checkbox-custom pt-2">
                                             <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1">
                                             <label for="w1-terms1">Type Manually</label>
@@ -2189,10 +2575,10 @@
                                     </div>
                                     <div class="col-lg-2 mar-top-37">
                                         <a href="javascript:;" class="btn btn-dark">Clear</a>
-                                        <a *ngIf="i == 0;" (click)="addAddress(consigneeData);" class="btn btn-success" href="javascript:;"><i
-                                                class="fa fa-plus fa-fw"></i></a>
-                                        <a *ngIf="i != 0;" (click)="remove(consigneeData,  i)" class="btn btn-success" href="javascript:;"><i
-                                                class="fa fa-minus fa-fw"></i></a>
+                                        <a *ngIf="i == 0;" (click)="addAddress(consigneeData);" class="btn btn-success"
+                                            href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
+                                        <a *ngIf="i != 0;" (click)="remove(consigneeData,  i)" class="btn btn-success"
+                                            href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                     <div *ngIf="manualAddress1" class="row">
                                         <div class="col-lg-4 offset-lg-1 pt-4">
@@ -2200,75 +2586,60 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <select (change)= "getStates($event.target.value)" [(ngModel)]="item.countryID"
-                                                    name="countryID{{i}}" data-plugin-selectTwo class="form-control populate address_country">
-                                                        <optgroup label="Select Country">
-                                                            <option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</option>
-                                                            {{country}}
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getStates($event)" [(ngModel)]="item.countryID"
+                                                    name="countryID{{i}}" class="form-control populate address_country"
+                                                        placeholder="Select Country">
+                                                        <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         State</label>
-                                                    <select (change)= "getCities($event.target.value)"[(ngModel)]="item.stateID"
-                                                    name="stateID{{i}}" data-plugin-selectTwo class="form-control populate address_state">
-                                                        <optgroup label="Select State">
-                                                            <option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select (change)= "getCities($event)" [(ngModel)]="item.stateID"
+                                                    name="stateID{{i}}" class="form-control populate address_state"
+                                                        placeholder="Select State">
+                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Select
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <select [(ngModel)]="item.cityID"
-                                                    name="cityID{{i}}" data-plugin-selectTwo class="form-control populate address_city">
-                                                        <optgroup label="Select City">
-                                                            <option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</option>
-                                                        </optgroup>
-                                                    </select>
+                                                    <ng-select [(ngModel)]="item.cityID"
+                                                    name="cityID{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Zip
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
-                                                    <input [(ngModel)]="item.zipCode"
-                                                    name="zipCode{{i}}" type="text" class="form-control address_zip"> 
+                                                    <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
+                                                        class="form-control address_zip" placeholder="Enter Zip Code">
                                                 </div>
                                             </div>
-                                            
+    
                                         </div>
-                                        
+            
                                         <div class="col-lg-5 pt-4">
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
-                                                    <input [(ngModel)]="item.address1"
-                                                    name="address1{{i}}" type="text" class="form-control address_one"> 
+                                                    <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
+                                                        class="form-control address_one" placeholder="Enter Address 1">
                                                 </div>
                                                 <div class="col-lg-12">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Address
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
-                                                    <input [(ngModel)]="item.address2"
-                                                    name="address2{{i}}" type="text" class="form-control"> 
-                                                </div>  
-                                                <!-- <div class="col-lg-12 pt-3">
-                                                    <div class="checkbox-custom">
-                                                        <input [(ngModel)]="item.saveAsLocation"
-                                                        name="saveAsLocation{{i}}" type="checkbox" name="terms">
-                                                        <label for="w1-terms">Also Save as Location?</label>
-                                                    </div>
-                                                </div> -->
+                                                    <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
+                                                        class="form-control" placeholder="Enter Address 2">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="consigneeAdditionalContact" role="tabpanel"
+                            <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}" id="consigneeAdditionalContact" role="tabpanel"
                                 aria-labelledby="consigneeAdditionalContact-tab">
                                 <div class="row">
                                     <div class="col-lg-5 offset-lg-1">
@@ -2276,40 +2647,39 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.firstName"
-                                                name="firstName1" type="text" class="form-control"> 
+                                                <input [(ngModel)]="consigneeData.additionalContact.firstName" name="firstName1"
+                                                    type="text" class="form-control" placeholder="Enter First Name">
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.lastName"
-                                                name="lastName1" type="text" class="form-control"> 
+                                                <input [(ngModel)]="consigneeData.additionalContact.lastName" name="lastName1"
+                                                    type="text" class="form-control" placeholder="Enter Last Name">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.designation"
-                                                name="designation" type="text" class="form-control">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                <input [(ngModel)]="consigneeData.additionalContact.designation" name="designation"
+                                                    type="text" class="form-control" placeholder="Enter Designation">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.phone"
-                                                name="phone1" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
+                                                <input [(ngModel)]="consigneeData.additionalContact.phone" name="phone1" type="text"
+                                                    class="form-control" placeholder="Enter Phone">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.email"
-                                                name="email1" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Email</label>
+                                                <input [(ngModel)]="consigneeData.additionalContact.email" name="email1" type="text"
+                                                    class="form-control" placeholder="Enter Email">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.fax"
-                                                name="fax" type="text" class="form-control"> </div>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Fax</label>
+                                                <input [(ngModel)]="consigneeData.additionalContact.fax" name="fax" type="text"
+                                                    class="form-control" placeholder="Enter Fax">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2317,12 +2687,17 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right pr-5">
+                                <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
+                                <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
+
                                 <button class="btn btn-default modal-dismiss">Cancel</button>
-                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addConsignee()">Submit</a>
-                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton" (click)="updateConsignee()">Update</a>
+                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2"
+                                    (click)="addConsignee()">Submit</a>
+                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2"
+                                    (click)="updateConsignee()">Update</a>
                             </div>
                         </div>
-                    
+            
                     </form>
                 </div>
             </div>
@@ -2337,7 +2712,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Factoring Company</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2598,7 +2973,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Add Staff</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
@@ -2935,7 +3310,7 @@
 <ng-template #content let-modal>
             <div class="modal-header">
                 <h5 class="modal-title">{{userDetailTitle}}'s Details</h5>
-                <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close" (click)="showMainModal()">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
