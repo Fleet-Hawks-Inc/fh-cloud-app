@@ -99,7 +99,7 @@ import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
-
+import {PdfAutomationComponent} from './pdf-automation/pdf-automation.component'
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -271,6 +271,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,
+    PdfAutomationComponent
 
   ],
 

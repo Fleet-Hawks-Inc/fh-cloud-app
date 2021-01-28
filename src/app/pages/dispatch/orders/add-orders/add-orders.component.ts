@@ -1,9 +1,9 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import {  ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
 import {AwsUploadService} from '../../../../services/aws-upload.service';
-import { v4 as uuidv4 } from 'uuid';
+
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsService } from '../../../../services/google-maps.service';
@@ -11,12 +11,9 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
 import {NgbTimeStruct, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
-import { element } from 'protractor';
-import { PdfAutomationService } from 'src/app/pages/automation/pdf-automation/pdf-automation.service';
-import { a, input } from 'aws-amplify';
-import { EventEmitter } from 'stream';
+import { PdfAutomationService } from '../../pdf-automation/pdf-automation.service';
 import { Subscription }   from 'rxjs/Subscription';
-import { HttpClientModule } from '@angular/common/http';
+
 declare var $: any;
 declare var H: any;
 @Component({
