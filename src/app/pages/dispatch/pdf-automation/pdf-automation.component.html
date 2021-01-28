@@ -1,30 +1,3 @@
-<style>
-  .cursor {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.vt {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: black;
-}
-
-.hl {
-  position: absolute;
-  height: 1px;
-  left: 0;
-  right: 0;
-  background: black;
-}
-</style>
 <section class="body">
   <!-- start: header -->
   <app-header></app-header>
@@ -40,10 +13,10 @@
         <div class="row pr-5 " style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Pdf Automation</a> </div>
-          
+
         </div>
       </header>
-    
+
       <div class="row">
 
         <table>
@@ -53,12 +26,12 @@
         </div>
         <input type="file" id="myFile" size="50" (click)="selectfile(event)"/>
         <input type="file" id="uploadedfile" size="50" (load)="onpdfLoad()" />
-        
+
        <canvas id="src" width="500"  height="500"  class="d-flex" style="cursor:crosshair" #pdfcanvas (mouseout)="mymouseout($event)" (mousedown)="mymousedown($event)" (mouseup)="mymouseup($event)" (mousemove)="mymousemove($event)" ></canvas>
        <div id="json"> hi</div>
-      
+
       </table>
-      
+
         <h1 id="a"></h1>
 
         <!-- Button trigger modal -->
@@ -98,7 +71,7 @@
                   <option value="notes">notes </option>
                   <option value="minTemprature">minTemprature </option>
                   <option value="maxTemprature" >maxTemprature </option>
-                 
+
 
 
 
@@ -126,7 +99,7 @@
                   <option value="receiverphone">receiverphone </option>
                   <option value="receiverreference">receiverreference </option>
                   <option value="receivernotes">receivernotes </option>
-                
+
                 </select>
 
               </div>

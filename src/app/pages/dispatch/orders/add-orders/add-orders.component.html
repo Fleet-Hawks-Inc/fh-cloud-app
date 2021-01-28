@@ -1,12 +1,11 @@
 <section class="body">
-   
+
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
-    <app-pdfautomation></app-pdfautomation>
+<!--    <app-pdf-automation></app-pdf-automation>-->
 
-
-    <div class="inner-wrapper">
+  <div class="inner-wrapper">
         <!-- start: sidebar -->
         <app-sidebar></app-sidebar>
         <!-- end: sidebar -->
@@ -23,6 +22,12 @@
          </header>
             <div class="card">
                 <div class="card-body">
+
+                  <!--Pdf Automation-->
+                  <app-pdf-automation></app-pdf-automation>
+                  <!--Pdf Automation-->
+
+
                   <form #orderForm="ngForm" (ngSubmit)="orderForm.form.valid && onSubmit()">
                           <div class="form-group row">
                             <div class="col-lg-12 text-right">
@@ -71,7 +76,7 @@
 											</div>
 										</div>
                         </div>
-                        
+
                         <div class="form-group row mt-3">
                             <div class="col-lg-12">
                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Customer</h4> </div>
@@ -82,8 +87,8 @@
                                         <select [(ngModel)]="orderData.customerID" name="customerID" #customerID="ngModel" required customerID (change)="selectedCustomer($event.target.value)" class="form-control">
                                             <optgroup label="Select Customer">
                                                <option value=""></option>
-                                                <option 
-                                                   *ngFor="let customer of customers" 
+                                                <option
+                                                   *ngFor="let customer of customers"
                                                    value="{{customer.customerID}}"
                                                 >
                                                    {{customer.firstName}} {{customer.lastName}}
@@ -131,10 +136,10 @@
                                                          <label class="control-label text-lg-right"><span class=" font-weight-bold">Fax:</span> --</label>
                                                       </div>
                                                    </div>
-                                                    
-                                                    
+
+
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     </div>
@@ -197,15 +202,15 @@
                                 </div>
                             </div>
                         </div>
-                        
-                      
+
+
                         <div class="row">
                            <div class="col-6">
                               <div class="shipper__listing" *ngIf="orderData.shipperInfo?.length > 0">
                                  <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
                                  <table class="table">
                                     <tbody>
-                                      
+
                                        <tr *ngFor="let item of orderData.shipperInfo; let i = index;">
                                           <td>
                                              {{item.shipperName}}
@@ -221,7 +226,7 @@
                                              <i (click)="removeList('shipper', i)" class="fa fa-trash fa-fw"></i>
                                           </td>
                                        </tr>
-                                       
+
                                     </tbody>
                                  </table>
                                </div>
@@ -231,7 +236,7 @@
                                  <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
                                  <table class="table">
                                     <tbody>
-                                      
+
                                        <tr *ngFor="let item of orderData.receiverInfo; let i = index;">
                                           <td>
                                              {{item.receiverName}}
@@ -247,7 +252,7 @@
                                              <i (click)="removeList('receiver', i)" class="fa fa-trash fa-fw"></i>
                                           </td>
                                        </tr>
-                                       
+
                                     </tbody>
                                  </table>
                                </div>
@@ -259,7 +264,7 @@
                          <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
                          <div class="col-lg-6">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
-                            
+
                             <div class="pl-0 pr-5">
                             <div class="toggle toggle-primary">
                                 <section class="toggle">
@@ -287,14 +292,14 @@
                                           </span>
                                        </div>
                                        <div class="col-lg-3">
-                                          
+
                                        </div>
                                     </div>
                                     <div class="row mt-3">
                                        <div class="col-lg-3 labelalign">
                                           <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pickup Location</label>
                                        </div>
-                                       
+
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.pickupLocation"
                                           name="pickupLocation" (keyup)="searchTerm.next($event);" class="form-control" #pickupLocation="ngModel" required pickupLocation tabindex="-1" aria-hidden="true">
@@ -304,7 +309,7 @@
                                                 <a href="javascript:;" (click)="assignLocation('shipper', item.address.label)" title="{{item.address.label}}">{{item.address.label}}</a>
                                              </li>
                                           </ul>
-                                          
+
                                           <span class="text-danger" *ngIf="(orderForm.submitted) && pickupLocation.errors?.required">
                                              This Field is required
                                           </span>
@@ -385,7 +390,7 @@
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.BOL"
                                           name="BOL" type="file" />
-                                         
+
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -396,7 +401,7 @@
                                        </div>
                                        <div class="col-lg-6">
                                           <input [(ngModel)]="shipperCurrent.reference"
-                                          
+
                                           name="reference"  type="text" class="form-control" id="inputDefault">
                                     {{shipperCurrent.reference}}
                                        </div>
@@ -438,7 +443,7 @@
                                        </div>
                                     </div>
 
-                                    
+
 
 
                                     <div class="row mt-3">
@@ -471,7 +476,7 @@
                                           <div class="radio-custom">
                                              <input [(ngModel)]="shipperCurrent.driverLoad"
                                              name="driverLoad" type="radio" value="yes" id="loadyes" checked="">
-                                             
+
                                              <label for="radioExample1">Yes</label>
                                           </div>
                                        </div>
@@ -491,17 +496,17 @@
                                 </section>
                             </div>
                             </div>
-                            
+
                             <a (click)="addShipper()" class="btn btn-success btn-sm" href="javascript:;"><i class="fas fa-plus"></i> Add Next Shipper</a>
-                            
-                            
+
+
                          </div>
-                         
-                         
-                         
+
+
+
                          <div class="col-lg-6">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
-                            
+
                             <div class="pl-0 pr-5">
                             <div class="toggle toggle-primary" data-plugin-toggle>
                                 <section class="toggle">
@@ -529,7 +534,7 @@
                                           </span>
                                        </div>
                                        <div class="col-lg-3">
-                                          
+
                                        </div>
                                     </div>
                                     <div class="row mt-3">
@@ -710,16 +715,16 @@
                                 </section>
                             </div>
                             </div>
-                            
+
                             <a class="btn btn-success btn-sm" href="javascript:" (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a>
-                            
-                            
+
+
                          </div>
                       </div>
 
-                      
+
                       <div class="form-group row">
-                        
+
                          <div class="col-lg-12">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Freight Details</h4>
                             <div class="row mt-3">
@@ -732,7 +737,7 @@
                                      </optgroup>
                                   </select>
                                </div>
-                               
+
                                <div class="col-lg-2">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Location</label>
                                   <select [(ngModel)]="orderData.freightDetails.deliveryLocation"
@@ -754,7 +759,7 @@
                                   <input [(ngModel)]="orderData.freightDetails.quantity"
                                   name="quantity" type="text" class="form-control">
                                </div>
-                               
+
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
                                   <select [(ngModel)]="orderData.freightDetails.quantityUnit"
@@ -772,13 +777,13 @@
                                      </optgroup>
                                   </select>
                                </div>
-                               
+
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Rate</label>
                                   <input [(ngModel)]="orderData.freightDetails.rate"
                                   name="rate" type="text" class="form-control">
                                </div>
-                               
+
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
                                   <select [(ngModel)]="orderData.freightDetails.rateUnit"
@@ -796,15 +801,15 @@
                                      </optgroup>
                                   </select>
                                </div>
-                               
-                               
+
+
 
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Weight</label>
                                   <input [(ngModel)]="orderData.freightDetails.weight"
                                   name="weight" type="text" class="form-control">
                                </div>
-                               
+
                                <div class="col-lg-1">
                                 <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
                                   <select [(ngModel)]="orderData.freightDetails.weightUnit"
@@ -816,8 +821,8 @@
                                      </optgroup>
                                   </select>
                                </div>
-                               
-                               
+
+
                                <div class="col-lg-1">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Amount</label>
                                   <div class="input-group mb-3">
@@ -828,17 +833,17 @@
                                      name="amount" type="text" class="form-control">
                                   </div>
                                </div>
-                               
+
                             </div>
 
                             <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
                          </div>
-                         
+
                       </div>
 
 
                       <div class="form-group row">
-                        
+
                          <div class="col-lg-6">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
 
@@ -852,14 +857,14 @@
                                      name="dropTrailer" type="checkbox" id="droptrailer">
                                      <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
                                   </div>
-                              
+
                                </div>
                                <div class="col-lg-3">
                                </div>
                             </div>
 
-                            
-                            
+
+
                             <div class="row mt-3">
                                <div class="col-lg-3 labelalign">
                                   <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
@@ -913,10 +918,10 @@
                                   </div>
                                </div>
 
-                               
+
                             </div>
 
-                            
+
                          </div>
                          <div class="col-lg-6">
                             <div class="row mt-5">
@@ -933,11 +938,11 @@
 
 
                       <div class="form-group row">
-                        
+
                          <div class="col-lg-8">
                             <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
 
-                            
+
                             <div class="row mt-3">
                                <div class="col-lg-3 labelalign">
                                   <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Freight Fee</label>
@@ -1101,7 +1106,7 @@
                                </div>
                             </div>
                             <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Deduction</a>
-                           
+
                            <div class="row">
                                     <div class="col-lg-8">
                                         <div class="row mt-3">
@@ -1192,7 +1197,7 @@
                                             <div class="col-lg-9 pt-1 bordtop text-right">
                                                 <h5 class="text-right font-weight-semibold text-4 text-dark">Discount</h5> </div>
                                             <div class="col-lg-3 bordtop pt-1">
-                                                <p class="text-right"> 
+                                                <p class="text-right">
                                                    <span *ngIf="orderData.discount.unit != 'percentage'"> $</span>
                                                    <span *ngIf="orderData.discount.unit === 'percentage'"> %</span> <span [innerHTML]="discount"> </span></p>
                                             </div>
@@ -1213,8 +1218,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            
-                            
+
+
                          </div>
 
                          <div class="col-lg-4">
@@ -1223,7 +1228,7 @@
                                <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>
                                 <h5 class="text-4 text-dark mb-3">Calculated Using</h5>
 
-                            
+
                             <div class="col-lg-12 mb-3">
                               <!-- <div class="btn-group-toggle" data-toggle="buttons">
                                  <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
@@ -1251,10 +1256,10 @@
                                     value="manual"> Manual
                               </label>
                             </div>
-                            
-                            
 
-                            
+
+
+
                             <div class="col-lg-12 mb-3">
                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Total Miles</label>
                                <input type="text" [(ngModel)]="orderData.totalMiles"
@@ -1268,24 +1273,24 @@
                              name="remarks" class="form-control" rows="10" id="textareaDefault"></textarea>
                              </div>
 
-                            
+
 
                          </div>
 
-                         
+
                       </div>
 
-           
+
                    <div class="form-group row">
                       <div class="col-lg-12">
-                         <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a> 
+                         <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
                          <button type="submit" class="btn btn-dark modal-confirm">Create Load</button>
                       </div>
                     </div>
                </form>
-               
-               
-               
+
+
+
 
                 </div>
             </div>
