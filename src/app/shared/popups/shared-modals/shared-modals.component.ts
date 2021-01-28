@@ -4,6 +4,9 @@ import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { ListService } from '../../../services';
+
 declare var $: any;
 @Component({
   selector: 'app-shared-modals',
@@ -11,9 +14,12 @@ declare var $: any;
   styleUrls: ['./shared-modals.component.css']
 })
 export class SharedModalsComponent implements OnInit {
+  countriesList: any= [];
   countries: any  = [];
   states: any = [];
   cities: any = [];
+  manufacturers: any = [];
+  assetManufacturers: any = [];
   form:any;
   response: any = '';
   hasError: boolean = false;
@@ -22,7 +28,7 @@ export class SharedModalsComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
-  constructor(private apiService: ApiService,private toastr: ToastrService) { }
+  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService) { }
 stateData = {
   countryID : '',
   stateName: '',
@@ -33,11 +39,62 @@ cityData = {
   stateID: '',
   cityName: '', 
 };
+vehicleMakeData = {
+  manufacturerName: ''
+}
+vehicleModelData = {
+  manufacturerID: '',
+  modelName:''
+}
+assetMakeData = {
+  manufacturerName: ''
+}
+assetModelData = {
+  manufacturerID: '',
+  modelName:''
+}
+test: any = [];
   ngOnInit() {
     this.fetchCountries();
+    this.fetchManufacturers();
+    this.fetchAssetManufacturers();
+    this.newManufacturers();
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
-    });
+      this.form = $('#cityForm').validate();
+      this.form = $('#vehicleMakeForm').validate();
+      this.form = $('#vehicleModelForm').validate();
+      this.form = $('#assetMakeForm').validate();
+      this.form = $('#assetModelForm').validate();
+    });    
+  }
+  /**
+   * fetch vehicle manufacturers
+   */
+  fetchManufacturers(){
+    this.apiService.getData('manufacturers')
+      .subscribe((result: any) => {
+        this.manufacturers = result.Items;
+      });
+  }
+  newManufacturers(){
+    this.apiService.getData('manufacturers')
+    .subscribe((result: any) => {
+      this.test = result.Items;   
+      for(let i=0; i< this.test.length; i++){
+        
+   }
+    }); 
+ 
+  }
+   /**
+   * fetch asset manufacturers
+   */
+  fetchAssetManufacturers(){
+    this.apiService.getData('assetManufacturers')
+      .subscribe((result: any) => {
+        this.assetManufacturers = result.Items;
+      });
   }
  /*
    * Get all countries from api
@@ -48,7 +105,6 @@ cityData = {
         this.countries = result.Items;
       });
   }
-
   getStates(id) {
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
@@ -88,12 +144,12 @@ cityData = {
           this.response = res;
           this.hasSuccess = true;
           $('#addStateModal').modal('hide');
-          this.toastr.success('State Added Successfully');
+          this.toastr.success('State Added Successfully.');
+          this.listService.fetchStates();
         }
       });
   }
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -139,7 +195,139 @@ cityData = {
           this.response = res;
           this.hasSuccess = true;
           $('#addCityModal').modal('hide');
-          this.toastr.success('City Added Successfully');
+          this.toastr.success('City Added Successfully.');
+        }
+      });
+  }
+  // add vehicle make
+  addVehicleMake() {
+    this.hideErrors();  
+    this.apiService.postData('manufacturers', this.vehicleMakeData).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          $('#addVehicleMakeModal').modal('hide');
+          this.toastr.success('Vehicle Make Added Successfully.');
+          this.listService.fetchManufacturers();
+        }
+      });
+  }
+
+   /**
+    *   add vehicle model
+    * */
+   addVehicleModel() {
+    this.hideErrors();  
+    this.apiService.postData('vehicleModels', this.vehicleModelData).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          $('#addVehicleModelModal').modal('hide');
+          this.toastr.success('Vehicle Model Added Successfully.');
+          this.listService.fetchModels();
+        }
+      });
+  }
+
+  /**
+   * add asset make
+   */
+   
+   addAssetMake() {
+    this.hideErrors();  
+    this.apiService.postData('assetManufacturers', this.assetMakeData).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          $('#addAssetMakeModal').modal('hide');
+          this.toastr.success('Asset Make Added Successfully.');
+        }
+      });
+  }
+  /**
+   * add asset model
+   */
+   // add vehicle model
+   addAssetModel() {
+    this.hideErrors();  
+    this.apiService.postData('assetModels', this.assetModelData).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          $('#addAssetModelModal').modal('hide');
+          this.toastr.success('Asset Model Added Successfully.');
         }
       });
   }
