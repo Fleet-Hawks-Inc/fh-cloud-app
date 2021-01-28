@@ -133,6 +133,7 @@ export class AddressBookComponent implements OnInit {
 
   // Carrier Object
   carrierData = {
+    entityType: 'carrier',
     paymentDetails: {},
     address: [{
       addressType: '',
@@ -261,6 +262,9 @@ export class AddressBookComponent implements OnInit {
   uploadedPhotos = [];
   ownerOperatorss = [];
   custCurrentTab = 1;
+  statesObject = [];
+  countriesObject = [];
+  citiesObject = [];
 
   constructor(
             private apiService: ApiService,
@@ -317,89 +321,8 @@ export class AddressBookComponent implements OnInit {
           this.fcCompanies = fcCompanies.Items;
           this.ownerOperatorss = operators.Items;
 
-          console.log('this.ownerOperatorss');
-          console.log(this.ownerOperatorss)
-
-          for (let i = 0; i < this.customers.length; i++) {
-            const element = this.customers[i];
-            element.userType = 'Customer';
-            element.userTypeTitle = 'CU';
-            element.imageText = "Add Picture";
-            element.profilePath = 'assets/img/driver/driver.png';
-            if(element.profileImg != '' && element.profileImg != undefined) {
-              element.imageText = "Update Picture";
-              element.profilePath = `${this.Asseturl}/${element.carrierID}/${element.profileImg}`;
-            }
-          }
-
-          for (let i = 0; i < this.drivers.length; i++) {
-            const element = this.drivers[i];
-            
-            element.userType = 'Driver';
-            element.userTypeTitle = 'DR';
-          }
-
-          for (let i = 0; i < this.brokers.length; i++) {
-            const element = this.brokers[i];
-            
-            element.userType = 'Broker';
-            element.userTypeTitle = 'BR';
-            element.imageText = "Add Picture";
-            element.profilePath = 'assets/img/driver/driver.png';
-            if(element.profileImg != '' && element.profileImg != undefined) {
-              element.imageText = "Update Picture";
-              element.profilePath = `${this.Asseturl}/${element.carrierID}/${element.profileImg}`;
-            }
-          }
-
-          for (let i = 0; i < this.vendors.length; i++) {
-            const element = this.vendors[i];
-            
-            element.userType = 'Vendor';
-            element.userTypeTitle = 'VN';
-          }
-
-          for (let i = 0; i < this.carriers.length; i++) {
-            const element = this.carriers[i];
-            
-            element.userType = 'Carrier';
-            element.userTypeTitle = 'CR';
-          }
-
-          for (let i = 0; i < this.shippers.length; i++) {
-            const element = this.shippers[i];
-            
-            element.userType = 'Shipper';
-            element.userTypeTitle = 'SH';
-          }
-
-          for (let i = 0; i < this.receivers.length; i++) {
-            const element = this.receivers[i];
-            
-            element.userType = 'Consignee';
-            element.userTypeTitle = 'CO';
-          }
-
-          for (let i = 0; i < this.staffs.length; i++) {
-            const element = this.staffs[i];
-            
-            element.userType = 'Staff';
-            element.userTypeTitle = 'ST';
-          }
-
-          for (let i = 0; i < this.fcCompanies.length; i++) {
-            const element = this.fcCompanies[i];
-            
-            element.userType = 'Factoring Company';
-            element.userTypeTitle = 'FC';
-          }
-
-          for (let i = 0; i < this.ownerOperatorss.length; i++) {
-            const element = this.ownerOperatorss[i];
-            
-            element.userType = 'Owner Operator';
-            element.userTypeTitle = 'OP';
-          }
+          console.log('carriers');
+          console.log(this.carriers)
 
           this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
                             ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies, ...this.ownerOperatorss];                           
@@ -916,7 +839,19 @@ export class AddressBookComponent implements OnInit {
   addCarrier() {
     this.hideErrors();
     // this.removeUserLocation(this.carrierData.address);
-    this.apiService.postData('carriers', this.carrierData).
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.carrierData));
+
+    this.apiService.postData('externalCarriers', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -939,9 +874,55 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCarrierModal').modal('hide');
+          this.showMainModal();
           this.toastr.success('Carrier Added Successfully');
         }
       });
+  }
+
+  updateCarrier() {
+   
+    this.hideErrors();
+    this.removeAddressFields(this.carrierData);
+    // this.removeUserLocation(this.carrierData.address);
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.carrierData));
+    
+    this.apiService.putData('externalCarriers', formData, true).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#addBrokerModal').modal('hide');
+        this.showMainModal();
+        this.toastr.success('Broker updated successfully');
+      },
+    });
   }
 
   
@@ -1130,7 +1111,19 @@ export class AddressBookComponent implements OnInit {
   addFCompany() {
     this.hideErrors();
     // this.removeUserLocation(this.fcCompanyData.address);
-    this.apiService.postData('factoringCompanies', this.fcCompanyData).
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.fcCompanyData));
+
+    this.apiService.postData('factoringCompanies', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1153,6 +1146,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addFCModal').modal('hide');
+          this.showMainModal();
           this.toastr.success('Company Added Successfully');
         }
       });
@@ -1163,7 +1157,19 @@ export class AddressBookComponent implements OnInit {
     this.hideErrors();
     this.removeAddressFields(this.fcCompanyData);
     // this.removeUserLocation(this.fcCompanyData.address)
-    this.apiService.putData('factoringCompanies', this.fcCompanyData).subscribe({
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.fcCompanyData));
+
+    this.apiService.putData('factoringCompanies', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1185,6 +1191,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addFCModal').modal('hide');
+        this.showMainModal();
         this.toastr.success('Company updated successfully');
       },
     });
@@ -1194,7 +1201,19 @@ export class AddressBookComponent implements OnInit {
   addStaff() {
     this.hideErrors();
     // this.removeUserLocation(this.staffData.address);
-    this.apiService.postData('staffs', this.staffData).
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.staffData));
+    
+    this.apiService.postData('staffs', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1227,7 +1246,19 @@ export class AddressBookComponent implements OnInit {
     this.hideErrors();
     this.removeAddressFields(this.staffData);
     // this.removeUserLocation(this.staffData.address)
-    this.apiService.putData('staffs', this.staffData).subscribe({
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.staffData));
+
+    this.apiService.putData('staffs', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1336,7 +1367,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCarriers() {
-    return this.apiService.getData('carriers');
+    return this.apiService.getData('externalCarriers');
   }
   
   fetchShippers() {
@@ -1531,8 +1562,8 @@ export class AddressBookComponent implements OnInit {
       let result = this.assignAddressToUpdate(item.address)
       this.staffData.address = result;
 
-    } else if(type === 'Factoring Company') {
-      $('#addStaffModal').modal('show');
+    } else if(type === 'factoring company') {
+      $('#addFCModal').modal('show');
       this.fcCompanyData = item;
       let result = this.assignAddressToUpdate(item.address)
       this.fcCompanyData.address = result;
@@ -1542,6 +1573,12 @@ export class AddressBookComponent implements OnInit {
       this.ownerData = item;
       let result = this.assignAddressToUpdate(item.address)
       this.ownerData.address = result;
+
+    } else if(type === 'carrier') {
+      $('#addCarrierModal').modal('show');
+      this.carrierData = item;
+      let result = this.assignAddressToUpdate(item.address)
+      this.carrierData.address = result;
     } 
     
   }
@@ -1669,6 +1706,7 @@ export class AddressBookComponent implements OnInit {
 
     // Carrier Object
     this.carrierData = {
+      entityType: 'carrier',
       paymentDetails: {},
       address: [{
         addressType: '',
@@ -1687,7 +1725,6 @@ export class AddressBookComponent implements OnInit {
         }
       }],
       additionalContact: {}
-
     };
 
     // Shipper Object
@@ -1780,4 +1817,24 @@ export class AddressBookComponent implements OnInit {
     };
   }
 
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
+
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
+      });
+  }
 }
