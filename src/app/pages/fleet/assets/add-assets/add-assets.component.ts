@@ -97,7 +97,7 @@ export class AddAssetsComponent implements OnInit {
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
-  ownerOperators = [];
+  ownOperators = [];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -518,9 +518,11 @@ export class AddAssetsComponent implements OnInit {
   fetchOwnerOperators() {
     this.apiService.getData('ownerOperators')
       .subscribe((result: any) => {
-        this.ownerOperators = result.Items;
+        this.ownOperators = result.Items;
       });
   }
+  
+
   
   fetchGroups() {
     this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {

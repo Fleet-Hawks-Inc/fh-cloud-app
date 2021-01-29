@@ -276,9 +276,13 @@
 										</div>
 										<div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'Owner Operator'">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
-											<ng-select class="form-control populate select2-hidden-accessible">
-												<ng-option *ngFor="let item of ownerOperators" value="{{item.operatorID}}">{{item.firstName}} {{item.lastName}}</ng-option>
-												
+
+											<ng-select class="form-control populate ">
+												<ng-option *ngFor="let item of ownOperators" value="{{item.operatorID}}"
+												>
+													{{item.firstName}} {{item.lastName}}
+												</ng-option>
+
 											</ng-select>
 										</div>
 									</div>
