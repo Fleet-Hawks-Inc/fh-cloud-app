@@ -171,6 +171,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   showIcons: boolean = false;
   profileTitle: string = 'Add';
   addressCountries = [];
+  deletedAddress = [];
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -292,8 +293,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (value === 'employee') {
       this.driverData['companyId'] = '';
       this.driverData['companyName'] = '';
+      this.driverData['contractStart'] = '';
+      this.driverData['contractEnd'] = '';
     } else {
       this.driverData['employeeId'] = '';
+      this.driverData['startDate'] = '';
+      this.driverData['terminationDate'] = '';
     }
     this.driverData['driverType'] = value;
   }
@@ -524,10 +529,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.register();
     
     this.hideErrors();
-    if (this.driverData.DOB !== '') {
-      //date in Y-m-d format 
-      this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
-    }
+    // if (this.driverData.DOB !== '') {
+    //   //date in Y-m-d format 
+    //   this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
+    // }
     
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
@@ -672,7 +677,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
       if (addressID != null) {
-        this.apiService.deleteData(`addresses/deleteAddress/${addressID}`).subscribe(async (result: any) => {});
+        this.deletedAddress.push(addressID)
+        console.log('deleadd', this.deletedAddress);
+        // this.apiService.deleteData(`addresses/deleteAddress/${addressID}`).subscribe(async (result: any) => {});
       }
       this.driverData.address.splice(i, 1);
     } else {
@@ -762,7 +769,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         
         
         this.driverData['gender'] = result.gender;
-        this.driverData.DOB = result.DOB.split('-').reverse().join('-');
+        this.driverData.DOB = result.DOB;
         this.driverData['workEmail'] = result.workEmail;
         this.driverData['workPhone'] = result.workPhone;
         
@@ -899,10 +906,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if (this.driverData.DOB !== '') {
-      //date in Y-m-d format 
-      this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
-    }
+    // if (this.driverData.DOB !== '') {
+    //   //date in Y-m-d format 
+    //   this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
+    // }
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
@@ -967,6 +974,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.response = res;
         this.hasSuccess = true;
         this.isSubmitted = true;
+        for (let i = 0; i < this.deletedAddress.length; i++) {
+          const element = this.deletedAddress[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+          
+        }
         this.toastr.success('Driver updated successfully');
         this.router.navigateByUrl('/fleet/drivers/list');
 
