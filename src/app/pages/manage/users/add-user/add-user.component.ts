@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class AddUserComponent implements OnInit {
   @ViewChild('userForm',null) userForm: NgForm;
+  Asseturl = this.apiService.AssetUrl;
   pageTitle = "Add User";
   userID: string;
   currentTab = 1;
@@ -25,15 +26,17 @@ export class AddUserComponent implements OnInit {
   cities = [];
   users: [];
   groups = [];
- 
+ /**
+  * form data
+  */
 
       firstName= '';
       lastName= '';
       employeeID= '';
       dateOfBirth= '';
-      workPhone= '';
+      phone= '';
       email = '';
- 
+      currentStatus = '';
     addressDetails = [{
       addressType:'',
       countryID: '',
@@ -56,8 +59,33 @@ export class AddUserComponent implements OnInit {
       userType = '';
       groupID = '';
       userName = '';
- 
-
+      timeCreated = '';
+ /**
+  * Photo data
+  *  */  
+ profileTitle ='Add';
+ selectedFiles: FileList;
+ selectedFileNames: Map<any, any>;   
+ public userProfileSrc: any = 'assets/img/driver/driver.png';
+ uploadedPhotos = [];
+ selectPhoto(event) {
+  let files = [...event.target.files];
+  const reader = new FileReader();
+  reader.onload = e => this.userProfileSrc = reader.result;
+  reader.readAsDataURL(files[0]);
+  this.uploadedPhotos = [];
+  this.uploadedPhotos.push(files[0])
+  
+  if(this.uploadedPhotos.length > 0) {
+    this.profileTitle = 'Change';
+  }
+  
+}
+removeProfile() {
+  this.userProfileSrc = 'assets/img/driver/driver.png';
+  this.uploadedPhotos = [];
+  this.profileTitle = 'Add';
+}
   /**
  *Group Properties
 */
@@ -74,6 +102,7 @@ export class AddUserComponent implements OnInit {
   statesObject: any = {};
   countriesObject: any = {};
   citiesObject: any = {};
+ 
   form;
   response: any = '';
   hasError = false;
@@ -86,9 +115,10 @@ export class AddUserComponent implements OnInit {
 
   ngOnInit() {
     this.userID = this.route.snapshot.params['userID'];
-    if (this.userName) {
+    if (this.userID) {
       this.pageTitle = 'Edit User';     
       this.fetchAddress();
+      this.fetchUser();
     } else {
       this.pageTitle = 'Add User';
     }
@@ -311,6 +341,8 @@ export class AddUserComponent implements OnInit {
   //   }, 2000);
   // }
   async onSubmit() {
+    this.hasError = false;
+    this.hasSuccess = false;
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
@@ -324,19 +356,31 @@ export class AddUserComponent implements OnInit {
       }
     }
     const data = {      
-        firstName: this.firstName,
-        lastName: this.lastName,
-        employeeID: this.employeeID,
-        dateOfBirth: this.dateOfBirth,
-        workPhone: this.workPhone,
-        email: this.email,         
-        departmentName: this.departmentName,
-        userType: this.userType,
-        groupID: this.groupID,
-        userName: this.userName,     
-      addressDetails: this.addressDetails
-    };
-    this.apiService.postData('users', data).subscribe({
+      firstName: this.firstName,
+      lastName: this.lastName,
+      employeeID: this.employeeID,
+      dateOfBirth: this.dateOfBirth,
+      phone: this.phone,
+      email: this.email,  
+      currentStatus: this.currentStatus,       
+      departmentName: this.departmentName,
+      userType: this.userType,
+      groupID: this.groupID,
+      userName: this.userName,     
+    addressDetails: this.addressDetails
+  };
+    
+      // create form data instance
+      const formData = new FormData();
+
+      //append photos if any
+      for(let i = 0; i < this.uploadedPhotos.length; i++){
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+       //append other fields
+    formData.append('data', JSON.stringify(data));
+   
+    this.apiService.postData('users',formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -349,6 +393,8 @@ export class AddUserComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.hasError = true;
+              this.toastr.error('Please see the errors');
             },
             error: () => { },
             next: () => { },
@@ -379,6 +425,101 @@ export class AddUserComponent implements OnInit {
           .remove('label');
       });
     this.errors = {};
+  }
+  /**
+   * Edit funcationality
+   */
+  fetchUser(){
+    this.apiService.getData('users'+ this.userName).subscribe((result:any) => {
+      result = result.Items[0];
+      console.log('result',result);
+      this.firstName = result.firstName,
+      this.lastName = result.lastName,
+      this.employeeID = result.employeeID,
+      this.dateOfBirth = result.dateOfBirth,
+      this.phone = result.phone,
+      this. email = result.email,  
+      this.currentStatus = result.currentStatus,       
+      this.departmentName = result.departmentName,
+      this.userType = result.userType,
+      this.groupID = result.groupID,
+      this.userName = result.userName,
+      this.timeCreated = result.timeCreated
+      if(result.userImage != '' && result.userImage != undefined) {
+        this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
+      }
+    });
+  }
+  /**
+   * update user
+   */
+ async updateUser() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      const element = this.addressDetails[i];
+      if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
+        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+        let result = await this.HereMap.geoCode(fullAddress);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+      }
+    }
+    const data = {      
+      firstName: this.firstName,
+      lastName: this.lastName,
+      employeeID: this.employeeID,
+      dateOfBirth: this.dateOfBirth,
+      phone: this.phone,
+      email: this.email,  
+      currentStatus: this.currentStatus,       
+      departmentName: this.departmentName,
+      userType: this.userType,
+      groupID: this.groupID,
+      userName: this.userName,   
+      timeCreated : this.timeCreated,  
+    addressDetails: this.addressDetails
+  };
+    
+      // create form data instance
+      const formData = new FormData();
+
+      //append photos if any
+      for(let i = 0; i < this.uploadedPhotos.length; i++){
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+       //append other fields
+    formData.append('data', JSON.stringify(data));
+   
+    this.apiService.putData('users',formData, true).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.hasError = true;
+              this.toastr.error('Please see the errors');
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('User Updated Successfully.');
+        this.location.back();
+      }
+    })
   }
   // GROUP MODAL
   addGroup() {

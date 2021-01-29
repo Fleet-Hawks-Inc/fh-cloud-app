@@ -7,8 +7,8 @@
 					<div class="col-md-4 col-lg-4">
 						<h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
 					</div>
-					<div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/fleet/assets/list"
-							class="btn btn-default btn-sm"><i class="fas fa-list"></i> Assets List</a> </div>
+					<div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/manage/users/list"
+							class="btn btn-default btn-sm"><i class="fas fa-list"></i> Users List</a> </div>
 				</div>
 			</header>
 			<div class="row text-dark">
@@ -48,20 +48,46 @@
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
                                                     <input type="date" class="form-control"  [(ngModel)]="dateOfBirth" name="dateOfBirth"> </div>
+                                                <div class="col-lg-10">
+                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
+                                                      <ng-select [(ngModel)]="currentStatus" name="currentStatus"
+                                                      placeholder="Select user status"> 
+                                                      <ng-option value="ACTIVE">Active</ng-option>
+                                                      <ng-option value="INACTIVE">Inactive</ng-option>
+                                                   </ng-select>
+                                                </div>
                                                 
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                           <div class="row">
+                                             <div class="col-lg-10  text-center">
+                                                <div id="male_photo" class="business_image_style position-relative mx-auto"
+                                                   style="display: block;">
+                                                   <img [src]="userProfileSrc" id="male_photo" class="w-100 h-100"
+                                                      style="object-fit: cover;">
+                                                   <span class="text-danger profile-cross" (click)="removeProfile()"
+                                                      *ngIf="uploadedPhotos != ''">
+                                                      <i class="fa fa-times"></i>
+                                                   </span>
+                                                </div>
+                                                <div class="mt-2">
+                                                   <div class="btn btn-sm btn-success overflow-hidden position-relative"><i
+                                                         class="fas fa-plus"></i> {{profileTitle}} Photo
+                                                      <input (change)="selectPhoto($event)"
+                                                         [(ngModel)]="userImage" name="userImage" type="file"
+                                                         class="hidden_input1 w-100" />
+                                                   </div>
+                                                </div>
+                                             </div>
+                                              
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Work Phone</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="workPhone" name="workPhone"> </div>
+                                                    <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Work Email</label>
                                                     <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Add Photo</label>
-                                                    <input type="file" class="form-control pt-0 pl-0"> </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -120,8 +146,7 @@
                                            </div>
                                         </div>
                                         <div class="address-inner" *ngIf="item.manual">
-                                           <div class="row mb-3 border-bottom pb-4">
-          
+                                           <div class="row mb-3 border-bottom pb-4">          
                                               <div class="col-lg-5 offset-lg-1 pt-3">
                                                  <div class="row">
                                                     <div class="col-lg-5">
@@ -129,22 +154,18 @@
                                                           Country</label>
                                                        <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}"
                                                           data-plugin-selectTwo (change)="getStates($event, i)"
-                                                          class="form-control populate" placeholder="Select country">
-          
+                                                          class="form-control populate" placeholder="Select country">          
                                                           <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                                             value="{{country.countryID}}">{{country.countryName}}</ng-option>
-          
+                                                             value="{{country.countryID}}">{{country.countryName}}</ng-option>          
                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                           State</label>
                                                        <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                          name="stateID{{i}}" placeholder="Select state">
-          
+                                                          name="stateID{{i}}" placeholder="Select state">          
                                                           <ng-option class="text-capitalize" *ngFor="let state of states"
-                                                             value="{{state.stateID}}">{{state.stateName}}</ng-option>
-          
+                                                             value="{{state.stateID}}">{{state.stateName}}</ng-option>          
                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-5">
@@ -184,8 +205,7 @@
                                                  </div>
                                               </div>
                                            </div>
-                                        </div>
-          
+                                        </div>          
                                      </div>
                                 </div>
                                 <!-- User Account -->
@@ -212,12 +232,11 @@
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
                                                     <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">                                                                
-                                                                    <ng-option value="Fleet Manager">Fleet Manager</ng-option>
-                                                                    <ng-option value="Driver">Driver</ng-option>
-                                                                    <ng-option value="Dispatcher">Dispatcher</ng-option>
+                                                                    <ng-option value="Full Admin">Full Admin</ng-option>
+                                                                    <ng-option value="Read Only Admin">Read Only Admin</ng-option>
+                                                                    <ng-option value="Dispatch">Dispatch</ng-option>
+                                                                    <ng-option value="Maintenance">Maintenance</ng-option>
                                                                     <ng-option value="Safety Manager">Safety Manager</ng-option>
-                                                                    <ng-option value="Manager">Manager</ng-option>
-                                                                    <ng-option value="IT">IT</ng-option>
                                                                     <ng-option value="Others">Others</ng-option>                                                               
                                                     </ng-select>															
                                                 </div>
