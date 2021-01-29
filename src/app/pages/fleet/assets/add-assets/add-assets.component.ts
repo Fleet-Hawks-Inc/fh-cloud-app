@@ -97,6 +97,7 @@ export class AddAssetsComponent implements OnInit {
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
+  ownOperators = [];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -115,6 +116,7 @@ export class AddAssetsComponent implements OnInit {
     this.fetchAllAssetTypes();
     this.fetchGroups();
     this.fetchAssets();
+    this.fetchOwnerOperators();
 
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
@@ -516,6 +518,14 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  fetchOwnerOperators() {
+    this.apiService.getData('ownerOperators')
+      .subscribe((result: any) => {
+        this.ownOperators = result.Items;
+        console.log('ownOperators', this.ownOperators)
+      });
+  }
+  
   
   fetchGroups() {
     this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
