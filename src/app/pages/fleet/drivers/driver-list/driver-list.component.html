@@ -469,15 +469,15 @@
                                  <tr>
                                     <!-- <th><input type="checkbox"></th> -->
 
-                                    <th width="8%" class="col1">Name</th>
-                                    <th width="8%" class="col2">Duty Status</th>
-                                    <th class="col18" width="14%" >Location</th>
+                                    <th class="col1">Name</th>
+                                    <th class="col2">Duty Status</th>
+                                    <th class="col18">Location</th>
                                     <th class="col11">Current Cycle</th>
-                                    <th class="col12">Current Vehicle</th>
-                                    <th class="col13">Assets</th>
-                                    <th class="col14">Contact</th>
-                                    <th class="col15">DL</th>
-                                    <th class="col16">Document</th>
+                                    <th class="col12 extra">Current Vehicle</th>
+                                    <th class="col13 extra">Assets</th>
+                                    <th class="col14 extra">Contact</th>
+                                    <th class="col15 extra">DL</th>
+                                    <th class="col16 extra">Document</th>
                                     <th class="col3 extra">Group</th>
                                     <th class="col4 extra">Citizenship</th>
                                     <th class="col5 extra">Address</th>
@@ -492,8 +492,8 @@
                               <tbody *ngIf="drivers.length > 0">
                                  <tr *ngFor="let driver of drivers;let i = index;">
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
-                                       <span class="font-weight-bold line-height-lg text-capitalize">{{driver.firstName}}
-                                          {{driver.lastName}}</span>
+                                       <span class="font-weight-bold line-height-lg text-capitalize">
+                                          {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</span>
                                     </td>
                                     <td *ngIf="hideShow.dutyStatus">Live Status</td>
 
@@ -512,7 +512,7 @@
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                                     
                                     <td *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
-                                    <td *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
+                                    <td *ngIf="hideShow.citizenship">{{ countriesObject[driver.citizenship] }}</td>
                                     <td *ngIf="hideShow.address">{{ driver.address.address1 }} {{ driver.address.address2}}, {{ driver.address.cityName }}, {{ driver.address.stateName }}, {{ driver.address.countryName }}</td>
                                     <td *ngIf="hideShow.paymentType">{{driver.paymentDetails.paymentType}}</td>
                                     <td *ngIf="hideShow.sin">{{driver.paymentDetails.SIN_Number}}</td>

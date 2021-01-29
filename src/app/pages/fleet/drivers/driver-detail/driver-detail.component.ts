@@ -106,6 +106,7 @@ export class DriverDetailComponent implements OnInit {
 
   docs = [];
   assetsDocs = [];
+  absDocs = [];
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(
@@ -150,7 +151,7 @@ export class DriverDetailComponent implements OnInit {
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
-          this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;
@@ -161,6 +162,9 @@ export class DriverDetailComponent implements OnInit {
             this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
           } else {
             this.profile = 'assets/img/driver/driver.png';
+          }
+          if(this.driverData.abstractDocs != undefined && this.driverData.abstractDocs.length > 0) {
+            this.absDocs = this.driverData.abstractDocs.map(x => ({path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x}));
           }
           
           this.driverType = this.driverData.driverType;
