@@ -2,7 +2,6 @@ import { HttpClient, JsonpClientBackend } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { functions } from 'lodash';
 import { createWorker } from 'tesseract.js';
-import { AddOrdersComponent } from '../../dispatch/orders/add-orders/add-orders.component';
 import { PdfAutomationService } from './pdf-automation.service';
 
 declare var Tesseract: any;
@@ -12,7 +11,10 @@ declare var $: any;
   selector: 'app-pdfautomation',
   templateUrl: './pdf-automation.component.html',
   styleUrls: ['./pdf-automation.component.css'],
+<<<<<<< HEAD
 
+=======
+>>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 })
 export class  PdfAutomationComponent implements OnInit {
 
@@ -46,7 +48,7 @@ export class  PdfAutomationComponent implements OnInit {
 
   $obj = {
     "documentId": "RANDOM VALUE", //Random value generated
-    "typeofDocument": "Order", // This will be static 
+    "typeofDocument": "Order", // This will be static
     "nameofDocument": "LighSpeed",
     "carrierId": "carrierId",
 
@@ -84,7 +86,7 @@ export class  PdfAutomationComponent implements OnInit {
 
 
     console.log("pdfservice called");
-    
+
 
 
     $(() => {
@@ -451,7 +453,7 @@ export class  PdfAutomationComponent implements OnInit {
         // text = result.text
 
         const objects = [{
-          "typeofDocument": "Order", // This will be static 
+          "typeofDocument": "Order", // This will be static
           "nameOfDocument": "LightSpeed", // Docment Name
           "carrierId": "carrierId"
         }]
@@ -524,7 +526,7 @@ export class  PdfAutomationComponent implements OnInit {
 
     this.$jsonfile = {
       "documentId": "RANDOM VALUE", //Random value generated
-      "typeofDocument": "Order", // This will be static 
+      "typeofDocument": "Order", // This will be static
       "nameofDocument": "LighSpeed",
       "carrierId": "carrierId",
       "value": this.selectOpt,
