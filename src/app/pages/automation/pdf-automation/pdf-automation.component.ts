@@ -9,12 +9,12 @@ declare var Tesseract: any;
 declare var $: any;
 
 @Component({
-  selector: 'app-pdf-automation',
+  selector: 'app-pdfautomation',
   templateUrl: './pdf-automation.component.html',
   styleUrls: ['./pdf-automation.component.css'],
-  providers: [AddOrdersComponent]
+
 })
-export class PdfAutomationComponent implements OnInit {
+export class  PdfAutomationComponent implements OnInit {
 
   public modalBody = '';
   $rect: any = {};

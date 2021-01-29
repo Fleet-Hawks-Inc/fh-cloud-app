@@ -9,12 +9,12 @@ declare var Tesseract: any;
 declare var $: any;
 
 @Component({
-  selector: 'app-pdf-automation',
+  selector: 'app-pdfautomation',
   templateUrl: './pdf-automation.component.html',
   styleUrls: ['./pdf-automation.component.css'],
-  providers: [AddOrdersComponent]
+
 })
-export class PdfAutomationComponent implements OnInit {
+export class  PdfAutomationComponent implements OnInit {
 
   public modalBody = '';
   $rect: any = {};
@@ -390,8 +390,8 @@ export class PdfAutomationComponent implements OnInit {
 
 
     console.log("mousedownworks" + this.$canvas.offsetLeft);
-    this.$rect.startX = e.pageX - this.$canvas.offsetLeft - 255;
-    this.$rect.startY = e.pageY - this.$canvas.offsetTop - 110;
+    this.$rect.startX = e.pageX - this.$canvas.offsetLeft - 280;
+    this.$rect.startY = e.pageY - this.$canvas.offsetTop - 195;
 
 
     this.drag = true;
@@ -616,8 +616,8 @@ export class PdfAutomationComponent implements OnInit {
     if (this.drag) {
 
 
-      this.$rect.w = (e.pageX - this.$canvas.offsetLeft) - this.$rect.startX - 260;
-      this.$rect.h = (e.pageY - this.$canvas.offsetTop) - this.$rect.startY - 115;
+      this.$rect.w = (e.pageX - this.$canvas.offsetLeft) - this.$rect.startX - 280;
+      this.$rect.h = (e.pageY - this.$canvas.offsetTop) - this.$rect.startY - 195;
       this.$ctx.strokeStyle = 'red';
 
       //  this.$ctx.strokeRect( this.$rect.startX,  this.$rect.startY,  this.$rect.w,  this.$rect.h);
