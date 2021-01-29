@@ -24,7 +24,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   allAssetTypes: any;
-  assetTypesObects: any = {};
+  assetTypesObjects: any = {};
   title = 'Assets List';
   mapView: boolean = false ;
   listView: boolean = true;
@@ -137,7 +137,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchManufacturesByIDs() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetManufacturers/get/list').subscribe((result: any) => {
       this.manufacturersObjects = result;
     });
   }
@@ -181,7 +181,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchAllAssetTypes() {
     this.httpClient.get("assets/trailers.json").subscribe((data: any) =>{
       this.allAssetTypes = data;
-      this.assetTypesObects =  data.reduce( (a: any, b: any) => {
+      this.assetTypesObjects =  data.reduce( (a: any, b: any) => {
         return a[b['code']] = b['description'], a;
     }, {});
     })
