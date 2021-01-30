@@ -415,14 +415,14 @@
                                              class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="Add color of the vehicle">
                                      </div>
-                                     <div class="col-lg-10">
+                                     <!-- <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">MSRP <span
                                              class="font-size-12"> (Manufacturer Suggested Retail
                                              Price)</span>&nbsp;<span
                                              class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="text" class="form-control" name="msrp" [(ngModel)]="msrp"
                                           placeholder="eg. 45000 CAD">
-                                    </div>
+                                    </div> -->
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Add Document</label>
                                         <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
@@ -430,7 +430,7 @@
                                   </div>
                                </div>
                                <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
+                                 <!-- <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Body
                                           Type&nbsp;   <i class="fas fa-exclamation-circle" data-toggle="tooltip"
@@ -453,7 +453,7 @@
                                           </optgroup>
                                        </ng-select>
                                     </div>
-                                 </div>
+                                 </div> -->
                                  <div class="row ">
                                     <!-- <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign DVIR</label>
@@ -494,7 +494,7 @@
                                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">In-Service</label>
                                </div>
                                <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
+                                 <!-- <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">In-Service
                                           Date
@@ -505,7 +505,7 @@
                                        <input type="date" class="form-control" name="lifeCycle.inServiceDate"
                                           [(ngModel)]="lifeCycle.inServiceDate">
                                     </div>
-                                 </div>
+                                 </div> -->
                                  <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Start Date</label>
@@ -645,7 +645,7 @@
                                     <div class="col-lg-5">
                                        <label
                                           class="control-label font-weight-bold text-lg-right pt-2">Height&nbsp; <span
-                                          class="text-1 optional-label-color">(optional)</span></label>
+                                          class="text-1 optional-label-color"></span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" class="form-control" name="specifications.height"
@@ -653,7 +653,7 @@
                                           </div>
                                           <div class="col-lg-6 pl-0">
                                              <ng-select class="form-control populate"
-                                                name="heightUnit"
+                                                name="specifications.heightUnit"
                                                 [(ngModel)]="specifications.heightUnit">
                                                 <ng-option value="Feet">Feet</ng-option>
                                                 <ng-option value="Centimeters">Centimeters</ng-option>
