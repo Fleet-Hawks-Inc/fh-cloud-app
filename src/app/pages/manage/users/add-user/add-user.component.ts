@@ -102,7 +102,7 @@ removeProfile() {
   statesObject: any = {};
   countriesObject: any = {};
   citiesObject: any = {};
- 
+  entityType: 'user';
   form;
   response: any = '';
   hasError = false;
@@ -358,6 +358,7 @@ removeProfile() {
     const data = {      
       firstName: this.firstName,
       lastName: this.lastName,
+      entityType: this.entityType,
       employeeID: this.employeeID,
       dateOfBirth: this.dateOfBirth,
       phone: this.phone,
@@ -403,7 +404,7 @@ removeProfile() {
       next: (res) => {
         this.response = res;
         this.toastr.success('User Added Successfully.');
-        this.location.back();
+        // this.location.back();
       }
     })
   }
@@ -435,6 +436,7 @@ removeProfile() {
       console.log('result',result);
       this.firstName = result.firstName,
       this.lastName = result.lastName,
+      this.entityType = result.entityType,
       this.employeeID = result.employeeID,
       this.dateOfBirth = result.dateOfBirth,
       this.phone = result.phone,
@@ -444,7 +446,8 @@ removeProfile() {
       this.userType = result.userType,
       this.groupID = result.groupID,
       this.userName = result.userName,
-      this.timeCreated = result.timeCreated
+      this.timeCreated = result.timeCreated,
+      this.addressDetails = result.addressDetails
       if(result.userImage != '' && result.userImage != undefined) {
         this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
       }
@@ -471,6 +474,7 @@ removeProfile() {
     const data = {      
       firstName: this.firstName,
       lastName: this.lastName,
+      entityType : this.entityType,
       employeeID: this.employeeID,
       dateOfBirth: this.dateOfBirth,
       phone: this.phone,

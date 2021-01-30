@@ -58,7 +58,6 @@ test: any = [];
     this.fetchCountries();
     this.fetchManufacturers();
     this.fetchAssetManufacturers();
-    this.newManufacturers();
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
       this.form = $('#cityForm').validate();
@@ -77,16 +76,7 @@ test: any = [];
         this.manufacturers = result.Items;
       });
   }
-  newManufacturers(){
-    this.apiService.getData('manufacturers')
-    .subscribe((result: any) => {
-      this.test = result.Items;   
-      for(let i=0; i< this.test.length; i++){
-        
-   }
-    }); 
  
-  }
    /**
    * fetch asset manufacturers
    */
@@ -146,6 +136,11 @@ test: any = [];
           $('#addStateModal').modal('hide');
           this.toastr.success('State Added Successfully.');
           this.listService.fetchStates();
+          this.stateData = {
+            countryID : '',
+            stateName: '',
+            stateCode: ''
+          };
         }
       });
   }
@@ -196,6 +191,12 @@ test: any = [];
           this.hasSuccess = true;
           $('#addCityModal').modal('hide');
           this.toastr.success('City Added Successfully.');
+          this.listService.fetchCities();
+          this.cityData = {
+            countryID : '',
+            stateID: '',
+            cityName: '', 
+          };
         }
       });
   }
@@ -227,6 +228,10 @@ test: any = [];
           $('#addVehicleMakeModal').modal('hide');
           this.toastr.success('Vehicle Make Added Successfully.');
           this.listService.fetchManufacturers();
+          this.vehicleMakeData = {
+            manufacturerName: ''
+          }
+         
         }
       });
   }
@@ -261,6 +266,10 @@ test: any = [];
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
           this.listService.fetchModels();
+          this.vehicleModelData = {
+            manufacturerID: '',
+            modelName:''
+          }
         }
       });
   }
@@ -294,7 +303,11 @@ test: any = [];
           this.response = res;
           this.hasSuccess = true;
           $('#addAssetMakeModal').modal('hide');
-          this.toastr.success('Asset Make Added Successfully.');
+          this.toastr.success('Asset Make Added Successfully.');   
+          this.assetMakeData = {
+            manufacturerName: ''
+          }
+         
         }
       });
   }
@@ -328,6 +341,10 @@ test: any = [];
           this.hasSuccess = true;
           $('#addAssetModelModal').modal('hide');
           this.toastr.success('Asset Model Added Successfully.');
+          this.assetModelData = {
+            manufacturerID: '',
+            modelName:''
+          }
         }
       });
   }

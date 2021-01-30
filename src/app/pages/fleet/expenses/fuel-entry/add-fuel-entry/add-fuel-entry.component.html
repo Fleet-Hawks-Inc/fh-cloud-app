@@ -247,7 +247,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Country</label>
-                             <ng-select placeholder="Select Country" name="countryID" [(ngModel)]="fuelData.countryID" (change)="getStates()">
+                             <ng-select placeholder="Select Country" name="countryID" [(ngModel)]="fuelData.countryID" (change)="resetState()">
                              
                                 <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
 
@@ -258,11 +258,11 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >State</label>
-                             <ng-select placeholder="Select State" name="stateID"
-                             [(ngModel)]="fuelData.stateID" (change)="getCities()">
-                              
-                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
-                              
+                             <ng-select placeholder="Select State" name="stateID" id="stateSelect"
+                             [(ngModel)]="fuelData.stateID" (change)="resetCity()">
+                             <ng-container *ngFor="let state of states| async">
+                                <ng-option *ngIf="state.countryID == fuelData.countryID"  value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                              </ng-container>
                              </ng-select>
                           </div>
                           <div class="col-lg-2  mar-top-37">
@@ -276,10 +276,11 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >City</label>
-                             <ng-select  placeholder="Select City" name="cityID"
-                             [(ngModel)]="fuelData.cityID">
-                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
-                              
+                            
+                             <ng-select  placeholder="Select City" name="cityID" id="citySelect" [(ngModel)]="fuelData.cityID">
+                             <ng-container *ngFor="let city of cities | async">
+                                <ng-option *ngIf="city.stateID == fuelData.stateID" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                              </ng-container>
                              </ng-select>
                           </div>
                           <div class="col-lg-2  mar-top-37">
@@ -293,7 +294,7 @@
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor</label>
                              <ng-select  placeholder="Select Vendor" name="vendorID" [(ngModel)]="fuelData.vendorID">
                               
-                                  <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
+                                  <ng-option *ngFor = "let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                               
                              </ng-select>
                           </div>

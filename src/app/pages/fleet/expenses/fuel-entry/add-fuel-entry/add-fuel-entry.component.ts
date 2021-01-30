@@ -11,6 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import { ListService } from '../../../../../services';
 
 declare var jquery: any;
 declare var $: any;
@@ -69,10 +70,10 @@ export class AddFuelEntryComponent implements OnInit {
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
   carrierID;
-  countries = [];
-  states = [];
-  cities = [];
-  vendors = [];
+  countries:any = [];
+  states: any = [];
+  cities: any = [];
+  vendors: any = [];
   vehicles = [];
   assets = [];
   drivers = [];
@@ -102,7 +103,7 @@ export class AddFuelEntryComponent implements OnInit {
   constructor(private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+    private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,private listService: ListService,
     private location: Location,
     private awsUS: AwsUploadService, private toaster: ToastrService,
     private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
@@ -114,17 +115,22 @@ export class AddFuelEntryComponent implements OnInit {
 
   ngOnInit() {
     this.fetchVehicles();
-    this.fetchVendors();
-    this.fetchTrips();
+    this.listService.fetchVendors();
     this.fetchCountries();
+    this.listService.fetchStates();
+    this.listService.fetchCities();
+    this.fetchTrips();   
     this.fetchAssets();
     this.fetchDrivers();
+    this.vendors = this.listService.vendorList;
+   this.states = this.listService.stateList;
+   this.cities =  this.listService.cityList;
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
       this.title = 'Edit Fuel Entry';
       this.fetchFuelEntry();
     } else {
-      this.title = 'Add Fuel Entry';
+      this.title = 'Add Fuel Entry';      
     }
     $(document).ready(() => {
       this.fuelForm = $('#fuelForm').validate();
@@ -144,6 +150,14 @@ export class AddFuelEntryComponent implements OnInit {
       .subscribe((result: any) => {
         this.states = result.Items;
       });
+  }
+  resetState(){
+    this.fuelData.stateID = '';
+    $('#stateSelect').val('');
+  }
+  resetCity(){
+    this.fuelData.cityID = '';
+    $('#citySelect').val('');
   }
   getCities() {
     this.apiService.getData('cities/state/' + this.fuelData.stateID)
