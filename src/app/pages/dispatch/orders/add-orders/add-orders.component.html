@@ -106,7 +106,8 @@
                                           <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                                        </div>
                                        <div class="modal-body">
-                                         <app-pdfautomation></app-pdfautomation>
+                                         <app-pdfautomation></app-pdfautomation> 
+
                                        </div>
                                        <div class="modal-footer">
                                           <button type="button" class="btn btn-default"
@@ -203,7 +204,6 @@
                               </div>
                            </div>
                         </div>
-<<<<<<< HEAD
                         <div class="row mt-2">
                            <div class="col-lg-10">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Customer
@@ -272,62 +272,6 @@
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Phone</label>
                               <input [(ngModel)]="orderData.phone" name="phone" type="text" class="form-control">
                               {{orderData.phone}}
-=======
-
-
-                        <div class="row">
-                           <div class="col-6">
-                              <div class="shipper__listing" *ngIf="orderData.shipperInfo?.length > 0">
-                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
-                                 <table class="table">
-                                    <tbody>
-
-                                       <tr *ngFor="let item of orderData.shipperInfo; let i = index;">
-                                          <td>
-                                             {{item.shipperName}}
-                                          </td>
-                                          <td>
-                                             {{item.pickupLocation}}
-                                          </td>
-                                          <td>
-                                             {{item.locationDateTime}}
-                                          </td>
-                                          <td>
-                                             <i (click)="editList('shipper', item, i)" class="fa fa-edit fa-fw"></i>
-                                             <i (click)="removeList('shipper', i)" class="fa fa-trash fa-fw"></i>
-                                          </td>
-                                       </tr>
-
-                                    </tbody>
-                                 </table>
-                               </div>
-                           </div>
-                           <div class="col-6">
-                              <div class="shipper__listing" *ngIf="orderData.receiverInfo?.length > 0">
-                                 <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
-                                 <table class="table">
-                                    <tbody>
-
-                                       <tr *ngFor="let item of orderData.receiverInfo; let i = index;">
-                                          <td>
-                                             {{item.receiverName}}
-                                          </td>
-                                          <td>
-                                             {{item.dropOffLocation}}
-                                          </td>
-                                          <td>
-                                             {{item.locationDateTime}}
-                                          </td>
-                                          <td>
-                                             <i class="fa fa-edit fa-fw"></i>
-                                             <i (click)="removeList('receiver', i)" class="fa fa-trash fa-fw"></i>
-                                          </td>
-                                       </tr>
-
-                                    </tbody>
-                                 </table>
-                               </div>
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                            </div>
                            <div class="col-lg-5">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">email</label>
@@ -403,7 +347,6 @@
                   <div class="form-group row divderrel">
                      <!-- <div class="midledriver">
                          </div> -->
-<<<<<<< HEAD
                      <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
                      <div class="col-lg-6">
                         <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
@@ -413,17 +356,6 @@
                               <section class="toggle">
                                  <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Shipper
                                     <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
-=======
-                         <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i class="fas fa-arrow-circle-right"></i></p>
-                         <div class="col-lg-6">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
-
-                            <div class="pl-0 pr-5">
-                            <div class="toggle toggle-primary">
-                                <section class="toggle">
-                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Shipper
-                                       <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                                           <i class="fas fa-minus fa-fw d-block m-0"></i>
                                        </span>  -->
                                  </label>
@@ -472,12 +404,8 @@
                                              </li>
                                           </ul>
 
-<<<<<<< HEAD
                                           <span class="text-danger"
                                              *ngIf="(orderForm.submitted) && pickupLocation.errors?.required">
-=======
-                                          <span class="text-danger" *ngIf="(orderForm.submitted) && pickupLocation.errors?.required">
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                                              This Field is required
                                           </span>
                                        </div>
@@ -566,12 +494,7 @@
                                              for="inputDefault">BOL</label>
                                        </div>
                                        <div class="col-lg-6">
-<<<<<<< HEAD
                                           <input [(ngModel)]="shipperCurrent.BOL" name="BOL" type="file" />
-=======
-                                          <input [(ngModel)]="shipperCurrent.BOL"
-                                          name="BOL" type="file" />
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 
                                        </div>
                                        <div class="col-lg-3 mt-1">
@@ -583,16 +506,9 @@
                                              for="inputDefault">Reference</label>
                                        </div>
                                        <div class="col-lg-6">
-<<<<<<< HEAD
                                           <input [(ngModel)]="shipperCurrent.reference" name="reference" type="text"
                                              class="form-control" id="inputDefault">
                                           {{shipperCurrent.reference}}
-=======
-                                          <input [(ngModel)]="shipperCurrent.reference"
-
-                                          name="reference"  type="text" class="form-control" id="inputDefault">
-                                    {{shipperCurrent.reference}}
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                                        </div>
                                        <div class="col-lg-3 mt-1">
                                        </div>
@@ -671,13 +587,8 @@
                                        </div>
                                        <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
                                           <div class="radio-custom">
-<<<<<<< HEAD
                                              <input [(ngModel)]="shipperCurrent.driverLoad" name="driverLoad"
                                                 type="radio" value="yes" id="loadyes" checked="">
-=======
-                                             <input [(ngModel)]="shipperCurrent.driverLoad"
-                                             name="driverLoad" type="radio" value="yes" id="loadyes" checked="">
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 
                                              <label for="radioExample1">Yes</label>
                                           </div>
@@ -695,7 +606,6 @@
                                        <p class="mb-1"><a href="javascript:;" (click)="saveShipper()"
                                              class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a></p>
                                     </div>
-<<<<<<< HEAD
                                  </div>
                               </section>
                            </div>
@@ -717,27 +627,6 @@
                               <section class="toggle">
                                  <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Receiver
                                     <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
-=======
-                                </section>
-                            </div>
-                            </div>
-
-                            <a (click)="addShipper()" class="btn btn-success btn-sm" href="javascript:;"><i class="fas fa-plus"></i> Add Next Shipper</a>
-
-
-                         </div>
-
-
-
-                         <div class="col-lg-6">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
-
-                            <div class="pl-0 pr-5">
-                            <div class="toggle toggle-primary" data-plugin-toggle>
-                                <section class="toggle">
-                                    <label (click)="toggleAccordian(i)" class="text-dark text-5 font-weight-bold">Receiver
-                                       <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                                           <i class="fas fa-minus fa-fw d-block m-0"></i>
                                        </span> -->
                                  </label>
@@ -969,7 +858,6 @@
                                        <a href="javascript:;" class="mb-1 mt-1 mr-1 btn btn-md btn-dark"
                                           (click)="saveReceiver()">Save</a>
                                     </div>
-<<<<<<< HEAD
                                  </div>
                               </section>
                            </div>
@@ -1044,517 +932,6 @@
                                  </optgroup>
                               </select>
                            </div>
-=======
-                                </section>
-                            </div>
-                            </div>
-
-                            <a class="btn btn-success btn-sm" href="javascript:" (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a>
-
-
-                         </div>
-                      </div>
-
-
-                      <div class="form-group row">
-
-                         <div class="col-lg-12">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Freight Details</h4>
-                            <div class="row mt-3">
-                               <div class="col-lg-2">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Pick Up Location</label>
-                                  <select [(ngModel)]="orderData.freightDetails.pickupLocation"
-                                  name="pickupLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option *ngFor="let item of orderData.shipperInfo;" value="{{item.shipperName}}">{{item.pickupLocation}}</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-
-                               <div class="col-lg-2">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Delivery Location</label>
-                                  <select [(ngModel)]="orderData.freightDetails.deliveryLocation"
-                                  name="deliveryLocation" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                       <option *ngFor="let item of orderData.receiverInfo;" value="{{item.receiverName}}">{{item.dropOffLocation}}</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-
-                               <div class="col-lg-1">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Commodity</label>
-                                  <input [(ngModel)]="orderData.freightDetails.commodity"
-                                  name="commodity" type="text" class="form-control">
-                               </div>
-
-                               <div class="col-lg-1">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Quantity</label>
-                                  <input [(ngModel)]="orderData.freightDetails.quantity"
-                                  name="quantity" type="text" class="form-control">
-                               </div>
-
-                               <div class="col-lg-1">
-                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select [(ngModel)]="orderData.freightDetails.quantityUnit"
-                                  name="quantityUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option value="Bag" data-select2-id="21">Bag</option>
-                                        <option value="Bale">Bale</option>
-                                        <option value="Barrel">Barrel</option>
-                                        <option value="Basket">Basket</option>
-                                        <option value="Bin">Bin</option>
-                                        <option value="Box">Box</option>
-                                        <option value="Bucket">Bucket</option>
-                                        <option value="Can">Can</option>
-                                        <option value="Crate">Crate</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-
-                               <div class="col-lg-1">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Rate</label>
-                                  <input [(ngModel)]="orderData.freightDetails.rate"
-                                  name="rate" type="text" class="form-control">
-                               </div>
-
-                               <div class="col-lg-1">
-                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select [(ngModel)]="orderData.freightDetails.rateUnit"
-                                  name="rateUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                       <option value="Bag" data-select2-id="21">Bag</option>
-                                       <option value="Bale">Bale</option>
-                                       <option value="Barrel">Barrel</option>
-                                       <option value="Basket">Basket</option>
-                                       <option value="Bin">Bin</option>
-                                       <option value="Box">Box</option>
-                                       <option value="Bucket">Bucket</option>
-                                       <option value="Can">Can</option>
-                                       <option value="Crate">Crate</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-
-
-
-                               <div class="col-lg-1">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Weight</label>
-                                  <input [(ngModel)]="orderData.freightDetails.weight"
-                                  name="weight" type="text" class="form-control">
-                               </div>
-
-                               <div class="col-lg-1">
-                                <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">&nbsp;</label>
-                                  <select [(ngModel)]="orderData.freightDetails.weightUnit"
-                                  name="weightUnit" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option value="ton(s)" data-select2-id="21">ton(s)</option>
-                                        <option value="Kilograms">Kilograms</option>
-                                        <option value="lbs">lbs</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-
-
-                               <div class="col-lg-1">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Amount</label>
-                                  <div class="input-group mb-3">
-                                     <span class="input-group-prepend positionsta">
-                                     <span class="input-group-text pt-0 pb-0">$</span>
-                                     </span>
-                                     <input [(ngModel)]="orderData.freightDetails.amount"
-                                     name="amount" type="text" class="form-control">
-                                  </div>
-                               </div>
-
-                            </div>
-
-                            <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Another Line</a>
-                         </div>
-
-                      </div>
-
-
-                      <div class="form-group row">
-
-                         <div class="col-lg-6">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
-
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">&nbsp;</label>
-                               </div>
-                               <div class="col-lg-6">
-                                  <div class="checkbox-custom checkbox-default">
-                                     <input [(ngModel)]="orderData.additionalDetails.dropTrailer"
-                                     name="dropTrailer" type="checkbox" id="droptrailer">
-                                     <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="droptrailer">Drop Trailer</label>
-                                  </div>
-
-                               </div>
-                               <div class="col-lg-3">
-                               </div>
-                            </div>
-
-
-
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Trailer Type</label>
-                               </div>
-                               <div class="col-lg-6">
-                                  <select [disabled]="orderData.additionalDetails.dropTrailer" [(ngModel)]="orderData.additionalDetails.trailerType"
-                                  name="trailerType" class="form-control populate" data-select2-id="49" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                     <option value="Refer" data-select2-id="51">Refer</option>
-                                     <option value="Dry Van">Dry Van</option>
-                                     <option value="Flat Bed">Flat Bed</option>
-                                     </optgroup>
-                                     </select>
-                               </div>
-                               <div class="col-lg-3">
-                               </div>
-                            </div>
-
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load Type</label>
-                               </div>
-                               <div class="col-lg-2">
-                                  <div class="checkbox-custom checkbox-default">
-                                     <input name="loadType1" (change)="getLoadTypes(0, 'hazMat', $event.target.checked)" value="hazMat" type="checkbox" id="HazMat">
-                                     <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="HazMat">HazMat</label>
-                                  </div>
-                               </div>
-
-                               <div class="col-lg-3">
-                                  <div class="checkbox-custom checkbox-default">
-                                     <input
-                                     name="loadType2" (change)="getLoadTypes(1, 'oversize load', $event.target.checked)" value="oversize load" type="checkbox" id="Load">
-                                     <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Load">Oversize Load</label>
-                                  </div>
-                               </div>
-
-                               <div class="col-lg-2">
-                                  <div class="checkbox-custom checkbox-default">
-                                     <input
-                                     name="loadType3" (change)="getLoadTypes(2, 'reefer', $event.target.checked)" value="reefer" type="checkbox" id="Reefer">
-                                     <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Reefer">Reefer</label>
-                                  </div>
-                               </div>
-
-                               <div class="col-lg-2">
-                                  <div class="checkbox-custom checkbox-default">
-                                     <input
-                                     name="loadType4" (change)="getLoadTypes(3, 'tanker', $event.target.checked)" value="tanker" type="checkbox" id="Tanker">
-                                     <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="Tanker">Tanker</label>
-                                  </div>
-                               </div>
-
-
-                            </div>
-
-
-                         </div>
-                         <div class="col-lg-6">
-                            <div class="row mt-5">
-                                    <div class="col-lg-3 labelalign">
-                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
-                                    </div>
-                                    <div class="col-lg-6 col-md-12">
-                                        <input [(ngModel)]="orderData.additionalDetails.attachments"
-                                        name="attachments" type="file" class="form-control border-0 p-0"> </div>
-                                    <div class="col-lg-3"> </div>
-                                </div>
-                         </div>
-                      </div>
-
-
-                      <div class="form-group row">
-
-                         <div class="col-lg-8">
-                            <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
-
-
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Freight Fee</label>
-                               </div>
-                               <div class="col-lg-3 col-md-12">
-                                  <select [(ngModel)]="orderData.charges.freightFee.type"
-                                  name="type" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option value="Flat Fee">Flat Fee</option>
-                                        <option value="Per Mile">Per Mile</option>
-                                        <option value="Bag">Bag</option>
-                                        <option value="Barrel">Barrel</option>
-                                        <option value="Basket">Basket</option>
-                                        <option value="Bin">Bin</option>
-                                        <option value="Box">Box</option>
-                                        <option value="Bucket">Bucket</option>
-                                        <option value="Can">Can</option>
-                                        <option value="Crate">Crate</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <div class="input-group mb-3">
-                                     <span class="input-group-prepend positionsta">
-                                     <span class="input-group-text pt-0 pb-0">$</span>
-                                     </span>
-                                     <input [(ngModel)]="orderData.charges.freightFee.amount"
-                                     name="amount" (keyup)="amountCalculate()" type="text" class="form-control" placeholder="0.00">
-                                  </div>
-                               </div>
-                               <div class="col-lg-2">
-                                  <select [(ngModel)]="orderData.charges.freightFee.currency"
-                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option value="CAD">CAD</option>
-                                        <option value="USD">USD</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <p class="text-right">$ <span [innerHTML]="freightFee">0.00</span> </p>
-                               </div>
-
-                            </div>
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Fuel Surcharge</label>
-                               </div>
-                               <div class="col-lg-3">
-                                  <select [(ngModel)]="orderData.charges.fuelSurcharge.type"
-                                  name="type" class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                       <option value="Flat Fee">Flat Fee</option>
-                                       <option value="Per Mile">Per Mile</option>
-                                       <option value="Bag">Bag</option>
-                                       <option value="Barrel">Barrel</option>
-                                       <option value="Basket">Basket</option>
-                                       <option value="Bin">Bin</option>
-                                       <option value="Box">Box</option>
-                                       <option value="Bucket">Bucket</option>
-                                       <option value="Can">Can</option>
-                                       <option value="Crate">Crate</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <div class="input-group mb-3">
-                                     <span class="input-group-prepend positionsta">
-                                     <span class="input-group-text pt-0 pb-0">$</span>
-                                     </span>
-                                     <input [(ngModel)]="orderData.charges.fuelSurcharge.amount"
-                                     name="amount" (keyup)="amountCalculate()" type="text" class="form-control" placeholder="0.00">
-                                  </div>
-                               </div>
-                               <div class="col-lg-2">
-                                  <select [(ngModel)]="orderData.charges.fuelSurcharge.currency"
-                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                       <option value="CAD">CAD</option>
-                                       <option value="USD">USD</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <p class="text-right">$ <span [innerHTML]="fuelSurcharge">0.00 </span></p>
-                               </div>
-                            </div>
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Fee</label>
-                               </div>
-                               <div class="col-lg-3">
-                                  <select [(ngModel)]="orderData.charges.accessorialFee.type"
-                                  name="type" class="form-control populate" data-select2-id="58" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                     <option value="Stop Off" data-select2-id="60">Stop Off</option>
-                                     <option value="Lumper">Lumper</option>
-                                     <option value="Detention">Detention</option>
-                                     <option value="Tarp">Tarp</option>
-                                     </optgroup>
-                                     </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <div class="input-group mb-3">
-                                     <span class="input-group-prepend positionsta">
-                                     <span class="input-group-text pt-0 pb-0">$</span>
-                                     </span>
-                                     <input (keyup)="amountCalculate()" [(ngModel)]="orderData.charges.accessorialFee.amount"
-                                     name="amount" type="text" class="form-control" placeholder="0.00">
-                                  </div>
-                               </div>
-                               <div class="col-lg-2">
-                                  <select [(ngModel)]="orderData.charges.accessorialFee.currency"
-                                  name="currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                       <option value="CAD">CAD</option>
-                                       <option value="USD">USD</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <p class="text-right">$ <span [innerHTML]="accessorialFee">0.00 </span></p>
-                               </div>
-                            </div>
-                            <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Fee</a>
-                            <div class="row mt-3">
-                               <div class="col-lg-3 labelalign">
-                                  <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Accessorial Deduction</label>
-                               </div>
-                               <div class="col-lg-3">
-                                  <select [(ngModel)]="orderData.charges.accessorialDeduction.type"
-                                  name="type" class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                     <option value="Stop Off" data-select2-id="63">Stop Off</option>
-                                     <option value="Lumper">Lumper</option>
-                                     <option value="Detention">Detention</option>
-                                     <option value="Tarp">Tarp</option>
-                                     </optgroup>
-                                     </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <div class="input-group mb-3">
-                                     <span class="input-group-prepend positionsta">
-                                     <span class="input-group-text pt-0 pb-0">$</span>
-                                     </span>
-                                     <input (keyup)="amountCalculate()" [(ngModel)]="orderData.charges.accessorialDeduction.amount"
-                                     name="amount" type="text" class="form-control" placeholder="0.00">
-                                  </div>
-                               </div>
-                               <div class="col-lg-2">
-                                  <select [(ngModel)]="orderData.charges.accessorialDeduction.unit"
-                                  name="unit" data-plugin-selecttwo="" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
-                                     <optgroup label="">
-                                        <option value="CAD">CAD</option>
-                                        <option value="USD">USD</option>
-                                     </optgroup>
-                                  </select>
-                               </div>
-                               <div class="col-lg-2">
-                                  <p class="text-right">$ <span [innerHTML]="accessorialDeduction">0.00 </span></p>
-                               </div>
-                            </div>
-                            <a class="btn btn-success btn-sm" href="#"><i class="fas fa-plus"></i> Add Accessorial Deduction</a>
-
-                           <div class="row">
-                                    <div class="col-lg-8">
-                                        <div class="row mt-3">
-                                            <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 1</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input [(ngModel)]="orderData.taxesInfo.name"
-                                                name="name" type="text" class="form-control" value="GST"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <input [(ngModel)]="orderData.taxesInfo.amount"
-                                                name="amount" (keyup)="taxCalculate($event.target.value)" type="text" class="form-control" value="13"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <select (change)="taxCalculate($event.target.value)" [(ngModel)]="orderData.taxesInfo.unit"
-                                                name="unit" class="form-control populate">
-                                                    <optgroup label="">
-                                                      <option selected value="percentage">%</option>
-                                                      <option value="CAD">CAD</option>
-                                                      <option value="USD">USD</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 2</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" value="PST"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <input type="text" class="form-control" value="5"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <select data-plugin-selectTwo class="form-control populate">
-                                                    <optgroup label="">
-                                                      <option selected value="percentage">%</option>
-                                                      <option value="CAD">CAD</option>
-                                                      <option value="USD">USD</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax 3</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input type="text" class="form-control" value="HST"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <input type="text" class="form-control" value="0"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <select data-plugin-selectTwo class="form-control populate">
-                                                    <optgroup label="">
-                                                      <option selected value="percentage">%</option>
-                                                        <option value="CAD">CAD</option>
-                                                        <option value="USD">USD</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-lg-3 labelalign">
-                                                <label class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <input (keyup)="discountCalculate($event.target.value)" [(ngModel)]="orderData.discount.amount"
-                                                name="amount"  type="text" class="form-control" value="0"> </div>
-                                            <div class="col-lg-2 pl-0">
-                                                <select (change)="discountCalculate($event.target.value)" [(ngModel)]="orderData.discount.unit"
-                                                name="unit" data-plugin-selectTwo class="form-control populate">
-                                                    <optgroup label="">
-                                                        <option selected value="percentage">%</option>
-                                                        <option value="CAD">CAD</option>
-                                                        <option value="USD">USD</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="row mt-3">
-                                            <div class="col-lg-9 bordtop pt-1">
-                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Sub Total</h5> </div>
-                                            <div class="col-lg-3 bordtop pt-1">
-                                                <p class="text-right">$ <span [innerHTML]="subTotal"> </span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-9 pt-1 bordtop text-right">
-                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Discount</h5> </div>
-                                            <div class="col-lg-3 bordtop pt-1">
-                                                <p class="text-right">
-                                                   <span *ngIf="orderData.discount.unit != 'percentage'"> $</span>
-                                                   <span *ngIf="orderData.discount.unit === 'percentage'"> %</span> <span [innerHTML]="discount"> </span></p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-9 bordtop pt-1">
-                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Taxes</h5> </div>
-                                            <div class="col-lg-3 bordtop pt-1">
-                                                <p class="text-right">0.00</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-9 bordtop pt-1">
-                                                <h5 class="text-right font-weight-semibold text-4 text-dark">Total Amount</h5> </div>
-                                            <div class="col-lg-3 bordtop pt-1">
-                                                <p class="text-right"> $ <span [innerHTML]="totalAmount"> </span> </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                         </div>
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 
                            <div class="col-lg-1">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
@@ -2045,7 +1422,6 @@
                         </div>
 
 
-<<<<<<< HEAD
                      </div>
 
                      <div class="col-lg-4">
@@ -2056,9 +1432,6 @@
 
 
                            <div class="col-lg-12 mb-3">
-=======
-                            <div class="col-lg-12 mb-3">
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
                               <!-- <div class="btn-group-toggle" data-toggle="buttons">
                                  <label class="btn btn-outline btn-fleet mr-2 mb-2" style="width:130px;">
                                     <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect" type="radio" name="calculateMiles"
@@ -2084,16 +1457,11 @@
                                  <input (change)="onItemChange($event.target.value)" [(ngModel)]="apiSelect"
                                     type="radio" name="calculateMiles" value="manual"> Manual
                               </label>
-<<<<<<< HEAD
                            </div>
-=======
-                            </div>
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 
 
 
 
-<<<<<<< HEAD
                            <div class="col-lg-12 mb-3">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                  for="inputDefault">Total Miles</label>
@@ -2124,51 +1492,12 @@
                      </div>
                   </div>
                </form>
-=======
-                            <div class="col-lg-12 mb-3">
-                               <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="inputDefault">Total Miles</label>
-                               <input type="text" [(ngModel)]="orderData.totalMiles"
-                               name="totalMiles" class="form-control">
-                            </div>
-                            </div>
-
-                            <div class="col-lg-12 pl-0 mt-3">
-                               <label class="control-label font-weight-bold text-4 text-dark" for="inputDefault">Remarks</label>
-                             <textarea [(ngModel)]="orderData.remarks"
-                             name="remarks" class="form-control" rows="10" id="textareaDefault"></textarea>
-                             </div>
-
-
-
-                         </div>
-
-
-                      </div>
-
-
-                   <div class="form-group row">
-                      <div class="col-lg-12">
-                         <a href="#" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                         <button type="submit" class="btn btn-dark modal-confirm">Create Load</button>
-                      </div>
-                    </div>
-               </form>
-
-
-
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 
 
 
 
             </div>
-<<<<<<< HEAD
          </div>
       </section>
    </div>
 </section>
-=======
-        </section>
-    </div>
-</section>
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4

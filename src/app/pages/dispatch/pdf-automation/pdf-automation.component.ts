@@ -11,10 +11,7 @@ declare var $: any;
   selector: 'app-pdfautomation',
   templateUrl: './pdf-automation.component.html',
   styleUrls: ['./pdf-automation.component.css'],
-<<<<<<< HEAD
 
-=======
->>>>>>> cebd546222bb550aac8b71a90a5c0ff19d5cdfd4
 })
 export class  PdfAutomationComponent implements OnInit {
 
