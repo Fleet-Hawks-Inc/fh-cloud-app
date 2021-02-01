@@ -51,6 +51,7 @@ import { CalendarViewComponent } from './planner/calendar-view/calendar-view.com
 import { MapViewComponent } from './planner/map-view/map-view.component';
 
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
+import { PdfAutomationComponent } from './pdf-automation/pdf-automation.component';
 
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
@@ -117,7 +118,8 @@ const routes: Routes = [
       { path: '', component: OrdersListComponent},
       { path: 'edit/:orderID', component: AddOrdersComponent},
       { path: 'add', component: AddOrdersComponent},
-      { path: 'detail/:orderID', component: OrderDetailComponent }
+      { path: 'detail/:orderID', component: OrderDetailComponent },
+      { path: 'pdfautomation', component:PdfAutomationComponent }
     ]
   },
   {
