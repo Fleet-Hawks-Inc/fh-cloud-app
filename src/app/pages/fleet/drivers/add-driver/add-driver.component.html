@@ -97,14 +97,16 @@
                                       </div>
                                        <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3"
-                                             >Company ID</label>
-                                          <input [(ngModel)]="driverData.companyId" name="companyId" type="text" class="form-control" placeholder="Enter companyID">
+                                             >Owner Operator</label>
+                                             <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator" class="form-control" placeholder="Select Owner Operator">
+                                               <ng-option *ngFor="let item of ownerOperators" value="{{item.operatorID}}">{{item.companyName}}</ng-option>
+                                            </ng-select>
                                        </div>
-                                       <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
+                                       <!-- <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
                                          <label class="control-label font-weight-bold text-lg-right pt-3"
                                             >Company Name</label>
                                          <input [(ngModel)]="driverData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter company Name">
-                                      </div>
+                                      </div> -->
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
                                              >Status</label>
@@ -147,6 +149,20 @@
                                                   class="text-1 optional-label-color">(optional)</span></label>
                                                <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker" [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text" data-plugin-datepicker=""
                                                   class="form-control" placeholder="Select Date">
+                                            </div>
+                                         </div>
+                                         
+                                      </div>
+                                      <div class="col-lg-10">
+                                         <div class="row">
+                                            <div class="col-lg-6">
+                                               <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
+                                               <input [(ngModel)]="driverData.password" name="password" type="text" class="form-control" placeholder="Enter Password">
+                                            </div>
+                                            <div class="col-lg-6">
+                                               <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password</label>
+                                               <input [(ngModel)]="driverData.confirmPassword" name="confirmPassword" type="text" data-plugin-datepicker=""
+                                                  class="form-control" placeholder="Enter Confirm Password">
                                             </div>
                                          </div>
                                          
@@ -246,12 +262,13 @@
                                              <img [src]="driverProfileSrc"  id="male_photo" class="w-100 h-100" style="object-fit: cover;">
                                              <span class="text-danger profile-cross" 
                                                (click)="removeProfile()" *ngIf="uploadedPhotos != '' || showIcons"
+                                               style="cursor: pointer;"
                                                >
                                                <i class="fa fa-times"></i>
                                             </span>
                                          </div>
                                          <div class="mt-2">
-                                             <div class="btn btn-sm btn-success overflow-hidden position-relative"><i class="fas fa-plus"></i> {{profileTitle}} Photo
+                                             <div class="btn btn-sm btn-success overflow-hidden position-relative" style="cursor: pointer;"><i class="fas fa-plus"></i> {{profileTitle}} Photo
                                                 <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                                                 name="driverImage" type="file" class="hidden_input1 w-100" />
                                              </div>
@@ -1049,8 +1066,8 @@
                      <div class="col-lg-12 text-right pb-4 pr-5">
                          <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
                         <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
-                        <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 8" class="btn btn-success btnNext">Next</a>
-                        <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Submit</button>
+                        <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 8" class="btn btn-success btnNext">Save & Next</a>
+                        <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Save</button>
                         <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
  
                      </div>
