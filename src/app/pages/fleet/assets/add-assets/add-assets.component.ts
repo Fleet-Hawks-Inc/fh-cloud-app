@@ -153,7 +153,7 @@ export class AddAssetsComponent implements OnInit {
    * Get all manufacturers from api
    */
   fetchManufactuer() {
-    this.apiService.getData('manufacturers').subscribe((result: any) => {
+    this.apiService.getData('assetManufacturers').subscribe((result: any) => {
       this.manufacturers = result.Items;
     });
   }
@@ -243,22 +243,19 @@ export class AddAssetsComponent implements OnInit {
     formData.append('data', JSON.stringify(data));
 
     this.apiService.postData('assets', formData, true).subscribe({
-      complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
+              this.hasError = true;
+              this.toastr.error('Please see the errors');
             },
             error: () => { },
             next: () => { },
@@ -522,10 +519,10 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.getData('ownerOperators')
       .subscribe((result: any) => {
         this.ownOperators = result.Items;
-        console.log('ownOperators', this.ownOperators)
       });
   }
   
+
   
   fetchGroups() {
     this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
@@ -566,8 +563,9 @@ export class AddAssetsComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully.');
         $('#addGroupModal').modal('hide');
-
-
+        this.groupData['groupName'] = '';
+        this.groupData['groupMembers'] = '';
+        this.groupData['description'] = '';
       },
     });
   }

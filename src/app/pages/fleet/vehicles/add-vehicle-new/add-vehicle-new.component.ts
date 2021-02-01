@@ -491,9 +491,11 @@ vehicles= [];
         this.inspectionForms = result.Items;
       });
   }
-  addVehicle() {
+  async addVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.Error = '';
+
     this.hideErrors();
     const data = {
       vehicleIdentification: this.vehicleIdentification,
@@ -650,7 +652,8 @@ vehicles= [];
         hardAccelrationParams: this.settings.hardAccelrationParams,
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
-      }
+      },
+      activeTab: this.activeTab
     };
     
     // create form data instance
@@ -669,195 +672,200 @@ vehicles= [];
     //append other fields
     formData.append('data', JSON.stringify(data));
 
-    this.apiService.postData('vehicles', formData, true).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = true;
-              this.Error = 'Please see the errors';
+    try {
+      return await new Promise((resolve, reject) => {this.apiService.postData('vehicles', formData, true).subscribe({
+        complete: () => {},
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                if(err) return reject(err);
+              },
+              error: () => {},
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.Success = '';
+          // this.uploadFiles(); // upload selected files to bucket
+          let vehicle = {
+            vehicleIdentification: '',
+            vehicleType: '',
+            VIN: '',
+            DOT: '',
+            year: '',
+            manufacturerID: '',
+            modelID: '',
+            plateNumber: '',
+            countryID: '',
+            stateID: '',
+            driverID: '',
+            teamDriverID: '',
+            serviceProgramID: '',
+            repeatByTime: '',
+            repeatByTimeUnit: '',
+            reapeatbyOdometerMiles: '',
+            annualSafetyDate: '',
+            annualSafetyReminder: false,
+            currentStatus: '',
+            ownership: '',
+            ownerOperator: '',
+            groupID: '',
+            aceID: '',
+            aciID: '',
+            iftaReporting: false,
+            vehicleColor: '',
+            bodyType: '',
+            bodySubType: '',
+            msrp: '',
+            inspectionFormID: '',
+            lifeCycle: {
+              inServiceDate: '',
+              startDate: '',
+              inServiceOdometer: '',
+              estimatedServiceYears: '',
+              estimatedServiceMonths: '',
+              estimatedServiceMiles: '',
+              estimatedResaleValue: '',
+              outOfServiceDate: '',
+              outOfServiceOdometer: '',
             },
-            error: () => {},
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.Success = '';
-        // this.uploadFiles(); // upload selected files to bucket
-        let vehicle = {
-          vehicleIdentification: '',
-          vehicleType: '',
-          VIN: '',
-          DOT: '',
-          year: '',
-          manufacturerID: '',
-          modelID: '',
-          plateNumber: '',
-          countryID: '',
-          stateID: '',
-          driverID: '',
-          teamDriverID: '',
-          serviceProgramID: '',
-          repeatByTime: '',
-          repeatByTimeUnit: '',
-          reapeatbyOdometerMiles: '',
-          annualSafetyDate: '',
-          annualSafetyReminder: false,
-          currentStatus: '',
-          ownership: '',
-          ownerOperator: '',
-          groupID: '',
-          aceID: '',
-          aciID: '',
-          iftaReporting: false,
-          vehicleColor: '',
-          bodyType: '',
-          bodySubType: '',
-          msrp: '',
-          inspectionFormID: '',
-          lifeCycle: {
-            inServiceDate: '',
-            startDate: '',
-            inServiceOdometer: '',
-            estimatedServiceYears: '',
-            estimatedServiceMonths: '',
-            estimatedServiceMiles: '',
-            estimatedResaleValue: '',
-            outOfServiceDate: '',
-            outOfServiceOdometer: '',
-          },
-          specifications: {
-            height: '',
-            heightUnit: '',
-            length: '',
-            lengthUnit: '',
-            width: '',
-            widthUnit: '',
-            interiorVolume: '',
-            passangerVolume: '',
-            groundClearnce: '',
-            groundClearnceUnit: '',
-            bedLength: '',
-            bedLengthUnit: '',
-            cargoVolume: '',
-            tareWeight: '',
-            grossVehicleWeightRating: '',
-            towingCapacity: '',
-            maxPayload: '',
-            EPACity: '',
-            EPACombined: '',
-            EPAHighway: '',
-          },
-          insurance: {
-            dateOfIssue: '',
-            premiumAmount: '',
-            premiumCurrency: '',
-            vendorID: '',
-            dateOfExpiry: '',
-            reminder: '',
-            remiderEvery: '',
-            policyNumber: '',
-            amount: 0,
-            amountCurrency: ''
-          },
-          fluid: {
-            fuelType: '',
-            fuelTankOneCapacity: '',
-            fuelTankOneType: '',
-            fuelQuality: '',
-            fuelTankTwoCapacity: '',
-            fuelTankTwoType: '',
-            oilCapacity: '',
-            oilCapacityType: '',
-            def: '',
-            defType: ''
-          },
-          wheelsAndTyres: {
-            numberOfTyres: '',
-            driveType: '',
-            brakeSystem: '',
-            wheelbase: '',
-            rearAxle: '',
-            frontTyreType: '',
-            rearTyreType: '',
-            frontTrackWidth: '',
-            rearTrackWidth: '',
-            frontWheelDiameter: '',
-            rearWheelDiameter: '',
-            frontTyrePSI: '',
-            rearTyrePSI: '',
-          },
-          engine: {
-            engineSummary: '',
-            engineBrand: '',
-            aspiration: '',
-            blockType: '',
-            bore: '',
-            camType: '',
-            stroke: '',
-            valves: '',
-            compression: '',
-            cylinders: '',
-            displacement: '',
-            fuelIndication: '',
-            fuelQuality: '',
-            maxHP: '',
-            maxTorque: 0,
-            readlineRPM: '',
-            transmissionSummary: '',
-            transmissionType: '',
-            transmissonBrand: '',
-            transmissionGears: '',
-          },
-          purchase: {
-            purchaseVendorID: '',
-            warrantyExpirationDate: '',
-            purchasePrice: '',
-            purchasePriceCurrency: '',
-            warrantyExpirationMeter: '',
-            purchaseDate: '',
-            purchaseComments: '',
-            purchaseOdometer: '',
-          },
-          loan: {
-            loanVendorID: '',
-            amountOfLoan: '',
-            aspiration: '',
-            annualPercentageRate: '',
-            downPayment: '',
-            dateOfLoan: '',
-            monthlyPayment: '',
-            monthlyPaymentCurrency: '',
-            firstPaymentDate: '',
-            numberOfPayments: '',
-            loadEndDate: '',
-            accountNumber: '',
-            generateExpenses: '',
-            notes: '',
-          },
-          settings: {
-            primaryMeter: 'miles',
-            fuelUnit: 'gallons(CA)',
-            hardBreakingParams: 0,
-            hardAccelrationParams: 0,
-            turningParams: 0,
-            measurmentUnit: 'imperial',
-          },
-        }
-        localStorage.setItem('vehicle', JSON.stringify(vehicle));
-        this.toastr.success('Vehicle Added Successfully');
-        this.router.navigateByUrl('/fleet/vehicles/list');
-      },
-    });
+            specifications: {
+              height: '',
+              heightUnit: '',
+              length: '',
+              lengthUnit: '',
+              width: '',
+              widthUnit: '',
+              interiorVolume: '',
+              passangerVolume: '',
+              groundClearnce: '',
+              groundClearnceUnit: '',
+              bedLength: '',
+              bedLengthUnit: '',
+              cargoVolume: '',
+              tareWeight: '',
+              grossVehicleWeightRating: '',
+              towingCapacity: '',
+              maxPayload: '',
+              EPACity: '',
+              EPACombined: '',
+              EPAHighway: '',
+            },
+            insurance: {
+              dateOfIssue: '',
+              premiumAmount: '',
+              premiumCurrency: '',
+              vendorID: '',
+              dateOfExpiry: '',
+              reminder: '',
+              remiderEvery: '',
+              policyNumber: '',
+              amount: 0,
+              amountCurrency: ''
+            },
+            fluid: {
+              fuelType: '',
+              fuelTankOneCapacity: '',
+              fuelTankOneType: '',
+              fuelQuality: '',
+              fuelTankTwoCapacity: '',
+              fuelTankTwoType: '',
+              oilCapacity: '',
+              oilCapacityType: '',
+              def: '',
+              defType: ''
+            },
+            wheelsAndTyres: {
+              numberOfTyres: '',
+              driveType: '',
+              brakeSystem: '',
+              wheelbase: '',
+              rearAxle: '',
+              frontTyreType: '',
+              rearTyreType: '',
+              frontTrackWidth: '',
+              rearTrackWidth: '',
+              frontWheelDiameter: '',
+              rearWheelDiameter: '',
+              frontTyrePSI: '',
+              rearTyrePSI: '',
+            },
+            engine: {
+              engineSummary: '',
+              engineBrand: '',
+              aspiration: '',
+              blockType: '',
+              bore: '',
+              camType: '',
+              stroke: '',
+              valves: '',
+              compression: '',
+              cylinders: '',
+              displacement: '',
+              fuelIndication: '',
+              fuelQuality: '',
+              maxHP: '',
+              maxTorque: 0,
+              readlineRPM: '',
+              transmissionSummary: '',
+              transmissionType: '',
+              transmissonBrand: '',
+              transmissionGears: '',
+            },
+            purchase: {
+              purchaseVendorID: '',
+              warrantyExpirationDate: '',
+              purchasePrice: '',
+              purchasePriceCurrency: '',
+              warrantyExpirationMeter: '',
+              purchaseDate: '',
+              purchaseComments: '',
+              purchaseOdometer: '',
+            },
+            loan: {
+              loanVendorID: '',
+              amountOfLoan: '',
+              aspiration: '',
+              annualPercentageRate: '',
+              downPayment: '',
+              dateOfLoan: '',
+              monthlyPayment: '',
+              monthlyPaymentCurrency: '',
+              firstPaymentDate: '',
+              numberOfPayments: '',
+              loadEndDate: '',
+              accountNumber: '',
+              generateExpenses: '',
+              notes: '',
+            },
+            settings: {
+              primaryMeter: 'miles',
+              fuelUnit: 'gallons(CA)',
+              hardBreakingParams: 0,
+              hardAccelrationParams: 0,
+              turningParams: 0,
+              measurmentUnit: 'imperial',
+            },
+          }
+          localStorage.setItem('vehicle', JSON.stringify(vehicle));
+          this.toastr.success('Vehicle Added Successfully');
+          this.router.navigateByUrl('/fleet/vehicles/list');
+        },
+      })});
+    } catch (error) {
+      return 'error found';
+    }
+    
   }
 
   throwErrors() {
@@ -1091,9 +1099,11 @@ vehicles= [];
       });
 
   }
-  updateVehicle() {
+  async updateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.Error = '';
+
     this.hideErrors();
     const data = {
       vehicleID : this.vehicleID,
@@ -1253,7 +1263,8 @@ vehicles= [];
         measurmentUnit: this.settings.measurmentUnit,
       },
       uploadedPhotos: this.existingPhotos,
-      uploadedDocs: this.existingDocs
+      uploadedDocs: this.existingDocs,
+      activeTab: this.activeTab
     };
 
      // create form data instance
@@ -1272,33 +1283,38 @@ vehicles= [];
      //append other fields
      formData.append('data', JSON.stringify(data));
 
-    this.apiService.putData('vehicles', formData, true).
-    subscribe({
-      complete : () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.Success = '';
-        this.toastr.success('Vehicle Updated successfully');
-        this.router.navigateByUrl('/fleet/vehicles/list');
+     try {
+      return await new Promise((resolve, reject) => {this.apiService.putData('vehicles', formData, true).
+      subscribe({
+        complete : () => {},
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                if(err) return reject(err);
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.Success = '';
+          this.toastr.success('Vehicle Updated successfully');
+          this.router.navigateByUrl('/fleet/vehicles/list');
+        }
+      })});
+     } catch (error) {
+       
+     }
 
-      }
-    });
   }
   onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
@@ -1338,10 +1354,7 @@ vehicles= [];
     this.quantumSelected = newValue;
   }
 
-  next(){
-    this.activeTab++;
-    if(this.vehicleID) return;
-
+  async next(){
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
@@ -1499,10 +1512,28 @@ vehicles= [];
         measurmentUnit: this.settings.measurmentUnit,
       }
     }
+    
+    if(!this.vehicleID){
+      localStorage.setItem('vehicle', JSON.stringify(data));
+      await this.addVehicle();
+    }else {
+      await this.updateVehicle();
+    }
 
-    localStorage.setItem('vehicle', JSON.stringify(data));
+
+    if($('#details .error').length > 0 && this.activeTab == 1) return;
+    if($('#lifecycle .error').length > 0 && this.activeTab == 2) return;
+    if($('#specifications .error').length > 0 && this.activeTab == 3) return;
+    if($('#insurance .error').length > 0 && this.activeTab == 4) return;
+    if($('#fluids .error').length > 0 && this.activeTab == 5) return;
+    if($('#wheels .error').length > 0 && this.activeTab == 6) return;
+    if($('#engine .error').length > 0 && this.activeTab == 7) return;
+    if($('#purchase .error').length > 0 && this.activeTab == 8) return;
+    if($('#loan .error').length > 0 && this.activeTab == 9) return;
+   
 
 
+    this.activeTab++;
   }
 
   previous(){

@@ -246,12 +246,13 @@
                                               <img [src]="driverProfileSrc"  id="male_photo" class="w-100 h-100" style="object-fit: cover;">
                                               <span class="text-danger profile-cross" 
                                                 (click)="removeProfile()" *ngIf="uploadedPhotos != '' || showIcons"
+                                                style="cursor: pointer;"
                                                 >
                                                 <i class="fa fa-times"></i>
                                              </span>
                                           </div>
                                           <div class="mt-2">
-                                              <div class="btn btn-sm btn-success overflow-hidden position-relative"><i class="fas fa-plus"></i> {{profileTitle}} Photo
+                                              <div class="btn btn-sm btn-success overflow-hidden position-relative" style="cursor: pointer;"><i class="fas fa-plus"></i> {{profileTitle}} Photo
                                                  <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                                                  name="driverImage" type="file" class="hidden_input1 w-100" />
                                               </div>
@@ -1050,7 +1051,7 @@
                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
                          <button type="button"  *ngIf="currentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
                          <a href="javascript:;" (click)="nextStep()"  *ngIf="currentTab != 8" class="btn btn-success btnNext">Next</a>
-                         <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Submit</button>
+                         <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Save</button>
                          <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()" class="btn btn-success">Update</a>
   
                       </div>
