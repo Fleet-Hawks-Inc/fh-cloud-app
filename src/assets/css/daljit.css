@@ -608,5 +608,13 @@ html.fixed .content-body {
 }
 .document_modal-width .modal-dialog {
     margin: 0;
-
 }
+#addVehicleProgramModal .modal-body .content-body {
+margin-left: 0;
+}
+#addVehicleProgramModal .modal-body .inner-wrapper {
+    padding-top: 0;
+}
+  #addVehicleProgramModal .modal-body .page-header {
+    display: none;
+  }
