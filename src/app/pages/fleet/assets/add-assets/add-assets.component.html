@@ -431,7 +431,7 @@
 											<ng-select [(ngModel)]="assetsData.insuranceDetails.vendor"
 												name="insuranceDetails.vendor" placeholder="Select vendor"
 												class="form-control populate">
-												<ng-option *ngFor="let vendor of vendors" value="{{vendor.vendorID}}">
+												<ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">
 													{{vendor.companyName}}
 												</ng-option>
 											</ng-select>

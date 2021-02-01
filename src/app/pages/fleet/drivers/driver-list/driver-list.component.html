@@ -85,11 +85,11 @@
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.contact"
-                              name="contact" (change)="hideShowColumn()"> Contact </label>
+                              name="contact" (change)="hideShowColumn()"> Phone Number </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.dl"
-                              name="dl" (change)="hideShowColumn()"> DL </label>
+                              name="dl" (change)="hideShowColumn()"> CDL Number </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.document"
@@ -475,8 +475,8 @@
                                     <th class="col11">Current Cycle</th>
                                     <th class="col12 extra">Current Vehicle</th>
                                     <th class="col13 extra">Assets</th>
-                                    <th class="col14 extra">Contact</th>
-                                    <th class="col15 extra">DL</th>
+                                    <th class="col14 extra">Phone Number</th>
+                                    <th class="col15 extra">CDL Number</th>
                                     <th class="col16 extra">Document</th>
                                     <th class="col3 extra">Group</th>
                                     <th class="col4 extra">Citizenship</th>
@@ -501,11 +501,8 @@
                                     <td *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
                                     <td *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td *ngIf="hideShow.assets">Live Status</td>
-                                    <td *ngIf="hideShow.contact"><span class="font-weight-bold">Phone: </span>{{driver.workPhone}} <br> <span
-                                          class="font-weight-bold">E-mail: </span>{{driver.workEmail ? driver.workEmail : '-'}}</td>
-                                    <td *ngIf="hideShow.dl"><span class="font-weight-bold">DL#: </span>{{driver.licenceDetails.CDL_Number}}
-                                       <br><span class="font-weight-bold">DL State:
-                                       </span>{{statesObject[driver.licenceDetails.issuedState]}}</td>
+                                    <td *ngIf="hideShow.contact">{{driver.workPhone}} </td>
+                                    <td *ngIf="hideShow.dl">{{driver.licenceDetails.CDL_Number}}</td>
                                     <td *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
                                           class="font-weight-bold">Issue State:
