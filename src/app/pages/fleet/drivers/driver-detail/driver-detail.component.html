@@ -787,23 +787,23 @@
                                     </div>
                                     <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Birth:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{DOB}}</div>
+                                       <div class="col-lg-6 p-2 bor_half">{{DOB | date: 'dd/MM/yyyy'}}</div>
                                    </div>
                                    <div class="row  m-0" *ngIf="driverType == 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{startDate}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{startDate | date: 'dd/MM/yyyy'}}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType == 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{terminationDate ? terminationDate : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{terminationDate ? (terminationDate | date: 'dd/MM/yyyy')  : '-' }}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType != 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractStart ? contractStart : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{contractStart ? (contractStart | date: 'dd/MM/yyyy') : '-'}}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType != 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{contractEnd ? (contractEnd | date: 'dd/MM/yyyy') : '-'}}</div>
                                  </div>
                                    <div class="row" *ngIf="absDocs.length > 0">
                                     <div class="col-lg-12 mt-2">
@@ -835,7 +835,7 @@
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? fastExpiry : '-'}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? ( fastExpiry | date: 'dd/MM/yyyy' ) : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
@@ -930,11 +930,11 @@
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issueDate}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issueDate | date: 'dd/MM/yyyy'}}</div>
                                         </div>
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Expiry Date:</div>
-                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.expiryDate ? item.expiryDate : '-'}}</div>
+                                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.expiryDate ? (item.expiryDate | date: 'dd/MM/yyyy') : '-'}}</div>
                                         </div>
                                        <div class="row m-0" *ngIf="assetsDocs[i]">
                                           <div class="col-lg-12 p-0 mt-2" >
@@ -986,7 +986,7 @@
                                  </div>
                                      <div class="row  m-0">
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Licence Expiration:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{licenceExpiry}}</div>
+                                         <div class="col-lg-6 p-2 bor_half">{{licenceExpiry | date: 'dd/MM/yyyy'}}</div>
                                      </div>
                                      <!-- <div class="row  m-0">
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:</div>
@@ -1098,13 +1098,13 @@
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
                                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosRemarks ? hosRemarks : '-'}}</div>
                                 </div>
-                                <div class="row  m-0" *ngIf="hosPcAllowed">
+                                <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance (PC):</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosPcAllowed}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosPcAllowed ? hosPcAllowed : 'False'}}</div>
                                 </div>
-                                <div class="row  m-0" *ngIf="hosYmAllowed">
+                                <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosYmAllowed}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosYmAllowed ? hosYmAllowed : 'False'}}</div>
                                 </div>
                                 <div class="row  m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>

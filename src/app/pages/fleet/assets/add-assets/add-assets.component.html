@@ -276,13 +276,12 @@
 										</div>
 										<div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'Owner Operator'">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
-											<select data-plugin-selecttwo="" class="form-control populate select2-hidden-accessible" data-select2-id="303" tabindex="-1" aria-hidden="true">
-												<optgroup label="">
-												<option value="1" data-select2-id="305">Owner Operator 1</option>
-												<option value="2">Owner Operator 2</option>
-												<option value="2">Owner Operator 3</option>
-												</optgroup>
-											</select><span class="select2 select2-container select2-container--bootstrap" dir="ltr" data-select2-id="304" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-yy0e-container"><span class="select2-selection__rendered" id="select2-yy0e-container" role="textbox" aria-readonly="true" title="Owner Operator 1">Owner Operator 1</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+											<ng-select class="form-control populate ">
+												<ng-option *ngFor="let item of ownOperators" value="{{item.operatorID}}"
+												>
+													{{item.firstName}} {{item.lastName}}
+												</ng-option>
+											</ng-select>
 										</div>
 									</div>
 									<div class="row mt-2">
