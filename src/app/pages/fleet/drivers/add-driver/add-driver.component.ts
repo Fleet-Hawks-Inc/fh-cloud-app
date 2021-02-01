@@ -532,19 +532,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // if (this.driverData.DOB !== '') {
     //   //date in Y-m-d format 
     //   this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
-    // }
-    
+    // }    
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        
+        let result = await this.HereMap.geoCode(fullAddress);        
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-        
+        element.geoCords.lng = result.position.lng;        
       }
     }
     
@@ -764,8 +761,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           this.driverData['abstractDocs'] = result.abstractDocs;
           this.absDocs = result.abstractDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
          
-        }
-        
+        }    
         
         
         this.driverData['gender'] = result.gender;
