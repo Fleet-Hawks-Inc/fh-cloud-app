@@ -7,8 +7,10 @@ import { ToastrService } from 'ngx-toastr';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Console } from 'console';
 import { ListService } from '../../../services';
+import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { QueryList, ViewChildren } from '@angular/core';
 
 declare var $: any;
 @Component({
@@ -16,29 +18,56 @@ declare var $: any;
   templateUrl: './address-book.component.html',
   styleUrls: ['./address-book.component.css']
 })
-export class AddressBookComponent implements OnInit {
+export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
+
+  @ViewChildren(DataTableDirective)
+  dtElement: QueryList<DataTableDirective>;
+
+  dtOptions: any = {};
+  dtTrigger: Subject<any> = new Subject();
+  dtOptionsBroker: any = {};
+  dtTriggerBroker: Subject<any> = new Subject();
+  dtOptionsVendor: any = {};
+  dtTriggerVendor: Subject<any> = new Subject();
+  dtOptionsCarrier: any = {};
+  dtTriggerCarrier: Subject<any> = new Subject();
+  dtOptionsOperator: any = {};
+  dtTriggerOperator: Subject<any> = new Subject();
+  dtOptionsShipper: any = {};
+  dtTriggerShipper: Subject<any> = new Subject();
+  dtOptionsConsignee: any = {};
+  dtTriggerConsignee: Subject<any> = new Subject();
+  dtOptionsStaff: any = {};
+  dtTriggerStaff: Subject<any> = new Subject();
+  dtOptionsCompany: any = {};
+  dtTriggerCompany: Subject<any> = new Subject();
+
+  dtOptionsDriver: any = {};
+  dtTriggerDriver: Subject<any> = new Subject();
+  
   Asseturl = this.apiService.AssetUrl;
-  customers: any;
-  drivers: any;
-  brokers: any; 
-  vendors: any;
-  carriers: any;
-  shippers: any;
-  receivers: any;
-  staffs: any;
-  fcCompanies: any;
-  allData: any;
+  customers = [];
+  drivers = [];
+  brokers = []; 
+  vendors = [];
+  carriers = [];
+  shippers = [];
+  receivers = [];
+  staffs = [];
+  fcCompanies = [];
+  allData = [];
   form;
   countries;
   states;
   cities;
   public profilePath: any = 'assets/img/driver/driver.png';
+  public detailImgPath: any = 'assets/img/driver/driver.png';
   public defaultProfilePath: any = 'assets/img/driver/driver.png';
   imageText = 'Add Picture';
   userLocation;
   manualAddress: boolean;
   manualAddress1: boolean;
-  dtOptions: DataTables.Settings = {};
+  // dtOptions: DataTables.Settings = {};
   wsib: false;
   updateButton: boolean = false;
   addresses = [];
@@ -265,6 +294,63 @@ export class AddressBookComponent implements OnInit {
   statesObject = [];
   countriesObject = [];
   citiesObject = [];
+  pageLength = 10;
+  lastEvaluatedKeyCustomer = '';
+  lastEvaluatedKeyBroker = '';
+  lastEvaluatedKeyVendor = '';
+  lastEvaluatedKeyCarrier = '';
+  lastEvaluatedKeyOperator = '';
+  lastEvaluatedKeyShipper = '';
+  lastEvaluatedKeyConsignee = ''; 
+  lastEvaluatedKeyStaff = ''; 
+  lastEvaluatedKeyCompany = ''; 
+  lastEvaluatedKeyDriver = ''; 
+  totalRecords = 20;
+  totalRecordsBroker = 20;
+  totalRecordsVendor = 20;
+  totalRecordsCarrier = 20;
+  totalRecordsOperator = 20;
+  totalRecordsShipper = 20;
+  totalRecordsConsignee = 20;
+  totalRecordsStaff = 20;
+  totalRecordsCompany = 20;
+  totalRecordsDriver = 20;
+  activeDiv = 'customerTable';
+  modalTitle = 'Add ';
+  filterVal = {
+    customerName : '',
+    customerID: '',
+    brokerID: '',
+    brokerName: '',
+    vendorID: '',
+    vendorName: '',
+    carrierID: '',
+    carrierName: '',
+    operatorID: '',
+    operatorName: '',
+    shipperID: '',
+    shipperName: '',
+    consigneeID: '',
+    consigneeName: '',
+    staffID: '',
+    staffName: '',
+    companyID: '',
+    fcompanyName: '',
+    driverID: '',
+    driverName: '',
+  }
+
+  //suggestions
+  suggestedCustomers = [];
+  suggestedBrokers = [];
+  suggestedVendors = [];
+  suggestedCarriers = [];
+  suggestedOperators = [];
+  suggestedShipper = [];
+  suggestedConsignees = [];
+  suggestedStaffs = [];
+  suggestedCompany = [];
+  suggestedDriver = [];
 
   constructor(
             private apiService: ApiService,
@@ -276,60 +362,29 @@ export class AddressBookComponent implements OnInit {
   { }
 
   ngOnInit() {
-    forkJoin([
-      this.fetchCustomers(),
-      this.fetchDrivers(),
-      this.fetchBrokers(),
-      this.fetchVendors(),
-      this.fetchCarriers(),
-      this.fetchShippers(),
-      this.fetchConsignee(),
-      this.fetchStaffs(),
-      this.fetchFcCompanies(),
-      this.fetchCountries(),
-      this.fetchAddress(),
-      this.fetchOwnerOperators()
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        complete: () => {
-          this.initDataTable();
-        },
-        error: () => { },
-        next: ([
-          customers,
-          drivers,
-          brokers,
-          vendors,
-          carriers,
-          shippers,
-          receivers,
-          staffs,
-          fcCompanies,
-          countries,
-          addresses,
-          operators
-        ]: any) => {
-          this.customers = customers.Items;
-          this.drivers = drivers.Items;
-          this.brokers = brokers.Items;
-          this.vendors = vendors.Items;
-          this.carriers = carriers.Items;
-          this.shippers = shippers.Items;
-          this.receivers = receivers.Items;
-          this.staffs = staffs.Items;
-          this.fcCompanies = fcCompanies.Items;
-          this.ownerOperatorss = operators.Items;
+    this.fetchCountries();
+    this.fetchCustomers();
+    this.fetchBrokers();
+    this.fetchVendors();
+    this.fetchCarriers();
+    this.fetchOwnerOperators();
+    this.fetchShippers();
+    this.fetchConsignee();
+    this.fetchStaffs();
+    this.fetchFcCompanies();
+    this.fetchDrivers();
 
-          console.log('carriers');
-          console.log(this.carriers)
+    this.initDataTable();
+    this.initDataTableBroker();
+    this.initDataTableVendor();
+    this.initDataTableCarrier();
+    this.initDataTableOperator();
+    this.initDataTableShipper();
+    this.initDataTableConsignee();
+    this.initDataTableStaff();
+    this.initDataTableCompany();
+    this.initDataTableDriver();
 
-          this.allData = [...this.customers, ...this.drivers, ...this.brokers, ...this.vendors,
-                            ...this.carriers, ...this.shippers, ...this.receivers, ...this.staffs, ...this.fcCompanies, ...this.ownerOperatorss];                           
-          this.countries = countries.Items;
-          this.addresses = addresses;
-        }
-      });
     this.searchLocation();
     
     $(document).ready(() => {
@@ -348,11 +403,17 @@ export class AddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, data) {
+    if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
+      this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;
+    } else {
+      this.detailImgPath = this.defaultProfilePath;
+    }
     $('.modal').modal('hide');
     this.userDetailTitle = data.firstName;
     const modalRef = this.modalService.open(targetModal);
-    this.userDetailData = data;
+    this.userDetailData = data; 
   }
+
   remove(data, i) {
     data.address.splice(i, 1);
   }
@@ -493,6 +554,11 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCustomerModal').modal('hide');
+          this.showMainModal();
+          this.customers = [];
+          this.fetchCustomers();
+          this.activeDiv = 'customerTable';
+          this.rerender();
           this.toastr.success('Customer Added Successfully');
         }
       });
@@ -561,6 +627,10 @@ export class AddressBookComponent implements OnInit {
 
         this.hasSuccess = true;
         $('#addCustomerModal').modal('hide');
+        this.showMainModal();
+        this.customers = [];
+        this.activeDiv = 'customerTable';
+        this.rerender();
         this.toastr.success('Customer updated successfully');
       },
     });
@@ -605,7 +675,12 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addBrokerModal').modal('hide');
-        this.toastr.success('Customer Added Successfully');
+        this.fetchBrokers();
+        this.showMainModal();
+        this.brokers = [];
+        this.activeDiv = 'brokerTable';
+        this.rerender();
+        this.toastr.success('Broker Added Successfully');
       }
     });
   }
@@ -649,6 +724,11 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addOwnerOperatorModal').modal('hide');
+        this.fetchOwnerOperators();
+        this.showMainModal();
+        this.ownerOperatorss = [];
+        this.activeDiv = 'operatorTable';
+        this.rerender();
         this.toastr.success('Owner Operator Added Successfully');
       }
     });
@@ -691,6 +771,10 @@ export class AddressBookComponent implements OnInit {
         this.response = res.Items[0];
         this.hasSuccess = true;
         $('#addOwnerOperatorModal').modal('hide');
+        this.showMainModal();
+        this.ownerOperatorss = [];
+        this.activeDiv = 'operatorTable';
+        this.rerender();
         this.toastr.success('Owner operator updated successfully');
       },
     });
@@ -735,6 +819,10 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addBrokerModal').modal('hide');
+        this.showMainModal();
+        this.brokers = [];
+        this.activeDiv = 'brokerTable';
+        this.rerender();
         this.toastr.success('Broker updated successfully');
       },
     });
@@ -784,8 +872,12 @@ export class AddressBookComponent implements OnInit {
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
-          this.listService.fetchVendors();
-
+          this.fetchVendors();
+          this.showMainModal();
+          this.vendors = [];
+          this.activeDiv = 'vendorTable';
+          this.rerender();
+          // this.listService.fetchVendors();
         }
       });
   }
@@ -830,6 +922,9 @@ export class AddressBookComponent implements OnInit {
         this.hasSuccess = true;
         $('#addVendorModal').modal('hide');
         this.showMainModal();
+        this.vendors = [];
+        this.activeDiv = 'vendorTable';
+        this.rerender();
         this.toastr.success('Vendor updated successfully');
       },
     });
@@ -859,7 +954,7 @@ export class AddressBookComponent implements OnInit {
             .pipe(
               map((val: any) => {
                 val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
+                this.errors[val.context.label] = val.message;
               })
             )
             .subscribe({
@@ -874,7 +969,11 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCarrierModal').modal('hide');
+          this.fetchCarriers();
           this.showMainModal();
+          this.carriers = [];
+          this.activeDiv = 'carrierTable';
+          this.rerender();
           this.toastr.success('Carrier Added Successfully');
         }
       });
@@ -918,9 +1017,12 @@ export class AddressBookComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        $('#addBrokerModal').modal('hide');
+        $('#addCarrierModal').modal('hide');
         this.showMainModal();
-        this.toastr.success('Broker updated successfully');
+        this.carriers = [];
+        this.activeDiv = 'carrierTable';
+        this.rerender();
+        this.toastr.success('Carrier updated successfully');
       },
     });
   }
@@ -965,7 +1067,11 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addShipperModal').modal('hide');
+          this.fetchShippers();
           this.showMainModal();
+          this.shippers = [];
+          this.activeDiv = 'shipperTable';
+          this.rerender();
           this.toastr.success('Shipper Added Successfully');
         }
       });
@@ -1010,7 +1116,10 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addShipperModal').modal('hide');
+        this.shippers = [];
         this.showMainModal();
+        this.activeDiv = 'shipperTable';
+        this.rerender();
         this.toastr.success('Shipper updated successfully');
       },
     });
@@ -1057,6 +1166,10 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           $('#addConsigneeModal').modal('hide');
           this.showMainModal();
+          this.receivers = [];
+          this.activeDiv = 'consigneeTable';
+          this.fetchConsignee();
+          this.rerender();
           this.toastr.success('Consignee Added Successfully');
         }
       });
@@ -1101,7 +1214,10 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addConsigneeModal').modal('hide');
+        this.receivers = [];
         this.showMainModal();
+        this.activeDiv = 'consigneeTable';
+        this.rerender();
         this.toastr.success('Consignee updated successfully');
       },
     });
@@ -1146,7 +1262,11 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addFCModal').modal('hide');
+          this.fetchFcCompanies();
           this.showMainModal();
+          this.brokers = [];
+          this.activeDiv = 'brokerTable';
+          this.rerender();
           this.toastr.success('Company Added Successfully');
         }
       });
@@ -1192,6 +1312,9 @@ export class AddressBookComponent implements OnInit {
         this.hasSuccess = true;
         $('#addFCModal').modal('hide');
         this.showMainModal();
+        this.fcCompanies = [];
+        this.activeDiv = 'companyTable';
+        this.rerender();
         this.toastr.success('Company updated successfully');
       },
     });
@@ -1236,6 +1359,11 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addStaffModal').modal('hide');
+          this.staffs = [];
+          this.fetchStaffs();
+          this.showMainModal();
+          this.activeDiv = 'staffTable';
+          this.rerender();
           this.toastr.success('Staff Added Successfully');
         }
       });
@@ -1280,6 +1408,10 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addStaffModal').modal('hide');
+        this.staffs = [];
+        this.showMainModal();
+        this.activeDiv = 'staffTable';
+        this.rerender();
         this.toastr.success('Staff updated successfully');
       },
     });
@@ -1347,43 +1479,83 @@ export class AddressBookComponent implements OnInit {
   }
   
   fetchCustomers() {
-    return this.apiService.getData('customers');
+    // return this.apiService.getData('customers');
+    this.apiService.getData('customers')
+      .subscribe((result: any) => {
+        this.totalRecords = result.Count;
+      });
   }
 
   fetchOwnerOperators() {
-    return this.apiService.getData('ownerOperators');
+    // return this.apiService.getData('ownerOperators');
+    this.apiService.getData('ownerOperators')
+      .subscribe((result: any) => {
+        this.totalRecordsOperator = result.Count;
+      });
   }
 
   fetchDrivers() {
-    return this.apiService.getData('drivers');
+    // return this.apiService.getData('drivers');
+    this.apiService.getData('drivers')
+      .subscribe((result: any) => {
+        this.totalRecordsDriver = result.Count;
+      });
   }
   
   fetchBrokers() {
-    return this.apiService.getData('brokers');
+    // return this.apiService.getData('brokers');
+    this.apiService.getData('brokers')
+      .subscribe((result: any) => {
+        this.totalRecordsBroker = result.Count;
+    });
   }
 
   fetchVendors() {
-    return this.apiService.getData('vendors');
+    // return this.apiService.getData('vendors');
+    this.apiService.getData('vendors')
+      .subscribe((result: any) => {
+        this.totalRecordsVendor = result.Count;
+    });
   }
 
   fetchCarriers() {
-    return this.apiService.getData('externalCarriers');
+    // return this.apiService.getData('externalCarriers');
+    this.apiService.getData('externalCarriers')
+      .subscribe((result: any) => {
+        this.totalRecordsCarrier = result.Count;
+    });
   }
   
   fetchShippers() {
-    return this.apiService.getData('shippers');
+    // return this.apiService.getData('shippers');
+    this.apiService.getData('shippers')
+      .subscribe((result: any) => {
+        this.totalRecordsShipper = result.Count;
+    });
   }
   
   fetchConsignee() {
-    return this.apiService.getData('receivers');
+    // return this.apiService.getData('receivers');
+    this.apiService.getData('receivers')
+      .subscribe((result: any) => {
+        this.totalRecordsConsignee = result.Count;
+    });
   }
 
   fetchStaffs() {
-    return this.apiService.getData('staffs');
+    // return this.apiService.getData('staffs');
+    this.apiService.getData('staffs')
+      .subscribe((result: any) => {
+        this.totalRecordsStaff = result.Count;
+    });
   }
 
   fetchFcCompanies() {
-    return this.apiService.getData('factoringCompanies');
+    // return this.apiService.getData('factoringCompanies');
+    this.apiService.getData('factoringCompanies')
+      .subscribe((result: any) => {
+        this.totalRecordsCompany = result.Count;
+    });
   }
 
 
@@ -1392,15 +1564,6 @@ export class AddressBookComponent implements OnInit {
       delete this.carrierData['paymentDetails']['wsibAccountNumber'];
       delete this.carrierData['paymentDetails']['wsibExpiry'];
     }
-  }
-
-  initDataTable() {
-    this.dtOptions = {
-      "pageLength": 10,
-      searching: false,
-      processing: true,
-      
-    };
   }
 
   assignAddressToUpdate(entityAddresses: any) {
@@ -1423,12 +1586,18 @@ export class AddressBookComponent implements OnInit {
     return this.newAddress;
   }
 
-  deactivateCustomer(item, userID) {
+  async deactivateCustomer(item, userID) {
+    let curr = this;
     if (confirm("Are you sure you want to delete?") === true) {
-      this.apiService
+      await this.apiService
       .getData(`customers/isDeleted/${userID}/${item.isDeleted}`)
-      .subscribe((result: any) => {
-        this.customers = this.customers.filter(u => u.customerID !== item.customerID);
+      .subscribe(async(result: any) => {
+        curr.customers = [];
+        curr.rerender();
+        curr.fetchCustomers();
+        curr.toastr.success('Customer deleted successfully');
+        
+        // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
       });
     }
   }
@@ -1513,6 +1682,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   editUser(type: string, item: any, index:any) {
+    this.modalTitle = 'Edit ';
     this.updateButton = true;
     $('.modal').modal('hide');
     this.clearModalData();
@@ -1594,6 +1764,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   resetModal(type){
+    this.modalTitle = 'Add ';
     if(type == 'driver') {
       this.showDriverModal = true;
     } else {
@@ -1601,6 +1772,10 @@ export class AddressBookComponent implements OnInit {
     }
     this.custCurrentTab = 1;
     this.clearModalData()
+  }
+
+  setActiveDiv(type){
+    this.activeDiv = type+'Table';
   }
 
   showMainModal() {
@@ -1836,5 +2011,883 @@ export class AddressBookComponent implements OnInit {
       .subscribe((result: any) => {
         this.citiesObject = result;
       });
+  }
+
+  //dtb
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+    this.dtTriggerBroker.next();
+    this.dtTriggerVendor.next();
+    this.dtTriggerCarrier.next();
+    this.dtTriggerOperator.next();
+    this.dtTriggerShipper.next();
+    this.dtTriggerConsignee.next();
+    this.dtTriggerStaff.next();
+    this.dtTriggerCompany.next();
+    this.dtTriggerDriver.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    if(this.activeDiv == 'customerTable') { 
+      this.dtTrigger.unsubscribe();
+    } else if(this.activeDiv == 'brokerTable') { 
+      this.dtTriggerBroker.unsubscribe();
+    } else if(this.activeDiv == 'vendorTable') { 
+      this.dtTriggerVendor.unsubscribe();
+    } else if(this.activeDiv == 'carrierTable') { 
+      this.dtTriggerCarrier.unsubscribe();
+    } else if(this.activeDiv == 'operatorTable') { 
+      this.dtTriggerOperator.unsubscribe();
+    } else if(this.activeDiv == 'shipperTable') { 
+      this.dtTriggerShipper.unsubscribe();
+    } else if(this.activeDiv == 'consigneeTable') { 
+      this.dtTriggerConsignee.unsubscribe();
+    } else if(this.activeDiv == 'staffTable') { 
+      this.dtTriggerStaff.unsubscribe();
+    } else if(this.activeDiv == 'companyTable') { 
+      this.dtTriggerCompany.unsubscribe();
+    } else if(this.activeDiv == 'driverTable') { 
+      this.dtTriggerDriver.unsubscribe();
+    }
+  }
+
+  rerender() {
+    let curr = this;
+    this.dtElement.forEach((dtElement: DataTableDirective) => {
+      dtElement.dtInstance.then((dtInstance: any) => {
+        let tableId = dtInstance.table().node().id;
+        if(this.activeDiv == tableId) { 
+          if(tableId == 'customerTable') { 
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptions.pageLength = this.totalRecords;
+            } else {
+              this.dtOptions.pageLength = this.pageLength;
+            }
+            curr.dtTrigger.next();
+
+          } else if(tableId == 'brokerTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsBroker.pageLength = this.totalRecordsBroker;
+            } else {
+              this.dtOptionsBroker.pageLength = this.pageLength;
+            }
+            curr.dtTriggerBroker.next();
+
+          } else if(tableId == 'vendorTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsVendor.pageLength = this.totalRecordsVendor;
+            } else {
+              this.dtOptionsVendor.pageLength = this.pageLength;
+            }
+            curr.dtTriggerVendor.next();
+
+          } else if(tableId == 'carrierTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsCarrier.pageLength = this.totalRecordsCarrier;
+            } else {
+              this.dtOptionsCarrier.pageLength = this.pageLength;
+            }
+            curr.dtTriggerCarrier.next();
+
+          } else if(tableId == 'operatorTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsOperator.pageLength = this.totalRecordsOperator;
+            } else {
+              this.dtOptionsOperator.pageLength = this.pageLength;
+            }
+            curr.dtTriggerOperator.next();
+
+          } else if(tableId == 'shipperTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsShipper.pageLength = this.totalRecordsShipper;
+            } else {
+              this.dtOptionsShipper.pageLength = this.pageLength;
+            }
+            curr.dtTriggerShipper.next();
+
+          } else if(tableId == 'consigneeTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsConsignee.pageLength = this.totalRecordsConsignee;
+            } else {
+              this.dtOptionsConsignee.pageLength = this.pageLength;
+            }
+            curr.dtTriggerConsignee.next();
+
+          } else if(tableId == 'staffTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsStaff.pageLength = this.totalRecordsStaff;
+            } else {
+              this.dtOptionsStaff.pageLength = this.pageLength;
+            }
+            curr.dtTriggerStaff.next();
+
+          } else if(tableId == 'companyTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsCompany.pageLength = this.totalRecordsCompany;
+            } else {
+              this.dtOptionsCompany.pageLength = this.pageLength;
+            }
+            curr.dtTriggerCompany.next();
+
+          } else if(tableId == 'driverTable') {
+            dtInstance.destroy();
+            if (status === 'reset') {
+              this.dtOptionsDriver.pageLength = this.totalRecordsDriver;
+            } else {
+              this.dtOptionsDriver.pageLength = this.pageLength;
+            }
+            curr.dtTriggerDriver.next();
+          }
+        }
+      });
+    });
+  }
+
+  initDataTable() {
+    let current = this;
+    this.dtOptions = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('customers/fetch/records?customer='+this.filterVal.customerID+'&lastKey='+this.lastEvaluatedKeyCustomer, dataTablesParameters).subscribe(resp => {
+            current.customers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyCustomer = resp['LastEvaluatedKey'].customerID;
+              
+            } else {
+              this.lastEvaluatedKeyCustomer = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecords,
+              recordsFiltered: current.totalRecords,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableBroker() {
+    let current = this;
+    this.dtOptionsBroker = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('brokers/fetch/records?brokerID='+this.filterVal.brokerID+'&lastKey='+this.lastEvaluatedKeyBroker, dataTablesParameters).subscribe(resp => {
+            current.brokers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyBroker = resp['LastEvaluatedKey'].brokerID;
+              
+            } else {
+              this.lastEvaluatedKeyBroker = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsBroker,
+              recordsFiltered: current.totalRecordsBroker,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableVendor() {
+    let current = this;
+    this.dtOptionsVendor = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('vendors/fetch/records?vendorID='+this.filterVal.vendorID+'&lastKey='+this.lastEvaluatedKeyVendor, dataTablesParameters).subscribe(resp => {
+            current.vendors = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyVendor = resp['LastEvaluatedKey'].vendorID;
+              
+            } else {
+              this.lastEvaluatedKeyVendor = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsVendor,
+              recordsFiltered: current.totalRecordsVendor,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableCarrier() {
+    let current = this;
+    this.dtOptionsCarrier = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('externalCarriers/fetch/records?infoID='+this.filterVal.carrierID+'&lastKey='+this.lastEvaluatedKeyCarrier, dataTablesParameters).subscribe(resp => {
+            current.carriers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyCarrier = resp['LastEvaluatedKey'].infoID;
+              
+            } else {
+              this.lastEvaluatedKeyCarrier = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsCarrier,
+              recordsFiltered: current.totalRecordsCarrier,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableOperator() {
+    let current = this;
+    this.dtOptionsOperator = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('ownerOperators/fetch/records?operatorID='+this.filterVal.operatorID+'&lastKey='+this.lastEvaluatedKeyOperator, dataTablesParameters).subscribe(resp => {
+            current.ownerOperatorss = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyOperator = resp['LastEvaluatedKey'].operatorID;
+              
+            } else {
+              this.lastEvaluatedKeyOperator = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsOperator,
+              recordsFiltered: current.totalRecordsOperator,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableShipper() {
+    let current = this;
+    this.dtOptionsShipper = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('shippers/fetch/records?shipperID='+this.filterVal.shipperID+'&lastKey='+this.lastEvaluatedKeyShipper, dataTablesParameters).subscribe(resp => {
+            current.shippers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyShipper = resp['LastEvaluatedKey'].shipperID;
+              
+            } else {
+              this.lastEvaluatedKeyShipper = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsShipper,
+              recordsFiltered: current.totalRecordsShipper,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableConsignee() {
+    let current = this;
+    this.dtOptionsConsignee = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('receivers/fetch/records?consigneeID='+this.filterVal.consigneeID+'&lastKey='+this.lastEvaluatedKeyConsignee, dataTablesParameters).subscribe(resp => {
+            current.receivers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyConsignee = resp['LastEvaluatedKey'].receiverID;
+              
+            } else {
+              this.lastEvaluatedKeyConsignee = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsConsignee,
+              recordsFiltered: current.totalRecordsConsignee,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableStaff() {
+    let current = this;
+    this.dtOptionsStaff = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('staffs/fetch/records?staffID='+this.filterVal.staffID+'&lastKey='+this.lastEvaluatedKeyStaff, dataTablesParameters).subscribe(resp => {
+            current.staffs = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyStaff = resp['LastEvaluatedKey'].staffID;
+              
+            } else {
+              this.lastEvaluatedKeyStaff = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsStaff,
+              recordsFiltered: current.totalRecordsStaff,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableCompany() {
+    let current = this;
+    this.dtOptionsCompany = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5,6],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('factoringCompanies/fetch/records?companyID='+this.filterVal.companyID+'&lastKey='+this.lastEvaluatedKeyCompany, dataTablesParameters).subscribe(resp => {
+            current.fcCompanies = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].factoringCompanyID;
+              
+            } else {
+              this.lastEvaluatedKeyCompany = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsCompany,
+              recordsFiltered: current.totalRecordsCompany,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  initDataTableDriver() {
+    let current = this;
+    this.dtOptionsDriver = { // All list options
+      pagingType: 'full_numbers',
+      pageLength: this.pageLength,
+      serverSide: true,
+      processing: true,
+      order: [],
+      columnDefs: [ //sortable false
+        {"targets": [0,1,2,3,4,5],"orderable": false},
+      ],
+      dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
+      ajax: (dataTablesParameters: any, callback) => {
+        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.filterVal.driverID+'&dutyStatus=&lastKey='+this.lastEvaluatedKeyCompany, dataTablesParameters).subscribe(resp => {
+            current.drivers = resp['Items'];
+            if (resp['LastEvaluatedKey'] !== undefined) {
+              this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].driverID;
+              
+            } else {
+              this.lastEvaluatedKeyCompany = '';
+            }
+
+            callback({
+              recordsTotal: current.totalRecordsDriver,
+              recordsFiltered: current.totalRecordsDriver,
+              data: []
+            });
+          });
+      }
+    };
+  }
+
+  getSuggestions(value, type) {
+    if (type == 'customer') {
+      this.apiService
+        .getData(`customers/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedCustomers = result.Items;
+          if (this.suggestedCustomers.length == 0) {
+            this.filterVal.customerID = '';
+            this.filterVal.customerName = '';
+          } else {
+            this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+          }
+        });
+
+    } else if (type == 'broker') {
+      this.apiService
+        .getData(`brokers/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedBrokers = result.Items;
+          if (this.suggestedBrokers.length == 0) {
+            this.filterVal.brokerID = '';
+            this.filterVal.brokerName = '';
+          } else {
+            this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+          }
+        });
+
+    } else if (type == 'vendor') {
+      this.apiService
+        .getData(`vendors/nameSuggestions/${value}`)
+        .subscribe((result) => {
+          this.suggestedVendors = result.Items;
+            this.suggestedVendors = this.suggestedVendors.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+
+    } else if (type == 'carrier') {
+      this.apiService
+        .getData(`externalCarriers/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedCarriers = result.Items;
+            this.suggestedCarriers = this.suggestedCarriers.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'operator') {
+      this.apiService
+        .getData(`ownerOperators/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedOperators = result.Items;
+            this.suggestedOperators = this.suggestedOperators.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'shipper') {
+      this.apiService
+        .getData(`shippers/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedShipper = result.Items;
+            this.suggestedShipper = this.suggestedShipper.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'consignee') {
+      this.apiService
+        .getData(`receivers/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedConsignees = result.Items;
+            this.suggestedConsignees = this.suggestedConsignees.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'staff') {
+      this.apiService
+        .getData(`staffs/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedStaffs = result.Items;
+            this.suggestedStaffs = this.suggestedStaffs.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'company') {
+      this.apiService
+        .getData(`factoringCompanies/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedCompany = result.Items;
+            this.suggestedCompany = this.suggestedCompany.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    } else if (type == 'driver') {
+      this.apiService
+        .getData(`drivers/get/suggestions/${value}`)
+        .subscribe((result) => {
+          this.suggestedDriver = result.Items;
+            this.suggestedDriver = this.suggestedDriver.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+        });
+    }
+  }
+
+  setSearchValues(searchID, searchValue, type) {
+    if(type == 'customer') {
+      this.filterVal.customerID = searchID;
+      this.filterVal.customerName = searchValue;
+      this.suggestedCustomers = [];
+
+    } else if(type == 'broker') {
+      this.filterVal.brokerID = searchID;
+      this.filterVal.brokerName = searchValue;
+      this.suggestedBrokers = [];
+      
+    } else if(type == 'vendor') {
+      this.filterVal.vendorID = searchID;
+      this.filterVal.vendorName = searchValue;
+      this.suggestedVendors = [];
+
+    } else if(type == 'carrier') {
+      this.filterVal.carrierID = searchID;
+      this.filterVal.carrierName = searchValue;
+      this.suggestedCarriers = [];
+
+    } else if(type == 'operator') {
+      this.filterVal.operatorID = searchID;
+      this.filterVal.operatorName = searchValue;
+      this.suggestedOperators = [];
+
+    } else if(type == 'shipper') {
+      this.filterVal.shipperID = searchID;
+      this.filterVal.shipperName = searchValue;
+      this.suggestedShipper = [];
+
+    } else if(type == 'consignee') {
+      this.filterVal.consigneeID = searchID;
+      this.filterVal.consigneeName = searchValue;
+      this.suggestedConsignees = [];
+
+    } else if(type == 'staff') {
+      this.filterVal.staffID = searchID;
+      this.filterVal.staffName = searchValue;
+      this.suggestedStaffs = [];
+
+    } else if(type == 'company') {
+      this.filterVal.companyID = searchID;
+      this.filterVal.fcompanyName = searchValue;
+      this.suggestedCompany = [];
+
+    } else if(type == 'driver') {
+      this.filterVal.driverID = searchID;
+      this.filterVal.driverName = searchValue;
+      this.suggestedDriver = [];
+    }
+  }
+
+  async searchFilter(type) {
+    if(type == 'customer') {
+      if(this.filterVal.customerID != '' || this.filterVal.customerName != '') {
+        this.customers = [];
+        this.activeDiv = 'customerTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'broker') {
+      if(this.filterVal.brokerID != '' || this.filterVal.brokerName != '') {
+        this.brokers = [];
+        this.activeDiv = 'brokerTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'vendor') {
+      if(this.filterVal.vendorID != '' || this.filterVal.vendorName != '') {
+        this.vendors = [];
+        this.activeDiv = 'vendorTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'carrier') {
+      if(this.filterVal.carrierID != '' || this.filterVal.carrierName != '') {
+        this.carriers = [];
+        this.activeDiv = 'carrierTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+      
+    } else if(type == 'operator') {
+      if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '') {
+        this.ownerOperatorss = [];
+        this.activeDiv = 'operatorTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'shipper') {
+      if(this.filterVal.shipperID != '' || this.filterVal.shipperName != '') {
+        this.shippers = [];
+        this.activeDiv = 'shipperTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'consignee') {
+      if(this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '') {
+        this.receivers = [];
+        this.activeDiv = 'consigneeTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'staff') {
+      if(this.filterVal.staffID != '' || this.filterVal.staffName != '') {
+        this.staffs = [];
+        this.activeDiv = 'staffTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'company') {
+      if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '') {
+        this.fcCompanies = [];
+        this.activeDiv = 'companyTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'driver') {
+      if(this.filterVal.driverID != '' || this.filterVal.driverName != '') {
+        this.drivers = [];
+        this.activeDiv = 'driverTable';
+        await this.rerender();
+      } else {
+        return false
+      }
+      
+    }
+  }
+
+  async resetFilter(type) {
+    if(type == 'customer') {
+      if(this.filterVal.customerID != '' || this.filterVal.customerName != '') {
+        this.customers = [];
+        this.activeDiv = 'customerTable';
+        this.filterVal.customerID = '';
+        this.filterVal.customerName = '';
+        this.suggestedCustomers = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'broker') {
+      if(this.filterVal.brokerID != '' || this.filterVal.brokerName != '') {
+        this.brokers = [];
+        this.activeDiv = 'brokerTable';
+        this.filterVal.brokerID = '';
+        this.filterVal.brokerName = '';
+        this.suggestedBrokers = [];
+        await this.rerender();
+
+      } else {
+        return false
+      }
+
+    } else if(type == 'vendor') {
+      if(this.filterVal.vendorID != '' || this.filterVal.vendorName != '') {
+        this.vendors = [];
+        this.activeDiv = 'vendorTable';
+        this.filterVal.vendorID = '';
+        this.filterVal.vendorName = '';
+        this.suggestedVendors = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'carrier') {
+      if(this.filterVal.carrierID != '' || this.filterVal.carrierName != '') {
+        this.carriers = [];
+        this.activeDiv = 'carrierTable';
+        this.filterVal.carrierID = '';
+        this.filterVal.carrierName = '';
+        this.suggestedCarriers = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'operator') {
+      if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '') {
+        this.ownerOperatorss = [];
+        this.activeDiv = 'operatorTable';
+        this.filterVal.operatorID = '';
+        this.filterVal.operatorName = '';
+        this.suggestedOperators = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'shipper') {
+      if(this.filterVal.shipperID != '' || this.filterVal.shipperName != '') {
+        this.shippers = [];
+        this.activeDiv = 'shipperTable';
+        this.filterVal.shipperID = '';
+        this.filterVal.shipperName = '';
+        this.suggestedShipper = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'consignee') {
+      if(this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '') {
+        this.receivers = [];
+        this.activeDiv = 'consigneeTable';
+        this.filterVal.consigneeID = '';
+        this.filterVal.consigneeName = '';
+        this.suggestedConsignees = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'staff') {
+      if(this.filterVal.staffID != '' || this.filterVal.staffName != '') {
+        this.receivers = [];
+        this.activeDiv = 'staffTable';
+        this.filterVal.staffID = '';
+        this.filterVal.staffName = '';
+        this.suggestedStaffs = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'company') {
+      if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '') {
+        this.fcCompanies = [];
+        this.activeDiv = 'companyTable';
+        this.filterVal.companyID = '';
+        this.filterVal.fcompanyName = '';
+        this.suggestedCompany = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+
+    } else if(type == 'driver') {
+      if(this.filterVal.driverID != '' || this.filterVal.driverName != '') {
+        this.drivers = [];
+        this.activeDiv = 'driverTable';
+        this.filterVal.driverID = '';
+        this.filterVal.driverName = '';
+        this.suggestedDriver = [];
+        await this.rerender();
+      } else {
+        return false
+      }
+    }
   }
 }
