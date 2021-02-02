@@ -31,6 +31,7 @@ export class AddAssetsComponent implements OnInit {
     assetIdentification: '',
     groupID: '',
     VIN: '',
+    startDate: '',
     assetDetails: {
       assetType: '',
       currentStatus: '',
@@ -48,6 +49,8 @@ export class AddAssetsComponent implements OnInit {
       licenceCountryID: '',
       licenceStateID: '',
       licencePlateNumber: '',
+      annualSafetyDate: '',
+      annualSafetyReminder: true,
       remarks: '',
     },
     insuranceDetails: {
@@ -73,7 +76,7 @@ export class AddAssetsComponent implements OnInit {
   };
 
   vendors: any = [];;
-  manufacturers = [];
+  manufacturers: any = [];
   models = [];
   groups = [];
 
@@ -110,8 +113,9 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    this.fetchManufactuer();
+    // this.fetchManufactuer();
     // this.fetchVendors();
+    this.listService.fetchAssetManufacturers();
     this.listService.fetchVendors();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
@@ -131,6 +135,7 @@ export class AddAssetsComponent implements OnInit {
     });
 
     this.vendors = this.listService.vendorList;
+    this.manufacturers = this.listService.assetManufacturesList;
   }
 
   getYears() {
@@ -155,11 +160,11 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all manufacturers from api
    */
-  fetchManufactuer() {
-    this.apiService.getData('assetManufacturers').subscribe((result: any) => {
-      this.manufacturers = result.Items;
-    });
-  }
+  // fetchManufactuer() {
+  //   this.apiService.getData('assetManufacturers').subscribe((result: any) => {
+  //     this.manufacturers = result.Items;
+  //   });
+  // }
   /*
    * Get all vendors from api
    */
@@ -246,6 +251,7 @@ export class AddAssetsComponent implements OnInit {
     formData.append('data', JSON.stringify(data));
 
     this.apiService.postData('assets', formData, true).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -257,8 +263,6 @@ export class AddAssetsComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.hasError = true;
-              this.toastr.error('Please see the errors');
             },
             error: () => { },
             next: () => { },
@@ -304,7 +308,7 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
+        
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['groupID'] = result.groupID;
@@ -498,7 +502,7 @@ export class AddAssetsComponent implements OnInit {
 
   
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }

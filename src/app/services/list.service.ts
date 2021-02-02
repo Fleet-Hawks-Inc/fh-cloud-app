@@ -21,11 +21,15 @@ export class ListService {
   stateDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   stateList = this.stateDataSource.asObservable();
 
+  assetManuDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  assetManufacturesList = this.assetManuDataSource.asObservable();
+
+  
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
     this.apiService.getData("vendors").subscribe((result: any) => {
-      console.log('in new service');
+      
       this.vendorDataSource.next(result.Items);
     });
   }
@@ -55,6 +59,15 @@ export class ListService {
       .getData(`states`)
       .subscribe((result: any) => {
         this.stateDataSource.next(result.Items);
+      });
+  }
+
+  fetchAssetManufacturers() {
+    this.apiService
+      .getData(`assetManufacturers`)
+      .subscribe((result: any) => {
+        console.log('in new service');
+        this.assetManuDataSource.next(result.Items);
       });
   }
 }
