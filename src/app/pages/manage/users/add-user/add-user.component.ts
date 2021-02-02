@@ -322,7 +322,7 @@ removeProfile() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if(this.userPassword === this.confirmUserPassword){
+    if(this.userPassword === this.confirmUserPassword && this.userPassword != ''){
       for (let i = 0; i < this.addressDetails.length; i++) {
         const element = this.addressDetails[i];
         if (element.countryID != '' && element.stateID != '' && element.cityID != '') {

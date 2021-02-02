@@ -998,10 +998,8 @@
                                              >Home Terminal</label>
                                           <ng-select
                                               [(ngModel)]="driverData.hosDetails.homeTerminal" name="hosDetails.homeTerminal"
-                                             class="form-control populate" placeholder="Select home terminal of the driver">
-                                             
-                                               <ng-option class="text-capitalize" *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</ng-option>
-                                             
+                                             class="form-control populate" placeholder="Select home terminal of the driver">                                             
+                                               <ng-option class="text-capitalize" *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</ng-option>                                             
                                           </ng-select>
                                        </div>
                                     </div>
@@ -1057,11 +1055,9 @@
                                  </div>
                               </div>
                            </div>
-                        </div>
- 
+                        </div> 
                      </div>
-                  </div>
-                  
+                  </div>                  
                   <div class="form-group row mt-3">
                      <div class="col-lg-12 text-right pb-4 pr-5">
                          <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
