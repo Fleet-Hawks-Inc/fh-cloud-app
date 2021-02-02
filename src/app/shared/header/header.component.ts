@@ -33,10 +33,13 @@ export class HeaderComponent implements OnInit {
   Logout() {
     console.log('logout');
     Auth.signOut();
+    localStorage.removeItem('vehicle');
+    localStorage.removeItem('driver');
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
+     
   }
 
   getCurrentuser = async () => {
