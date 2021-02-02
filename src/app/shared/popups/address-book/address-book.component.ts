@@ -877,7 +877,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.vendors = [];
           this.activeDiv = 'vendorTable';
           this.rerender();
-          // this.listService.fetchVendors();
+          this.listService.fetchVendors();
         }
       });
   }
