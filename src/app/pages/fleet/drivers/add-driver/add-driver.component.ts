@@ -342,9 +342,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async nextStep() {
-    let a = $('#addDriverBasic .error').length;
-    console.log('a', a);
-    console.log('a', this.currentTab);
     
     if(!this.driverID){
       localStorage.setItem('driver', JSON.stringify(this.driverData));
@@ -361,7 +358,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if($('#payment .error').length > 0 && this.currentTab == 6) return;
     if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
     if($('#emergency .error').length > 0 && this.currentTab == 8) return;
-    console.log('this.driverData', this.driverData );
+    
     this.currentTab++;
     
     
@@ -926,8 +923,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (obj === 'address') {
       if (addressID != null) {
         this.deletedAddress.push(addressID)
-        console.log('deleadd', this.deletedAddress);
-        // this.apiService.deleteData(`addresses/deleteAddress/${addressID}`).subscribe(async (result: any) => {});
       }
       this.driverData.address.splice(i, 1);
     } else {

@@ -144,7 +144,7 @@
 												[(ngModel)]="assetsData.assetDetails.manufacturer"
 												name="assetDetails.manufacturer" class="form-control"
 												(change)="getModels($event)" placeholder="Select asset make">
-												<ng-option *ngFor="let item of manufacturers"
+												<ng-option *ngFor="let item of manufacturers | async"
 													id="{{item.manufacturerID}}" value="{{item.manufacturerID}}">{{item.manufacturerName}}
 												</ng-option>
 											</ng-select>
@@ -326,12 +326,12 @@
 									<div class="row mt-2">
 											<div class="col-lg-10">
 													<label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set Reminder)</label>
-													<input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="annualSafetyDate" class="form-control"> 
+													<input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate" class="form-control"> 
 											</div>
 											<div class="col-lg-10">
 												<div class="checkbox mt-1">
 												<label>
-													<input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder" value="true">
+													<input type="checkbox" name="annualSafetyReminder" [(ngModel)]="assetsData.assetDetails.annualSafetyReminder" value="true">
 													Set Reminder
 												</label>
 												</div>
@@ -612,7 +612,7 @@
 				</div>
 			</div>
 			<div class="modal-footer text-right">
-				<a class="btn btn-success" (click)="addGroup()">Save</a>
+				<a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
 				<a class="btn btn-default" data-dismiss="modal">Cancel</a>
 			</div>
 		</div>
