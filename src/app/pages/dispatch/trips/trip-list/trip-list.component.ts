@@ -359,6 +359,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],"orderable": false},
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData(current.serviceUrl + current.lastEvaluated.value1 +
           '&searchValue=' + this.tripsFiltr.searchValue + "&startDate=" + this.tripsFiltr.start + 

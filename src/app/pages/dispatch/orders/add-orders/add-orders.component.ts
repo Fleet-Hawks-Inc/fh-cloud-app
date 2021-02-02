@@ -200,9 +200,7 @@ export class AddOrdersComponent implements OnInit {
 
   stateShipperIndex: any;
   stateReceiverIndex: number;
-
   uploadedDocs = [];
-
   constructor(
     private apiService: ApiService,
     private domSanitizer: DomSanitizer,
@@ -388,6 +386,7 @@ export class AddOrdersComponent implements OnInit {
     
     this.mergedArray.sort((a, b) => {
      return new Date(a.dateAndTime).valueOf() - new Date(b.dateAndTime).valueOf();
+
     });
     
   }
@@ -416,6 +415,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers['driverLoad'] = '';
   }
 
+
   emptyReceiver(i) {
     this.shippersReceivers[i].receivers['receiverID'] = '';
     this.shippersReceivers[i].receivers['dropOffLocation'] = '';
@@ -426,6 +426,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers['phone'] = '';
     this.shippersReceivers[i].receivers['reference'] = '';
     this.shippersReceivers[i].receivers['notes'] = '';
+
     this.shippersReceivers[i].receivers['commodity'].forEach( item => {
       item.name = '',
       item.quantity = ''
@@ -433,6 +434,7 @@ export class AddOrdersComponent implements OnInit {
       item.weight = ''
       item.weightUnit = ''
     });
+
     this.shippersReceivers[i].receivers['minTempratureUnit'] = '';
     this.shippersReceivers[i].receivers['maxTemprature'] = '';
     this.shippersReceivers[i].receivers['maxTempratureUnit'] = '';
@@ -489,6 +491,7 @@ export class AddOrdersComponent implements OnInit {
     });
   }
 
+
   /*
    * Selecting files before uploading
    */
@@ -501,6 +504,7 @@ export class AddOrdersComponent implements OnInit {
     console.log('uploadedDocs', this.uploadedDocs);
   }
 
+
   getTimeFormat(date) {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -512,8 +516,10 @@ export class AddOrdersComponent implements OnInit {
     return strTime;
   }
 
+
   async getMiles(value) {
     
+
     this.orderData.milesInfo['calculateBy'] = value;
     
     if (this.mergedArray !== undefined) {
@@ -524,6 +530,7 @@ export class AddOrdersComponent implements OnInit {
       
       if (value === 'google') {
         this.mergedArray.forEach(element => {
+
           this.googleCords.push({lat: element.position.lat ,lng: element.position.lng});
         });
         this.origin = this.googleCords[0];
@@ -539,6 +546,7 @@ export class AddOrdersComponent implements OnInit {
         // }
 
         this.orderData.milesInfo['totalMiles'] = await this.google.googleDistance([this.origin], this.destination);
+
       } else if (value === 'pcmiles') {
         this.google.pcMiles.next(true);
         this.google.pcMilesDistance(this.getAllCords.join(';')).subscribe(res => {
@@ -620,6 +628,7 @@ export class AddOrdersComponent implements OnInit {
 
 
   onSubmit() {
+
     this.hideErrors();
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
@@ -660,6 +669,7 @@ export class AddOrdersComponent implements OnInit {
         next: (res) => {
          this.toastr.success('Order added successfully');
          this.router.navigateByUrl('/dispatch/orders');
+
         }
       });
     
@@ -747,14 +757,17 @@ export class AddOrdersComponent implements OnInit {
     
   }
 
+
   getLoadTypes(value) {
     var index = this.loadTypeData.indexOf(value);
     if(index === -1){
       this.loadTypeData.push(value);
+
     }else{
       this.loadTypeData.splice(index,1);
     }
     this.orderData.additionalDetails['loadType'] = this.loadTypeData;
+
   }
 
   removeList(elem, parentIndex, i) {
@@ -1055,9 +1068,11 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
+
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
   }
+
 
   addAccessFee(value: string) {
     if (value === 'accessFee') {
@@ -1076,6 +1091,7 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
+
   accordianChange() {
     setTimeout(() => {
       this.timpickerInit();
@@ -1090,6 +1106,7 @@ export class AddOrdersComponent implements OnInit {
     this.accessFeesInfo.accessFees.forEach(item => {
       item.currency = value;
     });
+
 
     this.accessorialDeductionInfo.accessDeductions.forEach(item => {
       item.currency = value;

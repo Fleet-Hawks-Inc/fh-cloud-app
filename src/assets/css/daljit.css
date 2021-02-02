@@ -165,7 +165,7 @@ html.fixed .content-body {
     position: relative;
 }
 #allContactsModal .modal-dialog{
-    max-width: 1024px;
+    max-width: 1150px;
 }
 #canvas1,
 #canvas2,
@@ -365,9 +365,9 @@ html.fixed .content-body {
 
 /*--circle progress css*/
 .circle-wrap {
-  margin: 50px auto;
-  width: 150px;
-  height: 150px;
+  margin: 36px auto;
+  width: 140px;
+  height: 140px;
   background: #e6e2e7;
   border-radius: 50%;
 }
@@ -609,3 +609,12 @@ html.fixed .content-body {
 .document_modal-width .modal-dialog {
     margin: 0;
 }
+#addVehicleProgramModal .modal-body .content-body {
+margin-left: 0;
+}
+#addVehicleProgramModal .modal-body .inner-wrapper {
+    padding-top: 0;
+}
+  #addVehicleProgramModal .modal-body .page-header {
+    display: none;
+  }

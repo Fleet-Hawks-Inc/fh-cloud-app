@@ -24,7 +24,7 @@ import {
 } from './index';
 
 const COMPONENTS = [
-  AddServiceProgramComponent,
+  // AddServiceProgramComponent,
   ServiceProgramListComponent,
   AddVendorComponent,
   VendorsListComponent,

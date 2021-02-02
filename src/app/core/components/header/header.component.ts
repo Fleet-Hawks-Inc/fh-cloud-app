@@ -33,6 +33,7 @@ export class HeaderComponent implements OnInit {
     Auth.signOut();
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
+    localStorage.removeItem('vehicle');
     // localStorage.removeItem('jwt');
     // this.router.navigate(['/Login']);
   }

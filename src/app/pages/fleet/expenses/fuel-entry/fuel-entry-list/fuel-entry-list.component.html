@@ -24,43 +24,36 @@
 								{{ suggestedUnit.unitName }}
 							</div>
 						</div>
-						<!-- <div class="col-md-2 col-lg-2 pr-0 pl-1">
-
-				   <div class="input-group input-group-md mb-3">
-					<input class="form-control" name="amount" [(ngModel)]="amount" >
-				   </div>
-				</div> -->
-
-						<div class="col-lg-2 col-md-2 pl-2 pr-0">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-prepend positionsta">
-										<span class="input-group-text" (click)="from.toggle()"><i
-												class="fas fa-calendar-alt"></i></span>
-									</span>
-									<input class="form-control" placeholder="Enter Start Date" name="fromDate"
-										[(ngModel)]="fromDate" ngbDatepicker #from="ngbDatepicker" />
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-2 col-md-2 pr-0 pl-2">
-							<div class="form-group">
-								<div class="input-group">
-									<span class="input-group-prepend positionsta">
-										<span class="input-group-text" (click)="to.toggle()"><i
-												class="fas fa-calendar-alt"></i></span>
-									</span>
-									<input class="form-control" placeholder="Enter End Date" name="toDate"
-										[(ngModel)]="toDate" ngbDatepicker #to="ngbDatepicker" />
-								</div>
-							</div>
-						</div>
+				<div class="col-lg-3 col-md-3">
+					<div class="input-daterange input-group">
+						<span class="input-group-prepend">
+							<span class="input-group-text">
+								<i class="fas fa-calendar-alt"></i>
+							</span>
+						</span>
+						<input 
+						[(ngModel)]="fromDate" name="fromDate"
+						type="text" 
+						placeholder="DD-MM-YYYY"
+						(click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+						class="form-control" autocomplete="off"> 
+						<span class="input-group-text border-left-0 border-right-0 rounded-0">
+							to
+						</span>
+						<input 
+						[(ngModel)]="toDate" name="toDate"
+						type="text" 
+						placeholder="DD-MM-YYYY"
+						(click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+						class="form-control" autocomplete="off"> 
+					</div>
+				</div>
 						<div class="col-md-2 col-lg- pl-2">
 							<button type="submit" (click)="searchFilter()"
 								class="btn btn-sm btn-success mr-2">Search</button>
 							<button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
 						</div>
-						<div class="col-md-4  col-lg-4 text-right pr-5 page-buttons">
+						<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
 							<div class="btn-group flex-wrap">
 								<button type="button" class="btn btn-success btn-sm dropdown-toggle"
 									data-toggle="dropdown" aria-expanded="false">Actions<span
@@ -90,15 +83,19 @@
 											<th style="min-width: 5% !important;">Date</th>
 											<th>Time</th>
 											<th>Card Number</th>
-											<th>Driver ID</th>
-											<th>Driver Name</th>
 											<th>Unit#</th>
-											<th>Hub Miles</th>
-											<th>Odometer Miles</th>
-											<th>Trip No</th>
-											<th>Invoice</th>
-											<th>Total Invoice</th>
-											<th>Amount Billed</th>
+											<th>Unit Type</th>
+											<th>Trip #</th>
+											<th>Driver Name</th>											
+											<th>Vendor</th>
+											<th>Odometer</th>
+											<th>Fuel Amount</th>
+											<th>Fuel Units</th>
+											<th>Fuel Type</th>
+											<th>Fuel Cost</th>
+											<th>Invoice Total</th>
+											<th>Retail Total</th>
+											<th>Cost Per Mile</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -109,27 +106,32 @@
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
 												fuelEntry.fuelTime }}</td>
 											<td>{{fuelEntry.fuelCardNumber}}</td>
-											<td>{{driverList[fuelEntry.paidBy]}}</td>
-											<td>Driver Name</td>
 											<td>
 												<span
 													*ngIf="fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
 												<span
 													*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
 											</td>
-											<td>Hub Miles</td>
-											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.additionalDetails.odometer }}</td>
+											<td>{{fuelEntry.unitType}}</td>
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
 												tripList[fuelEntry.tripID]}}</td>
-											<td>Invoice</td>
-											<td>Total Invoice</td>
+											<td>{{driverList[fuelEntry.paidBy]}}</td>
+											<td>{{vendorList[fuelEntry.vendorID]}}</td>										
+										
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.amountPaid}}</td>
+												fuelEntry.additionalDetails.odometer }}</td>
+											
+												<td>Fuel Amount</td>
+												<td>{{fuelEntry.totalGallons}} gal</td>
+												<td>{{fuelEntry.fuelType}}</td>
+												<td>{{fuelEntry.costPerGallon}} {{currency}}</td>
+												<td>{{fuelEntry.amountPaid}}</td>
+												<td>Retail Total</td>
+												<td>Cost Per Mile</td>
 											<td>
 												<div class="btn-group flex-wrap">
 													<button type="button" class="mb-1 mt-1 mr-1 btn"
-														data-toggle="dropdown"><i class="fas fa-ellipsis-h"></i></button>
+														data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
 													<div class="dropdown-menu" role="menu">
 														<a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}"
 															class="dropdown-item text-1">Edit</a>

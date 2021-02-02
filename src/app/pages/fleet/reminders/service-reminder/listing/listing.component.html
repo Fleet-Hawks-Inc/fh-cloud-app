@@ -14,7 +14,7 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification"
-                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search vehicle"
+                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search by vehicle"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
                         <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
@@ -145,7 +145,7 @@
                                         <tr>
                                             <td colspan="10" class="no-data-available">No records found</td>
                                         </tr>
-                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

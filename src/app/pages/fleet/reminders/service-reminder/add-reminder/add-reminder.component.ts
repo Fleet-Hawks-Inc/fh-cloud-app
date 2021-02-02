@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 declare var $: any;
 
 
@@ -45,7 +46,6 @@ export class AddReminderComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-
   test = [];
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
     private location: Location) { }
@@ -249,8 +249,7 @@ export class AddReminderComponent implements OnInit {
       }
 
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
- 
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);      
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {

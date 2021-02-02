@@ -62,11 +62,11 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     dutyStatus: true,
     location: true,
     currCycle: true,
-    currVehicle: true,
-    assets: true,
-    contact: true,
-    dl: true,
-    document: true,
+    currVehicle: false,
+    assets: false,
+    contact: false,
+    dl: false,
+    document: false,
     status: true,
     groupID: false,
     citizenship: false,
@@ -195,8 +195,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       error: () => { },
       next: (result: any) => {
-        // console.log(result);
-        // console.log(result.Items);
+
         this.totalRecords = result.Count;
       },
     });
@@ -286,6 +285,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
         .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
         .subscribe((result: any) => {
+
+          this.drivers = [];
+          this.fetchDrivers();
           this.rerender();
           this.toastr.success('Driver deleted successfully!');
           // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
@@ -307,6 +309,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];
@@ -318,8 +323,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
               element.address = result['Items'][0];
             });
           }
-          console.log('element')
-          console.log(current.drivers)
           
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
@@ -340,6 +343,8 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
+      this.drivers = [];
+      this.fetchDrivers();
       this.rerender('reset');
     } else {
       return false;
@@ -352,6 +357,9 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
+
+      this.drivers = [];
+      this.fetchDrivers();
       this.rerender();
       // this.spinner.hide();
     } else {
@@ -388,31 +396,41 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     if(this.hideShow.currVehicle == false) {
       $('.col12').css('display','none');
     } else {
+      $('.col12').removeClass('extra');
       $('.col12').css('display','');
+      $('.col12').css('width','200px');
     }
 
     if(this.hideShow.assets == false) {
       $('.col13').css('display','none');
     } else {
+      $('.col13').removeClass('extra');
       $('.col13').css('display','');
+      $('.col13').css('width','200px');
     }
 
     if(this.hideShow.contact == false) {
       $('.col14').css('display','none');
     } else {
+      $('.col14').removeClass('extra');
       $('.col14').css('display','');
+      $('.col14').css('width','200px');
     }
 
     if(this.hideShow.dl == false) {
       $('.col15').css('display','none');
     } else {
+      $('.col15').removeClass('extra');
       $('.col15').css('display','');
+      $('.col15').css('width','200px');
     }
 
     if(this.hideShow.document == false) {
       $('.col16').css('display','none');
     } else {
+      $('.col16').removeClass('extra');
       $('.col16').css('display','');
+      $('.col16').css('width','200px');
     }
 
     if(this.hideShow.status == false) {
@@ -427,6 +445,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col3').removeClass('extra');
       $('.col3').css('display','');
+      $('.col3').css('width','200px');
     }
 
     if(this.hideShow.citizenship == false) {
@@ -434,6 +453,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col4').removeClass('extra');
       $('.col4').css('display','');
+      $('.col4').css('width','200px');
     }
 
     if(this.hideShow.address == false) {
@@ -441,6 +461,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col5').removeClass('extra');
       $('.col5').css('display','');
+      $('.col5').css('width','200px');
     }
     
     if(this.hideShow.paymentType == false) {
@@ -448,6 +469,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col6').removeClass('extra');
       $('.col6').css('display','');
+      $('.col6').css('width','200px');
     }
 
     if(this.hideShow.sin == false) {
@@ -455,6 +477,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col7').removeClass('extra');
       $('.col7').css('display','');
+      $('.col7').css('width','200px');
     }
 
     if(this.hideShow.contractStart == false) {
@@ -462,6 +485,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col8').removeClass('extra');
       $('.col8').css('display','');
+      $('.col8').css('width','200px');
     }
 
     if(this.hideShow.homeTerminal == false) {
@@ -469,6 +493,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col9').removeClass('extra');
       $('.col9').css('display','');
+      $('.col9').css('width','200px');
     }
 
     if(this.hideShow.fastNumber == false) {
@@ -476,6 +501,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
+      $('.col10').css('width','200px');
     }
     
 

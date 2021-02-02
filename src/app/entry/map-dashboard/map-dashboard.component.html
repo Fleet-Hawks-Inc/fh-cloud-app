@@ -1,17 +1,19 @@
 <style>
-  .vehicle_idle,.vehicle_stop,.vehicle_moving {
-    display: none;
-  }
+   .vehicle_idle,
+   .vehicle_stop,
+   .vehicle_moving {
+      display: none;
+   }
 </style>
 <section class="body">
-  <!-- <app-header></app-header> -->
+   <!-- <app-header></app-header> -->
 
-  <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <!-- <app-sidebar></app-sidebar> -->
-    <!-- end: sidebar -->
-  
-    <!-- <section role="main" class="content-body pl-0 pr-0 pt-0">
+   <div class="inner-wrapper">
+      <!-- start: sidebar -->
+      <!-- <app-sidebar></app-sidebar> -->
+      <!-- end: sidebar -->
+
+      <!-- <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
         <h2>{{ title }}</h2>
         <div class="right-wrapper text-right">
@@ -172,14 +174,14 @@
         </div>
       </div>
     </section> -->
-    <section role="main" class="content-body">
-      <header class="page-header pr-5">
-         
-         <div class="row pr-1 mr-1" style="padding-top:10px;">
-            <div class="col-lg-7">
-               <h4 class="text-4 mt-0 mb-0 text-dark">Driver Dashboard</h4>
-            </div>
-            <!-- <div class="col-lg-2">
+      <section role="main" class="content-body">
+         <header class="page-header pr-5">
+
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               <div class="col-lg-7">
+                  <h4 class="text-4 mt-0 mb-0 text-dark">Driver Dashboard</h4>
+               </div>
+               <!-- <div class="col-lg-2">
                <div class="input-group">
                   <input type="text" id="destinationLocation" value="{{destinationLocation}}"
                      placeholder="Choose Location" (keyup)="searchTerm.next($event);" [(ngModel)]="search"
@@ -198,213 +200,219 @@
                   </ul>
                 </div>
             </div> -->
-            <div class="col-lg-5 text-right pr-1">
-               <div class="btn-group flex-wrap">
-                  <button type="button" class="mb-1 mr-2 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Duty Status<span class="caret"></span></button>
-                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                     <a class="dropdown-item text-1" href="">ON</a>
-                     <a class="dropdown-item text-1" href="">OFF</a>
-                     <a class="dropdown-item text-1" href="">D</a>
-                     <a class="dropdown-item text-1" href="">SB</a>
-                     <a class="dropdown-item text-1" href="">YM</a>
+               <div class="col-lg-5 text-right pr-1">
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="mb-1 mr-2 btn btn-success btn-sm dropdown-toggle"
+                        data-toggle="dropdown" aria-expanded="false">Duty Status<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">ON</a>
+                        <a class="dropdown-item text-1" href="">OFF</a>
+                        <a class="dropdown-item text-1" href="">D</a>
+                        <a class="dropdown-item text-1" href="">SB</a>
+                        <a class="dropdown-item text-1" href="">YM</a>
+                     </div>
                   </div>
-               </div>
-               <div class="btn-group flex-wrap">
-                  <button type="button" class="mb-1 mr-2 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Schedule<span class="caret"></span></button>
-                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                     <a class="dropdown-item text-1" href="">On Time</a>
-                     <a class="dropdown-item text-1" href="">Late</a>
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="mb-1 mr-2 btn btn-success btn-sm dropdown-toggle"
+                        data-toggle="dropdown" aria-expanded="false">Schedule<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">On Time</a>
+                        <a class="dropdown-item text-1" href="">Late</a>
+                     </div>
                   </div>
-               </div>
-               <div class="btn-group flex-wrap">
-                  <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Load Type<span class="caret"></span></button>
-                  <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                     <a class="dropdown-item text-1" href="">FTL</a>
-                     <a class="dropdown-item text-1" href="">LTL</a>
-                     <a class="dropdown-item text-1" href="">Reefer</a>
+                  <div class="btn-group flex-wrap">
+                     <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false">Load Type<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" href="">FTL</a>
+                        <a class="dropdown-item text-1" href="">LTL</a>
+                        <a class="dropdown-item text-1" href="">Reefer</a>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-      </header>
-      <div class="mapclass drivermain">
-         <div id="map" style="height: calc(100vh - 110px)"></div> 
-         <!-- COLLAPSABLE BUTTON -->
-         <div  id="map_collapse_sidebar">
-            <section class="card">
-               <header class="card-header" style="border-radius:none;">
-                  <div class="card-actions">
-                     <a class="card-action card-action-toggle" href="javascript:;" data-card-toggle=""></a>
+         </header>
+         <div class="mapclass drivermain">
+            <div id="map" style="height: calc(100vh - 110px)"></div>
+            <!-- COLLAPSABLE BUTTON -->
+            <div id="map_collapse_sidebar">
+               <section class="card">
+                  <header class="card-header" style="border-radius:none;">
+                     <div class="card-actions">
+                        <a class="card-action card-action-toggle" href="javascript:;" data-card-toggle=""></a>
+                     </div>
+                     <h2 class="card-title" style="width:230px;"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;&nbsp; Entire
+                        Fleet</h2>
+                     <div class="mt-3">
+                        <select data-plugin-selectTwo class="form-control populate">
+                           <optgroup label="Select Truck">
+                              <option value="1">Groups</option>
+                              <option value="2">Vehicles</option>
+                              <option value="2">Drivers</option>
+                              <option value="2">Assets</option>
+                           </optgroup>
+                        </select>
+                     </div>
+                  </header>
+                  <div class="card-body" style="display: block;">
+                     <div id="treeCheckbox">
+                        <ul>
+                           <li data-jstree='{ "opened" : true }'>
+                              Entire Fleet
+                              <ul>
+                                 <li data-jstree='{ "opened" : false }'>
+                                    Long Haul
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          John Smith
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike William
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Harry Johnson
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          James
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Juan Carlos
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike Jones
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Sarah Smith
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Short Haul
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          John Smith
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike William
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Harry Johnson
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          James Rodriguez
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Juan Carlos
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mike Jones
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Sarah Smith
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Regions
+                                    <ul>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Canada
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Central
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Mexico
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Northeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Southeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          Southeast
+                                       </li>
+                                       <li data-jstree='{ "icon" : "fas fa-user" }'>
+                                          West
+                                       </li>
+                                    </ul>
+                                 </li>
+                                 <li data-jstree=''>
+                                    Ungrouped
+                                 </li>
+                              </ul>
+                           </li>
+                        </ul>
+                     </div>
                   </div>
-                  <h2 class="card-title" style="width:230px;"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;&nbsp; Entire Fleet</h2>
-                  <div class="mt-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="Select Truck">
-                           <option value="1">Groups</option>
-                           <option value="2">Vehicles</option>
-                           <option value="2">Drivers</option>
-                           <option value="2">Assets</option>
-                        </optgroup>
-                     </select>
-                  </div>
-               </header>
-               <div class="card-body" style="display: block;">
-                  <div id="treeCheckbox">
-                     <ul>
-                        <li data-jstree='{ "opened" : true }'>
-                            Entire Fleet
-                           <ul>
-                              <li data-jstree='{ "opened" : false }'>
-                                  Long Haul
-                                 <ul>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        John Smith
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Mike William
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Harry Johnson
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        James  
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Juan Carlos
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Mike Jones
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Sarah Smith
-                                    </li>
-                                 </ul>
-                              </li>
-                              <li data-jstree=''>
-                                  Short Haul
-                                  <ul>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        John Smith
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Mike William
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Harry Johnson
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        James Rodriguez 
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Juan Carlos
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Mike Jones
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Sarah Smith
-                                    </li>
-                                 </ul>
-                              </li>
-                              <li data-jstree=''>
-                                 Regions
-                                  <ul>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Canada
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Central
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Mexico
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Northeast 
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Southeast
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        Southeast
-                                    </li>
-                                    <li data-jstree='{ "icon" : "fas fa-user" }'>
-                                        West
-                                    </li>
-                                 </ul>
-                              </li>
-                              <li data-jstree=''>
-                                 Ungrouped
-                              </li>
-                           </ul>
-                        </li>
-                     </ul>
-                  </div>
-               </div>
-            </section>
-         </div>
+               </section>
+            </div>
 
-         <!-- VEHICLE MAP LOCATIONS -->
-         <div class="vehicle_moving vehicle-item" id="vehicleLoc1">
-            <a href="#"><i class="fas fa-location-arrow"></i>
-            <p class="vehicle-description">
-            <i class="fas fa-user"></i> Manjit Singh<br>
-            <i class="fas fa-calendar-day"></i> Cycle: 10 D<br>
-            <i class="fas fa-map-marker-alt"></i> Location: Kingston, Toronto<br>
-               <strong>HOS Summary</strong><br>
-               Break: 10 h, Hours: 5 h<br>
-               Shift: 2nd, Cycle Reset: 4:25 h
-            </p>
-         </a>
-         
-      </div>
-         <div class="vehicle_moving" id="vehicleLoc2"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_moving" id="vehicleLoc3"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_moving" id="vehicleLoc4"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_moving" id="vehicleLoc5"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_stop" id="vehicleStopLoc1"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_stop" id="vehicleStopLoc2"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_stop" id="vehicleStopLoc3"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_idle" id="vehicleIdleLoc1"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_idle" id="vehicleIdleLoc2"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_idle" id="vehicleIdleLoc3"><i class="fas fa-location-arrow"></i></div>
-         <div class="vehicle_idle" id="vehicleIdleLoc4"><i class="fas fa-location-arrow"></i></div>
-         <div class="iconR" id="arrowR"  *ngIf="visible">
-            <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
-         </div>
-         <div class="iconL" id="arrowL" *ngIf="!visible">
-            <a  [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
-         </div>
-         
-         <form method=""  >
-            <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList" *ngIf="visible"
-            [@slideInOut]
-               >
-               <div class="driverdetail">
+            <!-- VEHICLE MAP LOCATIONS -->
+            <div class="vehicle_moving vehicle-item" id="vehicleLoc1">
+               <a href="#"><i class="fas fa-location-arrow"></i>
+                  <p class="vehicle-description">
+                     <i class="fas fa-user"></i> Manjit Singh<br>
+                     <i class="fas fa-calendar-day"></i> Cycle: 10 D<br>
+                     <i class="fas fa-map-marker-alt"></i> Location: Kingston, Toronto<br>
+                     <strong>HOS Summary</strong><br>
+                     Break: 10 h, Hours: 5 h<br>
+                     Shift: 2nd, Cycle Reset: 4:25 h
+                  </p>
+               </a>
+
+            </div>
+            <div class="vehicle_moving" id="vehicleLoc2"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_moving" id="vehicleLoc3"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_moving" id="vehicleLoc4"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_moving" id="vehicleLoc5"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_stop" id="vehicleStopLoc1"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_stop" id="vehicleStopLoc2"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_stop" id="vehicleStopLoc3"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_idle" id="vehicleIdleLoc1"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_idle" id="vehicleIdleLoc2"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_idle" id="vehicleIdleLoc3"><i class="fas fa-location-arrow"></i></div>
+            <div class="vehicle_idle" id="vehicleIdleLoc4"><i class="fas fa-location-arrow"></i></div>
+            <div class="iconR" id="arrowR" *ngIf="visible">
+               <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="iconL" id="arrowL" *ngIf="!visible">
+               <a [routerLink]="" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <form method="">
+               <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList"
+                  *ngIf="visible" [@slideInOut]>
+                  <div class="driverdetail">
 
                      <div class="driverleftmain">
                         <div class="row">
                            <div class="col-lg-5">
-                                 <p class="mb-2 text-5 font-weight-semibold text-dark"><a
-                                       href="driver-profile2.php">Manjit Singh </a>
-                                    <span class="onduty">ON</span></p>
+                              <p class="mb-2 text-5 font-weight-semibold text-dark"><a href="driver-profile2.php">Manjit
+                                    Singh </a>
+                                 <span class="onduty">ON</span>
+                              </p>
                            </div>
                            <div class="col-lg-4">
                            </div>
                            <div class="col-lg-3 pl-0">
-                                 <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
+                              <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
                            </div>
                         </div>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span
-                                 class="text-5">10D</span></p>
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">10D</span></p>
                         <p class="mb-0"><span class="text-dark pl-0">Kingston, Toronto, ON K7L 5K4 <i
-                                    class="fas fa-map-marker-alt" title="Share Location"></i></span></p>
+                                 class="fas fa-map-marker-alt" title="Share Location"></i></span></p>
 
                         <div class="row">
                            <div class="col-lg-6">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
                            </div>
                            <div class="col-lg-6 text-right">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
                            </div>
                         </div>
 
@@ -413,47 +421,47 @@
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
                            <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On
-                                    Time</button></span>
+                                 Time</button></span>
                         </p>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Dispatch
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Trip&nbsp;<span class="badge badge-dark p-1">STARTED</span>
                            <a class="pull-right" href="">DIS-6104</a>
                         </p>
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature <span
-                                 class="text-1 pl-0">(Set & Actual)</span></p>
+                              class="text-1 pl-0">(Set & Actual)</span></p>
 
 
                         <table class="table table-responsive-md table-sm table-bordered">
                            <thead>
-                                 <tr>
-                                    <th>Refer Name</th>
-                                    <th>Set</th>
-                                    <th>Actual</th>
+                              <tr>
+                                 <th>Reefer Name</th>
+                                 <th>Set</th>
+                                 <th>Actual</th>
 
-                                 </tr>
+                              </tr>
                            </thead>
                            <tbody>
-                                 <tr>
-                                    <td>Refer 120</td>
-                                    <td>15<sup>o</sup></td>
-                                    <td>14<sup>o</sup></td>
-                                 </tr>
-                                 <tr>
-                                    <td>Refer 5689</td>
-                                    <td>15<sup>o</sup></td>
-                                    <td>17<sup>o</sup></td>
-                                 </tr>
-                                 <tr>
-                                    <td>Refer 336001</td>
-                                    <td>11<sup>o</sup></td>
-                                    <td>10<sup>o</sup></td>
-                                 </tr>
+                              <tr>
+                                 <td>Reefer 120</td>
+                                 <td>15<sup>o</sup></td>
+                                 <td>14<sup>o</sup></td>
+                              </tr>
+                              <tr>
+                                 <td>Reefer 5689</td>
+                                 <td>15<sup>o</sup></td>
+                                 <td>17<sup>o</sup></td>
+                              </tr>
+                              <tr>
+                                 <td>Reefer 336001</td>
+                                 <td>11<sup>o</sup></td>
+                                 <td>10<sup>o</sup></td>
+                              </tr>
                            </tbody>
                         </table>
 
 
                      </div>
-
+                     <!-- 
                      <div class="driverrighttrip">
                         <p class="mb-2 t text-2 font-weight-semibold text-dark">Trip Info</p>
                         <div class="tripsmain ml-4">
@@ -477,40 +485,39 @@
                                     title="10:10AM, Brampton">D4</a>
                            </p>
                         </div>
-                     </div>
+                     </div> -->
 
-               </div>
+                  </div>
 
 
 
-               <div class="driverdetail">
+                  <div class="driverdetail">
 
                      <div class="driverleftmain">
                         <div class="row">
                            <div class="col-lg-5">
-                                 <p class="mb-2 text-5 font-weight-semibold text-dark">
-                                    <a href="driver-profile2.php">Roshan Prince </a>
-                                    <span class="offduty">OFF</span>
-                                 </p>
+                              <p class="mb-2 text-5 font-weight-semibold text-dark">
+                                 <a href="driver-profile2.php">Roshan Prince </a>
+                                 <span class="offduty">OFF</span>
+                              </p>
                            </div>
                            <div class="col-lg-4">
                            </div>
                            <div class="col-lg-3 pl-0">
-                                 <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live
-                                    View</a>
+                              <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live
+                                 View</a>
                            </div>
                         </div>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span
-                                 class="text-5">5D</span></p>
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">5D</span></p>
                         <p class="driverstatus mb-0 text-dark pl-0">Crescent Road Vancouver, BC V6T 1Z2 <i
-                                 class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                              class="fas fa-map-marker-alt" title="Share Location"></i></p>
 
                         <div class="row">
                            <div class="col-lg-6">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
                            </div>
                            <div class="col-lg-6 text-right">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
                            </div>
                         </div>
 
@@ -518,44 +525,43 @@
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
                            <span class="pull-right"><button
-                                    class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
+                                 class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
                         </p>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Load
-                           <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1"
-                                 href="">6894</a>
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Trip&nbsp;<span class="badge badge-dark p-1">EN-ROUTE</span>
+                           <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1" href="">6894</a>
                            <span class="pull-right LTLload">LTL</span>
                         </p>
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature <span
-                                 class="text-1 pl-0">(Set & Actual)</span></p>
+                              class="text-1 pl-0">(Set & Actual)</span></p>
 
                         <table class="table table-responsive-md table-sm table-bordered">
                            <thead>
-                                 <tr>
-                                    <th>Refer Name</th>
-                                    <th>Set</th>
-                                    <th>Actual</th>
+                              <tr>
+                                 <th>Reefer Name</th>
+                                 <th>Set</th>
+                                 <th>Actual</th>
 
-                                 </tr>
+                              </tr>
                            </thead>
                            <tbody>
-                                 <tr>
-                                    <td>Refer 120</td>
-                                    <td>17<sup>o</sup></td>
-                                    <td>16<sup>o</sup></td>
-                                 </tr>
-                                 <tr>
-                                    <td>Refer 5689</td>
-                                    <td>17<sup>o</sup></td>
-                                    <td>16<sup>o</sup></td>
-                                 </tr>
+                              <tr>
+                                 <td>Reefer 120</td>
+                                 <td>17<sup>o</sup></td>
+                                 <td>16<sup>o</sup></td>
+                              </tr>
+                              <tr>
+                                 <td>Reefer 5689</td>
+                                 <td>17<sup>o</sup></td>
+                                 <td>16<sup>o</sup></td>
+                              </tr>
                            </tbody>
                         </table>
 
 
                      </div>
 
-                     <div class="driverrighttrip">
+                     <!-- <div class="driverrighttrip">
                         <p class="mb-2 t text-2 font-weight-semibold text-dark">Trip Info</p>
                         <div class="tripsmain ml-4">
                            <p class="tripcirlce">
@@ -569,40 +575,38 @@
                            </p>
 
                         </div>
-                     </div>
+                     </div> -->
 
-               </div>
+                  </div>
 
-               <div class="driverdetail">
+                  <div class="driverdetail">
 
                      <div class="driverleftmain">
 
                         <div class="row">
                            <div class="col-lg-8">
-                                 <p class="mb-2 text-5 font-weight-semibold text-dark"><a
-                                       href="driver-profile2.php">Diljit </a><span class="dutyonly">D</span>
-                                 </p>
-                                 <p class="mb-2 text-3 font-weight-semibold text-dark"><a
-                                       href="driver-profile2.php">Kulwinder Singh </a><span
-                                       class="sbduty">SB</span>
-                                 </p>
+                              <p class="mb-2 text-5 font-weight-semibold text-dark"><a href="driver-profile2.php">Diljit
+                                 </a><span class="dutyonly">D</span>
+                              </p>
+                              <p class="mb-2 text-3 font-weight-semibold text-dark"><a
+                                    href="driver-profile2.php">Kulwinder Singh </a><span class="sbduty">SB</span>
+                              </p>
                            </div>
 
                            <div class="col-lg-4 pl-0">
-                                 <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
+                              <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
                            </div>
                         </div>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span
-                                 class="text-5">7D</span></p>
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">7D</span></p>
                         <p class="driverstatus mb-0 text-dark pl-0">McCallum Ave Regina SK S4S 0S4 <i
-                                 class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                              class="fas fa-map-marker-alt" title="Share Location"></i></p>
 
                         <div class="row">
                            <div class="col-lg-6">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
                            </div>
                            <div class="col-lg-6 text-right">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
                            </div>
                         </div>
 
@@ -610,45 +614,44 @@
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
                            <span class="pull-right"><button
-                                    class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
+                                 class="mb-0 mt-0 mr-1 btn btn-xs btn-danger">Late</button></span>
                         </p>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Trip&nbsp;<span class="badge badge-dark p-1">STARTED</span>
                            <a class="pull-right mx-1" href="#">7864</a>
-                           <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1"
-                                 href="">6894</a>
+                           <a class="pull-right mx-1" href="">6564</a><a class="pull-right mx-1" href="">6894</a>
                            <span class="pull-right LTLload">LTL</span>
                         </p>
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature <span
-                                 class="text-1 pl-0">(Set & Actual)</span></p>
+                              class="text-1 pl-0">(Set & Actual)</span></p>
 
                         <table class="table table-responsive-md table-sm table-bordered">
                            <thead>
-                                 <tr>
-                                    <th>Refer Name</th>
-                                    <th>Set</th>
-                                    <th>Actual</th>
+                              <tr>
+                                 <th>Reefer Name</th>
+                                 <th>Set</th>
+                                 <th>Actual</th>
 
-                                 </tr>
+                              </tr>
                            </thead>
                            <tbody>
-                                 <tr>
-                                    <td>Refer 120</td>
-                                    <td>17<sup>o</sup></td>
-                                    <td>16<sup>o</sup></td>
-                                 </tr>
-                                 <tr>
-                                    <td>Refer 5689</td>
-                                    <td>17<sup>o</sup></td>
-                                    <td>16<sup>o</sup></td>
-                                 </tr>
+                              <tr>
+                                 <td>Reefer 120</td>
+                                 <td>17<sup>o</sup></td>
+                                 <td>16<sup>o</sup></td>
+                              </tr>
+                              <tr>
+                                 <td>Reefer 5689</td>
+                                 <td>17<sup>o</sup></td>
+                                 <td>16<sup>o</sup></td>
+                              </tr>
                            </tbody>
                         </table>
 
                      </div>
 
 
-                     <div class="driverrighttrip">
+                     <!-- <div class="driverrighttrip">
                         <p class="mb-2 t text-2 font-weight-semibold text-dark">Trip Info</p>
                         <div class="tripsmain ml-4">
                            <p class="tripcirlce">
@@ -662,40 +665,38 @@
                            </p>
 
                         </div>
-                     </div>
-               </div>
+                     </div> -->
+                  </div>
 
 
-               <div class="driverdetail">
+                  <div class="driverdetail">
 
                      <div class="driverleftmain">
 
                         <div class="row">
                            <div class="col-lg-8">
-                                 <p class="mb-2 text-5 font-weight-semibold text-dark"><a
-                                       href="driver-profile2.php">Maninder </a><span class="dutyonly">D</span>
-                                 </p>
-                                 <p class="mb-2 text-3 font-weight-semibold text-dark"><a
-                                       href="driver-profile2.php">Honey Sharma </a><span
-                                       class="sbduty">SB</span>
-                                 </p>
+                              <p class="mb-2 text-5 font-weight-semibold text-dark"><a
+                                    href="driver-profile2.php">Maninder </a><span class="dutyonly">D</span>
+                              </p>
+                              <p class="mb-2 text-3 font-weight-semibold text-dark"><a href="driver-profile2.php">Honey
+                                    Sharma </a><span class="sbduty">SB</span>
+                              </p>
                            </div>
 
                            <div class="col-lg-4 pl-0">
-                                 <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
+                              <a class="pull-right btn btn-dark btn-xs" routerLink="/fleet/live-driver">Live View</a>
                            </div>
                         </div>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span
-                                 class="text-5">9D</span></p>
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle <span class="text-5">9D</span></p>
                         <p class="driverstatus mb-0 text-dark pl-0">McCallum Ave Regina SK S4S 0S4 <i
-                                 class="fas fa-map-marker-alt" title="Share Location"></i></p>
+                              class="fas fa-map-marker-alt" title="Share Location"></i></p>
 
                         <div class="row">
                            <div class="col-lg-6">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Vehicle: F 3650</p>
                            </div>
                            <div class="col-lg-6 text-right">
-                                 <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
+                              <p class="mb-0 text-3 font-weight-semibold text-dark">Trailer: 2356</p>
                            </div>
                         </div>
 
@@ -704,31 +705,31 @@
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
                            <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">On
-                                    Time</button></span>
+                                 Time</button></span>
                         </p>
-                        <p class="mb-2 text-4 font-weight-semibold text-dark">Load
+                        <p class="mb-2 text-4 font-weight-semibold text-dark">Trip &nbsp;<span class="badge badge-dark p-1">STARTED</span>
                            <a class="pull-right" href="#">6578</a>
                            <span class="pull-right FTLload">FTL</span>
                         </p>
 
                         <p class="mb-2 text-4 font-weight-semibold text-dark temp_graph">Temperature <span
-                                 class="text-1 pl-0">(Set & Actual)</span></p>
+                              class="text-1 pl-0">(Set & Actual)</span></p>
 
                         <table class="table table-responsive-md table-sm table-bordered">
                            <thead>
-                                 <tr>
-                                    <th>Refer Name</th>
-                                    <th>Set</th>
-                                    <th>Actual</th>
+                              <tr>
+                                 <th>Reefer Name</th>
+                                 <th>Set</th>
+                                 <th>Actual</th>
 
-                                 </tr>
+                              </tr>
                            </thead>
                            <tbody>
-                                 <tr>
-                                    <td>Refer 120</td>
-                                    <td>17<sup>o</sup></td>
-                                    <td>16<sup>o</sup></td>
-                                 </tr>
+                              <tr>
+                                 <td>Reefer 120</td>
+                                 <td>17<sup>o</sup></td>
+                                 <td>16<sup>o</sup></td>
+                              </tr>
                            </tbody>
                         </table>
 
@@ -736,7 +737,7 @@
                      </div>
 
 
-                     <div class="driverrighttrip">
+                     <!-- <div class="driverrighttrip">
                         <p class="mb-2 t text-2 font-weight-semibold text-dark">Trip Info</p>
                         <div class="tripsmain ml-4">
                            <p class="tripcirlce">
@@ -752,11 +753,11 @@
 
 
                         </div>
-                     </div>
+                     </div> -->
 
+                  </div>
                </div>
-            </div>
-            <!-- <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList" *ngIf="visible"
+               <!-- <div class="drivelist" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="driverList" *ngIf="visible"
             [@slideInOut]>
                <div class="driverdetail" *ngFor="let driver of frontEndData.drivers">
                   <div class="row">
@@ -828,16 +829,16 @@
                   <table class="table table-responsive-md table-sm table-bordered">
              <thead>
                <tr>
-                 <th>Refer 1</th>
-                              <th>Refer 2</th>
-                              <th>Refer 3</th>
+                 <th>Reefer 1</th>
+                              <th>Reefer 2</th>
+                              <th>Reefer 3</th>
                </tr>
              </thead>
              <tbody>
                <tr>
-                 <td>{{driver.referTemprature.refeer1}}<sup>o</sup></td>
-                 <td>{{driver.referTemprature.refeer2}}<sup>o</sup></td>
-                 <td>{{driver.referTemprature.refeer3}}<sup>o</sup></td>
+                 <td>{{driver.ReeferTemprature.refeer1}}<sup>o</sup></td>
+                 <td>{{driver.ReeferTemprature.refeer2}}<sup>o</sup></td>
+                 <td>{{driver.ReeferTemprature.refeer3}}<sup>o</sup></td>
                </tr>
              </tbody>
                      </table>
@@ -845,14 +846,14 @@
                   <p class="mb-2 text-4 font-weight-semibold text-dark">Schedule Status
                      <span class="pull-right"><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">{{driver.scheduleStatus}}</button></span>
                   </p>
-                  <p class="mb-2 text-4 font-weight-semibold text-dark">Dispatch
+                  <p class="mb-2 text-4 font-weight-semibold text-dark">Trip<span class="badge badge-dark p-1>STARTED</span>
                      <a class="pull-right" href="">{{driver.dispatchId}}</a>
                   </p>
                </div>
                
             </div> -->
-         </form>
-      </div>
-   </section>
-  </div>
+            </form>
+         </div>
+      </section>
+   </div>
 </section>

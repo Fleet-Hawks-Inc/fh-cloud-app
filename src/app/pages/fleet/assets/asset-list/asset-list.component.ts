@@ -24,7 +24,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   dtTrigger: Subject<any> = new Subject();
 
   allAssetTypes: any;
-  assetTypesObects: any = {};
+  assetTypesObjects: any = {};
   title = 'Assets List';
   mapView: boolean = false ;
   listView: boolean = true;
@@ -109,7 +109,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
-      this.fetchManufacturesByIDs();
+      this.fetchModalsByIDs();
   }
 
   getSuggestions(value) {
@@ -137,7 +137,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchManufacturesByIDs() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetManufacturers/get/list').subscribe((result: any) => {
       this.manufacturersObjects = result;
     });
   }
@@ -181,7 +181,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchAllAssetTypes() {
     this.httpClient.get("assets/trailers.json").subscribe((data: any) =>{
       this.allAssetTypes = data;
-      this.assetTypesObects =  data.reduce( (a: any, b: any) => {
+      this.assetTypesObjects =  data.reduce( (a: any, b: any) => {
         return a[b['code']] = b['description'], a;
     }, {});
     })
@@ -192,8 +192,11 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
-        this.toastr.success('Asset deleted successfully');
+        this.allData = [];
+        this.fetchAssets();
         this.rerender();
+        this.toastr.success('Asset deleted successfully');
+        
       });
     }
   }
@@ -215,7 +218,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   uncheckCheckbox = (data, tableID) => {
     if (data.length > 0) {
       if (tableID === '#DataTables_Table_0_wrapper') {
-        console.log('if');
         setTimeout(() => {
           $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
         }, 2000);
@@ -238,8 +240,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   initDataTable() {
     let current = this;
-    // console.log('this.pageLengths');
-    // console.log(this.pageLength)
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: this.pageLength,
@@ -250,10 +250,12 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
         {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"orderable": false},
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('assets/fetch/records?assetID='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
             current.allData = resp['Items'];
-            // console.log(resp)
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
               
@@ -296,6 +298,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if(this.assetID !== '' || this.currentStatus !== '') {
+      this.allData = [];
+      this.fetchAssets();
       this.rerender('reset');
     } else {
       return false;
@@ -308,6 +312,9 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.assetID = '';
       this.assetIdentification = '';
       this.currentStatus = '';
+
+      this.allData = [];
+      this.fetchAssets();
       this.rerender();
       // this.spinner.hide();
     } else {
@@ -377,6 +384,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
+      $('.col10').css('width','200px');
     }
 
     if(this.hideShow.aceID == false) {
@@ -384,6 +392,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col11').removeClass('extra');
       $('.col11').css('display','');
+      $('.col11').css('width','200px');
     }
 
     if(this.hideShow.aciID == false) {
@@ -391,6 +400,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
+      $('.col12').css('width','200px');
     }
     
     if(this.hideShow.gvwr == false) {
@@ -398,6 +408,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
+      $('.col13').css('width','200px');
     }
 
     if(this.hideShow.gawr == false) {
@@ -405,6 +416,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
+      $('.col14').css('width','200px');
     }
   }
 

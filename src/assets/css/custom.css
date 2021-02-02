@@ -1839,7 +1839,8 @@ html.fixed .reports-wrapper {
 }
 
 .dataTables_empty {
-  display: none;
+  /* display: none; */
+  padding: 10px !important
 }
 
 .no-data-available {
@@ -1942,3 +1943,5 @@ table.dataTable thead th, table.dataTable thead td {
   background-color: #e1e1e1;
 
 }
+
+.mandfield{color: #ff0000;}
