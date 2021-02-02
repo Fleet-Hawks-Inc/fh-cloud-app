@@ -22,6 +22,7 @@ import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstr
 // ngselect2
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
+import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -109,6 +110,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DriverComponent,
     VehicleComponent,
     AddDriverComponent,
+    AddServiceProgramComponent,
     AddVehicleNewComponent,
     SharedModalsComponent
     
