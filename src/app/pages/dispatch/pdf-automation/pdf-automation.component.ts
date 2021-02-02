@@ -502,7 +502,7 @@ export class  PdfAutomationComponent implements OnInit {
   }
 
   mybutton() {
-    console.log('H1')
+    console.log('H1');
     let rct = "rct" + this.i;
 
 
@@ -580,25 +580,23 @@ export class  PdfAutomationComponent implements OnInit {
 
     JSON.stringify(this.$pdfjson);
     console.log(this.$pdfjson);
-
-
-
-
+    this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     document.getElementById('myDIV').appendChild(h);
     document.getElementById('myDIV').appendChild(para);
   }
 
   myclick(e) {
-    this.http.post(this.url, this.$obj).subscribe((data) => {
-      console.log(this.$obj)
-      console.log("done");
-    });
+    this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
+    // this.http.post(this.url, this.$obj).subscribe((data) => {
+    //   console.log(this.$obj)
+    //   console.log("done");
+    // });
     // this.http.get(this.url + "/fgfd").subscribe((data : any) => {
     //   console.log(this.$jsonfile)
     //   console.log(data.Items[0].documentId);
     // });
 
-    console.log("this.$val" + JSON.stringify(this.$pdfjson));
+    console.log('valsend=====>' + JSON.stringify(this.$pdfjson));
     this.service.missionAnnouncedSource.next(this.$pdfjson);
 
 

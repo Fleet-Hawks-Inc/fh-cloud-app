@@ -1,18 +1,19 @@
 import { Component, OnInit,Input } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import {  ActivatedRoute } from '@angular/router';
-import { from, Subject, throwError } from 'rxjs';
+import {EMPTY, from, pipe, Subject, throwError} from 'rxjs';
 import {AwsUploadService} from '../../../../services/aws-upload.service';
 
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsService } from '../../../../services/google-maps.service';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, onErrorResumeNext, tap} from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
 import {NgbTimeStruct, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
 import { PdfAutomationService } from '../../pdf-automation/pdf-automation.service';
 import { Subscription }   from 'rxjs/Subscription';
+import {empty} from 'rxjs/internal/Observer';
 
 declare var $: any;
 declare var H: any;
@@ -188,13 +189,52 @@ export class AddOrdersComponent implements OnInit {
     private route: ActivatedRoute,
     private config: NgbDatepickerConfig,
     private pdfService: PdfAutomationService
-  ) { 
+  ) {
     const current = new Date();
-    config.minDate = { year: current.getFullYear(), month: 
+    config.minDate = { year: current.getFullYear(), month:
     current.getMonth() + 1, day: current.getDate() };
     config.outsideDays = 'hidden';
 
-    this.subscription = this.pdfService.missionAnnounced$.subscribe((v) => {
+   // this.orderData.orderNumber = this.pdfService.dataSubscribe.getValue().orderNumber;
+    // console.log('v=====>' + this.pdfService.dataSubscribe.getValue());
+    // this.pdfService.dataSubscribe$.subscribe((v: any) => {
+    //   console.log(v);
+    //   this.orderData.orderNumber = v.OrderNumber.trim();
+    // //  console.log('v=====>' + v);
+    // //  const pdfData = JSON.parse(v);
+    // //  console.log('v=====>' + pdfData);
+    // //  console.log('v=======>' + pdfData.orderNumber);
+    //  // const pdfData = JSON.parse(v);
+    //  // console.log('v=====>' + pdfData);
+    //  // this.orderData.orderNumber = v.orderNumber;
+    //
+    //  // console.log(pdfData);
+    // });
+
+    this.pdfService.dataSubscribe$
+      .pipe(tap((v) => {
+        console.log("pdf service" + v);
+        if (v.toString() !== '' && v !== 'undefined' && v !== undefined) {
+          const d = JSON.parse(v);
+          if (d.OrderNumber !== 'undefined' || d.OrderNumber !== undefined) {
+            this.orderData.orderNumber = d.OrderNumber.trim();
+          //  console.log('Order Number is ' + d.OrderNumber);
+          }
+        }
+      }))
+      .subscribe((v: any) => {
+     // const data = JSON.parse(v.toString());
+    //  console.log(data.OrderNumber);
+      console.log('continue service======>' + v);
+    });
+
+    this.subscription = this.pdfService.missionAnnounced$
+      .pipe(catchError(() => {
+        console.log('subs======> Canceled');
+        return EMPTY;
+      }))
+      .subscribe((v: any) => {
+      console.log('v=====>' + v);
       this.OrderNumber = v['OrderNumber']
       this.Customer = v['Customer']
       // this.CarrierName = v['CarrierName']
@@ -225,7 +265,7 @@ export class AddOrdersComponent implements OnInit {
 
 
 
-      
+
       this.shipperCurrent.shipperName= v['shipperName']
       this.shipperCurrent.pickupLocation= v['pickupLocation']
 
@@ -236,22 +276,22 @@ export class AddOrdersComponent implements OnInit {
 
       this.shipperCurrent.contactPerson= v['contactPerson']
       this.shipperCurrent.phone= v['phone']
-     
+
 
       this.shipperCurrent.BOL= v['BOL']
       this.shipperCurrent.reference= v['reference']
       this.shipperCurrent.notes= v['notes']
-    
-    
-      
-    
+
+
+
+
 
       console.log(this.OrderNumber,   this.CarrierName,   this.CarrierAddress,  this.Email, this.Phone,  this.TotalAgreedAmount, this.ShipperDetails )
-  
-      
-      
-    
-      
+
+
+
+
+
       // OrderDate;
       // CarrierName;
       // CarrierAddress;
@@ -260,13 +300,13 @@ export class AddOrdersComponent implements OnInit {
       // TotalAgreedAmount;
       // ShipperDetails;
       // ConsigneeDetails;
-     
 
-    
-     
-      
+
+
+
+
       this.orderData.orderNumber = this.OrderNumber;
-      
+
        this.orderData.customerPO = this.CustomerPO;
        this.Customer.Customer = this.Customer
        this.orderData.reference = this.ConsigneeDetails;
@@ -287,18 +327,18 @@ export class AddOrdersComponent implements OnInit {
       this.orderData.receiverphone = this.receiverphone;
       this.orderData.receiverreference = this.receiverreference;
       this.orderData.receivernotes = this.receivernotes;
-      
-    
-     
-      
+
+
+
+
 
 
 
       // console.log(this.pdfObjectData[0]+ this.pdfObjectData[1])
-    
+
     });
-      
-  
+
+
   }
 
 
@@ -308,18 +348,19 @@ export class AddOrdersComponent implements OnInit {
   confirmed = false;
   announced = false;
   subscription: Subscription;
- 
- 
+
+
   confirm() {
     // this.confirmed = true;
     // this.pdfService.confirmMission(this.astronaut);
     // console.log(this.mission);
-    
+
   }
- 
+
 
   ngOnDestroy() {
     // prevent memory leak when component destroyed
+    console.log('service unsubscribed');
     this.subscription.unsubscribe();
   }
 
@@ -329,11 +370,11 @@ export class AddOrdersComponent implements OnInit {
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
- 
+
   ngOnInit() {
     // this.pdfService.$isLoggedIn.subscribe
     // console.log(a);
-    
+
     this.fetchCustomers();
     this.searchLocation();
     $(document).ready(() => {
@@ -347,12 +388,12 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.pageTitle = 'Add Order';
     }
-   
-    
+
+
   }
 
 
-   
+
 
   userLocation(label) {
     console.log(label);
@@ -530,7 +571,7 @@ export class AddOrdersComponent implements OnInit {
         console.log("origin", this.origin);
         console.log("destination", this.destination);
       }
-      
+
       this.google.googleDistance([this.origin], [this.googleCords.join('|')]).subscribe(res => {
         console.log("google res", res);
         this.orderData['totalMiles'] =  res;
@@ -606,9 +647,9 @@ export class AddOrdersComponent implements OnInit {
       this.visibleIndex = ind;
     }
   }
-  
 
-  
+
+
   onSubmit() {
     console.log("order", this.orderData);
     this.apiService.postData('orders', this.orderData).
@@ -674,7 +715,7 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.accessorialDeduction = 0;
     }
-    this.subTotal = parseFloat(this.freightFee) + parseFloat(this.fuelSurcharge) 
+    this.subTotal = parseFloat(this.freightFee) + parseFloat(this.fuelSurcharge)
                     + parseFloat(this.accessorialFee) - parseFloat(this.accessorialDeduction);
   }
 
@@ -773,7 +814,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData.additionalDetails['dropTrailer'] = result.additionalDetails.dropTrailer;
     this.loadTypeData = result.additionalDetails.loadType;
-    
+
     this.orderData.charges.accessorialDeduction['amount'] = result.charges.accessorialDeduction.amount;
     this.orderData.charges.accessorialDeduction['type'] = result.charges.accessorialDeduction.type;
     this.orderData.charges.accessorialDeduction['unit'] = result.charges.accessorialDeduction.unit;
@@ -789,7 +830,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.amountCalculate();
     this.discountCalculate();
-    
+
   });
  }
 }
