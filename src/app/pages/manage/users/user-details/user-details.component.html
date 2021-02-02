@@ -90,9 +90,12 @@
                                              <td class="back-color-gray font-weight-bold">Group</td>
                                              <td>{{groupList[groupID]}}</td>
                                           </tr>
-                                          <tr>
+                                          <tr *ngIf="addressDetails.length>0">
                                              <td class="back-color-gray font-weight-bold">Address</td>
-                                             <td>Address line, CIty,State,Country, Zip Code </td>
+                                             <td>
+                                                <span *ngFor="let address of addressDetails; let i=index;">Address{{i+1}}-<span *ngIf="address.userLocation != ''">{{address.userLocation}}<br></span>
+                                                <span *ngIf="address.countryID != ''">{{address.address1}}<span *ngIf="address.address2 != ''">{{address.address2}}</span>{{cityList[address.cityID]}},{{stateList[address.stateID]}},{{address.zipCode}},{{countryList[address.countryID]}}<br></span>
+                                                </span> </td>
                                           </tr>
                                        </tbody>
                                     </table>

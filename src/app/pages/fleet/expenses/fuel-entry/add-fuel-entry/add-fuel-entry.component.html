@@ -78,10 +78,10 @@
                           <div class="row">
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Quantity</label>
-                                <input type="number" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" (change)="calculate()" >
+                                <input type="number" min='0' class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" (change)="calculate()" >
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
-                                <ng-select data-plugin-selectTwo class="form-control populate" name="fuelQtyUnit" [(ngModel)]="fuelQtyUnit" (change)="changeFuelUnit()">
+                                <ng-select class="form-control populate" name="fuelQtyUnit" [(ngModel)]="fuelQtyUnit" (change)="changeFuelUnit()">
                                
                                       <ng-option value="gallon">gallon</ng-option>
                                       <ng-option value="litre">litre</ng-option>
@@ -90,23 +90,21 @@
                              </div>
                              <div class="col-lg-4">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
-                                <input type="number" class="form-control" name="fuelQtyAmt" [(ngModel)]="fuelData.fuelQtyAmt" (change)="calculate()">
+                                <input type="number" min='0' class="form-control" name="fuelQtyAmt" [(ngModel)]="fuelData.fuelQtyAmt" (change)="calculate()">
                              </div>
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >DEF Fuel Quantity</label>
-                             <input type="number" class="form-control" name="DEFFuelQty" [(ngModel)]="fuelData.DEFFuelQty" (change)="calculate()">
+                             <input type="number" min='0' class="form-control" name="DEFFuelQty" [(ngModel)]="fuelData.DEFFuelQty" (change)="calculate()">
                           </div>
-                          <div class="col-lg-2 qtumbtn px-0">
-                          
+                          <div class="col-lg-2 qtumbtn px-0">                          
                              <label class="control-label pl-2 text-lg-right" >{{DEFFuelQtyUnit}}</label>
-
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
-                             <input type="number" class="form-control"  name="DEFFuelQtyAmt" [(ngModel)]="fuelData.DEFFuelQtyAmt" (change)="calculate()">
+                             <input type="number" class="form-control" min='0' name="DEFFuelQtyAmt" [(ngModel)]="fuelData.DEFFuelQtyAmt" (change)="calculate()">
                           </div>
                        </div>
                        <div class="row">
@@ -119,11 +117,9 @@
                              <div class="row">
                                 <div class="col-lg-4 text-right mt-1"> <label class="control-label font-weight-bold text-5"> {{fuelData.totalAmount}}</label></div>
                                 <div class="col-lg-8">
-                                 <ng-select placeholder="Select Currency" name="currency" [(ngModel)]="fuelData.currency" (change)="changeCurrency($event)">
-                                   
+                                 <ng-select placeholder="Select Currency" name="currency" [(ngModel)]="fuelData.currency" (change)="changeCurrency($event)">                                   
                                        <ng-option value="USD">USD</ng-option>
-                                       <ng-option value="CAD">CAD</ng-option>
-                                 
+                                       <ng-option value="CAD">CAD</ng-option>                                 
                                  </ng-select>
                                 </div>
                              </div>
@@ -137,7 +133,7 @@
                           </div>
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount({{currency}})</label>
-                             <input type="number" class="form-control" name="discount" [(ngModel)]="fuelData.discount" (change)="calculate()">
+                             <input type="number" class="form-control" min='0' name="discount" [(ngModel)]="fuelData.discount" (change)="calculate()">
                           </div>
                        </div>
                        <div class="row">
@@ -373,7 +369,7 @@
                        <div class="row pt-2">
                           <div class="col-lg-10">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling(miles)</label>
-                             <input class="form-control" type="number" name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
+                             <input class="form-control" type="number" min='0' name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
                              <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                           </div>
                        </div>
