@@ -13,6 +13,7 @@ import { Location } from '@angular/common';
 
 import  Constants  from '../../constants'
 import { ListService } from '../../../../services';
+import { AnyCnameRecord } from 'dns';
 
 
 declare var $: any;
@@ -71,7 +72,7 @@ vehicles= [];
   annualSafetyReminder = false;
   currentStatus = '';
   ownership = '';
-  ownerOperator = '';
+  ownerOperatorID = '';
   groupID = '';
   aceID = '';
   aciID = '';
@@ -210,6 +211,7 @@ vehicles= [];
     measurmentUnit: 'imperial',
   };
 
+  ownerOperators: any = []
   servicePrograms = [];
   inspectionForms = [];
   manufacturers: any = [];
@@ -270,6 +272,7 @@ vehicles= [];
     this.listService.fetchCountries();
     this.listService.fetchModels();
     this.listService.fetchStates();
+    this.listService.fetchOwnerOperators();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -298,7 +301,7 @@ vehicles= [];
       this.annualSafetyReminder = this.vehicleSession.annualSafetyDate;
       this.currentStatus = this.vehicleSession.currentStatus;
       this.ownership = this.vehicleSession.ownership;
-      this.ownerOperator = this.vehicleSession.ownerOperator;
+      this.ownerOperatorID = this.vehicleSession.ownerOperatorID;
       this.groupID = this.vehicleSession.groupID;
       this.aceID = this.vehicleSession.aceID;
       this.aciID = this.vehicleSession.aciID;
@@ -450,6 +453,7 @@ vehicles= [];
    this.countries = this.listService.countryList;
    this.models = this.listService.modelList;
    this.states = this.listService.stateList;
+   this.ownerOperators = this.listService.ownerOperatorList;
   }
 
 
@@ -515,7 +519,7 @@ vehicles= [];
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
-      ownerOperator: this.ownerOperator,
+      ownerOperatorID: this.ownerOperatorID,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,
@@ -718,7 +722,7 @@ vehicles= [];
             annualSafetyReminder: false,
             currentStatus: '',
             ownership: '',
-            ownerOperator: '',
+            ownerOperatorID: '',
             groupID: '',
             aceID: '',
             aciID: '',
@@ -941,7 +945,7 @@ vehicles= [];
         this.annualSafetyReminder = result.annualSafetyReminder,
         this.currentStatus = result.currentStatus;
         this.ownership = result.ownership;
-        this.ownerOperator = this.ownerOperator;
+        this.ownerOperatorID = this.ownerOperatorID;
         this.groupID = result.groupID;
         this.aceID = result.aceID;
         this.aciID = result.aciID;
@@ -1124,7 +1128,7 @@ vehicles= [];
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
-      ownerOperator: this.ownerOperator,
+      ownerOperatorID: this.ownerOperatorID,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,
@@ -1373,7 +1377,7 @@ vehicles= [];
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
-      ownerOperator: this.ownerOperator,
+      ownerOperatorID: this.ownerOperatorID,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,
@@ -1558,7 +1562,7 @@ vehicles= [];
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
       ownership: this.ownership,
-      ownerOperator: this.ownerOperator,
+      ownerOperatorID: this.ownerOperatorID,
       groupID: this.groupID,
       aceID: this.aceID,
       aciID: this.aciID,

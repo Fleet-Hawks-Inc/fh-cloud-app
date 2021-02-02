@@ -30,6 +30,7 @@ export class DriverDetailComponent implements OnInit {
   driverType: any;
   employeeId: any;
   companyId: any;
+  ownerOperator: string;
   companyName: string;
   driverStatus: any;
   userName: any;
@@ -103,6 +104,7 @@ export class DriverDetailComponent implements OnInit {
   countriesObject: any = {};
   citiesObject: any = {};
   groupsObjects: any = {};
+  ownerOperatorsObjects: any = {};
 
   docs = [];
   assetsDocs = [];
@@ -132,6 +134,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
+    this.fetchAllOwnOperatorsIDs();
   }
 
    /**
@@ -174,6 +177,8 @@ export class DriverDetailComponent implements OnInit {
           
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeId;
+          this.ownerOperator = this.driverData.ownerOperator;
+          
           this.companyId = this.driverData.companyId;
           this.companyName = this.driverData.companyName;
           this.driverStatus = this.driverData.driverStatus;
@@ -304,6 +309,13 @@ export class DriverDetailComponent implements OnInit {
     this.apiService.getData('countries/get/list')
       .subscribe((result: any) => {
         this.countriesObject = result;
+      });
+  }
+
+  fetchAllOwnOperatorsIDs() {
+    this.apiService.getData('ownerOperators/get/list')
+      .subscribe((result: any) => {
+        this.ownerOperatorsObjects = result;
       });
   }
 

@@ -183,6 +183,118 @@ export class LoginComponent implements OnInit {
     },
   }
 
+
+  driver = {
+    driverType: 'employee',
+    entityType: 'driver',
+    employeeId: '',
+    // ownerOperator: '',
+    driverStatus: '',
+    userName: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    startDate: '',
+    terminationDate: '',
+    //contractStart: '',
+    //contractEnd: '',
+    password: '',
+    confirmPassword: '',
+    citizenship: '',
+    assignedVehicle: '',
+    groupID: '',
+    abstractDocs: [],
+    driverImage: '',
+    gender: 'M',
+    DOB: '',
+    workPhone: '',
+    workEmail: '',
+    address: [{
+      addressType: '',
+      userLocation: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords : {
+        lat: null,
+        lng: null
+      },
+      manual: false,
+    }],
+    documentDetails: [{
+      documentType: '',
+      document: '',
+      issuingAuthority: '',
+      issuingCountry: '',
+      issuingState: '',
+      issueDate: '',
+      expiryDate: '',
+      uploadedDocs: [],
+    }],
+    crossBorderDetails: {
+      ACI_ID: '',
+      ACE_ID: '',
+      fast_ID: '',
+      fastExpiry: '',
+      csa: false,
+    },
+    paymentDetails: {
+      paymentType: '',
+      loadedMiles: '',
+      loadedMilesTeam: '',
+      loadedMilesUnit: '',
+      loadedMilesTeamUnit: '',
+      emptyMiles: '',
+      emptyMilesTeam: '',
+      emptyMilesUnit: '',
+      emptyMilesTeamUnit: '',
+      loadPayPercentage: '',
+      loadPayPercentageOf: '',
+      rate: '',
+      rateUnit: '',
+      waitingPay: '',
+      waitingPayUnit: '',
+      waitingHourAfter: '',
+      deliveryRate: '',
+      deliveryRateUnit: '',
+      SIN_Number: '',
+      payPeriod: '',
+    },
+    licenceDetails: {
+      CDL_Number: '',
+      issuedCountry: '',
+      issuedState: '',
+      licenceExpiry: '',
+      licenceNotification: false,
+      WCB: '',
+      medicalCardRenewal: '',
+      healthCare: '',
+      vehicleType: '',
+    },
+    hosDetails: {
+      hosStatus: '',
+      type: '',
+      hosRemarks: '',
+      hosCycle: '',
+      homeTerminal: '',
+      pcAllowed: false, 
+      ymAllowed: false,
+    },
+    emergencyDetails: {
+      name: '',
+      relationship: '',
+      phone: '',
+      email: '',
+      emergencyAddress: '',
+    },
+  }
+
   constructor(private apiService: ApiService,
               private router: Router,
               private authService: AuthService) {}
@@ -271,8 +383,9 @@ export class LoginComponent implements OnInit {
           role: Role.FleetManager
         };
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('vehicle', JSON.stringify(this.vehicle));  
-
+        localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
+        localStorage.setItem('driver', JSON.stringify(this.driver));
+        
 
 
         /**
