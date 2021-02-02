@@ -845,7 +845,7 @@
                                              placeholder="Enter curb weight">
                                           <span class="input-group-append">
                                              <span class="input-group-text pt-0 pb-0">
-                                                lb
+                                                kg
                                              </span>
                                           </span>
                                        </div>
@@ -866,7 +866,7 @@
                                              name="specifications.grossVehicleWeightRating"
                                              [(ngModel)]="specifications.grossVehicleWeightRating" placeholder="Enter gross vehicle weight rating">
                                           <span class="input-group-append">
-                                             <span class="input-group-text pt-0 pb-0">lb</span>
+                                             <span class="input-group-text pt-0 pb-0">kg</span>
                                           </span>
                                        </div>
                                     </div>
@@ -976,13 +976,15 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
-                                          Issue<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                          Issue<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="date" class="form-control" name="insurance.dateOfIssue"
                                           [(ngModel)]="insurance.dateOfIssue">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Premium
-                                          Amount<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                          Amount<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" class="form-control" name="insurance.premiumAmount" min="1"
@@ -1005,7 +1007,8 @@
                                <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                      <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vendor<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>                                      
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vendor<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>                                      
                                         <ng-select  placeholder="Select Vendor" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
                                
                                            <ng-option *ngFor = "let vendor of vendors | async" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
@@ -1025,13 +1028,15 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
-                                          Expiry<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                          Expiry<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="date" class="form-control" name="insurance.dateOfExpiry"
                                           [(ngModel)]="insurance.dateOfExpiry">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Reminder
-                                          Every<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                          Every<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" class="form-control" name="insurance.reminder"
@@ -1051,15 +1056,16 @@
                                     </div>
                                  </div>
                               </div>
-                              <!-- <div class="col-lg-5 offset-lg-1">
+                              <div class="col-lg-5 offset-lg-1">
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
-                                          Policy#</label>
+                                          Policy# &nbsp;
+                                          <span class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="text" class="form-control" name="insurance.policyNumber"
                                           [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757 etc.">
                                     </div>
-                                    <div class="col-lg-5">
+                                    <!-- <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
                                           Amount</label>
                                        <div class="row">
@@ -1079,9 +1085,9 @@
                                           </div>
                                        </div>
 
-                                    </div>
+                                    </div> -->
                                  </div>
-                              </div> -->
+                              </div>
                             </div>
                          </div>
                       </div>
@@ -1403,7 +1409,8 @@
                                         Summary<span class="mandfield text-1 ml-1"><sup>*</sup></span>
 
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
-                                           data-placement="top" title="Basic engine summary"></i></label>
+                                           data-placement="top" title="Basic engine summary"></i> &nbsp; <span
+                                           class="text-1 optional-label-color">(optional)</span></label>
 
                                      <input type="text" class="form-control" name="engine.engineSummary"
                                         [(ngModel)]="engine.engineSummary" placeholder="eg. 5.0L etc">
