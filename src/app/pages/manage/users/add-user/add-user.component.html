@@ -36,19 +36,21 @@
                                         </div>
                                         <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">First Name</label>
                                                     <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName"> </div>
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Last Name</label>
                                                     <input type="text" class="form-control"  [(ngModel)]="lastName" name="lastName"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Employee ID</label>
                                                     <input type="text" class="form-control"  [(ngModel)]="employeeID" name="employeeID"> </div>
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
-                                                    <input type="date" class="form-control"  [(ngModel)]="dateOfBirth" name="dateOfBirth"> </div>
-                                                <div class="col-lg-10">
+                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text" 
+                                                  class="form-control" placeholder="Select Date">
+                                                   </div>
+                                                <div class="col-lg-5">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
                                                       <ng-select [(ngModel)]="currentStatus" name="currentStatus"
                                                       placeholder="Select user status"> 
@@ -56,7 +58,12 @@
                                                       <ng-option value="INACTIVE">Inactive</ng-option>
                                                    </ng-select>
                                                 </div>
-                                                
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Work Phone</label>
+                                                   <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
+                                                   <div class="col-lg-10">
+                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Work Email</label>
+                                                      <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
@@ -83,12 +90,8 @@
                                                 </div>
                                              </div>
                                               
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Work Phone</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Work Email</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
+                                               
+                                              
                                                
                                             </div>
                                         </div>
@@ -110,7 +113,7 @@
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                     <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
                                                        placeholder="Select address type"> 
-                                                       <!-- <ng-option value="Work">Work</ng-option> -->
+                                                       <ng-option value="Work">Work</ng-option>
                                                        <ng-option  value="Home">Home</ng-option>
                                                        <!-- <ng-option value="Office">Office</ng-option> -->
                                                     </ng-select>
@@ -143,7 +146,7 @@
                                                  (click)="clearUserLocation(i);">Clear</a>
                                               <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"
                                                    ><i class="fa fa-plus fa-fw"></i></a>
-                                              <a *ngIf="i != 0;" (click)="remove('address', i)" class="btn btn-success"
+                                              <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)" class="btn btn-success"
                                                  href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                            </div>
                                         </div>
@@ -272,12 +275,13 @@
                                                  </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
-                                                    <input type="password" class="form-control" [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
+                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
                                                  </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password</label>
-                                                    <input type="password" class="form-control" [(ngModel)]="confirmUserPassword" name="confirmUserPassword" [disabled]="disableInput">
+                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="confirmUserPassword" name="confirmUserPassword" [disabled]="disableInput">
                                                  </div>
+                                                 <div *ngIf="errorClass" class="col-lg-10 text-danger">Password and Confirm Password must match and can not be empty.</div>
                                             </div>
                                         </div>
                                     </div>
