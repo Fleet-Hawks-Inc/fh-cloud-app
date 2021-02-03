@@ -7,3 +7,9 @@
 .show-search__result .map-search__results {
     display: block !important;
 }
+.profile-cross {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 20px;
+}
