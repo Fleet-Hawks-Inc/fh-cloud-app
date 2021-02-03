@@ -13,7 +13,7 @@
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                 
                            <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{userName}}">Edit</a>
-                           <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                           <a class="modal-with-form dropdown-item text-1" (click)="deleteUser(userName)" href="javascript:;">Delete</a>
                         </div>
                      </div>
                      <a [routerLink]="['/manage','users','add']"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add User</a>
@@ -86,7 +86,7 @@
                                              <td class="back-color-gray font-weight-bold">Email</td>
                                              <td>{{email}}</td>
                                           </tr>  
-                                          <tr>
+                                          <tr *ngIf="groupID != ''">
                                              <td class="back-color-gray font-weight-bold">Group</td>
                                              <td>{{groupList[groupID]}}</td>
                                           </tr>
