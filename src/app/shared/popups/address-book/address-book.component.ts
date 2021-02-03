@@ -7,7 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// import { ListService } from '../../../services';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
@@ -357,7 +356,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             private toastr: ToastrService,
             private modalService: NgbModal,
             private HereMap: HereMapService,
-            // private listService: ListService
             )
   { }
 
