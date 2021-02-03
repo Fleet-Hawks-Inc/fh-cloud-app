@@ -1789,7 +1789,21 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Amount of
                                           Loan&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="number" min="1" class="form-control" name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan" placeholder="Enter loan amount">
+                                          <div class="row"> 
+                                             <div class="col-lg-6">
+                                                <input type="number" min="1" class="form-control" name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan" placeholder="Enter loan amount">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                name="loan.amountOfLoanCurrency"
+                                                [(ngModel)]="loan.amountOfLoanCurrency" placeholder="Select currency">
+                                                <optgroup label="">
+                                                   <ng-option value="USD">USD</ng-option>
+                                                   <ng-option value="CAD">CAD</ng-option>
+                                                </optgroup>
+                                             </ng-select>
+                                             </div>
+                                          </div>
                                      </div>
                                      <!-- <div class="col-lg-5">
                                        <label
@@ -1807,7 +1821,21 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Down
                                           Payment&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="number" min="1" class="form-control" name="loan.downPayment" [(ngModel)]="loan.downPayment" placeholder="Enter down payment">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <input type="number" min="1" class="form-control" name="loan.downPayment" [(ngModel)]="loan.downPayment" placeholder="Enter down payment">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                name="loan.downPaymentCurrency"
+                                                [(ngModel)]="loan.downPaymentCurrency" placeholder="Select currency">
+                                                <optgroup label="">
+                                                   <ng-option value="USD">USD</ng-option>
+                                                   <ng-option value="CAD">CAD</ng-option>
+                                                </optgroup>
+                                             </ng-select>
+                                             </div>
+                                          </div>
                                      </div>
                                      <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
