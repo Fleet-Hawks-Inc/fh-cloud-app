@@ -63,7 +63,7 @@
                                      </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">VIN<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
-                                        <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN" placeholder="VIN or Serial Number">
+                                        <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN" placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705">
                                      </div>
                                      <!-- <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
@@ -134,7 +134,7 @@
                                        <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
                                        class="btn btn-sm btn-success modal-with-form"><i
                                           class="fas fa-plus"></i></a> 
-                                                                          </div>
+                                     </div>
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Model<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                                         <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID" placeholder="Select vehicle model" id="vehicleSelect">
@@ -153,9 +153,7 @@
                                    
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
-
                                        <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
-
                                           <optgroup label="">
                                              <ng-option *ngFor="let country of countries | async" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                           </optgroup>
@@ -553,7 +551,7 @@
                                           name="lifeCycle.estimatedServiceYears"
                                           min="1"
                                           [(ngModel)]="lifeCycle.estimatedServiceYears"
-                                          placeholder="eg. 1,40 etc.">
+                                          placeholder="eg. 5,10,20 years etc.">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Service Life in Months
@@ -566,7 +564,7 @@
                                           name="lifeCycle.estimatedServiceMonths"
                                           min="1"
                                           [(ngModel)]="lifeCycle.estimatedServiceMonths"
-                                          placeholder="eg. 1,40 etc.">
+                                          placeholder="eg. 10,20,30 etc.">
                                     </div>
                                   </div>
                                </div>
@@ -653,8 +651,7 @@
                                   <div class="row">
                                     <div class="col-lg-5">
                                        <label
-                                          class="control-label font-weight-bold text-lg-right pt-2">Height&nbsp; <span
-                                          class="text-1 optional-label-color"></span></label>
+                                          class="control-label font-weight-bold text-lg-right pt-2">Height<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input type="number" min="1" class="form-control" name="specifications.height"
@@ -1065,7 +1062,7 @@
                                        <input type="text" class="form-control" name="insurance.policyNumber"
                                           [(ngModel)]="insurance.policyNumber" placeholder="eg. RT5648757 etc.">
                                     </div>
-                                    <!-- <div class="col-lg-5">
+                                    <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Insurance
                                           Amount</label>
                                        <div class="row">
@@ -1085,7 +1082,7 @@
                                           </div>
                                        </div>
 
-                                    </div> -->
+                                    </div>
                                  </div>
                               </div>
                             </div>
@@ -1702,7 +1699,7 @@
                                   <div class="row">
                                      <div class="col-lg-6">
                                         <input class="form-control" name="purchase.purchasePrice" type="number" min="1"
-                                           [(ngModel)]="purchase.purchasePrice" placeholder="purchase price">
+                                           [(ngModel)]="purchase.purchasePrice" placeholder="Enter purchase price">
                                      </div>
                                      <div class="col-lg-6">
                                         <ng-select class="form-control populate"
@@ -1792,7 +1789,21 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Amount of
                                           Loan&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="number" min="1" class="form-control" name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan" placeholder="Enter loan amount">
+                                          <div class="row"> 
+                                             <div class="col-lg-6">
+                                                <input type="number" min="1" class="form-control" name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan" placeholder="Enter loan amount">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                name="loan.amountOfLoanCurrency"
+                                                [(ngModel)]="loan.amountOfLoanCurrency" placeholder="Select currency">
+                                                <optgroup label="">
+                                                   <ng-option value="USD">USD</ng-option>
+                                                   <ng-option value="CAD">CAD</ng-option>
+                                                </optgroup>
+                                             </ng-select>
+                                             </div>
+                                          </div>
                                      </div>
                                      <!-- <div class="col-lg-5">
                                        <label
@@ -1810,7 +1821,21 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Down
                                           Payment&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="number" min="1" class="form-control" name="loan.downPayment" [(ngModel)]="loan.downPayment" placeholder="Enter down payment">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <input type="number" min="1" class="form-control" name="loan.downPayment" [(ngModel)]="loan.downPayment" placeholder="Enter down payment">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                name="loan.downPaymentCurrency"
+                                                [(ngModel)]="loan.downPaymentCurrency" placeholder="Select currency">
+                                                <optgroup label="">
+                                                   <ng-option value="USD">USD</ng-option>
+                                                   <ng-option value="CAD">CAD</ng-option>
+                                                </optgroup>
+                                             </ng-select>
+                                             </div>
+                                          </div>
                                      </div>
                                      <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
@@ -1844,7 +1869,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Number of
                                           Payments&nbsp; <span
                                           class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="number" min="1" class="form-control" name="loan.numberOfPayments" [(ngModel)]="loan.numberOfPayments" placeholder="enter total loan payments">
+                                        <input type="number" min="1" class="form-control" name="loan.numberOfPayments" [(ngModel)]="loan.numberOfPayments" placeholder="Enter total loan payments eg. 10,20">
                                      </div>
                                      <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Monthly
