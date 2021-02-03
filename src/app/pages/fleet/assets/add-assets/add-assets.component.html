@@ -29,7 +29,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-												Name/Number</label>
+												Name/Number<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.assetIdentification"
 												name="assetIdentification" class="form-control" placeholder="eg. XYZ,123 etc.">
 										</div>
@@ -61,14 +61,14 @@
 									<div class="row">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.VIN" name="VIN" placeholder="Enter VIN number of the asset"
 												class="form-control">
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-lg-10">
-											<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date</label>
+											<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.startDate" name="startDate" placeholder="Enter Start Date of the asset"
 												class="form-control">	 
 										</div>
@@ -86,7 +86,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-												Type</label>
+												Type<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.assetType"
 												name="assetDetails.assetType" class="form-control populate"
 												id="assetType" placeholder="Select asset type">
@@ -112,7 +112,7 @@
 									<div class="row mt-2">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Year</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.year"
 												name="assetDetails.year"
 												class="form-control populate" placeholder="Select year">
@@ -128,7 +128,7 @@
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Asset
-												Status</label>
+												Status<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
 												name="assetDetails.currentStatus" placeholder="Select asset status">
 
@@ -139,12 +139,12 @@
 										</div>
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select 
 												[(ngModel)]="assetsData.assetDetails.manufacturer"
 												name="assetDetails.manufacturer" class="form-control"
 												(change)="getModels($event)" placeholder="Select asset make">
-												<ng-option *ngFor="let item of manufacturers"
+												<ng-option *ngFor="let item of manufacturers | async"
 													id="{{item.manufacturerID}}" value="{{item.manufacturerID}}">{{item.manufacturerName}}
 												</ng-option>
 											</ng-select>
@@ -154,7 +154,7 @@
 										 </div>
 										<div class="col-lg-10 ">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
 												name="assetDetails.model" class="form-control">
 												<ng-option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}
@@ -290,7 +290,7 @@
 										<div class="col-lg-5">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												Country</label>
+												Country<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
 												name="assetDetails.licenceCountryID" (change)="getStates($event)" placeholder="Select country"
 												class="form-control populate">
@@ -303,7 +303,7 @@
 										</div>
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province</label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
 												name="assetDetails.licenceStateID" class="form-control populate" placeholder="Select state">
 												<ng-option *ngFor="let state of states" value="{{state.stateID}}">
@@ -317,7 +317,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												Plate Number</label>
+												Plate Number<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="Enter licence plate number of asset"
 												name="assetDetails.licencePlateNumber" class="form-control" type="text">
 										</div>
@@ -326,12 +326,12 @@
 									<div class="row mt-2">
 											<div class="col-lg-10">
 													<label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set Reminder)</label>
-													<input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="annualSafetyDate" class="form-control"> 
+													<input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate" class="form-control"> 
 											</div>
 											<div class="col-lg-10">
 												<div class="checkbox mt-1">
 												<label>
-													<input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder" value="true">
+													<input type="checkbox" name="annualSafetyReminder" [(ngModel)]="assetsData.assetDetails.annualSafetyReminder" value="true">
 													Set Reminder
 												</label>
 												</div>
@@ -488,7 +488,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Photo</label>
+												Photo<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input (change)="selectDocuments($event, 'uploadedPhotos')"
 												name="uploadedPhotos" type="file" multiple
 												class="form-control border-0 p-0">
@@ -518,7 +518,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Document</label>
+												Document<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
 											<input (change)="selectDocuments($event, 'uploadedDocs')"
 												name="uploadedDocs" type="file" multiple
 												class="form-control border-0 p-0">
@@ -612,7 +612,7 @@
 				</div>
 			</div>
 			<div class="modal-footer text-right">
-				<a class="btn btn-success" (click)="addGroup()">Save</a>
+				<a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
 				<a class="btn btn-default" data-dismiss="modal">Cancel</a>
 			</div>
 		</div>

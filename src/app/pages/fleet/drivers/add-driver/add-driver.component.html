@@ -200,7 +200,7 @@
                                          </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37 pl-0">
-                                         <a data-toggle="modal" data-target="#addDriverVehicleModal"  href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                         <a routerLink="/fleet/vehicles/add" href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                       </div>
                                        <div class="col-lg-10">
                                           <label
@@ -1077,22 +1077,6 @@
          </div>
       </section>
      
-      <div class="modal fade" id="addDriverVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addDriverVehicleModal" aria-hidden="true">
-         <div class="modal-dialog" style="max-width: 98%;" role="document">
-              <div class="modal-content">
-              <div class="modal-header">
-                    <h5 class="modal-title">Add Vehicle</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                    </button>
-              </div>
-              <div class="modal-body text-dark">
-                 <app-add-vehicle-new></app-add-vehicle-new>
-              </div>
-           </div>
-        </div>
-     </div>
-
      <div class="modal fade" id="addDriverGroupModal" tabindex="-1" role="dialog" aria-labelledby="addDriverGroupModal" aria-hidden="true">
         <div class="modal-dialog" style="max-width: 600px;" role="document">
           <div class="modal-content">

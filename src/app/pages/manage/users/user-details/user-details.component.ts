@@ -11,6 +11,9 @@ export class UserDetailsComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   userID: string = '';
   groupList:any = {};
+  countryList: any = {};
+  stateList: any = {};
+  cityList: any = {};
   firstName= '';
       lastName= '';
       employeeID= '';
@@ -34,8 +37,7 @@ export class UserDetailsComponent implements OnInit {
         lng: ''
       },
       manual: false
-    }];
-   
+    }];   
       departmentName = '';
       userType = '';
       groupID = '';
@@ -45,16 +47,35 @@ export class UserDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.userID = this.route.snapshot.params['userID'];
-    if(this.userID){
-      this.fetchUser();
+    this.fetchCountryList();
+      this.fetchStateList();
+      this.fetchCityList();
       this.fetchGroupList();
+    if(this.userID){
+      this.fetchUser();  
+      
     }
-    this.fetchGroupList();
+    
   }
   fetchGroupList(){
     this.apiService.getData('groups/get/list').subscribe( (result:any) => {
       this.groupList = result;
     })
+  }
+  fetchCountryList() {
+    this.apiService.getData('countries/get/list').subscribe((result: any) => {
+      this.countryList = result;
+    });
+  }
+  fetchStateList() {
+    this.apiService.getData('states/get/code').subscribe((result: any) => {// to get state code against stateID
+      this.stateList = result;
+    });
+  }
+  fetchCityList() {
+    this.apiService.getData('cities/get/list').subscribe((result: any) => {
+      this.cityList = result;
+    });
   }
 fetchUser(){
   this.apiService.getData('users/'+ this.userID).subscribe((result:any)=>{
@@ -71,6 +92,7 @@ fetchUser(){
     this.userType = result.userType;
     this.groupID = result.groupID;
     this.userName = result.userName;
+    this.addressDetails = result.addressDetails;
     if(result.userImage != '' && result.userImage != undefined) {
       this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
     }
