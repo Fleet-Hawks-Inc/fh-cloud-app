@@ -30,6 +30,7 @@ export class DriverDetailComponent implements OnInit {
   driverType: any;
   employeeId: any;
   companyId: any;
+  ownerOperator: string;
   companyName: string;
   driverStatus: any;
   userName: any;
@@ -103,9 +104,11 @@ export class DriverDetailComponent implements OnInit {
   countriesObject: any = {};
   citiesObject: any = {};
   groupsObjects: any = {};
+  ownerOperatorsObjects: any = {};
 
   docs = [];
   assetsDocs = [];
+  absDocs = [];
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(
@@ -131,6 +134,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
+    this.fetchAllOwnOperatorsIDs();
   }
 
    /**
@@ -150,7 +154,12 @@ export class DriverDetailComponent implements OnInit {
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
-          this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          if(this.driverData.middleName == undefined) {
+            this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          } else {
+            this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
+          }
+          
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;
@@ -162,9 +171,14 @@ export class DriverDetailComponent implements OnInit {
           } else {
             this.profile = 'assets/img/driver/driver.png';
           }
+          if(this.driverData.abstractDocs != undefined && this.driverData.abstractDocs.length > 0) {
+            this.absDocs = this.driverData.abstractDocs.map(x => ({path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x}));
+          }
           
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeId;
+          this.ownerOperator = this.driverData.ownerOperator;
+          
           this.companyId = this.driverData.companyId;
           this.companyName = this.driverData.companyName;
           this.driverStatus = this.driverData.driverStatus;
@@ -295,6 +309,13 @@ export class DriverDetailComponent implements OnInit {
     this.apiService.getData('countries/get/list')
       .subscribe((result: any) => {
         this.countriesObject = result;
+      });
+  }
+
+  fetchAllOwnOperatorsIDs() {
+    this.apiService.getData('ownerOperators/get/list')
+      .subscribe((result: any) => {
+        this.ownerOperatorsObjects = result;
       });
   }
 

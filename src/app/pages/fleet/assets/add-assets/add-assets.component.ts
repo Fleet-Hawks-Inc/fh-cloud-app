@@ -11,7 +11,7 @@ import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bo
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-
+import { ListService } from '../../../../services/list.service'
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -31,6 +31,7 @@ export class AddAssetsComponent implements OnInit {
     assetIdentification: '',
     groupID: '',
     VIN: '',
+    startDate: '',
     assetDetails: {
       assetType: '',
       currentStatus: '',
@@ -48,6 +49,8 @@ export class AddAssetsComponent implements OnInit {
       licenceCountryID: '',
       licenceStateID: '',
       licencePlateNumber: '',
+      annualSafetyDate: '',
+      annualSafetyReminder: true,
       remarks: '',
     },
     insuranceDetails: {
@@ -72,8 +75,8 @@ export class AddAssetsComponent implements OnInit {
     groupType : 'assets'
   };
 
-  vendors = [];
-  manufacturers = [];
+  vendors: any = [];;
+  manufacturers: any = [];
   models = [];
   groups = [];
 
@@ -97,10 +100,11 @@ export class AddAssetsComponent implements OnInit {
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
+  ownOperators = [];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
-              private toastr: ToastrService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
+              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -109,12 +113,15 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    this.fetchManufactuer();
-    this.fetchVendors();
+    // this.fetchManufactuer();
+    // this.fetchVendors();
+    this.listService.fetchAssetManufacturers();
+    this.listService.fetchVendors();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
     this.fetchGroups();
     this.fetchAssets();
+    this.fetchOwnerOperators();
 
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
@@ -126,6 +133,9 @@ export class AddAssetsComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+
+    this.vendors = this.listService.vendorList;
+    this.manufacturers = this.listService.assetManufacturesList;
   }
 
   getYears() {
@@ -150,19 +160,19 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all manufacturers from api
    */
-  fetchManufactuer() {
-    this.apiService.getData('manufacturers').subscribe((result: any) => {
-      this.manufacturers = result.Items;
-    });
-  }
+  // fetchManufactuer() {
+  //   this.apiService.getData('assetManufacturers').subscribe((result: any) => {
+  //     this.manufacturers = result.Items;
+  //   });
+  // }
   /*
    * Get all vendors from api
    */
-  fetchVendors() {
-    this.apiService.getData('vendors').subscribe((result: any) => {
-      this.vendors = result.Items;
-    });
-  }
+  // fetchVendors() {
+  //   this.apiService.getData('vendors').subscribe((result: any) => {
+  //     this.vendors = result.Items;
+  //   });
+  // }
   /*
    * Get all models from api
    */
@@ -242,21 +252,17 @@ export class AddAssetsComponent implements OnInit {
 
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
-      error: (err) => {
+      error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.Success = '';
             },
             error: () => { },
             next: () => { },
@@ -302,7 +308,7 @@ export class AddAssetsComponent implements OnInit {
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
+        
         this.assetsData['assetID'] = this.assetID;
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['groupID'] = result.groupID;
@@ -450,29 +456,7 @@ export class AddAssetsComponent implements OnInit {
       },
     });
   }
-  /*
-   * Selecting files before uploading
-   */
-  // selectDocuments(event, obj) {
-  //   this.selectedFiles = event.target.files;
-  //   if (obj === 'uploadedDocs') {
-  //     //this.assetsData.uploadedDocs = [];
-  //     for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-  //       const randomFileGenerate = this.selectedFiles[i].name.split('.');
-  //       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-  //       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-  //       this.assetsData.uploadedDocs.push(fileName);
-  //     }
-  //   } else {
-  //     for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-  //       const randomFileGenerate = this.selectedFiles[i].name.split('.');
-  //       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-
-  //       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-  //       this.assetsData.uploadedPhotos.push(fileName);
-  //     }
-  //   }
-  // }
+  
 
   selectDocuments(event, obj) {
     let files = [...event.target.files];
@@ -490,15 +474,7 @@ export class AddAssetsComponent implements OnInit {
     }
   }
   
-  /*
-   * Uploading files which selected
-   */
-  // uploadFiles = async () => {
-  //   this.carrierID = await this.apiService.getCarrierID();
-  //   this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-  //     this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-  //   });
-  // }
+
 
   // Changing gvwr/gawr values
   gwr(value, el) {
@@ -516,9 +492,17 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  fetchOwnerOperators() {
+    this.apiService.getData('ownerOperators')
+      .subscribe((result: any) => {
+        this.ownOperators = result.Items;
+      });
+  }
+  
+
   
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -556,8 +540,9 @@ export class AddAssetsComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully.');
         $('#addGroupModal').modal('hide');
-
-
+        this.groupData['groupName'] = '';
+        this.groupData['groupMembers'] = '';
+        this.groupData['description'] = '';
       },
     });
   }

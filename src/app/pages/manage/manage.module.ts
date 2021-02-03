@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { DataTablesModule } from 'angular-datatables';
+import { SharedModule } from '../../shared/shared.module';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -25,7 +26,8 @@ const COMPONENTS = [
     FormsModule,
     ManageRoutingModule,
     NgSelectModule,
-    DataTablesModule
+    DataTablesModule,
+    SharedModule
   ]
 })
 export class ManageModule { }

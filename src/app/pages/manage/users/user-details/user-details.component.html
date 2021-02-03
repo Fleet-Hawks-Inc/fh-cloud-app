@@ -1,1 +1,159 @@
-<p>user-details works!</p>
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header">
+               <div class="row pr-5 " style="padding-top:10px;">
+                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                     User {{employeeID}} <span class="badge badge-dark p-1">{{currentStatus}}</span>                   
+                  </div>
+                  <div class="col-md-8  col-lg-8 text-right pr-4">
+                     <a [routerLink]="['/manage','users','list']" class="btn btn-sm btn-default mr-1"><i class="fas fa-list"></i> Users List</a>  
+                     <div class="btn-group flex-wrap mr-1">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                
+                           <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{userName}}">Edit</a>
+                           <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
+                        </div>
+                     </div>
+                     <a [routerLink]="['/manage','users','add']"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add User</a>
+                  </div>
+               </div>
+            </header>
+            <div class="row">
+               <div class="col pr-0">
+                  <div class="card-body text-dark">
+                     <form class="form-horizontal form-bordered" method="get">
+                     <div class="row cmaindiv">
+                           <div class="col-md-3 col-lg-3">
+                              <div class="text-center p-4 cerbor">
+                              <i class="fa fa-user text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{userName}}</p>
+                              <p class="mb-0">USER NAME</p>
+                              </div>
+                           </div>
+                           <div class="col-md-3 col-lg-3">
+                              <div class="text-center p-4 cerbor">
+                              <i class="far fa-id-card text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{employeeID}}</p>
+                              <p class="mb-0">EMPLOYEE ID</p>
+                              </div>
+                           </div>
+                           <div class="col-md-3 col-lg-3">
+                              <div class="text-center p-4 cerbor">
+                              <i class="fas fa-user-lock text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{userType}}</p>
+                              <p class="mb-0">USER TYPE</p>
+                              </div>
+                           </div>
+
+                           <div class="col-md-3 col-lg-3">
+                              <div class="text-center p-4">
+                              <i class="far fa-building text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{departmentName}}</p>
+                              <p class="mb-0">DEPARTMENT</p>
+                              </div>
+                           </div>
+
+                         
+                        </div>
+                        <div class=" row">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Other Details</label>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="row">
+                                 <div class="col-lg-12">
+                                    <table class="table table-bordered table-responsive-lg">
+                                       <tbody>
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Name</td>
+                                             <td>{{firstName}} &nbsp; {{lastName}}</td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Date of Birth</td>
+                                             <td>{{dateOfBirth}}</td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Phone</td>
+                                             <td>{{phone}}</td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Email</td>
+                                             <td>{{email}}</td>
+                                          </tr>  
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Group</td>
+                                             <td>{{groupList[groupID]}}</td>
+                                          </tr>
+                                          <tr *ngIf="addressDetails.length>0">
+                                             <td class="back-color-gray font-weight-bold">Address</td>
+                                             <td>
+                                                <span *ngFor="let address of addressDetails; let i=index;">Address{{i+1}}-<span *ngIf="address.userLocation != ''">{{address.userLocation}}<br></span>
+                                                <span *ngIf="address.countryID != ''">{{address.address1}}<span *ngIf="address.address2 != ''">{{address.address2}}</span>{{cityList[address.cityID]}},{{stateList[address.stateID]}},{{address.zipCode}},{{countryList[address.countryID]}}<br></span>
+                                                </span> </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                             
+                           </div>
+                           <div class="col-lg-6">
+                              
+                              <!-- MAP -->
+                              <div class="row">
+                              <div class="col-lg-6 offset-lg-3">
+                                             <div class="vehicle-photo-box">
+                                                <img [src]="userProfileSrc"  height="204px !important" width="100%">
+                                                <hr class="m-3">
+                                                <div class="row">
+                                                   <div class="col-lg-8">{{userName}}'s Profile Image</div>
+                                                   <div class="col-lg-4 text-right">
+                                                   <!-- <a href="#deleteModal" class="modal-with-form"><i class="fas fa-times text-danger"></i></a> -->
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                              </div>
+                           </div>
+                        </div>
+                      
+                     <!-- Delete MODAL -->
+                     <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
+                        <section class="card">
+                           <header class="card-header">
+                              <h2 class="card-title">Corfirm Action</h2>
+                           </header>
+                           <div class="card-body text-dark">
+                              <form>
+                                 <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                       <label for="inputEmail4">Are you sure?</label>
+                                    </div>
+                                 </div>
+                              </form>
+                           </div>
+                           <footer class="card-footer">
+                              <div class="row">
+                                 <div class="col-md-12 text-right">
+                                 <button class="btn btn-default modal-dismiss">Cancel</button>
+
+                                    <button class="btn btn-danger modal-confirm">OK</button>
+                                 </div>
+                              </div>
+                           </footer>
+                        </section>
+                     </div>
+                    
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </section>
+    </div>
+</section>
