@@ -17,9 +17,9 @@ import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
-import { SlickCarouselModule } from 'ngx-slick-carousel'; 
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
+import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
@@ -112,8 +112,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddDriverComponent,
     AddServiceProgramComponent,
     AddVehicleNewComponent,
-    SharedModalsComponent
-    
+    SharedModalsComponent,
+    AddServiceProgramComponent,
   ],
   exports: [
     CommonModule,
