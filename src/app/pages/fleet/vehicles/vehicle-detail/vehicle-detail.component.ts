@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class VehicleDetailComponent implements OnInit {
   slides = [];
+  docs = [];
   Asseturl = this.apiService.AssetUrl;
 
   /**
@@ -461,6 +462,15 @@ export class VehicleDetailComponent implements OnInit {
           result.uploadedPhotos.length > 0
         ) {
           this.slides = result.uploadedPhotos.map(
+            (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+          );
+        }
+
+        if (
+          result.uploadedDocs != undefined &&
+          result.uploadedDocs.length > 0
+        ) {
+          this.docs = result.uploadedDocs.map(
             (x) => `${this.Asseturl}/${result.carrierID}/${x}`
           );
         }
