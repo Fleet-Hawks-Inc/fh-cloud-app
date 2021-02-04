@@ -28,6 +28,9 @@ export class ListService {
   ownerOperatorDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   ownerOperatorList = this.ownerOperatorDataSource.asObservable();
 
+  serviceProgramDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  serviceProgramList = this.serviceProgramDataSource.asObservable();
+
 
   constructor(private apiService: ApiService) {}
 
@@ -80,6 +83,14 @@ export class ListService {
       .subscribe((result: any) => {
         console.log('in new service');
         this.assetManuDataSource.next(result.Items);
+    });
+  }
+
+  fetchServicePrograms() {
+    this.apiService
+      .getData(`servicePrograms`)
+      .subscribe((result: any) => {
+        this.serviceProgramDataSource.next(result.Items);
     });
   }
 }

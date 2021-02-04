@@ -6,6 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ListService } from '../../../services';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 @Component({
@@ -28,7 +29,8 @@ export class SharedModalsComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
-  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService) { }
+  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
+    ) { }
 stateData = {
   countryID : '',
   stateName: '',
@@ -54,11 +56,38 @@ assetModelData = {
   modelName:''
 }
 test: any = [];
+
+/**
+ * service program props
+ */
+pageTitle: string;
+vehicleModal: boolean = false;
+vehicles: any;
+tasks = [];
+private programID;
+serviceData = {
+  serviceScheduleDetails: [{
+    serviceTask: '',
+    repeatByTime: '',
+    repeatByTimeUnit: '',
+    repeatByOdometer: '',
+  }]
+};
+
+taskData = {
+  taskType: 'service',
+};
+
+
+
+
   ngOnInit() {
     this.fetchCountries();
     this.fetchManufacturers();
     this.fetchAssetManufacturers();
     this.newManufacturers();
+    this.fetchVehicles();
+    this.fetchTasks();
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
       this.form = $('#cityForm').validate();
@@ -66,6 +95,7 @@ test: any = [];
       this.form = $('#vehicleModelForm').validate();
       this.form = $('#assetMakeForm').validate();
       this.form = $('#assetModelForm').validate();
+      this.form = $('#serviceProgramForm').validate();
     });    
   }
   /**
@@ -331,4 +361,102 @@ test: any = [];
         }
       });
   }
+
+  addDocument() {
+    this.serviceData.serviceScheduleDetails.push({
+      serviceTask: '',
+      repeatByTime: '',
+      repeatByTimeUnit: '',
+      repeatByOdometer: '',
+    })
+    
+  }
+  addServiceProgram() {
+    
+    this.hideErrors();
+    this.apiService.postData('servicePrograms', this.serviceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+        next: (res) => {
+          this.response = res;
+          this.listService.fetchServicePrograms();
+
+          this.toastr.success('Service added successfully');
+        }
+      });
+  }
+
+  addServiceTask() {
+   
+    this.hideErrors();
+    this.apiService.postData('tasks', this.taskData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+        next: (res) => {
+          
+          this.toastr.success('Service Task added successfully');
+          $('#addServiceTaskModal').modal('hide');
+          this.taskData['taskName'] = '';
+          this.taskData['description'] = '';
+        }
+      });
+  }
+
+  fetchVehicles() {
+    this.apiService.getData('vehicles').subscribe({
+      error: () => {},
+      next: (result: any) => {
+        this.vehicles = result.Items;
+      },
+    });
+  }
+
+  fetchTasks() {
+    this.apiService.getData('tasks').subscribe({
+      error: () => {},
+      next: (result: any) => {
+       // this.tasks = result.Items;
+       result.Items.forEach(element => {
+        if (element.taskType === 'service') {
+          this.tasks.push(element);
+        }
+       });
+      },
+    });
+  }
+
+  removeTasks(i) {
+    this.serviceData.serviceScheduleDetails.splice(i, 1);
+  }
+
 }
