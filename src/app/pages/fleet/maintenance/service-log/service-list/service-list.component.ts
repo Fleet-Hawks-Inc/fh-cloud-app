@@ -47,14 +47,13 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
     ) {}
 
   ngOnInit() {
-    this.fetchLogs();
+    this.fetchLogsCount();
     this.fetchTasks();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.initDataTable();
-    
   }
 
   getSuggestions(value) {
@@ -106,20 +105,16 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
    */
   fetchTasks() {
     this.apiService.getData('tasks').subscribe((result: any) => {
-      console.log('tasks', result);
       this.tasks = result.Items;
     });
   }
 
-  fetchLogs() {
-    this.spinner.show(); // loader init
-    this.apiService.getData('serviceLogs?vehicleID='+this.vehicleID).subscribe({
+  fetchLogsCount() {
+    this.apiService.getData('serviceLogs/get/count?vehicleID='+this.vehicleID).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        // this.logs = result.Items;
         this.totalRecords = result.Count;
-        this.spinner.hide(); // loader hide
       },
     });
   }
@@ -185,7 +180,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
   searchFilter() {
     if (this.vehicleID !== '') {
       this.logs = [];
-      this.fetchLogs();
+      this.fetchLogsCount();
       this.rerender('reset');
     } else {
       return false;
@@ -197,7 +192,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleID = '';
       this.vehicleIdentification = '';
       this.logs = [];
-      this.fetchLogs();
+      this.fetchLogsCount();
       this.rerender();
     } else {
       return false;
@@ -210,7 +205,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`serviceLogs/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.logs = [];
-        this.fetchLogs();
+        this.fetchLogsCount();
         this.rerender();
         this.toastr.success('Service Log Deleted Successfully!');
       });
