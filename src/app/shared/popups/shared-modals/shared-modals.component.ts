@@ -21,6 +21,7 @@ export class SharedModalsComponent implements OnInit {
   cities: any = [];
   manufacturers: any = [];
   assetManufacturers: any = [];
+  assetModels: any = [];
   form:any;
   response: any = '';
   hasError: boolean = false;
@@ -85,6 +86,7 @@ taskData = {
     this.fetchCountries();
     this.fetchManufacturers();
     this.fetchAssetManufacturers();
+    this.fetchAssetModels();
     this.newManufacturers();
     this.fetchVehicles();
     this.fetchTasks();
@@ -125,6 +127,13 @@ taskData = {
       .subscribe((result: any) => {
         this.assetManufacturers = result.Items;
       });
+  }
+
+  fetchAssetModels() {
+    this.apiService.getData('assetModels')
+      .subscribe((result: any) => {
+        this.assetModels = result.Items;
+      })
   }
  /*
    * Get all countries from api
@@ -325,6 +334,7 @@ taskData = {
           this.hasSuccess = true;
           $('#addAssetMakeModal').modal('hide');
           this.toastr.success('Asset Make Added Successfully.');
+          this.listService.fetchAssetManufacturers();
         }
       });
   }
@@ -358,6 +368,7 @@ taskData = {
           this.hasSuccess = true;
           $('#addAssetModelModal').modal('hide');
           this.toastr.success('Asset Model Added Successfully.');
+          this.listService.fetchAssetModels();
         }
       });
   }
@@ -395,6 +406,7 @@ taskData = {
         next: (res) => {
           this.response = res;
           this.listService.fetchServicePrograms();
+          $('#addVehicleProgramModal').modal('hide');
 
           this.toastr.success('Service added successfully');
         }

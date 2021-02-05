@@ -346,10 +346,12 @@ removeProfile() {
           let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
           ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
           let result = await this.HereMap.geoCode(fullAddress);
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+          if(result.items.length > 0){
+            result = result.items[0];
+            element.geoCords.lat = result.position.lat;
+            element.geoCords.lng = result.position.lng;
+            }
+          }
       }
       const data = {      
         firstName: this.firstName,
@@ -366,7 +368,6 @@ removeProfile() {
         password : this.userPassword, 
         addressDetails: this.addressDetails
     }; 
-    console.log(data);
         // create form data instance
         const formData = new FormData();
   
@@ -499,10 +500,7 @@ removeProfile() {
 
       }
 
-      this.addressDetails = this.newAddress;
-      if(result.userImage != '' && result.userImage != undefined) {
-        this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
-      }
+      this.addressDetails = this.newAddress;    
     });
   }
   /**
