@@ -258,7 +258,7 @@
                                      <div class="col-lg-10">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Service Program&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <ng-select class="form-control populate" name="serviceProgramID" [(ngModel)]="serviceProgramID" placeholder="Select service program for vehicle">                                    
-                                              <ng-option *ngFor="let serviceProgram of servicePrograms" value="{{serviceProgram.programID}}">{{serviceProgram.programName}}</ng-option>
+                                              <ng-option *ngFor="let serviceProgram of servicePrograms | async" value="{{serviceProgram.programID}}">{{serviceProgram.programName}}</ng-option>
                                     
                                         </ng-select>
                                      </div>
@@ -428,7 +428,7 @@
                                           placeholder="eg. 45000 CAD">
                                     </div> -->
                                      <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document<span class="mandfield text-1 ml-1"></span></label>
                                         <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
                                      </div>
                                   </div>
@@ -973,14 +973,14 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
-                                          Issue<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          Issue<span class="mandfield text-1 ml-1"></span>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="date" class="form-control" name="insurance.dateOfIssue"
                                           [(ngModel)]="insurance.dateOfIssue">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Premium
-                                          Amount<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          Amount<span class="mandfield text-1 ml-1"></span>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
@@ -1004,7 +1004,7 @@
                                <div class="col-lg-5 offset-lg-1">
                                   <div class="row">
                                      <div class="col-lg-10">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vendor<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Vendor<span class="mandfield text-1 ml-1"></span>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>                                      
                                         <ng-select  placeholder="Select Vendor" name="insurance.vendorID" [(ngModel)]="insurance.vendorID">
                                
@@ -1025,14 +1025,14 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Date of
-                                          Expiry<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          Expiry<span class="mandfield text-1 ml-1"></span>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="date" class="form-control" name="insurance.dateOfExpiry"
                                           [(ngModel)]="insurance.dateOfExpiry">
                                     </div>
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Reminder
-                                          Every<span class="mandfield text-1 ml-1"><sup>*</sup></span>&nbsp;
+                                          Every<span class="mandfield text-1 ml-1"></span>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
@@ -1403,7 +1403,7 @@
                                <div class="row">
                                   <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Engine
-                                        Summary<span class="mandfield text-1 ml-1"><sup>*</sup></span>
+                                        Summary<span class="mandfield text-1 ml-1"></span>
 
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Basic engine summary"></i> &nbsp; <span
@@ -2167,7 +2167,7 @@
   </div>
 </div> -->
 
-<div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal" aria-hidden="true">
+<!-- <div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal" aria-hidden="true">
    <div class="modal-dialog" style="max-width: 1024px" role="document">
         <div class="modal-content">
         <div class="modal-header">
@@ -2181,5 +2181,5 @@
         </div>
      </div>
   </div>
-</div>
+</div> -->
 

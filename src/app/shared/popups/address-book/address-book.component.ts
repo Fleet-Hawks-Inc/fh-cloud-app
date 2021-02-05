@@ -87,7 +87,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
   };
@@ -110,7 +111,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
   };
@@ -133,7 +135,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
   };
@@ -155,7 +158,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }], 
   };
 
@@ -177,7 +181,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
       
@@ -200,7 +205,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
   };
@@ -222,7 +228,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     additionalContact: {}
   };
@@ -244,7 +251,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     fcDetails: {}
   };
@@ -267,7 +275,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       geoCords: { 
         lat: '', 
         lng: '' 
-      }
+      },
+      userLocation: ''
     }],
     userAccount: {},
   };
@@ -351,6 +360,17 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   suggestedCompany = [];
   suggestedDriver = [];
 
+  //delete address arr's
+  deleteCustomerAddr = [];
+  deleteBrokerAddr = [];
+  deleteVendorAddr = [];
+  deleteCarrierAddr = [];
+  deleteOperatorAddr = [];
+  deleteShipperAddr = [];
+  deleteConsigneeAddr = [];
+  deleteStaffAddr = [];
+  deleteCompanyAddr = [];
+
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
@@ -415,9 +435,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.userDetailData = data; 
   }
 
-  remove(data, i) {
-    data.address.splice(i, 1);
-  }
+  // remove(data, i) {
+  //   data.address.splice(i, 1);
+  // }
 
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
@@ -479,6 +499,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   addAddress(data) {
+    this.searchResults = [];
     data.address.push({
       addressType: '',
       countryID: '',
@@ -588,7 +609,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     delete arr['userType'];
     delete arr['userTypeTitle'];
     arr.address.forEach(element => {
-      delete element['addressID'];
       delete element['email'];
       delete element['entityID'];
       delete element['entityType'];
@@ -651,17 +671,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           });
       },
       next: (res) => {
-        if(res.Items[0] != undefined) {
-          this.response = res.Items[0];
-          if(this.response.profileImg != '' && this.response.profileImg != undefined) {
-            this.imageText = "Update Picture";
-            this.profilePath = `${this.Asseturl}/${this.response.carrierID}/${this.response.profileImg}`;
-          }
-          this.customerData['userType'] = 'Customer';
-          this.customerData['userTypeTitle'] = 'CU';
+        this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteCustomerAddr.length; i++) {
+          const element = this.deleteCustomerAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
         }
 
-        this.hasSuccess = true;
         $('#addCustomerModal').modal('hide');
         this.showMainModal();
         this.customers = [];
@@ -863,6 +880,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res.Items[0];
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteOperatorAddr.length; i++) {
+          const element = this.deleteOperatorAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addOwnerOperatorModal').modal('hide');
         this.showMainModal();
         this.ownerOperatorss = [];
@@ -928,6 +952,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteBrokerAddr.length; i++) {
+          const element = this.deleteBrokerAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addBrokerModal').modal('hide');
         this.showMainModal();
         this.brokers = [];
@@ -1065,6 +1096,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        
+        //delete address
+        for (let i = 0; i < this.deleteVendorAddr.length; i++) {
+          const element = this.deleteVendorAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addVendorModal').modal('hide');
         this.showMainModal();
         this.vendors = [];
@@ -1200,6 +1238,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteCarrierAddr.length; i++) {
+          const element = this.deleteCarrierAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addCarrierModal').modal('hide');
         this.showMainModal();
         this.carriers = [];
@@ -1333,6 +1378,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteShipperAddr.length; i++) {
+          const element = this.deleteShipperAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addShipperModal').modal('hide');
         this.shippers = [];
         this.showMainModal();
@@ -1467,6 +1519,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteConsigneeAddr.length; i++) {
+          const element = this.deleteConsigneeAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addConsigneeModal').modal('hide');
         this.receivers = [];
         this.showMainModal();
@@ -1599,6 +1658,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteCompanyAddr.length; i++) {
+          const element = this.deleteCompanyAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addFCModal').modal('hide');
         this.showMainModal();
         this.fcCompanies = [];
@@ -1732,6 +1798,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+
+        //delete address
+        for (let i = 0; i < this.deleteStaffAddr.length; i++) {
+          const element = this.deleteStaffAddr[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+        }
+
         $('#addStaffModal').modal('hide');
         this.staffs = [];
         this.showMainModal();
@@ -1964,6 +2037,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.newAddress = [];
     for (let i = 0; i < entityAddresses.length; i++) {
       this.newAddress.push({
+        addressID: entityAddresses[i].addressID,
         addressType: entityAddresses[i].addressType,
         countryID: entityAddresses[i].countryID,
         countryName: entityAddresses[i].countryName,
@@ -2216,6 +2290,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     this.custCurrentTab = 1;
     this.clearModalData()
+
+    this.searchResults = [];
+    
   }
 
   setActiveDiv(type){
@@ -2229,7 +2306,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
   clearModalData() {
     this.hideErrors();
-
+    this.searchResults = [];
     this.profilePath = this.defaultProfilePath;
     this.imageText = 'Add Picture';
     this.custCurrentTab = 1;
@@ -2251,7 +2328,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2274,7 +2352,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2297,7 +2376,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2319,7 +2399,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
     };
 
@@ -2341,7 +2422,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2363,7 +2445,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2385,7 +2468,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       additionalContact: {}
     };
@@ -2407,7 +2491,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       fcDetails: {}
     };
@@ -2430,7 +2515,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         geoCords: {
           lat: '',
           lng: ''
-        }
+        },
+        userLocation: ''
       }],
       userAccount: {},
     };
@@ -2447,8 +2533,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.apiService.getData('countries/get/list')
       .subscribe((result: any) => {
         this.countriesObject = result;
-        console.log('this.countriesObject')
-        console.log(this.countriesObject)
       });
   }
 
@@ -3334,6 +3418,175 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       } else {
         return false
       }
+    }
+  }
+
+  removeAddress(index, addressID = null, type='') {
+    if(type == 'vendor') {
+      if (addressID != null) {
+        this.deleteVendorAddr.push(addressID);
+      }
+      this.vendorData.address.splice(index, 1);
+
+    } else if(type == 'customer') {
+      if (addressID != null) {
+        this.deleteCustomerAddr.push(addressID);
+      }
+      this.customerData.address.splice(index, 1);
+
+    } else if(type == 'broker') {
+      if (addressID != null) {
+        this.deleteBrokerAddr.push(addressID);
+      }
+      this.brokerData.address.splice(index, 1);
+
+    } else if(type == 'carrier') {
+      if (addressID != null) {
+        this.deleteCarrierAddr.push(addressID);
+      }
+      this.carrierData.address.splice(index, 1);
+      
+    } else if(type == 'operator') {
+      if (addressID != null) {
+        this.deleteOperatorAddr.push(addressID);
+      }
+      this.ownerData.address.splice(index, 1);
+      
+    } else if(type == 'shipper') {
+      if (addressID != null) {
+        this.deleteShipperAddr.push(addressID);
+      }
+      this.shipperData.address.splice(index, 1);
+      
+    } else if(type == 'consignee') {
+      if (addressID != null) {
+        this.deleteConsigneeAddr.push(addressID);
+      }
+      this.consigneeData.address.splice(index, 1);
+      
+    } else if(type == 'staff') {
+      if (addressID != null) {
+        this.deleteStaffAddr.push(addressID);
+      }
+      this.staffData.address.splice(index, 1);
+      
+    } else if(type == 'company') {
+      if (addressID != null) {
+        this.deleteCompanyAddr.push(addressID);
+      }
+      this.fcCompanyData.address.splice(index, 1);
+    }
+  }
+
+  clearAddress(index, type='') {
+    if(type == 'vendor') {
+      this.vendorData.address[index].address1 = '';
+      this.vendorData.address[index].address2 = '';
+      this.vendorData.address[index].cityID = '';
+      this.vendorData.address[index].cityName = '';
+      this.vendorData.address[index].countryID = '';
+      this.vendorData.address[index].countryName = '';
+      this.vendorData.address[index].stateID = '';
+      this.vendorData.address[index].stateName = '';
+      this.vendorData.address[index].userLocation = '';
+      this.vendorData.address[index].zipCode = '';
+
+    } else if(type == 'customer') {
+      this.customerData.address[index].addressType = '';
+      this.customerData.address[index].address1 = '';
+      this.customerData.address[index].address2 = '';
+      this.customerData.address[index].cityID = '';
+      this.customerData.address[index].cityName = '';
+      this.customerData.address[index].countryID = '';
+      this.customerData.address[index].countryName = '';
+      this.customerData.address[index].stateID = '';
+      this.customerData.address[index].stateName = '';
+      this.customerData.address[index].userLocation = '';
+      this.customerData.address[index].zipCode = '';
+
+    } else if(type == 'broker') {
+      this.brokerData.address[index].address1 = '';
+      this.brokerData.address[index].address2 = '';
+      this.brokerData.address[index].cityID = '';
+      this.brokerData.address[index].cityName = '';
+      this.brokerData.address[index].countryID = '';
+      this.brokerData.address[index].countryName = '';
+      this.brokerData.address[index].stateID = '';
+      this.brokerData.address[index].stateName = '';
+      this.brokerData.address[index].userLocation = '';
+      this.brokerData.address[index].zipCode = '';
+
+    } else if(type == 'carrier') {
+      this.carrierData.address[index].address1 = '';
+      this.carrierData.address[index].address2 = '';
+      this.carrierData.address[index].cityID = '';
+      this.carrierData.address[index].cityName = '';
+      this.carrierData.address[index].countryID = '';
+      this.carrierData.address[index].countryName = '';
+      this.carrierData.address[index].stateID = '';
+      this.carrierData.address[index].stateName = '';
+      this.carrierData.address[index].userLocation = '';
+      this.carrierData.address[index].zipCode = '';
+      
+    } else if(type == 'operator') {
+      this.ownerData.address[index].address1 = '';
+      this.ownerData.address[index].address2 = '';
+      this.ownerData.address[index].cityID = '';
+      this.ownerData.address[index].cityName = '';
+      this.ownerData.address[index].countryID = '';
+      this.ownerData.address[index].countryName = '';
+      this.ownerData.address[index].stateID = '';
+      this.ownerData.address[index].stateName = '';
+      this.ownerData.address[index].userLocation = '';
+      this.ownerData.address[index].zipCode = '';
+      
+    } else if(type == 'shipper') {
+      this.shipperData.address[index].address1 = '';
+      this.shipperData.address[index].address2 = '';
+      this.shipperData.address[index].cityID = '';
+      this.shipperData.address[index].cityName = '';
+      this.shipperData.address[index].countryID = '';
+      this.shipperData.address[index].countryName = '';
+      this.shipperData.address[index].stateID = '';
+      this.shipperData.address[index].stateName = '';
+      this.shipperData.address[index].userLocation = '';
+      this.shipperData.address[index].zipCode = '';
+      
+    } else if(type == 'consignee') {
+      this.consigneeData.address[index].address1 = '';
+      this.consigneeData.address[index].address2 = '';
+      this.consigneeData.address[index].cityID = '';
+      this.consigneeData.address[index].cityName = '';
+      this.consigneeData.address[index].countryID = '';
+      this.consigneeData.address[index].countryName = '';
+      this.consigneeData.address[index].stateID = '';
+      this.consigneeData.address[index].stateName = '';
+      this.consigneeData.address[index].userLocation = '';
+      this.consigneeData.address[index].zipCode = '';
+      
+    } else if(type == 'staff') {
+      this.staffData.address[index].address1 = '';
+      this.staffData.address[index].address2 = '';
+      this.staffData.address[index].cityID = '';
+      this.staffData.address[index].cityName = '';
+      this.staffData.address[index].countryID = '';
+      this.staffData.address[index].countryName = '';
+      this.staffData.address[index].stateID = '';
+      this.staffData.address[index].stateName = '';
+      this.staffData.address[index].userLocation = '';
+      this.staffData.address[index].zipCode = '';
+      
+    } else if(type == 'company') {
+      this.fcCompanyData.address[index].address1 = '';
+      this.fcCompanyData.address[index].address2 = '';
+      this.fcCompanyData.address[index].cityID = '';
+      this.fcCompanyData.address[index].cityName = '';
+      this.fcCompanyData.address[index].countryID = '';
+      this.fcCompanyData.address[index].countryName = '';
+      this.fcCompanyData.address[index].stateID = '';
+      this.fcCompanyData.address[index].stateName = '';
+      this.fcCompanyData.address[index].userLocation = '';
+      this.fcCompanyData.address[index].zipCode = '';
     }
   }
 }
