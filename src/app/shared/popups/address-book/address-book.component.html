@@ -843,26 +843,25 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type
-                                            Your Location</label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location</label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
-                                        <div class="map-search__results bg-white">
+                                        <div class="bg-white">
                                             <ul class="p-0 m-0 text-left">
                                               <li *ngFor="let item of searchResults;">
                                                 <a href="javascript:;" (click)="userAddress(vendorData, i, item)">{{item.address.label}}</a>
                                               </li>
                                             </ul>
                                           </div>
-                                        <div class="checkbox-custom pt-2">
+                                        <div class="checkbox-custom mt-2">
                                             <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1">
                                             <label for="w1-terms1">Type Manually</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-1 mar-top-37 text-right">
                                         <a href="javascript:;" class="btn btn-dark">Clear</a>
-                                        <a *ngIf="i == 0;" (click)="addAddress(vendorData);" class="btn btn-success" href="javascript:;"><i
+                                        <a *ngIf="i == 0;" (click)="addAddress(vendorData);" class="btn btn-success mt-2" href="javascript:;"><i
                                                 class="fa fa-plus fa-fw"></i></a>
-                                        <a *ngIf="i != 0;" (click)="remove(vendorData,  i)" class="btn btn-success" href="javascript:;"><i
+                                        <a *ngIf="i != 0;" (click)="remove(vendorData,  i)" class="btn btn-success mt-2" href="javascript:;"><i
                                                 class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                     <div *ngIf="manualAddress1" class="row">

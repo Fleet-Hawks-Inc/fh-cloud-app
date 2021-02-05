@@ -329,7 +329,7 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Photo</label>
-                                   <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple  type="file" class="form-control p-0" >
+                                   <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple  type="file" class="form-control border-0 p-0" >
                                 </div>
                                 <!-- <div class="col-lg-2  mar-top-37">
                                    <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -340,7 +340,7 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Attach Document</label>
-                                   <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocuments" multiple type="file" class="form-control p-0" >
+                                   <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocuments" multiple type="file" class="form-control border-0 p-0" >
                                 </div>
                                 <!-- <div class="col-lg-2  mar-top-37">
                                    <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
@@ -348,11 +348,10 @@
                              </div>
                           </div>
                        </div>
-                       <div class="form-group row">
-                       </div>
+                       
                        <div class="form-group row">
                           <div class="col-lg-11 text-right">
-                             <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default" id="">Cancel</a>
+                             <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2" id="">Cancel</a>
                              <a *ngIf="!logID" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
                              <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
                           </div>

@@ -29,7 +29,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-												Name/Number<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.assetIdentification"
 												name="assetIdentification" class="form-control" placeholder="eg. XYZ,123 etc.">
 										</div>
@@ -61,14 +61,14 @@
 									<div class="row">
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.VIN" name="VIN" placeholder="Enter VIN number of the asset"
 												class="form-control">
 										</div>
 									</div>
 									<div class="row">
 										<div class="col-lg-10">
-											<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+											<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input type="text" [(ngModel)]="assetsData.startDate" name="startDate" placeholder="Enter Start Date of the asset"
 												class="form-control">	 
 										</div>
@@ -86,7 +86,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-												Type<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.assetType"
 												name="assetDetails.assetType" class="form-control populate"
 												id="assetType" placeholder="Select asset type">
@@ -112,7 +112,7 @@
 									<div class="row mt-2">
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.year"
 												name="assetDetails.year"
 												class="form-control populate" placeholder="Select year">
@@ -128,7 +128,7 @@
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Asset
-												Status<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
 												name="assetDetails.currentStatus" placeholder="Select asset status">
 
@@ -139,7 +139,7 @@
 										</div>
 										<div class="col-lg-10">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Make&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 											<ng-select 
 												[(ngModel)]="assetsData.assetDetails.manufacturer"
 												name="assetDetails.manufacturer" class="form-control"
@@ -154,7 +154,7 @@
 										 </div>
 										<div class="col-lg-10 ">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Model&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
 												name="assetDetails.model" class="form-control">
 												<ng-option *ngFor="let val of models" value="{{val.modelID}}">{{val.name}}
@@ -290,7 +290,7 @@
 										<div class="col-lg-5">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												Country<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
 												name="assetDetails.licenceCountryID" (change)="getStates($event)" placeholder="Select country"
 												class="form-control populate">
@@ -303,7 +303,7 @@
 										</div>
 										<div class="col-lg-5">
 											<label
-												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
 												name="assetDetails.licenceStateID" class="form-control populate" placeholder="Select state">
 												<ng-option *ngFor="let state of states" value="{{state.stateID}}">
@@ -317,7 +317,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
-												Plate Number<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="Enter licence plate number of asset"
 												name="assetDetails.licencePlateNumber" class="form-control" type="text">
 										</div>
@@ -369,8 +369,7 @@
 										</div>
 										<div class="col-lg-5">
 											<label class="control-label font-weight-bold text-lg-right pt-2">Premium
-												Amount&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label>
+												Amount&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 											<div class="row">
 												<div class="col-lg-6">
 													<input [(ngModel)]="assetsData.insuranceDetails.premiumAmount"
@@ -488,7 +487,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Photo<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Photo<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input (change)="selectDocuments($event, 'uploadedPhotos')"
 												name="uploadedPhotos" type="file" multiple
 												class="form-control border-0 p-0">
@@ -518,7 +517,7 @@
 										<div class="col-lg-10">
 											<label
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-												Document<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+												Document<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 											<input (change)="selectDocuments($event, 'uploadedDocs')"
 												name="uploadedDocs" type="file" multiple
 												class="form-control border-0 p-0">
