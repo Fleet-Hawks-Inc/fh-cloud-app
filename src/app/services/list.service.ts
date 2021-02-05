@@ -27,7 +27,7 @@ export class ListService {
 
 
   assetModelsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
-  assetModelsList = this.assetManuDataSource.asObservable();
+  assetModelsList = this.assetModelsDataSource.asObservable();
 
   ownerOperatorDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   ownerOperatorList = this.ownerOperatorDataSource.asObservable();
