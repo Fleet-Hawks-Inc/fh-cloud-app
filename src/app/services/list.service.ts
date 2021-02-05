@@ -21,12 +21,20 @@ export class ListService {
   stateDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   stateList = this.stateDataSource.asObservable();
 
+
   assetManuDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetManufacturesList = this.assetManuDataSource.asObservable();
 
+
   assetModelsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetModelsList = this.assetManuDataSource.asObservable();
-  
+
+  ownerOperatorDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  ownerOperatorList = this.ownerOperatorDataSource.asObservable();
+
+  serviceProgramDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  serviceProgramList = this.serviceProgramDataSource.asObservable();
+
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
@@ -64,12 +72,28 @@ export class ListService {
       });
   }
 
+  fetchOwnerOperators() {
+    this.apiService
+      .getData(`ownerOperators`)
+      .subscribe((result: any) => {
+        this.ownerOperatorDataSource.next(result.Items);
+      });
+  }
+  
   fetchAssetManufacturers() {
     this.apiService
       .getData(`assetManufacturers`)
       .subscribe((result: any) => {
         this.assetManuDataSource.next(result.Items);
-      });
+    });
+  }
+
+  fetchServicePrograms() {
+    this.apiService
+      .getData(`servicePrograms`)
+      .subscribe((result: any) => {
+        this.serviceProgramDataSource.next(result.Items);
+    });
   }
   fetchAssetModels() {
     this.apiService

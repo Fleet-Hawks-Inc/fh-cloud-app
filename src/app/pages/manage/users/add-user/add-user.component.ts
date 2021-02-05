@@ -8,6 +8,7 @@ import {Router, ActivatedRoute, RouterStateSnapshot, RouterState} from '@angular
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { NgForm} from '@angular/forms';
+import {NgbCalendar, NgbDateAdapter, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -37,6 +38,7 @@ export class AddUserComponent implements OnInit {
       phone= '';
       email = '';
       currentStatus = '';
+      showIcons: boolean = false;
     addressDetails = [{
       addressType:'',
       countryID: '',
@@ -59,7 +61,16 @@ export class AddUserComponent implements OnInit {
       userType = '';
       groupID = '';
       userName = '';
+      userPassword = '';
+      confirmUserPassword = '';
       timeCreated = '';
+      disableInput: boolean = false; // to disable username nd password fields while editing 
+      /**
+       * variable to show error
+       */
+      errorClass: boolean = false;
+      isSubmitted: boolean = false;
+      deletedAddress = [];
  /**
   * Photo data
   *  */  
@@ -78,13 +89,13 @@ export class AddUserComponent implements OnInit {
   
   if(this.uploadedPhotos.length > 0) {
     this.profileTitle = 'Change';
-  }
-  
+  }  
 }
 removeProfile() {
   this.userProfileSrc = 'assets/img/driver/driver.png';
   this.uploadedPhotos = [];
   this.profileTitle = 'Add';
+  this.showIcons = false;
 }
   /**
  *Group Properties
@@ -102,7 +113,7 @@ removeProfile() {
   statesObject: any = {};
   countriesObject: any = {};
   citiesObject: any = {};
- 
+  newAddress = [];
   form;
   response: any = '';
   hasError = false;
@@ -111,12 +122,15 @@ removeProfile() {
   errors = {};
   Success = '';
   constructor(private location: Location,
-    private HereMap: HereMapService, private apiService: ApiService, private toastr: ToastrService, private router: Router,private route: ActivatedRoute) { }
-
+    private HereMap: HereMapService,private dateAdapter: NgbDateAdapter<string>,private ngbCalendar: NgbCalendar, private apiService: ApiService, private toastr: ToastrService, private router: Router,private route: ActivatedRoute) { }
+    get today() {
+      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+    }
   ngOnInit() {
     this.userID = this.route.snapshot.params['userID'];
     if (this.userID) {
       this.pageTitle = 'Edit User';     
+      this.disableInput = true;
       this.fetchAddress();
       this.fetchUser();
     } else {
@@ -151,6 +165,9 @@ removeProfile() {
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
+  }
+  cancelModel(){
+    $('#addGroupModal').modal('hide');
   }
   fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
@@ -231,10 +248,18 @@ removeProfile() {
       manual: false
     });
   }
-  remove(obj, i) {
+  // remove(obj, i) {
+  //   if (obj === 'address') {
+  //     this.addressDetails.splice(i, 1);
+  //   }
+  // }
+  remove(obj, i, addressID = null) {
     if (obj === 'address') {
+      if (addressID != null) {
+        this.deletedAddress.push(addressID)
+      }
       this.addressDetails.splice(i, 1);
-    }
+    } 
   }
   getCityName(i, id: any) {
     let result = this.citiesObject[id];
@@ -266,29 +291,17 @@ removeProfile() {
     this.addressDetails[i]['userLocation'] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
-    
-    // let countryID = await this.fetchCountriesByName(result.address.countryName, i);
-    // this.addressDetails[i].countryID = countryID;
     this.addressDetails[i].countryName = result.address.countryName;
 
     $('div').removeClass('show-search__result');
-
-    //let stateID = await this.fetchStatesByName(result.address.state, i);
-    // this.addressDetails[i].stateID = stateID;
     this.addressDetails[i].stateName = result.address.state;
-
-    //let cityID = await this.fetchCitiesByName(result.address.city);
-    // this.addressDetails[i].cityID = cityID;
     this.addressDetails[i].cityName = result.address.city;
-
-    // this.addressDetails[i].zipCode = result.address.postalCode;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
     if (result.address.street === undefined) {
       result.address.street = '';
-    }
-    // this.addressDetails[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;    
+    }    
   }
   clearUserLocation(i) {
     this.addressDetails[i]['userLocation'] = '';
@@ -322,90 +335,79 @@ removeProfile() {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  /**
-   * edit time filling of input
-   */
-  // fillCountry() {
-  //   this.apiService
-  //     .getData('states/' + this.addressDetails.stateID)
-  //     .subscribe((result: any) => {
-  //       result = result.Items[0];
-  //       this.addressDetails.countryID = result.countryID;
-  //     });
-
-  //   setTimeout(() => {
-  //     this.getStates();
-  //   }, 2000);
-  //   setTimeout(() => {
-  //     this.getCities();
-  //   }, 2000);
-  // }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    for (let i = 0; i < this.addressDetails.length; i++) {
-      const element = this.addressDetails[i];
-      if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+    if(this.userPassword === this.confirmUserPassword && this.userPassword != ''){
+      for (let i = 0; i < this.addressDetails.length; i++) {
+        const element = this.addressDetails[i];
+        if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+          let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
+          ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+          let result = await this.HereMap.geoCode(fullAddress);
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
+      const data = {      
+        firstName: this.firstName,
+        lastName: this.lastName,
+        employeeID: this.employeeID,
+        dateOfBirth: this.dateOfBirth,
+        phone: this.phone,
+        email: this.email,  
+        currentStatus: this.currentStatus,       
+        departmentName: this.departmentName,
+        userType: this.userType,
+        groupID: this.groupID,
+        userName: this.userName,   
+        password : this.userPassword, 
+        addressDetails: this.addressDetails
+    }; 
+    console.log(data);
+        // create form data instance
+        const formData = new FormData();
+  
+        //append photos if any
+        for(let i = 0; i < this.uploadedPhotos.length; i++){
+          formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+        }
+         //append other fields
+      formData.append('data', JSON.stringify(data));
+     
+      this.apiService.postData('users',formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.toastr.error('Please see the errors');
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.isSubmitted = true;
+          this.toastr.success('User Added Successfully.');
+         // this.location.back();
+        }
+      });
+    }else{     
+      this.errorClass = true;
     }
-    const data = {      
-      firstName: this.firstName,
-      lastName: this.lastName,
-      employeeID: this.employeeID,
-      dateOfBirth: this.dateOfBirth,
-      phone: this.phone,
-      email: this.email,  
-      currentStatus: this.currentStatus,       
-      departmentName: this.departmentName,
-      userType: this.userType,
-      groupID: this.groupID,
-      userName: this.userName,     
-    addressDetails: this.addressDetails
-  };
-    
-      // create form data instance
-      const formData = new FormData();
-
-      //append photos if any
-      for(let i = 0; i < this.uploadedPhotos.length; i++){
-        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-      }
-       //append other fields
-    formData.append('data', JSON.stringify(data));
-   
-    this.apiService.postData('users',formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = true;
-              this.toastr.error('Please see the errors');
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.toastr.success('User Added Successfully.');
-        this.location.back();
-      }
-    })
+  
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -432,19 +434,72 @@ removeProfile() {
   fetchUser(){
     this.apiService.getData('users'+ this.userName).subscribe((result:any) => {
       result = result.Items[0];
-      console.log('result',result);
-      this.firstName = result.firstName,
-      this.lastName = result.lastName,
-      this.employeeID = result.employeeID,
-      this.dateOfBirth = result.dateOfBirth,
-      this.phone = result.phone,
-      this. email = result.email,  
-      this.currentStatus = result.currentStatus,       
-      this.departmentName = result.departmentName,
-      this.userType = result.userType,
-      this.groupID = result.groupID,
-      this.userName = result.userName,
-      this.timeCreated = result.timeCreated
+      this.firstName = result.firstName;
+      this.lastName = result.lastName;
+      this.employeeID = result.employeeID;
+      this.dateOfBirth = result.dateOfBirth;
+      this.phone = result.phone;
+      this. email = result.email;  
+      this.currentStatus = result.currentStatus;       
+      this.departmentName = result.departmentName;
+      this.userType = result.userType;
+      this.groupID = result.groupID;
+      this.userName = result.userName;
+      this.timeCreated = result.timeCreated;   
+      if(result.userImage != '' && result.userImage != undefined) {
+        this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
+        this.showIcons = true;
+        this.profileTitle = 'Change';
+      } else {
+        this.userProfileSrc = 'assets/img/driver/driver.png';
+        this.showIcons = false;
+      }       
+      for (let i = 0; i < result.addressDetails.length; i++) {
+         this.getStates(result.addressDetails[i].countryID);
+         this.getCities(result.addressDetails[i].stateID);
+        if (result.addressDetails[i].manual) {
+          this.newAddress.push({
+            addressID: result.addressDetails[i].addressID,
+            addressType: result.addressDetails[i].addressType,
+            countryID: result.addressDetails[i].countryID,
+            countryName: result.addressDetails[i].countryName,
+            stateID: result.addressDetails[i].stateID,
+            stateName: result.addressDetails[i].stateName,
+            cityID: result.addressDetails[i].cityID,
+            cityName: result.addressDetails[i].cityName,
+            zipCode: result.addressDetails[i].zipCode,
+            address1: result.addressDetails[i].address1,
+            address2: result.addressDetails[i].address2,
+            geoCords: {
+              lat: result.addressDetails[i].geoCords.lat,
+              lng: result.addressDetails[i].geoCords.lng
+            },
+            manual: result.addressDetails[i].manual
+          })
+        } else {
+          this.newAddress.push({
+            addressID: result.addressDetails[i].addressID,
+            addressType: result.addressDetails[i].addressType,
+            countryID: result.addressDetails[i].countryID,
+            countryName: result.addressDetails[i].countryName,
+            stateID: result.addressDetails[i].stateID,
+            stateName: result.addressDetails[i].stateName,
+            cityID: result.addressDetails[i].cityID,
+            cityName: result.addressDetails[i].cityName,
+            zipCode: result.addressDetails[i].zipCode,
+            address1: result.addressDetails[i].address1,
+            address2: result.addressDetails[i].address2,
+            geoCords: {
+              lat: result.addressDetails[i].geoCords.lat,
+              lng: result.addressDetails[i].geoCords.lng
+            },
+            userLocation: result.addressDetails[i].userLocation
+          })
+        }
+
+      }
+
+      this.addressDetails = this.newAddress;
       if(result.userImage != '' && result.userImage != undefined) {
         this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
       }
@@ -463,9 +518,11 @@ removeProfile() {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
+        if(result.items.length > 0){
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
+        }
       }
     }
     const data = {      
@@ -481,9 +538,8 @@ removeProfile() {
       groupID: this.groupID,
       userName: this.userName,   
       timeCreated : this.timeCreated,  
-    addressDetails: this.addressDetails
+      addressDetails: this.addressDetails
   };
-    
       // create form data instance
       const formData = new FormData();
 
@@ -516,6 +572,13 @@ removeProfile() {
       },
       next: (res) => {
         this.response = res;
+        this.hasSuccess = true;
+        this.isSubmitted = true;
+        for (let i = 0; i < this.deletedAddress.length; i++) {
+          const element = this.deletedAddress[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+          
+        }
         this.toastr.success('User Updated Successfully.');
         this.location.back();
       }

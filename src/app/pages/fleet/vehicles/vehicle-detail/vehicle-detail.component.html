@@ -275,7 +275,7 @@
                               {{ vehicleModelList[modelID] }}
                             </div>
                           </div>
-                          <div class="row m-0">
+                          <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
@@ -284,8 +284,8 @@
                             <div class="col-lg-8 p-2 border-box">
                               {{ aceID }}
                             </div>
-                          </div>
-                          <div class="row m-0">
+                          </div> -->
+                          <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
@@ -294,7 +294,7 @@
                             <div class="col-lg-8 p-2 border-box">
                               {{ aciID }}
                             </div>
-                          </div>
+                          </div> -->
                           <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -325,7 +325,7 @@
                               {{ ownership }}
                             </div>
                           </div>
-                          <div class="row m-0">
+                          <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
@@ -334,8 +334,8 @@
                             <div class="col-lg-8 p-2 border-box">
                               {{ bodyType }}
                             </div>
-                          </div>
-                          <div class="row m-0">
+                          </div> -->
+                          <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
@@ -344,8 +344,8 @@
                             <div class="col-lg-8 p-2 border-box">
                               {{ bodySubType }}
                             </div>
-                          </div>
-                          <div class="row m-0">
+                          </div> -->
+                          <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
@@ -354,7 +354,7 @@
                             <div class="col-lg-8 p-2 border-box">
                               {{ msrp }}
                             </div>
-                          </div>
+                          </div> -->
                         </div>
 
                         <div id="linked-vehicle-details" class="mt-4">
@@ -609,56 +609,21 @@
                           </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <tbody>
-                              <tr *ngFor="let document of documents">
+                              <tr *ngFor="let document of docs; let i = index">
                                 <td width="85%">
-                                  Document Name.pdf
-                                  <span class="font-size-12"
+                                  Document {{i + 1}}
+                                  <!-- <span class="font-size-12"
                                     ><br /><span
                                       class="text-info font-weight-bold"
                                       >Vehicle</span
                                     >
                                     34.6KB - Jun 5,2019</span
-                                  >
+                                  > -->
                                 </td>
                                 <td width="15%">
-                                  <button class="btn btn-deafault btn-xs">
+                                  <a class="btn btn-deafault btn-xs" href="{{document}}" target="_blank">
                                     <i class="fas fa-eye"></i>
-                                  </button>
-                                  <button class="btn btn-deafault btn-xs">
-                                    <i class="fas fa-download"></i>
-                                  </button>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >View Vehicle</a
-                                      >
-                                    </div>
-                                  </div>
+                                  </a>
                                 </td>
                               </tr>
                             </tbody>
@@ -1228,10 +1193,10 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            In-Service Date:
+                            StartDate Date:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ lifeCycle.inServiceDate }}
+                            {{ lifeCycle.startDate }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -1242,6 +1207,16 @@
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ lifeCycle.inServiceOdometer }}
+                          </div>
+                        </div>
+                        <div class="row m-0">
+                          <div
+                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
+                            Estimated Service Life in Years:
+                          </div>
+                          <div class="col-lg-8 p-2 border-box">
+                            {{ lifeCycle.estimatedServiceYear }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -1268,7 +1243,7 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            Estimated Resale Value:
+                            Depreciation  Value:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ lifeCycle.estimatedResaleValue }}
@@ -1315,7 +1290,7 @@
                           </div>
                           <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
                             Length:
@@ -1324,8 +1299,8 @@
                             {{ specifications.length }}
                             {{ specifications.lengthUnit }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1334,7 +1309,7 @@
 
                           <div class="col-lg-7 p-2 border-box">{{ specifications.width }}
                             {{ specifications.widthUnit }}</div>
-                        </div>
+                        </div> -->
                         
                         <div class="row m-0">
                           <div
@@ -1347,7 +1322,7 @@
                             {{ specifications.heightUnit }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1356,8 +1331,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.interiorVolume }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1366,8 +1341,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.passangerVolume }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1376,7 +1351,7 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.cargoVolume }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -1388,7 +1363,7 @@
                             {{ specifications.groundClearnceUnit }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1398,7 +1373,7 @@
                             {{ specifications.bedLength }}
                             {{ specifications.bedLengthUnit }}
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                       <!-- WEIGHT DIV -->
                       <div class="col-lg-6">
@@ -1412,12 +1387,22 @@
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
+                          Tare  Weight:
+                          </div>
+                          <div class="col-lg-7 p-2 border-box">
+                            {{ specifications.tareWeight }}
+                          </div>
+                        </div>
+                        <!-- <div class="row m-0">
+                          <div
+                            class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
                             Curb Weight:
                           </div>
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.curbWeight }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -1428,13 +1413,12 @@
                             {{ specifications.grossVehicleWeightRating }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div class="col-lg-4 p-2 font-weight-bold text-5">
                             Performance
                           </div>
-                          <!-- <div class="col-lg-8 p-2 text-right" ><a href="edit-vehicle.php" class="btn btn-xs btn-default"><i class="fas fa-pencil-alt"></i>Edit</a></div> -->
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1443,8 +1427,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.towingCapacity }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1453,8 +1437,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.maxPayload }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1463,8 +1447,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPACity }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1473,8 +1457,8 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPAHighway }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1483,7 +1467,7 @@
                           <div class="col-lg-7 p-2 border-box">
                             {{ specifications.EPACombined }}
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -1614,7 +1598,7 @@
                             {{ engine.engineBrand }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1623,8 +1607,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.aspiration }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1633,8 +1617,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.blockType }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1643,8 +1627,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.bore }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1653,8 +1637,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.camType }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1663,7 +1647,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.compression }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -1674,7 +1658,7 @@
                             {{ engine.cylinders }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1683,8 +1667,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.displacement }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1693,8 +1677,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.fuelIndication }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1703,8 +1687,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.maxHP }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1713,8 +1697,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.maxTorque }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1723,7 +1707,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.readlineRPM }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -1763,7 +1747,7 @@
                             {{ engine.transmissionSummary }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1772,7 +1756,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ engine.transmissonBrand }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -1837,13 +1821,23 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
+                          Number of Tires:
+                          </div>
+                          <div class="col-lg-8 p-2 border-box">
+                            {{ wheelsAndTyres.numberOfTyres }}
+                          </div>
+                        </div>
+                        <!-- <div class="row m-0">
+                          <div
+                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
                             Front Track Width:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.frontTrackWidth }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1852,8 +1846,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearTrackWidth }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1862,8 +1856,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.wheelbase }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1872,8 +1866,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.frontWheelDiameter }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1882,8 +1876,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearWheelDiameter }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1892,8 +1886,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearAxle }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1902,8 +1896,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.frontTyreType }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1912,8 +1906,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearTyrePSI }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1922,8 +1916,8 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearTyreType }}
                           </div>
-                        </div>
-                        <div class="row m-0">
+                        </div> -->
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -1932,7 +1926,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ wheelsAndTyres.rearTyrePSI }}
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
