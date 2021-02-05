@@ -13,3 +13,13 @@
 .show-search__result .map-search__results {
     display: block !important;
 }
+/* for bank address*/
+.map-search__resultsBank {
+    display: none;
+}
+.map-search__resultsBank ul{
+    list-style: none;
+}
+.show-search__resultBank .map-search__resultsBank {
+    display: block !important;
+}
