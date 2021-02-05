@@ -214,7 +214,7 @@ vehicles= [];
   };
 
   ownerOperators: any = []
-  servicePrograms = [];
+  servicePrograms: any = [];
   inspectionForms = [];
   manufacturers: any = [];
   models: any = [];
@@ -263,7 +263,7 @@ vehicles= [];
   ngOnInit() {
     // console.log(this.vehicleSession);
     // this.vehicleIdentification = this.vehicleSession.vehicleIdentification;
-    this.fetchServicePrograms();
+  //  this.fetchServicePrograms();
     this.fetchInspectionForms();
     //this.fetchVendors();
     this.fetchGroups();
@@ -275,6 +275,7 @@ vehicles= [];
     this.listService.fetchModels();
     this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
+    this.listService.fetchServicePrograms();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -458,6 +459,7 @@ vehicles= [];
    this.models = this.listService.modelList;
    this.states = this.listService.stateList;
    this.ownerOperators = this.listService.ownerOperatorList;
+   this.servicePrograms = this.listService.serviceProgramList;
   }
 
 
