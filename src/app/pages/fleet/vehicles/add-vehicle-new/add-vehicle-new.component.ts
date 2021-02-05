@@ -189,9 +189,11 @@ vehicles= [];
   loan = {
     loanVendorID: '',
     amountOfLoan: '',
+    amountOfLoanCurrency: '',
     aspiration: '',
     annualPercentageRate: '',
     downPayment: '',
+    downPaymentCurrency: '',
     dateOfLoan: '',
     monthlyPayment: '',
     monthlyPaymentCurrency: '',
@@ -212,7 +214,7 @@ vehicles= [];
   };
 
   ownerOperators: any = []
-  servicePrograms = [];
+  servicePrograms: any = [];
   inspectionForms = [];
   manufacturers: any = [];
   models: any = [];
@@ -261,7 +263,7 @@ vehicles= [];
   ngOnInit() {
     // console.log(this.vehicleSession);
     // this.vehicleIdentification = this.vehicleSession.vehicleIdentification;
-    this.fetchServicePrograms();
+  //  this.fetchServicePrograms();
     this.fetchInspectionForms();
     //this.fetchVendors();
     this.fetchGroups();
@@ -273,6 +275,7 @@ vehicles= [];
     this.listService.fetchModels();
     this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
+    this.listService.fetchServicePrograms();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -418,9 +421,11 @@ vehicles= [];
       this.loan = {
         loanVendorID: this.vehicleSession.loan.loanVendorID,
         amountOfLoan: this.vehicleSession.loan.amountOfLoan,
+        amountOfLoanCurrency: this.vehicleSession.loan.amountOfLoanCurrency,
         aspiration: this.vehicleSession.loan.aspiration,
         annualPercentageRate: this.vehicleSession.loan.annualPercentageRate,
         downPayment: this.vehicleSession.loan.downPayment,
+        downPaymentCurrency: this.vehicleSession.loan.downPaymentCurrency,
         dateOfLoan: this.vehicleSession.loan.dateOfLoan,
         monthlyPayment: this.vehicleSession.loan.monthlyPayment,
         monthlyPaymentCurrency: this.vehicleSession.loan.monthlyPaymentCurrency,
@@ -454,6 +459,7 @@ vehicles= [];
    this.models = this.listService.modelList;
    this.states = this.listService.stateList;
    this.ownerOperators = this.listService.ownerOperatorList;
+   this.servicePrograms = this.listService.serviceProgramList;
   }
 
 
@@ -636,9 +642,11 @@ vehicles= [];
       loan: {
         loanVendorID: this.loan.loanVendorID,
         amountOfLoan: this.loan.amountOfLoan,
+        amountOfLoanCurrency: this.loan.amountOfLoanCurrency,
         aspiration: this.loan.aspiration,
         annualPercentageRate: this.loan.annualPercentageRate,
         downPayment: this.loan.downPayment,
+        downPaymentCurrency: this.loan.downPaymentCurrency,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
         monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,
@@ -722,7 +730,7 @@ vehicles= [];
             annualSafetyReminder: false,
             currentStatus: '',
             ownership: '',
-            ownerOperatorID: '',
+            ownerOperator: '',
             groupID: '',
             aceID: '',
             aciID: '',
@@ -745,7 +753,7 @@ vehicles= [];
             },
             specifications: {
               height: '',
-              heightUnit: '',
+              heightUnit: 'Centimeters',
               length: '',
               lengthUnit: '',
               width: '',
@@ -753,7 +761,7 @@ vehicles= [];
               interiorVolume: '',
               passangerVolume: '',
               groundClearnce: '',
-              groundClearnceUnit: '',
+              groundClearnceUnit: 'Centimeters',
               bedLength: '',
               bedLengthUnit: '',
               cargoVolume: '',
@@ -768,26 +776,26 @@ vehicles= [];
             insurance: {
               dateOfIssue: '',
               premiumAmount: '',
-              premiumCurrency: '',
+              premiumCurrency: 'CAD',
               vendorID: '',
               dateOfExpiry: '',
               reminder: '',
               remiderEvery: '',
               policyNumber: '',
               amount: 0,
-              amountCurrency: ''
+              amountCurrency: 'CAD'
             },
             fluid: {
               fuelType: '',
               fuelTankOneCapacity: '',
-              fuelTankOneType: '',
+              fuelTankOneType: 'Liters',
               fuelQuality: '',
               fuelTankTwoCapacity: '',
-              fuelTankTwoType: '',
+              fuelTankTwoType: 'Liters',
               oilCapacity: '',
-              oilCapacityType: '',
+              oilCapacityType: 'Liters',
               def: '',
-              defType: ''
+              defType: 'Liters'
             },
             wheelsAndTyres: {
               numberOfTyres: '',
@@ -830,7 +838,7 @@ vehicles= [];
               purchaseVendorID: '',
               warrantyExpirationDate: '',
               purchasePrice: '',
-              purchasePriceCurrency: '',
+              purchasePriceCurrency: 'CAD',
               warrantyExpirationMeter: '',
               purchaseDate: '',
               purchaseComments: '',
@@ -839,12 +847,14 @@ vehicles= [];
             loan: {
               loanVendorID: '',
               amountOfLoan: '',
+              amountOfLoanCurrency: 'CAD',
               aspiration: '',
               annualPercentageRate: '',
               downPayment: '',
+              downPaymentCurrency: 'CAD',
               dateOfLoan: '',
               monthlyPayment: '',
-              monthlyPaymentCurrency: '',
+              monthlyPaymentCurrency: 'CAD',
               firstPaymentDate: '',
               numberOfPayments: '',
               loadEndDate: '',
@@ -1062,9 +1072,11 @@ vehicles= [];
         this.loan = {
           loanVendorID: result.loan.loanVendorID,
           amountOfLoan: result.loan.amountOfLoan,
+          amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
           aspiration: result.loan.aspiration,
           annualPercentageRate: result.loan.annualPercentageRate,
           downPayment: result.loan.downPayment,
+          downPaymentCurrency: result.loan.downPaymentCurrency,
           dateOfLoan: result.loan.dateOfLoan,
           monthlyPayment: result.loan.monthlyPayment,
           monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
@@ -1245,9 +1257,11 @@ vehicles= [];
       loan: {
         loanVendorID: this.loan.loanVendorID,
         amountOfLoan: this.loan.amountOfLoan,
+        amountOfLoanCurrency: this.loan.amountOfLoanCurrency,
         aspiration: this.loan.aspiration,
         annualPercentageRate: this.loan.annualPercentageRate,
         downPayment: this.loan.downPayment,
+        downPaymentCurrency: this.loan.downPaymentCurrency,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
         monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,
@@ -1494,9 +1508,11 @@ vehicles= [];
       loan: {
         loanVendorID: this.loan.loanVendorID,
         amountOfLoan: this.loan.amountOfLoan,
+        amountOfLoanCurrency: this.loan.amountOfLoanCurrency,
         aspiration: this.loan.aspiration,
         annualPercentageRate: this.loan.annualPercentageRate,
         downPayment: this.loan.downPayment,
+        downPaymentCurrency: this.loan.downPaymentCurrency,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
         monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,
@@ -1679,9 +1695,11 @@ vehicles= [];
       loan: {
         loanVendorID: this.loan.loanVendorID,
         amountOfLoan: this.loan.amountOfLoan,
+        amountOfLoanCurrency: this.loan.amountOfLoanCurrency,
         aspiration: this.loan.aspiration,
         annualPercentageRate: this.loan.annualPercentageRate,
         downPayment: this.loan.downPayment,
+        downPaymentCurrency: this.loan.downPaymentCurrency,
         dateOfLoan: this.loan.dateOfLoan,
         monthlyPayment: this.loan.monthlyPayment,
         monthlyPaymentCurrency: this.loan.monthlyPaymentCurrency,

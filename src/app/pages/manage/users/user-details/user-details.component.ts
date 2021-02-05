@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 import { ApiService } from 'src/app/services';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
@@ -43,7 +43,7 @@ export class UserDetailsComponent implements OnInit {
       groupID = '';
       userName = '';
       public userProfileSrc: any = 'assets/img/driver/driver.png';
-  constructor(private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private route: ActivatedRoute, private apiService: ApiService,private router: Router, private toastr: ToastrService,) { }
 
   ngOnInit() {
     this.userID = this.route.snapshot.params['userID'];
@@ -94,8 +94,21 @@ fetchUser(){
     this.userName = result.userName;
     this.addressDetails = result.addressDetails;
     if(result.userImage != '' && result.userImage != undefined) {
-      this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
+       this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
     }
   });
+}
+/**
+ * delete user
+ */
+deleteUser(userName) {
+    if (confirm('Are you sure you want to delete?') === true) {
+        this.apiService
+        .getData(`users/isDeleted/${userName}/`+1)
+        .subscribe((result: any) => {
+        this.toastr.success('User Deleted Successfully!');
+        this.router.navigateByUrl('/manage/users/list');
+      });
+    }
 }
 }

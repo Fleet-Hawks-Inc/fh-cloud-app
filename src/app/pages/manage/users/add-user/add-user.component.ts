@@ -8,6 +8,7 @@ import {Router, ActivatedRoute, RouterStateSnapshot, RouterState} from '@angular
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { NgForm} from '@angular/forms';
+import {NgbCalendar, NgbDateAdapter, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -64,6 +65,12 @@ export class AddUserComponent implements OnInit {
       confirmUserPassword = '';
       timeCreated = '';
       disableInput: boolean = false; // to disable username nd password fields while editing 
+      /**
+       * variable to show error
+       */
+      errorClass: boolean = false;
+      isSubmitted: boolean = false;
+      deletedAddress = [];
  /**
   * Photo data
   *  */  
@@ -115,8 +122,10 @@ removeProfile() {
   errors = {};
   Success = '';
   constructor(private location: Location,
-    private HereMap: HereMapService, private apiService: ApiService, private toastr: ToastrService, private router: Router,private route: ActivatedRoute) { }
-
+    private HereMap: HereMapService,private dateAdapter: NgbDateAdapter<string>,private ngbCalendar: NgbCalendar, private apiService: ApiService, private toastr: ToastrService, private router: Router,private route: ActivatedRoute) { }
+    get today() {
+      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+    }
   ngOnInit() {
     this.userID = this.route.snapshot.params['userID'];
     if (this.userID) {
@@ -239,10 +248,18 @@ removeProfile() {
       manual: false
     });
   }
-  remove(obj, i) {
+  // remove(obj, i) {
+  //   if (obj === 'address') {
+  //     this.addressDetails.splice(i, 1);
+  //   }
+  // }
+  remove(obj, i, addressID = null) {
     if (obj === 'address') {
+      if (addressID != null) {
+        this.deletedAddress.push(addressID)
+      }
       this.addressDetails.splice(i, 1);
-    }
+    } 
   }
   getCityName(i, id: any) {
     let result = this.citiesObject[id];
@@ -348,7 +365,8 @@ removeProfile() {
         userName: this.userName,   
         password : this.userPassword, 
         addressDetails: this.addressDetails
-    };    
+    }; 
+    console.log(data);
         // create form data instance
         const formData = new FormData();
   
@@ -381,12 +399,13 @@ removeProfile() {
         },
         next: (res) => {
           this.response = res;
+          this.isSubmitted = true;
           this.toastr.success('User Added Successfully.');
-          this.location.back();
+         // this.location.back();
         }
       });
-    }else{
-      this.toastr.warning('paswords dont match');
+    }else{     
+      this.errorClass = true;
     }
   
   }
@@ -553,6 +572,13 @@ removeProfile() {
       },
       next: (res) => {
         this.response = res;
+        this.hasSuccess = true;
+        this.isSubmitted = true;
+        for (let i = 0; i < this.deletedAddress.length; i++) {
+          const element = this.deletedAddress[i];
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+          
+        }
         this.toastr.success('User Updated Successfully.');
         this.location.back();
       }
