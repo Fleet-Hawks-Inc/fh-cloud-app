@@ -395,6 +395,7 @@ taskData = {
         next: (res) => {
           this.response = res;
           this.listService.fetchServicePrograms();
+          $('#addVehicleProgramModal').modal('hide');
 
           this.toastr.success('Service added successfully');
         }
