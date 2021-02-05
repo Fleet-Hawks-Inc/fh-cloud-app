@@ -1005,9 +1005,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           this.driverData['abstractDocs'] = result.abstractDocs;
           this.absDocs = result.abstractDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
          
-        }
-        
-        
+        }        
         
         this.driverData['gender'] = result.gender;
         this.driverData.DOB = result.DOB;
