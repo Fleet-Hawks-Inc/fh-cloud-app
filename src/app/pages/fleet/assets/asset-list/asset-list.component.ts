@@ -189,8 +189,18 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   deactivateAsset(value, assetID) {
     if (confirm('Are you sure you want to delete?') === true) {
+    //   this.apiService
+    //   .getData(`assets/isDeleted/${assetID}/${value}`)
+    //   .subscribe((result: any) => {
+    //     this.allData = [];
+    //     this.fetchAssets();
+    //     this.rerender();
+    //     this.toastr.success('Asset deleted successfully');
+        
+    //   });
+    // }
       this.apiService
-      .getData(`assets/isDeleted/${assetID}/${value}`)
+      .getData(`assets/reminderEmail/send`)
       .subscribe((result: any) => {
         this.allData = [];
         this.fetchAssets();
@@ -199,6 +209,7 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
         
       });
     }
+    
   }
 
 
