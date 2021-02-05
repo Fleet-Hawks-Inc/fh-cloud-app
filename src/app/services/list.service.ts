@@ -24,6 +24,8 @@ export class ListService {
   assetManuDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetManufacturesList = this.assetManuDataSource.asObservable();
 
+  assetModelsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  assetModelsList = this.assetManuDataSource.asObservable();
   
   constructor(private apiService: ApiService) {}
 
@@ -66,8 +68,14 @@ export class ListService {
     this.apiService
       .getData(`assetManufacturers`)
       .subscribe((result: any) => {
-        console.log('in new service');
         this.assetManuDataSource.next(result.Items);
+      });
+  }
+  fetchAssetModels() {
+    this.apiService
+      .getData(`assetModels`)
+      .subscribe((result: any) => {
+        this.assetModelsDataSource.next(result.Items);
       });
   }
 }

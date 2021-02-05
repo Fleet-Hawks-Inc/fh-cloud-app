@@ -820,7 +820,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             issuedCountry: '',
             issuedState: '',
             licenceExpiry: '',
-            licenceNotification: false,
+            licenceNotification: true,
             WCB: '',
             medicalCardRenewal: '',
             healthCare: '',

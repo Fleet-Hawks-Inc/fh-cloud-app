@@ -271,7 +271,7 @@ export class LoginComponent implements OnInit {
       issuedCountry: '',
       issuedState: '',
       licenceExpiry: '',
-      licenceNotification: false,
+      licenceNotification: true,
       WCB: '',
       medicalCardRenewal: '',
       healthCare: '',

@@ -20,6 +20,7 @@ export class SharedModalsComponent implements OnInit {
   cities: any = [];
   manufacturers: any = [];
   assetManufacturers: any = [];
+  assetModels: any = [];
   form:any;
   response: any = '';
   hasError: boolean = false;
@@ -58,6 +59,7 @@ test: any = [];
     this.fetchCountries();
     this.fetchManufacturers();
     this.fetchAssetManufacturers();
+    this.fetchAssetModels();
     this.newManufacturers();
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
@@ -95,6 +97,13 @@ test: any = [];
       .subscribe((result: any) => {
         this.assetManufacturers = result.Items;
       });
+  }
+
+  fetchAssetModels() {
+    this.apiService.getData('assetModels')
+      .subscribe((result: any) => {
+        this.assetModels = result.Items;
+      })
   }
  /*
    * Get all countries from api
@@ -295,6 +304,7 @@ test: any = [];
           this.hasSuccess = true;
           $('#addAssetMakeModal').modal('hide');
           this.toastr.success('Asset Make Added Successfully.');
+          this.listService.fetchAssetManufacturers();
         }
       });
   }
@@ -328,6 +338,7 @@ test: any = [];
           this.hasSuccess = true;
           $('#addAssetModelModal').modal('hide');
           this.toastr.success('Asset Model Added Successfully.');
+          this.listService.fetchAssetModels();
         }
       });
   }

@@ -46,6 +46,7 @@ export class AddAssetsComponent implements OnInit {
       GAWR: '',
       GAWR_Unit: '',
       ownerShip: '',
+      ownerOperator: '',
       licenceCountryID: '',
       licenceStateID: '',
       licencePlateNumber: '',
@@ -77,7 +78,7 @@ export class AddAssetsComponent implements OnInit {
 
   vendors: any = [];;
   manufacturers: any = [];
-  models = [];
+  models: any = [];
   groups = [];
 
   response: any = '';
@@ -116,6 +117,7 @@ export class AddAssetsComponent implements OnInit {
     // this.fetchManufactuer();
     // this.fetchVendors();
     this.listService.fetchAssetManufacturers();
+    this.listService.fetchAssetModels();
     this.listService.fetchVendors();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
@@ -136,6 +138,8 @@ export class AddAssetsComponent implements OnInit {
 
     this.vendors = this.listService.vendorList;
     this.manufacturers = this.listService.assetManufacturesList;
+    this.models = this.listService.assetModelsList;
+    console.log('this.models', this.models)
   }
 
   getYears() {
@@ -176,14 +180,20 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Get all models from api
    */
-  getModels(id) {
+  // getModels(id) {
 
-    this.apiService
-      .getData(`vehicleModels/manufacturer/${id}`)
-      .subscribe((result: any) => {
-        this.models = result.Items;
-        this.spinner.hide(); // loader hide
-      });
+  //   this.apiService
+  //     .getData(`assetModels/${id}`)
+  //     .subscribe((result: any) => {
+  //       this.models = result.Items;
+  //       console.log("models", this.models)
+  //       this.spinner.hide(); // loader hide
+  //     });
+  // }
+
+  resetModel(){
+    this.assetsData.assetDetails.model = '';
+    $('#assetSelect').val('');
   }
 
   /*
@@ -198,6 +208,7 @@ export class AddAssetsComponent implements OnInit {
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
+      startDate: this.assetsData.startDate,
       assetDetails:{
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
@@ -211,10 +222,13 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        ownerOperator: this.assetsData.assetDetails.ownerOperator,
         currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
+        annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
+        annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
         remarks: this.assetsData.assetDetails.remarks
       },
       insuranceDetails: {
@@ -233,7 +247,7 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-
+    
     // create form data instance
     const formData = new FormData();
 
@@ -313,10 +327,11 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['assetIdentification'] = result.assetIdentification;
         this.assetsData['groupID'] = result.groupID;
         this.assetsData['VIN'] = result.VIN;
+        this.assetsData['startDate'] = result.startDate;
         this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
         this.assetsData['assetDetails']['year'] = result.assetDetails.year;
         this.assetsData['assetDetails']['manufacturer'] = result.assetDetails.manufacturer;
-        this.getModels(result.assetDetails.manufacturer);
+        // this.getModels(result.assetDetails.manufacturer);
         this.assetsData['assetDetails']['model'] = result.assetDetails.model;
         this.assetsData['assetDetails']['length'] = result.assetDetails.length;
         this.assetsData['assetDetails']['lengthUnit'] = result.assetDetails.lengthUnit;
@@ -326,11 +341,16 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData['assetDetails']['GAWR'] = result.assetDetails.GAWR;
         this.assetsData['assetDetails']['GAWR_Unit'] = result.assetDetails.GAWR_Unit;
         this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
+        if (result.assetDetails.ownerShip == 'Owner Operator') {
+          this.assetsData['assetDetails']['ownerOperator'] = result.assetDetails.ownerOperator;
+        }
         this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
         this.assetsData['assetDetails']['licenceCountryID'] = result.assetDetails.licenceCountryID;
         this.getStates(result.assetDetails.licenceCountryID);
         this.assetsData['assetDetails']['licenceStateID'] = result.assetDetails.licenceStateID;
         this.assetsData['assetDetails']['licencePlateNumber'] = result.assetDetails.licencePlateNumber;
+        this.assetsData['assetDetails']['annualSafetyDate'] = result.assetDetails.annualSafetyDate;
+        this.assetsData['assetDetails']['annualSafetyReminder'] = result.assetDetails.annualSafetyReminder;
         this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
         this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
         this.assetsData['insuranceDetails']['premiumAmount'] = result.insuranceDetails.premiumAmount;
@@ -372,6 +392,7 @@ export class AddAssetsComponent implements OnInit {
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
+      startDate: this.assetsData.startDate,
       assetDetails:{
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
@@ -389,6 +410,8 @@ export class AddAssetsComponent implements OnInit {
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
+        annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
+        annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
         remarks: this.assetsData.assetDetails.remarks
       },
       insuranceDetails: {
