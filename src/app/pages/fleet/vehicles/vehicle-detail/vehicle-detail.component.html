@@ -609,56 +609,21 @@
                           </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
                             <tbody>
-                              <tr *ngFor="let document of documents">
+                              <tr *ngFor="let document of docs; let i = index">
                                 <td width="85%">
-                                  Document Name.pdf
-                                  <span class="font-size-12"
+                                  Document {{i + 1}}
+                                  <!-- <span class="font-size-12"
                                     ><br /><span
                                       class="text-info font-weight-bold"
                                       >Vehicle</span
                                     >
                                     34.6KB - Jun 5,2019</span
-                                  >
+                                  > -->
                                 </td>
                                 <td width="15%">
-                                  <button class="btn btn-deafault btn-xs">
+                                  <a class="btn btn-deafault btn-xs" href="{{document}}" target="_blank">
                                     <i class="fas fa-eye"></i>
-                                  </button>
-                                  <button class="btn btn-deafault btn-xs">
-                                    <i class="fas fa-download"></i>
-                                  </button>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >View Vehicle</a
-                                      >
-                                    </div>
-                                  </div>
+                                  </a>
                                 </td>
                               </tr>
                             </tbody>
