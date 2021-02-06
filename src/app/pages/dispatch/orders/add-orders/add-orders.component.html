@@ -9,11 +9,17 @@
       margin: 0;
       padding: 0;
    }
+ 
 
    .modal-content {
       height: auto;
       min-height: 100%;
       border-radius: 0;
+   }
+   .modal-body {
+      position: 'fixed';
+        top : '0px';
+       
    }
 </style>
 
@@ -262,8 +268,8 @@
                            <div class="col-lg-5">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Additonal
                                  Contact Name</label>
-                              <input [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text"
-                                 class="form-control"> {{orderData.additionalContact}}
+                              <input [(ngModel)]="orderData.additionalcontactname" name="additionalContact" type="text"
+                                 class="form-control"> {{orderData.additionalcontactname}}
                            </div>
                         </div>
                         <div class="row mt-2">

@@ -24,6 +24,11 @@
   right: 0;
   background: black;
 }
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
 </style>
 <section class="body">
   <!-- start: header -->
@@ -31,7 +36,7 @@
 
   <!-- end: header -->
 
-  <div class="inner-wrapper">
+  <div class="inner-wrapper" id="mainDIV">
     <!-- start: sidebar -->
     <app-sidebar></app-sidebar>
 
@@ -45,14 +50,14 @@
       </header>
     
       <div class="row">
-
+ 
         <table>
           <div class="cursor">
           <div class="vt"></div>
           <div class="hl"></div>
         </div>
         <input type="file" id="myFile" size="50" (click)="selectfile(event)"/>
-        <input type="file" id="uploadedfile" size="50" (load)="onpdfLoad()" />
+        <input type="file" id="uploadedfile" size="50" (click)="selectfile(event)" />
         
        <canvas id="src" width="500"  height="500"  class="d-flex" style="cursor:crosshair" #pdfcanvas (mouseout)="mymouseout($event)" (mousedown)="mymousedown($event)" (mouseup)="mymouseup($event)" (mousemove)="mymousemove($event)" ></canvas>
        <div id="json"> hi</div>
@@ -80,6 +85,7 @@
 
                 <select name="industry" class="form-control" id="select" [(ngModel)]="selectOpt" >
                   <option value="OrderNumber">OrderNumber</option>
+                  <option value="CustomerPO">CustomerPO</option>
                   <option value="orderDate">OrderDate</option>
                   <option value="carrierName">CarrierName</option>
                   <option value="carrierAddress">CarrierAddress </option>
@@ -145,7 +151,12 @@
         </h1>
 
 
-
+       
+        
+       
+        <output id="list"></output>
+        
+       
       </div>
 
     </section>

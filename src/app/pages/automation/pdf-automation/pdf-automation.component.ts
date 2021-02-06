@@ -4,6 +4,8 @@ import { functions } from 'lodash';
 import { createWorker } from 'tesseract.js';
 import { AddOrdersComponent } from '../../dispatch/orders/add-orders/add-orders.component';
 import { PdfAutomationService } from './pdf-automation.service';
+import * as AWS from 'aws-sdk/global';
+import * as S3 from 'aws-sdk/clients/s3';
 
 declare var Tesseract: any;
 declare var $: any;
@@ -96,6 +98,7 @@ export class  PdfAutomationComponent implements OnInit {
       const pdffile = document.getElementById('pdffile');
       const el = document.getElementById('myFile');
       const uf = document.getElementById('uploadedfile');
+    
 
       let text;
       this.$text = text;
@@ -113,19 +116,95 @@ export class  PdfAutomationComponent implements OnInit {
       this.$srcContext = srcContext;
       this.$cursorVT = document.querySelector('.vt')
       this.$cursorHL = document.querySelector('.hl')
+ 
+      interface HTMLInputEvent extends Event {
+        target: HTMLInputElement & EventTarget;
+    }
+
+      el.onchange = (e?: HTMLInputEvent) => {
+       
+        let files: any = e.target.files[0]; 
+        console.log(files);
+
+        const contentType = files.type;
+    const bucket = new S3(
+          {
+              accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
+              secretAccessKey: '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',
+              region: 'us-east-2'
+          }
+      );
+      
+      const params = {
+          Bucket: 'pdfautomation-bucket',
+          Key: files.name,
+          Body: files,
+          ACL: 'public-read',
+          ContentType: contentType
+      };
+      bucket.upload(params, function (err, data) {
+          if (err) {
+              console.log('There was an error uploading your file: ', err);
+              return false;
+          }
+          console.log('Successfully uploaded file.', data);
+          return true;
+      });
+//for upload progress   
+/*bucket.upload(params).on('httpUploadProgress', function (evt) {
+          console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+      }).send(function (err, data) {
+          if (err) {
+              console.log('There was an error uploading your file: ', err);
+              return false;
+          }
+          console.log('Successfully uploaded file.', data);
+          return true;
+      });*/
 
 
-      el.onchange = () => {
-        // var url = document.getElementById('myFile').value;
-        const a = '/assets/demo1.pdf'
+
+
+
+     
+    for (var i = 0, f; f = files[i]; i++) {
+      console.log("working")
+      
+      var reader = new FileReader();
+
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+      reader.onload = (function(theFile) {
+        return function(evt) {
+         
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', evt.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      
+      reader.readAsDataURL(f);
+    }
+    // (async () => {
+    //   await delay(2000);
+
+     
+
+        console.log("hello!");
+        console.log(files.webkitRelativePath)
+        const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/"+files.name;
+        
 
         // Loaded via <script> tag, create shortcut to access PDF.js exports.
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
         // The workerSrc property shall be specified.
         pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-
-        const loadingTask = pdfjsLib.getDocument(a);
+      
+        const loadingTask = pdfjsLib.getDocument(url);
 
 
         loadingTask.promise.then((pdf) => {
@@ -163,6 +242,7 @@ export class  PdfAutomationComponent implements OnInit {
           console.error(reason);
         });
       }
+    // )};
       // var ocrJson = {
       //     // todo: other parameters. b&w, resizing strategy etc
       //     'version': '1.0.0',
@@ -594,10 +674,10 @@ export class  PdfAutomationComponent implements OnInit {
       console.log(this.$obj)
       console.log("done");
     });
-    // this.http.get(this.url + "/fgfd").subscribe((data : any) => {
-    //   console.log(this.$jsonfile)
-    //   console.log(data.Items[0].documentId);
-    // });
+     this.http.get(this.url + "/fgfd").subscribe((data : any) => {
+       console.log(this.$jsonfile)
+       console.log(data.Items[0].documentId);
+    });
 
     console.log("this.$val" + JSON.stringify(this.$pdfjson));
     this.service.missionAnnouncedSource.next(this.$pdfjson);
@@ -609,6 +689,11 @@ export class  PdfAutomationComponent implements OnInit {
 
   }
 
+
+
+  
+
+ 
 
   mymousemove(e) {
     this.$cursorVT.setAttribute('style', `left: ${e.clientX}px;`);
@@ -632,7 +717,7 @@ export class  PdfAutomationComponent implements OnInit {
 
 
   }
-
+   
 
 
   ngOnInit() {

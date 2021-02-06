@@ -33,7 +33,7 @@ export class AddOrdersComponent implements OnInit {
   TotalAgreedAmount;
   ShipperDetails;
   ConsigneeDetails;
-  CustomerPO;
+  customerPO;
   Customer;
   Reference;
   csa;
@@ -125,11 +125,11 @@ export class AddOrdersComponent implements OnInit {
     reference: '',
     phone: '',
     email:'',
-    Phone:'',
+  
   TotalAgreedAmount:'',
   ShipperDetails:'',
   ConsigneeDetails:'',
-  CustomerPO:'',
+  
   Customer:'',
   Reference:'',
   csa:'',
@@ -216,10 +216,21 @@ export class AddOrdersComponent implements OnInit {
         console.log("pdf service" + v);
         if (v.toString() !== '' && v !== 'undefined' && v !== undefined) {
           const d = JSON.parse(v);
-          if (d.OrderNumber !== 'undefined' || d.OrderNumber !== undefined) {
-            this.orderData.orderNumber = d.OrderNumber.trim();
+        
+            this.orderData.orderNumber = d.OrderNumber;
+            this.orderData.customerPO = d.CustomerPO;
+            this.orderData.reference = d.reference;
+            this.orderData.csa = d.csa;
+            this.orderData.ctpat = d.ctpat;
+            this.orderData.additionalcontactname = d.additionalcontactname;
+            this.orderData.email = d.email;
+            this.orderData.phone = d.phone;
+           
+             
+
+
           //  console.log('Order Number is ' + d.OrderNumber);
-          }
+        
         }
       }))
       .subscribe((v: any) => {
@@ -235,7 +246,7 @@ export class AddOrdersComponent implements OnInit {
       }))
       .subscribe((v: any) => {
       console.log('v=====>' + v);
-      this.OrderNumber = v['OrderNumber']
+      // this.OrderNumber = v['OrderNumber']
       this.Customer = v['Customer']
       // this.CarrierName = v['CarrierName']
       // this.CarrierAddress = v['CarrierAddress']
@@ -244,7 +255,7 @@ export class AddOrdersComponent implements OnInit {
       // this.TotalAgreedAmount = v['TotalAgreedAmount']
       // this.ShipperDetails = v['ShipperDetails']
       // this.ConsigneeDetails = v['ConsigneeDetails']
-      this.CustomerPO = v['CustomerPO']
+      
 
       this.Reference = v['Reference']
       this.csa= v['csa']
@@ -307,7 +318,7 @@ export class AddOrdersComponent implements OnInit {
 
       this.orderData.orderNumber = this.OrderNumber;
 
-       this.orderData.customerPO = this.CustomerPO;
+      //  this.orderData.customerPO = this.CustomerPO;
        this.Customer.Customer = this.Customer
        this.orderData.reference = this.ConsigneeDetails;
       this.orderData.phone =  this.Phone;
