@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  vehicleModal: boolean = false;
+  vehicleModal: boolean = false; 
   vehicles: any;
   tasks = [];
   private programID;
@@ -141,7 +141,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           });
       },
         next: (res) => {
-          
+          this.fetchTasks();
           this.toastr.success('Service Task added successfully');
           $('#addServiceTaskModal').modal('hide');
           this.taskData['taskName'] = '';
@@ -160,6 +160,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   }
 
   fetchTasks() {
+    this.tasks = [];
     this.apiService.getData('tasks').subscribe({
       error: () => {},
       next: (result: any) => {
