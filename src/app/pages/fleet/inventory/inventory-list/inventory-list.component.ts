@@ -69,7 +69,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.fetchItems();
+    this.fetchItemsCount();
     this.fetchVendors();
     this.fetchItemGroups();
     this.fetchWarehouses();
@@ -131,7 +131,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   resetFilter(){
     if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
       this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
-      this.fetchItems();
+      this.fetchItemsCount();
       this.items = [];
       this.rerender('reset');
     } else {
@@ -156,11 +156,21 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     $('#transferModal').modal('show');
   }
 
-  fetchItems(){
-    this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
-      // this.items = result.Items;
-      this.totalRecords = result.Count;
-    })
+  // fetchItems(){
+  //   this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
+  //     // this.items = result.Items;
+  //     this.totalRecords = result.Count;
+  //   })
+  // }
+
+  fetchItemsCount() {
+    this.apiService.getData('items/get/count?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+      },
+    });
   }
 
   fetchWarehouses(){
@@ -175,7 +185,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       .getData(`items/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.items = [];
-        this.fetchItems();
+        this.fetchItemsCount();
         this.rerender();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
@@ -334,7 +344,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
 
   searchFilter() {
     if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
-      this.fetchItems();
+      this.fetchItemsCount();
       this.items = [];
       this.rerender('reset');
     } else {

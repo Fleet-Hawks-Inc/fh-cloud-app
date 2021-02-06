@@ -68,7 +68,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchGroups();
-    this.fetchVehicles();
+    this.fetchVehiclesCount();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchDriversList();
@@ -124,16 +124,27 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
   
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe({
+  // fetchVehicles() {
+  //   this.apiService.getData('vehicles').subscribe({
+  //     complete: () => {},
+  //     error: () => {},
+  //     next: (result: any) => {
+  //       // this.vehicles = result.Items;
+  //       this.totalRecords = result.Count;
+  //     },
+  //   });
+  // }
+
+  fetchVehiclesCount() {
+    this.apiService.getData('vehicles/get/count?vehicleID='+this.vehicleID+'&status='+this.currentStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        // this.vehicles = result.Items;
         this.totalRecords = result.Count;
       },
     });
   }
+
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleID;
@@ -224,7 +235,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
   searchFilter() {
     if (this.vehicleID !== '' || this.currentStatus !== '') {
       this.vehicles = [];
-      this.fetchVehicles();
+      this.fetchVehiclesCount();
       this.rerender('reset');
     } else {
       return false;
@@ -237,7 +248,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleIdentification = '';
       this.currentStatus = '';
       this.vehicles = [];
-      this.fetchVehicles();
+      this.fetchVehiclesCount();
       this.rerender();
     } else {
       return false;
@@ -251,7 +262,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
 
         this.vehicles = [];
-        this.fetchVehicles();
+        this.fetchVehiclesCount();
         this.rerender();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
