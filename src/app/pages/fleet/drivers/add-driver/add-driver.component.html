@@ -110,7 +110,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
                                              >Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control" placeholder="Select driver status">
+                                          <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control form-control-sm" placeholder="Select driver status">
                                              <ng-option value="Active">Active</ng-option>
                                              <ng-option value="InActive">InActive</ng-option>
                                           </ng-select>
@@ -310,8 +310,7 @@
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
-                                             >Work Email<span class="mandfield text-2 ml-1"><sup>*</sup></span> <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
+                                             >Work Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.workEmail" name="workEmail" type="text" class="form-control" placeholder="Enter the official email address of the driver">
                                        </div>
                                     </div>
@@ -531,7 +530,7 @@
                                  <div class="col-lg-5 offset-lg-1">
                                      <div class="row">
                                          <div class="col-lg-10">
-                                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Document</label>
                                              <input class="form-control p-0"
                                                  name="document.uploadedDocs{{i}}" (change)="selectDocuments('documents', $event, i)" type="file" multiple
                                              >
@@ -945,8 +944,9 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks if driver is Exempted.</label>
-                                          <textarea [(ngModel)]="driverData.hosDetails.hosRemarks" name="hosDetails.hosRemarks" class="form-control" rows="4" placeholder=" Enter remarks for the exempted driver"></textarea>
+                                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Write Remarks if driver is Exempted.&nbsp; <span
+                                             class="text-1 optional-label-color">(optional)</span></label>
+                                          <textarea style="height: unset !important;" [(ngModel)]="driverData.hosDetails.hosRemarks" name="hosDetails.hosRemarks" class="form-control" rows="4" placeholder=" Enter remarks for the exempted driver"></textarea>
                                        </div>
                                        <div class="col-lg-5 pt-3" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
                                           <div class="checkbox-custom">
