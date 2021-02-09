@@ -56,7 +56,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getReminders();
+    this.getRemindersCount();
     this.fetchGroups();
     this.fetchTasksList();
     this.fetchVehicleList();
@@ -227,20 +227,21 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         // console.log('result', result);
         this.remindersData = [];
-        this.getReminders()
+        this.getRemindersCount()
         this.rerender();
         this.toastr.success('Service Renewal Reminder Deleted Successfully!');
       });
     }
   }
 
-  getReminders() {
-    this.apiService
-      .getData('reminders/get-reminders/service?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service')
-      .subscribe((result) => {
-        // this.suggestedVehicles = result.Items;
+  getRemindersCount() {
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
   initDataTable() {
@@ -312,7 +313,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender('reset');
     } else {
       return false;
@@ -328,7 +329,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       this.filterStatus = '';
 
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender();
     } else {
       return false;

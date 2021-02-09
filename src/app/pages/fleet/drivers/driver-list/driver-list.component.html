@@ -495,9 +495,9 @@
                                        <span class="font-weight-bold line-height-lg text-capitalize">
                                           {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</span>
                                     </td>
-                                    <td *ngIf="hideShow.dutyStatus">Live Status</td>
+                                    <td *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
 
-                                    <td *ngIf="hideShow.location">Live Address</td>
+                                    <td *ngIf="hideShow.location">2876  th Street, Edmonton, Alberta, T5J 2R4</td>
                                     <td *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
                                     <td *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td *ngIf="hideShow.assets">Live Status</td>

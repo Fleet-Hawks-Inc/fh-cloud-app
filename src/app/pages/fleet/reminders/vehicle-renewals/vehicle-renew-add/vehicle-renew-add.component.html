@@ -31,7 +31,7 @@
                            <div class="col-lg-5 offset-lg-1">
                               <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  placeholder="Select vehicle">
                                       
                                           <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</ng-option>
@@ -70,7 +70,7 @@
                            <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
                                  <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
                                     name="task" style="width: 100%;" placeholder="Select renewal type">
                                     <optgroup label="Select Service Task">
@@ -86,7 +86,7 @@
                               </div>
                               <div class="row pt-2">
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <input
                                     class="form-control"
                                     placeholder="Enter due date"
@@ -94,7 +94,7 @@
                                   />
                                  </div>
                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <div class="row">
                                         <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control" min="1"></div>
                                         <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" >

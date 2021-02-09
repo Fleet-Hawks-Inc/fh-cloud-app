@@ -24,14 +24,12 @@
                      <div class="form-group row">
                         <div class="col-lg-12">
                            <label
-                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
-                              Program Details</label>
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Program Details</label>
                         </div>
                         <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service
-                                    Program Name</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Program Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="serviceData.programName" name="programName"
                                     type="text" class="form-control">
                               </div>
@@ -53,8 +51,7 @@
                      <div class="form-group row">
                         <div class="col-lg-12">
                            <label
-                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
-                              Schedule Details</label>
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Schedule Details</label>
                         </div>
                         <div class="col-lg-12 ">
                            <div class="row" *ngFor="let task of serviceData.serviceScheduleDetails;let i = index">
@@ -62,8 +59,7 @@
                                  <div class="row pt-2">
                                     <div class="col-lg-10">
 
-                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                          Service Tasks</label>
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="task.serviceTask"
                                           [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'" [ngModelOptions]="{standalone: true}"  style="width: 100%;"
                                           >
@@ -82,7 +78,7 @@
                                        <div class="row">
                                           <div class="col-lg-5">
                                              <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time </label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <div class="row">
                                                 <div class="col-lg-5 pr-0">
                                                    <input [(ngModel)]="task.repeatByTime"
@@ -103,7 +99,7 @@
                                           </div>
                                           <div class="col-lg-5">
                                              <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <input [(ngModel)]="task.repeatByOdometer"
                                              [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                           </div>
