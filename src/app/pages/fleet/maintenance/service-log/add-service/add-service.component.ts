@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../../services';
 import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { HereMapService } from '../../../../../services';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -46,6 +48,7 @@ export class AddServiceComponent implements OnInit {
 
   serviceData = {
     unitType: 'vehicle',
+    reference: 'REF-'+new Date().getTime(),
     vehicleID: '',
     assetID: '',
     allServiceTasks: {
@@ -54,7 +57,12 @@ export class AddServiceComponent implements OnInit {
     allServiceParts: {
       servicePartsList : []
     },
-    selectedIssues: []
+    selectedIssues: [],
+    location: '',
+    geoCords: {
+      lat: '',
+      lng: ''
+    }
   };
   uploadedPhotos = [];
     uploadedDocs = [];
@@ -67,6 +75,10 @@ export class AddServiceComponent implements OnInit {
   fetchedLocalData: any;
   tasksObject: any = {};
   localReminderUnitID: any;
+  public searchTerm = new Subject<string>();
+  public searchResults: any;
+  newCoords = [];
+  
   constructor(
     private apiService: ApiService,
     private awsUS: AwsUploadService,
@@ -76,6 +88,7 @@ export class AddServiceComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
+    private hereMap: HereMapService
   ) {
     this.selectedFileNames = new Map<any, any>();
    }
@@ -100,6 +113,7 @@ export class AddServiceComponent implements OnInit {
     this.fetchAssets();
     this.fetchTasks();
     this.fetchAllTasksIDs();    
+    this.searchLocation();
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
       if(this.fetchedLocalData.unitType === 'vehicle'){   
@@ -360,8 +374,6 @@ export class AddServiceComponent implements OnInit {
   addParts() {
     
     this.inventory.forEach(element => {
-      console.log('element.itemName', element);
-      console.log('this.selectedParts', this.selectedParts);
       if (element.itemID === this.selectedParts[this.selectedParts.length - 1]) {
         this.serviceData.allServiceParts.servicePartsList.push({
           partID: element.itemID,
@@ -421,7 +433,6 @@ export class AddServiceComponent implements OnInit {
   }
 
   remove(arr: any, data: any, i) {
-    console.log('data', data);
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -586,6 +597,8 @@ export class AddServiceComponent implements OnInit {
         this.serviceData['vendorID'] = result.vendorID;
         this.serviceData['reference'] = result.reference;
         this.serviceData['location'] = result.location;
+        this.serviceData.geoCords.lat = result.geoCords.lat;
+        this.serviceData.geoCords.lng = result.geoCords.lng;
         this.serviceData['odometer'] = result.odometer;
         this.serviceData['description'] = result.description;
         let newTasks = [];
@@ -703,18 +716,71 @@ export class AddServiceComponent implements OnInit {
   });
 }
 
-openReminders() {
-  $('#serviceReminderModal').modal('show');
-  let tasksList = this.serviceData.allServiceTasks.serviceTaskList;
-  let reminders = this.reminders;
-  tasksList.forEach(task => {
-    reminders.forEach(remind => {
-      if (task.taskID === remind.reminderTasks.task) {
-        remind.buttonShow = true;
-      }
+  openReminders() {
+    $('#serviceReminderModal').modal('show');
+    let tasksList = this.serviceData.allServiceTasks.serviceTaskList;
+    let reminders = this.reminders;
+    tasksList.forEach(task => {
+      reminders.forEach(remind => {
+        if (task.taskID === remind.reminderTasks.task) {
+          remind.buttonShow = true;
+        }
+      });
     });
-  });
-}
+  }
 
+  public searchLocation() {
+    let target;
+    this.searchTerm.pipe(
+      map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
+        target = e;
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.hereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
+  }
+
+  /**
+   * pass trips coords to show on the map
+   * @param data
+   */
+  async getCoords(data) {
+    this.spinner.show();
+    await Promise.all(data.map(async item => {
+      let result = await this.hereMap.geoCode(item.stopName);
+      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
+    }));
+    this.hereMap.calculateRoute(this.newCoords);
+    this.spinner.hide();
+    this.newCoords = [];
+  }
+
+  async assignLocation(label) {
+    const result = await this.hereMap.geoCode(label);
+    const labelResult = result.items[0];
+    this.serviceData.location = label;
+
+    if(labelResult.position != undefined) {
+      this.serviceData.geoCords = {
+        lat: labelResult.position.lat,
+        lng: labelResult.position.lat
+      }
+    }
+    
+    this.searchResults = false;
+    $('div').removeClass('show-search__result');
+
+  }
   
 }

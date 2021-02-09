@@ -40,9 +40,8 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
-
   ngOnInit() {
-    this.fetchIssues();
+    this.fetchIssuesCount();
     this.fetchVehicleList();
     this.fetchDriverList();
     this.fetchAssetList();
@@ -109,12 +108,22 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  fetchIssues() {
-    this.apiService.getData('issues?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
-      complete: () => { },
-      error: () => { },
+  // fetchIssues() {
+  //   this.apiService.getData('issues?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       // this.issues = result.Items;
+  //       this.totalRecords = result.Count;
+  //     },
+  //   });
+  // }
+
+  fetchIssuesCount() {
+    this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
-        // this.issues = result.Items;
         this.totalRecords = result.Count;
       },
     });
@@ -125,7 +134,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
       .getData(`issues/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-        this.fetchIssues();
+        this.fetchIssuesCount();
         this.issues = [];
         this.rerender();
         this.toastr.success('Issue Deleted Successfully!');
@@ -195,7 +204,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
-      this.fetchIssues();
+      this.fetchIssuesCount();
       this.issues = [];
       this.rerender('reset');
     } else {
@@ -210,7 +219,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.issueName = '';
       this.issueStatus = '';
 
-      this.fetchIssues();
+      this.fetchIssuesCount();
       this.issues = [];
       this.rerender();
     } else {

@@ -52,7 +52,7 @@
                        </div>
                        <div class="row pt-3" id="fuelVehicle" *ngIf="fuelData.unitType ==='vehicle'">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="fuelData.unitID" >                               
                                    <ng-option *ngFor="let vehicle of vehicles"  value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                              </ng-select>
@@ -60,7 +60,7 @@
                        </div>
                        <div class="row pt-3" id="fuelReefer" *ngIf="fuelData.unitType ==='reefer'">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Reefer<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Reefer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select name="unitID" [(ngModel)]="fuelData.unitID" placeholder="Select Reefer">                                
                                  <ng-option *ngFor="let reefer of reeferArray" value="{{reefer.assetID}}">{{reefer.assetIdentification}}</ng-option> 
                              </ng-select>
@@ -71,7 +71,7 @@
                         <div id="fuelVehicleQty" >
                           <div class="row">
                              <div class="col-lg-4">
-                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Quantity</label>
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Quantity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input type="number" min='0' class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" (change)="calculate()" >
                              </div>
                              <div class="col-lg-2 qtumbtn px-0">
@@ -83,21 +83,21 @@
                                 </ng-select>
                              </div>
                              <div class="col-lg-4">
-                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input type="number" min='0' class="form-control" name="fuelQtyAmt" [(ngModel)]="fuelData.fuelQtyAmt" (change)="calculate()">
                              </div>
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >DEF Fuel Quantity</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >DEF Fuel Quantity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="number" min='0' class="form-control" name="DEFFuelQty" [(ngModel)]="fuelData.DEFFuelQty" (change)="calculate()">
                           </div>
                           <div class="col-lg-2 qtumbtn px-0">                          
                              <label class="control-label pl-2 text-lg-right" >{{DEFFuelQtyUnit}}</label>
                           </div>
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="number" class="form-control" min='0' name="DEFFuelQtyAmt" [(ngModel)]="fuelData.DEFFuelQtyAmt" (change)="calculate()">
                           </div>
                        </div>
@@ -107,7 +107,7 @@
                           <div class="col-lg-2 qtumbtn px-0">
                           </div>
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total Amount</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <div class="row">
                                 <div class="col-lg-4 text-right mt-1"> <label class="control-label font-weight-bold text-5"> {{fuelData.totalAmount}}</label></div>
                                 <div class="col-lg-8">
@@ -126,7 +126,7 @@
                           <div class="col-lg-2 qtumbtn px-0">
                           </div>
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount({{currency}})</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount({{currency}})<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="number" class="form-control" min='0' name="discount" [(ngModel)]="fuelData.discount" (change)="calculate()">
                           </div>
                        </div>
@@ -146,7 +146,7 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Date<span class="mandfield text-1 ml-1"><sup>*</sup></span></label> 
+                             <label class="control-label font-weight-bold font-bold text-lg-right">Fuel Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label> 
                               <input class="form-control" placeholder="dd-mm-yyyy" name="fuelDate" [(ngModel)]="fuelData.fuelDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"/>                           
                           </div>
                           <div class="col-lg-5">
@@ -157,7 +157,7 @@
                        </div>
                        <div class="row">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Type<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select placeholder="Select Fuel Type" name="fuelType" [(ngModel)]="fuelData.fuelType">                               
                                    <ng-option value="Bio Diesel">Bio Diesel</ng-option>
                                    <ng-option value="Compressed Natural Gas">Compressed Natural Gas</ng-option>
@@ -177,14 +177,14 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By</label>                            
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>                            
                              <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" >                               
                               <ng-option *ngFor="let driver of drivers"  value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>                            
                           
                         </ng-select>
                           </div>
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode</label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select placeholder="Select Payment Mode" name="paymentMode" [(ngModel)]="fuelData.paymentMode">                           
                                    <ng-option value="Cash">Cash</ng-option>
                                    <ng-option value="Check">Check</ng-option>
@@ -196,7 +196,7 @@
                        </div>
                        <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
                         <div class="col-lg-5 offset-lg-5">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number</label>
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Fuel Card Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                            <input type="text" class="form-control" name="fuelCardNumber" [(ngModel)]="fuelData.fuelCardNumber">
                         </div>
                      </div>
@@ -232,7 +232,7 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Country<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select placeholder="Select Country" name="countryID" [(ngModel)]="fuelData.countryID" (change)="getStates()">
                              
                                 <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
@@ -243,7 +243,7 @@
                        </div>
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >State<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select placeholder="Select State" name="stateID"
                              [(ngModel)]="fuelData.stateID" (change)="getCities()">
                               
@@ -261,7 +261,7 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >City<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select  placeholder="Select City" name="cityID"
                              [(ngModel)]="fuelData.cityID">
                                 <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
@@ -276,7 +276,7 @@
                        </div>
                        <div class="row pt-2">
                           <div class="col-lg-10">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <ng-select  placeholder="Select Vendor" name="vendorID" [(ngModel)]="fuelData.vendorID">
                               
                                   <ng-option *ngFor = "let vendor of vendors" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
@@ -318,7 +318,7 @@
                     <div class="col-lg-5 offset-lg-1">
                      <div class="row pt-2">
                         <div class="col-lg-10">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling(miles)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling (miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                            <input class="form-control" type="number" min='0' name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
                            <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                         </div>
@@ -371,7 +371,26 @@
                         </div>
                      </div>
                     </div>
-                  
+
+                    <div class="col-lg-5 offset-lg-1">
+                       <div class="row pt-2">
+                          <div class="col-lg-10">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling (miles)</label>
+                             <input class="form-control" type="number" min='0' name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
+                             <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
+                          </div>
+                       </div>
+                       
+                       
+                       <div class="row pt-2">
+                          <div class="col-lg-10">
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description&nbsp; <span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                             <textarea class="form-control" rows="3" name="description" [(ngModel)] ="fuelData.additionalDetails.description" placeholder="Add description "></textarea>
+                          </div>
+                       </div>
+                    </div>
+
                  </div>
                  <div class="form-group row">
                     <div class="col-lg-11 text-right">

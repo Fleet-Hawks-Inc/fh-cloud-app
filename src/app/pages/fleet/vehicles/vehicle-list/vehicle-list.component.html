@@ -18,21 +18,19 @@
         <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header pr-5">
                 <form class="form-horizontal" method="get">
-                    <div class="row px-2" style="padding-top: 10px">
+                    <div class="row px-2" style="padding-top: 8px">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
                                     [(ngModel)]="vehicleIdentification" class="form-control"
                                     (input)="getSuggestions($event.target.value)" />
                             </div>
-                            <div *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer" (click)="
-                                setVehicle(
-                                    suggestedVehicle.vehicleID,
-                                    suggestedVehicle.vehicleIdentification
-                                )
-                                ">
-                                {{ suggestedVehicle.vehicleIdentification }}
-                            </div>
+                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                                <ul>
+                                   <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;" (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"
+                                   > {{ suggestedVehicle.vehicleIdentification }}</li>
+                                </ul>
+                             </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2">

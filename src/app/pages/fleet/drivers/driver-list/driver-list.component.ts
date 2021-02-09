@@ -91,7 +91,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     
     // this.hideShowColumn();
     this.fetchAllDocumentsTypes();
-    this.fetchDrivers();
+    this.fetchDriversCount();
     this.fetchAllStatesIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllCyclesIDs();
@@ -186,16 +186,26 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedDrivers = [];
   }
 
-  fetchDrivers() {
+  // fetchDrivers() {
 
-    this.apiService.getData('drivers')
-    .subscribe({
-      complete: () => {
-        this.initDataTable();
-      },
-      error: () => { },
+  //   this.apiService.getData('drivers')
+  //   .subscribe({
+  //     complete: () => {
+  //       this.initDataTable();
+  //     },
+  //     error: () => { },
+  //     next: (result: any) => {
+
+  //       this.totalRecords = result.Count;
+  //     },
+  //   });
+  // }
+
+  fetchDriversCount() {
+    this.apiService.getData('drivers/get/count?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
-
         this.totalRecords = result.Count;
       },
     });
@@ -287,7 +297,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         .subscribe((result: any) => {
 
           this.drivers = [];
-          this.fetchDrivers();
+          this.fetchDriversCount();
           this.rerender();
           this.toastr.success('Driver deleted successfully!');
           // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
@@ -344,7 +354,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   searchFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
       this.drivers = [];
-      this.fetchDrivers();
+      this.fetchDriversCount();
       this.rerender('reset');
     } else {
       return false;
@@ -359,7 +369,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.driverName = '';
 
       this.drivers = [];
-      this.fetchDrivers();
+      this.fetchDriversCount();
       this.rerender();
       // this.spinner.hide();
     } else {

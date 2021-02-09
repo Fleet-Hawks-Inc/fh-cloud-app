@@ -52,7 +52,7 @@
                              </div> -->
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID</label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service">
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
@@ -60,7 +60,7 @@
                              </div>
                              <div class="row" *ngIf="serviceData.unitType === 'asset'">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset ID</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service">
                                      <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
                                  </ng-select>
@@ -68,20 +68,20 @@
                            </div>
                              <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer</label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="Enter the odometer miles at the time of service">
                                 </div>
                              </div>
                              <div class="row pt-2">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion Date</label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <input type="text" placeholder="DD/MM/YYYY"
                                    (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate" class="form-control">
                                 </div>
                              </div>
                              <div class="row">
                                 <div class="col-lg-10" data-select2-id="118">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID</label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
                                        <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                           
@@ -102,13 +102,21 @@
                                    <input [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control"  placeholder="Enter reference number">
                                 </div>
                              </div>
-                             <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Location&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label>
-                                   <input [(ngModel)]="serviceData.location" name="location" type="text" class="form-control" placeholder="Enter location">
-                                </div>
-                             </div>
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Location&nbsp; <span
+                                       class="text-1 optional-label-color">(optional)</span></label>
+                                 <input [(ngModel)]="serviceData.location" name="location" type="text" (keyup)="searchTerm.next($event);"
+                                    class="form-control" autocomplete="off" placeholder="Enter location">
+                           
+                                 <ul class="p-0 m-0 text-left map-search__results bg-white" *ngIf="searchResults">
+                                    <li *ngFor="let item of searchResults;">
+                                       <a href="javascript:;" (click)="assignLocation(item.address.label)"
+                                          title="{{item.address.label}}">{{item.address.label}}</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
                              <div class="row">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
