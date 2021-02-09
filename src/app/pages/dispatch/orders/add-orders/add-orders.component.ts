@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { from, Subject, throwError } from 'rxjs';
+import { EMPTY, from, pipe, Subject, throwError } from 'rxjs';
 import { AwsUploadService } from '../../../../services/aws-upload.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsService } from '../../../../services/google-maps.service';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError, onErrorResumeNext, tap } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { environment } from '../../../../../environments/environment.prod';
 import { NgbTimeStruct, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { PdfAutomationService } from '../../pdf-automation/pdf-automation.service';
+
+
 declare var $: any;
 declare var H: any;
 @Component({
@@ -58,48 +61,84 @@ export class AddOrdersComponent implements OnInit {
   orderMode: string = 'FTL';
 
   orderData = {
-    orderStatus: 'confirmed',
-    orderMode: 'FTL',
-    tripType: 'Regular',
-    shippersReceiversInfo: [],
+    orderNumber: '',
+    customerPO: '',
+    reference: '',
+    phone: '',
+    email:'',
+  
+  TotalAgreedAmount:'',
+  ShipperDetails:'',
+  ConsigneeDetails:'',
+  
+  Customer:'',
+  Reference:'',
+  csa:'',
+  ctpat:'',
+  additionalcontactname:'',
+  pickuplocation:'',
+  pickupinstruction:'',
+  contactpersonatpickup:'',
+  shipperphone:'',
+  shipperreference:'',
+  shippernotes:'',
+  dropofflocation:'',
+  deliveryinstruction:'',
+  contactpersonatdelivery:'',
+  receiverphone:'',
+  receiverreference:'',
+  receivernotes:'',
+
+    shipperInfo: [],
+    receiverInfo: [],
+    freightDetails: {},
     additionalDetails: {},
-    charges: {
-      freightFee: {
-        type: '',
-        amount: '',
+    
+
+
+
+  orderStatus: 'confirmed',
+  orderMode: 'FTL',
+  tripType: 'Regular',
+  shippersReceiversInfo: [],
+    //  additionalDetails: {},
+     charges: {
+     freightFee: {
+      type: '',
+      amount: '',
         currency: '',
-      },
-      fuelSurcharge: {
-        type: '',
+     },
+     fuelSurcharge: {
+       type: '',
         amount: '',
-        currency: '',
+       currency: '',
       },
       accessorialFeeInfo: {
         accessorialFee: []
-      },
-      accessorialDeductionInfo : {
-        accessorialDeduction: []
-      }
-    },
-    taxesInfo: [
+     },
+     accessorialDeductionInfo : {
+       accessorialDeduction: []
+   }
+     },
+     taxesInfo: [
       {
-        name: 'GST',
-        amount: '5'
-      },
-      {
-        name: 'PST',
-        amount: '5'
-      },
+       name: 'GST',
+       amount: '5'
+   },
+    {
+     name: 'PST',
+       amount: '5'
+   },
       {
         name: 'HST',
-        amount: '0'
-      },
+       amount: '0'
+     },
     ],
-    discount: {
-      amount: '',
+     discount: {
+   amount: '',
       unit: ''
-    },
-    milesInfo: {}
+ },
+     milesInfo: {}
   };
   response: any = '';
   hasError: boolean = false;
@@ -212,7 +251,8 @@ export class AddOrdersComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private router: Router,
-    private config: NgbDatepickerConfig
+    private config: NgbDatepickerConfig,
+    private pdfService: PdfAutomationService
   ) {
     const current = new Date();
     config.minDate = {
@@ -221,7 +261,37 @@ export class AddOrdersComponent implements OnInit {
     };
     config.outsideDays = 'hidden';
     
+    this.pdfService.dataSubscribe$
+      .pipe(tap((v) => {
+        console.log("pdf service" + v);
+        if (v.toString() !== '' && v !== 'undefined' && v !== undefined) {
+          const d = JSON.parse(v);
+        
+            this.orderData.orderNumber = d.OrderNumber;
+            this.orderData.customerPO = d.CustomerPO;
+            this.orderData.reference = d.reference;
+            this.orderData.csa = d.csa;
+            this.orderData.ctpat = d.ctpat;
+            this.orderData.additionalcontactname = d.additionalcontactname;
+            this.orderData.email = d.email;
+            this.orderData.phone = d.phone;
+           
+             
+
+
+          //  console.log('Order Number is ' + d.OrderNumber);
+        
+        }
+      }))
+      .subscribe((v: any) => {
+     // const data = JSON.parse(v.toString());
+    //  console.log(data.OrderNumber);
+      console.log('continue service======>' + v);
+    });
+    
+    
   }
+  
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
