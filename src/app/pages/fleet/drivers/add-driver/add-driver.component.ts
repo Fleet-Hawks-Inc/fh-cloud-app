@@ -841,8 +841,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           },
         }
         localStorage.setItem('driver', JSON.stringify(driver));
-        this.router.navigateByUrl('/fleet/drivers/list');
-
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.cancel();
       },
     })})
   } catch (error) {
@@ -1224,7 +1224,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           
         }
         this.toastr.success('Driver updated successfully');
-        this.router.navigateByUrl('/fleet/drivers/list');
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.cancel();
 
       },
     })})

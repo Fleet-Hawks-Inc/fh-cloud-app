@@ -98,7 +98,7 @@
                                        <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3"
                                              >Owner Operator</label>
-                                             <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator" class="form-control" placeholder="Select Owner Operator">
+                                             <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator" class="form-control form-control-sm" placeholder="Select Owner Operator">
                                                <ng-option *ngFor="let item of ownerOperators" value="{{item.operatorID}}">{{item.companyName}}</ng-option>
                                             </ng-select>
                                        </div>
@@ -370,7 +370,7 @@
                                   <div class="col-lg-3 mar-top-37">
                                      <a class="btn btn-dark mr-2" href="javascript:;" (click)="clearUserLocation(i);">Clear</a> 
                                      <a *ngIf="driverData.address.length == 1" (click)="addAddress();" class="btn btn-success" href="javascript:;"
-                                        > Add Another Address</a>
+                                        ><i class="fa fa-plus"></i> Add Another Address</a>
                                      <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)" class="btn btn-success" href="javascript:;"
                                         ><i class="fa fa-minus fa-fw"></i></a>
                                   </div>
@@ -464,7 +464,7 @@
                                  </div>
                                  <div class="col-lg-5">
                                     <div>
-                                       <div class="row"  style="align-items: flex-end;">
+                                       <div class="row" >
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Document#</label>
                                              <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter the document number">
@@ -474,8 +474,8 @@
                                                 >Issuing Authority&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                              <input [(ngModel)]="document.issuingAuthority" [attr.name]="'documentDetails['+i+'].issuingAuthority'" [ngModelOptions]="{standalone: true}"  type="text" class="form-control" placeholder="Select licence issuing authority">
                                           </div>
-                                          <div class="col-lg-1">
-                                             <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success">Add Another Document</a>
+                                          <div class="col-lg-1 mar-top-37">
+                                             <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()" id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add Another Document</a>
                                              <a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)" class="btn btn-success"><i class="fa fa-minus"></i></a>
                                           </div>
                                          </div>
