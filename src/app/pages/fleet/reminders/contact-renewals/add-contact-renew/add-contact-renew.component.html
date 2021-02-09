@@ -34,8 +34,7 @@
                         <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
                             <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                    Contact</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
                                     name="reminderIdentification" placeholder="Select contact">
 
@@ -49,8 +48,7 @@
 
                            <div class="row pt-2">
                              <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
-                                    Users/Groups&nbsp;<span
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
                                     style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
@@ -77,8 +75,7 @@
                         <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                    Renewal Type</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
                                     name="task" style="width: 100%;" placeholder="Select renewal type eg. Licence Renewal">
                                     <optgroup label="Select Service Task">
@@ -94,13 +91,13 @@
                            </div>
                            <div class="row pt-2">
                               <div class="col-lg-5">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="dd-mm-yyyy" name="dueDate"
                                     [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker
                                     #d="ngbDatepicker" />
                               </div>
                               <div class="col-lg-5">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)</label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
                                     <div class="col-lg-4">
                                        <input type="number" class="form-control" [(ngModel)]="time" name="time" placeholder="eg. 2,3,4..">
