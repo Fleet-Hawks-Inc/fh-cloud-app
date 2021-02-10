@@ -78,6 +78,13 @@ export class AddServiceComponent implements OnInit {
   public searchTerm = new Subject<string>();
   public searchResults: any;
   newCoords = [];
+  partType = 'existing';
+  inventoryItems = [];
+  partData = {
+    partNumber:'',
+    preferredVendorID:'',
+    quantity:<any>''
+  };
   
   constructor(
     private apiService: ApiService,
@@ -114,6 +121,8 @@ export class AddServiceComponent implements OnInit {
     this.fetchTasks();
     this.fetchAllTasksIDs();    
     this.searchLocation();
+    this.fetchInventoryItems();
+
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
       if(this.fetchedLocalData.unitType === 'vehicle'){   
@@ -783,4 +792,46 @@ export class AddServiceComponent implements OnInit {
 
   }
   
+  async changePartTab(type) {
+    if(type == 'new') {
+      this.partType = 'new';
+    } else {
+      this.partType = 'existing';
+    }
+  }
+
+  fetchInventoryItems() {
+    this.apiService.getData('items').subscribe((result: any) => {
+      this.inventoryItems = result.Items;
+    });
+  }
+
+  addPartNumber () {
+    // this.apiService.postData('items', this.partData).subscribe({
+    //   complete: () => { },
+    //     error: (err: any) => {
+    //       from(err.error)
+    //         .pipe(
+    //           map((val: any) => {
+    //             val.message = val.message.replace(/'.*'/, 'This Field');
+    //             this.errors[val.context.label] = val.message;
+    //           })
+    //         )
+    //         .subscribe({
+    //           complete: () => {
+    //             this.spinner.hide(); // loader hide
+    //             this.throwErrors();
+    //           },
+    //           error: () => { },
+    //           next: () => { },
+    //         });
+    //     },
+    //   next: (res) => {
+    //     this.response = res;
+    //     this.hasSuccess = true;
+    //     // this.fetchInventoryItems();
+    //     this.toastr.success('Part Requested Successfully');
+    //   },
+    // });
+  }
 }
