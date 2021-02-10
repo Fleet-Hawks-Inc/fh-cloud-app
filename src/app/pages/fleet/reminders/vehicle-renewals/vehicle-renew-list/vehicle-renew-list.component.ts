@@ -50,7 +50,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getReminders();
+    // this.getReminders();
+    this.getRemindersCount();
     this.fetchServiceTaks();
     // this.fetchRenewals();
     this.fetchVehicles();
@@ -102,6 +103,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   
   fetchRenewals = async () => {    
     this.remindersData = [];
+    console.log('this.allRemindersData')
+    console.log(this.allRemindersData.length)
     for(let j=0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
         const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
@@ -144,7 +147,7 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       .subscribe((result: any) => {
         // console.log('result', result);
         this.remindersData = [];
-        this.getReminders()
+        this.getRemindersCount()
         this.rerender();
         this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
       });
@@ -168,13 +171,14 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       });
   }
 
-  getReminders() {
-    this.apiService
-      .getData('reminders/get-reminders/vehicle')
-      .subscribe((result) => {
-        // this.suggestedVehicles = result.Items;
+  getRemindersCount() {
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
   initDataTable() {
@@ -246,7 +250,7 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
     if(this.vehicleID !== '' || this.searchServiceTask !== ''  && this.searchServiceTask !== null && this.searchServiceTask !== undefined
     || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender('reset');
     } else {
       return false;
@@ -262,7 +266,7 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       this.filterStatus = '';
 
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender();
     } else {
       return false;

@@ -95,6 +95,9 @@ import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
 
+import {PdfAutomationComponent} from './pdf-automation/pdf-automation.component'
+
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -162,7 +165,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
     MatExpansionModule,
 
-    DragDropModule,
+    DragDropModule,   
     NgSelectModule,
     NgxMaterialTimepickerModule,
 
@@ -259,6 +262,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,
+    PdfAutomationComponent
 
   ],
 

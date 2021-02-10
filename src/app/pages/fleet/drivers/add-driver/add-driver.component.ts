@@ -104,7 +104,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   newDocuments = [];
-  newAddress = []
+  newAddress = [];
   /**
    * Form Props
    */
@@ -359,9 +359,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
     if($('#emergency .error').length > 0 && this.currentTab == 8) return;
     
-    this.currentTab++;
-    
-    
+    this.currentTab++; 
 
   }
   prevStep() {
@@ -503,7 +501,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(oid != null) {
       this.driverData.address[oid].countryName = this.countriesObject[id];
     }
-
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
@@ -820,7 +817,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             issuedCountry: '',
             issuedState: '',
             licenceExpiry: '',
-            licenceNotification: false,
+            licenceNotification: true,
             WCB: '',
             medicalCardRenewal: '',
             healthCare: '',
@@ -844,8 +841,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           },
         }
         localStorage.setItem('driver', JSON.stringify(driver));
-        this.router.navigateByUrl('/fleet/drivers/list');
-
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.cancel();
       },
     })})
   } catch (error) {
@@ -1008,9 +1005,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           this.driverData['abstractDocs'] = result.abstractDocs;
           this.absDocs = result.abstractDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
          
-        }
-        
-        
+        }        
         
         this.driverData['gender'] = result.gender;
         this.driverData.DOB = result.DOB;
@@ -1227,7 +1222,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           
         }
         this.toastr.success('Driver updated successfully');
-        this.router.navigateByUrl('/fleet/drivers/list');
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.cancel();
 
       },
     })})

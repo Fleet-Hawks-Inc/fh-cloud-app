@@ -12,7 +12,7 @@
 		<section role="main" class="content-body pl-0">
 			<header class="page-header">
 				<form class="form-horizontal" method="get" name="form" id="form_">
-					<div class="row pr-4 pl-4" style="padding-top:10px;">
+					<div class="row pr-4 pl-4" style="padding-top:9px;">
 						<div class="col-md-2 col-lg-2 pr-0 pl-0">
 							<div class="input-group input-group-sm mb-3">
 								<input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
@@ -80,8 +80,7 @@
 									class="row-border hover table table-bordered table-striped mb-0">
 									<thead>
 										<tr>
-											<th style="min-width: 5% !important;">Date</th>
-											<th>Time</th>
+											<th style="min-width: 5% !important;">Date/Time</th>										
 											<th>Card Number</th>
 											<th>Unit#</th>
 											<th>Unit Type</th>
@@ -102,32 +101,30 @@
 									<tbody *ngIf="fuelList.length > 0">
 										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.fuelDate | date:'dd-MM-yyyy' }}</td>
-											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.fuelTime }}</td>
-											<td>{{fuelEntry.fuelCardNumber}}</td>
-											<td>
+												fuelEntry.fuelDate | date:'dd-MM-yyyy' }}, {{fuelEntry.fuelTime}}</td>											
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelCardNumber}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">
 												<span
 													*ngIf="fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
 												<span
 													*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
 											</td>
-											<td>{{fuelEntry.unitType}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.unitType}}</td>
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
 												tripList[fuelEntry.tripID]}}</td>
-											<td>{{driverList[fuelEntry.paidBy]}}</td>
-											<td>{{vendorList[fuelEntry.vendorID]}}</td>										
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{driverList[fuelEntry.paidBy]}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{vendorList[fuelEntry.vendorID]}}</td>										
 										
 											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
 												fuelEntry.additionalDetails.odometer }}</td>
 											
-												<td>Fuel Amount</td>
-												<td>{{fuelEntry.totalGallons}} gal</td>
-												<td>{{fuelEntry.fuelType}}</td>
-												<td>{{fuelEntry.costPerGallon}} {{currency}}</td>
-												<td>{{fuelEntry.amountPaid}}</td>
-												<td>Retail Total</td>
-												<td>Cost Per Mile</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">Fuel Amount</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.totalLitres}} l</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelType}}</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.costPerLitre}} {{currency}}/l</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.amountPaid}}{{currency}}</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">Retail Total</td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">Cost Per Mile</td>
 											<td>
 												<div class="btn-group flex-wrap">
 													<button type="button" class="mb-1 mt-1 mr-1 btn"
