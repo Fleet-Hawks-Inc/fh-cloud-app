@@ -37,10 +37,12 @@ fetchCarrier(){
   this.apiService.getData('carriers/getCarrier')
       .subscribe((result: any) => {
         this.carriers = result.Items[0];
-        this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        if(this.logoSrc == undefined || this.logoSrc == null || this.logoSrc == '') {
-          this.logoSrc = 'assets/img/logo.png';
-        }
+        this.logoSrc = 'assets/img/logo.png';
+        // console.log("this.carriers",this.carriers)
+        // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+        // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
+        //   this.logoSrc = 'assets/img/logo.png';
+        // }
       });
 }
 
