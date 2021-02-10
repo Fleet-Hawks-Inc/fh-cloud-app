@@ -1945,3 +1945,8 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .mandfield{color: #ff0000;}
+
+.mt-1-c1, .my-1-c1
+{
+  margin-top: 0.15rem !important;
+}
