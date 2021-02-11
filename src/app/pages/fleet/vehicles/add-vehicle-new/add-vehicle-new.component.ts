@@ -30,7 +30,6 @@ export class AddVehicleNewComponent implements OnInit {
   activeTab = 1;
   modalImage = '';
 
-
   /**
    * Quantum prop
    */
@@ -240,7 +239,8 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = ['assets/img/truck.jpg'];
+  slides = [];
+  localPhotos = [];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -301,7 +301,7 @@ vehicles= [];
       this.repeatByTimeUnit = this.vehicleSession.repeatByTimeUnit;
       this.reapeatbyOdometerMiles = this.vehicleSession.reapeatbyOdometerMiles;
       this.annualSafetyDate = this.vehicleSession.annualSafetyDate;
-      this.annualSafetyReminder = this.vehicleSession.annualSafetyDate;
+      this.annualSafetyReminder = this.vehicleSession.annualSafetyReminder;
       this.currentStatus = this.vehicleSession.currentStatus;
       this.ownership = this.vehicleSession.ownership;
       this.ownerOperatorID = this.vehicleSession.ownerOperatorID;
@@ -909,16 +909,22 @@ vehicles= [];
    */
   selectDocuments(event, obj) {
     let files = [...event.target.files];
-
+    
     if (obj === 'uploadedDocs') {
-      this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
     } else {
-      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
+      }
+
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.localPhotos.push(e.target.result);
+        }
+        reader.readAsDataURL(files[i]);
       }
     }
   }
@@ -1373,6 +1379,7 @@ vehicles= [];
   }
 
   async next(){
+    console.log(this.annualSafetyReminder);
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
@@ -1767,8 +1774,13 @@ vehicles= [];
       $('#imageModal').modal('show');
     }
 
-    deleteImage(index){
+    deleteUploadedImage(index){
       this.slides.splice(index, 1);
       this.existingPhotos.splice(index, 1);
+    }
+
+    deleteLocalImage(index){
+      this.localPhotos.splice(index, 1);
+      this.uploadedPhotos.splice(index, 1);
     }
 }
