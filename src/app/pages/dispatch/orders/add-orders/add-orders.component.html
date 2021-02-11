@@ -18,8 +18,7 @@
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
                   <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  -->
-                  <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
-                     Orders</a>
+                  <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
                </div>
             </div>
          </header>
@@ -58,6 +57,7 @@
                         </div>
                      </div>
                      <div class="col-lg-6">
+                        <!--
                         <div class="row">
                            <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
                               <label class="control-label font-weight-semibold mb-0 text-3 text-dark">Trip Type</label>
@@ -75,16 +75,18 @@
                                     <input type="radio" [(ngModel)]="orderData.tripType" name="tripType" hidden
                                        value="Outsourced"> Outsourced </label>
                               </div>
-                              <!-- <label class="d-inline mr-3">
+                               
+                               <label class="d-inline mr-3">
                                  <input [(ngModel)]="orderData.tripType" type="radio" name="tripType"
                                     value="Regular">Regular
                               </label>
                               <label>
                                  <input [(ngModel)]="orderData.tripType" type="radio" name="tripType"
                                     value="Outsourced">Outsourced
-                              </label> -->
+                              </label>
                            </div>
                         </div>
+                     -->
                      </div>
                   </div>
 
@@ -109,7 +111,7 @@
                               </span>
                            </div>
                            <div class="col-lg-2 mar-top-37">
-                              <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#addCustomerModal"><i
+                              <a class="btn btn-success btn-sm text-light" data-toggle="modal" data-target="#addCustomerModal"><i
                                     class="fas fa-plus"></i>
                               </a>
                            </div>
@@ -276,8 +278,7 @@
                            <ngb-accordion (panelChange)="accordianChange()" [closeOthers]="true" activeIds="static-0">
                               <ngb-panel id="static-{{i}}">
                                  <ng-template ngbPanelTitle>
-                                    <h4 class="card-title m-0"><a
-                                          class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
+                                    <h4 class="card-title m-0"><a class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
                                           Shipment-{{i + 1}} </a> </h4>
                                  </ng-template>
                                  <ng-template ngbPanelContent>
@@ -338,10 +339,19 @@
                                     <div class="form-group row divderrel">
                                        <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i
                                              class="fas fa-arrow-circle-right"></i></p>
-                                       <div class="col-lg-6">
-                                          <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
 
-                                          <div class="pl-0 pr-5">
+                                             <div class="col-lg-6">
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                                             </div>
+
+                                             <div class="col-lg-6">
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                                              </div>
+
+
+                                       <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
+                                          
+                                          <div class="">
                                              <div class="toggle toggle-primary">
                                                 <section class="toggle">
                                                    <label (click)="toggleAccordian(i)"
@@ -352,12 +362,12 @@
                                                    </label>
                                                    <div class="" *ngIf="visibleIndex === i">
                                                       <div class="row">
-                                                         <div class="col-lg-3 labelalign">
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
                                                             <label
                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Shipper</label>
-                                                         </div>
-                                                         <div class="col-lg-6 col-md-12">
+
                                                             <ng-select [(ngModel)]="item.shippers.shipperID"
                                                                name="shipperID" #shipperID="ngModel" required
                                                                shipperID class="form-control">
@@ -370,18 +380,14 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3">
-
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Pickup Location</label>
-                                                         </div>
 
-                                                         <div class="col-lg-6">
                                                             <input [(ngModel)]="item.shippers.pickupLocation"
                                                                name="pickupLocation" (keyup)="searchTerm.next($event);"
                                                                class="form-control " #pickupLocation="ngModel" required
@@ -400,16 +406,16 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Pickup Date/Time</label>
                                                          </div>
-                                                         <div class="col-lg-3 pr-0">
+                                                         <div class="col-lg-6">
+                                                            
+
                                                             <div class="input-group">
                                                                <input [(ngModel)]="item.shippers.pickupDate"
                                                                   name="pickupDate" type="date" #pickupDate="ngModel"
@@ -421,7 +427,7 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3 ">
+                                                         <div class="col-lg-6">
                                                             <div class="input-group">
                                                                <input [(ngModel)]="item.shippers.pickupTime"
                                                                   name="pickupTime" type="time" class="timepicker form-control" placeholder=""
@@ -439,27 +445,23 @@
                                                          </div> -->
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Pickup Instruction</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <textarea [(ngModel)]="item.shippers.pickupInstruction"
                                                                name="pickupInstruction" class="form-control" rows="3"
-                                                               id="textareaDefault"
-                                                               style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                                               id="textareaDefault"></textarea>
                                                          </div>
-                                                         <div class="col-lg-3">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Contact Person at PickUp</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.shippers.contactPerson"
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
@@ -468,16 +470,14 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Phone</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.shippers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                             <span class="text-danger"
@@ -485,43 +485,41 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>                                                     
 
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Reference</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.shippers.reference"
                                                                name="reference" type="text" class="form-control"
                                                                id="inputDefault">
                                                             
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Notes</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.shippers.notes" name="notes"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
+                                                         
                                                       </div>
                                                       <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
                                                             </div>
+
                                                             <div class="col-lg-6">
 
                                                                <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
@@ -532,16 +530,17 @@
                                                                </span>
 
                                                             </div>
-                                                            <div class="col-lg-3">
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i>Commodity </a> 
+                                                            <div class="col-lg-6">
+                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i> Commodity </a> 
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a> 
                                                             </div>
                                                          </div>
+                                                         
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
                                                             </div>
-                                                            <div class="col-lg-3 pr-0">
+                                                            <div class="col-lg-6">
 
                                                                <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
                                                                <span class="text-danger"
@@ -551,7 +550,7 @@
                                                             </div>
                                                                
 
-                                                            <div class="col-lg-3 pl-0">
+                                                            <div class="col-lg-6">
                                                                <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
                                                                   <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
                                                                      <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
@@ -573,10 +572,10 @@
                                                             <div class="col-lg-3"> </div>
                                                          </div>
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
                                                             </div>
-                                                            <div class="col-lg-3 pr-0">
+                                                            <div class="col-lg-6">
 
                                                                <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
                                                                <span class="text-danger"
@@ -585,7 +584,7 @@
                                                                </span>
                                                             </div>
 
-                                                            <div class="col-lg-3 pl-0">
+                                                            <div class="col-lg-6">
                                                                <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
                                                                      <ng-option value="ton(s)">ton(s)</ng-option>
                                                                      <ng-option value="Kilograms">Kilograms</ng-option>
@@ -602,17 +601,17 @@
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
+                                                         <div class="col-lg-12">
                                                             <label
                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Temperature Required</label>
                                                          </div>
-                                                         <div class="col-lg-3">
+                                                         <div class="col-lg-6">
                                                             <input [(ngModel)]="item.shippers.minTemprature"
                                                                name="minTemprature" type="text" class="form-control"
                                                                placeholder="From" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-2">
+                                                         <div class="col-lg-6">
                                                             <ng-select [(ngModel)]="item.shippers.minTempratureUnit"
                                                                name="minTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="10"
@@ -623,25 +622,20 @@
                                                                
                                                             </ng-select>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
 
 
 
 
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">&nbsp;</label>
-                                                         </div>
-                                                         <div class="col-lg-3">
+                                                         
+                                                         <div class="col-lg-6">
                                                             <input [(ngModel)]="item.shippers.maxTemprature"
                                                                name="maxTemprature" type="text" class="form-control"
                                                                placeholder="To" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-2">
+                                                         <div class="col-lg-6">
                                                             <ng-select [(ngModel)]="item.shippers.maxTempratureUnit"
                                                                name="maxTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="13"
@@ -651,14 +645,12 @@
                                                                
                                                             </ng-select>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
 
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold mb-0 text-3 text-dark"
+                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                            <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
                                                                for="inputDefault">Will Driver Load ?</label>
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
@@ -697,10 +689,9 @@
 
 
 
-                                       <div class="col-lg-6">
-                                          <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
-
-                                          <div class="pl-0 pr-5">
+                                       <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
+                                          
+                                          <div class="">
                                              <div class="toggle toggle-primary" data-plugin-toggle>
                                                 <section class="toggle">
                                                    <label (click)="toggleAccordian(i)"
@@ -711,12 +702,11 @@
                                                    </label>
                                                    <div class="" *ngIf="visibleIndex === i">
                                                       <div class="row">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Receiver</label>
-                                                         </div>
-                                                         <div class="col-lg-6 col-md-12">
+
                                                             <ng-select [(ngModel)]="item.receivers.receiverID"
                                                                name="receiverID" #receiverID="ngModel" required
                                                                receiverID class="form-control" data-select2-id="16"
@@ -728,17 +718,14 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3">
-
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Drop Off Location</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.receivers.dropOffLocation"
                                                                name="dropOffLocation" #dropOffLocation="ngModel"
                                                                required dropOffLocation
@@ -758,16 +745,13 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3">
-                                                         </div>
-                                                      </div>
+                                                                                                               </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         <div class="col-lg-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Delivery Date/Time</label>
                                                          </div>
-                                                         <div class="col-lg-3 pr-0">
+                                                         <div class="col-lg-6">
                                                             <div class="input-group">
                                                                <input [(ngModel)]="item.receivers.dropOffDate"
                                                                   name="dropOffDate" #dropOffDate="ngModel" required
@@ -779,7 +763,7 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3">
+                                                         <div class="col-lg-6">
                                                             <div class="input-group">
                                                                <input [(ngModel)]="item.receivers.dropOffTime"
                                                                   name="dropOffTime" #dropOffTime="ngModel" required
@@ -795,27 +779,24 @@
                                                          </div> -->
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Delivery Instruction</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <textarea [(ngModel)]="item.receivers.dropOffInstruction"
                                                                name="dropOffInstruction" class="form-control" rows="3"
                                                                id="textareaDefault"
                                                                style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
                                                          </div>
-                                                         <div class="col-lg-3">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Contact Person at Delivery</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.receivers.contactPerson"
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
@@ -824,16 +805,14 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Phone</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.receivers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                             <span class="text-danger"
@@ -841,39 +820,36 @@
                                                                This Field is required
                                                             </span>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Reference</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
                                                             <input [(ngModel)]="item.receivers.reference"
                                                                name="reference" type="text" class="form-control"
                                                                id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label  class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Notes</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+
+
                                                             <input [(ngModel)]="item.receivers.notes" name="notes"
                                                                type="text" class="form-control" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
+                                                         
                                                       </div>
                                                       <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
                                                             </div>
                                                             <div class="col-lg-6">
@@ -885,16 +861,17 @@
                                                                </span> 
 
                                                             </div>
-                                                            <div class="col-lg-3">
+                                                            <div class="col-lg-6">
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i> Commodity </a> 
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', z)"><i class="fas fa-minus"></i> </a> 
                                                             </div>
                                                          </div>
+
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
                                                             </div>
-                                                            <div class="col-lg-3 pr-0">
+                                                            <div class="col-lg-6">
 
                                                                <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
                                                                <span class="text-danger"
@@ -903,7 +880,7 @@
                                                                </span>
                                                             </div>
 
-                                                            <div class="col-lg-3 pl-0">
+                                                            <div class="col-lg-6">
                                                                <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
                                                                   <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
                                                                      <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
@@ -922,13 +899,13 @@
                                                                </span>
 
                                                             </div>
-                                                            <div class="col-lg-3"> </div>
+                                                            
                                                          </div>
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-3 labelalign">
+                                                            <div class="col-lg-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
                                                             </div>
-                                                            <div class="col-lg-3 pr-0">
+                                                            <div class="col-lg-6">
 
                                                                <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
                                                                <span class="text-danger"
@@ -937,7 +914,7 @@
                                                                </span>
                                                             </div>
 
-                                                            <div class="col-lg-3 pl-0">
+                                                            <div class="col-lg-6">
                                                                <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
                                                                      <ng-option value="ton(s)">ton(s)</ng-option>
                                                                      <ng-option value="Kilograms">Kilograms</ng-option>
@@ -953,17 +930,17 @@
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
+                                                         <div class="col-lg-12">
                                                             <label
                                                                class="control-label font-weight-semibold labelmt text-3 text-dark"
                                                                for="inputDefault">Temperature Required</label>
                                                          </div>
-                                                         <div class="col-lg-3">
+                                                         <div class="col-lg-6">
                                                             <input [(ngModel)]="item.receivers.minTemprature"
                                                                name="minTemprature" type="text" class="form-control"
                                                                placeholder="From" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-2">
+                                                         <div class="col-lg-6">
                                                             <ng-select [(ngModel)]="item.receivers.minTempratureUnit"
                                                                name="minTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="22"
@@ -974,22 +951,18 @@
                                                                
                                                             </ng-select>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
 
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">&nbsp;</label>
-                                                         </div>
-                                                         <div class="col-lg-3">
+                                                        
+                                                         
+                                                         <div class="col-lg-6">
                                                             <input [(ngModel)]="item.receivers.maxTemprature"
                                                                name="maxTemprature" type="text" class="form-control"
                                                                placeholder="To" id="inputDefault">
                                                          </div>
-                                                         <div class="col-lg-2">
+                                                         <div class="col-lg-6">
                                                             <ng-select [(ngModel)]="item.receivers.maxTempratureUnit"
                                                                name="maxTempratureUnit" data-plugin-selecttwo=""
                                                                class="form-control populate" data-select2-id="25"
@@ -1000,14 +973,12 @@
                                                                
                                                             </ng-select>
                                                          </div>
-                                                         <div class="col-lg-3 mt-1">
-                                                         </div>
+                                                         
                                                       </div>
 
                                                       <div class="row mt-3">
-                                                         <div class="col-lg-3 col-sm-12 col-xs-12 col-12 labelalign">
-                                                            <label
-                                                               class="control-label font-weight-semibold mb-0 text-3 text-dark"
+                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                            <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
                                                                for="inputDefault">Will Driver Unload ?</label>
                                                          </div>
                                                          <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
@@ -1055,21 +1026,21 @@
                   <div class="form-group row">
                      <div class="col-lg-12 text-right">
                         <button (click)="addAccordian()" type="button" class="btn btn-success">Add More</button>
-                        <button *ngIf="shippersReceivers.length > 1" (click)="removeAccordian(i)" type="button" class="btn btn-success">Remove</button>
+                        <button *ngIf="shippersReceivers.length > 1" (click)="removeAccordian(i)" type="button" class="btn btn-success ml-2">Remove</button>
                      </div>
                   </div>
          
                   <div class="form-group row">
 
-                     <div class="col-lg-6">
+                     <div class="col-lg-12 pr-0">
                         <h4 class="mt-0 text-dark font-weight-bold text-4">Additional Details</h4>
 
                         <div class="row mt-3">
-                           <div class="col-lg-3 labelalign">
+                           
+                           <div class="col-lg-4 offset-lg-1">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">&nbsp;</label>
-                           </div>
-                           <div class="col-lg-6">
+                                 
                               <div class="checkbox-custom checkbox-default">
                                  <input (change)="checkTrailer($event.target.value)"
                                     [(ngModel)]="orderData.additionalDetails.dropTrailer" name="dropTrailer"
@@ -1079,18 +1050,17 @@
                               </div>
 
                            </div>
-                           <div class="col-lg-3">
-                           </div>
+                           
                         </div>
 
 
 
                         <div class="row mt-3" *ngIf="!orderData.additionalDetails.dropTrailer">
-                           <div class="col-lg-3 labelalign">
+                           
+                           <div class="col-lg-4 offset-lg-1 pr-0">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">Trailer Type</label>
-                           </div>
-                           <div class="col-lg-6">
+
                               <ng-select [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                  class="form-control populate">
 
@@ -1105,9 +1075,8 @@
                         </div>
 
                         <div class="row mt-3">
-                           <div class="col-lg-3 labelalign">
-                              <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load
-                                 Type</label>
+                           <div class="col-lg-2 offset-lg-1">
+                              <label class="control-label font-weight-semibold text-3 text-dark" for="inputDefault">Load Type</label>
                            </div>
                            <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
@@ -1120,7 +1089,7 @@
                               </div>
                            </div>
 
-                           <div class="col-lg-3">
+                           <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
                                  <input name="loadType2"
 
@@ -1158,35 +1127,35 @@
                         </div>
 
 
-                     </div>
-                     <div class="col-lg-6">
-                        <div class="row mt-5">
-                           <div class="col-lg-3 labelalign">
-                              <label
-                                 class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
-                           </div>
-                           <div class="col-lg-6 col-md-12">
+
+                        <div class="row mt-2">
+                           
+                           <div class="col-lg-4 offset-lg-1 pr-0">
+                              <label class="control-label font-weight-semibold labelmt text-3 text-dark">Attachments</label>
                               <input [(ngModel)]="orderData.additionalDetails.uploadedDocs" name="uploadedDocs"
-                                 type="file" (change)="selectDocuments($event)" multiple class="form-control border-0 p-0">
+                                 type="file" (change)="selectDocuments($event)" multiple class="form-control p-0">
                            </div>
-                           <div class="col-lg-3"> </div>
+                           
                         </div>
+
+
                      </div>
+                    
                   </div>
 
 
                   <div class="form-group row">
 
-                     <div class="col-lg-8">
+                     <div class="col-lg-7">
                         <h4 class="mt-0 text-dark font-weight-bold text-4">Charges</h4>
 
 
                         <div class="row mt-3">
-                           <div class="col-lg-3 labelalign">
+                           <div class="col-lg-9 offset-lg-2 pl-0">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                  for="inputDefault">Freight Fee</label>
                            </div>
-                           <div class="col-lg-3 col-md-12">
+                           <div class="col-lg-3 offset-lg-2 pl-0 col-md-12">
                               <ng-select [(ngModel)]="orderData.charges.freightFee.type" name="freight_type"
 
                               #freightType="ngModel" required freightType
@@ -1240,16 +1209,16 @@
                               </span>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span>{{orderData.charges.freightFee.amount}}</span> </p>
+                              <p class="text-right"> <span>{{orderData.charges.freightFee.amount}}</span> </p>
                            </div>
 
                         </div>
                         <div class="row mt-3">
-                           <div class="col-lg-3 labelalign">
+                           <div class="col-lg-9 offset-lg-2 pl-0">
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                  for="inputDefault">Fuel Surcharge</label>
                            </div>
-                           <div class="col-lg-3">
+                           <div class="col-lg-3 offset-lg-2 pl-0">
                               <ng-select [(ngModel)]="orderData.charges.fuelSurcharge.type" name="fuel_type"
                                  class="form-control populate" data-select2-id="55" tabindex="-1" aria-hidden="true">
 
@@ -1285,15 +1254,15 @@
                               </ng-select>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span>{{orderData.charges.fuelSurcharge.amount}} </span></p>
+                              <p class="text-right"> <span>{{orderData.charges.fuelSurcharge.amount}} </span></p>
                            </div>
                         </div>
                         <div class="row mt-3" *ngFor="let item of accessFeesInfo.accessFees; let i = index;">
-                           <div class="col-lg-3 labelalign">
+                           <div class="col-lg-9 offset-lg-2 pl-0">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault"> Accessorial Fee</label>
                            </div>
-                           <div class="col-lg-3">
+                           <div class="col-lg-3 offset-lg-2 pl-0">
                               <ng-select [(ngModel)]="item.type" name="accessfee_type{{i}}"
                                  class="form-control populate">
 
@@ -1324,18 +1293,18 @@
                               </ng-select>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span>{{item.amount}} </span></p>
+                              <p class="text-right"> <span>{{item.amount}} </span></p>
                            </div>
                         </div>
                         <a class="btn btn-success btn-sm" (click)="addAccessFee('accessFee')" href="javascript:;"><i class="fas fa-plus"></i> 
                            Add Accessorial Fee</a>
 
                         <div class="row mt-3" *ngFor="let item of accessorialDeductionInfo.accessDeductions; let i = index;" >
-                           <div class="col-lg-3 labelalign">
+                           <div class="col-lg-9 offset-lg-2 pl-0">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">Accessorial Deduction</label>
                            </div>
-                           <div class="col-lg-3">
+                           <div class="col-lg-3 offset-lg-2 pl-0">
                               <ng-select [(ngModel)]="item.type" name="type{{i}}"
                                  class="form-control populate" data-select2-id="61" tabindex="-1" aria-hidden="true">
 
@@ -1367,7 +1336,7 @@
                               </ng-select>
                            </div>
                            <div class="col-lg-2">
-                              <p class="text-right">$ <span>{{item.amount}} </span></p>
+                              <p class="text-right"> <span>{{item.amount}} </span></p>
                            </div>
                         </div>
                         <a class="btn btn-success btn-sm" href="javascript:;" (click)="addAccessFee('accessDeduct')"><i class="fas fa-plus"></i> Add Accessorial
@@ -1376,14 +1345,14 @@
                         <div class="row">
                            <div class="col-lg-8">
                               <div class="row mt-3" *ngFor="let item of orderData.taxesInfo; let i = index;">
-                                 <div class="col-lg-3 labelalign">
+                                 <div class="col-lg-2 offset-lg-3 pl-0">
                                     <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax
                                        {{i + 1}}</label>
                                  </div>
                                  <div class="col-lg-2">
                                     <input type="text" class="form-control" value="{{item.name}}">
                                  </div>
-                                 <div class="col-lg-2 pr-0 pl-0">
+                                 <div class="col-lg-3">
                                     <div class="input-group">
                                        <input type="text" class="form-control" value="{{item.amount}}" placeholder="0.00">
                                        <span class="input-group-append">
@@ -1396,16 +1365,15 @@
                               </div>
                               
                               <div class="row mt-3">
-                                 <div class="col-lg-3 labelalign">
-                                    <label
-                                       class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
+                                 <div class="col-lg-2 offset-lg-3 pl-0">
+                                    <label class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
                                  </div>
                                  <div class="col-lg-2">
                                     <input (blur)="calculateAmount()"
                                        [(ngModel)]="orderData.discount.amount" name="amount" type="text"
                                        class="form-control" value="0">
                                  </div>
-                                 <div class="col-lg-2 pl-0">
+                                 <div class="col-lg-3">
                                     <ng-select (change)="calculateAmount()"
                                        [(ngModel)]="orderData.discount.unit" name="unit" data-plugin-selectTwo
                                        class="form-control populate">
@@ -1463,7 +1431,7 @@
 
                      </div>
 
-                     <div class="col-lg-4">
+                     <div class="col-lg-5">
 
                         <div class="col-lg-12 bordall">
                            <h5 class="font-weight-semibold text-4 text-dark">Miles</h5>

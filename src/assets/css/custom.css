@@ -1903,7 +1903,12 @@ table.dataTable thead th, table.dataTable thead td {
 .checkboxalign{vertical-align: middle !important;}
 
 /*drop down icon for common pages*/
-.togglecolor::after{color:#999;}
+.togglecolor::after{
+  color:#999;
+  margin-top: 8px !important;
+  float: right !important;
+}
+
 
 /*drop down icon on asset page*/
 .toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}

@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <div class="btn-group flex-wrap" style="min-width:190px;">
+                            <div class="btn-group flex-wrap" style="width:100%;">
                                 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle togglecolor" data-toggle="dropdown" id="categorySelect">Search by Category<span
                                         class="caret"></span></button>
                                 <div class="dropdown-menu dutystatwd" role="menu">
@@ -91,7 +91,7 @@
                 </form>
             </header>
             <section class="card mt-0 mb-4">
-                <div class="card-body pt-3">
+                <div class="card-body pl-0 pr-0 pt-3">
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
@@ -115,10 +115,13 @@
                                     (click)="fetchTabData('cancelled')">Cancelled Dispatch :
                                     {{ cancelledOrdersCount }}</a>
                             </li>
+                            <!--
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="quoted-tab" (click)="fetchTabData('quoted')">Quoted :
                                     {{ quotedOrdersCount }}</a>
                             </li>
+                            -->
+
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="invoiced-tab"
                                     (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrdersCount }}</a>
@@ -141,8 +144,9 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Customer</th>
                                         <th>Pickup</th>
-                                        <th>Deliver</th>
+                                        <th>Drop</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -154,6 +158,7 @@
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
                                             Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
@@ -180,9 +185,11 @@
                                         <td>Name: {{order.freightDetails.commodity}}<br>
                                             Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
                                             Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
-                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br> -->
-                                            Received: 0<br>
+                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br> 
+                                        Received: 0<br>
                                             Balance: 0
+                                        -->
+                                            
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
