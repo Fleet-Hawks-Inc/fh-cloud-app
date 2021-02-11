@@ -203,26 +203,7 @@
                                      </div>
                                   </div>
                                </div>
-                               <div *ngIf="!vehicleID" class="col-lg-5 offset-lg-1">
-                                  <div class="row">
-                                     <div class="col-lg-7 text-center">
-                                        <ngx-slick-carousel class="carousel"
-                                           #slickModal="slick-carousel"
-                                           [config]="slideConfig"
-                                           >
-                                           <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                                              <img src="{{slide}}" alt="">
-                                           </div>
-                                        </ngx-slick-carousel>
-                                        <div class="mt-3">
-                                           <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                              <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1" name="uploadedPhotos" type="file" multiple >
-                                           </div>
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                               <div *ngIf="vehicleID" class="col-lg-5 offset-lg-1">
+                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row mt-4">                                    
                                    <div class="col-lg-10">
                                     <div width="80%"  style="overflow-y: scroll;overflow-x:hidden; min-height:auto;max-height:437px">                                
@@ -232,11 +213,21 @@
                                                  <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1" style="cursor:pointer;height:138px!important;width:100%;" src="{{slide}}" alt="img"></a>
                                                  <hr class="m-3">
                                                  <div class="row">
-                                                     <div class="col-lg-10">Image</div>
-                                                     <div class="col-lg-2 text-right"> <i (click)=deleteImage(i) class="fas fa-times text-danger"></i> </div>
+                                                     <!-- <div class="col-lg-10">Image</div> -->
+                                                     <div class="col-lg-2 text-right"> <i (click)=deleteUploadedImage(i) class="fas fa-times text-danger"></i> </div>
                                                  </div>
                                              </div>
                                          </div>
+                                         <div class="col-lg-6" *ngFor="let slide of localPhotos; let i = index">
+                                             <div class="vehicle-photo-box mb-1">
+                                                <a [routerLink]="" (click)=openImageModal(slide)><img class="img-fluid z-depth-1" style="cursor:pointer;height:138px!important;width:100%;" src="{{slide}}" alt="img"></a>
+                                                <hr class="m-3">
+                                                <div class="row">
+                                                   <!-- <div class="col-lg-10">Image</div> -->
+                                                   <div class="col-lg-2 text-right"> <i (click)=deleteLocalImage(i) class="fas fa-times text-danger"></i> </div>
+                                                </div>
+                                             </div>
+                                          </div>
                                      </div>
                                  </div>
                                    </div>
@@ -280,7 +271,7 @@
                                        <div class="col-lg-10">
                                           <div class="checkbox mt-1">
                                              <label>
-                                                <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder" value="true">
+                                                <input type="checkbox" name="annualSafetyReminder" [(ngModel)]="annualSafetyReminder">
                                                 Set Reminder
                                              </label>
                                           </div>
@@ -412,7 +403,7 @@
                                   <div class="row">
                                     <div class="checkbox mt-2 pl-3">
                                        <label>
-                                          <input type="checkbox" value="true" name="iftaReporting"
+                                          <input type="checkbox" name="iftaReporting"
                                           [(ngModel)]="iftaReporting">
                                        Enable IFTA Reporting
                                        </label>
@@ -433,7 +424,7 @@
                                     </div> -->
                                      <div class="col-lg-10">
 
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Document<span class="mandfield text-2 ml-1"></span></label>
                                         <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control border-0 p-0">
 
                                      </div>
@@ -1745,7 +1736,7 @@
                                      Odometer&nbsp; <span
                                      class="text-1 optional-label-color">(optional)</span></label>
                                   <input type="number" class="form-control" name="purchase.purchaseOdometer" min="1"
-                                     [(ngModel)]="purchase.purchaseOdometer" placeholder="Select purchase odmeter">
+                                     [(ngModel)]="purchase.purchaseOdometer" placeholder="Enter purchase odometer">
                                </div>
                             </div>
                             <div class="col-lg-5 offset-lg-1">
