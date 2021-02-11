@@ -815,15 +815,14 @@
                                 <th width="20%">Total</th>
                                 <th width="10%">MPG</th>
                                 <th width="10%">Cost/Mile</th>
-                                <th width="5%"></th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr *ngFor="let fuel of fuelEntries">
-                                <td>Mar 15, 2020</td>
-                                <td>23,8567 mi</td>
-                                <td>267 mi</td>
-                                <td>23.7</td>
+                                <td>{{fuel.fuelDate}}</td>
+                                <td>{{fuel.additionalDetails.odometer}}</td>
+                                <td>{{fuel.totalGallons}}</td>
+                                <td>{{fuel.totalLiters}}</td>
                                 <td>
                                   235 USD (<span class="font-size-12"
                                     >2.3/gallon</span
@@ -831,37 +830,6 @@
                                 </td>
                                 <td>23,85</td>
                                 <td>2.09 USD</td>
-                                <td>
-                                  <div class="btn-group flex-wrap mx-2">
-                                    <button
-                                      type="button"
-                                      class="btn btn-default btn-xs dropdown-toggle"
-                                      data-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      <span class="caret"></span>
-                                    </button>
-                                    <div
-                                      class="dropdown-menu"
-                                      role="menu"
-                                      x-placement="bottom-start"
-                                      style="
-                                        position: absolute;
-                                        will-change: transform;
-                                        top: 0px;
-                                        left: 0px;
-                                        transform: translate3d(0px, 38px, 0px);
-                                      "
-                                    >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Edit</a
-                                      >
-                                      <a class="dropdown-item text-1" href=""
-                                        >Delete</a
-                                      >
-                                    </div>
-                                  </div>
-                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -897,7 +865,7 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr *ngFor="let serviceLog of serviceHistory">
                                 <td>Mar 6,2019</td>
                                 <td>
                                   Fines<br /><span class="font-size-12"
@@ -907,17 +875,6 @@
                                 <td>Mr. X</td>
                                 <td>Manually Entered</td>
                                 <td>56 USD</td>
-                              </tr>
-                              <tr>
-                                <td>Mar 6,2019</td>
-                                <td>
-                                  Insurance<br /><span class="font-size-12"
-                                    >6 month insurance policy</span
-                                  >
-                                </td>
-                                <td>Mr. Y</td>
-                                <td>Manually Entered</td>
-                                <td>578 USD</td>
                               </tr>
                             </tbody>
                           </table>
@@ -961,13 +918,6 @@
                                 <td>Jun 30,2020</td>
                                 <td>340000</td>
                                 <td></td>
-                              </tr>
-                              <tr>
-                                <td>Elon Musk</td>
-                                <td>Jun 1,2020</td>
-                                <td>Jun 15,2020</td>
-                                <td>340000</td>
-                                <td>500000</td>
                               </tr>
                             </tbody>
                           </table>
