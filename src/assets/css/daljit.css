@@ -618,3 +618,32 @@ margin-left: 0;
   #addVehicleProgramModal .modal-body .page-header {
     display: none;
   }
+
+table.geofence-table thead tr, table.geofence-table tbody tr {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+}
+table.geofence-table, .geofence-table thead, .geofence-table tbody {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+}
+table.geofence-table tbody tr td:last-child {
+    width: 100%;
+    padding: 0;
+}
+table.geofence-table tbody {
+    background-color: #fff;
+}
+.map-search__results ul li a {
+    padding: 5px 10px;
+    display: block;
+    text-decoration: none;
+    transition: all 0.2s linear 0s;
+}
+.map-search__results ul li a:hover {
+    background: #2e353e;
+    color: #fff;
+}

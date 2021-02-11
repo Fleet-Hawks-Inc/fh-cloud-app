@@ -17,13 +17,13 @@
                                 [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search by vehicle"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
-                        <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
-                        setVehicle(
-                          suggestedVehicle.vehicleID,
-                          suggestedVehicle.vehicleIdentification
-                        )
-                      ">
-                            {{ suggestedVehicle.vehicleIdentification }}
+                        <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
+                                    (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"> {{
+                                        suggestedVehicle.vehicleIdentification }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
 

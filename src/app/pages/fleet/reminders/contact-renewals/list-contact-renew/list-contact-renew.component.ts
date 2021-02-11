@@ -45,7 +45,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getReminders();
+    this.getRemindersCount();
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
@@ -142,12 +142,22 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
 
-  getReminders() {
-    this.apiService
-      .getData('reminders/get-reminders/contact')
-      .subscribe((result) => {
+  // getReminders() {
+  //   this.apiService
+  //     .getData('reminders/get-reminders/contact')
+  //     .subscribe((result) => {
+  //       this.totalRecords = result.Count;
+  //     });
+  // }
+
+  getRemindersCount() {
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
   initDataTable() {
@@ -218,7 +228,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
     if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender('reset');
     } else {
       return false;
@@ -234,7 +244,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       this.filterStatus = '';
 
       this.remindersData = [];
-      this.getReminders()
+      this.getRemindersCount()
       this.rerender();
     } else {
       return false;
@@ -249,7 +259,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
         // console.log('result', result);
 
         this.remindersData = [];
-        this.getReminders()
+        this.getRemindersCount()
         this.rerender();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });

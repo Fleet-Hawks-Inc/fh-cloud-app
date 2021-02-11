@@ -381,16 +381,16 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchCountries();
-    this.fetchCustomers();
-    this.fetchBrokers();
-    this.fetchVendors();
-    this.fetchCarriers();
-    this.fetchOwnerOperators();
-    this.fetchShippers();
-    this.fetchConsignee();
-    this.fetchStaffs();
-    this.fetchFcCompanies();
-    this.fetchDrivers();
+    this.fetchCustomersCount();
+    this.fetchBrokersCount();
+    this.fetchVendorsCount();
+    this.fetchCarriersCount();
+    this.fetchOwnerOperatorsCount();
+    this.fetchShippersCount();
+    this.fetchConsigneeCount();
+    this.fetchStaffsCount();
+    this.fetchFcCompaniesCount();
+    this.fetchDriversCount();
 
     this.initDataTable();
     this.initDataTableBroker();
@@ -595,7 +595,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
-          this.fetchCustomers();
+          this.fetchCustomersCount();
           this.activeDiv = 'customerTable';
           this.rerender();
           this.toastr.success('Customer Added Successfully');
@@ -746,7 +746,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addBrokerModal').modal('hide');
-        this.fetchBrokers();
+        this.fetchBrokersCount();
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
@@ -814,7 +814,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.response = res;
         this.hasSuccess = true;
         $('#addOwnerOperatorModal').modal('hide');
-        this.fetchOwnerOperators();
+        this.fetchOwnerOperatorsCount();
         this.showMainModal();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
@@ -1032,7 +1032,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
-          this.fetchVendors();
+          this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
           this.activeDiv = 'vendorTable';
@@ -1171,7 +1171,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addCarrierModal').modal('hide');
-          this.fetchCarriers();
+          this.fetchCarriersCount();
           this.showMainModal();
           this.carriers = [];
           this.activeDiv = 'carrierTable';
@@ -1313,7 +1313,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addShipperModal').modal('hide');
-          this.fetchShippers();
+          this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
           this.activeDiv = 'shipperTable';
@@ -1457,7 +1457,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
-          this.fetchConsignee();
+          this.fetchConsigneeCount();
           this.rerender();
           this.toastr.success('Consignee Added Successfully');
         }
@@ -1593,7 +1593,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addFCModal').modal('hide');
-          this.fetchFcCompanies();
+          this.fetchFcCompaniesCount();
           this.showMainModal();
           this.brokers = [];
           this.activeDiv = 'brokerTable';
@@ -1734,7 +1734,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.hasSuccess = true;
           $('#addStaffModal').modal('hide');
           this.staffs = [];
-          this.fetchStaffs();
+          this.fetchStaffsCount();
           this.showMainModal();
           this.activeDiv = 'staffTable';
           this.rerender();
@@ -1944,84 +1944,168 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchAddress() {
     return this.apiService.getData('addresses');
   }
-  
-  fetchCustomers() {
-    // return this.apiService.getData('customers');
-    this.apiService.getData('customers')
-      .subscribe((result: any) => {
+ 
+  fetchCustomersCount() {
+    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
-  fetchOwnerOperators() {
-    // return this.apiService.getData('ownerOperators');
-    this.apiService.getData('ownerOperators')
-      .subscribe((result: any) => {
+  // fetchOwnerOperators() {
+  //   // return this.apiService.getData('ownerOperators');
+  //   this.apiService.getData('ownerOperators')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsOperator = result.Count;
+  //     });
+  // }
+  
+  fetchOwnerOperatorsCount() {
+    this.apiService.getData('ownerOperators/get/count?operatorID='+this.filterVal.operatorID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsOperator = result.Count;
-      });
+      },
+    });
   }
 
-  fetchDrivers() {
-    // return this.apiService.getData('drivers');
-    this.apiService.getData('drivers')
-      .subscribe((result: any) => {
+  fetchDriversCount() {
+    this.apiService.getData('drivers/get/count?driverID='+this.filterVal.driverID+'&dutyStatus=').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsDriver = result.Count;
-      });
+      },
+    });
   }
   
-  fetchBrokers() {
-    // return this.apiService.getData('brokers');
-    this.apiService.getData('brokers')
-      .subscribe((result: any) => {
+  // fetchBrokers() {
+  //   // return this.apiService.getData('brokers');
+  //   this.apiService.getData('brokers')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsBroker = result.Count;
+  //   });
+  // }
+
+  fetchBrokersCount() {
+    this.apiService.getData('brokers/get/count?brokerID='+this.filterVal.brokerID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsBroker = result.Count;
+      },
     });
   }
 
-  fetchVendors() {
-    // return this.apiService.getData('vendors');
-    this.apiService.getData('vendors')
-      .subscribe((result: any) => {
+  // fetchVendors() {
+  //   // return this.apiService.getData('vendors');
+  //   this.apiService.getData('vendors')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsVendor = result.Count;
+  //   });
+  // }
+
+  fetchVendorsCount() {
+    this.apiService.getData('vendors/get/count?vendorID='+this.filterVal.vendorID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsVendor = result.Count;
+      },
     });
   }
 
-  fetchCarriers() {
-    // return this.apiService.getData('externalCarriers');
-    this.apiService.getData('externalCarriers')
-      .subscribe((result: any) => {
+  // fetchCarriers() {
+  //   // return this.apiService.getData('externalCarriers');
+  //   this.apiService.getData('externalCarriers')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsCarrier = result.Count;
+  //   });
+  // }
+
+  fetchCarriersCount() {
+    this.apiService.getData('externalCarriers/get/count?infoID='+this.filterVal.carrierID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsCarrier = result.Count;
+      },
     });
   }
   
-  fetchShippers() {
-    // return this.apiService.getData('shippers');
-    this.apiService.getData('shippers')
-      .subscribe((result: any) => {
+  // fetchShippers() {
+  //   // return this.apiService.getData('shippers');
+  //   this.apiService.getData('shippers')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsShipper = result.Count;
+  //   });
+  // }
+
+  fetchShippersCount() {
+    this.apiService.getData('shippers/get/count?shipperID='+this.filterVal.shipperID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsShipper = result.Count;
+      },
     });
   }
   
-  fetchConsignee() {
-    // return this.apiService.getData('receivers');
-    this.apiService.getData('receivers')
-      .subscribe((result: any) => {
+  // fetchConsignee() {
+  //   // return this.apiService.getData('receivers');
+  //   this.apiService.getData('receivers')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsConsignee = result.Count;
+  //   });
+  // }
+
+  fetchConsigneeCount() {
+    this.apiService.getData('receivers/get/count?consigneeID='+this.filterVal.consigneeID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsConsignee = result.Count;
+      },
     });
   }
 
-  fetchStaffs() {
-    // return this.apiService.getData('staffs');
-    this.apiService.getData('staffs')
-      .subscribe((result: any) => {
+  // fetchStaffs() {
+  //   // return this.apiService.getData('staffs');
+  //   this.apiService.getData('staffs')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsStaff = result.Count;
+  //   });
+  // }
+
+  fetchStaffsCount() {
+    this.apiService.getData('staffs/get/count?staffID='+this.filterVal.staffID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsStaff = result.Count;
+      },
     });
   }
 
-  fetchFcCompanies() {
-    // return this.apiService.getData('factoringCompanies');
-    this.apiService.getData('factoringCompanies')
-      .subscribe((result: any) => {
+  // fetchFcCompanies() {
+  //   // return this.apiService.getData('factoringCompanies');
+  //   this.apiService.getData('factoringCompanies')
+  //     .subscribe((result: any) => {
+  //       this.totalRecordsCompany = result.Count;
+  //   });
+  // }
+
+  fetchFcCompaniesCount() {
+    this.apiService.getData('factoringCompanies/get/count?companyID='+this.filterVal.companyID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecordsCompany = result.Count;
+      },
     });
   }
 
@@ -2062,7 +2146,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe(async(result: any) => {
         curr.customers = [];
         curr.rerender();
-        curr.fetchCustomers();
+        curr.fetchCustomersCount();
         curr.toastr.success('Customer deleted successfully');
         
         // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
@@ -2077,7 +2161,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.drivers = [];
         this.rerender();
-        this.fetchDrivers();
+        this.fetchDriversCount();
         this.toastr.success('Driver deleted successfully');
         // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
       });
@@ -2091,7 +2175,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.brokers = [];
         this.rerender();
-        this.fetchBrokers();
+        this.fetchBrokersCount();
         this.toastr.success('Broker deleted successfully');
         // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
@@ -2105,7 +2189,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.vendors = [];
         this.rerender();
-        this.fetchVendors();
+        this.fetchVendorsCount();
         this.toastr.success('Vendor deleted successfully');
         // this.vendors = this.vendors.filter(u => u.vendorID !== item.vendorID);
       });
@@ -2119,7 +2203,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.shippers = [];
         this.rerender();
-        this.fetchShippers();
+        this.fetchShippersCount();
         this.toastr.success('Shipper deleted successfully');
         // this.shippers = this.shippers.filter(u => u.shipperID !== item.shipperID);
       });
@@ -2132,7 +2216,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.receivers = [];
         this.rerender();
-        this.fetchConsignee();
+        this.fetchConsigneeCount();
         this.toastr.success('Consignee deleted successfully');
         // this.receivers = this.receivers.filter(u => u.receiverID !== item.receiverID);
       });
@@ -2146,7 +2230,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.staffs = [];
         this.rerender();
-        this.fetchStaffs();
+        this.fetchStaffsCount();
         this.toastr.success('Staff deleted successfully');
         // this.staffs = this.staffs.filter(u => u.staffID !== item.staffID);
       });
@@ -2160,7 +2244,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.fcCompanies = [];
         this.rerender();
-        this.fetchFcCompanies();
+        this.fetchFcCompaniesCount();
         this.toastr.success('Company deleted successfully');
         // this.fcCompanies = this.fcCompanies.filter(u => u.factoringCompanyID !== item.factoringCompanyID);
       });
@@ -2174,7 +2258,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.ownerOperatorss = [];
         this.rerender();
-        this.fetchOwnerOperators();
+        this.fetchOwnerOperatorsCount();
         this.toastr.success('Operator deleted successfully');
         // this.toastr.success('Owner operator deleted successfully');
       });
@@ -2188,7 +2272,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.carriers = [];
         this.rerender();
-        this.fetchCarriers();
+        this.fetchCarriersCount();
         this.toastr.success('Carrier deleted successfully');
         // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
@@ -3208,6 +3292,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.customerID != '' || this.filterVal.customerName != '') {
         this.customers = [];
         this.activeDiv = 'customerTable';
+        this.fetchCustomersCount();
         await this.rerender();
       } else {
         return false
@@ -3217,6 +3302,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.brokerID != '' || this.filterVal.brokerName != '') {
         this.brokers = [];
         this.activeDiv = 'brokerTable';
+        this.fetchBrokersCount();
         await this.rerender();
       } else {
         return false
@@ -3226,6 +3312,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.vendorID != '' || this.filterVal.vendorName != '') {
         this.vendors = [];
         this.activeDiv = 'vendorTable';
+        this.fetchVendorsCount();
         await this.rerender();
       } else {
         return false
@@ -3235,6 +3322,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.carrierID != '' || this.filterVal.carrierName != '') {
         this.carriers = [];
         this.activeDiv = 'carrierTable';
+        this.fetchCarriersCount();
         await this.rerender();
       } else {
         return false
@@ -3244,6 +3332,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '') {
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
+        this.fetchOwnerOperatorsCount();
         await this.rerender();
       } else {
         return false
@@ -3253,6 +3342,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.shipperID != '' || this.filterVal.shipperName != '') {
         this.shippers = [];
         this.activeDiv = 'shipperTable';
+        this.fetchShippersCount();
         await this.rerender();
       } else {
         return false
@@ -3262,6 +3352,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '') {
         this.receivers = [];
         this.activeDiv = 'consigneeTable';
+        this.fetchConsigneeCount();
         await this.rerender();
       } else {
         return false
@@ -3271,6 +3362,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.staffID != '' || this.filterVal.staffName != '') {
         this.staffs = [];
         this.activeDiv = 'staffTable';
+        this.fetchStaffsCount();
         await this.rerender();
       } else {
         return false
@@ -3280,6 +3372,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '') {
         this.fcCompanies = [];
         this.activeDiv = 'companyTable';
+        this.fetchFcCompaniesCount()
         await this.rerender();
       } else {
         return false
@@ -3289,6 +3382,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       if(this.filterVal.driverID != '' || this.filterVal.driverName != '') {
         this.drivers = [];
         this.activeDiv = 'driverTable';
+        this.fetchDriversCount();
         await this.rerender();
       } else {
         return false
@@ -3305,6 +3399,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.customerID = '';
         this.filterVal.customerName = '';
         this.suggestedCustomers = [];
+        this.fetchCustomersCount();
         await this.rerender();
       } else {
         return false
@@ -3317,6 +3412,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.brokerID = '';
         this.filterVal.brokerName = '';
         this.suggestedBrokers = [];
+        this.fetchBrokersCount();
         await this.rerender();
 
       } else {
@@ -3330,6 +3426,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.vendorID = '';
         this.filterVal.vendorName = '';
         this.suggestedVendors = [];
+        this.fetchVendorsCount();
         await this.rerender();
       } else {
         return false
@@ -3342,6 +3439,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.carrierID = '';
         this.filterVal.carrierName = '';
         this.suggestedCarriers = [];
+        this.fetchCarriersCount();
         await this.rerender();
       } else {
         return false
@@ -3354,6 +3452,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.operatorID = '';
         this.filterVal.operatorName = '';
         this.suggestedOperators = [];
+        this.fetchOwnerOperatorsCount();
         await this.rerender();
       } else {
         return false
@@ -3366,6 +3465,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.shipperID = '';
         this.filterVal.shipperName = '';
         this.suggestedShipper = [];
+        this.fetchShippersCount();
         await this.rerender();
       } else {
         return false
@@ -3378,6 +3478,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.consigneeID = '';
         this.filterVal.consigneeName = '';
         this.suggestedConsignees = [];
+        this.fetchConsigneeCount();
         await this.rerender();
       } else {
         return false
@@ -3390,6 +3491,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.staffID = '';
         this.filterVal.staffName = '';
         this.suggestedStaffs = [];
+        this.fetchStaffsCount();
         await this.rerender();
       } else {
         return false
@@ -3402,6 +3504,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.companyID = '';
         this.filterVal.fcompanyName = '';
         this.suggestedCompany = [];
+        this.fetchStaffsCount();
         await this.rerender();
       } else {
         return false
@@ -3414,6 +3517,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.driverID = '';
         this.filterVal.driverName = '';
         this.suggestedDriver = [];
+        this.fetchDriversCount();
         await this.rerender();
       } else {
         return false
