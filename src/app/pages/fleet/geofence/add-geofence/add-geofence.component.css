@@ -20,4 +20,11 @@
 .map-search__results {
     left: unset;
     top: unset;
+    display: none;
+}
+.map-search__results ul{
+    list-style: none;
+}
+.show-search__result .map-search__results {
+    display: block !important;
 }

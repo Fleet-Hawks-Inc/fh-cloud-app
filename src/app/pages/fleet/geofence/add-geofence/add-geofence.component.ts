@@ -324,6 +324,8 @@ export class AddGeofenceComponent implements OnInit {
     let target;
     this.searchTerm.pipe(
       map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
         target = e;
         return e.target.value;
       }),
@@ -357,7 +359,7 @@ export class AddGeofenceComponent implements OnInit {
       animate: true,
       duration: 1.5
     });
-
+    $('div').removeClass('show-search__result');
   }
 
 
