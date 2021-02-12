@@ -41,6 +41,8 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   invoicedOrdersCount = 0;
   partiallyPaidOrdersCount = 0;
 
+  customersObjects: any = {};
+
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -48,6 +50,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     this.fetchOrders();
     this.initDataTable('all');
+    this.fetchCustomersByIDs();
   }
 
   ngAfterViewInit(): void {
@@ -99,6 +102,15 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       }
     });
   };
+
+  /*
+   * Get all customers's IDs of names from api
+   */
+  fetchCustomersByIDs() {
+    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
+  }
 
   fetchTabData(tabType) {
     let current = this;
