@@ -178,6 +178,7 @@ vehicles= [];
   purchase = {
     purchaseVendorID: '',
     warrantyExpirationDate: '',
+    warrantyExpirationDateReminder: false,
     purchasePrice: '',
     purchasePriceCurrency: '',
     warrantyExpirationMeter: '',
@@ -411,6 +412,7 @@ vehicles= [];
       this.purchase = {
         purchaseVendorID: this.vehicleSession.purchase.purchaseVendorID,
         warrantyExpirationDate: this.vehicleSession.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.vehicleSession.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.vehicleSession.purchase.purchasePrice,
         purchasePriceCurrency: this.vehicleSession.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.vehicleSession.purchase.warrantyExpirationMeter,
@@ -797,6 +799,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1002,6 +1005,7 @@ vehicles= [];
             purchase: {
               purchaseVendorID: '',
               warrantyExpirationDate: '',
+              warrantyExpirationDateReminder: false,
               purchasePrice: '',
               purchasePriceCurrency: 'CAD',
               warrantyExpirationMeter: '',
@@ -1234,6 +1238,7 @@ vehicles= [];
         this.purchase = {
           purchaseVendorID: result.purchase.purchaseVendorID,
           warrantyExpirationDate: result.purchase.warrantyExpirationDate,
+          warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
           purchasePrice: result.purchase.purchasePrice,
           purchasePriceCurrency: result.purchase.purchasePriceCurrency,
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
@@ -1419,6 +1424,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1671,6 +1677,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1858,6 +1865,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,

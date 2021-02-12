@@ -155,7 +155,7 @@ export class NewAceManifestComponent implements OnInit {
   passengerDocStates = [];
   shipments = [
     {
-      shipmentType: '',
+      type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -371,7 +371,7 @@ getThirdPartyStates(s,p){
   // TRUCK DATA
   addTruckSeal(){
     this.truck.sealNumbers.push({sealNumber: ''});
-    if(this.truck.sealNumbers.length <= 3){
+    if(this.truck.sealNumbers.length <= 2){
       this.addTruckSealBtn = true;
     } 
     else  {
@@ -405,7 +405,7 @@ deleteTrailer(i: number) {
 }
   addShipment() {
     this.shipments.push({
-      shipmentType: '',
+      type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -585,7 +585,7 @@ deleteTrailer(i: number) {
     if(this.shipments.length > 0 || this.address){  
     const data = {
       SCAC: this.SCAC,
-      tripNumber: this.SCAC+this.tripNumber,
+      tripNumber: this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
@@ -653,7 +653,8 @@ deleteTrailer(i: number) {
         this.sendId = result.sendId;
         this.timeCreated =  result.timeCreated;
           this.SCAC = result.SCAC;
-          this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
+          // this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
+          this.tripNumber = result.tripNumber;
           this.usPortOfArrival = result.usPortOfArrival;
           this.estimatedArrivalDate = result.estimatedArrivalDate;
           this.estimatedArrivalTime = result.estimatedArrivalTime;
@@ -707,7 +708,7 @@ deleteTrailer(i: number) {
       timeCreated: this.timeCreated,
       sendId: this.sendId,
       SCAC: this.SCAC,
-      tripNumber:this.SCAC+this.tripNumber,
+      tripNumber:this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
@@ -719,7 +720,7 @@ deleteTrailer(i: number) {
       currentStatus: this.currentStatus,
       usAddress: this.usAddress
     };
-    console.log('ata',data);
+ 
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

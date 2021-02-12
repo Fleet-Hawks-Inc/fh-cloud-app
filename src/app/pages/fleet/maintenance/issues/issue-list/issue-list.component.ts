@@ -60,12 +60,12 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getSuggestions(value) {
-    this.suggestedUnits = [];
     this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-
+        
+        this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
             unitID: result[i].vehicleID,

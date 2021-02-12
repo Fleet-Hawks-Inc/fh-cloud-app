@@ -150,6 +150,7 @@ export class LoginComponent implements OnInit {
     purchase: {
       purchaseVendorID: '',
       warrantyExpirationDate: '',
+      warrantyExpirationDateReminder: false,
       purchasePrice: '',
       purchasePriceCurrency: 'CAD',
       warrantyExpirationMeter: '',
