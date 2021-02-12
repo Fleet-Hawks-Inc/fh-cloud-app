@@ -612,7 +612,7 @@ export class NewAciManifestComponent implements OnInit {
   addACIManifest() {
     const data = {
       CCC: this.CCC,
-      tripNumber: this.CCC+this.tripNumber,
+      tripNumber: this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -683,7 +683,8 @@ export class NewAciManifestComponent implements OnInit {
         this.entryID = this.entryID;
         this.sendId = result.sendId;
           this.CCC = result.CCC,
-          this.tripNumber = result.tripNumber.substring(4,result.tripNumber.length),
+          // this.tripNumber = result.tripNumber.substring(4,result.tripNumber.length),
+          this.tripNumber = result.tripNumber,
           this.portOfEntry = result.portOfEntry,
           this.subLocation = result.subLocation,
           this.estimatedArrivalDate = result.estimatedArrivalDate,
@@ -707,7 +708,7 @@ export class NewAciManifestComponent implements OnInit {
       entryID: this.entryID,
       sendId: this.sendId,
       CCC: this.CCC,
-      tripNumber: this.CCC+this.tripNumber,
+      tripNumber: this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
