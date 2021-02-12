@@ -96,7 +96,6 @@ export class AddOrdersComponent implements OnInit {
     
 
 
-
   orderStatus: 'confirmed',
   orderMode: 'FTL',
   tripType: 'Regular',
@@ -275,6 +274,39 @@ export class AddOrdersComponent implements OnInit {
             this.orderData.additionalcontactname = d.additionalcontactname;
             this.orderData.email = d.email;
             this.orderData.phone = d.phone;
+
+            
+            this.shippersReceivers[0].shippers.shipperID= d.shippersshipperID;
+            this.shippersReceivers[0].shippers.pickupLocation =d.shipperspickupLocation;
+            this.shippersReceivers[0].shippers.pickupDate=d.shipperspickupDate;
+            this.shippersReceivers[0].shippers.pickupTime=d.shipperspickupTime;
+            this.shippersReceivers[0].shippers.pickupInstruction=d.shipperspickupInstruction;
+            this.shippersReceivers[0].shippers.contactPerson=d.shipperscontactPerson;
+            this.shippersReceivers[0].shippers.phone=d.shippersshipperID;
+            this.shippersReceivers[0].shippers.reference=d.shippersphone;
+            this.shippersReceivers[0].shippers.notes=d.shippersnotes;
+            this.shippersReceivers[0].shippers.commodity[0].name=d.shipperscommodityname; 
+            this.shippersReceivers[0].shippers.commodity[0].quantity=d.shipperscommodityquantity;
+            this.shippersReceivers[0].shippers.commodity[0].quantityUnit=d.shipperscommodityquantityUnit;
+            this.shippersReceivers[0].shippers.commodity[0].weight=d.shippersweight;
+            this.shippersReceivers[0].shippers.commodity[0].weightUnit=d.shippersweightUnit;
+
+
+
+
+            this.shippersReceivers[0].receivers.receiverID =d.receiversreceiverID;
+            this.shippersReceivers[0].receivers.dropOffLocation=d.receiversdropOffLocation;
+            this.shippersReceivers[0].receivers.dropOffDate=d.receiversdropOffDate;
+            this.shippersReceivers[0].receivers.dropOffTime=d.receiversdropOffTime;
+            this.shippersReceivers[0].receivers.dropOffInstruction=d.receiversdropOffInstruction;
+
+
+            this.orderData.charges.freightFee.amount =d.freightFeeamount;
+            this.orderData.charges.freightFee.currency =d.freightFeecurrency;
+            this.orderData.charges.freightFee.type =d.freightFeetype;
+
+
+            
            
              
 

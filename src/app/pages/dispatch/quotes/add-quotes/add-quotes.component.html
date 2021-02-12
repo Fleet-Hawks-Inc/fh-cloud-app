@@ -15,8 +15,10 @@
            <div class="row pr-5 " style="padding-top:10px;">
               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}} </div>
               <div class="col-md-8  col-lg-8 text-right pr-4">
-                 <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  --><a href="all-orders.php" class="btn btn-default"><i class="fas fa-list"></i> All Orders</a> </div>
-           </div>
+                 <!-- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  -->
+                 <a [routerLink]="['/dispatch', 'quotes']" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Estimates</a>
+              </div>
+              </div>
         </header>
            <div class="card">
                <div class="card-body">
@@ -61,8 +63,7 @@
                                               <option value=""></option>
                                                <option 
                                                   *ngFor="let customer of customers" 
-                                                  value="{{customer.customerID}}"
-                                               >
+                                                  value="{{customer.customerID}}"                                               >
                                                   {{customer.firstName}} {{customer.lastName}}
                                                </option>
                                            </optgroup>

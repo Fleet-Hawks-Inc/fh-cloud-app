@@ -30,7 +30,6 @@ export class AddVehicleNewComponent implements OnInit {
   activeTab = 1;
   modalImage = '';
 
-
   /**
    * Quantum prop
    */
@@ -179,6 +178,7 @@ vehicles= [];
   purchase = {
     purchaseVendorID: '',
     warrantyExpirationDate: '',
+    warrantyExpirationDateReminder: false,
     purchasePrice: '',
     purchasePriceCurrency: '',
     warrantyExpirationMeter: '',
@@ -240,7 +240,8 @@ vehicles= [];
   Error: string = '';
   Success: string = '';
 
-  slides = ['assets/img/truck.jpg'];
+  slides = [];
+  localPhotos = [];
   slideConfig = {
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -301,7 +302,7 @@ vehicles= [];
       this.repeatByTimeUnit = this.vehicleSession.repeatByTimeUnit;
       this.reapeatbyOdometerMiles = this.vehicleSession.reapeatbyOdometerMiles;
       this.annualSafetyDate = this.vehicleSession.annualSafetyDate;
-      this.annualSafetyReminder = this.vehicleSession.annualSafetyDate;
+      this.annualSafetyReminder = this.vehicleSession.annualSafetyReminder;
       this.currentStatus = this.vehicleSession.currentStatus;
       this.ownership = this.vehicleSession.ownership;
       this.ownerOperatorID = this.vehicleSession.ownerOperatorID;
@@ -411,6 +412,7 @@ vehicles= [];
       this.purchase = {
         purchaseVendorID: this.vehicleSession.purchase.purchaseVendorID,
         warrantyExpirationDate: this.vehicleSession.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.vehicleSession.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.vehicleSession.purchase.purchasePrice,
         purchasePriceCurrency: this.vehicleSession.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.vehicleSession.purchase.warrantyExpirationMeter,
@@ -632,6 +634,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -837,6 +840,7 @@ vehicles= [];
             purchase: {
               purchaseVendorID: '',
               warrantyExpirationDate: '',
+              warrantyExpirationDateReminder: false,
               purchasePrice: '',
               purchasePriceCurrency: 'CAD',
               warrantyExpirationMeter: '',
@@ -909,16 +913,22 @@ vehicles= [];
    */
   selectDocuments(event, obj) {
     let files = [...event.target.files];
-
+    
     if (obj === 'uploadedDocs') {
-      this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
     } else {
-      this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
+      }
+
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.localPhotos.push(e.target.result);
+        }
+        reader.readAsDataURL(files[i]);
       }
     }
   }
@@ -1062,6 +1072,7 @@ vehicles= [];
         this.purchase = {
           purchaseVendorID: result.purchase.purchaseVendorID,
           warrantyExpirationDate: result.purchase.warrantyExpirationDate,
+          warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
           purchasePrice: result.purchase.purchasePrice,
           purchasePriceCurrency: result.purchase.purchasePriceCurrency,
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
@@ -1247,6 +1258,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1373,6 +1385,7 @@ vehicles= [];
   }
 
   async next(){
+    console.log(this.annualSafetyReminder);
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
@@ -1498,6 +1511,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1685,6 +1699,7 @@ vehicles= [];
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
@@ -1767,8 +1782,13 @@ vehicles= [];
       $('#imageModal').modal('show');
     }
 
-    deleteImage(index){
+    deleteUploadedImage(index){
       this.slides.splice(index, 1);
       this.existingPhotos.splice(index, 1);
+    }
+
+    deleteLocalImage(index){
+      this.localPhotos.splice(index, 1);
+      this.uploadedPhotos.splice(index, 1);
     }
 }
