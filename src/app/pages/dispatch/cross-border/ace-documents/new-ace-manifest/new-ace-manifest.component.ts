@@ -155,7 +155,7 @@ export class NewAceManifestComponent implements OnInit {
   passengerDocStates = [];
   shipments = [
     {
-      shipmentType: '',
+      type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -405,7 +405,7 @@ deleteTrailer(i: number) {
 }
   addShipment() {
     this.shipments.push({
-      shipmentType: '',
+      type: '',
       shipmentControlNumber: '',
       provinceOfLoading: '',
       goodsAstrayDateOfExit: '',
@@ -708,7 +708,7 @@ deleteTrailer(i: number) {
       timeCreated: this.timeCreated,
       sendId: this.sendId,
       SCAC: this.SCAC,
-      tripNumber:this.SCAC+this.tripNumber,
+      tripNumber:this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
@@ -720,7 +720,7 @@ deleteTrailer(i: number) {
       currentStatus: this.currentStatus,
       usAddress: this.usAddress
     };
-    console.log('ata',data);
+ 
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

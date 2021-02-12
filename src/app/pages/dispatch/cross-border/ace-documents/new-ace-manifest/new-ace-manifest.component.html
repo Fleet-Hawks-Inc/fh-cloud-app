@@ -250,7 +250,7 @@
                                     <div class="form-group row">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Shipment Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [attr.name]="'shipments['+s+'].shipmentType'" [(ngModel)]="shipment.shipmentType" [ngModelOptions]="{standalone: true}">
+                                          <ng-select [attr.name]="'shipments['+s+'].type'" [(ngModel)]="shipment.type" [ngModelOptions]="{standalone: true}">
                                              <ng-option *ngFor="let shipment of shipmentTypeList"
                                                 [value]="shipment.code">
                                                 {{shipment.description}}</ng-option>
@@ -279,14 +279,14 @@
                                                 {{state.stateName}}</ng-option>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-10" *ngIf="shipment.shipmentType === 'GOODS_ASTRAY'">
+                                       <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray
                                              Date of Exit</label>
                                           <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
                                              [ngModelOptions]="{standalone: true}"  [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'"
                                              [(ngModel)]="shipment.goodsAstrayDateOfExit">
                                        </div>
-                                       <div class="col-lg-10" *ngIf="shipment.shipmentType === 'IN_BOND'">
+                                       <div class="col-lg-10" *ngIf="shipment.type === 'IN_BOND'">
                                           <div class="row">
                                              <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">In-Bond
@@ -560,7 +560,7 @@
                                              maxlength="9" [(ngModel)]="commodity.value">
                                        </div>
                                     </div>
-                                    <div class="row" *ngIf="shipment.shipmentType === 'IN_BOND'">
+                                    <div class="row" *ngIf="shipment.type === 'IN_BOND'">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Harmonized
                                              Code
@@ -838,3 +838,4 @@
       </div>
    </div>
 </div>
+
