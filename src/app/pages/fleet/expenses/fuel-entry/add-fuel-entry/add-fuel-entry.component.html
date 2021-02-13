@@ -177,7 +177,7 @@
                     <div class="col-lg-5 offset-lg-1">
                        <div class="row">
                           <div class="col-lg-5">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>                            
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Paid By (Driver)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>                            
                              <ng-select placeholder="Select Payer" name="paidBy" [(ngModel)]="fuelData.paidBy" >                               
                               <ng-option *ngFor="let driver of drivers"  value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>                            
                           
@@ -315,22 +315,6 @@
                     <div class="col-lg-12">
                        <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
                     </div>
-                    <div class="col-lg-5 offset-lg-1">
-                     <div class="row pt-2">
-                        <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Odometer Reading at Time of Fuelling (miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                           <input class="form-control" type="number" min='0' name="odometer" [(ngModel)] ="fuelData.additionalDetails.odometer">
-                           <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
-                        </div>
-                     </div>
-                     <div class="row pt-2">
-                        <div class="col-lg-10">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Description&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label>
-                           <textarea class="form-control" rows="3" name="description" [(ngModel)] ="fuelData.additionalDetails.description" placeholder="Add description "></textarea>
-                        </div>
-                     </div>
-                  </div>
                     <div class="col-lg-5 offset-lg-1">
                        <!-- <div class="row pt-2">
                           <div class="col-lg-10">

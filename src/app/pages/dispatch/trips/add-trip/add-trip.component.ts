@@ -9,6 +9,7 @@ import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import {Auth} from 'aws-amplify';
 declare var $: any;
 
 @Component({
@@ -134,6 +135,7 @@ export class AddTripComponent implements OnInit {
     assetsObjects = [];
     vehiclesObjects = [];
     carriersObject = [];
+    currentUser:any = '';
 
     ngOnInit() {
 
@@ -158,6 +160,7 @@ export class AddTripComponent implements OnInit {
         this.fetchDriversByIDs();
         this.fetchAssetsByIDs();
         this.fetchVehiclesByIDs();
+        this.getCurrentuser();
         if (this.tripID != undefined) {
             this.fetchTripDetail();
         }
@@ -428,6 +431,9 @@ export class AddTripComponent implements OnInit {
             }
 
         } else {
+            if ($('#editCell11'+index).val() !== '') {
+                return false;
+            } 
             this.tempTextFieldValues.type = 'edit';
             this.tempTextFieldValues.index = index;
             let editRowValues = this.trips[index];
@@ -576,8 +582,8 @@ export class AddTripComponent implements OnInit {
                                     carrierID: '',
                                     carrierName: '',
                                     // time: DrTime,
-                                    pickupTime: DrTime,
-                                    dropTime: '',
+                                    pickupTime: '',
+                                    dropTime: DrTime,
                                     actualPickupTime: '',
                                     actualDropTime: '',
                                     locationName: k.dropOffLocation,
@@ -1393,4 +1399,10 @@ export class AddTripComponent implements OnInit {
             },
         });
     }
+
+    getCurrentuser = async () => {
+        this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+        // this.userRole = this.currentUser.userType;
+        this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+      }
 }

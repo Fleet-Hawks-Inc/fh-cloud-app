@@ -47,7 +47,6 @@ import {DynamicModalDirective} from './directives/dynamic-modal.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
@@ -56,6 +55,8 @@ import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert
 import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
+
+import { AddAccountComponent  } from './entry/onboard/add-account/add-account.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -73,7 +74,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
-    AddAccountComponent,
     PdfAutomationComponent,
     DynamicModalDirective,
     ConfirmEqualValidatorDirective,
@@ -82,7 +82,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AlertListComponent,
     AlertTypeDetailComponent,
     ErrorComponent,
-    UnsavedChangesComponent,   
+    UnsavedChangesComponent,  
+    AddAccountComponent 
   ],
   imports: [
     AmplifyAngularModule,

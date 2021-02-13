@@ -98,6 +98,28 @@ export class AddServiceComponent implements OnInit {
   public searchTerm = new Subject<string>();
   public searchResults: any;
   newCoords = [];
+  partType = 'existing';
+  inventoryItems = [];
+  partData = {
+    partNumber:undefined,
+    preferredVendorID:undefined,
+    quantity: null,
+    itemID: ''
+  };
+  itemData = {
+    categoryID :undefined,
+    itemName: '',
+    cost: '',
+    costUnit: undefined,
+    warehouseID: undefined
+  }
+  itemGroups = [];
+  categoryData = {
+    name: '',
+    description: ''
+  };
+  warehouses = [];
+  existingItemQuantity = null;
   
   constructor(
     private apiService: ApiService,
@@ -170,6 +192,9 @@ export class AddServiceComponent implements OnInit {
     this.fetchTasks();
     this.fetchAllTasksIDs();    
     this.searchLocation();
+    this.fetchInventoryItems();
+    this.fetchItemGroups();
+
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
       if(this.fetchedLocalData.unitType === 'vehicle'){   
@@ -833,4 +858,283 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts.currency = value;
     this.serviceData.allServiceTasks.currency = value;
   }
+
+  async changePartTab(type) {
+    if(type == 'new') {
+      this.partType = 'new';
+    } else {
+      this.partType = 'existing';
+    }
+  }
+
+  fetchInventoryItems() {
+    this.apiService.getData('items').subscribe((result: any) => {
+      this.inventoryItems = result.Items;
+    });
+  }
+
+  fetchPartNumber() {
+    if (this.partData.partNumber != undefined && this.partData.partNumber != '') {
+      this.apiService.getData('requiredItems/check/requestedItem/' + this.partData.partNumber).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          if(res.Count > 0) {
+            this.existingItemQuantity = parseInt(res.Items[0].quantity);
+            this.partData.itemID = res.Items[0].itemID;
+            // show modal
+            $('#existingInvModal').modal('show');
+            
+          } else {
+            this.addExistingPartNumber();
+          }
+        },
+      });
+    } else {
+      return false;
+    }
+  }
+
+  updateExistingPartNumber () {
+    // let currQuan:any = parseInt(this.partData.quantity);
+    this.partData.quantity = parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
+    this.apiService.putData('requiredItems', this.partData).subscribe({
+      complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#partModal').modal('hide');
+        $('#existingInvModal').modal('hide');
+        this.existingItemQuantity = null;
+        this.partData = {
+          partNumber:undefined,
+          preferredVendorID:undefined,
+          quantity:null,
+          itemID: ''
+        };
+        this.itemData = {
+          categoryID :undefined,
+          itemName: '',
+          cost: '',
+          costUnit: undefined,
+          warehouseID: undefined
+        }
+        this.toastr.success('Part Updated Successfully');
+      },
+    });
+  }
+
+  addExistingPartNumber () {
+    delete this.partData.itemID;
+    this.apiService.postData('requiredItems', this.partData).subscribe({
+      complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#partModal').modal('hide');
+        $('#existingInvModal').modal('hide');
+        this.existingItemQuantity = null;
+        this.partData = {
+          partNumber:undefined,
+          preferredVendorID:undefined,
+          quantity:null,
+          itemID: ''
+        };
+        this.itemData = {
+          categoryID :undefined,
+          itemName: '',
+          cost: '',
+          costUnit: undefined,
+          warehouseID: undefined
+        }
+        this.toastr.success('Part Requested Successfully');
+      },
+    });
+  }
+
+  getPartDetail(event) {
+    let curr = this;
+    this.inventoryItems.map(function(v){
+      if(v.partNumber == event){
+        curr.partData.quantity = v.quantity;
+        curr.partData.preferredVendorID = v.preferredVendorID;
+      }
+    })
+  }
+
+  fetchItemGroups() {
+    this.apiService.getData(`itemGroups`).subscribe((result) => {
+      this.itemGroups = result.Items;
+    });
+  }
+
+  showCategoryModal() {
+    this.categoryData.name = "";
+    this.categoryData.description = "";
+    $("#categoryModal").modal("show");
+  }
+
+  addGroup() {
+    this.hideErrors();
+
+    const data = {
+      groupName: this.categoryData.name,
+      groupDescription: this.categoryData.description,
+    };
+
+    this.apiService.postData("itemGroups", data).subscribe({
+      complete: () => {},
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.categoryData.name = "";
+        this.categoryData.description = "";
+        this.fetchItemGroups();
+        $("#categoryModal").modal("hide");
+        this.toastr.success('Category Added successfully');
+      },
+    });
+  }
+
+  addInventory() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+
+    const data = {
+      partNumber: this.partData.partNumber,
+      quantity: 0,
+      itemName: this.itemData.itemName,
+      categoryID: this.itemData.categoryID,
+      preferredVendorID: this.partData.preferredVendorID,
+      cost: this.itemData.cost,
+      costUnit: this.itemData.costUnit,
+      warehouseID: this.itemData.warehouseID,
+      warehouseVendorID: this.partData.preferredVendorID,
+    };
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData("items", formData, true).subscribe({
+      complete: () => {},
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.addExistingPartNumber();
+      },
+    });
+  }
+
+  closeExistingModel() {
+    $('#existingInvModal').modal('hide');
+    this.updateExistingPartNumber();
+  }
+
+  showPartModal() {
+    this.existingItemQuantity = null;
+    this.partData = {
+      partNumber: undefined,
+      preferredVendorID: undefined,
+      quantity: null,
+      itemID: ''
+    };
+    this.itemData = {
+      categoryID: undefined,
+      itemName: '',
+      cost: '',
+      costUnit: undefined,
+      warehouseID: undefined
+    }
+    $("#partModal").modal('show');
+  }
+
 }
