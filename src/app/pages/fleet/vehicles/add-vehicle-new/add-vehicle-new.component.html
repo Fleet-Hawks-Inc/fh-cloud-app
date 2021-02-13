@@ -159,7 +159,9 @@
 
                                        <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
                                           <optgroup label="">
-                                             <ng-option *ngFor="let country of countries | async" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                             <ng-container *ngFor="let country of countries | async">
+                                                <ng-option *ngIf="country.countryID == '8e8a0700-8979-11ea-94e8-ddabdd2e57f0' || country.countryID == '73cba1a0-8977-11ea-b61f-0996be58fec9'"  value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                             </ng-container>
                                           </optgroup>
                                        </ng-select>
                                    </div>

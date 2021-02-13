@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     repeatByTimeUnit: '',
     reapeatbyOdometerMiles: '',
     annualSafetyDate: '',
-    annualSafetyReminder: false,
+    annualSafetyReminder: true,
     currentStatus: '',
     ownership: '',
     ownerOperator: '',
