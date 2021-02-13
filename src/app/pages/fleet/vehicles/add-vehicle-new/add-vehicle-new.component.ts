@@ -68,7 +68,7 @@ vehicles= [];
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
   annualSafetyDate = '';
-  annualSafetyReminder = false;
+  annualSafetyReminder = true;
   currentStatus = '';
   ownership = '';
   ownerOperatorID = '';
@@ -730,7 +730,7 @@ vehicles= [];
             repeatByTimeUnit: '',
             reapeatbyOdometerMiles: '',
             annualSafetyDate: '',
-            annualSafetyReminder: false,
+            annualSafetyReminder: true,
             currentStatus: '',
             ownership: '',
             ownerOperator: '',
