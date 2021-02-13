@@ -388,7 +388,7 @@ addTrailerSeal(i){
  addTrailer() {
   this.trailers.push({
     assetID: '',
-    sealNumbers: [{sealNumber:''}],
+    sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
   });
   this.addTrailerBtn = true;
 
