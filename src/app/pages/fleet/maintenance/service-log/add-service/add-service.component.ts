@@ -51,11 +51,30 @@ export class AddServiceComponent implements OnInit {
     reference: '',
     vehicleID: '',
     assetID: '',
+    odometer: '',
+    completionDate: '',
+    vendorID: '',
+    description: '',
     allServiceTasks: {
-      serviceTaskList : []
+      serviceTaskList : [],
+      subTotal: 0,
+      discountPercent: 0,
+      discountAmount: 0,
+      taxPercent: 0,
+      taxAmount: 0,
+      total: 0,
+      currency: 'CAD',
     },
     allServiceParts: {
-      servicePartsList : []
+      servicePartsList : [],
+      totalQuantity: 0,
+      subTotal: 0,
+      discountPercent: 0,
+      discountAmount: 0,
+      taxPercent: 0,
+      taxAmount: 0,
+      total: 0,
+      currency: 'CAD',
     },
     selectedIssues: [],
     location: '',
@@ -92,6 +111,7 @@ export class AddServiceComponent implements OnInit {
     private hereMap: HereMapService
   ) {
     this.selectedFileNames = new Map<any, any>();
+    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
    }
 
    
@@ -105,23 +125,36 @@ export class AddServiceComponent implements OnInit {
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
-
+      
       this.serviceData = {
         unitType: this.serviceLogSession.unitType,
         vehicleID: this.serviceLogSession.vehicleID,
         assetID: this.serviceLogSession.assetID,
         reference: this.serviceLogSession.reference,
+        odometer: this.serviceLogSession.odometer,
+        description: this.serviceLogSession.description,
+        completionDate: this.serviceLogSession.completionDate,
+        vendorID: this.serviceLogSession.vendorID, 
         allServiceTasks: {
           serviceTaskList: this.serviceLogSession.allServiceTasks.serviceTaskList,
-          // subTotal: this.serviceLogSession.allServiceTasks.subTotal
-          // discountPercent: this.serviceLogSession.allServiceTasks
-          // discountAmount: this.serviceLogSession.allServiceTasks
-          // taxPercent: this.serviceLogSession.allServiceTasks
-          // taxAmount: this.serviceLogSession.allServiceTasks
-          // total: this.serviceLogSession.allServiceTasks
+          subTotal: this.serviceLogSession.allServiceTasks.subTotal,
+          discountPercent: this.serviceLogSession.allServiceTasks.discountPercent,
+          discountAmount: this.serviceLogSession.allServiceTasks.discountAmount,
+          taxPercent: this.serviceLogSession.allServiceTasks.taxPercent,
+          taxAmount: this.serviceLogSession.allServiceTasks.taxAmount,
+          total: this.serviceLogSession.allServiceTasks.total,
+          currency: this.serviceLogSession.allServiceTasks.currency,
         },
         allServiceParts: {
           servicePartsList: this.serviceLogSession.allServiceParts.servicePartsList,
+          totalQuantity: this.serviceLogSession.allServiceParts.totalQuantity,
+          subTotal: this.serviceLogSession.allServiceParts.subTotal,
+          discountPercent: this.serviceLogSession.allServiceParts.discountPercent,
+          discountAmount: this.serviceLogSession.allServiceParts.discountAmount,
+          taxPercent: this.serviceLogSession.allServiceParts.taxPercent,
+          taxAmount: this.serviceLogSession.allServiceParts.taxAmount,
+          total: this.serviceLogSession.allServiceParts.total,
+          currency: this.serviceLogSession.allServiceParts.currency,
         },
         selectedIssues: this.serviceLogSession.selectedIssues,
         location: this.serviceLogSession.location,
@@ -167,6 +200,7 @@ export class AddServiceComponent implements OnInit {
   addService() {
     
     this.hideErrors();
+    console.log("data", this.serviceData)
     // create form data instance
     const formData = new FormData();
 
@@ -349,7 +383,6 @@ export class AddServiceComponent implements OnInit {
     this.getReminders(vehicleID);
     this.fetchVehicleByID(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
-      console.log("resuklt", result)
       this.issues = result.Items;
     });
   }
@@ -396,17 +429,25 @@ export class AddServiceComponent implements OnInit {
   }
 
   addParts() {
-    
     this.inventory.forEach(element => {
       if (element.itemID === this.selectedParts[this.selectedParts.length - 1]) {
         this.serviceData.allServiceParts.servicePartsList.push({
           partID: element.itemID,
+          existQuantity:  element.quantity,
           partNumber: element.partNumber,
           description: element.description,
         });
       }
-      
     });
+  }
+
+  checkQuantity(value) {
+    this.serviceData.allServiceParts.servicePartsList.forEach(e => {
+      if(value > e.existQuantity) {
+        this.toastr.error('The requested quantity is not available');
+        e.quantity = e.existQuantity;
+      }
+    })
   }
 
   async addTasks() {
@@ -457,6 +498,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   remove(arr: any, data: any, i) {
+    console.log("data", data, this.selectedParts);
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -465,7 +507,7 @@ export class AddServiceComponent implements OnInit {
         }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
       // this.totalLabors -= data.laborCost;
-      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName)
+      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName);
       this.calculateTasks();
     } else {
       this.serviceData.allServiceParts.servicePartsList.splice(i, 1);
@@ -483,57 +525,49 @@ export class AddServiceComponent implements OnInit {
     
   }
 
-  removeTasks(item) {
-    
+  removeTasks(item: any) {
     this.serviceData.allServiceTasks.serviceTaskList.filter(s => {
         if (s.taskName === item.label) {
           let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
           this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
           this.totalLabors -= s.laborCost; 
-          // this.calculateTasks();
+          this.calculateTasks();
         }
         if(this.totalLabors === 0) {
-          this.serviceData.allServiceTasks['discountPercent'] = 0;
-          this.serviceData.allServiceTasks['taxPercent'] = 0;
-          this.serviceData.allServiceTasks['total'] = 0;
+          this.serviceData.allServiceTasks.discountPercent = 0;
+          this.serviceData.allServiceTasks.taxPercent = 0;
+          this.serviceData.allServiceTasks.total = 0;
         }
     });
+  
+    
   }
 
-  removeParts(item) {
+  removeParts(item: any) {
+    console.log("item", item);
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      if (s.taskName === item.label) {
+      console.log("s", s);
+      if (s.partID === item.value) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
         // this.totalLabors -= s.laborCost; 
-        this.calculateTasks();
+        this.calculateParts();
       }
       if(this.totalLabors === 0) {
-        this.serviceData.allServiceParts['discountPercent'] = 0;
-        this.serviceData.allServiceParts['taxPercent'] = 0;
-        this.serviceData.allServiceParts['total'] = 0;
+        this.serviceData.allServiceParts.discountPercent = 0;
+        this.serviceData.allServiceParts.taxPercent = 0;
+        this.serviceData.allServiceParts.total = 0;
       }
   });
   }
 
   
   calculateTasks() {
-    let discountPercent = parseFloat(this.serviceData.allServiceTasks['discountPercent'] || 0);
-    let taxPercent = parseFloat(this.serviceData.allServiceTasks['taxPercent'] || 0);
-    let total = this.serviceData.allServiceTasks['total'];
-    let subTotal = this.serviceData.allServiceTasks['subTotal'];
-    if (isNaN(discountPercent)) {
-      discountPercent = 0;
-    }
-    if (isNaN(total)) {
-      total = 0;
-    }
-    if (isNaN(taxPercent)) {
-      taxPercent = 0;
-    }
-    if (isNaN(subTotal)) {
-      subTotal = 0;
-    }
+    let discountPercent = Number(this.serviceData.allServiceTasks.discountPercent);
+    let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
+    let total = Number(this.serviceData.allServiceTasks.total);
+    let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
+    
     let sum = 0;
     let tasksArr = this.serviceData.allServiceTasks.serviceTaskList;
     tasksArr.forEach(element => {
@@ -543,35 +577,40 @@ export class AddServiceComponent implements OnInit {
     });
     
     this.totalLabors = sum;
-    this.serviceData.allServiceTasks['subTotal'] = sum;
-    this.serviceData.allServiceTasks['total'] = sum;
-    
+    this.serviceData.allServiceTasks.subTotal = sum;
+   
+    if(discountPercent > 0) {
+      this.serviceData.allServiceTasks.total = this.serviceData.allServiceTasks.subTotal - (this.serviceData.allServiceTasks.subTotal * discountPercent) / 100;
+    } else {
+      this.serviceData.allServiceTasks.total = sum;
+    }
+    if(taxPercent > 0) {
+      let taxAble = (this.serviceData.allServiceTasks.total * taxPercent) / 100
+      this.serviceData.allServiceTasks.total = this.serviceData.allServiceTasks.total + (this.serviceData.allServiceTasks.total * taxPercent) / 100;
+      this.serviceData.allServiceTasks.taxAmount = taxAble;
+    }
     let discountAmount = (subTotal * discountPercent) / 100;
-    this.serviceData.allServiceTasks['discountAmount'] = discountAmount;
-    let taxAble = this.serviceData.allServiceTasks['total'] - discountAmount;
-    let taxAmount = ( taxAble * taxPercent ) / 100;
-    this.serviceData.allServiceTasks['taxAmount'] = taxAmount;
-    this.serviceData.allServiceTasks['total'] -= discountAmount;
-    this.serviceData.allServiceTasks['total'] += taxAmount;
+    this.serviceData.allServiceTasks.discountAmount = discountAmount;
+    
   }
 
   calculateParts() {
-    let discountPercent = parseFloat(this.serviceData.allServiceParts['discountPercent'] || 0);
-    let taxPercent = parseFloat(this.serviceData.allServiceParts['taxPercent'] || 0);
-    let total = this.serviceData.allServiceParts['total'];
-    let subTotal = this.serviceData.allServiceParts['subTotal'];
-    if (isNaN(discountPercent)) {
-      discountPercent = 0;
-    }
-    if (isNaN(total)) {
-      total = 0;
-    }
-    if (isNaN(taxPercent)) {
-      taxPercent = 0;
-    }
-    if (isNaN(subTotal)) {
-      subTotal = 0;
-    }
+    let discountPercent = Number(this.serviceData.allServiceParts.discountPercent);
+    let taxPercent = Number(this.serviceData.allServiceParts.taxPercent);
+    let total = Number(this.serviceData.allServiceParts.total);
+    let subTotal = Number(this.serviceData.allServiceParts.subTotal);
+    // if (isNaN(discountPercent)) {
+    //   discountPercent = 0;
+    // }
+    // if (isNaN(total)) {
+    //   total = 0;
+    // }
+    // if (isNaN(taxPercent)) {
+    //   taxPercent = 0;
+    // }
+    // if (isNaN(subTotal)) {
+    //   subTotal = 0;
+    // }
     let countQuantity = 0;
     let countAmount = 0;
     let quantity = this.serviceData.allServiceParts.servicePartsList;
@@ -584,18 +623,19 @@ export class AddServiceComponent implements OnInit {
       this.totalQuantity = countQuantity;
       this.totalPartsPrice = countAmount;
       subTotal = countAmount;
-      this.serviceData.allServiceParts['total'] = countAmount;
-      this.serviceData.allServiceParts['totalQuantity'] = countQuantity;
-      this.serviceData.allServiceParts['subTotal'] = countAmount;
+      this.serviceData.allServiceParts.total = countAmount;
+      this.serviceData.allServiceParts.totalQuantity = countQuantity;
+      this.serviceData.allServiceParts.subTotal = countAmount;
     });
     
     let discountAmount = (subTotal * discountPercent) / 100;
-    this.serviceData.allServiceParts['discountAmount'] = discountAmount;
-    let taxAble = this.serviceData.allServiceParts['total'] - discountAmount;
+    this.serviceData.allServiceParts.discountAmount = discountAmount;
+    let taxAble = this.serviceData.allServiceParts.total - discountAmount;
     let taxAmount = ( taxAble * taxPercent ) / 100;
-    this.serviceData.allServiceParts['taxAmount'] = taxAmount;
-    this.serviceData.allServiceParts['total'] -= discountAmount;
-    this.serviceData.allServiceParts['total'] += taxAmount;
+    this.serviceData.allServiceParts.taxAmount = taxAmount;
+    this.serviceData.allServiceParts.total -= discountAmount;
+    this.serviceData.allServiceParts.total += taxAmount;
+    console.log('parts', this.serviceData.allServiceParts)
   }
 
 
@@ -676,19 +716,10 @@ export class AddServiceComponent implements OnInit {
   onChangeUnitType(value: any) {
     this.serviceData['unitType'] = value;
     if (value === 'asset') {
-      delete this.serviceData['vehicleID'];
-      delete this.serviceData['odometer'];
-      this.serviceData.allServiceTasks.serviceTaskList = [];
-      this.selectedTasks = [];
-      this.serviceData.allServiceTasks['discountAmount'] = '';
-      this.serviceData.allServiceTasks['discountPercent'] = '';
-      this.serviceData.allServiceTasks['taxAmount'] = '';
-      this.serviceData.allServiceTasks['taxPercent'] = '';
-      this.serviceData.allServiceTasks['subTotal'] = '';
-      this.serviceData.allServiceTasks['total'] = '';
-      this.totalLabors = 0;
+      delete this.serviceData.vehicleID;
+      delete this.serviceData.odometer;
     } else {
-      delete this.serviceData['assetID'];
+      delete this.serviceData.assetID;
     }
   }
 
@@ -798,4 +829,8 @@ export class AddServiceComponent implements OnInit {
     this.router.navigateByUrl('/fleet/maintenance/issues/add')
   }
   
+  currencyChange(value: string) {
+    this.serviceData.allServiceParts.currency = value;
+    this.serviceData.allServiceTasks.currency = value;
+  }
 }
