@@ -270,7 +270,7 @@
                           <div class="col-lg-5 offset-lg-1">
                              <div class="row pt-2">
                                 <div class="col-lg-10 text-right">
-                                   <a href="javascript:;" class="modal-with-form"><label class="btn btn-dark text-3 pt-2">Part Missing, Click Here To Request</label></a>
+                                   <a href="javascript:;" (click)="showPartModal()" class="modal-with-form"><label class="btn btn-dark text-3 pt-2">Part Missing, Click Here To Request</label></a>
                                 </div>
                              </div>
                           </div>
@@ -381,9 +381,6 @@
                  </div>
               </div>
            </div>
-           
-
-           
         </section>
    </div>
 </section>
@@ -425,55 +422,212 @@
   </div>
 </div>
 
-
-
-<div id="partModal" class="modal-block modal-block-primary mfp-hide">
-   <section class="card">
-      <header class="card-header">
-         <h2 class="card-title">Request To Any Part</h2>
-      </header>
-      <div class="card-body text-dark">
-         <form>
-            <div class="form-row">
-               <div class="form-group col-md-12">
-                  <div class="row pt-2">
-                     <div class="col-lg-6">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part ID</label>
-                        <input type="text" class="form-control">
+<div class="modal fade" id="partModal" tabindex="-1" role="dialog" aria-labelledby="partModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document" style="max-width: 600px;">
+     <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Request Missing Part</h5>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
+         </div>
+         <form class="form-horizontal form-bordered" method="get" data-select2-id="17">
+            <div class="modal-body">
+               <div class="form-row text-dark">
+                  <div class="form-group col-md-12">
+                     <div class="row">
+                        <div class="col-lg-12 pt-2">
+                           <div class="row">
+                              <div class="col-lg-3">
+                                 <div class="radio">
+                                    <label class="btn btn-outline btn-fleet csbtn"
+                                       [ngClass]="(partType == 'existing')? 'active' : '' " (click)="changePartTab('existing')">
+                                       <input type="radio" name="fuelUnitType" id="existingPart" checked hidden value="vehicle">
+                                       Existing Part </label>
+                                 </div>
+                              </div>
+                              <div class="col-lg-4 text-right">
+                                 <div class="radio">
+                                    <label class="btn btn-outline btn-fleet csbtn"
+                                       [ngClass]="(partType == 'new')? 'active' : '' " (click)="changePartTab('new')">
+                                       <input type="radio" name="fuelUnitType" id="newPart" hidden value="reefer"> New Part
+                                    </label>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                      </div>
-                     <div class="col-lg-6">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                        <input type="text" class="form-control">
+                     <div class="row" id="newPartDiv" *ngIf="partType == 'new'">
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                           <input type="text" class="form-control" placeholder="Enter part number" [(ngModel)]="partData.partNumber" name="partNumber">
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Name</label>
+                           <input type="text" class="form-control" placeholder="Enter inventory part name eg. tires" [(ngModel)]="itemData.itemName" name="itemName">
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Category</label>
+                           <div class="row">
+                              <div class="col-lg-10">
+                                 <ng-select [(ngModel)]="itemData.categoryID" name="categoryID" style="width: 100%;"
+                                    placeholder="Select category">
+                                    <ng-option *ngFor="let data of itemGroups;" value="{{data.groupID}}">{{data.groupName}}</ng-option>
+                                 </ng-select>
+                              </div>
+                              <div class="col-lg-2 pl-0">
+                                 <a href="javascript:;" class="btn btn-sm btn-success modal-with-form text-light"><i
+                                       class="fas fa-plus" (click)="showCategoryModal()"></i></a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
+                           <input type="text" class="form-control" placeholder="Enter quantity" [(ngModel)]="partData.quantity" name="quantity">
+                        </div>
+
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)</label>
+                           <input type="number" class="form-control" name="cost" [(ngModel)]="itemData.cost" placeholder="Unit cost" />
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold text-lg-right pt-2">Select Cost Unit</label>
+                           <ng-select name="costUnit" [(ngModel)]="itemData.costUnit" data-plugin-selectTwo class="form-control populate"
+                              placeholder="Select unit">
+                                 <ng-option value="Each">Each</ng-option>
+                                 <ng-option value="Gallon">Gallon</ng-option>
+                                 <ng-option value="Quart">Quart</ng-option>
+                                 <ng-option value="Set">Set</ng-option>
+                                 <ng-option value="Tube">Tube</ng-option>
+                           </ng-select>
+                        </div>
+
+                        <!-- <div class="col-lg-12">
+                           <label class="control-label pt-2 font-weight-bold">Select Warehouse</label>
+                           <ng-select name="warehouseID" [(ngModel)]="itemData.warehouseID" data-plugin-selectTwo class="form-control populate"
+                              placeholder="Select warehouse">
+                              <ng-option *ngFor="let warehouse of warehouses" value="{{ warehouse.warehouseID }}">
+                                 {{ warehouse.warehouseName }}
+                              </ng-option>
+                           </ng-select>
+                        </div> -->
+                     </div>
+                     <div class="row" id="existingPartDiv" *ngIf="partType == 'existing'">
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                           <ng-select (change)="getPartDetail($event)" [(ngModel)]="partData.partNumber" name="partNumber" style="width: 100%;"
+                              placeholder="Select part number">
+                              <ng-option *ngFor="let data of inventoryItems;" value="{{data.partNumber}}">{{data.partNumber}}</ng-option>
+                           </ng-select>
+                        </div>
+                        <div class="col-lg-6">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
+                           <input type="text" [(ngModel)]="partData.quantity" name="quantity" class="form-control" placeholder="Enter Quantity">
+                        </div>
+                     </div>
+                     <div class="row pt-2">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Preferred
+                              Vendor</label>
+                           <ng-select [(ngModel)]="partData.preferredVendorID"
+                              name="preferredVendorID" style="width: 100%;" placeholder="Select preferred vendor">
+                              <ng-option *ngFor="let data of vendors;" value="{{data.vendorID}}">{{data.companyName}}</ng-option>
+                           </ng-select>
+                        </div>
                      </div>
                   </div>
-
-                  <div class="row pt-2">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Preferred Vendor</label>
-                        <input type="text" class="form-control">
-                     </div>
-                  </div>
-
-                  <div class="row pt-2">
-                  <div class="col-lg-12 text-center">
-                     <a href="" class="btn btn-default" id="">Cancel</a>
-                     <a href="" class="btn btn-success" id="nextBtn">Submit</a>
-                  </div>
-                  </div>
-
-
+               </div>
+            </div>
+            <div class="modal-footer">
+               <div class="col-md-12 text-right">
+                  <button class="btn btn-default modal-dismiss mr-3" data-dismiss="modal">Close</button>
+                  <a href="javascript:;" *ngIf="partType == 'existing'" (click)="fetchPartNumber()" class="btn btn-success" id="nextBtn">Save</a>
+                  <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success" id="nextBtn">Save</a>
                </div>
             </div>
          </form>
       </div>
-      <footer class="card-footer">
-         <div class="row">
-            <div class="col-md-12 text-right">
-               <button class="btn btn-default modal-dismiss">Close</button>
-            </div>
-         </div>
-      </footer>
-   </section>
+   </div>
 </div>
 
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
+   aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Add Inventory Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+               </i>
+            </button>
+         </div>
+         <div class="modal-body text-dark" id="groupForm">
+            <form form>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <label class="control-label font-weight-bold">Category Name</label>
+                     <input type="text" class="form-control" [(ngModel)]="categoryData.name" name="name"
+                        placeholder="Enter category name" />
+                  </div>
+               </div>
+               <div class="form-row">
+                  <div class="form-group col-lg-12">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
+                                 class="text-1 optional-label-color">(optional)</span></label>
+                           <textarea class="form-control" rows="2" [(ngModel)]="categoryData.description"
+                              name="description" placeholder="Enter item category description"></textarea>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+               Close
+            </button>
+            <button type="button" class="btn btn-success" (click)="addGroup()">
+               Save
+            </button>
+         </div>
+      </div>
+   </div>
+</div>
 
+<div class="modal fade" id="existingInvModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
+   aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Existing Inventory</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+               </i>
+            </button>
+         </div>
+         <div class="modal-body text-dark" id="groupForm">
+            <div class="form-row">
+               <div class="form-group mb-0 col-lg-12 col-md-12" id="manualDiv">
+                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">
+                     This inventory is already there in existing items. Do you want to add previous quantity into
+                     current?
+                  </label>
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <small>Previous Quantity: {{existingItemQuantity}}</small>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+               No
+            </button>
+            <button type="button" class="btn btn-success" (click)="closeExistingModel()">
+               Yes
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

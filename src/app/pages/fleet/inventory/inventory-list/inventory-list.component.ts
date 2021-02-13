@@ -65,6 +65,10 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   suggestedVendors = [];
   suggestedItems = [];
   suggestedItemGroups = [];
+  requiredItems = [];
+  allItems = [];
+  itemDetail = {};
+  itemPrevData = {};
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
@@ -73,6 +77,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.fetchVendors();
     this.fetchItemGroups();
     this.fetchWarehouses();
+    this.fetchRequiredItems();
+    this.fetchAllItemsList();
     this.initDataTable();
   }
 
@@ -176,6 +182,12 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   fetchWarehouses(){
     this.apiService.getData('warehouses/get/list').subscribe((result: any) => {
       this.warehouses = result;
+    });
+  }
+
+  fetchRequiredItems(){
+    this.apiService.getData('requiredItems').subscribe((result: any) => {
+      this.requiredItems = result.Items;
     });
   }
 
@@ -350,5 +362,62 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     } else {
       return false;
     }
+  }
+
+  fetchAllItemsList(){
+    this.apiService.getData(`items/get/list`).subscribe((result) => {
+      this.allItems = result;
+    })
+  }
+
+  deleteRequiredItem(entryID) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+        .deleteData(`requiredItems/${entryID}`)
+        .subscribe((result: any) => {
+          this.requiredItems = [];
+          this.fetchRequiredItems();
+          this.toastr.success('Required Item Deleted Successfully!');
+        });
+    }
+  }
+
+  addInventory(partData) {
+    this.apiService.getData('items/partNumber/details/'+partData.partNumber).subscribe((result: any) => {
+      let data = result.Items[0];
+      this.itemPrevData = result.Items[0];
+      let actualQuantity = result.Items[0].quantity;
+      this.itemDetail['itemID'] = data.itemID;
+      this.itemDetail['reqItemID'] = partData.itemID;
+      this.itemDetail['partNumber'] = data.partNumber;
+      this.itemDetail['itemName'] = data.itemName;
+      this.itemDetail['prevQuantity'] = data.quantity;
+      this.itemDetail['reqQuantity'] = partData.quantity;
+      this.itemDetail['totalQuantity'] = partData.quantity + data.quantity;
+      this.itemPrevData['quantity'] = this.itemDetail['totalQuantity'];
+
+      if(actualQuantity > 0) {
+        $("#existingInvModal").modal('show');  
+      } else {
+        this.updateItem(this.itemDetail['reqItemID']);
+      }
+      
+    });
+  }
+
+  updateItem(reqItemID) {
+    this.apiService.putData("items/update/item", this.itemPrevData).subscribe({
+      complete: () => { },
+      error: (err) => { },
+      next: (res) => {
+        $("#existingInvModal").modal('hide');
+
+        this.apiService.deleteData(`requiredItems/${reqItemID}`).subscribe((result: any) => {
+          this.requiredItems = [];
+          this.fetchRequiredItems();
+          this.toastr.success('Inventory Updated Successfully');
+        });
+      },
+    });
   }
 }
