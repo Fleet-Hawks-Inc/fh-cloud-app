@@ -272,16 +272,18 @@ export class AddInventoryComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -315,20 +317,12 @@ export class AddInventoryComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
-    from(Object.keys(this.errors)).subscribe((v) => {
-      $('[name="' + v + '"]')
-        .after(
-          '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
-        )
-        .addClass("error");
-    });
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
     // this.vehicleForm.showErrors(this.errors);
   }
 
