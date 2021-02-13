@@ -38,6 +38,7 @@ export class AddIssueComponent implements OnInit {
   vehicles = [];
   assets = [];
   contacts = [];
+  drivers = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -56,7 +57,7 @@ export class AddIssueComponent implements OnInit {
   public issueImages = [];
   image;
   public issueDocs = [];
-  pdfSrc: any;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
@@ -64,7 +65,7 @@ export class AddIssueComponent implements OnInit {
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
-              private location: Location, private domSanitizer: DomSanitizer,
+              private _location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
                 
@@ -76,7 +77,7 @@ export class AddIssueComponent implements OnInit {
   ngOnInit() {
     this.fetchVehicles();
     this.fetchAssets();
-    this.fetchContacts();
+    this.fetchDrivers();
     this.issueID = this.route.snapshot.params['issueID'];
     if (this.issueID) {
       this.title = 'Edit Issue';
@@ -89,8 +90,10 @@ export class AddIssueComponent implements OnInit {
     });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+    console.log('back', window.history)
+    this._location.back(); // <-- go back to previous location on cancel
   }
+
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
          this.vehicles = result.Items; });
@@ -100,9 +103,9 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
-    fetchContacts() {
-      this.apiService.getData('contacts').subscribe((result: any) => {
-        this.contacts = result.Items;
+    fetchDrivers() {
+      this.apiService.getData('drivers').subscribe((result: any) => {
+        this.drivers = result.Items;
       });
     }
     getToday(): string {
@@ -166,7 +169,8 @@ export class AddIssueComponent implements OnInit {
           this.response = res;
           // this.uploadFiles(); // upload selected files to bucket
           this.toaster.success('Issue Added successfully');
-          this.router.navigateByUrl('/fleet/maintenance/issues/list');
+          //this.router.navigateByUrl('/fleet/maintenance/issues/list');
+         this.cancel();
         }
       });
   }

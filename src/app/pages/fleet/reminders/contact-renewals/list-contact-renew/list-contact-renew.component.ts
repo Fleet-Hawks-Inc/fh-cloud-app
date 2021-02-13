@@ -23,7 +23,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
 
   public remindersData: any = [];
   contacts: [];
-  contactList: any = {};
+  driverList: any = {};
   tasksList: any = {};
   allRemindersData = [];
   subcribersArray = [];
@@ -45,7 +45,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getReminders();
+    this.getRemindersCount();
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
@@ -77,8 +77,8 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
     });
   }
   fetchContactList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.contactList = result;
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   setFilterStatus(val) {
@@ -91,7 +91,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   }
   getSuggestions(value) {
     this.apiService
-      .getData(`contacts/suggestion/${value}`)
+      .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedContacts = result.Items;
         if (this.suggestedContacts.length === 0) {
@@ -135,28 +135,29 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
     else if (this.filterStatus === Constants.DUE_SOON) {
       this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
     }
-    else {
+    else if (this.filterStatus === Constants.ALL){
       this.remindersData = this.remindersData;
     }
 
   }
 
-  // deleteRenewal(entryID) {
-  //   this.apiService
-  //     .deleteData('reminders/' + entryID)
-  //     .subscribe((result: any) => {
-  //       this.fetchRenewals();
-  //       this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
 
+  // getReminders() {
+  //   this.apiService
+  //     .getData('reminders/get-reminders/contact')
+  //     .subscribe((result) => {
+  //       this.totalRecords = result.Count;
   //     });
   // }
 
-  getReminders() {
-    this.apiService
-      .getData('reminders/get-reminders/contact')
-      .subscribe((result) => {
+  getRemindersCount() {
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
   initDataTable() {
@@ -176,11 +177,13 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
         { "targets": [5], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.allRemindersData = resp['Items'];
           current.fetchRenewals();
-          // console.log(resp)
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
 
@@ -224,6 +227,8 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   searchFilter() {
     if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.remindersData = [];
+      this.getRemindersCount()
       this.rerender('reset');
     } else {
       return false;
@@ -237,6 +242,9 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       this.firstName = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
+
+      this.remindersData = [];
+      this.getRemindersCount()
       this.rerender();
     } else {
       return false;
@@ -249,6 +257,9 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         // console.log('result', result);
+
+        this.remindersData = [];
+        this.getRemindersCount()
         this.rerender();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddTicketComponent } from './add-ticket.component';
+import { PdfAutomationComponent } from './pdf-automation.component';
 
-describe('AddTicketComponent', () => {
-  let component: AddTicketComponent;
-  let fixture: ComponentFixture<AddTicketComponent>;
+describe('PdfAutomationComponent', () => {
+  let component: PdfAutomationComponent;
+  let fixture: ComponentFixture<PdfAutomationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddTicketComponent ]
+      declarations: [ PdfAutomationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddTicketComponent);
+    fixture = TestBed.createComponent(PdfAutomationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

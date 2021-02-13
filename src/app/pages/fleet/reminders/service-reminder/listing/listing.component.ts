@@ -56,7 +56,7 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getReminders();
+    this.getRemindersCount();
     this.fetchGroups();
     this.fetchTasksList();
     this.fetchVehicleList();
@@ -122,9 +122,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
     for (let j = 0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
        this.apiService.getData('serviceLogs/reminder/'+ this.allRemindersData[j].reminderID).subscribe((result: any) => { // to fetch the last completion date and odometer of particular reminder
-         if(result === null)
-        {
-         lastCompleted =  moment().subtract(7, 'd').format('DD/MM/YYYY');
+         if(result == null || Object.keys(result).length === 0)
+        {          
+         lastCompleted =  moment().format('DD/MM/YYYY');
            serviceOdometer = this.allRemindersData[j].reminderTasks.odometer; 
            this.currentOdometer = +serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer/2);
           const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
@@ -157,12 +157,12 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
         else if (this.filterStatus === Constants.DUE_SOON) {
           this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
         }
-        else {
+        else if (this.filterStatus === Constants.ALL) {
           this.remindersData = this.remindersData;
         }
         }
         else {
-          lastCompleted = result.completionDate;
+          lastCompleted =  result.completionDate;
           serviceOdometer = +result.odometer;
           this.currentOdometer = +result.odometer + (this.allRemindersData[j].reminderTasks.odometer/2);
          
@@ -196,15 +196,11 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
           else if (this.filterStatus === Constants.DUE_SOON) {
             this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
           }
-          else {
+          else if (this.filterStatus === Constants.ALL) {
             this.remindersData = this.remindersData;
           }
         }
       });
-     
-
-    
-      
     }
   
   }
@@ -230,19 +226,22 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         // console.log('result', result);
+        this.remindersData = [];
+        this.getRemindersCount()
         this.rerender();
         this.toastr.success('Service Renewal Reminder Deleted Successfully!');
       });
     }
   }
 
-  getReminders() {
-    this.apiService
-      .getData('reminders/get-reminders/service')
-      .subscribe((result) => {
-        // this.suggestedVehicles = result.Items;
+  getRemindersCount() {
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
         this.totalRecords = result.Count;
-      });
+      },
+    });
   }
 
   initDataTable() {
@@ -262,6 +261,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [5], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.allRemindersData = resp['Items'];
@@ -310,6 +312,8 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
   searchFilter() {
     if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+      this.remindersData = [];
+      this.getRemindersCount()
       this.rerender('reset');
     } else {
       return false;
@@ -323,6 +327,9 @@ export class ListingComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleIdentification = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
+
+      this.remindersData = [];
+      this.getRemindersCount()
       this.rerender();
     } else {
       return false;

@@ -11,7 +11,7 @@
     <section role="main" class="content-body pl-1 pt-0 pr-0">
       <header class="page-header pr-5">
          <form class="form-horizontal" method="get">
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="row pr-1 mr-1" style="padding-top:8px;">
                <div class="col-md-2 col-lg-2">
                   <div class="input-group input-group-md mb-3">
                      <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -31,14 +31,14 @@
                      name="currentStatus"
                      placeholder="Select Type"
                      class="form-control populate">
-                     <ng-option  *ngFor="let item of allAssetTypes;" value="{{item.code}}">
+                     <ng-option *ngFor="let item of allAssetTypes;" value="{{item.code}}">
                         <div title="{{item.description}}"> {{item.description}}</div>
                     </ng-option>
                   </ng-select>
                </div>
 
                <div class="col-md-2 col-lg-2">
-                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                   <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                </div>
 
@@ -223,12 +223,12 @@
                         <th class="col6">Make</th>
                         <th class="col7">Model</th>
                         <th class="col8">Ownership</th>
-                        <th class="col9">Status</th>
                         <th class="col10 extra">Group</th>
                         <th class="col11 extra">ACE ID</th>
                         <th class="col12 extra">ACI ID</th>
                         <th class="col13 extra">GVWR</th>
                         <th class="col14 extra">GAWR</th>
+                        <th class="col9">Status</th>
                         <th>Actions</th>
                      </tr> 
                   </thead>
@@ -239,21 +239,20 @@
 
 
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                        <td *ngIf="hideShow.type">{{assetTypesObects[item.assetDetails.assetType]}}</td>                                          
+                        <td *ngIf="hideShow.type">{{assetTypesObjects[item.assetDetails.assetType]}}</td>                                          
                         <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                         <td *ngIf="hideShow.lastLocation" >Live Location</td>
                         <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
-                        <td *ngIf="hideShow.make" >{{manufacturersObjects[item.assetDetails.manufacturer]}}</td>
-                        <td *ngIf="hideShow.model" >{{modelsObjects[item.assetDetails.model]}}</td>
+                        <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
+                        <td *ngIf="hideShow.model" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
                         <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
-                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
                         <!-- extra columns -->
-                        <td *ngIf="hideShow.group" >{{groupsList[item.groupID]}}</td>
-                        <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID}}</td>
-                        <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID}}</td>
-                        <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
-                        <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
-
+                        <td *ngIf="hideShow.group" >{{item.groupID ? groupsList[item.groupID] : '-'}}</td>
+                        <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID ? item.crossBorderDetails.ACE_ID : '-'}}</td>
+                        <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
+                        <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR ? item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
+                        <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR ? item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
+                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
                         <td>
                            <div class="dropdown dropright">
                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

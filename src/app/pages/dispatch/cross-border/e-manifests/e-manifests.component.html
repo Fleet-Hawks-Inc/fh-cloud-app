@@ -12,8 +12,14 @@
             <header class="page-header pr-5" *ngIf="activeDiv === 'ace'">
                <form class="form-horizontal" method="get">
                   <div class="row px-2" style="padding-top:10px;">
+                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group mb-3">
+                            <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control"
+                                placeholder="Search SCAC/trip/shipment#/type/status" />
+                        </div>
+                    </div>
                      <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
+                        <div class="input-group input-group mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
                                 [(ngModel)]="vehicleIdentification" class="form-control"
                                 (input)="getSuggestions($event.target.value)" />
@@ -27,8 +33,8 @@
                             {{ suggestedVehicle.vehicleIdentification }}
                         </div>
                     </div>
-                     <div class="col-md-2  col-lg-2">
-                        <ng-select [(ngModel)]="currentStatus" name="currentStatus">
+                     <!-- <div class="col-md-2  col-lg-2">
+                        <ng-select [(ngModel)]="currentStatus" name="currentStatus" placeholder="Search by status">
                            <ng-option value="Draft">Draft</ng-option>
                            <ng-option value="Cancelled Manifest">Cancelled Manifest</ng-option>
                            <ng-option value="Transmitted to CBP">Transmitted to CBP</ng-option>
@@ -39,15 +45,37 @@
                            <ng-option value="Truck Arrived at Border">Truck Arrived at Border</ng-option>
                            <ng-option value="Truck Released at Border">Truck Released at Border</ng-option>
                         </ng-select>
-                     </div>
-                    
+                     </div> -->
+                     <div class="col-lg-3 col-md-3">
+                        <div class="input-daterange input-group">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </span>
+                            <input 
+                            [(ngModel)]="startDate" name="startDate"
+                            type="text" 
+                            placeholder="DD-MM-YYYY"
+                            (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                            class="form-control" autocomplete="off"> 
+                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                to
+                            </span>
+                            <input 
+                            [(ngModel)]="endDate" name="endDate"
+                            type="text" 
+                            placeholder="DD-MM-YYYY"
+                            (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                            class="form-control" autocomplete="off"> 
+                        </div>
+                    </div>
                      <div class="col-md-2  col-lg-2">
                         <button type="submit" (click)="searchACEFilter()"
                                 class="btn btn-sm btn-success mr-2">Search</button>
                             <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
-                     <div class="col-md-6 col-lg-6 text-right">
-                        
+                     <div class="col-md-3 col-lg-3 text-right">                        
                         <div class="btn-group flex-wrap">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -57,7 +85,6 @@
                            </div>
                         </div>
                         <a [routerLink] = "['/dispatch','cross-border','ACE-new-eManifest']"  class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACE eManifest</a>
-
                      </div>
                   </div>
                </form>
@@ -65,8 +92,14 @@
             <header class="page-header pr-5" *ngIf="activeDiv === 'aci'">
                <form class="form-horizontal" method="get">
                   <div class="row px-2" style="padding-top:10px;">
+                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group mb-3">
+                            <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control"
+                                placeholder="Search CCC/trip/shipment#/type/status" />
+                        </div>
+                    </div>
                      <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
+                        <div class="input-group input-group mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentificationACI" placeholder="Search vehicle"
                                 [(ngModel)]="vehicleIdentificationACI" class="form-control"
                                 (input)="getSuggestionsACI($event.target.value)" />
@@ -80,8 +113,8 @@
                             {{ suggestedVehicle.vehicleIdentification }}
                         </div>
                     </div>
-                     <div class="col-md-2  col-lg-2">
-                           <ng-select [(ngModel)]="currentStatusACI" name="currentStatusACI">
+                     <!-- <div class="col-md-2  col-lg-2">
+                           <ng-select [(ngModel)]="currentStatusACI" name="currentStatusACI" placeholder="Search by status">
                               <ng-option value="Draft">Draft</ng-option>
                               <ng-option value="Cancelled">Cancelled</ng-option>
                               <ng-option value="Transmitted to CBSA">Transmitted to CBSA</ng-option>
@@ -93,14 +126,36 @@
                               <ng-option value="Rejected After Arrival at Border">Rejected After Arrival at Border</ng-option>
                               <ng-option value="Released">Released</ng-option>
                            </ng-select>                       
-                     </div>
-                    
+                     </div> -->
+                     <div class="col-lg-3 col-md-3">
+                        <div class="input-daterange input-group">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </span>
+                            <input 
+                            [(ngModel)]="aciStartDate" name="aciStartDate"
+                            type="text" 
+                            placeholder="DD-MM-YYYY"
+                            (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                            class="form-control" autocomplete="off"> 
+                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                to
+                            </span>
+                            <input 
+                            [(ngModel)]="aciEndDate" name="aciEndDate"
+                            type="text" 
+                            placeholder="DD-MM-YYYY"
+                            (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                            class="form-control" autocomplete="off"> 
+                        </div>
+                    </div>
                      <div class="col-md-2  col-lg-2">
-                        <button type="submit" (click)="searchACIFilter()"
-                        class="btn btn-sm btn-success mr-2">Search</button>
-                    <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
+                        <button type="submit" (click)="searchACIFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
-                     <div class="col-md-6 col-lg-6 text-right">
+                     <div class="col-md-3 col-lg-3 text-right">
                         
                         <div class="btn-group flex-wrap">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
@@ -134,29 +189,36 @@
                               <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="ace">
                                  <thead>
                                     <tr> 
-                                       <th>Trip</th>
-                                       <th>SCAC Code</th>                                          
+                                       
+                                       <th>Trip#</th>
+                                       <!-- <th>SCAC Code</th>                                           -->
+                                      
+                                       <th>Shipment#</th>
+                                       <th>Type</th>
+                                       <th>Est Date</th>
                                        <th>Driver</th>
                                        <th>Truck</th>                                          
                                        <th>Trailer</th>
-                                       <th>Shipment No.</th>
-                                       <th>Type</th>
+                                       <th>Shipper</th>
                                        <th>Consignee</th>
                                        <th>Status</th>
                                        <th>Action</th>  
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <tr *ngFor = "let aceManifest of ACEList;">                                       
-                                       <td  routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>                                          
+                                    <tr *ngFor = "let aceManifest of ACEList;">       
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>-->
+                                      
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>                                
                                        <td routerLink="/dispatch/cross-b order/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
                                           {{vehiclesList[aceManifest.truck.truckID]}}
                                        </td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shippersList[shipment.shipperID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
@@ -168,42 +230,46 @@
                                         </div></td>                                       
                                     </tr> 
                                  </tbody>
-                                 <tbody *ngIf="ACEList.length === 0">
+                                 <!-- <tbody *ngIf="ACEList.length === 0">
                                     <tr>
                                         <td colspan="13" class="no-data-available">No records found</td>
                                     </tr>
-                                <tbody>
+                                <tbody> -->
                               </table>                              
                            </div>
                            <div class="tab-pane" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
                                <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable [dtOptions]="dtOptionsACI" [dtTrigger]="dtTriggerACI" id="aci">
                                  <thead>
-                                    <tr>                                 
+                                    <tr>
                                        
-                                       <th>Trip</th>
-                                       <th>CCC Code</th>                                          
-                                        <th>Driver</th>
-                                       <th>Truck</th>                                          
-                                       <th>Trailer</th>
+                                       <th>Trip#</th>
+                                       <!-- <th>CCC Code</th>                                           -->
+                                       
                                        <th>Cargo Control Number</th>
                                        <th>Type</th>
+                                       <th>Est Date</th>
+                                       <th>Driver</th>
+                                       <th>Truck</th>                                          
+                                       <th>Trailer</th>
+                                       <th>Shipper</th>
                                        <th>Consignee</th>
                                        <th>Status</th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <tr *ngFor = "let aciManifest of ACIList;">                                       
+                                    <tr *ngFor = "let aciManifest of ACIList;">      
                                        <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
-                                        <td>{{aciManifest.CCC}}</td>                                          
-                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">
-                                          {{vehiclesList[aciManifest.truck.truckID]}}
-                                       </td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
+                                        <!-- <td>{{aciManifest.CCC}}</td>                                           -->
+                    
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">Diamond, Detroit</td>
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>                                 
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shippersList[shipment.shipperID]}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -215,11 +281,11 @@
                                     </tr> 
                                     
                                  </tbody>
-                                 <tbody *ngIf="ACIList.length === 0">
+                                 <!-- <tbody *ngIf="ACIList.length === 0">
                                     <tr>
                                         <td colspan="13" class="no-data-available">No records found</td>
                                     </tr>
-                                <tbody>
+                                <tbody> -->
                               </table>
                            </div>
                         </div>

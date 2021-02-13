@@ -76,8 +76,7 @@
            </header>
            <section class="card mt-0 mb-4">
                <div class="card-body">
-                   <table class="table table-bordered table-responsive-lg table-striped mb-0" datatable
-                       [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
                        <thead>
                            <tr>
                                <th>Estimate</th>
@@ -97,7 +96,6 @@
                        <tbody *ngIf="quotes.length > 0">
                            <tr *ngFor="let quote of quotes;let i = index;">
                                <td routerLink="/dispatch/quotes/detail/{{quote.quoteID}}">{{quote.quoteNumber}}</td>
-
                                <!-- save creationDate in Y-m-d format -->
                                <td>{{quote.creationDate | date: 'dd-MM-yyyy'}}</td> 
                                <td>{{quote.reference}}</td>

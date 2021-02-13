@@ -14,7 +14,7 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 import {ChartsModule} from 'ng2-charts';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
-import { AddAccountComponent  } from './pages/onboard/add-account/add-account.component';
+import { AddAccountComponent  } from './entry/onboard/add-account/add-account.component';
 
 import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
 import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
@@ -75,6 +75,10 @@ const routes: Routes = [
   {
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false }
+  },
+  {
+    path: 'manage',
+    loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false }
   },
   { path: 'Left-Bar', component: LeftBarComponent },
   {                             

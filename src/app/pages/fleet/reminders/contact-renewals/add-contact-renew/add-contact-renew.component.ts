@@ -31,6 +31,7 @@ export class AddContactRenewComponent implements OnInit {
   timeType = 'Day(s)';
   vehicles = [];
   contacts = [];
+  drivers = [];
   users = [];
   test = [];
   groups = [];
@@ -58,6 +59,7 @@ export class AddContactRenewComponent implements OnInit {
     this.fetchUsers();
     this.fetchGroups();
     this.fetchContacts();
+    this.fetchDrivers();
     this. fetchServiceTaks();
     $(document).ready(() => {
       this.contactRenewalForm = $('#contactRenewalForm').validate();
@@ -73,7 +75,6 @@ export class AddContactRenewComponent implements OnInit {
     let test = [];
     let taskType = 'contact';
     this.apiService.getData('tasks').subscribe((result: any) => {
-      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });    
@@ -83,8 +84,13 @@ export class AddContactRenewComponent implements OnInit {
       this.users = result.Items;
     });
   }
+  fetchDrivers() {
+    this.apiService.getData('drivers').subscribe((result: any) => {
+      this.drivers = result.Items;
+    });
+  }
   fetchContacts() {
-    this.apiService.getData('contacts').subscribe((result: any) => {
+    this.apiService.getData('staffs').subscribe((result: any) => {
       this.contacts = result.Items;
     });
   }

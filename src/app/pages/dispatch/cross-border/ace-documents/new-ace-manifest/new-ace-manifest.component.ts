@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { BooleanNullable } from 'aws-sdk/clients/glue';
 declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -99,7 +100,7 @@ export class NewAceManifestComponent implements OnInit {
   modalTitle = 'Add';
   vehicles = [];
   assets = [];
-  drivers = [];
+  fetchedDrivers = [];
   shippers = [];
   consignees = [];
   brokers = [];
@@ -109,24 +110,23 @@ export class NewAceManifestComponent implements OnInit {
   thirdPartiesList : any = [];
   thirdPartyStates: any  = [];
   thirdPartyCities: any = [];
+  carriers: any = [];
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
   truck = {
     truckID: '',
-    sealNumbers: [{sealNumber: ''}]
+    sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}]
   }
-  assetsArray = [
+  trailers = [
     {
       assetID: '',
-      sealNumbers: [{sealNumber: ''}],
+      sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
     }];
-  addTrailerSealBtn = true;  
-  truckSealDiv = false;
-  truckIITDiv = false;  
+  addTrailerSealBtn = true;    
+  drivers: any  = [];
   estimatedArrivalDate: string;
-  estimatedArrivalTime: string;
-  driverArray = [];  
+  estimatedArrivalTime: string; 
   errors = {};
   form;
   response: any = '';
@@ -141,7 +141,7 @@ export class NewAceManifestComponent implements OnInit {
   shipmentTypeList: any = [];
   brokersList: any = [];
   timeList: any = [];
-  tripNumber: string;
+  tripNumber: string = '';
   SCAC: string;  
   shipmentControlNumber: string;
   currentStatus: string;
@@ -207,7 +207,14 @@ export class NewAceManifestComponent implements OnInit {
     state: '',
     zipCode: ''
     }
-  
+  /**
+   * for front end validation of US address
+   */
+  errorClassState: boolean = false;
+errorClassCity: boolean = false;
+errorClassAddress: boolean = false;
+errorClassZip: boolean = false;
+address:boolean = false;
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
@@ -229,6 +236,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchBrokers();
     this.getStates();
     this.getUSStates();
+    this.fetchCarrier();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -325,7 +333,7 @@ getThirdPartyStates(s,p){
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
-      this.drivers = result.Items;
+      this.fetchedDrivers = result.Items;
     });
   }
   fetchVehicles() {
@@ -339,6 +347,12 @@ getThirdPartyStates(s,p){
         this.countries = result.Items;
       });
   }
+  fetchCarrier(){
+    this.apiService.getData('carriers/getCarrier')
+    .subscribe((result: any) => {
+      this.carriers = result.Items;
+    });    
+  }v
   fetchShippers(){
   this.apiService.getData('shippers').subscribe((result:any)=> {
     this.shippers = result.Items;
@@ -357,7 +371,7 @@ getThirdPartyStates(s,p){
   // TRUCK DATA
   addTruckSeal(){
     this.truck.sealNumbers.push({sealNumber: ''});
-    if(this.truck.sealNumbers.length <= 3){
+    if(this.truck.sealNumbers.length <= 2){
       this.addTruckSealBtn = true;
     } 
     else  {
@@ -366,19 +380,19 @@ getThirdPartyStates(s,p){
   }  
 // TRAILER DATA
 addTrailerSeal(i){
-  if(this.assetsArray[i].sealNumbers.length <= 3) {
-    this.assetsArray[i].sealNumbers.push({sealNumber: ''});
+  if(this.trailers[i].sealNumbers.length <= 3) {
+    this.trailers[i].sealNumbers.push({sealNumber: ''});
   }
        
 }
  addTrailer() {
-  this.assetsArray.push({
+  this.trailers.push({
     assetID: '',
-    sealNumbers: [{sealNumber:''}],
+    sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}],
   });
   this.addTrailerBtn = true;
 
-  if (this.assetsArray.length >= 9999) {
+  if (this.trailers.length >= 9999) {
     this.addTrailerBtn = false;
   }
   else {
@@ -386,7 +400,7 @@ addTrailerSeal(i){
   }
 }
 deleteTrailer(i: number) {
-  this.assetsArray.splice(i, 1);
+  this.trailers.splice(i, 1);
   this.addTrailerBtn = true;
 }
   addShipment() {
@@ -412,19 +426,7 @@ deleteTrailer(i: number) {
           filerCode: '',
           portLocation: ''
          },
-         thirdParties:[
-          {
-            type: '',
-            name:'',
-            address: {
-            addressLine: '',
-            city: '',
-            stateProvince: '',
-            country: '',
-            postalCode: '',
-            }
-            }
-         ],
+         thirdParties:[],
       commodities: [{
         loadedOn: {
           type: '',
@@ -533,7 +535,7 @@ deleteTrailer(i: number) {
     this.shipments[s].commodities.splice(i, 1);
   }
  addThirdParty(p){
-   if(this.shipments[p].thirdParties.length <= 21){
+   if(this.shipments[p].thirdParties.length <= 20){
    this.shipments[p].thirdParties.push({
     type: '',
     name:'',
@@ -549,21 +551,52 @@ deleteTrailer(i: number) {
  deleteThirdParty(i: number, s: number) {
   this.shipments[s].thirdParties.splice(i, 1);
 }
+
   addACEManifest() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    if(this.shipments.length == 0){ // to show error on empty US address
+      if(this.usAddress.state == ''){
+        this.errorClassState = true; 
+      }
+      else{
+        this.errorClassState = false; 
+      }
+      if(this.usAddress.city == ''){
+        this.errorClassCity = true; 
+      }else{
+        this.errorClassCity = false;
+      }
+      if(this.usAddress.addressLine == ''){
+        this.errorClassAddress = true; 
+      }else{
+        this.errorClassAddress = false; 
+      }
+      if(this.usAddress.zipCode == ''){
+        this.errorClassZip = true; 
+      }else{
+        this.errorClassZip = false; 
+      }
+      if(this.usAddress.state !== '' && this.usAddress.city !== '' && this.usAddress.addressLine !== '' && this.usAddress.zipCode !== ''){
+        this.address = true;
+      }
+    }
+    if(this.shipments.length > 0 || this.address){  
     const data = {
       SCAC: this.SCAC,
-      tripNumber: this.SCAC+this.tripNumber,
+      tripNumber: this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
       truck: this.truck,
-      trailers: this.assetsArray,
-      drivers: this.driverArray,
+      trailers: this.trailers,
+      drivers: this.drivers,
       usAddress: this.usAddress,
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'Draft'
-    }; 
+    };  
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -571,7 +604,7 @@ deleteTrailer(i: number) {
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -584,20 +617,21 @@ deleteTrailer(i: number) {
       },
       next: (res) => {
         this.response = res;
-        this.toastr.success('Manifest added successfully');
-        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
+        this.hasSuccess = true;
+        this.toastr.success('Manifest added successfully.');
+        this.location.back(); // <-- go back to previous location
 
       },
     });
+  }
   }
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+          .addClass('error')
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -606,7 +640,7 @@ deleteTrailer(i: number) {
         $('[name="' + v + '"]')
           .removeClass('error')
           .next()
-          .remove('label');
+          .remove('label')
       });
     this.errors = {};
   }
@@ -619,13 +653,14 @@ deleteTrailer(i: number) {
         this.sendId = result.sendId;
         this.timeCreated =  result.timeCreated;
           this.SCAC = result.SCAC;
-          this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
+          // this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
+          this.tripNumber = result.tripNumber;
           this.usPortOfArrival = result.usPortOfArrival;
           this.estimatedArrivalDate = result.estimatedArrivalDate;
           this.estimatedArrivalTime = result.estimatedArrivalTime;
           this.truck = result.truck;
-          this.driverArray = result.drivers;
-          this.assetsArray = result.trailers;
+          this.drivers = result.drivers;
+          this.trailers = result.trailers;
           this.passengers = result.passengers;
           this.shipments = result.shipments;
           this.currentStatus = result.currentStatus,
@@ -640,23 +675,52 @@ deleteTrailer(i: number) {
       });
   }
   updateACEManifest() {
+    this.hideErrors();
+    if(this.shipments.length == 0){ // to show error on empty US address
+      if(this.usAddress.state == ''){
+        this.errorClassState = true; 
+      }
+      else{
+        this.errorClassState = false; 
+      }
+      if(this.usAddress.city == ''){
+        this.errorClassCity = true; 
+      }else{
+        this.errorClassCity = false;
+      }
+      if(this.usAddress.addressLine == ''){
+        this.errorClassAddress = true; 
+      }else{
+        this.errorClassAddress = false; 
+      }
+      if(this.usAddress.zipCode == ''){
+        this.errorClassZip = true; 
+      }else{
+        this.errorClassZip = false; 
+      }
+      if(this.usAddress.state !== '' && this.usAddress.city !== '' && this.usAddress.addressLine !== '' && this.usAddress.zipCode !== ''){
+        this.address = true;
+      }
+    }
+    if(this.shipments.length > 0 || this.address){  
     const data = {
       entryID: this.entryID,
       timeCreated: this.timeCreated,
       sendId: this.sendId,
       SCAC: this.SCAC,
-      tripNumber:this.SCAC+this.tripNumber,
+      tripNumber:this.tripNumber,
       usPortOfArrival: this.usPortOfArrival,
       estimatedArrivalDate: this.estimatedArrivalDate,
       estimatedArrivalTime: this.estimatedArrivalTime,
       truck: this.truck,
-      trailers: this.assetsArray,
-      drivers: this.driverArray,
+      trailers: this.trailers,
+      drivers: this.drivers,
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: this.currentStatus,
       usAddress: this.usAddress
     };
+ 
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -664,7 +728,7 @@ deleteTrailer(i: number) {
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -677,10 +741,12 @@ deleteTrailer(i: number) {
       },
       next: (res) => {
         this.response = res;
-        this.toastr.success('Manifest Updated successfully');
+        this.hasSuccess = true;
+        this.toastr.success('Manifest Updated successfully.');
         this.router.navigateByUrl('/dispatch/cross-border/eManifests');
 
       },
     });
   }
+}
 }

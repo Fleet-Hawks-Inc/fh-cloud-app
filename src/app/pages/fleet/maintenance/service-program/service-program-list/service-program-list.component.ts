@@ -37,20 +37,16 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
     ) {}
 
   ngOnInit() {
-    this.fetchPrograms();
+    this.fetchProgramsCount();
     this.initDataTable();
   }
 
-  fetchPrograms() {
-    this.spinner.show(); // loader init
-    this.apiService.getData('servicePrograms').subscribe({
+  fetchProgramsCount() {
+    this.apiService.getData('servicePrograms/get/count?programName='+this.programeName).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-        // this.programs = result.Items;
-        // console.log('this.programs', this.programs);
-        this.spinner.hide(); // loader hide
       },
     });
   }
@@ -67,6 +63,9 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
         { "targets": [0,1,2], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('servicePrograms/fetch-records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.programs = resp['Items'];
@@ -112,6 +111,8 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
 
   searchFilter() {
     if (this.programeName !== '') {
+      this.programs = [];
+      this.fetchProgramsCount();
       this.rerender('reset');
     } else {
       return false;
@@ -121,6 +122,8 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
   resetFilter() {
     if (this.programeName !== '') {
       this.programeName = '';
+      this.programs = [];
+      this.fetchProgramsCount();
       this.rerender();
     } else {
       return false;
@@ -132,6 +135,8 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
       this.apiService
       .getData(`servicePrograms/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.programs = [];
+        this.fetchProgramsCount();
         this.rerender();
         this.toastr.success('Service Program Deleted Successfully!');
       });

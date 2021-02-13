@@ -1839,7 +1839,8 @@ html.fixed .reports-wrapper {
 }
 
 .dataTables_empty {
-  display: none;
+  /* display: none; */
+  padding: 10px !important
 }
 
 .no-data-available {
@@ -1902,7 +1903,12 @@ table.dataTable thead th, table.dataTable thead td {
 .checkboxalign{vertical-align: middle !important;}
 
 /*drop down icon for common pages*/
-.togglecolor::after{color:#999;}
+.togglecolor::after{
+  color:#999;
+  margin-top: 8px !important;
+  float: right !important;
+}
+
 
 /*drop down icon on asset page*/
 .toggleright::after{margin-top: 8px !important; float: right !important; color:#999;}
@@ -1941,4 +1947,11 @@ table.dataTable thead th, table.dataTable thead td {
 .suggestionClass:hover{
   background-color: #e1e1e1;
 
+}
+
+.mandfield{color: #ff0000;}
+
+.mt-1-c1, .my-1-c1
+{
+  margin-top: 0.15rem !important;
 }

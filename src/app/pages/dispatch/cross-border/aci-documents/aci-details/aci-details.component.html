@@ -40,7 +40,21 @@
                     <a class="dropdown-item text-1" href="">Export</a>
                 </div>
             </div>
-            <a href="javascript:;"(click)="sendCBSAFn()" class="btn btn-success btn-sm" style="color:white;"> Send to CBSA</a>
+            <div class="btn-group btn-group1 flex-wrap mr-1">
+                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Send To CBSA<span class="caret"></span></button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                
+                   
+                    <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBSAFn()">Send Trip and Shipments</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Change Trip and Shipments</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Amend Trip and Shipments(Use After Arrival)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Cancel Trip and Shipments</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Send Trip Only(Shipments already on file or empty)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Change Trip Only(Shipments will not be changed.If adding shipment,it must be on file)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Amend Trip Only(Shipments will not be amended)</a>
+                    <a class="dropdown-item text-1" href="javascript:;" >Cancel Trip Only</a>
+                </div>
+            </div>
         </div>
         </header>
         <div class="ACI-main__wrapper p-4 bg-white">

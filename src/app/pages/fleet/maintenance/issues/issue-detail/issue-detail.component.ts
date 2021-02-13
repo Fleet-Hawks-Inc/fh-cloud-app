@@ -33,6 +33,7 @@ export class IssueDetailComponent implements OnInit {
   vehicleList: any = {};
   contactList: any = {};
   assetList: any = {};
+  driverList: any = {};
   uploadedPhotos = [];
   uploadedDocs = [];
   docs: SafeResourceUrl;
@@ -49,7 +50,7 @@ export class IssueDetailComponent implements OnInit {
     this.issueID = this.route.snapshot.params[`issueID`];
     this.fetchIssue();
     this.fetchVehicleList();
-    this.fetchContactList();
+    this.fetchDriverList();
     this.fetchAssetList();
   }
   fetchVehicleList() {
@@ -58,9 +59,9 @@ export class IssueDetailComponent implements OnInit {
     });
   }
 
-  fetchContactList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.contactList = result;
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   fetchAssetList() {

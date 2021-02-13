@@ -30,14 +30,13 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route#</label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeNo"
                                                     [(ngModel)]="routeData.routeNo" placeholder="Enter route#"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route
-                                                    Name</label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Route Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
                                                     [(ngModel)]="routeData.routeName" placeholder="Enter route name"> </div>
                                         </div>
@@ -116,7 +115,7 @@
                                             </div>
                                             
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
+                                                <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
                                                     (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter source address">
@@ -132,28 +131,28 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    Country</label>
+                                                    Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCountry"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCountry"
                                                     class="form-control"  placeholder="Enter source country">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State</label>
+                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
                                                     class="form-control" placeholder="Enter source state">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    City</label>
+                                                    City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCity"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCity"
                                                     class="form-control" placeholder="Enter source city">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                                    Code</label>
+                                                    Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="sourceInformation.sourceZipCode"
                                                     [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="off" placeholder="Enter source zip code">
                                             </div>
@@ -169,7 +168,7 @@
                                             
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-bold pt-2 text-lg-right">Address</label>
+                                                    class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
                                                     (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter destination address">
@@ -185,28 +184,28 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    Country</label>
+                                                    Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCountry"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCountry"
                                                     class="form-control" placeholder="Enter destination country">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State</label>
+                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
                                                     class="form-control" placeholder="Enter destination state">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    City</label>
+                                                    City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCity"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCity"
                                                     class="form-control" placeholder="Enter destination city">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                                    Code</label>
+                                                    Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="destinationInformation.destinationZipCode"
                                                     [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code">
                                             </div>
@@ -268,8 +267,7 @@
                                                 <div class="row mt-2">
                                                     <div class="col-lg-10">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Recurring
-                                                            Date</label>
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Recurring Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
                                                             placeholder="Enter recurring date" (click)="d.toggle()" ngbDatepicker
@@ -481,7 +479,7 @@
                                                                             placeholder="Notes" name="stopNotes_{{i}}"
                                                                             [(ngModel)]="routeData.stops[i].stopNotes">
                                                                     </td>
-                                                                    <td *ngIf="i >= 2"><span (click)="removeStops(i)"
+                                                                    <td *ngIf="i >= 1 && i < routeData.stops?.length-1"><span (click)="removeStops(i)"
                                                                             class="fas fa-trash-alt pt-2"></span></td>
                                                                 </tr>
                                                             </thead>

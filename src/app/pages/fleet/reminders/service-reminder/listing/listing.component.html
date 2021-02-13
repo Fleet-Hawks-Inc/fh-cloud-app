@@ -10,20 +10,20 @@
 
         <section role="main" class="content-body pl-0 pt-0">
             <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                <div class="row pr-1 mr-1" style="padding-top:8px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="vehicleIdentification"
-                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search vehicle"
+                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search by vehicle"
                                 (input)="getSuggestions($event.target.value)" />
                         </div>
-                        <div *ngFor="let suggestedVehicle of suggestedVehicles" class="suggestionClass" (click)="
-                        setVehicle(
-                          suggestedVehicle.vehicleID,
-                          suggestedVehicle.vehicleIdentification
-                        )
-                      ">
-                            {{ suggestedVehicle.vehicleIdentification }}
+                        <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
+                                    (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"> {{
+                                        suggestedVehicle.vehicleIdentification }}
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
@@ -145,7 +145,7 @@
                                         <tr>
                                             <td colspan="10" class="no-data-available">No records found</td>
                                         </tr>
-                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

@@ -13306,7 +13306,7 @@ html.dark .table .actions-hover a {
 	background-color: #FFF;
 	border: 1px solid #EEE;
 	border-top: 0;
-	padding: 15px;
+	padding: 11px;
 }
 
 /* Bottom Tabs */
@@ -14477,7 +14477,7 @@ html.header-dark .userbox .dropdown-menu a {
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 	background: rgba(36, 27, 28, 0.9);
-	bottom: 10%;
+	top: 0;
 	color: #FFF;
 	font-size: 18px;
 	font-weight: 700;

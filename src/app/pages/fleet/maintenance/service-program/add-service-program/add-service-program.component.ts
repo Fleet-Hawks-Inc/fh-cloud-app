@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  vehicleModal: boolean = false;
+  vehicleModal: boolean = false; 
   vehicles: any;
   tasks = [];
   private programID;
@@ -95,7 +95,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
       complete: () => { },
       error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -124,28 +124,24 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.hideErrors();
     this.apiService.postData('tasks', this.taskData).subscribe({
       complete: () => { },
-        error: (err) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                const path = val.path;
-                // We Can Use This Method
-                const key = val.message.match(/'([^']+)'/)[1];
-                
-                val.message = val.message.replace(/'.*'/, 'This Field');
-                this.errors[key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
         next: (res) => {
-          
+          this.fetchTasks();
           this.toastr.success('Service Task added successfully');
           $('#addServiceTaskModal').modal('hide');
           this.taskData['taskName'] = '';
@@ -164,6 +160,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   }
 
   fetchTasks() {
+    this.tasks = [];
     this.apiService.getData('tasks').subscribe({
       error: () => {},
       next: (result: any) => {

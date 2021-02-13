@@ -165,7 +165,7 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
         this.allVehicles = [];
-        if(this.programs[0].vehicles) {
+        if(this.vehicles) {
           this.updateVehicles(result.Items, this.programs[0].vehicles);
         }
       });

@@ -8,7 +8,7 @@
 
     <div class="panel card-sign">
       <div class="card-title-sign mt-3 text-center">
-        <h2 class="text-uppercase font-weight-bold mb-2">Driver Login</h2>
+        <h2 class="text-uppercase font-weight-bold mb-2">Login</h2>
       </div>
       <div class="card-body">
         <form action="select-vehicle.html" method="post">
@@ -46,7 +46,10 @@
             <div class="col-sm-12 text-center">
 
               <button type="submit" class="btn btn-primary btn-lg mt-2" (click)="loginAction1()">Submit</button>
-
+            
+            </div>
+            <div class="col-sm-12 mt-2">
+              <a [routerLink]="['/onboard']" class="font-weight-semibold">Does not have an account yet!&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
             </div>
           </div>
 

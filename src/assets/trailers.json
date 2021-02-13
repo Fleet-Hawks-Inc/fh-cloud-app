@@ -1,19 +1,11 @@
 [
 	{
-		"code": "2B",
-		"description": "20 ft. Container (Closed top) sea container"
+		"code": "TF",
+		"description": "Trailer (Dry freight)"
 	},
 	{
-		"code": "20",
-		"description": "20 ft. Container (Open top) sea container"
-	},
-	{
-		"code": "4B",
-		"description": "40 ft. Container (Closed top) sea container"
-	},
-	{
-		"code": "40",
-		"description": "40 ft. Container (Open top) sea container"
+		"code": "CZ",
+		"description": "Reefer"
 	},
 	{
 		"code": "TC",
@@ -108,18 +100,6 @@
 		"description": "Other"
 	},
 	{
-		"code": "CL",
-		"description": "Other length sea container (Closed top)"
-	},
-	{
-		"code": "CU",
-		"description": "Other length sea container (Open top)"
-	},
-	{
-		"code": "CZ",
-		"description": "Refrigerated container"
-	},
-	{
 		"code": "TL",
 		"description": "Semi truck trailer"
 	},
@@ -178,9 +158,5 @@
 	{
 		"code": "L1",
 		"description": "Tank trailer (Liquids) - Not heated/Not insulated"
-	},
-	{
-		"code": "TF",
-		"description": "Trailer (Dry freight)"
 	}
 ]

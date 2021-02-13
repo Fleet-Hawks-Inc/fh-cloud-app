@@ -69,7 +69,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.fetchItems();
+    this.fetchItemsCount();
     this.fetchVendors();
     this.fetchItemGroups();
     this.fetchWarehouses();
@@ -129,7 +129,14 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   
   
   resetFilter(){
-    this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+      this.fetchItemsCount();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
+    }
   }
 
   fetchVendors(){
@@ -149,11 +156,21 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     $('#transferModal').modal('show');
   }
 
-  fetchItems(){
-    this.apiService.getData('items').subscribe((result) => {
-      // this.items = result.Items;
-      this.totalRecords = result.Count;
-    })
+  // fetchItems(){
+  //   this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
+  //     // this.items = result.Items;
+  //     this.totalRecords = result.Count;
+  //   })
+  // }
+
+  fetchItemsCount() {
+    this.apiService.getData('items/get/count?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+      },
+    });
   }
 
   fetchWarehouses(){
@@ -167,6 +184,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.apiService
       .getData(`items/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.items = [];
+        this.fetchItemsCount();
         this.rerender();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
@@ -185,8 +204,11 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
         { "targets": [0,1,2,3,4,5,6,7,8,9,10,11], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('items/fetch-records?lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+        current.apiService.getDatatablePostData('items/fetch-records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           //record number
           if(dataTablesParameters.start >=2) {
             current.partNo = [];
@@ -317,6 +339,16 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     } else { 
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
+    }
+  }
+
+  searchFilter() {
+    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+      this.fetchItemsCount();
+      this.items = [];
+      this.rerender('reset');
+    } else {
+      return false;
     }
   }
 }

@@ -6,7 +6,7 @@
             <header class="page-header pr-5 service-program-header">
                 <form class="form-horizontal" method="get">
             
-                    <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="row pr-1 mr-1" style="padding-top:9px;">
                         <div class="col-md-3 col-lg-3">
                             <div class="input-group input-group-sm mb-3">
                                 <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control" placeholder="Search">
@@ -52,7 +52,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="tab-content p-0" id="myTabContent">
+                            <div class="tab-content p-0 border-0 shadow-none" id="myTabContent">
                                 <div class="tab-pane fade show active" id="service-prog" role="tabpanel" aria-labelledby="service-prog-tab">
                                     <div class="row">
                                         <div class="col pr-0">
@@ -74,7 +74,7 @@
                                         
                                                                     <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">
                                                                         {{program.programName}}</td>
-                                                                    <td>{{program.description}}</td>
+                                                                    <td>{{program.description ? program.description : '-'}}</td>
                                                                     <td>
                                                                         <div class="dropdown dropright">
                                                                             <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
@@ -95,7 +95,7 @@
                                                                 <tr>
                                                                     <td colspan="3" class="no-data-available">No records found</td>
                                                                 </tr>
-                                                            <tbody>
+                                                            </tbody>
                                                         </table>
                                                     </div>
                                                 </div>

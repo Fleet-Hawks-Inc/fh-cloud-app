@@ -15,11 +15,11 @@
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" autocomplete="off" name="firstName" [(ngModel)]="firstName"
-                                class="form-control" (input)="getSuggestions($event.target.value)"  placeholder="Search By Contact"/>
+                                class="form-control" (input)="getSuggestions($event.target.value)"  placeholder="Search by contact"/>
                         </div>
                         <div *ngFor="let suggestedContact of suggestedContacts" class="suggestionClass" (click)="
                             setContact(
-                              suggestedContact.contactID,
+                              suggestedContact.driverID,
                               suggestedContact.firstName
                             )
                           ">
@@ -99,7 +99,7 @@
                                     </thead>
                                     <tbody *ngIf="remindersData.length > 0">
                                         <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                            <td>{{contactList[item.reminderIdentification]}}</td>
+                                            <td>{{driverList[item.reminderIdentification]}}</td>
                                             <td> <span class="text-warning font-weight-bold font-size-12"
                                                     *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
                                                 <span class="text-danger font-weight-bold font-size-12"

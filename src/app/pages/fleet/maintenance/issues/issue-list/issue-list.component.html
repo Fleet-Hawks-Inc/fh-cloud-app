@@ -1,13 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
+    
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
+        
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header">
                 <div class="row px-4" style="padding-top: 10px">
@@ -82,7 +76,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngIf="issues.length > 0">
+                                    <tbody *ngIf="issues?.length > 0">
                                         <tr *ngFor="let issue of issues" style="cursor: pointer;">
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ issue.unitType }}
@@ -99,7 +93,7 @@
                                                 {{issue.reportedDate}}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{contactList[issue.reportedBy]}}
+                                                {{driverList[issue.reportedBy]}}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ issue.assignedTo }}
@@ -124,11 +118,11 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="issues.length === 0">
+                                    <tbody *ngIf="issues?.length == 0">
                                         <tr>
                                             <td colspan="8" class="no-data-available">No records found</td>
                                         </tr>
-                                    <tbody>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

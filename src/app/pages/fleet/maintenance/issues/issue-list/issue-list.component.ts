@@ -22,7 +22,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   title = 'Issues List';
   issues = [];
-  contactList: any = {};
+  driverList: any = {};
   vehicleList: any = {};
   assetList: any = {};
   vehicleName: string;
@@ -40,11 +40,10 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
-
   ngOnInit() {
-    this.fetchIssues();
+    this.fetchIssuesCount();
     this.fetchVehicleList();
-    this.fetchContactList();
+    this.fetchDriverList();
     this.fetchAssetList();
     this.initDataTable();
     $(document).ready(() => {
@@ -61,12 +60,12 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getSuggestions(value) {
-    this.suggestedUnits = [];
     this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-
+        
+        this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
             unitID: result[i].vehicleID,
@@ -98,9 +97,9 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleList = result;
     });
   }
-  fetchContactList() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.contactList = result;
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   fetchAssetList() {
@@ -109,12 +108,22 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  fetchIssues() {
-    this.apiService.getData(`issues`).subscribe({
-      complete: () => { },
-      error: () => { },
+  // fetchIssues() {
+  //   this.apiService.getData('issues?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       // this.issues = result.Items;
+  //       this.totalRecords = result.Count;
+  //     },
+  //   });
+  // }
+
+  fetchIssuesCount() {
+    this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
-        // this.issues = result.Items;
         this.totalRecords = result.Count;
       },
     });
@@ -125,6 +134,8 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
       .getData(`issues/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
+        this.fetchIssuesCount();
+        this.issues = [];
         this.rerender();
         this.toastr.success('Issue Deleted Successfully!');
       });
@@ -143,6 +154,9 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
         { "targets": [0, 1, 2, 3, 4, 5, 6, 7], "orderable": false },
       ],
       dom: 'lrtip',
+      language: {
+        "emptyTable": "No records found"
+      },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('issues/fetchRecords?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.issues = resp['Items'];
@@ -152,6 +166,8 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
           } else {
             this.lastEvaluatedKey = '';
           }
+
+          // $(".dataTables_empty").css('display','none')
 
           callback({
             recordsTotal: current.totalRecords,
@@ -188,6 +204,8 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchFilter() {
     if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
+      this.fetchIssuesCount();
+      this.issues = [];
       this.rerender('reset');
     } else {
       return false;
@@ -200,6 +218,9 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.unitName = '';
       this.issueName = '';
       this.issueStatus = '';
+
+      this.fetchIssuesCount();
+      this.issues = [];
       this.rerender();
     } else {
       return false;
