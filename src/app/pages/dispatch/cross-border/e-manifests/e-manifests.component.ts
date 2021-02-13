@@ -47,6 +47,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   assetsList: any = {};
   driversList: any = {};
   consigneesList: any = {};
+  shippersList: any = {};
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -66,6 +67,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     this.ACIEntries();
     this.fetchVehiclesList();
     this.fetchAssetsList();
+    this.fetchShippersList();
     this.fetchDriversList();
     this.fetchConsigneesList();
     this.initDataTable();
@@ -123,6 +125,11 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       this.consigneesList = result;
     });
   }
+  fetchShippersList() {
+    this.apiService.getData('shippers/get/list').subscribe((result: any) => {
+      this.shippersList = result;
+    });
+  }
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
@@ -135,6 +142,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
+        this.spinner.hide(); // loader hide
       },
     });
   }
@@ -284,6 +292,7 @@ ACIEntries() {
     next: (result: any) => {
      // this.ACIList = result.Items;
      this.totalACIRecords = result.Count;
+     this.spinner.hide(); // loader hide
     },
   });
 }

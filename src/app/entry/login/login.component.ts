@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     repeatByTimeUnit: '',
     reapeatbyOdometerMiles: '',
     annualSafetyDate: '',
-    annualSafetyReminder: false,
+    annualSafetyReminder: true,
     currentStatus: '',
     ownership: '',
     ownerOperator: '',
@@ -150,6 +150,7 @@ export class LoginComponent implements OnInit {
     purchase: {
       purchaseVendorID: '',
       warrantyExpirationDate: '',
+      warrantyExpirationDateReminder: false,
       purchasePrice: '',
       purchasePriceCurrency: 'CAD',
       warrantyExpirationMeter: '',

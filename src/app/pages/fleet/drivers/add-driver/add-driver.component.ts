@@ -172,6 +172,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   showIcons: boolean = false;
   profileTitle: string = 'Add';
   addressCountries = [];
+  carrierYards = [];
   deletedAddress = [];
   ownerOperators: any;
   constructor(private apiService: ApiService,
@@ -228,6 +229,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       return true;
     }
 
+    onChangeHideErrors(fieldname = '') {
+      $('[name="' + fieldname + '"]')
+        .removeClass('error')
+        .next()
+        .remove('label');
+    }
 
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -335,6 +342,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.fetchAllCitiesIDs(); // fetch all cities Ids with name
 
     this.fetchDocuments();
+    this.getCurrentuser();
 
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -374,6 +382,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
+  gotoVehiclePage() {
+    localStorage.setItem('driver', JSON.stringify(this.driverData));
+    this.router.navigateByUrl('/fleet/vehicles/add')
+  }
+  
 
   clearUserLocation(i) {
     this.driverData.address[i]['userLocation'] = '';
@@ -650,8 +663,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
+    console.log("this.driverData", this.driverData)
     // this.register();
-    
+    this.spinner.show();
     this.hideErrors();
     // if (this.driverData.DOB !== '') {
     //   //date in Y-m-d format 
@@ -708,6 +722,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
+              this.spinner.hide();
             })
           )
           .subscribe({
@@ -715,6 +730,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               this.throwErrors();
               this.hasError = true;
               if(err) return reject(err);
+              this.spinner.hide();
               //this.toastr.error('Please see the errors');
             },
             error: () => { },
@@ -841,8 +857,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           },
         }
         localStorage.setItem('driver', JSON.stringify(driver));
-        this.router.navigateByUrl('/fleet/drivers/list');
-
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.spinner.hide();
+        this.cancel();
+        
       },
     })})
   } catch (error) {
@@ -1222,7 +1240,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           
         }
         this.toastr.success('Driver updated successfully');
-        this.router.navigateByUrl('/fleet/drivers/list');
+        // this.router.navigateByUrl('/fleet/drivers/list');
+        this.cancel();
 
       },
     })})
@@ -1359,5 +1378,17 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.driverData.hosDetails['type'] = 'Log Book';
       this.driverData.hosDetails['hosCycle'] = '';
     }
+  }
+
+  getCurrentuser = async () => {
+    let currentUser = (await Auth.currentSession()).getIdToken().payload;
+    let currentUserCarrier = currentUser.carrierID;
+    this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
+      result.Items.map(e => {
+        if(e.addressType == 'Yard Address') {
+          this.carrierYards.push(e);
+        }
+      })
+    })
   }
 }

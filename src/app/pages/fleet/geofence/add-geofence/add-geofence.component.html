@@ -55,13 +55,12 @@
                        <div class="row">
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right pt-2"
-                                >Geo-Fence Name</label>
+                                >Geo-Fence Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName" placeholder="Enter geofence name eg. parking yard etc."
                              name="geofenceName">
                           </div>
                           <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right pt-2"
-                                >Location</label>
+                             <label class="control-label font-weight-bold text-lg-right pt-2">Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="Enter location">
                           </div>
                        </div>
@@ -71,7 +70,7 @@
                           <div class="col-lg-12">
                              <label
                                 class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                >Type</label>
+                                >Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <div class="row">
                                 <div class="col-lg-11">
                                    <ng-select

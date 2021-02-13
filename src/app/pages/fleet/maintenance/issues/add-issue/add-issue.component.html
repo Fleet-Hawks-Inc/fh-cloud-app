@@ -1,13 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
+   
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
+       
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header pr-5">
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -15,8 +9,7 @@
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right pr-1">
-                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues
-                            List</a>
+                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues List</a>
                     </div>
                 </div>
             </header>
@@ -27,8 +20,7 @@
                             <div class=" row">
                                 <div class="col-lg-12">
                                     <label
-                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Issue
-                                        Details</label>
+                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Issue Details</label>
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
                                     <div class="row">
@@ -54,14 +46,14 @@
                                      <div class="row pt-2">
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">                                               
                                                 <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>                                                
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID">
                                                 
                                                 <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
@@ -71,15 +63,14 @@
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
-                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name</label>
+                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                          <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="Enter issue name eg. brake issue">
                                        </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
-                                                Date</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                                                 <input class="form-control"  placeholder="dd-mm-yyyy"
                                                  [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker">
@@ -100,15 +91,14 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="odometer" name="odometer" min="0" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
-                                                By</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="reportedBy" name="reportedBy" placeholder="Select Contact">
                                               
                                                     <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
@@ -119,7 +109,7 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To</label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Assign the issue">                                               
                                                     <ng-option value="Operator">Operator</ng-option>
                                                     <ng-option value="Technician">Technician</ng-option>                                            
@@ -131,16 +121,14 @@
                             <div class="form-group row">
                                 <div class="col-lg-12">
                                     <label
-                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
-                                        Details</label>
+                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
                                     <div class="row">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                Photo</label>
-                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control border-0 p-0">
+                                                class="control-label font-weight-bold font-bold text-lg-right">Attach Photo</label>
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
                                             </div>
                                         <div class="col-lg-2  mar-top-37">                                    
                                        </div>
@@ -166,9 +154,8 @@
                                     <div class="row">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                Document</label>
-                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control border-0 p-0">
+                                                class="control-label font-weight-bold font-bold text-lg-right">Attach Document</label>
+                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
@@ -199,9 +186,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right pr-0">
-                                    <button type="button" (click)="cancel()" class="btn btn-default mr-1" >Cancel</button>
-                                  <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
-                                  <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
+                                    <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+                                    <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
+                                    <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
                                 </div>
                             </div>
                         </form>

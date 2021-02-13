@@ -22,7 +22,9 @@ export class JwtInterceptor implements HttpInterceptor {
     constructor(private router: Router, private googleMap: GoogleMapsService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-       
+        let arr = request.url.split('/');
+        if((arr[5] == 'countries' || arr[5] == 'states' || arr[5] == 'cities') && request.method != 'POST') return next.handle(request);
+      
         return from(Auth.currentSession())
             .pipe(
                 switchMap((auth: any) => { // switchMap() is used instead of map().
@@ -36,10 +38,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     });
                     this.googleMap.pcMiles.next(false);
                     return next.handle(withAuthRequest);
-                }),
-                catchError((e: any) =>{
-                    return next.handle(request);
-                }),
+                })
             );
     }
 }

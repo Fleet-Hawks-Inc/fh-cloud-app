@@ -45,10 +45,10 @@ export class AddServiceComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-
+  serviceLogSession = JSON.parse(localStorage.getItem('serviceLogs'));
   serviceData = {
     unitType: 'vehicle',
-    reference: 'REF-'+new Date().getTime(),
+    reference: '',
     vehicleID: '',
     assetID: '',
     allServiceTasks: {
@@ -64,6 +64,7 @@ export class AddServiceComponent implements OnInit {
       lng: ''
     }
   };
+  
   uploadedPhotos = [];
     uploadedDocs = [];
   totalLabors = 0;
@@ -126,6 +127,28 @@ export class AddServiceComponent implements OnInit {
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
+
+      this.serviceData = {
+        unitType: this.serviceLogSession.unitType,
+        vehicleID: this.serviceLogSession.vehicleID,
+        assetID: this.serviceLogSession.assetID,
+        reference: this.serviceLogSession.reference,
+        allServiceTasks: {
+          serviceTaskList: this.serviceLogSession.allServiceTasks.serviceTaskList,
+          // subTotal: this.serviceLogSession.allServiceTasks.subTotal
+          // discountPercent: this.serviceLogSession.allServiceTasks
+          // discountAmount: this.serviceLogSession.allServiceTasks
+          // taxPercent: this.serviceLogSession.allServiceTasks
+          // taxAmount: this.serviceLogSession.allServiceTasks
+          // total: this.serviceLogSession.allServiceTasks
+        },
+        allServiceParts: {
+          servicePartsList: this.serviceLogSession.allServiceParts.servicePartsList,
+        },
+        selectedIssues: this.serviceLogSession.selectedIssues,
+        location: this.serviceLogSession.location,
+        geoCords: this.serviceLogSession.geoCords,
+      };
     }
 
     this.fetchGroups();
@@ -291,7 +314,7 @@ export class AddServiceComponent implements OnInit {
    */
   fetchVehicleByID(id) {
     this.apiService.getData(`vehicles/${id}`).subscribe((result: any) => {
-      this.serviceData['unitStatus'] = result.Items[0].currentStatus;
+      // this.serviceData['unitStatus'] = result.Items[0].currentStatus;
     });
   }
 
@@ -300,7 +323,7 @@ export class AddServiceComponent implements OnInit {
    */
   fetchAssetByID(id) {
     this.apiService.getData(`assets/${id}`).subscribe(async (result: any) => {
-      this.serviceData['unitStatus'] = await result.Items[0].assetDetails.currentStatus;
+      // this.serviceData['unitStatus'] = await result.Items[0].assetDetails.currentStatus;
     });
   }
 
@@ -351,6 +374,7 @@ export class AddServiceComponent implements OnInit {
     this.getReminders(vehicleID);
     this.fetchVehicleByID(vehicleID);
     this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
+      console.log("resuklt", result)
       this.issues = result.Items;
     });
   }
@@ -776,20 +800,6 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  /**
-   * pass trips coords to show on the map
-   * @param data
-   */
-  async getCoords(data) {
-    this.spinner.show();
-    await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item.stopName);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
-    this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
-    this.newCoords = [];
-  }
 
   async assignLocation(label) {
     const result = await this.hereMap.geoCode(label);
@@ -806,6 +816,11 @@ export class AddServiceComponent implements OnInit {
     this.searchResults = false;
     $('div').removeClass('show-search__result');
 
+  }
+
+  gotoIssuePage() {
+    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
+    this.router.navigateByUrl('/fleet/maintenance/issues/add')
   }
   
   async changePartTab(type) {
