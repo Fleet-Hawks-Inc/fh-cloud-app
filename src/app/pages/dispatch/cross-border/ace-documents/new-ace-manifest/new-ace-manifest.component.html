@@ -373,7 +373,7 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37">
-                                          <a href="#addShipperModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          <a data-toggle="modal" data-target="#addShipperModal" class="modal-with-form btn btn-sm btn-success text-light"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
@@ -386,7 +386,7 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2 mar-top-37">
-                                          <a href="#addConsigneeModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          <a data-toggle="modal" data-target="#addConsigneeModal" class="modal-with-form btn btn-sm btn-success text-light"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
@@ -400,7 +400,7 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37">
-                                          <a href="#addBrokerModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          <a data-toggle="modal" data-target="#addBrokerModal" class="modal-with-form btn btn-sm btn-success text-light"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
@@ -437,8 +437,7 @@
                                                 <ng-option *ngFor="let thirdParty of thirdPartiesList" [value]="thirdParty.code" >
                                                    {{thirdParty.description}}</ng-option>
                                              </ng-select>
-                                          </div>
-                                      
+                                          </div>                                      
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
                                              <input type="text" class="form-control" maxlength="14"
