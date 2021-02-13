@@ -84,7 +84,7 @@ taskData = {
 
   ngOnInit() {
     this.fetchCountries();
-    this.fetchManufacturers();
+    this.listService.fetchManufacturers();
     this.fetchAssetManufacturers();
     this.fetchAssetModels();
     this.newManufacturers();
@@ -99,6 +99,8 @@ taskData = {
       this.form = $('#assetModelForm').validate();
       this.form = $('#serviceProgramForm').validate();
     });    
+
+    this.manufacturers = this.listService.manufacturerList;
   }
   /**
    * fetch vehicle manufacturers
