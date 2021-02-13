@@ -116,6 +116,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
+    this.fetchOtherTripsCount();
     this.fetchTripsCount()
     this.initDataTable('all');
     this.fetchAllStatesIDs();
@@ -182,12 +183,12 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.spinner.hide();
   }
 
-  fetchTripsCount() {
+  fetchOtherTripsCount() {
     let current = this;
     this.apiService.getData('trips').
       subscribe(async (result: any) => {
         this.allTripsCount = result.Count;
-        this.totalRecords = result.Count;
+        // this.totalRecords = result.Count;
 
         for (let i = 0; i < result.Items.length; i++) {
           if (result.Items[i].tripStatus === 'planned') {
@@ -210,6 +211,16 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
           }
         }
       })
+  }
+
+  fetchTripsCount() {
+    this.apiService.getData('trips/get/count').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+      },
+    });
   }
 
   openStatusModal(tripId) {
@@ -299,6 +310,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchTabData(tabType) {
+    this.trips = [];
     let current = this;
     $(".navtabs").removeClass('active');
 
@@ -414,6 +426,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
 
+      this.trips = [];
       let sdate;
       let edate;
       if(this.tripsFiltr.startDate !== ''){
@@ -441,6 +454,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   resetFilter() {
     if(this.tripsFiltr.startDate !== '' || this.tripsFiltr.endDate !== '' || this.tripsFiltr.searchValue !== '') {
       this.spinner.show();
+      this.trips = [];
       this.tripsFiltr = {
         searchValue: '',
         startDate: '',
