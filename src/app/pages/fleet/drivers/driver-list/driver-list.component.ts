@@ -326,13 +326,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];
           // let fetchedDrivers = resp['Items'].map(function(v){ return v.driverID; });
-          for (let i = 0; i < current.drivers.length; i++) {
-            const element = current.drivers[i];
-            element.address = {};
-            this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
-              element.address = result['Items'][0];
-            });
-          }
+          // for (let i = 0; i < current.drivers.length; i++) {
+          //   const element = current.drivers[i];
+          //   element.address = {};
+          //   this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
+          //     element.address = result['Items'][0];
+          //   });
+          // }
           
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;

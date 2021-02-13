@@ -201,6 +201,7 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
           }
         }
         this.spinner.hide();
+        this.map = this.LeafletMap.initGeoFenceMap();
       },
     });
   }
