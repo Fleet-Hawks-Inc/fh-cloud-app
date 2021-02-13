@@ -39,6 +39,9 @@ export class AciDetailsComponent implements OnInit {
   currentStatus: string;
   timeCreated: any;
   timeModified: any;
+  createdBy = '';
+  modifiedBy = '';
+  responses = [];
   errors = {};
   form;
   response: any = '';
@@ -77,6 +80,9 @@ export class AciDetailsComponent implements OnInit {
         this.currentStatus = result.currentStatus;     
         this.timeCreated = moment(result.timeCreated).format("MMMM D YYYY, h:mm:ss a");
         this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
+        this.createdBy = result.createdBy; 
+        this.modifiedBy = result.modifiedBy; 
+        this.responses = result.responses;
       });
   }
  
