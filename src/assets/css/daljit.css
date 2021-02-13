@@ -647,3 +647,6 @@ table.geofence-table tbody {
     background: #2e353e;
     color: #fff;
 }
+.map-search__results ul{
+    list-style: none;
+}
