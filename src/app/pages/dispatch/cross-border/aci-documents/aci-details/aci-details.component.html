@@ -11,11 +11,9 @@
         <header class="page-header pr-5">
         <h2>{{title}}</h2>
         <div class="right-wrapper text-right pt-2 pr-2">
-            <a
-                     [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm mr-1"><i
-                        class="fas fa-list"></i> ACI Manifests</a>
            
-            <div class="btn-group btn-group1 flex-wrap mr-1">
+           
+            <!-- <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Set Status<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-plACIment="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
@@ -29,7 +27,7 @@
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
                     <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Released')">Released</a>
                 </div>
-            </div>
+            </div> -->
             <div class="btn-group btn-group1 flex-wrap mr-1">
                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                 <div class="dropdown-menu" role="menu" x-plACIment="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -55,6 +53,8 @@
                     <a class="dropdown-item text-1" href="javascript:;" >Cancel Trip Only</a>
                 </div>
             </div>
+            <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm mr-1"><i
+               class="fas fa-list"></i> ACI Manifests</a>
         </div>
         </header>
         <div class="ACI-main__wrapper p-4 bg-white">
@@ -82,7 +82,24 @@
                                     <td>{{subLocation}}</td>
                                 </tr>
                                    <tr>
-                                       <th width="40%" class="back-color-gray">Current Status:</th>
+                                       <th width="40%" class="back-color-gray">Current Status:
+                                        <div class="btn-group btn-group1 flex-wrap mr-1">                                                       
+                                            <span class="fas fa-pencil-alt dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></span>
+                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Draft')">Draft</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Cancelled')">Cancelled</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Transmitted to CBSA')">Transmitted to CBSA</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'CBSA Returned Error')">CBSA Returned Error</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with CBSA')">On File with CBSA</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Match Notice')">On File with Match Notice</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'On File with Transaction Number(s)')">On File with Transaction Number(s)</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Arrival Reported at Border')">Arrival Reported at Border</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Rejected After Arrival at Border')">Rejected After Arrival at Border</a>
+                                            <a class="dropdown-item text-1" href="javascript:;" (click)="setStatus(entryID,'Released')">Released</a>>
+                                        </div>
+                                    </div>
+                                       </th>
                                        <td>{{currentStatus}}</td>
                                    </tr>
 
@@ -94,11 +111,11 @@
                           <tbody>
                               <tr>
                                   <th width="40%" class="back-color-gray">Created:</th>
-                                  <td>{{timeCreated}} By Demo User</td>
+                                  <td>{{timeCreated}} <span *ngIf="createdBy != ''">By {{createdBy}}</span></td>
                               </tr>
                               <tr>
                                   <th width="40%" class="back-color-gray">Last Edited:</th>
-                                  <td>{{timeModified}} By Demo User</td>
+                                  <td>{{timeModified}} <span *ngIf="modifiedBy != ''">By {{modifiedBy}}</span></td>
                               </tr>
                               <tr>
                                 <th width="40%" class="back-color-gray">Trip On File With CBSA:</th>
