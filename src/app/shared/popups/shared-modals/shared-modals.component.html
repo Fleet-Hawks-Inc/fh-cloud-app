@@ -170,7 +170,7 @@
                   <ng-select [(ngModel)]="vehicleModelData.manufacturerID" name="manufacturerID"
                     class="form-control populate" placeholder="Enter make of the vehicle">
 
-                    <ng-option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.manufacturerID">
+                    <ng-option *ngFor="let manufacturer of manufacturers | async" [value]="manufacturer.manufacturerID">
                       {{manufacturer.manufacturerName}}</ng-option>
 
                   </ng-select>
