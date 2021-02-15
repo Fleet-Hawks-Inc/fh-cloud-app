@@ -11,35 +11,68 @@ declare var $: any;
   styleUrls: ['./ace-details.component.css']
 })
 export class AceDetailsComponent implements OnInit {
-  public entryID;  
-  drivers = []; 
+  public entryID;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   tripNumber: string;
-  currentStatus: string;  
-  truck: any = {};
+  currentStatus: string;
+  truck: any = {
+    number: '',
+    type: '',
+    vinNumber: '',
+    dotNumber: '',
+    insurancePolicy: {
+      insuranceCompanyName: '',
+      policyNumber: '',
+      issuedDate: '',
+      policyAmount: '',
+    },
+    licensePlates: [
+      {
+        number: '',
+        stateProvince: ''
+      }
+    ],
+    sealNumbers: '',
+    comments: [
+      'my vehicle note'
+    ]
+  };
+  drivers = [];
   trailers = [];
-  shipments = [];  
+  shipments = [];
   passengers = [];
   result: any;
   timeModified: any;
   modifiedBy: any;
+  createdBy: any;
   responses: any;
   shipmentData = {
-    shipmentControlNumber:'',
+    shipmentControlNumber: '',
     type: '',
     shipperName: '',
     consigneeName: '',
     provinceOfLoading: '',
-    commodities : [],
+    commodities: [],
     thirdParties: [],
   };
-  constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
+  driverData = {
+    driverID: '',
+    driverNumber: '',
+    firstName: '',
+    gender: '',
+    lastName: '',
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber:'',
+    travelDocuments: [],
+  }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchACEEntry();
-  }  
+  }
   fetchACEEntry() {
     this.apiService
       .getData('ACEeManifest/details/' + this.entryID)
@@ -50,13 +83,13 @@ export class AceDetailsComponent implements OnInit {
         this.currentStatus = result.currentStatus;
         this.truck = result.truck;
         this.trailers = result.trailers;
-       this.drivers = result.drivers;
-       this.passengers = result.passengers;
-       this.shipments = result.shipments;
-       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a"); 
-       this.modifiedBy = result.modifiedBy; 
-       this.responses = result.responses; 
-              
+        this.drivers = result.drivers;
+        this.passengers = result.passengers;
+        this.shipments = result.shipments;
+        this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
+        this.modifiedBy = result.modifiedBy;
+        this.responses = result.responses;
+        this.createdBy = result.createdBy;
       });
   }
 
@@ -66,23 +99,37 @@ export class AceDetailsComponent implements OnInit {
       this.currentStatus = val;
     });
   }
-  sendCBPFn(){
+  sendCBPFn() {
     this.apiService
-    .getData('ACEeManifest/CBPdetails/' + this.entryID)
-    .subscribe((result: any) => { 
-    });
- 
+      .getData('ACEeManifest/CBPdetails/' + this.entryID)
+      .subscribe((result: any) => {
+      });
+
   }
-  showShipmentDetails(shipmentNumber){
-    let shipmentData = this.shipments.filter((item:any) => item.shipmentControlNumber === shipmentNumber);  
+  showShipmentDetails(shipmentNumber) {
+    let shipmentData = this.shipments.filter((item: any) => item.shipmentControlNumber === shipmentNumber);
     this.shipmentData = {
-      shipmentControlNumber: shipmentData[0].shipmentControlNumber ,
-      type: shipmentData[0].type ,
+      shipmentControlNumber: shipmentData[0].shipmentControlNumber,
+      type: shipmentData[0].type,
       provinceOfLoading: shipmentData[0].provinceOfLoading,
       shipperName: shipmentData[0].shipper.name,
       consigneeName: shipmentData[0].consignee.name,
       commodities: shipmentData[0].commodities,
       thirdParties: shipmentData[0].thirdParties
+    }
+  }
+  showDriverDetails(driverID) {
+    let driverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
+    this.driverData = {
+      driverID: driverData[0].driverID,
+      driverNumber: driverData[0].driverNumber,
+      firstName: driverData[0].firstName,
+      gender: driverData[0].gender,
+      lastName: driverData[0].lastName,
+      dateOfBirth: driverData[0].dateOfBirth,
+      citizenshipCountry: driverData[0].citizenshipCountry,
+      fastCardNumber: driverData[0].fastCardNumber,
+      travelDocuments: driverData[0].travelDocuments
     }
   }
 }

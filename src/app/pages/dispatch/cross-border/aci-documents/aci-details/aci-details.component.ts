@@ -20,13 +20,27 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDateTime: string;
   estimatedArrivalTimeZone: string;
-  truck:any = {
+  truck: any = {
     number: '',
-    licensePlate:{
+    type: '',
+    vinNumber: '',
+    dotNumber: '',
+    cargoExemptions: [],
+    insurancePolicy: {
+      insuranceCompanyName: '',
+      policyNumber: '',
+      issuedDate: '',
+      policyAmount: '',
+    },
+    licensePlate: {
       number: '',
-      stateProvince: ''},
-      sealNumbers: []
-};
+      stateProvince: '',
+    },
+    sealNumbers: [],
+    comments: [
+      'my vehicle note'
+    ]
+  };
   drivers = [];
   shipmentType: string;
   tripNumber: string;
@@ -41,6 +55,36 @@ export class AciDetailsComponent implements OnInit {
   timeModified: any;
   createdBy = '';
   modifiedBy = '';
+  shipmentData = {
+    shipmentType: '',
+    loadedOn: {
+      type: '',
+      number: ''
+    },
+    CCC: '',
+    cargoControlNumber: '',
+    portOfEntry: '',
+    releaseOffice: '',
+    subLocation: '',
+    importerCsaBusinessNumber: '',
+    uniqueConsignmentReferenceNumber: '',
+    estimatedArrivalDate: '',
+    estimatedArrivalTimeZone: '',
+    cityOfLoading: {
+      cityName: '',
+      stateProvince: ''
+    },
+    cityOfAcceptance: {
+      cityName: '',
+      stateProvince: ''
+    },
+    specialInstructions: '',
+    shipper: '',
+    consignee: '',
+    deliveryDestinations: [],
+    notifyParties: [],
+    commodities: []
+  };
   responses = [];
   errors = {};
   form;
@@ -49,13 +93,13 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-  
-  constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
     this.fetchACEEntry();
-  }  
+  }
   fetchACEEntry() {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
@@ -77,26 +121,59 @@ export class AciDetailsComponent implements OnInit {
         this.trailers = result.trailers;
         this.containers = result.containers,
         this.shipments = result.shipments;
-        this.currentStatus = result.currentStatus;     
+        this.currentStatus = result.currentStatus;
         this.timeCreated = moment(result.timeCreated).format("MMMM D YYYY, h:mm:ss a");
         this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
-        this.createdBy = result.createdBy; 
-        this.modifiedBy = result.modifiedBy; 
+        this.createdBy = result.createdBy;
+        this.modifiedBy = result.modifiedBy;
         this.responses = result.responses;
       });
   }
- 
+
   setStatus(entryID, val) {
     this.apiService.getData('ACIeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
     });
   }
-  sendCBSAFn(){
+  sendCBSAFn() {
     this.apiService
-    .getData('ACIeManifest/CBSAdetails/' + this.entryID)
-    .subscribe((result: any) => { 
-    });
- 
+      .getData('ACIeManifest/CBSAdetails/' + this.entryID)
+      .subscribe((result: any) => {
+      });
+  }
+
+  showShipmentDetails(cargoControlNumber) {
+    let shipmentData = this.shipments.filter((item: any) => item.cargoControlNumber === cargoControlNumber);
+    this.shipmentData = {
+      shipmentType: shipmentData[0].shipmentType,
+      loadedOn: {
+        type: shipmentData[0].loadedOn.type,
+        number: shipmentData[0].loadedOn.number,
+      },
+      CCC: shipmentData[0].CCC,
+      cargoControlNumber: shipmentData[0].cargoControlNumber,
+      portOfEntry: shipmentData[0].portOfEntry,
+      releaseOffice: shipmentData[0].releaseOffice,
+      subLocation: shipmentData[0].subLocation,
+      importerCsaBusinessNumber: shipmentData[0].importerCsaBusinessNumber,
+      uniqueConsignmentReferenceNumber: shipmentData[0].uniqueConsignmentReferenceNumber,
+      estimatedArrivalDate: shipmentData[0].estimatedArrivalDate,
+      estimatedArrivalTimeZone: shipmentData[0].estimatedArrivalTimeZone,
+      cityOfLoading: {
+        cityName: shipmentData[0].cityOfLoading.cityName,
+        stateProvince: shipmentData[0].cityOfLoading.stateProvince,
+      },
+      cityOfAcceptance: {
+        cityName: shipmentData[0].cityOfAcceptance.cityName,
+        stateProvince: shipmentData[0].cityOfAcceptance.stateProvince,
+      },
+      specialInstructions: shipmentData[0].specialInstructions,
+      shipper: shipmentData[0].shipper.name,
+      consignee: shipmentData[0].consignee.name,
+      deliveryDestinations: shipmentData[0].deliveryDestinations,
+      notifyParties: shipmentData[0].notifyParties,
+      commodities: shipmentData[0].commodities
+    }
   }
 }
