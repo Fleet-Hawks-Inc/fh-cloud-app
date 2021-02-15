@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-lg-12 pr-0">
                     <section class="card">
-                        <div class="card-body table-responsive">
+                        <div class="card-body pl-3 pt-3 table-responsive">
                             <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"   class="row-border hover table table-bordered table-striped mb-0 ">
                                     <thead>
                                         <tr>
@@ -54,8 +54,8 @@
                                             <th>Destination</th>
                                             <th>Distance</th>
                                             <th>Recurring</th>
-                                            <th>Stops</th>
-                                            <th>Notes</th>
+                                            <!-- <th>Stops</th>
+                                            <th>Notes</th> -->
                                             <th>Action</th>
                                          </tr>
                                     </thead>
@@ -71,10 +71,10 @@
                                                     {{ route.recurring.recurringType }}
                                                 </span>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 {{ route.stopNames }}
                                             </td>
-                                            <td>{{ route.notes }}</td>
+                                            <td>{{ route.notes }}</td> -->
                                             <td>
                                                 <div class="dropdown dropright">
                                                     <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
