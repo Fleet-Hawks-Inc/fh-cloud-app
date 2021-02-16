@@ -142,7 +142,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
-        console.log('records',result);
+        this.spinner.hide(); // loader hide
       },
     });
   }
@@ -292,6 +292,7 @@ ACIEntries() {
     next: (result: any) => {
      // this.ACIList = result.Items;
      this.totalACIRecords = result.Count;
+     this.spinner.hide(); // loader hide
     },
   });
 }

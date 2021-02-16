@@ -45,17 +45,36 @@ export class AddServiceComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-
+  serviceLogSession = JSON.parse(localStorage.getItem('serviceLogs'));
   serviceData = {
     unitType: 'vehicle',
-    reference: 'REF-'+new Date().getTime(),
+    reference: '',
     vehicleID: '',
     assetID: '',
+    odometer: '',
+    completionDate: '',
+    vendorID: '',
+    description: '',
     allServiceTasks: {
-      serviceTaskList : []
+      serviceTaskList : [],
+      subTotal: 0,
+      discountPercent: 0,
+      discountAmount: 0,
+      taxPercent: 0,
+      taxAmount: 0,
+      total: 0,
+      currency: 'CAD',
     },
     allServiceParts: {
-      servicePartsList : []
+      servicePartsList : [],
+      totalQuantity: 0,
+      subTotal: 0,
+      discountPercent: 0,
+      discountAmount: 0,
+      taxPercent: 0,
+      taxAmount: 0,
+      total: 0,
+      currency: 'CAD',
     },
     selectedIssues: [],
     location: '',
@@ -64,6 +83,7 @@ export class AddServiceComponent implements OnInit {
       lng: ''
     }
   };
+  
   uploadedPhotos = [];
     uploadedDocs = [];
   totalLabors = 0;
@@ -78,6 +98,28 @@ export class AddServiceComponent implements OnInit {
   public searchTerm = new Subject<string>();
   public searchResults: any;
   newCoords = [];
+  partType = 'existing';
+  inventoryItems = [];
+  partData = {
+    partNumber:undefined,
+    preferredVendorID:undefined,
+    quantity: null,
+    itemID: ''
+  };
+  itemData = {
+    categoryID :undefined,
+    itemName: '',
+    cost: '',
+    costUnit: undefined,
+    warehouseID: undefined
+  }
+  itemGroups = [];
+  categoryData = {
+    name: '',
+    description: ''
+  };
+  warehouses = [];
+  existingItemQuantity = null;
   
   constructor(
     private apiService: ApiService,
@@ -91,6 +133,7 @@ export class AddServiceComponent implements OnInit {
     private hereMap: HereMapService
   ) {
     this.selectedFileNames = new Map<any, any>();
+    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
    }
 
    
@@ -104,6 +147,41 @@ export class AddServiceComponent implements OnInit {
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
+      
+      this.serviceData = {
+        unitType: this.serviceLogSession.unitType,
+        vehicleID: this.serviceLogSession.vehicleID,
+        assetID: this.serviceLogSession.assetID,
+        reference: this.serviceLogSession.reference,
+        odometer: this.serviceLogSession.odometer,
+        description: this.serviceLogSession.description,
+        completionDate: this.serviceLogSession.completionDate,
+        vendorID: this.serviceLogSession.vendorID, 
+        allServiceTasks: {
+          serviceTaskList: this.serviceLogSession.allServiceTasks.serviceTaskList,
+          subTotal: this.serviceLogSession.allServiceTasks.subTotal,
+          discountPercent: this.serviceLogSession.allServiceTasks.discountPercent,
+          discountAmount: this.serviceLogSession.allServiceTasks.discountAmount,
+          taxPercent: this.serviceLogSession.allServiceTasks.taxPercent,
+          taxAmount: this.serviceLogSession.allServiceTasks.taxAmount,
+          total: this.serviceLogSession.allServiceTasks.total,
+          currency: this.serviceLogSession.allServiceTasks.currency,
+        },
+        allServiceParts: {
+          servicePartsList: this.serviceLogSession.allServiceParts.servicePartsList,
+          totalQuantity: this.serviceLogSession.allServiceParts.totalQuantity,
+          subTotal: this.serviceLogSession.allServiceParts.subTotal,
+          discountPercent: this.serviceLogSession.allServiceParts.discountPercent,
+          discountAmount: this.serviceLogSession.allServiceParts.discountAmount,
+          taxPercent: this.serviceLogSession.allServiceParts.taxPercent,
+          taxAmount: this.serviceLogSession.allServiceParts.taxAmount,
+          total: this.serviceLogSession.allServiceParts.total,
+          currency: this.serviceLogSession.allServiceParts.currency,
+        },
+        selectedIssues: this.serviceLogSession.selectedIssues,
+        location: this.serviceLogSession.location,
+        geoCords: this.serviceLogSession.geoCords,
+      };
     }
 
     this.fetchGroups();
@@ -114,6 +192,9 @@ export class AddServiceComponent implements OnInit {
     this.fetchTasks();
     this.fetchAllTasksIDs();    
     this.searchLocation();
+    this.fetchInventoryItems();
+    this.fetchItemGroups();
+
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
       if(this.fetchedLocalData.unitType === 'vehicle'){   
@@ -144,6 +225,7 @@ export class AddServiceComponent implements OnInit {
   addService() {
     
     this.hideErrors();
+    console.log("data", this.serviceData)
     // create form data instance
     const formData = new FormData();
 
@@ -266,7 +348,7 @@ export class AddServiceComponent implements OnInit {
    */
   fetchVehicleByID(id) {
     this.apiService.getData(`vehicles/${id}`).subscribe((result: any) => {
-      this.serviceData['unitStatus'] = result.Items[0].currentStatus;
+      // this.serviceData['unitStatus'] = result.Items[0].currentStatus;
     });
   }
 
@@ -275,7 +357,7 @@ export class AddServiceComponent implements OnInit {
    */
   fetchAssetByID(id) {
     this.apiService.getData(`assets/${id}`).subscribe(async (result: any) => {
-      this.serviceData['unitStatus'] = await result.Items[0].assetDetails.currentStatus;
+      // this.serviceData['unitStatus'] = await result.Items[0].assetDetails.currentStatus;
     });
   }
 
@@ -372,17 +454,25 @@ export class AddServiceComponent implements OnInit {
   }
 
   addParts() {
-    
     this.inventory.forEach(element => {
       if (element.itemID === this.selectedParts[this.selectedParts.length - 1]) {
         this.serviceData.allServiceParts.servicePartsList.push({
           partID: element.itemID,
+          existQuantity:  element.quantity,
           partNumber: element.partNumber,
           description: element.description,
         });
       }
-      
     });
+  }
+
+  checkQuantity(value) {
+    this.serviceData.allServiceParts.servicePartsList.forEach(e => {
+      if(value > e.existQuantity) {
+        this.toastr.error('The requested quantity is not available');
+        e.quantity = e.existQuantity;
+      }
+    })
   }
 
   async addTasks() {
@@ -433,6 +523,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   remove(arr: any, data: any, i) {
+    console.log("data", data, this.selectedParts);
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -441,7 +532,7 @@ export class AddServiceComponent implements OnInit {
         }});
       this.serviceData.allServiceTasks.serviceTaskList.splice(i, 1);
       // this.totalLabors -= data.laborCost;
-      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName)
+      this.selectedTasks = this.selectedTasks.filter( elem => elem.taskName != data.taskName);
       this.calculateTasks();
     } else {
       this.serviceData.allServiceParts.servicePartsList.splice(i, 1);
@@ -459,57 +550,49 @@ export class AddServiceComponent implements OnInit {
     
   }
 
-  removeTasks(item) {
-    
+  removeTasks(item: any) {
     this.serviceData.allServiceTasks.serviceTaskList.filter(s => {
         if (s.taskName === item.label) {
           let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
           this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
           this.totalLabors -= s.laborCost; 
-          // this.calculateTasks();
+          this.calculateTasks();
         }
         if(this.totalLabors === 0) {
-          this.serviceData.allServiceTasks['discountPercent'] = 0;
-          this.serviceData.allServiceTasks['taxPercent'] = 0;
-          this.serviceData.allServiceTasks['total'] = 0;
+          this.serviceData.allServiceTasks.discountPercent = 0;
+          this.serviceData.allServiceTasks.taxPercent = 0;
+          this.serviceData.allServiceTasks.total = 0;
         }
     });
+  
+    
   }
 
-  removeParts(item) {
+  removeParts(item: any) {
+    console.log("item", item);
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      if (s.taskName === item.label) {
+      console.log("s", s);
+      if (s.partID === item.value) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
         // this.totalLabors -= s.laborCost; 
-        this.calculateTasks();
+        this.calculateParts();
       }
       if(this.totalLabors === 0) {
-        this.serviceData.allServiceParts['discountPercent'] = 0;
-        this.serviceData.allServiceParts['taxPercent'] = 0;
-        this.serviceData.allServiceParts['total'] = 0;
+        this.serviceData.allServiceParts.discountPercent = 0;
+        this.serviceData.allServiceParts.taxPercent = 0;
+        this.serviceData.allServiceParts.total = 0;
       }
   });
   }
 
   
   calculateTasks() {
-    let discountPercent = parseFloat(this.serviceData.allServiceTasks['discountPercent'] || 0);
-    let taxPercent = parseFloat(this.serviceData.allServiceTasks['taxPercent'] || 0);
-    let total = this.serviceData.allServiceTasks['total'];
-    let subTotal = this.serviceData.allServiceTasks['subTotal'];
-    if (isNaN(discountPercent)) {
-      discountPercent = 0;
-    }
-    if (isNaN(total)) {
-      total = 0;
-    }
-    if (isNaN(taxPercent)) {
-      taxPercent = 0;
-    }
-    if (isNaN(subTotal)) {
-      subTotal = 0;
-    }
+    let discountPercent = Number(this.serviceData.allServiceTasks.discountPercent);
+    let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
+    let total = Number(this.serviceData.allServiceTasks.total);
+    let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
+    
     let sum = 0;
     let tasksArr = this.serviceData.allServiceTasks.serviceTaskList;
     tasksArr.forEach(element => {
@@ -519,35 +602,40 @@ export class AddServiceComponent implements OnInit {
     });
     
     this.totalLabors = sum;
-    this.serviceData.allServiceTasks['subTotal'] = sum;
-    this.serviceData.allServiceTasks['total'] = sum;
-    
+    this.serviceData.allServiceTasks.subTotal = sum;
+   
+    if(discountPercent > 0) {
+      this.serviceData.allServiceTasks.total = this.serviceData.allServiceTasks.subTotal - (this.serviceData.allServiceTasks.subTotal * discountPercent) / 100;
+    } else {
+      this.serviceData.allServiceTasks.total = sum;
+    }
+    if(taxPercent > 0) {
+      let taxAble = (this.serviceData.allServiceTasks.total * taxPercent) / 100
+      this.serviceData.allServiceTasks.total = this.serviceData.allServiceTasks.total + (this.serviceData.allServiceTasks.total * taxPercent) / 100;
+      this.serviceData.allServiceTasks.taxAmount = taxAble;
+    }
     let discountAmount = (subTotal * discountPercent) / 100;
-    this.serviceData.allServiceTasks['discountAmount'] = discountAmount;
-    let taxAble = this.serviceData.allServiceTasks['total'] - discountAmount;
-    let taxAmount = ( taxAble * taxPercent ) / 100;
-    this.serviceData.allServiceTasks['taxAmount'] = taxAmount;
-    this.serviceData.allServiceTasks['total'] -= discountAmount;
-    this.serviceData.allServiceTasks['total'] += taxAmount;
+    this.serviceData.allServiceTasks.discountAmount = discountAmount;
+    
   }
 
   calculateParts() {
-    let discountPercent = parseFloat(this.serviceData.allServiceParts['discountPercent'] || 0);
-    let taxPercent = parseFloat(this.serviceData.allServiceParts['taxPercent'] || 0);
-    let total = this.serviceData.allServiceParts['total'];
-    let subTotal = this.serviceData.allServiceParts['subTotal'];
-    if (isNaN(discountPercent)) {
-      discountPercent = 0;
-    }
-    if (isNaN(total)) {
-      total = 0;
-    }
-    if (isNaN(taxPercent)) {
-      taxPercent = 0;
-    }
-    if (isNaN(subTotal)) {
-      subTotal = 0;
-    }
+    let discountPercent = Number(this.serviceData.allServiceParts.discountPercent);
+    let taxPercent = Number(this.serviceData.allServiceParts.taxPercent);
+    let total = Number(this.serviceData.allServiceParts.total);
+    let subTotal = Number(this.serviceData.allServiceParts.subTotal);
+    // if (isNaN(discountPercent)) {
+    //   discountPercent = 0;
+    // }
+    // if (isNaN(total)) {
+    //   total = 0;
+    // }
+    // if (isNaN(taxPercent)) {
+    //   taxPercent = 0;
+    // }
+    // if (isNaN(subTotal)) {
+    //   subTotal = 0;
+    // }
     let countQuantity = 0;
     let countAmount = 0;
     let quantity = this.serviceData.allServiceParts.servicePartsList;
@@ -560,18 +648,19 @@ export class AddServiceComponent implements OnInit {
       this.totalQuantity = countQuantity;
       this.totalPartsPrice = countAmount;
       subTotal = countAmount;
-      this.serviceData.allServiceParts['total'] = countAmount;
-      this.serviceData.allServiceParts['totalQuantity'] = countQuantity;
-      this.serviceData.allServiceParts['subTotal'] = countAmount;
+      this.serviceData.allServiceParts.total = countAmount;
+      this.serviceData.allServiceParts.totalQuantity = countQuantity;
+      this.serviceData.allServiceParts.subTotal = countAmount;
     });
     
     let discountAmount = (subTotal * discountPercent) / 100;
-    this.serviceData.allServiceParts['discountAmount'] = discountAmount;
-    let taxAble = this.serviceData.allServiceParts['total'] - discountAmount;
+    this.serviceData.allServiceParts.discountAmount = discountAmount;
+    let taxAble = this.serviceData.allServiceParts.total - discountAmount;
     let taxAmount = ( taxAble * taxPercent ) / 100;
-    this.serviceData.allServiceParts['taxAmount'] = taxAmount;
-    this.serviceData.allServiceParts['total'] -= discountAmount;
-    this.serviceData.allServiceParts['total'] += taxAmount;
+    this.serviceData.allServiceParts.taxAmount = taxAmount;
+    this.serviceData.allServiceParts.total -= discountAmount;
+    this.serviceData.allServiceParts.total += taxAmount;
+    console.log('parts', this.serviceData.allServiceParts)
   }
 
 
@@ -652,19 +741,10 @@ export class AddServiceComponent implements OnInit {
   onChangeUnitType(value: any) {
     this.serviceData['unitType'] = value;
     if (value === 'asset') {
-      delete this.serviceData['vehicleID'];
-      delete this.serviceData['odometer'];
-      this.serviceData.allServiceTasks.serviceTaskList = [];
-      this.selectedTasks = [];
-      this.serviceData.allServiceTasks['discountAmount'] = '';
-      this.serviceData.allServiceTasks['discountPercent'] = '';
-      this.serviceData.allServiceTasks['taxAmount'] = '';
-      this.serviceData.allServiceTasks['taxPercent'] = '';
-      this.serviceData.allServiceTasks['subTotal'] = '';
-      this.serviceData.allServiceTasks['total'] = '';
-      this.totalLabors = 0;
+      delete this.serviceData.vehicleID;
+      delete this.serviceData.odometer;
     } else {
-      delete this.serviceData['assetID'];
+      delete this.serviceData.assetID;
     }
   }
 
@@ -751,20 +831,6 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  /**
-   * pass trips coords to show on the map
-   * @param data
-   */
-  async getCoords(data) {
-    this.spinner.show();
-    await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item.stopName);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
-    this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
-    this.newCoords = [];
-  }
 
   async assignLocation(label) {
     const result = await this.hereMap.geoCode(label);
@@ -782,5 +848,293 @@ export class AddServiceComponent implements OnInit {
     $('div').removeClass('show-search__result');
 
   }
+
+  gotoIssuePage() {
+    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
+    this.router.navigateByUrl('/fleet/maintenance/issues/add')
+  }
   
+  currencyChange(value: string) {
+    this.serviceData.allServiceParts.currency = value;
+    this.serviceData.allServiceTasks.currency = value;
+  }
+
+  async changePartTab(type) {
+    if(type == 'new') {
+      this.partType = 'new';
+    } else {
+      this.partType = 'existing';
+    }
+  }
+
+  fetchInventoryItems() {
+    this.apiService.getData('items').subscribe((result: any) => {
+      this.inventoryItems = result.Items;
+    });
+  }
+
+  fetchPartNumber() {
+    if (this.partData.partNumber != undefined && this.partData.partNumber != '') {
+      this.apiService.getData('requiredItems/check/requestedItem/' + this.partData.partNumber).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          if(res.Count > 0) {
+            this.existingItemQuantity = parseInt(res.Items[0].quantity);
+            this.partData.itemID = res.Items[0].itemID;
+            // show modal
+            $('#existingInvModal').modal('show');
+            
+          } else {
+            this.addExistingPartNumber();
+          }
+        },
+      });
+    } else {
+      return false;
+    }
+  }
+
+  updateExistingPartNumber () {
+    // let currQuan:any = parseInt(this.partData.quantity);
+    this.partData.quantity = parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
+    this.apiService.putData('requiredItems', this.partData).subscribe({
+      complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#partModal').modal('hide');
+        $('#existingInvModal').modal('hide');
+        this.existingItemQuantity = null;
+        this.partData = {
+          partNumber:undefined,
+          preferredVendorID:undefined,
+          quantity:null,
+          itemID: ''
+        };
+        this.itemData = {
+          categoryID :undefined,
+          itemName: '',
+          cost: '',
+          costUnit: undefined,
+          warehouseID: undefined
+        }
+        this.toastr.success('Part Updated Successfully');
+      },
+    });
+  }
+
+  addExistingPartNumber () {
+    delete this.partData.itemID;
+    this.apiService.postData('requiredItems', this.partData).subscribe({
+      complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/'.*'/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide(); // loader hide
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        $('#partModal').modal('hide');
+        $('#existingInvModal').modal('hide');
+        this.existingItemQuantity = null;
+        this.partData = {
+          partNumber:undefined,
+          preferredVendorID:undefined,
+          quantity:null,
+          itemID: ''
+        };
+        this.itemData = {
+          categoryID :undefined,
+          itemName: '',
+          cost: '',
+          costUnit: undefined,
+          warehouseID: undefined
+        }
+        this.toastr.success('Part Requested Successfully');
+      },
+    });
+  }
+
+  getPartDetail(event) {
+    let curr = this;
+    this.inventoryItems.map(function(v){
+      if(v.partNumber == event){
+        curr.partData.quantity = v.quantity;
+        curr.partData.preferredVendorID = v.preferredVendorID;
+      }
+    })
+  }
+
+  fetchItemGroups() {
+    this.apiService.getData(`itemGroups`).subscribe((result) => {
+      this.itemGroups = result.Items;
+    });
+  }
+
+  showCategoryModal() {
+    this.categoryData.name = "";
+    this.categoryData.description = "";
+    $("#categoryModal").modal("show");
+  }
+
+  addGroup() {
+    this.hideErrors();
+
+    const data = {
+      groupName: this.categoryData.name,
+      groupDescription: this.categoryData.description,
+    };
+
+    this.apiService.postData("itemGroups", data).subscribe({
+      complete: () => {},
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => {},
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.categoryData.name = "";
+        this.categoryData.description = "";
+        this.fetchItemGroups();
+        $("#categoryModal").modal("hide");
+        this.toastr.success('Category Added successfully');
+      },
+    });
+  }
+
+  addInventory() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+
+    const data = {
+      partNumber: this.partData.partNumber,
+      quantity: 0,
+      itemName: this.itemData.itemName,
+      categoryID: this.itemData.categoryID,
+      preferredVendorID: this.partData.preferredVendorID,
+      cost: this.itemData.cost,
+      costUnit: this.itemData.costUnit,
+      warehouseID: this.itemData.warehouseID,
+      warehouseVendorID: this.partData.preferredVendorID,
+    };
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+
+    this.apiService.postData("items", formData, true).subscribe({
+      complete: () => {},
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.hasError = true;
+              this.Error = 'Please see the errors';
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.addExistingPartNumber();
+      },
+    });
+  }
+
+  closeExistingModel() {
+    $('#existingInvModal').modal('hide');
+    this.updateExistingPartNumber();
+  }
+
+  showPartModal() {
+    this.existingItemQuantity = null;
+    this.partData = {
+      partNumber: undefined,
+      preferredVendorID: undefined,
+      quantity: null,
+      itemID: ''
+    };
+    this.itemData = {
+      categoryID: undefined,
+      itemName: '',
+      cost: '',
+      costUnit: undefined,
+      warehouseID: undefined
+    }
+    $("#partModal").modal('show');
+  }
+
 }

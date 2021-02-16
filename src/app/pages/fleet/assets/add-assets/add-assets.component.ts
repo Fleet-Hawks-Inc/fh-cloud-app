@@ -139,7 +139,7 @@ export class AddAssetsComponent implements OnInit {
     this.vendors = this.listService.vendorList;
     this.manufacturers = this.listService.assetManufacturesList;
     this.models = this.listService.assetModelsList;
-    console.log('this.models', this.models)
+    
   }
 
   getYears() {

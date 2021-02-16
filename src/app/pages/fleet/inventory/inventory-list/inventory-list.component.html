@@ -211,146 +211,32 @@
                     <table class="table table-bordered table-responsive-lg table-striped mb-0" id="simple-table1">
                       <thead>
                         <tr>
-                          <th width="5%">Part#</th>
-                          <th width="20%">Name</th>
-                          <th width="10%">Category</th>
-                          <th width="20%">Vendor</th>
-                          <th width="5%">Quantity</th>
-                          <th width="10%">On Hand</th>
-                          <th width="10%">Unit Cost</th>
-                          <th width="15%">Warehouse Details</th>
+                          <th>Part#</th>
+                          <th>Name</th>
+                          <!-- <th>Category</th> -->
+                          <th>Vendor</th>
+                          <th>Quantity</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="cursorpoint">
+                        <tr *ngFor="let item of requiredItems; let i = index">
+                          <td>{{ item.partNumber }}</td>
+                          <td>{{ allItems[item.partNumber] }}</td>
+                          <!-- <td>{{itemGroups[item.categoryID]}}</td> -->
+                          <td>{{vendors[item.preferredVendorID]}}</td>
+                          <td>{{ item.quantity }}</td>
                           <td>
-                            01
-                          </td>
-                          <td>
-                            10-30wt Oil
-                          </td>
-                          <td>
-                            Oil
-                          </td>
-                          <td>
-                            Warren CAT
-                          </td>
-                          <td>
-                            15
-                          </td>
-                          <td>
-                            234
-                          </td>
-                          <td>
-                            $ 2.34
-                          </td>
-                          <td>
-                            Warehouse Location 1
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            10-30wt Oil
-                          </td>
-                          <td>
-                            Oil
-                          </td>
-                          <td>
-                            Warren CAT
-                          </td>
-                          <td>
-                            3
-                          </td>
-                          <td>
-                            234
-                          </td>
-                          <td>
-                            $ 2.34
-                          </td>
-                          <td>
-                            Warehouse Detail 1
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            10-30wt Oil
-                          </td>
-                          <td>
-                            Oil
-                          </td>
-                          <td>
-                            Warren CAT
-                          </td>
-                          <td>
-                            4
-                          </td>
-                          <td>
-                            234
-                          </td>
-                          <td>
-                            $ 2.34
-                          </td>
-                          <td>
-                            Warehouse Location 2
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            10-30wt Oil
-                          </td>
-                          <td>
-                            Oil
-                          </td>
-                          <td>
-                            Warren CAT
-                          </td>
-                          <td>
-                            11
-                          </td>
-                          <td>
-                            234
-                          </td>
-                          <td>
-                            $ 2.34
-                          </td>
-                          <td>
-                            Warehouse Location 3
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            01
-                          </td>
-                          <td>
-                            10-30wt Oil
-                          </td>
-                          <td>
-                            Oil
-                          </td>
-                          <td>
-                            Warren CAT
-                          </td>
-                          <td>
-                            6
-                          </td>
-                          <td>
-                            234
-                          </td>
-                          <td>
-                            $ 2.34
-                          </td>
-                          <td>
-                            Warehouse Location 4
-                          </td>
+                            <div class="dropdown dropright">
+                              <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fas fa-ellipsis-v"></i>
+                              </button>
+                              <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                  <a class="dropdown-item" href="javascript:;" (click)="addInventory(item)">Add Inventory</a>
+                                  <a href="javascript:;" class="dropdown-item" (click)="deleteRequiredItem(item.itemID)">Delete</a>
+                              </div>
+                            </div>
+                        </td>
                         </tr>
                       </tbody>
                     </table>
@@ -441,6 +327,44 @@
         </button>
         <button type="button" class="btn btn-success" [routerLink]="" (click)="addGroup()">
           Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="existingInvModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Inventory</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark" id="groupForm">
+        <div class="form-row">
+          <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2">
+                The request for the part number already exists with quantity: {{ itemDetail.prevQuantity }}. <br> Do you want to add your requirement to the request?
+              </label>
+              <p>Part# : {{ itemDetail.partNumber }} <br>
+                  Item Name : {{ itemDetail.itemName }} <br>
+                  Previous Quantity : {{ itemDetail.prevQuantity }} <br>
+                  Required Quantity : {{ itemDetail.reqQuantity }} <br>
+                  Total Quantity : {{ itemDetail.totalQuantity }} <br>
+              </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          No
+        </button>
+        <button type="button" class="btn btn-success" (click)="updateItem(itemDetail.reqItemID)">
+          Yes
         </button>
       </div>
     </div>
