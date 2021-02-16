@@ -38,8 +38,8 @@
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
                                     name="reminderIdentification" placeholder="Select contact">
 
-                                    <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
-                                       {{driver.firstName}} {{driver.lastName}}</ng-option>                               
+                                    <ng-option *ngFor="let user of users" value="{{user.userName}">
+                                       {{user.firstName}} {{user.lastName}}</ng-option>                               
 
                                  </ng-select>
                               </div> 

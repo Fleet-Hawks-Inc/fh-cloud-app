@@ -98,7 +98,13 @@
                                        <div class="col-lg-10" id="companyDiv" *ngIf="driverData.driverType == 'contractor'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3"
                                              >Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator" class="form-control form-control-sm" placeholder="Select Owner Operator">
+                                             <ng-select 
+                                                [(ngModel)]="driverData.ownerOperator" 
+                                                name="ownerOperator" 
+                                                class="form-control form-control-sm" 
+                                                placeholder="Select Owner Operator"
+                                                (change)="onChangeHideErrors('ownerOperator')" 
+                                             >
                                                <ng-option *ngFor="let item of ownerOperators" value="{{item.operatorID}}">{{item.companyName}}</ng-option>
                                             </ng-select>
                                        </div>
@@ -110,7 +116,12 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
                                              >Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus" class="form-control form-control-sm" placeholder="Select driver status">
+                                          <ng-select 
+                                             [(ngModel)]="driverData.driverStatus" 
+                                             name="driverStatus" class="form-control form-control-sm" 
+                                             placeholder="Select driver status"
+                                             (change)="onChangeHideErrors('driverStatus')" 
+                                          >
                                              <ng-option value="Active">Active</ng-option>
                                              <ng-option value="InActive">InActive</ng-option>
                                           </ng-select>
@@ -138,21 +149,39 @@
                                           
                                        </div>
                                        <div class="col-lg-10" *ngIf="driverData.driverType != 'contractor'">
-                                         <div class="row">
-                                            <div class="col-lg-6">
-                                               <label class="control-label font-weight-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                               <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="driverData.startDate" name="startDate" type="text" data-plugin-datepicker=""
-                                                  class="form-control" placeholder="Select Date">
-                                            </div>
-                                            <div class="col-lg-6">
-                                               <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date&nbsp; <span
-                                                  class="text-1 optional-label-color">(optional)</span></label>
-                                               <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker" [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text" data-plugin-datepicker=""
-                                                  class="form-control" placeholder="Select Date">
-                                            </div>
-                                         </div>
-                                         
-                                      </div>
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Start Date<span
+                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
+                                                   [(ngModel)]="driverData.startDate" name="startDate" type="text" class="form-control"
+                                                   placeholder="Select Date">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Termination Date&nbsp; <span
+                                                      class="text-1 optional-label-color">(optional)</span></label>
+                                                <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker" [(ngModel)]="driverData.terminationDate"
+                                                   name="terminationDate" type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
+                                             </div>
+                                          </div>
+                                       
+                                       </div>
+                                       <div class="col-lg-10" *ngIf="driverData.driverType === 'contractor'">
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"> Start Date<span
+                                                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart"
+                                                   name="contractStart" type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2"> End Date&nbsp; <span
+                                                      class="text-1 optional-label-color">(optional)</span></label>
+                                                <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" [(ngModel)]="driverData.contractEnd"
+                                                   name="contractEnd" type="text" data-plugin-datepicker="" class="form-control" placeholder="Select Date">
+                                             </div>
+                                          </div>
+                                       </div>
                                       <div class="col-lg-10">
                                          <div class="row">
                                             <div class="col-lg-6">
@@ -167,27 +196,16 @@
                                          </div>
                                          
                                       </div>
-                                      <div class="col-lg-10" *ngIf="driverData.driverType === 'contractor'">
-                                         <div class="row">
-                                            <div class="col-lg-6">
-                                               <label class="control-label font-weight-bold text-lg-right pt-2"
-                                               > Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                               <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart" type="text" data-plugin-datepicker=""
-                                                  class="form-control" placeholder="Select Date">
-                                            </div>
-                                            <div class="col-lg-6">
-                                               <label class="control-label font-weight-bold text-lg-right pt-2"
-                                               > End Date&nbsp; <span
-                                               class="text-1 optional-label-color">(optional)</span></label>
-                                               <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text" data-plugin-datepicker=""
-                                                  class="form-control" placeholder="Select Date">
-                                            </div>
-                                         </div>
-                                      </div>
+                                      
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2"
                                              >Citizenship<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.citizenship" name="citizenship" placeholder="Select the citizenship country of driver">
+                                          <ng-select 
+                                             [(ngModel)]="driverData.citizenship" 
+                                             name="citizenship" 
+                                             placeholder="Select the citizenship country of driver"
+                                             (change)="onChangeHideErrors('citizenship')"
+                                          >
                                              <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                           </ng-select>
                                        </div>
@@ -200,7 +218,7 @@
                                          </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37 pl-0">
-                                         <a routerLink="/fleet/vehicles/add" href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                         <a (click)="gotoVehiclePage();" href="javascript:;" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                       </div>
                                        <div class="col-lg-10">
                                           <label
@@ -228,7 +246,7 @@
                                          <a data-toggle="modal" data-target="#addDriverGroupModal"  href="javascript:;" class="modal-with-form btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
                                       </div>
                                       <div class="col-lg-10">
-                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Abstract History Document<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Abstract History Document&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                          <input class="form-control p-0"
                                              name="abstractDocs" (change)="selectDocuments('abstract', $event, i)" type="file" multiple
                                          >
@@ -300,7 +318,9 @@
                                        <div class="col-lg-10">
                                          <label class="control-label font-weight-bold text-lg-right pt-2"
                                             >Birth Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB" type="text" data-plugin-datepicker=""
+                                         <input 
+                                             (click)="onChangeHideErrors('DOB');d6.toggle()" 
+                                             ngbDatepicker #d6="ngbDatepicker" [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB" type="text" data-plugin-datepicker=""
                                             class="form-control" placeholder="Select Date">
                                       </div>
                                        <div class="col-lg-10">
@@ -453,7 +473,13 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Document Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="document.documentType" [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}" placeholder="Select document type">
+                                          <ng-select 
+                                             [(ngModel)]="document.documentType" 
+                                             [attr.name]="'documentDetails['+i+'].documentType'" 
+                                             [ngModelOptions]="{standalone: true}" 
+                                             placeholder="Select document type"
+                                             (change)="onChangeHideErrors('documentDetails['+i+'].documentType')"
+                                          >
                                              
                                               <ng-option *ngFor = "let documentType of documentTypeList" [value]="documentType.code">{{documentType.description}}</ng-option>
                                              
@@ -466,7 +492,15 @@
                                        <div class="row" >
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Document#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter the document number">
+                                             <input 
+                                                [(ngModel)]="document.document" 
+                                                [attr.name]="'documentDetails['+i+'].document'" 
+                                                [ngModelOptions]="{standalone: true}" 
+                                                type="text" 
+                                                class="form-control" 
+                                                placeholder="Enter the document number"
+                                                (change)="onChangeHideErrors('documentDetails['+i+'].document')"
+                                             >
                                           </div>
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -485,7 +519,13 @@
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Issuing Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select (change)="getStates($event, i)"  [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'" [ngModelOptions]="{standalone: true}" class="form-control populate" placeholder="Select the issuing country">
+                                          <ng-select 
+                                             (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getStates($event, i)"
+                                             [(ngModel)]="document.issuingCountry" 
+                                             [attr.name]="'documentDetails['+i+'].issuingCountry'" 
+                                             [ngModelOptions]="{standalone: true}" 
+                                             class="form-control populate" 
+                                             placeholder="Select the issuing country">
                                             
                                               <ng-option class="text-capitalize" *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                              
@@ -494,8 +534,13 @@
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Issuing State<span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
-                                          <ng-select (change)="getCities($event, i)" [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'" [ngModelOptions]="{standalone: true}"   placeholder="Select issuing state">
-                                             
+                                          <ng-select 
+                                             (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event, i)" 
+                                             [(ngModel)]="document.issuingState" 
+                                             [attr.name]="'documentDetails['+i+'].issuingState'" 
+                                             [ngModelOptions]="{standalone: true}" 
+                                             placeholder="Select issuing state"
+                                             >
                                                <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                              
                                           </ng-select>
@@ -509,7 +554,7 @@
                                           Issue Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                          <input
                                               [(ngModel)]="document.issueDate"
-                                              (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                              (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker #d="ngbDatepicker"
                                               type="text"
                                               class="form-control"
                                               placeholder="Select issued date of the document"
@@ -645,13 +690,27 @@
                                    <div class="col-lg-10">
                                       <label class="control-label font-weight-bold text-lg-right pt-2"
                                          >CDL Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                      <input [(ngModel)]="driverData.licenceDetails.CDL_Number" name="licenceDetails.CDL_Number" type="text" class="form-control" placeholder="Enter CDL(Commercial Driving Licence) number">
+                                      <input 
+                                          [(ngModel)]="driverData.licenceDetails.CDL_Number" 
+                                          name="licenceDetails.CDL_Number" 
+                                          type="text" 
+                                          class="form-control" 
+                                          placeholder="Enter CDL(Commercial Driving Licence) number"
+                                          (change)="onChangeHideErrors('CDL_Number')"
+                                       >
                                    </div>
                                    <div class="col-lg-10">
                                       <label class="control-label font-weight-bold text-lg-right pt-2"
                                          >Licence Expiration<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                      <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry" type="text" data-plugin-datepicker=""
-                                         class="form-control" placeholder="Select Date">
+                                      <input 
+                                          (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()" 
+                                          ngbDatepicker #d3="ngbDatepicker" 
+                                          [(ngModel)]="driverData.licenceDetails.licenceExpiry" 
+                                          name="licenceDetails.licenceExpiry" 
+                                          type="text"
+                                          class="form-control" 
+                                          placeholder="Select Date"
+                                       >
                                    </div>
                                    <div class="col-lg-10 pt-2">
                                       <input type="checkbox" [(ngModel)]="driverData.licenceDetails.licenceNotification" name="licenceDetails.licenceNotification" > Send notification (Before 30 days of expiration)
@@ -663,7 +722,7 @@
                                       <label class="control-label font-weight-bold text-lg-right pt-2"
                                          >Issued Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                       <ng-select
-                                          (change)="getStates($event, 0)"
+                                          (change)="onChangeHideErrors('licenceDetails.issuedCountry');getStates($event, 0)"
                                           [(ngModel)]="driverData.licenceDetails.issuedCountry"
                                           placeholder="Select country"
                                           name="licenceDetails.issuedCountry"
@@ -676,7 +735,12 @@
                                    <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2"
                                         >Issued State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                     <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState" placeholder="Select state">
+                                     <ng-select 
+                                          [(ngModel)]="driverData.licenceDetails.issuedState" 
+                                          name="licenceDetails.issuedState" 
+                                          placeholder="Select state"
+                                          (change)="onChangeHideErrors('licenceDetails.issuedState')"
+                                       >
                                         
                                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                         
@@ -736,9 +800,13 @@
                                       <div class="col-lg-10">
                                          <label class="control-label font-weight-bold text-lg-right pt-2"
                                             >Default Payment Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <ng-select (change)="changePaymentModeForm($event)" [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
-                                         placeholder="Select the payment type" id="paymentTypeForm">
-                                            
+                                         <ng-select
+                                             [(ngModel)]="driverData.paymentDetails.paymentType" 
+                                             name="paymentDetails.paymentType"
+                                             placeholder="Select the payment type" 
+                                             id="paymentTypeForm"
+                                             (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event)"
+                                          >
                                                <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                                                <ng-option value="Percentage">Percentage</ng-option> 
                                                <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
@@ -748,7 +816,14 @@
                                       <div class="col-lg-10">
                                          <label class="control-label font-weight-bold text-lg-right pt-2"
                                             >SIN Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input [(ngModel)]="driverData.paymentDetails.SIN_Number" name="paymentDetails.SIN_Number" type="text" class="form-control" placeholder="Enter the SIN (Social Insurance Number)">
+                                         <input 
+                                             (change)="onChangeHideErrors('paymentDetails.SIN_Number')" 
+                                             [(ngModel)]="driverData.paymentDetails.SIN_Number" 
+                                             name="paymentDetails.SIN_Number" 
+                                             type="text" 
+                                             class="form-control" 
+                                             placeholder="Enter the SIN (Social Insurance Number)"
+                                          >
                                       </div>
                                       <!-- <div class="col-lg-10">
                                          <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -813,14 +888,26 @@
                                             >Load Pay Percent<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                          <div class="row">
                                             <div class="col-lg-3">
-                                               <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage" name="paymentDetails.loadPayPercentage" type="text" class="form-control" placeholder="eg. 5,6 etc.">
+                                               <input 
+                                                   [(ngModel)]="driverData.paymentDetails.loadPayPercentage" 
+                                                   name="paymentDetails.loadPayPercentage" 
+                                                   type="text" 
+                                                   class="form-control" 
+                                                   placeholder="eg. 5,6 etc."
+                                                   (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')"
+                                                >
                                             </div>
                                             <div class="col-lg-2 px-0">
                                                <label class="font-weight-bold">%</label>
                                                <label class="font-weight-bold pull-right">of</label>
                                             </div>
                                             <div class="col-lg-7">
-                                               <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf" name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of">
+                                               <ng-select 
+                                                   [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf" 
+                                                   name="paymentDetails.loadPayPercentageOf" 
+                                                   placeholder="Select the percentage type of"
+                                                   (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')"
+                                                >
                                                   
                                                      <ng-option value="Freight Fees">Freight Fees</ng-option>
                                                      <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
@@ -841,7 +928,13 @@
                                             <div class="col-lg-2 ">
                                               <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                  ></label>
-                                              <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit" name="paymentDetails.loadedMilesUnit" placeholder="Select Currency">
+                                              <ng-select 
+                                                class="mt-2" 
+                                                [(ngModel)]="driverData.paymentDetails.loadedMilesUnit" 
+                                                name="paymentDetails.loadedMilesUnit" 
+                                                placeholder="Select Currency"
+                                                (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')"
+                                             >
                                                  
                                                     <ng-option value="CAD">CAD</ng-option>
                                                     <ng-option value="USD">USD</ng-option>
@@ -855,8 +948,13 @@
                                             <div class="col-lg-2 ">
                                               <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                  ></label>
-                                              <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" name="paymentDetails.emptyMilesUnit" placeholder="Select Currency">
-                                                    
+                                              <ng-select 
+                                                class="mt-2" 
+                                                [(ngModel)]="driverData.paymentDetails.emptyMilesUnit" 
+                                                name="paymentDetails.emptyMilesUnit" 
+                                                placeholder="Select Currency"
+                                                (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')"
+                                             >
                                                     <ng-option value="CAD">CAD</ng-option>
                                                     <ng-option value="USD">USD</ng-option>
                                               </ng-select>
@@ -864,7 +962,7 @@
 
                                             <div class="col-lg-3 pr-0">
                                                <label class="control-label font-weight-bold text-lg-right pt-2"
-                                               >Loaded Miles (Team)<span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                               >Loaded Miles (Team) </label>
                                                <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam" name="paymentDetails.loadedMilesTeam" type="text" class="form-control"  placeholder="Loaded miles rate">
                                            </div>
                                            <div class="col-lg-2">
@@ -878,7 +976,7 @@
                                           </div>
                                            <div class="col-lg-3 pr-0">
                                                <label class="control-label font-weight-bold text-lg-right pt-2"
-                                               >Empty Miles (Team)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                               >Empty Miles (Team)</label>
                                                <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam" name="paymentDetails.emptyMilesTeam" type="text" class="form-control" placeholder="Empty miles rate">
                                            </div>
                                            <div class="col-lg-2">
@@ -906,7 +1004,12 @@
                                          <div class="col-lg-10">
                                             <label class="control-label font-weight-bold text-lg-right pt-2"
                                                >Pay Period<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod" placeholder="Select pay period of the driver">
+                                             <ng-select 
+                                                [(ngModel)]="driverData.paymentDetails.payPeriod" 
+                                                name="paymentDetails.payPeriod" 
+                                                placeholder="Select pay period of the driver"
+                                                (change)="onChangeHideErrors('paymentDetails.payPeriod')"
+                                             >
                                                
                                                   <ng-option value="Weekly">Weekly</ng-option>
                                                   <ng-option value="Biweekly">Biweekly</ng-option>
@@ -998,7 +1101,14 @@
                                               [(ngModel)]="driverData.hosDetails.homeTerminal" name="hosDetails.homeTerminal"
                                              class="form-control populate" placeholder="Select home terminal of the driver">
                                              
-                                               <ng-option class="text-capitalize" *ngFor="let yard of yards" value="{{yard.yardID}}">{{yard.yardName}}</ng-option>
+                                               <ng-option class="text-capitalize" *ngFor="let yard of carrierYards" value="{{yard.addressID}}">
+                                                <div *ngIf="yard.manual">
+                                                   {{ yard.address1 }} {{ yard.address2}}, {{ yard.cityName }}, {{ yard.stateName }}, {{ yard.countryName }}
+                                                </div>
+                                                <div *ngIf="!yard.manual">
+                                                   {{ yard.userLocation }}
+                                                </div>
+                                                </ng-option>
                                              
                                           </ng-select>
                                        </div>

@@ -57,7 +57,7 @@ export class AddIssueComponent implements OnInit {
   public issueImages = [];
   image;
   public issueDocs = [];
-  pdfSrc: any;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   // date: {year: number, month: number};
   constructor(private apiService: ApiService,
@@ -65,7 +65,7 @@ export class AddIssueComponent implements OnInit {
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
-              private location: Location, private domSanitizer: DomSanitizer,
+              private _location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
                 
@@ -90,8 +90,10 @@ export class AddIssueComponent implements OnInit {
     });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+    console.log('back', window.history)
+    this._location.back(); // <-- go back to previous location on cancel
   }
+
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
          this.vehicles = result.Items; });
@@ -167,7 +169,8 @@ export class AddIssueComponent implements OnInit {
           this.response = res;
           // this.uploadFiles(); // upload selected files to bucket
           this.toaster.success('Issue Added successfully');
-          this.router.navigateByUrl('/fleet/maintenance/issues/list');
+          //this.router.navigateByUrl('/fleet/maintenance/issues/list');
+         this.cancel();
         }
       });
   }

@@ -1,0 +1,5 @@
+.scroll-table-class{
+    height: 211px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

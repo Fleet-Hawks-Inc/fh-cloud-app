@@ -23,6 +23,17 @@ export class AceDetailsComponent implements OnInit {
   passengers = [];
   result: any;
   timeModified: any;
+  modifiedBy: any;
+  responses: any;
+  shipmentData = {
+    shipmentControlNumber:'',
+    type: '',
+    shipperName: '',
+    consigneeName: '',
+    provinceOfLoading: '',
+    commodities : [],
+    thirdParties: [],
+  };
   constructor(private apiService: ApiService, private route: ActivatedRoute,private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -42,7 +53,10 @@ export class AceDetailsComponent implements OnInit {
        this.drivers = result.drivers;
        this.passengers = result.passengers;
        this.shipments = result.shipments;
-       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");      
+       this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a"); 
+       this.modifiedBy = result.modifiedBy; 
+       this.responses = result.responses; 
+              
       });
   }
 
@@ -59,4 +73,17 @@ export class AceDetailsComponent implements OnInit {
     });
  
   }
+  showShipmentDetails(shipmentNumber){
+    let shipmentData = this.shipments.filter((item:any) => item.shipmentControlNumber === shipmentNumber);  
+    this.shipmentData = {
+      shipmentControlNumber: shipmentData[0].shipmentControlNumber ,
+      type: shipmentData[0].type ,
+      provinceOfLoading: shipmentData[0].provinceOfLoading,
+      shipperName: shipmentData[0].shipper.name,
+      consigneeName: shipmentData[0].consignee.name,
+      commodities: shipmentData[0].commodities,
+      thirdParties: shipmentData[0].thirdParties
+    }
+  }
 }
+;
