@@ -750,9 +750,8 @@ deleteTrailer(i: number) {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest Updated successfully.');
-        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
-
-      },
+        this.location.back(); // <-- go back to previous location
+      }
     });
   }
 }

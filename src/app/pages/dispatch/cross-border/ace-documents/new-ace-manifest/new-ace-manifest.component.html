@@ -804,11 +804,21 @@
                                  {{country.countryName}}</ng-option>
                            </ng-select>
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing State</label>
-                           <ng-select    [ngModelOptions]="{standalone: true}"  [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"  [(ngModel)]="document.stateProvince">
-                              <ng-option *ngFor="let state of passengerDocStates" [value]="state.stateID">
-                                 {{state.stateName}}</ng-option>
-                           </ng-select>
+                        <div class="col-lg-6">
+                           <div class="row">
+                              <div class="col-lg-10">
+                                 <label class="col-form-label font-weight-bold">Issuing State</label>
+                                 <ng-select    [ngModelOptions]="{standalone: true}"  [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"  [(ngModel)]="document.stateProvince">
+                                    <ng-option *ngFor="let state of passengerDocStates" [value]="state.stateID">
+                                       {{state.stateName}}</ng-option>
+                                 </ng-select>
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
+                                 <button type="button" class="btn btn-success btn-sm">
+                                    <i class="fas fa-plus"></i></button>
+                              </div>
+                           </div>
+                           
                         </div>
                      </div>
 

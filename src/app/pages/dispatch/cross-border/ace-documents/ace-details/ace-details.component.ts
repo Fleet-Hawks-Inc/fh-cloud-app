@@ -33,10 +33,7 @@ export class AceDetailsComponent implements OnInit {
         stateProvince: ''
       }
     ],
-    sealNumbers: '',
-    comments: [
-      'my vehicle note'
-    ]
+    sealNumbers: []    
   };
   drivers = [];
   trailers = [];
@@ -46,7 +43,7 @@ export class AceDetailsComponent implements OnInit {
   timeModified: any;
   modifiedBy: any;
   createdBy: any;
-  responses: any;
+  borderResponses = [];
   shipmentData = {
     shipmentControlNumber: '',
     type: '',
@@ -66,7 +63,17 @@ export class AceDetailsComponent implements OnInit {
     citizenshipCountry: '',
     fastCardNumber:'',
     travelDocuments: [],
-  }
+  };
+  passengerData = {
+    passengerID: '',
+    firstName: '',
+    gender: '',
+    lastName: '',
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber:'',
+    travelDocuments: [],
+  };
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -88,7 +95,7 @@ export class AceDetailsComponent implements OnInit {
         this.shipments = result.shipments;
         this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
         this.modifiedBy = result.modifiedBy;
-        this.responses = result.responses;
+        this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
       });
   }
@@ -106,8 +113,9 @@ export class AceDetailsComponent implements OnInit {
       });
 
   }
-  showShipmentDetails(shipmentNumber) {
-    let shipmentData = this.shipments.filter((item: any) => item.shipmentControlNumber === shipmentNumber);
+  showShipmentDetails(shipmentID) {
+
+    let shipmentData = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
     this.shipmentData = {
       shipmentControlNumber: shipmentData[0].shipmentControlNumber,
       type: shipmentData[0].type,
@@ -132,5 +140,17 @@ export class AceDetailsComponent implements OnInit {
       travelDocuments: driverData[0].travelDocuments
     }
   }
+  showPassengerDetails(passengerID) {
+    let passengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
+    this.passengerData = {
+      passengerID: passengerData[0].passengerID,
+      firstName: passengerData[0].firstName,
+      gender: passengerData[0].gender,
+      lastName: passengerData[0].lastName,
+      dateOfBirth: passengerData[0].dateOfBirth,
+      citizenshipCountry: passengerData[0].citizenshipCountry,
+      fastCardNumber: passengerData[0].fastCardNumber,
+      travelDocuments: passengerData[0].travelDocuments
+    }
+  }
 }
-;

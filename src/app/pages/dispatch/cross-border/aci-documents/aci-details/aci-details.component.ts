@@ -36,10 +36,7 @@ export class AciDetailsComponent implements OnInit {
       number: '',
       stateProvince: '',
     },
-    sealNumbers: [],
-    comments: [
-      'my vehicle note'
-    ]
+    sealNumbers: []  
   };
   drivers = [];
   shipmentType: string;
@@ -56,6 +53,7 @@ export class AciDetailsComponent implements OnInit {
   createdBy = '';
   modifiedBy = '';
   shipmentData = {
+    shipmentID: '',
     shipmentType: '',
     loadedOn: {
       type: '',
@@ -85,7 +83,28 @@ export class AciDetailsComponent implements OnInit {
     notifyParties: [],
     commodities: []
   };
-  responses = [];
+  driverData = {
+    driverID: '',
+    driverNumber: '',
+    firstName: '',
+    gender: '',
+    lastName: '',
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber:'',
+    travelDocuments: [],
+  };
+  passengerData = {
+    passengerID: '',
+    firstName: '',
+    gender: '',
+    lastName: '',
+    dateOfBirth: '',
+    citizenshipCountry: '',
+    fastCardNumber:'',
+    travelDocuments: [],
+  };
+  borderResponses = [];
   errors = {};
   form;
   response: any = '';
@@ -98,12 +117,13 @@ export class AciDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
-    this.fetchACEEntry();
+    this.fetchACIEntry();
   }
-  fetchACEEntry() {
+  fetchACIEntry() {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
+        console.log('result',result);
         this.entryID = this.entryID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -126,7 +146,8 @@ export class AciDetailsComponent implements OnInit {
         this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
-        this.responses = result.responses;
+        this.borderResponses = result.borderResponses;
+
       });
   }
 
@@ -143,9 +164,10 @@ export class AciDetailsComponent implements OnInit {
       });
   }
 
-  showShipmentDetails(cargoControlNumber) {
-    let shipmentData = this.shipments.filter((item: any) => item.cargoControlNumber === cargoControlNumber);
+  showShipmentDetails(shipmentID) {
+    let shipmentData = this.shipments.filter((item: any) => item.shipmentID === shipmentID); 
     this.shipmentData = {
+      shipmentID: shipmentData[0].shipmentID,
       shipmentType: shipmentData[0].shipmentType,
       loadedOn: {
         type: shipmentData[0].loadedOn.type,
@@ -174,6 +196,33 @@ export class AciDetailsComponent implements OnInit {
       deliveryDestinations: shipmentData[0].deliveryDestinations,
       notifyParties: shipmentData[0].notifyParties,
       commodities: shipmentData[0].commodities
+    }
+  }
+  showDriverDetails(driverID) {
+    let driverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
+    this.driverData = {
+      driverID: driverData[0].driverID,
+      driverNumber: driverData[0].driverNumber,
+      firstName: driverData[0].firstName,
+      gender: driverData[0].gender,
+      lastName: driverData[0].lastName,
+      dateOfBirth: driverData[0].dateOfBirth,
+      citizenshipCountry: driverData[0].citizenshipCountry,
+      fastCardNumber: driverData[0].fastCardNumber,
+      travelDocuments: driverData[0].travelDocuments
+    }
+  }
+  showPassengerDetails(passengerID) {
+    let passengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
+    this.passengerData = {
+      passengerID: passengerData[0].passengerID,
+      firstName: passengerData[0].firstName,
+      gender: passengerData[0].gender,
+      lastName: passengerData[0].lastName,
+      dateOfBirth: passengerData[0].dateOfBirth,
+      citizenshipCountry: passengerData[0].citizenshipCountry,
+      fastCardNumber: passengerData[0].fastCardNumber,
+      travelDocuments: passengerData[0].travelDocuments
     }
   }
 }
