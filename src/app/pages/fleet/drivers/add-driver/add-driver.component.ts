@@ -892,7 +892,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         localStorage.setItem('driver', JSON.stringify(driver));
         // this.router.navigateByUrl('/fleet/drivers/list');
         this.spinner.hide();
-        // this.cancel();
+        this.cancel();
         
       },
     })})
@@ -1202,15 +1202,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData['currentTab'] = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
+      if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
         
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-        
+        if(result != undefined) {
+            element.geoCords.lat = result.position.lat;
+            element.geoCords.lng = result.position.lng;
+        }
       }
     }
     this.driverData['driverID'] = this.driverID;
