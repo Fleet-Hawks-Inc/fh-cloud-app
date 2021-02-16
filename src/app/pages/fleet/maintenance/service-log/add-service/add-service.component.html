@@ -152,8 +152,8 @@
                                       </tr>
                                    </thead>
                                    <tbody>
-                                      <tr *ngFor="let issue of issues;">
-                                         <td><input (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
+                                      <tr *ngFor="let issue of issues; let i=index;">
+                                         <td><input [(ngModel)]="issue.selected" name="selected{{i}}" (change)="selectIssues($event, issue.issueID)" type="checkbox"></td>
                                          <td>{{issue.issueName}}</td>
                                          <td>{{issue.assignedTo}}</td>
                                       </tr>
@@ -192,7 +192,7 @@
                                    <thead>
                                       <tr>
                                          <th width="30%">Task</th>
-                                         <th width="35%">Schedule</th>
+                                         <th width="35%" *ngIf="serviceData.unitType != 'asset'">Schedule</th>
                                          <th width="10%">Labor</th>
                                          <!-- <th width="10%">Subtotal</th> -->
                                          <th width="5%">Action</th>
@@ -201,10 +201,14 @@
                                    <tbody> 
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
-                                         <td>{{item.schedule}}</td>
+                                         <td *ngIf="serviceData.unitType != 'asset'">{{item.schedule ? item.schedule : '-'}}</td>
                                          <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
                                          <!-- <td><input type="text" value="0.00" name="{{item.labor}}" class="form-control"></td> -->
-                                         <td><i (click)="remove('tasks', item, i)" class="far fa-trash-alt"></i></td>
+                                         <td>
+                                             <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
+                                                <i class="fas fa-times"></i>
+                                             </button>
+                                          </td>
                                       </tr>
                                        <tr *ngIf="!serviceData.allServiceTasks.serviceTaskList?.length > 0">
                                           <td colspan="4">No Task Found</td>
@@ -266,10 +270,8 @@
                              <div class="row pt-2">
                                 <div class="col-lg-10" data-select2-id="14">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
-                                   <ng-select [(ngModel)]="selectedParts" name="selectedParts" bindLabel="name" placeholder="Select service part"
-                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;">
-                                    <ng-option *ngFor="let item of inventory" value={{item.itemID}}>{{item.itemName}}</ng-option>
-                                    </ng-select>
+                                   <ng-select [items]="inventory" bindLabel="itemName" [(ngModel)]="selectedParts" name="selectedParts" placeholder="Select service part"
+                                   (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;"></ng-select>
                                    
                                 </div>
                              </div>
@@ -286,7 +288,7 @@
                                 <table class="table table-bordered table-striped">
                                    <thead>
                                       <tr>
-                                         <th width="15%">Parts Number</th>
+                                         <th width="15%">Item</th>
                                          <th width="15%">Existing Quantity</th>
                                          <th width="35%">Description</th>
                                          <th width="10%">Quantity</th>
@@ -297,13 +299,19 @@
                                    </thead>
                                    <tbody>
                                       <tr *ngFor="let part of serviceData.allServiceParts.servicePartsList; let j = index;">
-                                         <td>{{part.partNumber}}</td>
-                                         <th>{{part.existQuantity}}</th>
-                                         <td>{{part.description}}</td>
-                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (keyup)="checkQuantity($event.target.value)" (blur)="calculateParts()" value="0.00" class="form-control"></td>
+                                         <td>
+                                            <strong>Name: </strong><span class="text-capitalize">{{part.partName}}</span><br>
+                                            <strong>Part Number:</strong> <span class="text-capitalize">{{part.partNumber}}</span>
+                                          </td>
+                                         <th>{{inventoryQuantity[part.partNumber]}}</th>
+                                         <td>{{part.description ? part.description : '-'}}</td>
+                                         <td><input type="text" [(ngModel)]="part.quantity" name="quantity{{j}}" (keyup)="checkQuantity(j)" (blur)="calculateParts()" value="0.00" class="form-control"></td>
                                          <td><input type="text" [(ngModel)]="part.rate" name="rate{{j}}" value="0.00" (blur)="calculateParts()" class="form-control"></td>
                                          <td><input readonly type="text" [(ngModel)]="part.partCost" name="partCost{{j}}" value="0.00" class="form-control"></td>
-                                         <td><i (click)="remove('parts', part, j)" class="far fa-trash-alt"></i></td>
+                                         <td>
+                                             <button class="btn btn-sm btn-danger" type="button" (click)="remove('parts', part, j)">
+                                                <i class="fas fa-times"></i></button>
+                                          </td>
                                       </tr>
                                       <tr *ngIf="!serviceData.allServiceParts.servicePartsList?.length > 0">
                                           <td colspan="7">No Parts Found</td>
