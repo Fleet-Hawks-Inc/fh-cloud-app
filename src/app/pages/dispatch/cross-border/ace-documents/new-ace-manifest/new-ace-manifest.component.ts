@@ -10,6 +10,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { BooleanNullable } from 'aws-sdk/clients/glue';
+import {Auth} from 'aws-amplify';
 declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -114,6 +115,7 @@ export class NewAceManifestComponent implements OnInit {
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
+  currentUser:any = '';
   truck = {
     truckID: '',
     sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}]
@@ -187,7 +189,7 @@ export class NewAceManifestComponent implements OnInit {
         packagingUnit: '',
         weight: '',
         weightUnit: '',
-        marksAndNumbers: [{markNumber: ''}], 
+        marksAndNumbers: [{markNumber: ''},{markNumber: ''},{markNumber: ''},{markNumber: ''}], 
         c4LineReleaseNumber: '',
         harmonizedCode: '',
         value: '',
@@ -237,6 +239,7 @@ address:boolean = false;
     this.getStates();
     this.getUSStates();
     this.fetchCarrier();
+    this.getCurrentuser();
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -437,7 +440,7 @@ deleteTrailer(i: number) {
         packagingUnit: '',
         weight: '',
         weightUnit: '',
-        marksAndNumbers: [{markNumber: ''}],
+        marksAndNumbers: [{markNumber: ''},{markNumber: ''},{markNumber: ''},{markNumber: ''}],
         c4LineReleaseNumber: '',
         harmonizedCode: '',
         value: '',
@@ -518,7 +521,7 @@ deleteTrailer(i: number) {
       packagingUnit: '',
       weight: '',
       weightUnit: '',
-      marksAndNumbers: [{markNumber: ''}],
+      marksAndNumbers: [{markNumber: ''},{markNumber: ''},{markNumber: ''},{markNumber: ''}],
       c4LineReleaseNumber: '',
       harmonizedCode: '',
       value: '',
@@ -644,6 +647,10 @@ deleteTrailer(i: number) {
       });
     this.errors = {};
   }
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;    
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+  }
   fetchACEEntry() {
     this.apiService
       .getData('ACEeManifest/' + this.entryID)
@@ -718,9 +725,9 @@ deleteTrailer(i: number) {
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: this.currentStatus,
-      usAddress: this.usAddress
-    };
- 
+      usAddress: this.usAddress,
+      modifiedBy: this.currentUser
+    }; 
     this.apiService.putData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -743,9 +750,8 @@ deleteTrailer(i: number) {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Manifest Updated successfully.');
-        this.router.navigateByUrl('/dispatch/cross-border/eManifests');
-
-      },
+        this.location.back(); // <-- go back to previous location
+      }
     });
   }
 }
