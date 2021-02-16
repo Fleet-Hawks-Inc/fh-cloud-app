@@ -133,7 +133,6 @@ float:  left;
 }
 
 
-
 .chat-footer {
   background-color: #fff;
   padding: 5px 10px;
@@ -779,6 +778,14 @@ background: #646464; color: #fff; text-decoration: none; text-align: center;}
 .tripvet-scroll-y {
 	display: block;
 }
+
+.addtrip-odnuscrollbar {
+	position: relative;
+	height: 600px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
 
 .tripvertifinish{width:4px; height:80px; background: #0fd50a;
     position: absolute; left: 4px; top:0px; z-index: 500; }
@@ -1955,3 +1962,5 @@ table.dataTable thead th, table.dataTable thead td {
 {
   margin-top: 0.15rem !important;
 }
+
+.bggreyn{background: #f6f6f6 !important;}
