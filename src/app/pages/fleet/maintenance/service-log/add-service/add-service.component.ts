@@ -120,6 +120,9 @@ export class AddServiceComponent implements OnInit {
   };
   warehouses = [];
   existingItemQuantity = null;
+
+  inventoryQuantity: any = {};
+  savedIssues = [];
   
   constructor(
     private apiService: ApiService,
@@ -184,6 +187,8 @@ export class AddServiceComponent implements OnInit {
       };
     }
 
+
+
     this.fetchGroups();
     this.fetchVehicles();
     this.fetchVendors();
@@ -194,6 +199,7 @@ export class AddServiceComponent implements OnInit {
     this.searchLocation();
     this.fetchInventoryItems();
     this.fetchItemGroups();
+    this.fetchInventoryQuanitity();
 
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
@@ -217,6 +223,13 @@ export class AddServiceComponent implements OnInit {
       this.serviceData.unitType = 'vehicle';
       window.localStorage.removeItem('reminderUnitID');
      }
+
+     if(this.serviceData.vehicleID != '') {
+       this.getVehicleIssues(this.serviceData.vehicleID)
+     } 
+     if(this.serviceData.assetID != '') {
+       this.getAssetIssues(this.serviceData.assetID);
+     }
   }
 
   /*
@@ -225,7 +238,12 @@ export class AddServiceComponent implements OnInit {
   addService() {
     
     this.hideErrors();
-    console.log("data", this.serviceData)
+    this.spinner.show();
+    
+    this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
+      delete elem.existQuantity;
+      delete elem.partName;
+    })
     // create form data instance
     const formData = new FormData();
 
@@ -241,6 +259,7 @@ export class AddServiceComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.serviceData));
+    return;
     this.apiService.postData('serviceLogs', formData, true).subscribe({
       complete: () => { },
        error: (err: any) => {
@@ -249,11 +268,13 @@ export class AddServiceComponent implements OnInit {
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
+              this.spinner.hide();
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.spinner.hide();
             },
             error: () => { },
             next: () => { },
@@ -263,6 +284,7 @@ export class AddServiceComponent implements OnInit {
         this.response = res;
         this.toastr.success('Log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
+        this.spinner.hide();
       },
     });
     if(this.serviceData.selectedIssues.length > 0){
@@ -293,15 +315,15 @@ export class AddServiceComponent implements OnInit {
     this.errors = {};
   }
 
-  selectIssues($event, ids) {
+  selectIssues(event, ids: any) {
     
-    if($event.target.checked) {
+    if(event.target.checked) {
       this.selectedIssues.push(ids);
     } else {
       let index = this.selectedIssues.indexOf(ids);
       this.selectedIssues.splice(index, 1);
     }
-    this.serviceData['selectedIssues'] = this.selectedIssues;
+    this.serviceData.selectedIssues = this.selectedIssues;
   }
   /**
    * to set status of issue to resolved 
@@ -403,26 +425,47 @@ export class AddServiceComponent implements OnInit {
   }
   
 
-  getVehicleIssues(id) {
+  async getVehicleIssues(id: any) {
+    this.spinner.show();
     const vehicleID = id;
-    this.getReminders(vehicleID);
-    this.fetchVehicleByID(vehicleID);
-    this.apiService.getData(`issues/vehicle/${vehicleID}`).subscribe((result: any) => {
-      this.issues = result.Items;
-    });
+    await this.getReminders(vehicleID);
+    // this.fetchVehicleByID(vehicleID);
+    
+    let promise = await this.apiService.getData(`issues/vehicle/${vehicleID}`).toPromise()
+    this.issues = promise.Items;
+
+    for (let z = 0; z < this.savedIssues.length; z++) {
+      this.issues.map(elem => {
+        if (elem.issueID == this.savedIssues[z]) {
+          elem.selected = true;
+        }
+      })
+    }
+
+    this.spinner.hide();
   }
 
-  getAssetIssues(id) {
+  async getAssetIssues(id) {
+    this.spinner.show();
     const assetID = id;
-    this.getReminders(assetID);
-    this.fetchAssetByID(assetID);
-    this.apiService.getData(`issues/asset/${assetID}`).subscribe((result: any) => {
-      this.issues = result.Items;
-    });
+    await this.getReminders(assetID);
+    // this.fetchAssetByID(assetID);
+    let promise = await this.apiService.getData(`issues/asset/${assetID}`).toPromise();
+    this.issues = promise.Items;
+
+    for (let z = 0; z < this.savedIssues.length; z++) {
+      this.issues.map(elem => {
+        if (elem.issueID == this.savedIssues[z]) {
+          elem.selected = true;
+        }
+      })
+    }
+    this.spinner.hide();
   }
 
-  getReminders(id) {
+  async getReminders(id) {
     const vehicleID = id;
+    this.reminders = [];
     this.apiService.getData(`reminders/vehicle/${vehicleID}`).subscribe(async (result: any) => {
       let response = await result.Items;
       response.forEach(element => {
@@ -455,10 +498,11 @@ export class AddServiceComponent implements OnInit {
 
   addParts() {
     this.inventory.forEach(element => {
-      if (element.itemID === this.selectedParts[this.selectedParts.length - 1]) {
+      if (element.itemID === this.selectedParts[this.selectedParts.length - 1].itemID) {
         this.serviceData.allServiceParts.servicePartsList.push({
+          partName: element.itemName,  
           partID: element.itemID,
-          existQuantity:  element.quantity,
+          existQuantity:  this.inventoryQuantity[element.partNumber],
           partNumber: element.partNumber,
           description: element.description,
         });
@@ -466,13 +510,13 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  checkQuantity(value) {
-    this.serviceData.allServiceParts.servicePartsList.forEach(e => {
-      if(value > e.existQuantity) {
-        this.toastr.error('The requested quantity is not available');
-        e.quantity = e.existQuantity;
-      }
-    })
+  checkQuantity(index: number) {
+    let reqQuantity = this.serviceData.allServiceParts.servicePartsList[index].quantity;
+    let totalStocks = this.serviceData.allServiceParts.servicePartsList[index].existQuantity;
+    if (reqQuantity > totalStocks) {
+      this.toastr.error('The requested quantity is not available');
+      this.serviceData.allServiceParts.servicePartsList[index].quantity = totalStocks;
+    }
   }
 
   async addTasks() {
@@ -491,11 +535,12 @@ export class AddServiceComponent implements OnInit {
     }
     
     this.serviceData.allServiceTasks.serviceTaskList.push({
-      taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
+      // taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
       taskID: this.selectedTasks[this.selectedTasks.length - 1].taskID,
       reminderID: remindID,
       schedule: newSchedule,
     });
+    
   }
 
   async addListedTasks(data) {
@@ -522,8 +567,7 @@ export class AddServiceComponent implements OnInit {
     taskList.splice(index, 1);
   }
 
-  remove(arr: any, data: any, i) {
-    console.log("data", data, this.selectedParts);
+  remove(arr: any, data: any, i: number) {
     if (arr === 'tasks') {
       let remindersList = this.reminders;
       remindersList.findIndex(item => {
@@ -536,7 +580,8 @@ export class AddServiceComponent implements OnInit {
       this.calculateTasks();
     } else {
       this.serviceData.allServiceParts.servicePartsList.splice(i, 1);
-      this.selectedParts = this.selectedParts.filter( elem => elem.itemID != data.partID);
+      this.selectedParts = this.selectedParts.filter( elem => elem.itemID != data.partID
+      );
       this.calculateParts();
     }
   }
@@ -569,9 +614,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   removeParts(item: any) {
-    console.log("item", item);
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      console.log("s", s);
       if (s.partID === item.value) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
@@ -660,36 +703,38 @@ export class AddServiceComponent implements OnInit {
     this.serviceData.allServiceParts.taxAmount = taxAmount;
     this.serviceData.allServiceParts.total -= discountAmount;
     this.serviceData.allServiceParts.total += taxAmount;
-    console.log('parts', this.serviceData.allServiceParts)
   }
 
 
-  fetchServiceByID() {
+  async fetchServiceByID() {
     // this.spinner.show(); // loader init
     this.apiService
       .getData('serviceLogs/' + this.logID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        
         this.serviceData['logID'] = this.logID;
-        this.serviceData['unitType'] = result.unitType;
+        this.serviceData.unitType = result.unitType;
         if (result.vehicleID) {
           this.getVehicleIssues(result.vehicleID);
-          this.serviceData['vehicleID'] = result.vehicleID;
+          
+          this.serviceData.vehicleID = result.vehicleID;
         } else {
           this.getAssetIssues(result.assetID);
-          this.serviceData['assetID'] = result.assetID;
+          this.serviceData.assetID = result.assetID;
         }
         
-        this.serviceData['odometer'] = result.odometer;
-        this.serviceData['completionDate'] = result.completionDate;
-        this.serviceData['vendorID'] = result.vendorID;
-        this.serviceData['reference'] = result.reference;
-        this.serviceData['location'] = result.location;
+        this.serviceData.odometer = result.odometer;
+        this.serviceData.completionDate = result.completionDate;
+        this.serviceData.vendorID = result.vendorID;
+        this.serviceData.reference = result.reference;
+        this.serviceData.location = result.location;
         this.serviceData.geoCords.lat = result.geoCords.lat;
         this.serviceData.geoCords.lng = result.geoCords.lng;
-        this.serviceData['odometer'] = result.odometer;
-        this.serviceData['description'] = result.description;
+        this.serviceData.odometer = result.odometer;
+        this.serviceData.description = result.description;
+        
+        this.savedIssues = result.selectedIssues;
+        
         let newTasks = [];
         for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
           newTasks.push({
@@ -719,7 +764,7 @@ export class AddServiceComponent implements OnInit {
             quantity: result.allServiceParts.servicePartsList[i].quantity,
             rate: result.allServiceParts.servicePartsList[i].rate,
           });
-          this.selectedParts.push(result.allServiceParts.servicePartsList[i].description);
+          this.selectedParts.push(result.allServiceParts.servicePartsList[i].partID);
         }
         this.serviceData.allServiceParts.servicePartsList = newParts;
         
@@ -870,6 +915,11 @@ export class AddServiceComponent implements OnInit {
   fetchInventoryItems() {
     this.apiService.getData('items').subscribe((result: any) => {
       this.inventoryItems = result.Items;
+    });
+  }
+  fetchInventoryQuanitity() {
+    this.apiService.getData('items/get/quantity').subscribe((result: any) => {
+      this.inventoryQuantity = result;
     });
   }
 
@@ -1085,7 +1135,7 @@ export class AddServiceComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(data));
-
+    
     this.apiService.postData("items", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
