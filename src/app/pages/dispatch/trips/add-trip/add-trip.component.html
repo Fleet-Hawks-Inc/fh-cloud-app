@@ -57,89 +57,84 @@
                         <div class="card-body">
                             <form class="form-horizontal form-bordered" method="get" id="form_">
                                 <div class="row">
-                                    <div class="col-lg-6 my-2">
+                                    <div class="col-lg-5 offset-lg-1 my-2">
                                         <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
+                                            <div class="col-lg-3">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
                                             </div>
                                             <div class="col-lg-6">
+                                                <p class="font-weight-semibold text-5 mb-0 pt-1">Mike</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
+
                                                 <input type="text" class="form-control" name="tripNo"
                                                     [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">
-                                                    Select Order Number
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-6">
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Order Number</label>
                                                 <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-4 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <p class="font-weight-semibold text-5  pt-1">{{ currentUser }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row my-2">
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select Permanent Route</label>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID" placeholder="Select Route">
+
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Permanent Route</label>
+                                              <ng-select [(ngModel)]="tripData.routeID" name="routeID" placeholder="Select Route">
                                                     <ng-option *ngFor = "let route of routes" value="{{ route.routeID }}">{{ route.routeName }}</ng-option>
                                                 </ng-select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                            </div>
-                                            <div class="col-lg-6">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row my-2">
 
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
                                             </div>
-                                            <div class="col-lg-6 col-md-12">
+                                        </div>
+                                    </div>
+
+
+
+
+                                    </div>
+
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <p class="font-weight-semibold text-5 mb-3 pt-1">&nbsp;</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-10 col-md-12">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
+
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="row">
-                                            <div class="col-lg-6 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer Temperature</label>
+
+                                        <div class="row mb-2">
+                                            
+                                            <div class="col-lg-10 col-md-12">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date</label>
+
+                                                <input [(ngModel)]="tripData.dateCreated" name="dateCreated" 
+                                                    type="text" 
+                                                    placeholder="Select Trip Date"
+                                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                                    class="form-control" autocomplete="off"> 
                                             </div>
-                                            <div class="col-lg-6 col-md-12">
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer Temperature</label>
+                                            </div>
+                                            <div class="col-lg-10 col-md-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <input type="number" class="form-control"
@@ -158,25 +153,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row my-2">
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date</label>
-                                            </div>
-                                            <div class="col-lg-6 col-md-12">
-                                                <input 
-                                                    [(ngModel)]="tripData.dateCreated" name="dateCreated" 
-                                                    type="text" 
-                                                    placeholder="Select Trip Date"
-                                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                                    class="form-control" autocomplete="off"> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                               
 
                                 <div class="row my-2">
                                     <div class="col-lg-12">
@@ -440,127 +418,118 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-12">
+                                        <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
+                                        <div class="row">
+                                            <div class="col-lg-4 text-center" *ngIf="trips.length > 0; else sourceElseBlock">
+                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[0].locationName }}</p>
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }} {{ trips[0].time }}</p>
+                                            </div>
+
+                                            <ng-template #sourceElseBlock>
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark"> - </p>
+                                                </div>
+                                            </ng-template>
+
+                                            <div class="col-lg-4 text-center pt-3">
+                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-4 text-center" *ngIf="trips.length > 1; else destinationElseBlock">
+                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                </p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[trips.length-1].locationName }}</p>
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
+                                            </div>
+
+                                            <ng-template #destinationElseBlock>
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
+                                                    </p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">-</p>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                        <div class="wizard-progress">
+                                            <div class="steps-progress">
+                                                <div class="progress-indicator" style="width: 0%;"></div>
+                                            </div>
+                                            <ul class="wizard-steps">
+                                                <li class="" *ngFor="let trip of trips">
+                                                    <a class="" href=""
+                                                        data-toggle="tab"><span></span>{{ trip.type}}
+                                                        <br>{{ trip.locationName }}
+                                                        <br>{{ trip.pickupTime }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 mb-2">
                                         <div class="mapclass" id="map_view">
                                             <div id="map" class=""></div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="col-lg-12">
-                                            <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
+                                    <div class="col-lg-12">
+                                        <div class="bggreyn p-3">
+                                            <h3 class="font-weight-bold text-dark text-6 mt-0">Notifications</h3>
                                             <div class="row">
-                                                <div class="col-lg-4 text-center" *ngIf="trips.length > 0; else sourceElseBlock">
-                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[0].locationName }}</p>
-                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }} {{ trips[0].time }}</p>
-                                                </div>
-
-                                                <ng-template #sourceElseBlock>
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark"> - </p>
+                                                
+                                                <div class="col-lg-6 col-md-6">
+                                                    <label class="control-label font-weight-bold labelmt text-3 text-dark">Planned v/s Changed Route</label>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat1" name="changeRoute"
+                                                            [(ngModel)]="tripData.notifications.changeRoute">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat1">Notify Dispatcher about changed route?</label>
                                                     </div>
-                                                </ng-template>
-
-                                                <div class="col-lg-4 text-center pt-3">
-                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
-                                                    </p>
-                                                </div>
-                                                <div class="col-lg-4 text-center" *ngIf="trips.length > 1; else destinationElseBlock">
-                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
-                                                    </p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[trips.length-1].locationName }}</p>
-                                                    <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
-                                                </div>
-
-                                                <ng-template #destinationElseBlock>
-                                                    <div class="col-lg-4 text-center">
-                                                        <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
-                                                        </p>
-                                                        <p class="mb-0 text-4 font-weight-semibold text-dark">-</p>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat2" name="pickUp"
+                                                            [(ngModel)]="tripData.notifications.pickUp">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat2">Notify Dispatcher about pick up?</label>
                                                     </div>
-                                                </ng-template>
-                                            </div>
-                                            <div class="wizard-progress">
-                                                <div class="steps-progress">
-                                                    <div class="progress-indicator" style="width: 0%;"></div>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat3" name="dropOff"
+                                                            [(ngModel)]="tripData.notifications.dropOff">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat3">Notify Dispatcher about drop off?</label>
+                                                    </div>
                                                 </div>
-                                                <ul class="wizard-steps">
-                                                    <li class="" *ngFor="let trip of trips">
-                                                        <a class="" href=""
-                                                            data-toggle="tab"><span></span>{{ trip.type}}
-                                                            <br>{{ trip.locationName }}
-                                                            <br>{{ trip.pickupTime }}
-                                                        </a>
-                                                    </li>
-                                                </ul>
+
+                                                <div class="col-lg-6 col-md-6">
+                                                    <label class="control-label font-weight-    bold labelmt text-3 text-dark">Trip Details</label>
+
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat4" name="tripToDriver"
+                                                            [(ngModel)]="tripData.notifications.tripToDriver">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat4">Send trip details to the driver</label>
+                                                    </div>
+                                                    <div class="checkbox-custom checkbox-default">
+                                                        <input type="checkbox" id="HazMat5" name="tripToDispatcher"
+                                                            [(ngModel)]="tripData.notifications.tripToDispatcher">
+                                                        <label
+                                                            class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                            for="HazMat5">Send trip details to the dispatcher</label>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12 text-dark">
-                                        <h3>Notifications</h3>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">
-                                                    Planned v/s Changed Route</label>
-                                            </div>
-                                            <div class="col-lg-6 col-md-12">
-                                                <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat1" name="changeRoute"
-                                                        [(ngModel)]="tripData.notifications.changeRoute">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat1">Notify Dispatcher about changed route?</label>
-                                                </div>
-                                                <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat2" name="pickUp"
-                                                        [(ngModel)]="tripData.notifications.pickUp">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat2">Notify Dispatcher about pick up?</label>
-                                                </div>
-                                                <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat3" name="dropOff"
-                                                        [(ngModel)]="tripData.notifications.dropOff">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat3">Notify Dispatcher about drop off?</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="row ">
-                                            <div class="col-lg-3 labelalign">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip
-                                                    Details</label>
-                                            </div>
-                                            <div class="col-lg-6 col-md-12">
-                                                <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat4" name="tripToDriver"
-                                                        [(ngModel)]="tripData.notifications.tripToDriver">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat4">Send trip details to the driver</label>
-                                                </div>
-                                                <div class="checkbox-custom checkbox-default">
-                                                    <input type="checkbox" id="HazMat5" name="tripToDispatcher"
-                                                        [(ngModel)]="tripData.notifications.tripToDispatcher">
-                                                    <label
-                                                        class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                        for="HazMat5">Send trip details to the dispatcher</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
+                                
                                 <div class="row text-right">
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;" routerLink="/dispatch/trips/trip-list">Cancel</a>
@@ -579,10 +548,10 @@
 
 <!-- order modal start -->
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Select Modal</h5>
+                <h5 class="modal-title">Select Order</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
@@ -592,11 +561,11 @@
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL" role="tab"
+                                <a class="nav-link pl-5 pr-5 active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL" role="tab"
                                     aria-controls="loadFTL" aria-selected="true" (click)="changeOrderTab('FTL')">FTL</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="loadLTL-tab" data-toggle="tab" href="#loadLTL" role="tab"
+                                <a class="nav-link pl-5 pr-5" id="loadLTL-tab" data-toggle="tab" href="#loadLTL" role="tab"
                                     aria-controls="loadLTL" aria-selected="false" (click)="changeOrderTab('LTL')">LTL</a>
                             </li>
                         </ul>
@@ -608,40 +577,42 @@
                                     <div class="tab-content p-0" id="myTabContent">
                                         <div class="tab-pane show active" id="loadFTL" role="tabpanel"
                                             aria-labelledby="loadFTL-tab">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered table-striped mb-0 dataTable no-footer">
-                                                    <thead>
-                                                        <tr class="" role="row">
-                                                            <th></th>
-                                                            <th class="text-2">Order#</th>
-                                                            <th class="text-2">Customer</th>
-                                                            <th class="text-2">P/L</th>
-                                                            <th class="text-2">D/L</th>
-                                                            <th class="text-2">Total Amount</th>
-                                                            <th class="text-2">Status</th>
-                                                        </tr>
-                                                    </thead> 
-                                                    <tbody class="ui-sortable">
-                                                        <tr class="ui-sortable-handle odd" role="row"
-                                                            *ngFor="let order of ftlOrders">
-                                                            <td class="sorting_1">
-                                                                <input type="radio" name="ftlOrderIds" value="{{ order.orderNumber }}" [checked]="order.selected" id="{{ order.orderID }}" (change)="selectOrderIDS('ftl', order)">
-                                                            </td>
-                                                            <td class="loadid"><span class="FTLload">FTL</span><br>
-                                                                <a href="javascript:;">{{ order.orderNumber }}</a>
-                                                            </td>
-                                                            <td>{{ customersObjects[order.customerID] }}</td>
-                                                            <td>
-                                                                <div [innerHTML]="order.pickupLocations"></div>
-                                                            </td>
-                                                            <td>
-                                                                <div [innerHTML]="order.deliveryLocations"></div>
-                                                            </td>
-                                                            <td>CAD {{ order.totalAmount }}</td>
-                                                            <td>{{ order.orderStatus }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="tripvet-scroll-y addtrip-odnuscrollbar">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                                        <thead>
+                                                            <tr class="" role="row">
+                                                                <th></th>
+                                                                <th class="text-2">Order#</th>
+                                                                <th class="text-2">Customer</th>
+                                                                <th class="text-2">P/L</th>
+                                                                <th class="text-2">D/L</th>
+                                                                <th class="text-2">Total Amount</th>
+                                                                <th class="text-2">Status</th>
+                                                            </tr>
+                                                        </thead> 
+                                                        <tbody class="ui-sortable">
+                                                            <tr class="ui-sortable-handle odd" role="row"
+                                                                *ngFor="let order of ftlOrders">
+                                                                <td class="sorting_1">
+                                                                    <input type="radio" name="ftlOrderIds" value="{{ order.orderNumber }}" [checked]="order.selected" id="{{ order.orderID }}" (change)="selectOrderIDS('ftl', order)">
+                                                                </td>
+                                                                
+                                                                <td class="loadid"><a href="javascript:;">{{ order.orderNumber }}</a></td>
+
+                                                                <td>{{ customersObjects[order.customerID] }}</td>
+                                                                <td>
+                                                                    <div [innerHTML]="order.pickupLocations"></div>
+                                                                </td>
+                                                                <td>
+                                                                    <div [innerHTML]="order.deliveryLocations"></div>
+                                                                </td>
+                                                                <td>CAD {{ order.totalAmount }}</td>
+                                                                <td>{{ order.orderStatus }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="loadLTL" role="tabpanel"
@@ -667,9 +638,7 @@
                                                             <input type="checkbox" value="{{ order.orderNumber }}"
                                                                 name="ltlOrderIds" id="{{ order.orderID }}" [checked]="order.selected" (change)="selectOrderIDS('ltl')">
                                                         </td>
-                                                        <td class="loadid"><span class="LTLload">LTL</span><br>
-                                                            <a href="javascript:;">{{ order.orderNumber }}</a>
-                                                        </td>
+                                                        <td class="loadid"><a href="javascript:;">{{ order.orderNumber }}</a></td>
 
                                                         <td>{{ customersObjects[order.customerID] }}</td>
 
