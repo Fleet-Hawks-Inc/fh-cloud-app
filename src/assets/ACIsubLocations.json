@@ -1,969 +1,5 @@
 [
-	{
-		"code": "2064",
-		"portLocation": {
-			"number": "0015",
-			"name": "NEW GLASGOW"
-		}
-	},
-	{
-		"code": "2140",
-		"portLocation": {
-			"number": "0212",
-			"name": "WOODSTOCK"
-		}
-	},
-	{
-		"code": "2247",
-		"portLocation": {
-			"number": "0312",
-			"name": "QUEBEC"
-		}
-	},
-	{
-		"code": "2264"
-	},
-	{
-		"code": "2343"
-	},
-	{
-		"code": "2421"
-	},
-	{
-		"code": "2465",
-		"portLocation": {
-			"number": "0395",
-			"name": "MONTREAL - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "2628"
-	},
-	{
-		"code": "2682",
-		"portLocation": {
-			"number": "0398",
-			"name": "MONTREAL - INTERMEDIATE TERMINAL (C.D.L.)"
-		}
-	},
-	{
-		"code": "2724",
-		"portLocation": {
-			"number": "0400",
-			"name": "PETERBOROUGH"
-		}
-	},
-	{
-		"code": "2750"
-	},
-	{
-		"code": "2791",
-		"portLocation": {
-			"number": "0449",
-			"name": "TRENTON"
-		}
-	},
-	{
-		"code": "2839",
-		"portLocation": {
-			"number": "0401",
-			"name": "KITCHENER"
-		}
-	},
-	{
-		"code": "2844",
-		"portLocation": {
-			"number": "0406",
-			"name": "CHATHAM"
-		}
-	},
-	{
-		"code": "2900",
-		"portLocation": {
-			"number": "0423",
-			"name": "LONDON"
-		}
-	},
-	{
-		"code": "2903"
-	},
-	{
-		"code": "2984",
-		"portLocation": {
-			"number": "0459",
-			"name": "BARRIE"
-		}
-	},
-	{
-		"code": "3040"
-	},
-	{
-		"code": "3067",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "3070",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "3081"
-	},
-	{
-		"code": "3090",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3092",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3096",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3098",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3110",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3111",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3118"
-	},
-	{
-		"code": "3136",
-		"portLocation": {
-			"number": "0499",
-			"name": "TORONTO - SUFFERANCE TRUCK TERMINAL (KENNEDY ROAD)"
-		}
-	},
-	{
-		"code": "3145",
-		"portLocation": {
-			"number": "0504",
-			"name": "WINNIPEG - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "3210",
-		"portLocation": {
-			"number": "0604",
-			"name": "REGINA"
-		}
-	},
-	{
-		"code": "3221",
-		"portLocation": {
-			"number": "0605",
-			"name": "SASKATOON"
-		}
-	},
-	{
-		"code": "3266",
-		"portLocation": {
-			"number": "0701",
-			"name": "CALGARY"
-		}
-	},
-	{
-		"code": "3285",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "3314",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "3337",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "3348",
-		"portLocation": {
-			"number": "0801",
-			"name": "CRANBROOK"
-		}
-	},
-	{
-		"code": "3374"
-	},
-	{
-		"code": "3453",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "3485",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "3528"
-	},
-	{
-		"code": "3539",
-		"portLocation": {
-			"number": "0821",
-			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3602"
-	},
-	{
-		"code": "3619",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3659",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3779",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "3849",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "3930",
-		"portLocation": {
-			"number": "0395",
-			"name": "MONTREAL - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "4054"
-	},
-	{
-		"code": "4193",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "4199"
-	},
-	{
-		"code": "4282"
-	},
-	{
-		"code": "4304",
-		"portLocation": {
-			"number": "0495",
-			"name": "TORONTO - METRO OPERATIONS DIVISION"
-		}
-	},
-	{
-		"code": "4531",
-		"portLocation": {
-			"number": "0480",
-			"name": "BRAMPTON"
-		}
-	},
-	{
-		"code": "4534",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "4566",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "4578"
-	},
-	{
-		"code": "4595",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "4596",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "4648",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "4685"
-	},
-	{
-		"code": "4747",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "4817",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "4825",
-		"portLocation": {
-			"number": "0457",
-			"name": "CAMBRIDGE"
-		}
-	},
-	{
-		"code": "4826",
-		"portLocation": {
-			"number": "0459",
-			"name": "BARRIE"
-		}
-	},
-	{
-		"code": "4909",
-		"portLocation": {
-			"number": "0396",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
-		}
-	},
-	{
-		"code": "4915",
-		"portLocation": {
-			"number": "0495",
-			"name": "TORONTO - METRO OPERATIONS DIVISION"
-		}
-	},
-	{
-		"code": "4944"
-	},
-	{
-		"code": "5094",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5261",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"stateProvince": "SK",
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0604",
-			"name": "REGINA"
-		}
-	},
-	{
-		"code": "5273",
-		"portLocation": {
-			"number": "0485",
-			"name": "OTTAWA MACDONALD - CARTIER INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5274",
-		"portLocation": {
-			"number": "0701",
-			"name": "CALGARY"
-		}
-	},
-	{
-		"code": "5277",
-		"portLocation": {
-			"number": "0009",
-			"name": "HALIFAX"
-		}
-	},
-	{
-		"code": "5284",
-		"portLocation": {
-			"number": "0504",
-			"name": "WINNIPEG - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5291",
-		"portLocation": {
-			"number": "0323",
-			"name": "VALLEYFIELD"
-		}
-	},
-	{
-		"code": "5301",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5316",
-		"portLocation": {
-			"number": "0399",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (MIRABEL)"
-		}
-	},
-	{
-		"code": "5326",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0495",
-			"name": "TORONTO - METRO OPERATIONS DIVISION"
-		}
-	},
-	{
-		"code": "5353",
-		"portLocation": {
-			"number": "0504",
-			"name": "WINNIPEG - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5361",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"stateProvince": "MB",
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0504",
-			"name": "WINNIPEG - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5365",
-		"portLocation": {
-			"number": "0396",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
-		}
-	},
-	{
-		"code": "5366",
-		"portLocation": {
-			"number": "0701",
-			"name": "CALGARY"
-		}
-	},
-	{
-		"code": "5368",
-		"portLocation": {
-			"number": "0701",
-			"name": "CALGARY"
-		}
-	},
-	{
-		"code": "5374",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "5381",
-		"portLocation": {
-			"number": "0396",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
-		}
-	},
-	{
-		"code": "5382",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "5406",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5413",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5424",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0495",
-			"name": "TORONTO - METRO OPERATIONS DIVISION"
-		}
-	},
-	{
-		"code": "5425",
-		"portLocation": {
-			"number": "0009",
-			"name": "HALIFAX"
-		}
-	},
-	{
-		"code": "5431",
-		"portLocation": {
-			"number": "0821",
-			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5441",
-		"portLocation": {
-			"number": "0009",
-			"name": "HALIFAX"
-		}
-	},
-	{
-		"code": "5476",
-		"portLocation": {
-			"number": "0457",
-			"name": "CAMBRIDGE"
-		}
-	},
-	{
-		"code": "5477",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5486",
-		"portLocation": {
-			"number": "0396",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
-		}
-	},
-	{
-		"code": "5491",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5492",
-		"portLocation": {
-			"number": "0821",
-			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5510",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0504",
-			"name": "WINNIPEG - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5514",
-		"portLocation": {
-			"number": "0417",
-			"name": "HAMILTON"
-		}
-	},
-	{
-		"code": "5516",
-		"portLocation": {
-			"number": "0495",
-			"name": "TORONTO - METRO OPERATIONS DIVISION"
-		}
-	},
-	{
-		"code": "5518",
-		"portLocation": {
-			"number": "0914",
-			"name": "ST. JOHNS, NEWFOUNDLAND"
-		}
-	},
-	{
-		"code": "5525",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5526",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"stateProvince": "AB",
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0701",
-			"name": "CALGARY"
-		}
-	},
-	{
-		"code": "5540",
-		"portLocation": {
-			"number": "0395",
-			"name": "MONTREAL - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5546",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5551",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "5556",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5557",
-		"portLocation": {
-			"number": "0396",
-			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
-		}
-	},
-	{
-		"code": "5569",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5573",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5581",
-		"portLocation": {
-			"number": "0809",
-			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
-		}
-	},
-	{
-		"code": "5591",
-		"portLocation": {
-			"number": "0441",
-			"name": "SAULT STE. MARIE"
-		}
-	},
-	{
-		"code": "5595",
-		"portLocation": {
-			"number": "0009",
-			"name": "HALIFAX"
-		}
-	},
-	{
-		"code": "5598",
-		"portLocation": {
-			"number": "0496",
-			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
-		}
-	},
-	{
-		"code": "5603",
-		"portLocation": {
-			"number": "0497",
-			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5604",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "5608",
-		"portLocation": {
-			"number": "0395",
-			"name": "MONTREAL - MAIN LONGROOM"
-		}
-	},
-	{
-		"code": "5625",
-		"portLocation": {
-			"number": "0702",
-			"name": "EDMONTON"
-		}
-	},
-	{
-		"code": "5626",
-		"portLocation": {
-			"number": "0485",
-			"name": "OTTAWA MACDONALD - CARTIER INTERNATIONAL AIRPORT"
-		}
-	},
-	{
-		"code": "5634",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0480",
-			"name": "BRAMPTON"
-		}
-	},
-	{
-		"code": "5714",
-		"portLocation": {
-			"number": "0410",
-			"name": "FORT ERIE"
-		}
-	},
-	{
-		"code": "9216",
-		"portLocation": {
-			"number": "0216",
-			"name": "CLAIR"
-		}
-	},
-	{
-		"code": "9218",
-		"portLocation": {
-			"number": "0218",
-			"name": "ST. LEONARD"
-		}
-	},
-	{
-		"code": "9219",
-		"portLocation": {
-			"number": "0219",
-			"name": "GILLESPIE PORTAGE"
-		}
-	},
-	{
-		"code": "9231",
-		"portLocation": {
-			"number": "0231",
-			"name": "ST. STEPHEN 3RD BRIDGE"
-		}
-	},
-	{
-		"code": "9307",
-		"portLocation": {
-			"number": "0307",
-			"name": "TROUT RIVER"
-		}
-	},
-	{
-		"code": "9324",
-		"portLocation": {
-			"number": "0324",
-			"name": "ROUTE 221: LACOLLE"
-		}
-	},
-	{
-		"code": "9330",
-		"portLocation": {
-			"number": "0330",
-			"name": "DUNDEE"
-		}
-	},
-	{
-		"code": "9331",
-		"portLocation": {
-			"number": "0331",
-			"name": "POHENEGAMOOK"
-		}
-	},
-	{
-		"code": "9332",
-		"portLocation": {
-			"number": "0332",
-			"name": "FRELIGHSBURG"
-		}
-	},
-	{
-		"code": "9333",
-		"portLocation": {
-			"number": "0333",
-			"name": "HEMMINGFORD"
-		}
-	},
-	{
-		"code": "9366",
-		"portLocation": {
-			"number": "0366",
-			"name": "HEREFORD ROAD"
-		}
-	},
-	{
-		"code": "9507",
-		"portLocation": {
-			"number": "0507",
-			"name": "BOISSEVAIN"
-		}
-	},
-	{
-		"code": "9607",
-		"portLocation": {
-			"number": "0607",
-			"name": "REGWAY"
-		}
-	},
-	{
-		"code": "9706",
-		"address": {
-			"addressLine": null,
-			"city": null,
-			"postalCode": null
-		},
-		"portLocation": {
-			"number": "0706",
-			"name": "ADEN"
-		}
-	},
-	{
-		"code": "9815",
-		"portLocation": {
-			"number": "0815",
-			"name": "BOUNDARY BAY"
-		}
-	},
-	{
-		"code": "9822",
-		"portLocation": {
-			"number": "0822",
-			"name": "RYKERTS"
-		}
-	},
-	{
-		"code": "9838",
-		"portLocation": {
-			"number": "0838",
-			"name": "CAMPBELL RIVER"
-		}
-	},
-	{
-		"code": "9842",
-		"portLocation": {
-			"number": "0842",
-			"name": "PACIFIC CUSTOMS BROKERS HIGHWAY SUFFERANCE WAREHOUSE"
-		}
-	},
-	{
-		"code": "9891",
-		"portLocation": {
-			"number": "0891",
-			"name": "PLEASANT CAMP"
-		}
-	},
-	{
-		"code": "9892",
-		"portLocation": {
-			"number": "0892",
-			"name": "BEAVER CREEK"
-		}
-	},
-	{
-		"code": "9893",
-		"portLocation": {
-			"number": "0893",
-			"name": "FRASER"
-		}
-	},
+	
 	{
 		"code": "4256",
 		"name": "10050 NEWFOUNDLAND LTD. AMJ        CAMPBELL VAN LINES",
@@ -27123,6 +26159,971 @@
 		"portLocation": {
 			"number": "0497",
 			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "2064",
+		"portLocation": {
+			"number": "0015",
+			"name": "NEW GLASGOW"
+		}
+	},
+	{
+		"code": "2140",
+		"portLocation": {
+			"number": "0212",
+			"name": "WOODSTOCK"
+		}
+	},
+	{
+		"code": "2247",
+		"portLocation": {
+			"number": "0312",
+			"name": "QUEBEC"
+		}
+	},
+	{
+		"code": "2264"
+	},
+	{
+		"code": "2343"
+	},
+	{
+		"code": "2421"
+	},
+	{
+		"code": "2465",
+		"portLocation": {
+			"number": "0395",
+			"name": "MONTREAL - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "2628"
+	},
+	{
+		"code": "2682",
+		"portLocation": {
+			"number": "0398",
+			"name": "MONTREAL - INTERMEDIATE TERMINAL (C.D.L.)"
+		}
+	},
+	{
+		"code": "2724",
+		"portLocation": {
+			"number": "0400",
+			"name": "PETERBOROUGH"
+		}
+	},
+	{
+		"code": "2750"
+	},
+	{
+		"code": "2791",
+		"portLocation": {
+			"number": "0449",
+			"name": "TRENTON"
+		}
+	},
+	{
+		"code": "2839",
+		"portLocation": {
+			"number": "0401",
+			"name": "KITCHENER"
+		}
+	},
+	{
+		"code": "2844",
+		"portLocation": {
+			"number": "0406",
+			"name": "CHATHAM"
+		}
+	},
+	{
+		"code": "2900",
+		"portLocation": {
+			"number": "0423",
+			"name": "LONDON"
+		}
+	},
+	{
+		"code": "2903"
+	},
+	{
+		"code": "2984",
+		"portLocation": {
+			"number": "0459",
+			"name": "BARRIE"
+		}
+	},
+	{
+		"code": "3040"
+	},
+	{
+		"code": "3067",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "3070",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "3081"
+	},
+	{
+		"code": "3090",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3092",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3096",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3098",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3110",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3111",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3118"
+	},
+	{
+		"code": "3136",
+		"portLocation": {
+			"number": "0499",
+			"name": "TORONTO - SUFFERANCE TRUCK TERMINAL (KENNEDY ROAD)"
+		}
+	},
+	{
+		"code": "3145",
+		"portLocation": {
+			"number": "0504",
+			"name": "WINNIPEG - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "3210",
+		"portLocation": {
+			"number": "0604",
+			"name": "REGINA"
+		}
+	},
+	{
+		"code": "3221",
+		"portLocation": {
+			"number": "0605",
+			"name": "SASKATOON"
+		}
+	},
+	{
+		"code": "3266",
+		"portLocation": {
+			"number": "0701",
+			"name": "CALGARY"
+		}
+	},
+	{
+		"code": "3285",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "3314",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "3337",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "3348",
+		"portLocation": {
+			"number": "0801",
+			"name": "CRANBROOK"
+		}
+	},
+	{
+		"code": "3374"
+	},
+	{
+		"code": "3453",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "3485",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "3528"
+	},
+	{
+		"code": "3539",
+		"portLocation": {
+			"number": "0821",
+			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3602"
+	},
+	{
+		"code": "3619",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3659",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3779",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "3849",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "3930",
+		"portLocation": {
+			"number": "0395",
+			"name": "MONTREAL - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "4054"
+	},
+	{
+		"code": "4193",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "4199"
+	},
+	{
+		"code": "4282"
+	},
+	{
+		"code": "4304",
+		"portLocation": {
+			"number": "0495",
+			"name": "TORONTO - METRO OPERATIONS DIVISION"
+		}
+	},
+	{
+		"code": "4531",
+		"portLocation": {
+			"number": "0480",
+			"name": "BRAMPTON"
+		}
+	},
+	{
+		"code": "4534",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "4566",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "4578"
+	},
+	{
+		"code": "4595",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "4596",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "4648",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "4685"
+	},
+	{
+		"code": "4747",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "4817",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "4825",
+		"portLocation": {
+			"number": "0457",
+			"name": "CAMBRIDGE"
+		}
+	},
+	{
+		"code": "4826",
+		"portLocation": {
+			"number": "0459",
+			"name": "BARRIE"
+		}
+	},
+	{
+		"code": "4909",
+		"portLocation": {
+			"number": "0396",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+		}
+	},
+	{
+		"code": "4915",
+		"portLocation": {
+			"number": "0495",
+			"name": "TORONTO - METRO OPERATIONS DIVISION"
+		}
+	},
+	{
+		"code": "4944"
+	},
+	{
+		"code": "5094",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5261",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"stateProvince": "SK",
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0604",
+			"name": "REGINA"
+		}
+	},
+	{
+		"code": "5273",
+		"portLocation": {
+			"number": "0485",
+			"name": "OTTAWA MACDONALD - CARTIER INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5274",
+		"portLocation": {
+			"number": "0701",
+			"name": "CALGARY"
+		}
+	},
+	{
+		"code": "5277",
+		"portLocation": {
+			"number": "0009",
+			"name": "HALIFAX"
+		}
+	},
+	{
+		"code": "5284",
+		"portLocation": {
+			"number": "0504",
+			"name": "WINNIPEG - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5291",
+		"portLocation": {
+			"number": "0323",
+			"name": "VALLEYFIELD"
+		}
+	},
+	{
+		"code": "5301",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5316",
+		"portLocation": {
+			"number": "0399",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (MIRABEL)"
+		}
+	},
+	{
+		"code": "5326",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0495",
+			"name": "TORONTO - METRO OPERATIONS DIVISION"
+		}
+	},
+	{
+		"code": "5353",
+		"portLocation": {
+			"number": "0504",
+			"name": "WINNIPEG - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5361",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"stateProvince": "MB",
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0504",
+			"name": "WINNIPEG - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5365",
+		"portLocation": {
+			"number": "0396",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+		}
+	},
+	{
+		"code": "5366",
+		"portLocation": {
+			"number": "0701",
+			"name": "CALGARY"
+		}
+	},
+	{
+		"code": "5368",
+		"portLocation": {
+			"number": "0701",
+			"name": "CALGARY"
+		}
+	},
+	{
+		"code": "5374",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "5381",
+		"portLocation": {
+			"number": "0396",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+		}
+	},
+	{
+		"code": "5382",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "5406",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5413",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5424",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0495",
+			"name": "TORONTO - METRO OPERATIONS DIVISION"
+		}
+	},
+	{
+		"code": "5425",
+		"portLocation": {
+			"number": "0009",
+			"name": "HALIFAX"
+		}
+	},
+	{
+		"code": "5431",
+		"portLocation": {
+			"number": "0821",
+			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5441",
+		"portLocation": {
+			"number": "0009",
+			"name": "HALIFAX"
+		}
+	},
+	{
+		"code": "5476",
+		"portLocation": {
+			"number": "0457",
+			"name": "CAMBRIDGE"
+		}
+	},
+	{
+		"code": "5477",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5486",
+		"portLocation": {
+			"number": "0396",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+		}
+	},
+	{
+		"code": "5491",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5492",
+		"portLocation": {
+			"number": "0821",
+			"name": "VANCOUVER - INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5510",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0504",
+			"name": "WINNIPEG - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5514",
+		"portLocation": {
+			"number": "0417",
+			"name": "HAMILTON"
+		}
+	},
+	{
+		"code": "5516",
+		"portLocation": {
+			"number": "0495",
+			"name": "TORONTO - METRO OPERATIONS DIVISION"
+		}
+	},
+	{
+		"code": "5518",
+		"portLocation": {
+			"number": "0914",
+			"name": "ST. JOHNS, NEWFOUNDLAND"
+		}
+	},
+	{
+		"code": "5525",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5526",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"stateProvince": "AB",
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0701",
+			"name": "CALGARY"
+		}
+	},
+	{
+		"code": "5540",
+		"portLocation": {
+			"number": "0395",
+			"name": "MONTREAL - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5546",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5551",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "5556",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5557",
+		"portLocation": {
+			"number": "0396",
+			"name": "MONTREAL - INTERNATIONAL AIRPORT (DORVAL)"
+		}
+	},
+	{
+		"code": "5569",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5573",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5581",
+		"portLocation": {
+			"number": "0809",
+			"name": "VANCOUVER - COMMERCIAL OPERATIONS WEST"
+		}
+	},
+	{
+		"code": "5591",
+		"portLocation": {
+			"number": "0441",
+			"name": "SAULT STE. MARIE"
+		}
+	},
+	{
+		"code": "5595",
+		"portLocation": {
+			"number": "0009",
+			"name": "HALIFAX"
+		}
+	},
+	{
+		"code": "5598",
+		"portLocation": {
+			"number": "0496",
+			"name": "TORONTO - INTERPORT SUFFERANCE WAREHOUSE (DIXIE)"
+		}
+	},
+	{
+		"code": "5603",
+		"portLocation": {
+			"number": "0497",
+			"name": "TORONTO - PEARSON INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5604",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "5608",
+		"portLocation": {
+			"number": "0395",
+			"name": "MONTREAL - MAIN LONGROOM"
+		}
+	},
+	{
+		"code": "5625",
+		"portLocation": {
+			"number": "0702",
+			"name": "EDMONTON"
+		}
+	},
+	{
+		"code": "5626",
+		"portLocation": {
+			"number": "0485",
+			"name": "OTTAWA MACDONALD - CARTIER INTERNATIONAL AIRPORT"
+		}
+	},
+	{
+		"code": "5634",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0480",
+			"name": "BRAMPTON"
+		}
+	},
+	{
+		"code": "5714",
+		"portLocation": {
+			"number": "0410",
+			"name": "FORT ERIE"
+		}
+	},
+	{
+		"code": "9216",
+		"portLocation": {
+			"number": "0216",
+			"name": "CLAIR"
+		}
+	},
+	{
+		"code": "9218",
+		"portLocation": {
+			"number": "0218",
+			"name": "ST. LEONARD"
+		}
+	},
+	{
+		"code": "9219",
+		"portLocation": {
+			"number": "0219",
+			"name": "GILLESPIE PORTAGE"
+		}
+	},
+	{
+		"code": "9231",
+		"portLocation": {
+			"number": "0231",
+			"name": "ST. STEPHEN 3RD BRIDGE"
+		}
+	},
+	{
+		"code": "9307",
+		"portLocation": {
+			"number": "0307",
+			"name": "TROUT RIVER"
+		}
+	},
+	{
+		"code": "9324",
+		"portLocation": {
+			"number": "0324",
+			"name": "ROUTE 221: LACOLLE"
+		}
+	},
+	{
+		"code": "9330",
+		"portLocation": {
+			"number": "0330",
+			"name": "DUNDEE"
+		}
+	},
+	{
+		"code": "9331",
+		"portLocation": {
+			"number": "0331",
+			"name": "POHENEGAMOOK"
+		}
+	},
+	{
+		"code": "9332",
+		"portLocation": {
+			"number": "0332",
+			"name": "FRELIGHSBURG"
+		}
+	},
+	{
+		"code": "9333",
+		"portLocation": {
+			"number": "0333",
+			"name": "HEMMINGFORD"
+		}
+	},
+	{
+		"code": "9366",
+		"portLocation": {
+			"number": "0366",
+			"name": "HEREFORD ROAD"
+		}
+	},
+	{
+		"code": "9507",
+		"portLocation": {
+			"number": "0507",
+			"name": "BOISSEVAIN"
+		}
+	},
+	{
+		"code": "9607",
+		"portLocation": {
+			"number": "0607",
+			"name": "REGWAY"
+		}
+	},
+	{
+		"code": "9706",
+		"address": {
+			"addressLine": null,
+			"city": null,
+			"postalCode": null
+		},
+		"portLocation": {
+			"number": "0706",
+			"name": "ADEN"
+		}
+	},
+	{
+		"code": "9815",
+		"portLocation": {
+			"number": "0815",
+			"name": "BOUNDARY BAY"
+		}
+	},
+	{
+		"code": "9822",
+		"portLocation": {
+			"number": "0822",
+			"name": "RYKERTS"
+		}
+	},
+	{
+		"code": "9838",
+		"portLocation": {
+			"number": "0838",
+			"name": "CAMPBELL RIVER"
+		}
+	},
+	{
+		"code": "9842",
+		"portLocation": {
+			"number": "0842",
+			"name": "PACIFIC CUSTOMS BROKERS HIGHWAY SUFFERANCE WAREHOUSE"
+		}
+	},
+	{
+		"code": "9891",
+		"portLocation": {
+			"number": "0891",
+			"name": "PLEASANT CAMP"
+		}
+	},
+	{
+		"code": "9892",
+		"portLocation": {
+			"number": "0892",
+			"name": "BEAVER CREEK"
+		}
+	},
+	{
+		"code": "9893",
+		"portLocation": {
+			"number": "0893",
+			"name": "FRASER"
 		}
 	}
 ]
