@@ -576,6 +576,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
+        this.spinner.hide(); // loader init
       });
   }
 
