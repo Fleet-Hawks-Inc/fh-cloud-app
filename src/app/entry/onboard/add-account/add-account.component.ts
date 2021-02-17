@@ -25,8 +25,11 @@ export class AddAccountComponent implements OnInit {
   EIN = '';
   MC = '';
   SCAC = '';
+  CTPAT = '';
+  CSA = '';
   cargoInsurance = '';
   email = '';
+  userName = '';
   carrierName = '';
   carrierBusinessName = '';
   findingWay = '';
@@ -502,7 +505,6 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
-
     const data = {
       CCC: this.CCC,
       DBAName: this.DBAName,
@@ -512,6 +514,9 @@ export class AddAccountComponent implements OnInit {
       SCAC: this.SCAC,
       cargoInsurance: this.cargoInsurance,
       email: this.email,
+      userName: this.userName,
+      CTPAT: this.CTPAT,
+      CSA: this.CSA,
       carrierName: this.carrierName,
       findingWay: this.findingWay,
       firstName: this.firstName,
@@ -531,6 +536,7 @@ export class AddAccountComponent implements OnInit {
       },
       bank: this.bank
     };
+    
     // create form data instance
     const formData = new FormData();
 
