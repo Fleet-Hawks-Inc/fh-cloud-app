@@ -367,9 +367,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }else {
       await this.updateDriver();
     }
-    console.log('this.abstract', this.abstractDocs)
-    console.log('this.abstractlength', this.abstractDocs.length)
-    console.log('this.currentTab', this.currentTab)
+   
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
       this.abstractValid = true; 
       return;
@@ -712,8 +710,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    console.log('driverdata', this.driverData)
-    console.log('this.abstractDocs', this.abstractDocs);
+   
     this.driverData['currentTab'] = this.currentTab;
 
     for (let i = 0; i < this.driverData.address.length; i++) {
