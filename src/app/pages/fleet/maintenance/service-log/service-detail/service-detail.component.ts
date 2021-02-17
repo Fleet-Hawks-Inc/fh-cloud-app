@@ -120,10 +120,10 @@ export class ServiceDetailComponent implements OnInit {
             name: x,
           }));
         }
-        console.log('photos', this.photos)
-
+        this.spinner.hide(); // loader init
       },
     });
+    
   }
 
  fetchAllVehiclesIDs() {
@@ -144,7 +144,6 @@ export class ServiceDetailComponent implements OnInit {
     this.apiService.getData('issues/get/list')
       .subscribe((result: any) => {
         this.issuesObject = result;
-        console.log('fetchAllIssuesIDs', this.issuesObject)
       });
   }
 

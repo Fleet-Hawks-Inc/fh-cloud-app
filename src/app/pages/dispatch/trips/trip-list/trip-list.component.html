@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <div class="btn-group flex-wrap" style="min-width:190px;">
+                            <div class="btn-group flex-wrap" style="width:100%;">
                                 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle toggleright"
                                     data-toggle="dropdown" id="categorySelect">Search by Category<span class="caret"></span></button>
                                 <div class="dropdown-menu dutystatwd" role="menu">
@@ -87,8 +87,8 @@
                 </form>
             </header>
 
-            <section class="card mt-0 mb-4 pr-0 mr-0">
-                <div class="card-body pr-0">
+            <section class="card mt-0 mb-4">
+                <div class="card-body pl-0 pr-0 pt-3">
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
@@ -134,8 +134,8 @@
                                         <th>Date</th>
                                         <th>Pick-up Location</th>
                                         <th>Drop Location</th>
-                                        <th>Pick-up Time</th>
-                                        <th>Drop Time</th>
+                                        <!-- <th>Pick-up Time</th>
+                                        <th>Drop Time</th> -->
                                         <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Assets</th>
@@ -161,8 +161,8 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ trip.pickupTime }}</td>
-                                        <td>{{ trip.dropTime }}</td>
+                                        <!-- <td>{{ trip.pickupTime }}</td>
+                                        <td>{{ trip.dropTime }}</td> -->
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>

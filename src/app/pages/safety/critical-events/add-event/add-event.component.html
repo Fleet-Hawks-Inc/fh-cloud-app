@@ -10,21 +10,21 @@
       <!-- end: sidebar -->
 
 
-        <section role="main" class="content-body pr-0 pl-0 pt-0">
-            <header class="page-header pr-5">
-               <div class="row pr-1 mr-1" style="padding-top:10px;">
-                  <div class="col-md-4 col-lg-4">
-                     <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Add Critical Event</h4>
-                  </div>
-                  <div class="col-md-8 col-lg-8 text-right pr-1">
-                     <a href="javascript:;" routerLink="/safety/critical-events" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Events List</a>
-                  </div>
-
+      <section role="main" class="content-body pr-0 pl-0 pt-0">
+         <header class="page-header pr-5">
+            <div class="row pr-1 mr-1" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4">
+                  <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Add Critical Event</h4>
                </div>
-               <div class="col-md-8  col-lg-8 text-right pr-4">
+               <div class="col-md-8 col-lg-8 text-right pr-1">
                   <a href="javascript:;" routerLink="/safety/critical-events" class="btn btn-default btn-sm"><i
                         class="fas fa-list"></i> Events List</a>
                </div>
+
+            </div>
+            <div class="col-md-8  col-lg-8 text-right pr-4">
+               <a href="javascript:;" routerLink="/safety/critical-events" class="btn btn-default btn-sm"><i
+                     class="fas fa-list"></i> Events List</a>
             </div>
          </header>
          <div class="add-incident__main">
@@ -169,8 +169,8 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Remarks
                                           &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                        </label>
-                                       <textarea class="form-control" rows="3" placeholder="Enter Remarks" name="remarks"
-                                          [(ngModel)]="event.remarks"></textarea>
+                                       <textarea class="form-control" rows="3" placeholder="Enter Remarks"
+                                          name="remarks" [(ngModel)]="event.remarks"></textarea>
                                     </div>
                                  </div>
                               </div>
