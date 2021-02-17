@@ -14,7 +14,7 @@
         </header>
          <div class="row text-dark">
             <div class="col pr-0 pb-3">
-               <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" (ngSubmit)="onSubmit(driverForm)" >
+               <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm" (ngSubmit)="onSubmit(driverForm)" novalidate>
                   <div class="p-2 pt-4">
                      <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                         <li class="nav-item">
@@ -138,7 +138,8 @@
                                                 <input [(ngModel)]="driverData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter first name">
                                              </div>
                                              <div class="col-lg-4">
-                                               <label class="control-label font-weight-bold text-lg-right pt-2">Middle Name</label>
+                                               <label class="control-label font-weight-bold text-lg-right pt-2">Middle Name&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
                                                <input [(ngModel)]="driverData.middleName" name="middleName" type="text" class="form-control" placeholder="Enter middle name">
                                             </div>
                                              <div class="col-lg-4">
@@ -247,9 +248,11 @@
                                       </div>
                                       <div class="col-lg-10">
                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Abstract History Document<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input class="form-control p-0"
-                                             name="abstractDocs" (change)="selectDocuments('abstract', $event, i)" type="file" multiple
-                                         >
+                                         <input class="form-control p-0" [ngClass]="abstractValid ? 'error' : 'err' "
+                                             name="abstractDocs" (change)="selectDocuments('abstract', $event, i);onChangeHideErrors('abstractDocs')" type="file" multiple>
+                                             <label class="error" *ngIf="abstractValid">
+                                                This Field is required
+                                             </label>
                                       </div>
                                       <div class="col-lg-10 mt-2" *ngIf="absDocs.length > 0">
                                          <div class="vehicle-common-box p-3">
