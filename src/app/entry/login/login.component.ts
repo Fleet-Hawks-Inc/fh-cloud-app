@@ -206,7 +206,6 @@ export class LoginComponent implements OnInit {
     citizenship: '',
     assignedVehicle: '',
     groupID: '',
-    abstractDocs: [],
     driverImage: '',
     gender: 'M',
     DOB: '',

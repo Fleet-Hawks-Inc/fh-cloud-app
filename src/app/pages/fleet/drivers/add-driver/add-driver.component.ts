@@ -176,6 +176,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   carrierYards = [];
   deletedAddress = [];
   ownerOperators: any;
+  abstractValid: boolean = false;
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
               private toastr: ToastrService,
@@ -241,7 +242,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.driverID = this.route.snapshot.params['driverID'];
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
@@ -267,8 +268,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.driverData['confirmPassword'] = this.driverSession.confirmPassword;
       this.driverData['citizenship'] = this.driverSession.citizenship;
       this.driverData['assignedVehicle'] = this.driverSession.assignedVehicle;
-      this.driverData['groupID'] = this.driverSession.groupID;
-      this.driverData['abstractDocs'] = this.driverSession.abstractDocs;
+      this.driverData['groupID'] = this.driverSession.groupID
       this.driverData['driverImage'] = this.driverSession.driverImage;
       this.driverData['gender'] = this.driverSession.gender;
       this.driverData['DOB'] = this.driverSession.DOB;
@@ -331,6 +331,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
+    
     this.fetchYards(); // fetch yards
     this.fetchCycles(); // fetch cycles
     this.fetchVehicles(); // fetch vehicles
@@ -349,6 +350,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
     });
+
+    for (let i = 0; i < this.driverData.documentDetails.length; i++) {
+      const element = this.driverData.documentDetails[i];
+      await this.getStates(element.issuingCountry)
+    }
+    
+
   }
 
   async nextStep() {
@@ -359,7 +367,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }else {
       await this.updateDriver();
     }
-
+    console.log('this.abstract', this.abstractDocs)
+    console.log('this.abstractlength', this.abstractDocs.length)
+    console.log('this.currentTab', this.currentTab)
+    if(this.abstractDocs.length == 0 && this.currentTab == 1) {
+      this.abstractValid = true; 
+      return;
+    }
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
@@ -605,9 +619,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.uploadedDocs[i] = files;
       }
     } else {
+      this.abstractDocs = [];
       this.abstractDocs = files;
     }
-    
+    console.log('this.abstractDocs', this.abstractDocs)
   }
   
   selectPhoto(event) {
@@ -697,10 +712,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    // if (this.driverData.DOB !== '') {
-    //   //date in Y-m-d format 
-    //   this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
-    // }
+    console.log('driverdata', this.driverData)
+    console.log('this.abstractDocs', this.abstractDocs);
     this.driverData['currentTab'] = this.currentTab;
 
     for (let i = 0; i < this.driverData.address.length; i++) {
@@ -797,7 +810,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           citizenship: '',
           assignedVehicle: '',
           groupID: '',
-          abstractDocs: [],
           driverImage: '',
           gender: 'M',
           DOB: '',
