@@ -5937,8 +5937,14 @@ a.close.disabled {
 
 @media (min-width: 1200px) {
   .modal-xl {
-    max-width: 1140px;
+    max-width: 1140px !important;
   }
+
+  .modal-xxl {
+    max-width: 1340px !important;
+  }
+
+
 }
 
 .tooltip {
