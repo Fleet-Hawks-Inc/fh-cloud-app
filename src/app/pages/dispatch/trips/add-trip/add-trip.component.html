@@ -111,7 +111,6 @@
                                         </div>
                                     </div>
 
-
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
@@ -125,21 +124,18 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
-
                                             <div class="col-lg-10 col-md-12">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
                                                     Trip Date
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-
                                                 <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
                                                     placeholder="Select Trip Date" (click)="from.toggle()" ngbDatepicker
                                                     #from="ngbDatepicker" class="form-control" autocomplete="off">
