@@ -37,13 +37,13 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   dummyTrips = [];
   trips = [];
   tempTrips = [];
-  plannedTrips = [];
+  confirmedTrips = [];
   dispatchedTrips = [];
   startedTrips = [];
   enrouteTrips = [];
   cancelledTrips = [];
   deliveredTrips = [];
-  plannedTripsCount = 0;
+  confirmedTripsCount = 0;
   dispatchedTripsCount = 0;
   startedTripsCount = 0;
   enrouteTripsCount = 0;
@@ -52,8 +52,8 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
   allTripsCount = 0;
   statusData = [
     {
-      name: "Planned",
-      value: 'planned'
+      name: "Confirmed",
+      value: 'confirmed'
     },
     {
       name: "Dispatched",
@@ -191,8 +191,8 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
         // this.totalRecords = result.Count;
 
         for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].tripStatus === 'planned') {
-            this.plannedTripsCount = this.plannedTripsCount + 1;
+          if (result.Items[i].tripStatus === 'confirmed') {
+            this.confirmedTripsCount = this.confirmedTripsCount + 1;
 
           } else if (result.Items[i].tripStatus === 'dispatched') {
             this.dispatchedTripsCount = this.dispatchedTripsCount + 1;
@@ -298,6 +298,8 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       next: (res) => {
         this.spinner.hide();
+        this.trips = [];
+        this.initDataTable('all','reload');
         $("#tripStatusModal").modal('hide');
         this.toastr.success('Trip status updated successfully.');
         this.router.navigateByUrl('/dispatch/trips/trip-list');
@@ -318,9 +320,9 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       $("#allTrips-tab").addClass('active');
       this.totalRecords = this.allTripsCount;
 
-    } else if (tabType === 'planned') {
-      $("#planned-tab").addClass('active');
-      this.totalRecords = this.plannedTripsCount;
+    } else if (tabType === 'confirmed') {
+      $("#confirmed-tab").addClass('active');
+      this.totalRecords = this.confirmedTripsCount;
 
     } else if (tabType === 'dispatched') {
       $("#dispatchedTrip-tab").addClass('active');
@@ -368,7 +370,7 @@ export class TripListComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11],"orderable": false},
       ],
       dom: 'lrtip',
       language: {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGrigPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -21,7 +23,7 @@ export class CalendarViewComponent implements OnInit {
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
-  calendarPlugins = [dayGridPlugin];
+  calendarPlugins = [dayGridPlugin, timeGrigPlugin, listPlugin ];
   vehicles = [];
   assets = [];
   drivers = [];
@@ -54,11 +56,12 @@ export class CalendarViewComponent implements OnInit {
   orders = [];
   customersArr = [];
   customersObjects = [];
+  OrderIDs = [];
 
   ngOnInit() {
     // this.fetchAllOrder();
-    this.fetchTrips();
     this.fetchCustomers();
+    this.fetchTrips();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -280,20 +283,22 @@ export class CalendarViewComponent implements OnInit {
     // let tripAssgn = '0';
 
     this.spinner.show();
+    this.OrderIDs = [];
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
         result = result.Items[0];
         delete result.timeCreated;
         delete result.timeModified;
         this.tripData = result;
-        
+        this.OrderIDs = this.tripData['orderId'];
+
         if(this.tripData.tripPlanning.length === 0) { 
           this.toastr.error('Trip plan for selected trip is empty. Please create one to assign');
           this.spinner.hide();
           return false;
         }
 
-        if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'planned') {
+        if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'confirmed') {
           $("#assetModal").modal('show');
           this.spinner.hide();
         } else {
@@ -308,12 +313,10 @@ export class CalendarViewComponent implements OnInit {
 
     const tripResponse = this.apiService.getData('trips');
     const orderResponse = this.apiService.getData('orders');
-    const observables = forkJoin([tripResponse, orderResponse]);
-    observables.subscribe(
-      value => this.orderTripValues(value),
-      err => {}
-    );
-    this.spinner.hide();
+    const observables = forkJoin([tripResponse, orderResponse]).subscribe(value => {
+      this.orderTripValues(value);
+      this.spinner.hide();
+    });
   }
 
   throwErrors() {
@@ -378,6 +381,7 @@ export class CalendarViewComponent implements OnInit {
         this.spinner.hide();
         this.response = res;
         $('#assetModal').modal('hide');
+        this.updateOrderStatus();
         this.toastr.success('Assignment done successfully');
       },
     });
@@ -398,8 +402,8 @@ export class CalendarViewComponent implements OnInit {
                 if (obj.orderID !== element1) {
                   let cusObj = {
                     customerId : obj.customerID,
-                    name: '',
-                    icon: ''
+                    name: 'NA',
+                    icon: 'NA'
                   }
                   element.customersArr.push(cusObj);
                 }
@@ -426,6 +430,7 @@ export class CalendarViewComponent implements OnInit {
           deliveryLocation: '',
           tripID: element.tripID,
           tripNo: element.tripNo,
+          tripStatus: element.tripStatus,
           date: tripDate,
           time: '-',
           tripPlan: element.tripPlanning,
@@ -486,5 +491,22 @@ export class CalendarViewComponent implements OnInit {
           }
         }
     });
+  }
+
+  updateOrderStatus() {
+    for (let i = 0; i < this.OrderIDs.length; i++) {
+      const orderID = this.OrderIDs[i];
+
+      this.apiService.getData('orders/' + orderID)
+        .subscribe((result: any) => {
+          let orderData = result.Items[0];
+          console.log(orderData);
+          if (orderData.orderStatus == 'confirmed') {
+            this.apiService.getData('orders/update/orderStatus/' + orderID + '/dispatched')
+              .subscribe((result: any) => {
+              });
+          }
+        });
+    }
   }
 }

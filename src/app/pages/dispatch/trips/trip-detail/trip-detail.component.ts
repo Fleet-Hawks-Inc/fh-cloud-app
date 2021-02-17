@@ -65,6 +65,7 @@ export class TripDetailComponent implements OnInit {
   fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
+    let locations = [];
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
@@ -72,7 +73,6 @@ export class TripDetailComponent implements OnInit {
         let tripPlanning = result.tripPlanning;
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-
           let obj = {
             carrierID: element.carrierID,
             carrierName: "",
@@ -81,19 +81,19 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverUsername: element.driverUsername,
-            location: {
-              countryID: element.location.countryID,
-              cityID: element.location.cityID,
-              cityName: '',
-              countryName: '',
-              locationName: '',
-              stateID: element.location.stateID,
-              stateName: '',
-              zipcode: element.location.zipcode,
-              address1: element.location.address1,
-              address2: element.location.address2,
-            },
-            locationName: "",
+            // location: {
+            //   countryID: element.location.countryID,
+            //   cityID: element.location.cityID,
+            //   cityName: '',
+            //   countryName: '',
+            //   locationName: '',
+            //   stateID: element.location.stateID,
+            //   stateName: '',
+            //   zipcode: element.location.zipcode,
+            //   address1: element.location.address1,
+            //   address2: element.location.address2,
+            // },
+            locationName: element.location,
             mileType: element.mileType,
             miles: element.miles,
             name: element.name,
@@ -109,6 +109,10 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime
           };
 
+          if(element.location != undefined && element.location != '') {
+            locations.push(element.location)
+          }
+
           this.trips.push(obj);
           let assetName = '';
 
@@ -119,11 +123,8 @@ export class TripDetailComponent implements OnInit {
 
             this.apiService.getData('assets/' + assetID)
               .subscribe((result: any) => {
-                // console.log('========here');
                 if (result.Items[0].assetIdentification != undefined) {
                   assetName = result.Items[0].assetIdentification;
-                  // console.log('assetName', assetName)
-
                   let assObj = {
                     id: assetID,
                     name: assetName
@@ -135,16 +136,32 @@ export class TripDetailComponent implements OnInit {
                 }
               })
 
-            // console.log('========now here');
             this.trips[i].trailer = assetArr;
           }
-          this.fetchVehicleDetail(element.vehicleID, i);
-          this.fetchDriverDetail(element.driverUsername, 'driver', i);
-          this.fetchDriverDetail(element.codriverUsername, 'codriver', i);
-          this.fetchCountryName(element.location.countryID, i);
-          this.fetchStateDetail(element.location.stateID, i);
-          this.fetchCityDetail(element.location.cityID, i);
-          this.fetchCarrierName(element.carrierID, i)
+
+          if(element.vehicleID != '' && element.vehicleID != undefined) {
+            this.fetchVehicleDetail(element.vehicleID, i);
+          }
+          
+          if(element.driverUsername != '' && element.driverUsername != undefined) {
+            this.fetchDriverDetail(element.driverUsername, 'driver', i);
+          }
+          
+          if(element.codriverUsername != '' && element.codriverUsername != undefined) {
+            this.fetchDriverDetail(element.codriverUsername, 'codriver', i);
+          }
+          
+          if(element.carrierID != '' && element.carrierID != undefined) {
+            this.fetchCarrierName(element.carrierID, i)
+          }
+          
+          // this.fetchCountryName(element.location.countryID, i);
+          // this.fetchStateDetail(element.location.stateID, i);
+          // this.fetchCityDetail(element.location.cityID, i);
+        }
+
+        if(locations.length > 0) {
+          this.getCoords(locations);
         }
         this.spinner.hide();
       })
@@ -157,8 +174,7 @@ export class TripDetailComponent implements OnInit {
   async getCoords(data) {
     this.spinner.show();
     await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item.locationName);
-      console.log('result', result);
+      let result = await this.hereMap.geoCode(item);
       this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
     }));
     this.hereMap.calculateRoute(this.newCoords);
@@ -177,7 +193,6 @@ export class TripDetailComponent implements OnInit {
   fetchVehicleDetail(vehicleID, index) {
     this.apiService.getData('vehicles/' + vehicleID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
         if (result.Items[0].vehicleIdentification != undefined) {
           this.trips[index].vehicleName = result.Items[0].vehicleIdentification
         }
@@ -187,7 +202,6 @@ export class TripDetailComponent implements OnInit {
   fetchDriverDetail(driverUserName, type, index) {
     this.apiService.getData('drivers/userName/' + driverUserName)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
         if (result.Items[0].firstName != undefined) {
           if (type === 'driver') {
             this.trips[index].driverName = result.Items[0].firstName + ' ' + result.Items[0].lastName;
@@ -201,7 +215,6 @@ export class TripDetailComponent implements OnInit {
   fetchCountryName(countryID, index) {
     this.apiService.getData('countries/' + countryID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
         if (result.Items[0].countryName != undefined) {
           this.trips[index].location.countryName = result.Items[0].countryName;
         }
@@ -211,13 +224,8 @@ export class TripDetailComponent implements OnInit {
   fetchCarrierName(carrierID, index) {
     this.apiService.getData('carriers/' + carrierID)
       .subscribe((result: any) => {
-        // console.log('carrier');
-        // console.log(result.Items[0]);
-        if (result.Items[0].businessDetail.carrierName != undefined) {
-          this.trips[index].carrierName = result.Items[0].businessDetail.carrierName;
-
-          console.log('this.trips');
-          console.log(this.trips);
+        if (result.Items[0].carrierName != undefined) {
+          this.trips[index].carrierName = result.Items[0].carrierName;
         }
       })
   }
@@ -225,7 +233,6 @@ export class TripDetailComponent implements OnInit {
   fetchStateDetail(stateID, index) {
     this.apiService.getData('states/' + stateID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
         if (result.Items[0].stateName != undefined) {
           this.trips[index].location.stateName = result.Items[0].stateName;
         }
@@ -235,7 +242,6 @@ export class TripDetailComponent implements OnInit {
   fetchCityDetail(cityID, index) {
     this.apiService.getData('cities/' + cityID)
       .subscribe((result: any) => {
-        // console.log(result.Items[0]);
         if (result.Items[0].cityName != undefined) {
           this.trips[index].location.cityName = result.Items[0].cityName;
           this.trips[index].locationName = this.trips[index].location.address1 + ', ' + this.trips[index].location.address2 + ', ' + this.trips[index].location.zipcode + ', ' + this.trips[index].location.cityName + ', ' + this.trips[index].location.stateName + ', ' + this.trips[index].location.countryName;
@@ -380,10 +386,7 @@ export class TripDetailComponent implements OnInit {
 
   selectDocuments(event) {
     this.selectedFiles = event.target.files;
-    console.log(this.selectedFiles)
     for (let i = 0; i < this.selectedFiles.item.length; i++) {
-      console.log('this.selectedFiles[i]')
-      console.log(this.selectedFiles[i])
       const randomFileGenerate = this.selectedFiles[i].name.split('.');
       const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
@@ -391,5 +394,4 @@ export class TripDetailComponent implements OnInit {
     }
     this.uploadFiles();
   }
-
 }
