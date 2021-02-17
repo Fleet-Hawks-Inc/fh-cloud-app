@@ -710,9 +710,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.register();
     this.spinner.show();
     this.hideErrors();
-   
     this.driverData['currentTab'] = this.currentTab;
-
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
