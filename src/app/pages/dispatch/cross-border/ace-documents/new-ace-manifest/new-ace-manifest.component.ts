@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { BooleanNullable } from 'aws-sdk/clients/glue';
 import {Auth} from 'aws-amplify';
+import { ListService } from '../../../../../services';
 declare var $: any;
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -102,8 +103,10 @@ export class NewAceManifestComponent implements OnInit {
   vehicles = [];
   assets = [];
   fetchedDrivers = [];
-  shippers = [];
-  consignees = [];
+  mainDriver = '';
+  coDrivers = [];
+  shippers: any = [];
+  consignees: any = [];
   brokers = [];
   inbondTypesList: any = [];
   foreignPortsList: any =[];
@@ -116,6 +119,7 @@ export class NewAceManifestComponent implements OnInit {
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
   currentUser:any = '';
+  getcurrentDate: any;
   truck = {
     truckID: '',
     sealNumbers: [{sealNumber:''},{sealNumber: ''},{sealNumber: ''},{sealNumber: ''}]
@@ -127,7 +131,7 @@ export class NewAceManifestComponent implements OnInit {
     }];
   addTrailerSealBtn = true;    
   drivers: any  = [];
-  estimatedArrivalDate: string;
+  estimatedArrivalDate: any ='';
   estimatedArrivalTime: string; 
   errors = {};
   form;
@@ -155,6 +159,7 @@ export class NewAceManifestComponent implements OnInit {
   timeCreated = '';
   passengers = [];
   passengerDocStates = [];
+  addedPassengers = [];
   shipments = [
     {
       type: '',
@@ -228,18 +233,21 @@ address:boolean = false;
     } else {
       this.title = 'Add ACE e-Manifest';
       this.modalTitle = 'Add';
+
     }
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
     this.fetchCountries();
-    this.fetchShippers();
-    this.fetchConsignees();
+    this.listService.fetchShippers();
+    this.listService.fetchReceivers();
     this.fetchBrokers();
     this.getStates();
     this.getUSStates();
     this.fetchCarrier();
     this.getCurrentuser();
+    this.shippers = this.listService.shipperList;
+    this.consignees = this.listService.receiverList;
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -290,6 +298,12 @@ getUSStates(){
   .subscribe((result: any) => {
     this.addressStates = result.Items;
   });
+}
+onChangeHideErrors(fieldname = '') {
+  $('[name="' + fieldname + '"]')
+    .removeClass('error')
+    .next()
+    .remove('label');
 }
 getAddressCities() { 
   this.apiService.getData('cities/state/' + this.usAddress.state)
@@ -355,17 +369,17 @@ getThirdPartyStates(s,p){
     .subscribe((result: any) => {
       this.carriers = result.Items;
     });    
-  }v
-  fetchShippers(){
-  this.apiService.getData('shippers').subscribe((result:any)=> {
-    this.shippers = result.Items;
-  });
   }
-  fetchConsignees(){
-    this.apiService.getData('receivers').subscribe((result:any)=> {
-      this.consignees = result.Items;
-    });
-    }
+  // fetchShippers(){
+  // this.apiService.getData('shippers').subscribe((result:any)=> {
+  //   this.shippers = result.Items;
+  // });
+  // }
+  // fetchConsignees(){
+  //   this.apiService.getData('receivers').subscribe((result:any)=> {
+  //     this.consignees = result.Items;
+  //   });
+  //   }
     fetchBrokers(){
       this.apiService.getData('brokers').subscribe((result:any)=> {
         this.brokers = result.Items;
@@ -458,10 +472,12 @@ deleteTrailer(i: number) {
     this.shipments.splice(i, 1);
   }  
   constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService,
-    private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location,
+    private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location, private listService: ListService,
     config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
     config.seconds = true;
     config.spinners = true;
+    const date = new Date();
+    this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
   }
 
   
@@ -554,7 +570,9 @@ deleteTrailer(i: number) {
  deleteThirdParty(i: number, s: number) {
   this.shipments[s].thirdParties.splice(i, 1);
 }
-
+savePassengers(){
+  this.addedPassengers = this.passengers;
+}
   addACEManifest() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -594,12 +612,14 @@ deleteTrailer(i: number) {
       estimatedArrivalTime: this.estimatedArrivalTime,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.drivers,
+      mainDriver: this.mainDriver,
+      coDrivers: this.coDrivers,
       usAddress: this.usAddress,
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: 'Draft'
-    };  
+    }; 
+    console.log('data',data);
     this.apiService.postData('ACEeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {

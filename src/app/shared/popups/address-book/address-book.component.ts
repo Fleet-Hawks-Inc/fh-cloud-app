@@ -10,7 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
-
+import { ListService } from '../../../services';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -376,6 +376,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             private toastr: ToastrService,
             private modalService: NgbModal,
             private HereMap: HereMapService,
+            private listService: ListService,
             )
   { }
 
@@ -1032,6 +1033,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
+          this.listService.fetchVendors();
           this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
@@ -1313,16 +1315,17 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addShipperModal').modal('hide');
+          this.listService.fetchShippers();
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
           this.activeDiv = 'shipperTable';
           this.rerender();
           this.toastr.success('Shipper Added Successfully');
+         
         }
       });
   }
-
   async updateShipper() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -1454,6 +1457,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addConsigneeModal').modal('hide');
+          this.listService.fetchReceivers();
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
