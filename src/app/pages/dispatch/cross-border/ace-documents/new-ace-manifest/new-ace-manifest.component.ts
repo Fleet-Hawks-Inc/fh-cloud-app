@@ -13,86 +13,12 @@ import { BooleanNullable } from 'aws-sdk/clients/glue';
 import {Auth} from 'aws-amplify';
 import { ListService } from '../../../../../services';
 declare var $: any;
-/**
- * This Service handles how the date is represented in scripts i.e. ngModel.
- */
-@Injectable()
-export class CustomAdapter extends NgbDateAdapter<string> {
 
-  readonly DELIMITER = '-';
-
-  fromModel(value: string | null): NgbDateStruct | null {
-    if (value) {
-      const date = value.split(this.DELIMITER);
-      return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : null;
-  }
-}
-
-/**
- * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
- */
-@Injectable()
-export class CustomDateParserFormatter extends NgbDateParserFormatter {
-
-  readonly DELIMITER = '-';
-
-  parse(value: string): NgbDateStruct | null {
-    if (value) {
-      const date = value.split(this.DELIMITER);
-      return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
-  }
-}
-const pad = (i: number): string => i < 10 ? `0${i}` : `${i}`;
-/**
- * Example of a String Time adapter
- */
-@Injectable()
-export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
-
-  fromModel(value: string | null): NgbTimeStruct | null {
-    if (!value) {
-      return null;
-    }
-    const split = value.split(':');
-    return {
-      hour: parseInt(split[0], 10),
-      minute: parseInt(split[1], 10),
-      second: parseInt(split[2], 10)
-    };
-  }
-
-  toModel(time: NgbTimeStruct | null): string | null {
-    return time != null ? `${pad(time.hour)}:${pad(time.minute)}:${pad(time.second)}` : null;
-  }
-}
 @Component({
   selector: 'app-new-ace-manifest',
   templateUrl: './new-ace-manifest.component.html',
   styleUrls: ['./new-ace-manifest.component.css'],
   providers: [
-    { provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter },
-    { provide: NgbDateAdapter, useClass: CustomAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
   ]
 })
 export class NewAceManifestComponent implements OnInit {
@@ -158,7 +84,7 @@ export class NewAceManifestComponent implements OnInit {
   addTrailerBtn = true;  
   timeCreated = '';
   passengers = [];
-  passengerDocStates = [];
+  passengerDocStates:any = [];
   addedPassengers = [];
   shipments = [
     {
@@ -227,14 +153,14 @@ address:boolean = false;
     if (this.entryID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
-      this.fetchACEEntry();
-      this.getDocStates();
-      this.getThirdPartyStatesCities(); // for edit purpose
+      this.fetchACEEntry();      
     } else {
       this.title = 'Add ACE e-Manifest';
       this.modalTitle = 'Add';
 
     }
+    this.listService.fetchStates();
+    this.listService.fetchCities();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -248,6 +174,9 @@ address:boolean = false;
     this.getCurrentuser();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
+    this.thirdPartyStates = this.listService.stateList;
+    this.thirdPartyCities = this.listService.cityList;
+    this.passengerDocStates = this.listService.stateList;
     this.httpClient.get('assets/USports.json').subscribe(data => {
       this.USports = data;
     });
@@ -305,6 +234,14 @@ onChangeHideErrors(fieldname = '') {
     .next()
     .remove('label');
 }
+resetThirdPartyState(s,p){
+  this.shipments[s].thirdParties[p].address.stateProvince = '';
+  $('#thirdPartyStateSelect').val('');
+}
+resetThirdPartyCity(s,p){
+  this.shipments[s].thirdParties[p].address.city = '';
+  $('#thirdPartyCitySelect').val('');
+}
 getAddressCities() { 
   this.apiService.getData('cities/state/' + this.usAddress.state)
     .subscribe((result: any) => {
@@ -335,18 +272,16 @@ getThirdPartyStates(s,p){
       this.thirdPartyCities = result.Items;
     });
     }
-  getStatesDoc(i, j) { //document issuing states
-    const countryID = this.passengers[i].travelDocuments[j].country;
-    this.apiService.getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.passengerDocStates = result.Items;
-      });
-  }
-  getDocStates(){
-    this.apiService.getData('states')
-    .subscribe((result: any) => {
-      this.passengerDocStates = result.Items;
-    });
+  // getStatesDoc(i, j) { //document issuing states
+  //   const countryID = this.passengers[i].travelDocuments[j].country;
+  //   this.apiService.getData('states/country/' + countryID)
+  //     .subscribe((result: any) => {
+  //       this.passengerDocStates = result.Items;
+  //     });
+  // }
+  resetpassengerDocState(i,j){
+    this.passengers[i].travelDocuments[j].stateProvince = '';
+    $('#passengerDocStateSelect').val('');
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
@@ -603,7 +538,8 @@ savePassengers(){
         this.address = true;
       }
     }
-    if(this.shipments.length > 0 || this.address){  
+    if(this.shipments.length > 0 || this.address){      
+      this.coDrivers.unshift(this.mainDriver);
     const data = {
       SCAC: this.SCAC,
       tripNumber: this.tripNumber,
@@ -612,8 +548,9 @@ savePassengers(){
       estimatedArrivalTime: this.estimatedArrivalTime,
       truck: this.truck,
       trailers: this.trailers,
-      mainDriver: this.mainDriver,
-      coDrivers: this.coDrivers,
+      // mainDriver: this.mainDriver,
+      // coDrivers: this.coDrivers,
+      drivers: this.coDrivers,
       usAddress: this.usAddress,
       passengers: this.passengers,
       shipments: this.shipments, 
@@ -686,7 +623,8 @@ savePassengers(){
           this.estimatedArrivalDate = result.estimatedArrivalDate;
           this.estimatedArrivalTime = result.estimatedArrivalTime;
           this.truck = result.truck;
-          this.drivers = result.drivers;
+          this.mainDriver = result.drivers[0];
+          this.coDrivers =  result.drivers.slice(1);
           this.trailers = result.trailers;
           this.passengers = result.passengers;
           this.shipments = result.shipments;
@@ -729,7 +667,8 @@ savePassengers(){
         this.address = true;
       }
     }
-    if(this.shipments.length > 0 || this.address){  
+    if(this.shipments.length > 0 || this.address){ 
+      this.coDrivers.unshift(this.mainDriver); 
     const data = {
       entryID: this.entryID,
       timeCreated: this.timeCreated,
@@ -741,7 +680,7 @@ savePassengers(){
       estimatedArrivalTime: this.estimatedArrivalTime,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.drivers,
+      drivers: this.coDrivers,    
       passengers: this.passengers,
       shipments: this.shipments, 
       currentStatus: this.currentStatus,

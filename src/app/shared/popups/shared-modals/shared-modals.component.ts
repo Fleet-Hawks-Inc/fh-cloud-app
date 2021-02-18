@@ -237,6 +237,7 @@ taskData = {
           this.hasSuccess = true;
           $('#addCityModal').modal('hide');
           this.toastr.success('City Added Successfully.');
+          this.listService.fetchCities();
         }
       });
   }

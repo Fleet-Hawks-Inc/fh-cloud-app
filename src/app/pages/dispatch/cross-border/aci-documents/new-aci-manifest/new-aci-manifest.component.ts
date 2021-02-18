@@ -9,89 +9,14 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { ListService } from '../../../../../services';
 
 declare var $: any;
-/**
- * This Service handles how the date is represented in scripts i.e. ngModel.
- */
-@Injectable()
-export class CustomAdapter extends NgbDateAdapter<string> {
-
-  readonly DELIMITER = '-';
-
-  fromModel(value: string | null): NgbDateStruct | null {
-    if (value) {
-      const date = value.split(this.DELIMITER);
-      return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  toModel(date: NgbDateStruct | null): string | null {
-    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : null;
-  }
-}
-
-/**
- * This Service handles how the date is rendered and parsed from keyboard i.e. in the bound input field.
- */
-@Injectable()
-export class CustomDateParserFormatter extends NgbDateParserFormatter {
-
-  readonly DELIMITER = '-';
-
-  parse(value: string): NgbDateStruct | null {
-    if (value) {
-      const date = value.split(this.DELIMITER);
-      return {
-        day: parseInt(date[0], 10),
-        month: parseInt(date[1], 10),
-        year: parseInt(date[2], 10)
-      };
-    }
-    return null;
-  }
-
-  format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
-  }
-}
-const pad = (i: number): string => i < 10 ? `0${i}` : `${i}`;
-/**
- * Example of a String Time adapter
- */
-@Injectable()
-export class NgbTimeStringAdapter extends NgbTimeAdapter<string> {
-
-  fromModel(value: string | null): NgbTimeStruct | null {
-    if (!value) {
-      return null;
-    }
-    const split = value.split(':');
-    return {
-      hour: parseInt(split[0], 10),
-      minute: parseInt(split[1], 10),
-      second: parseInt(split[2], 10)
-    };
-  }
-
-  toModel(time: NgbTimeStruct | null): string | null {
-    return time != null ? `${pad(time.hour)}:${pad(time.minute)}:${pad(time.second)}` : null;
-  }
-}
 @Component({
   selector: 'app-new-aci-manifest',
   templateUrl: './new-aci-manifest.component.html',
   styleUrls: ['./new-aci-manifest.component.css'],
-  providers: [
-    { provide: NgbTimeAdapter, useClass: NgbTimeStringAdapter },
-    { provide: NgbDateAdapter, useClass: CustomAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
-  ]
+  providers: []
 })
 export class NewAciManifestComponent implements OnInit {
   public entryID;
@@ -117,8 +42,10 @@ export class NewAciManifestComponent implements OnInit {
   acceptanceCities : any = [];
   assets: any = [];
   drivers: any = [];
-  shippers = [];
-  consignees = [];
+  mainDriver = '';
+  coDrivers = [];
+  shippers:any = [];
+  consignees: any = [];
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
   cityList: any = [];
@@ -156,9 +83,10 @@ export class NewAciManifestComponent implements OnInit {
       cargoExemptions: []
     }];
   passengers = [];
+  addedPassengers = [];
   containers = [];
-
-  passengerDocStates = [];
+ addedContainers = [];
+  passengerDocStates: any = [];
   shipments = [
     {
       shipmentType: '',
@@ -215,7 +143,7 @@ export class NewAciManifestComponent implements OnInit {
   shipmentTypeList: any = [];
   CCCShipment: string;
   cargoControlNumberInput: string;
-  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService,
+  constructor(private httpClient: HttpClient, private router: Router, private route: ActivatedRoute, private toastr: ToastrService, private listService: ListService,
     private apiService: ApiService, private ngbCalendar: NgbCalendar, private location: Location,
     config: NgbTimepickerConfig, private dateAdapter: NgbDateAdapter<string>) {
     config.seconds = true;
@@ -228,7 +156,7 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Edit ACI e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACIEntry();
-      this.getDocStates();
+      // this.getDocStates();
       this.fetchCities();
       this.getNotifyPartyStatesCities();
       this.getDeliveryDestinationStatesCities();
@@ -236,8 +164,11 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Add ACI e-Manifest';
       this.modalTitle = 'Add';
     }
-    this.fetchShippers();
-    this.fetchConsignees();
+    this.listService.fetchShippers();
+    this.listService.fetchReceivers();
+    this.shippers = this.listService.shipperList;
+    this.consignees = this.listService.receiverList;
+    this.passengerDocStates = this.listService.stateList;
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -295,6 +226,12 @@ export class NewAciManifestComponent implements OnInit {
       this.carriers = result.Items;
     });    
   }
+  savePassengers(){
+    this.addedPassengers = this.passengers;
+  }
+  saveContainers(){
+    this.addedContainers = this.containers;
+  }
   getLoadingCities(s) {
     let stateID = this.shipments[s].cityOfLoading.stateProvince;
     this.apiService.getData('cities/state/'+ stateID)
@@ -309,12 +246,12 @@ export class NewAciManifestComponent implements OnInit {
         this.acceptanceCities = result.Items;
       });
   }
-  getDocStates(){
-    this.apiService.getData('states')
-    .subscribe((result: any) => {
-      this.passengerDocStates = result.Items;
-    });
-  }
+  // getDocStates(){
+  //   this.apiService.getData('states')
+  //   .subscribe((result: any) => {
+  //     this.passengerDocStates = result.Items;
+  //   });
+  // }
   fetchCities() {
     this.apiService.getData('cities')
       .subscribe((result: any) => {
@@ -428,6 +365,10 @@ export class NewAciManifestComponent implements OnInit {
   }
   deletePassenger(i: number) {
     this.passengers.splice(i, 1);
+  }
+  resetpassengerDocState(i,j){
+    this.passengers[i].travelDocuments[j].stateProvince = '';
+    $('#passengerDocStateSelect').val('');
   }
   addDocument(i) {
     if(this.passengers[i].travelDocuments.length <= 2){
@@ -610,6 +551,7 @@ export class NewAciManifestComponent implements OnInit {
   }
 
   addACIManifest() {
+    this.coDrivers.unshift(this.mainDriver);
     const data = {
       CCC: this.CCC,
       tripNumber: this.tripNumber,
@@ -620,12 +562,13 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
        trailers: this.trailers,
-       drivers: this.driverArray,
+       drivers: this.coDrivers,
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
        currentStatus: 'Draft'
     };
+    console.log('data',data);return;
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -691,7 +634,8 @@ export class NewAciManifestComponent implements OnInit {
           this.estimatedArrivalTime = result.estimatedArrivalTime,
           this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
           this.truck = result.truck,
-          this.driverArray = result.drivers,
+          this.mainDriver = result.drivers[0];
+          this.coDrivers =  result.drivers.slice(1);
           this.trailers = result.trailers,
           this.containers = result.containers,
           this.passengers = result.passengers,
@@ -704,6 +648,7 @@ export class NewAciManifestComponent implements OnInit {
       });
   }
   updateACIManifest()  {
+    this.coDrivers.unshift(this.mainDriver); 
     const data = {
       entryID: this.entryID,
       sendId: this.sendId,
@@ -716,7 +661,7 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
        trailers: this.trailers,
-       drivers: this.driverArray,
+       drivers: this.coDrivers,
        passengers: this.passengers,
        containers: this.containers,
        shipments: this.shipments,
