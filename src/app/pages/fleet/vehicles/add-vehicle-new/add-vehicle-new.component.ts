@@ -2139,4 +2139,16 @@ vehicles= [];
       this.localPhotos.splice(index, 1);
       this.uploadedPhotos.splice(index, 1);
     }
+
+    driverChange(driverType){
+      if(driverType == 'main' && this.driverID != '' && this.driverID == this.teamDriverID){
+        alert('Both drivers cant be same.');
+        this.driverID = '';
+        $('#main_driver').val('');
+      }else if(driverType == 'team' && this.teamDriverID != '' && this.driverID == this.teamDriverID){
+        alert('Both drivers cant be same.');
+        this.teamDriverID = '';
+        $('#team_driver').val('');
+      }
+    }
 }
