@@ -26,7 +26,7 @@ export class ListService {
 
   stateDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   stateList = this.stateDataSource.asObservable();
-
+  
   cityDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   cityList = this.cityDataSource.asObservable();
 
@@ -88,6 +88,7 @@ fetchReceivers() {
         this.stateDataSource.next(result.Items);
       });
   }
+
   fetchCities() {
     this.apiService
       .getData(`cities`)
@@ -95,6 +96,7 @@ fetchReceivers() {
         this.cityDataSource.next(result.Items);
       });
   }
+
   fetchOwnerOperators() {
     this.apiService
       .getData(`ownerOperators`)
