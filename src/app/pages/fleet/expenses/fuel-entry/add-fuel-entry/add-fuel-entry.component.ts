@@ -11,6 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as _ from 'lodash';
+import { ListService } from '../../../../../services';
 
 declare var jquery: any;
 declare var $: any;
@@ -69,10 +70,10 @@ export class AddFuelEntryComponent implements OnInit {
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
   carrierID;
-  countries = [];
-  states = [];
-  cities = [];
-  vendors = [];
+  countries: any = [];
+  states: any = [];
+  cities: any = [];
+  vendors: any = [];
   vehicles = [];
   assets = [];
   drivers = [];
@@ -105,7 +106,7 @@ export class AddFuelEntryComponent implements OnInit {
     private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
     private location: Location,
     private awsUS: AwsUploadService, private toaster: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
   }
   get today() {
@@ -114,11 +115,14 @@ export class AddFuelEntryComponent implements OnInit {
 
   ngOnInit() {
     this.fetchVehicles();
-    this.fetchVendors();
     this.fetchTrips();
-    this.fetchCountries();
     this.fetchAssets();
     this.fetchDrivers();
+    this.listService.fetchVendors();
+    this.listService.fetchCountries();
+    this.listService.fetchStates();
+    this.listService.fetchCities();
+
     this.entryID = this.route.snapshot.params[`entryID`];
     if (this.entryID) {
       this.title = 'Edit Fuel Entry';
@@ -129,6 +133,11 @@ export class AddFuelEntryComponent implements OnInit {
     $(document).ready(() => {
       this.fuelForm = $('#fuelForm').validate();
     });
+
+    this.vendors = this.listService.vendorList;
+    this.states = this.listService.stateList;
+    this.cities = this.listService.cityList;
+    this.countries = this.listService.countryList;
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -137,18 +146,6 @@ export class AddFuelEntryComponent implements OnInit {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
-      });
-  }
-  getStates() {
-    this.apiService.getData('states/country/' + this.fuelData.countryID)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
-  getCities() {
-    this.apiService.getData('cities/state/' + this.fuelData.stateID)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
       });
   }
   fetchVehicles() {
@@ -188,13 +185,6 @@ export class AddFuelEntryComponent implements OnInit {
         result = result.Items[0];
         this.fuelData.countryID = result.countryID;
       });
-
-    setTimeout(() => {
-      this.getStates();
-    }, 2000);
-    setTimeout(() => {
-      this.getCities();
-    }, 2000);
   }
 
 
