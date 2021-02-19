@@ -459,6 +459,7 @@ vehicles= [];
    this.manufacturers = this.listService.manufacturerList;
    this.countries = this.listService.countryList;
    this.models = this.listService.modelList;
+   this.countries = this.listService.countryList;
    this.states = this.listService.stateList;
    this.ownerOperators = this.listService.ownerOperatorList;
    this.servicePrograms = this.listService.serviceProgramList;

@@ -103,8 +103,8 @@ export class ListService {
       });
   }
 
-  async fetchVehicles() {
-    this.apiService.getData(`vehicles`).subscribe(async (result: any) => {
+  fetchVehicles() {
+    this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);
     });
   }

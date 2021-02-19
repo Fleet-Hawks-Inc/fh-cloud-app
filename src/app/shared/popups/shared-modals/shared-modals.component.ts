@@ -21,6 +21,7 @@ export class SharedModalsComponent implements OnInit {
   states: any = [];
   cities: any = [];
   manufacturers: any = [];
+  models: any = [];
   assetManufacturers: any = [];
   assetModels: any = [];
   form:any;
@@ -271,6 +272,8 @@ activeTab = 1;
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
+    // this.listService.fetchCountries();
+    // this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
 
@@ -288,6 +291,9 @@ activeTab = 1;
     });
 
     this.manufacturers = this.listService.manufacturerList;
+    this.models = this.listService.modelList;
+    // this.countries = this.listService.countryList;
+    // this.states = this.listService.stateList;
   }
   /**
    * fetch vehicle manufacturers
@@ -307,6 +313,7 @@ activeTab = 1;
    }
     }); 
  }
+ 
  fetchInspectionForms() {
   this.apiService
     .getData('inspectionForms/type/Vehicle')
@@ -847,7 +854,6 @@ fetchDrivers(){
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
       },
-      activeTab: this.activeTab
     };
     
     // create form data instance
@@ -1051,6 +1057,7 @@ fetchDrivers(){
           }
           localStorage.setItem('vehicle', JSON.stringify(vehicle));
           this.toastr.success('Vehicle Added Successfully');
+          $('#addVehicleModelDriver').modal('hide');
         },
       })});
     } catch (error) {
@@ -1078,6 +1085,15 @@ fetchDrivers(){
         reader.readAsDataURL(files[i]);
       }
     
+  }
+
+  resetModel(){
+    this.modelID = '';
+    $('#vehicleSelect').val('');
+  }
+  resetState(){
+    this.stateID = '';
+    $('#stateSelect').val('');
   }
 
 }
