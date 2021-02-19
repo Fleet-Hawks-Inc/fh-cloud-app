@@ -1,11 +1,7 @@
 <section class="body">
-
    <!-- start: header -->
    <app-header></app-header>
    <!-- end: header -->
-
-
-
    <div class="inner-wrapper">
       <!-- start: sidebar -->
       <app-sidebar></app-sidebar>
@@ -78,7 +74,8 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <input class="form-control" type="date" placeholder="mm/dd/yyyy"
-                                       name="estimatedArrivalDate" [(ngModel)]="estimatedArrivalDate" />
+                                       name="estimatedArrivalDate" [(ngModel)]="estimatedArrivalDate" ngbDatepicker #d6="ngbDatepicker"
+                                       [minDate]="getcurrentDate" (click)="d6.toggle()"/>
                                  </div>
                               </div>
                               <div class="row">
@@ -119,8 +116,8 @@
                                     </ng-select>
                                  </div>
                                  <div class="col-lg-2  mar-top-37">
-                                    <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i
-                                          class="fas fa-plus"></i></a>
+                                    <!-- <a href="#addVehicleModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          class="fas fa-plus"></i></a> -->
                                  </div>
                               </div>
                               <div class="row">
@@ -151,7 +148,7 @@
 
                               </div>
                               <div class="row">
-                                 <div class="col-lg-10">
+                                 <!-- <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver<span
                                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [multiple]="true" [(ngModel)]="driverArray" name="driverArray"
@@ -159,15 +156,33 @@
                                        <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
                                           {{driver.firstName}} {{driver.lasttName}}</ng-option>
                                     </ng-select>
+                                 </div> -->
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
+                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
+                                    <ng-select [(ngModel)]="mainDriver" name="drivers" placeholder="Select driver">
+                                       <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
+                                          {{driver.firstName}} {{driver.lastName}}</ng-option>
+                                    </ng-select>
+                                 </div>
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign
+                                       Co-Driver&nbsp; <span
+                                       class="text-1 optional-label-color">(optional)</span></label>
+                                    <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers"
+                                       placeholder="Select co-driver">
+                                       <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
+                                          {{driver.firstName}} {{driver.lastName}}</ng-option>
+                                    </ng-select>
                                  </div>
                                  <div class="col-lg-2  mar-top-37">
-                                    <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i
-                                          class="fas fa-plus"></i></a>
+                                    <!-- <a href="#addDriverModal" class="modal-with-form btn btn-sm btn-success"><i
+                                          class="fas fa-plus"></i></a> -->
                                  </div>
                               </div>
                               <div class="row mt-4 pt-2">
                                  <div class="col-lg-5">
-
                                     <button type="button" data-toggle="modal" data-target="#passengerModal"
                                        class="btn btn-sm btn-success">{{modalTitle}} Passenger(s)</button>
                                  </div>
@@ -176,15 +191,17 @@
                                     <button type="button" data-toggle="modal" data-target="#containerModal"
                                        class="btn btn-sm btn-success">{{modalTitle}} Container(s)</button>
                                  </div>
-                                 <div class="col-lg-2 mar-top-37">
+                                 <div class="col-lg-5 mt-2" *ngIf="addedPassengers?.length">
+                                    <span *ngFor="let passenger of addedPassengers; let i=index">Passenger {{i+1}}:
+                                       {{passenger.firstName}}&nbsp;{{passenger.lastName}}<br></span>
+                                 </div>
+                                 <div class="col-lg-5 mt-2" *ngIf="addedContainers?.length">
+                                    <span *ngFor="let container of addedContainers; let i=index">Container {{i+1}}:
+                                       {{container.number}}<br></span>
                                  </div>
                               </div>
-
                            </div>
                         </div>
-
-
-
                         <!-- new shipment div start -->
                         <div class="row">
                            <div class="col-lg-12">
@@ -387,15 +404,15 @@
                                                 <ng-select [ngModelOptions]="{standalone: true}"
                                                    [attr.name]="'shipments['+s+'].shipperID'"
                                                    [(ngModel)]="shipment.shipperID">
-                                                   <ng-option *ngFor="let shipper of shippers"
+                                                   <ng-option *ngFor="let shipper of shippers | async"
                                                       value="{{shipper.shipperID}}">
                                                       {{shipper.companyName}}</ng-option>
                                                 </ng-select>
                                              </div>
                                              <div class="col-lg-2  mar-top-37">
-                                                <a href="#addShipperModal"
-                                                   class="modal-with-form btn btn-sm btn-success"><i
-                                                      class="fas fa-plus"></i></a>
+                                                <a data-toggle="modal" data-target="#addShipperModal"
+                                             class="modal-with-form btn btn-sm btn-success text-light"><i
+                                                class="fas fa-plus"></i></a>
                                              </div>
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Assign
@@ -404,15 +421,15 @@
                                                 <ng-select [ngModelOptions]="{standalone: true}"
                                                    [attr.name]="'shipments['+s+'].consigneeID'"
                                                    [(ngModel)]="shipment.consigneeID">
-                                                   <ng-option *ngFor="let consignee of consignees"
+                                                   <ng-option *ngFor="let consignee of consignees | async"
                                                       value="{{consignee.receiverID}}">
                                                       {{consignee.companyName}}</ng-option>
                                                 </ng-select>
                                              </div>
-                                             <div class="col-lg-2 mar-top-37">
-                                                <a href="#addConsigneeModal"
-                                                   class="modal-with-form btn btn-sm btn-success"><i
-                                                      class="fas fa-plus"></i></a>
+                                             <div class="col-lg-2 mar-top-37">                                               
+                                                      <a data-toggle="modal" data-target="#addConsigneeModal"
+                                             class="modal-with-form btn btn-sm btn-success text-light"><i
+                                                class="fas fa-plus"></i></a>
                                              </div>
                                              <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">State
@@ -863,7 +880,7 @@
                                     <tr *ngFor="let trailer of trailers; let t = index;">
                                        <td>
                                           <div class="row">
-                                             <div class="col-lg-10">
+                                             <div class="col-lg-12">
                                                 <ng-select [(ngModel)]="trailer.assetID"
                                                    [ngModelOptions]="{standalone: true}"
                                                    [attr.name]="'trailers['+t+'].assetID'">
@@ -871,11 +888,11 @@
                                                       {{asset.assetIdentification}}</ng-option>
                                                 </ng-select>
                                              </div>
-                                             <div class="col-lg-2">
+                                             <!-- <div class="col-lg-2">
                                                 <a href="#addAssetModal"
                                                    class="modal-with-form btn btn-sm btn-success"><i
                                                       class="fas fa-plus"></i></a>
-                                             </div>
+                                             </div> -->
                                           </div>
                                        </td>
                                        <td>
@@ -1017,11 +1034,11 @@
                         </div>
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document#</label>
                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'travelDocuments['+j+'].number'" placeholder="Enter docuement number"
+                           [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'" placeholder="Enter docuement number"
                               [(ngModel)]="document.number">
                         </div>
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document Type</label>
-                           <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'travelDocuments['+j+'].type'"
+                           <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].travelDocuments['+j+'].type'"
                               [(ngModel)]="document.type">
                               <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
                                  {{document.description}}</ng-option>
@@ -1030,18 +1047,31 @@
                      </div>
                      <div class="row">
                         <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing Country</label>
-                           <ng-select (change)="getStatesDoc(i,j)" [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'travelDocuments['+j+'].country'" [(ngModel)]="document.country">
+                           <ng-select (change)="resetpassengerDocState(i,j)" [ngModelOptions]="{standalone: true}" 
+                           [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'" [(ngModel)]="document.country">
                               <ng-option *ngFor="let country of countries" [value]="country.countryID">
                                  {{country.countryName}}</ng-option>
                            </ng-select>
                         </div>
-                        <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing State</label>
-                           <ng-select [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'travelDocuments['+j+'].stateProvince'" [(ngModel)]="document.stateProvince">
-                              <ng-option *ngFor="let state of passengerDocStates" [value]="state.stateID">
-                                 {{state.stateName}}</ng-option>
-                           </ng-select>
+                        <div class="col-lg-6"> 
+                           <div class="row">
+                              <div class="col-lg-10">
+                                 <label class="col-form-label font-weight-bold">Issuing State</label>
+                                 <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
+                                    [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
+                                    [(ngModel)]="document.stateProvince">                                   
+                                       <ng-container *ngFor="let state of passengerDocStates| async">
+                                          <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country" [value]="state.stateID"> {{state.stateName}}</ng-option>
+                                        </ng-container>
+                                 </ng-select>
+                                 
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
+                                 <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                 class="btn btn-sm btn-success modal-with-form"><i
+                                    class="fas fa-plus"></i></a>
+                              </div>
+                           </div>
                         </div>
                      </div>
 
@@ -1068,14 +1098,14 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" data-dismiss="modal" class="btn btn-success">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-success" (click)="savePassengers()">Save</button>
          </div>
       </div>
    </div>
 </div>
 
 <!-- CONTAINER MODAL -->
-<div class="modal fade" id="containerModal" tabindex="-1" role="dialog" aria-labelledby="containerModalLabel"
+ <div class="modal fade" id="containerModal" tabindex="-1" role="dialog" aria-labelledby="containerModalLabel"
    aria-hidden="true">
    <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -1166,7 +1196,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" data-dismiss="modal" class="btn btn-success">Save</button>
+            <button type="button" data-dismiss="modal" class="btn btn-success" (click)="saveContainers()">Save</button>
          </div>
       </div>
    </div>

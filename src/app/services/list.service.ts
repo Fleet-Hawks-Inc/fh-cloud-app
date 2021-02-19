@@ -9,6 +9,12 @@ export class ListService {
   vendorDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   vendorList = this.vendorDataSource.asObservable();
 
+  shipperDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  shipperList = this.shipperDataSource.asObservable();
+
+  receiverDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  receiverList = this.receiverDataSource.asObservable();
+
   manufacturerDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   manufacturerList = this.manufacturerDataSource.asObservable();
 
@@ -40,12 +46,21 @@ export class ListService {
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => {
-      
+    this.apiService.getData("vendors").subscribe((result: any) => {      
       this.vendorDataSource.next(result.Items);
     });
   }
 
+fetchShippers() {
+  this.apiService.getData("shippers").subscribe((result: any) => {      
+    this.shipperDataSource.next(result.Items);
+  });
+}
+fetchReceivers() {
+  this.apiService.getData("receivers").subscribe((result: any) => {      
+    this.receiverDataSource.next(result.Items);
+  });
+}
   fetchManufacturers() {
     this.apiService.getData('manufacturers').subscribe((result: any) => {
       this.manufacturerDataSource.next(result.Items);
@@ -74,7 +89,6 @@ export class ListService {
       });
   }
 
-  
   fetchCities() {
     this.apiService
       .getData(`cities`)
