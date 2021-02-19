@@ -220,13 +220,6 @@ export class CalendarViewComponent implements OnInit {
 
   saveAssetModalData() {
 
-    // if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
-    //   this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
-
-    //     this.toastr.error('Please select all the assignment values');
-    //     return false;
-    // }
-
     if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
       this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.trailer.length != 0) {
       let planData = this.tripData.tripPlanning;
@@ -280,8 +273,7 @@ export class CalendarViewComponent implements OnInit {
 
   showAssignModal(tripID) {
     this.emptyAssetModalFields();
-    // let tripAssgn = '0';
-
+    
     this.spinner.show();
     this.OrderIDs = [];
     this.apiService.getData('trips/' + tripID).
@@ -293,7 +285,7 @@ export class CalendarViewComponent implements OnInit {
         this.OrderIDs = this.tripData['orderId'];
 
         if(this.tripData.tripPlanning.length === 0) { 
-          this.toastr.error('Trip plan for selected trip is empty. Please create one to assign');
+          this.toastr.error('The trip plan for the selected trip is empty. Please create one to assign.');
           this.spinner.hide();
           return false;
         }
