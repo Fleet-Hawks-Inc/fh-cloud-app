@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
-import { HereMapService } from '../../../services';
+import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { mergeMap, takeUntil } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
@@ -382,6 +382,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             private toastr: ToastrService,
             private modalService: NgbModal,
             private HereMap: HereMapService,
+            private listService: ListService
             )
   { }
 
@@ -1038,6 +1039,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
+          this.listService.fetchVendors();
           this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
