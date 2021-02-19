@@ -369,9 +369,9 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2  mar-top-37">
-                                          <a data-toggle="modal" data-target="#addShipperModal"
+                                          <!-- <a data-toggle="modal" data-target="#addShipperModal"
                                              class="modal-with-form btn btn-sm btn-success text-light"><i
-                                                class="fas fa-plus"></i></a>
+                                                class="fas fa-plus"></i></a> -->
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Assign
@@ -385,9 +385,9 @@
                                           </ng-select>
                                        </div>
                                        <div class="col-lg-2 mar-top-37">
-                                          <a data-toggle="modal" data-target="#addConsigneeModal"
+                                          <!-- <a data-toggle="modal" data-target="#addConsigneeModal"
                                              class="modal-with-form btn btn-sm btn-success text-light"><i
-                                                class="fas fa-plus"></i></a>
+                                                class="fas fa-plus"></i></a> -->
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Assign
@@ -479,7 +479,7 @@
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Country</label>
                                           <ng-select [ngModelOptions]="{standalone: true}"
-                                             [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.country'"                                             
+                                             [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.country'"
                                              [(ngModel)]="thirdParty.address.country" (change)="resetThirdPartyState(s,p)">
                                              <ng-option *ngFor="let country of countries" [value]="country.countryID">
                                                 {{country.countryName}}</ng-option>
@@ -491,7 +491,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
                                           <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyStateSelect" (change)="resetThirdPartyCity(s,p)"
                                              [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateProvince'"
-                                             [(ngModel)]="thirdParty.address.stateProvince"                                             
+                                             [(ngModel)]="thirdParty.address.stateProvince"
                                              >
                                                 <ng-container *ngFor="let state of thirdPartyStates| async">
                                                    <ng-option *ngIf="state.countryID == shipments[s].thirdParties[p].address.country" [value]="state.stateID"> {{state.stateName}}</ng-option>
@@ -977,12 +977,12 @@
                                  <label class="col-form-label font-weight-bold">Issuing State</label>
                                  <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                                     [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
-                                    [(ngModel)]="document.stateProvince">                                   
+                                    [(ngModel)]="document.stateProvince">
                                        <ng-container *ngFor="let state of passengerDocStates| async">
                                           <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country" [value]="state.stateID"> {{state.stateName}}</ng-option>
                                         </ng-container>
                                  </ng-select>
-                                 
+
                               </div>
                               <div class="col-lg-2 mar-top-37">
                                  <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
