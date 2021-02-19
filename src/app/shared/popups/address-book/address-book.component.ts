@@ -10,7 +10,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
-import { ListService } from '../../../services';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
