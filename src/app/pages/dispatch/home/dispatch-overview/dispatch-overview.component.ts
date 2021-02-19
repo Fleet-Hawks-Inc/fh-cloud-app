@@ -166,8 +166,6 @@ export class DispatchOverviewComponent implements OnInit {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           if(element.isDeleted === 0 && element.tripStatus === 'confirmed'){
-            // for (let j = 0; j < element.tripPlanning.length; j++) {
-            //   const element2 = element.tripPlanning[j];
               if(element.dateCreated != '' && element.dateCreated != undefined) {
                 let pickDate = element.dateCreated.split("-");
                 var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
@@ -177,7 +175,6 @@ export class DispatchOverviewComponent implements OnInit {
                     pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
                 }
               }
-            // }
             resolve(pickupObj);
           }
         }
@@ -201,7 +198,6 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('trips/status/enroute').
       subscribe((result: any) => {
-        // result = result.Items[0];
         this.activeTripsCount = result.Count;
         this.spinner.hide();
       })
