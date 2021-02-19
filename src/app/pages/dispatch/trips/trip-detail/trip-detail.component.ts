@@ -81,18 +81,6 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverUsername: element.driverUsername,
-            // location: {
-            //   countryID: element.location.countryID,
-            //   cityID: element.location.cityID,
-            //   cityName: '',
-            //   countryName: '',
-            //   locationName: '',
-            //   stateID: element.location.stateID,
-            //   stateName: '',
-            //   zipcode: element.location.zipcode,
-            //   address1: element.location.address1,
-            //   address2: element.location.address2,
-            // },
             locationName: element.location,
             mileType: element.mileType,
             miles: element.miles,
@@ -119,7 +107,6 @@ export class TripDetailComponent implements OnInit {
           let assetArr = [];
           for (let j = 0; j < element.assetID.length; j++) {
             const assetID = element.assetID[j];
-            // let assetName = this.fetchAssetDetail(assetID,j);
 
             this.apiService.getData('assets/' + assetID)
               .subscribe((result: any) => {
@@ -153,11 +140,7 @@ export class TripDetailComponent implements OnInit {
           
           if(element.carrierID != '' && element.carrierID != undefined) {
             this.fetchCarrierName(element.carrierID, i)
-          }
-          
-          // this.fetchCountryName(element.location.countryID, i);
-          // this.fetchStateDetail(element.location.stateID, i);
-          // this.fetchCityDetail(element.location.cityID, i);
+          }          
         }
 
         if(locations.length > 0) {
