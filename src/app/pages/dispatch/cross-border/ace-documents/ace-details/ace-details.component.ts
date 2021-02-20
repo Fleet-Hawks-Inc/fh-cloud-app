@@ -33,7 +33,7 @@ export class AceDetailsComponent implements OnInit {
         stateProvince: ''
       }
     ],
-    sealNumbers: []    
+    sealNumbers: []
   };
   drivers = [];
   trailers = [];
@@ -74,7 +74,7 @@ export class AceDetailsComponent implements OnInit {
     fastCardNumber:'',
     travelDocuments: [],
   };
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
@@ -151,6 +151,15 @@ export class AceDetailsComponent implements OnInit {
       citizenshipCountry: passengerData[0].citizenshipCountry,
       fastCardNumber: passengerData[0].fastCardNumber,
       travelDocuments: passengerData[0].travelDocuments
-    }
+    };
   }
+
+  cancelManifest(entryID){
+    this.apiService.getData(`ACEeManifest/cancelManifest/` + entryID).subscribe();
+  }
+
+ amendManifest() {
+   const amend = 'amend';
+ this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.entryID + `?manifestType=` + amend);
+ }
 }
