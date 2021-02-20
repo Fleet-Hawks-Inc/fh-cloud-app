@@ -165,7 +165,7 @@ export class NewAceManifestComponent implements OnInit {
   errorClassAddress = false;
   errorClassZip = false;
   address = false;
-  manifestType = '';
+  amendManifest = false;
   constructor(
     private httpClient: HttpClient,
     private router: Router,
@@ -189,13 +189,15 @@ export class NewAceManifestComponent implements OnInit {
   }
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
-    this.route.queryParams.subscribe((params) => {
-      this.manifestType = params.manifestType; // to get query parameter amend
-    });
     if (this.entryID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
+      this.route.queryParams.subscribe((params) => {
+        if(params.amendManifest != undefined){
+          this.amendManifest = params.amendManifest; // to get query parameter amend
+        }
+       });
     } else {
       this.title = 'Add ACE e-Manifest';
       this.modalTitle = 'Add';
@@ -751,7 +753,7 @@ export class NewAceManifestComponent implements OnInit {
         modifiedBy: this.currentUser,
       };
       this.apiService
-        .putData(`ACEeManifest/${this.manifestType}`, data)
+        .putData(`ACEeManifest/${this.amendManifest}`, data)
         .subscribe({
           complete: () => {},
           error: (err: any) => {
