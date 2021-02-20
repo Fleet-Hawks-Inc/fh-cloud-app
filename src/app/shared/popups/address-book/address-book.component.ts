@@ -10,7 +10,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
-
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -43,11 +42,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
   dtOptionsDriver: any = {};
   dtTriggerDriver: Subject<any> = new Subject();
-  
+
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   drivers = [];
-  brokers = []; 
+  brokers = [];
   vendors = [];
   carriers = [];
   shippers = [];
@@ -84,15 +83,15 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
     additionalContact: {}
   };
-  
+
   // Broker Object
   brokerData = {
     entityType: 'broker',
@@ -108,9 +107,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -132,9 +131,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -155,12 +154,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
-    }], 
+    }],
   };
 
   // Carrier Object
@@ -178,14 +177,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
     additionalContact: {}
-      
+
   };
 
   // Shipper Object
@@ -202,9 +201,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -225,9 +224,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -248,9 +247,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -272,9 +271,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       zipCode: '',
       address1: '',
       address2: '',
-      geoCords: { 
-        lat: '', 
-        lng: '' 
+      geoCords: {
+        lat: '',
+        lng: ''
       },
       userLocation: ''
     }],
@@ -309,10 +308,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   lastEvaluatedKeyCarrier = '';
   lastEvaluatedKeyOperator = '';
   lastEvaluatedKeyShipper = '';
-  lastEvaluatedKeyConsignee = ''; 
-  lastEvaluatedKeyStaff = ''; 
-  lastEvaluatedKeyCompany = ''; 
-  lastEvaluatedKeyDriver = ''; 
+  lastEvaluatedKeyConsignee = '';
+  lastEvaluatedKeyStaff = '';
+  lastEvaluatedKeyCompany = '';
+  lastEvaluatedKeyDriver = '';
   totalRecords = 20;
   totalRecordsBroker = 20;
   totalRecordsVendor = 20;
@@ -370,7 +369,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteConsigneeAddr = [];
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
-
+  loginDiv = false;
+  userData = {
+    username: '',
+    userType: '',
+    password: '',
+    confirmPassword: ''
+  };
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
@@ -408,7 +413,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
-    
+
     $(document).ready(() => {
       this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -433,7 +438,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     $('.modal').modal('hide');
     this.userDetailTitle = data.firstName;
     const modalRef = this.modalService.open(targetModal);
-    this.userDetailData = data; 
+    this.userDetailData = data;
   }
 
   // remove(data, i) {
@@ -550,11 +555,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
 
@@ -631,11 +636,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.customerData.address)
@@ -650,7 +655,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.customerData));
-    
+
     this.apiService.putData('customers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -702,11 +707,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.brokerData.address);
@@ -721,7 +726,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.brokerData));
-    
+
     this.apiService.postData('brokers', formData, true).
     subscribe({
       complete: () => { },
@@ -770,11 +775,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.ownerData.address);
@@ -789,7 +794,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.ownerData));
-    
+
     this.apiService.postData('ownerOperators', formData, true).
     subscribe({
       complete: () => { },
@@ -839,11 +844,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
 
@@ -857,7 +862,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.ownerData));
-    
+
     this.apiService.putData('ownerOperators', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -912,11 +917,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.brokerData.address);
@@ -931,7 +936,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.brokerData));
-    
+
     this.apiService.putData('brokers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -985,11 +990,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.vendorData.address);
@@ -1057,11 +1062,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.vendorData.address)
@@ -1100,7 +1105,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        
+
         //delete address
         for (let i = 0; i < this.deleteVendorAddr.length; i++) {
           const element = this.deleteVendorAddr[i];
@@ -1130,11 +1135,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.carrierData.address);
@@ -1198,11 +1203,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.carrierData.address);
@@ -1217,7 +1222,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.carrierData));
-    
+
     this.apiService.putData('externalCarriers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1259,7 +1264,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  
+
   // Add Shipper
   async addShipper() {
     this.hasError = false;
@@ -1272,7 +1277,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
@@ -1317,16 +1322,17 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addShipperModal').modal('hide');
+          this.listService.fetchShippers();
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
           this.activeDiv = 'shipperTable';
           this.rerender();
           this.toastr.success('Shipper Added Successfully');
+
         }
       });
   }
-
   async updateShipper() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -1339,11 +1345,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.shipperData.address)
@@ -1413,11 +1419,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.consigneeData.address);
@@ -1458,6 +1464,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.response = res;
           this.hasSuccess = true;
           $('#addConsigneeModal').modal('hide');
+          this.listService.fetchReceivers();
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
@@ -1480,11 +1487,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.consigneeData.address)
@@ -1552,11 +1559,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.fcCompanyData.address);
@@ -1619,11 +1626,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.fcCompanyData.address)
@@ -1692,11 +1699,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.staffData.address);
@@ -1711,7 +1718,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-    
+
     this.apiService.postData('staffs', formData, true).
       subscribe({
         complete: () => { },
@@ -1750,7 +1757,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   async updateStaff() {
     this.hasError = false;
     this.hasSuccess = false;
-    
+
     this.hideErrors();
     this.removeAddressFields(this.staffData);
     for (let i = 0; i < this.staffData.address.length; i++) {
@@ -1759,11 +1766,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-        
+
       }
     }
     // this.removeUserLocation(this.staffData.address)
@@ -1940,7 +1947,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.uploadedPhotos.push(file)
       if(this.uploadedPhotos.length > 0) {
         this.imageText = 'Change Picture';
-      } 
+      }
     }
   }
 
@@ -1948,7 +1955,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   fetchAddress() {
     return this.apiService.getData('addresses');
   }
- 
+
   fetchCustomersCount() {
     this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID).subscribe({
       complete: () => {},
@@ -1966,7 +1973,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   //       this.totalRecordsOperator = result.Count;
   //     });
   // }
-  
+
   fetchOwnerOperatorsCount() {
     this.apiService.getData('ownerOperators/get/count?operatorID='+this.filterVal.operatorID).subscribe({
       complete: () => {},
@@ -1986,7 +1993,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-  
+
   // fetchBrokers() {
   //   // return this.apiService.getData('brokers');
   //   this.apiService.getData('brokers')
@@ -2040,7 +2047,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-  
+
   // fetchShippers() {
   //   // return this.apiService.getData('shippers');
   //   this.apiService.getData('shippers')
@@ -2058,7 +2065,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-  
+
   // fetchConsignee() {
   //   // return this.apiService.getData('receivers');
   //   this.apiService.getData('receivers')
@@ -2152,7 +2159,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         curr.rerender();
         curr.fetchCustomersCount();
         curr.toastr.success('Customer deleted successfully');
-        
+
         // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
       });
     }
@@ -2353,8 +2360,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.carrierData = item;
       let result = this.assignAddressToUpdate(item.address)
       this.carrierData.address = result;
-    } 
-    
+    }
+
   }
 
   nextStep() {
@@ -2380,7 +2387,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.clearModalData()
 
     this.searchResults = [];
-    
+
   }
 
   setActiveDiv(type){
@@ -2647,25 +2654,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    if(this.activeDiv == 'customerTable') { 
+    if(this.activeDiv == 'customerTable') {
       this.dtTrigger.unsubscribe();
-    } else if(this.activeDiv == 'brokerTable') { 
+    } else if(this.activeDiv == 'brokerTable') {
       this.dtTriggerBroker.unsubscribe();
-    } else if(this.activeDiv == 'vendorTable') { 
+    } else if(this.activeDiv == 'vendorTable') {
       this.dtTriggerVendor.unsubscribe();
-    } else if(this.activeDiv == 'carrierTable') { 
+    } else if(this.activeDiv == 'carrierTable') {
       this.dtTriggerCarrier.unsubscribe();
-    } else if(this.activeDiv == 'operatorTable') { 
+    } else if(this.activeDiv == 'operatorTable') {
       this.dtTriggerOperator.unsubscribe();
-    } else if(this.activeDiv == 'shipperTable') { 
+    } else if(this.activeDiv == 'shipperTable') {
       this.dtTriggerShipper.unsubscribe();
-    } else if(this.activeDiv == 'consigneeTable') { 
+    } else if(this.activeDiv == 'consigneeTable') {
       this.dtTriggerConsignee.unsubscribe();
-    } else if(this.activeDiv == 'staffTable') { 
+    } else if(this.activeDiv == 'staffTable') {
       this.dtTriggerStaff.unsubscribe();
-    } else if(this.activeDiv == 'companyTable') { 
+    } else if(this.activeDiv == 'companyTable') {
       this.dtTriggerCompany.unsubscribe();
-    } else if(this.activeDiv == 'driverTable') { 
+    } else if(this.activeDiv == 'driverTable') {
       this.dtTriggerDriver.unsubscribe();
     }
   }
@@ -2675,8 +2682,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtElement.forEach((dtElement: DataTableDirective) => {
       dtElement.dtInstance.then((dtInstance: any) => {
         let tableId = dtInstance.table().node().id;
-        if(this.activeDiv == tableId) { 
-          if(tableId == 'customerTable') { 
+        if(this.activeDiv == tableId) {
+          if(tableId == 'customerTable') {
             dtInstance.destroy();
             if (status === 'reset') {
               this.dtOptions.pageLength = this.totalRecords;
@@ -2791,7 +2798,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.customers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyCustomer = resp['LastEvaluatedKey'].customerID;
-              
+
             } else {
               this.lastEvaluatedKeyCustomer = '';
             }
@@ -2826,7 +2833,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.brokers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyBroker = resp['LastEvaluatedKey'].brokerID;
-              
+
             } else {
               this.lastEvaluatedKeyBroker = '';
             }
@@ -2861,7 +2868,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.vendors = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyVendor = resp['LastEvaluatedKey'].vendorID;
-              
+
             } else {
               this.lastEvaluatedKeyVendor = '';
             }
@@ -2896,7 +2903,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.carriers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyCarrier = resp['LastEvaluatedKey'].infoID;
-              
+
             } else {
               this.lastEvaluatedKeyCarrier = '';
             }
@@ -2931,7 +2938,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.ownerOperatorss = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyOperator = resp['LastEvaluatedKey'].operatorID;
-              
+
             } else {
               this.lastEvaluatedKeyOperator = '';
             }
@@ -2966,7 +2973,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.shippers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyShipper = resp['LastEvaluatedKey'].shipperID;
-              
+
             } else {
               this.lastEvaluatedKeyShipper = '';
             }
@@ -3001,7 +3008,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.receivers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyConsignee = resp['LastEvaluatedKey'].receiverID;
-              
+
             } else {
               this.lastEvaluatedKeyConsignee = '';
             }
@@ -3036,7 +3043,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.staffs = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyStaff = resp['LastEvaluatedKey'].staffID;
-              
+
             } else {
               this.lastEvaluatedKeyStaff = '';
             }
@@ -3071,7 +3078,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.fcCompanies = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].factoringCompanyID;
-              
+
             } else {
               this.lastEvaluatedKeyCompany = '';
             }
@@ -3106,7 +3113,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             current.drivers = resp['Items'];
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].driverID;
-              
+
             } else {
               this.lastEvaluatedKeyCompany = '';
             }
@@ -3248,7 +3255,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.filterVal.brokerID = searchID;
       this.filterVal.brokerName = searchValue;
       this.suggestedBrokers = [];
-      
+
     } else if(type == 'vendor') {
       this.filterVal.vendorID = searchID;
       this.filterVal.vendorName = searchValue;
@@ -3331,7 +3338,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       } else {
         return false
       }
-      
+
     } else if(type == 'operator') {
       if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '') {
         this.ownerOperatorss = [];
@@ -3391,7 +3398,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       } else {
         return false
       }
-      
+
     }
   }
 
@@ -3553,31 +3560,31 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.deleteCarrierAddr.push(addressID);
       }
       this.carrierData.address.splice(index, 1);
-      
+
     } else if(type == 'operator') {
       if (addressID != null) {
         this.deleteOperatorAddr.push(addressID);
       }
       this.ownerData.address.splice(index, 1);
-      
+
     } else if(type == 'shipper') {
       if (addressID != null) {
         this.deleteShipperAddr.push(addressID);
       }
       this.shipperData.address.splice(index, 1);
-      
+
     } else if(type == 'consignee') {
       if (addressID != null) {
         this.deleteConsigneeAddr.push(addressID);
       }
       this.consigneeData.address.splice(index, 1);
-      
+
     } else if(type == 'staff') {
       if (addressID != null) {
         this.deleteStaffAddr.push(addressID);
       }
       this.staffData.address.splice(index, 1);
-      
+
     } else if(type == 'company') {
       if (addressID != null) {
         this.deleteCompanyAddr.push(addressID);
@@ -3635,7 +3642,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.carrierData.address[index].stateName = '';
       this.carrierData.address[index].userLocation = '';
       this.carrierData.address[index].zipCode = '';
-      
+
     } else if(type == 'operator') {
       this.ownerData.address[index].address1 = '';
       this.ownerData.address[index].address2 = '';
@@ -3647,7 +3654,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.ownerData.address[index].stateName = '';
       this.ownerData.address[index].userLocation = '';
       this.ownerData.address[index].zipCode = '';
-      
+
     } else if(type == 'shipper') {
       this.shipperData.address[index].address1 = '';
       this.shipperData.address[index].address2 = '';
@@ -3659,7 +3666,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.shipperData.address[index].stateName = '';
       this.shipperData.address[index].userLocation = '';
       this.shipperData.address[index].zipCode = '';
-      
+
     } else if(type == 'consignee') {
       this.consigneeData.address[index].address1 = '';
       this.consigneeData.address[index].address2 = '';
@@ -3671,7 +3678,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.consigneeData.address[index].stateName = '';
       this.consigneeData.address[index].userLocation = '';
       this.consigneeData.address[index].zipCode = '';
-      
+
     } else if(type == 'staff') {
       this.staffData.address[index].address1 = '';
       this.staffData.address[index].address2 = '';
@@ -3683,7 +3690,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.staffData.address[index].stateName = '';
       this.staffData.address[index].userLocation = '';
       this.staffData.address[index].zipCode = '';
-      
+
     } else if(type == 'company') {
       this.fcCompanyData.address[index].address1 = '';
       this.fcCompanyData.address[index].address2 = '';
@@ -3696,5 +3703,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fcCompanyData.address[index].userLocation = '';
       this.fcCompanyData.address[index].zipCode = '';
     }
+  }
+
+  enableLogin(event) {
+    console.log('event')
+    console.log(event.target.checked)
+    this.loginDiv = event.target.checked;
   }
 }

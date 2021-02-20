@@ -3481,10 +3481,24 @@
                                                             placeholder="Enter Contract End Date" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
                                                             class="form-control" autocomplete="off">
                                                     </div>
-                                                </div>
+                                                </div> 
                                             </div>
                                             <div class="col-lg-10 offset-lg-1">
                                                 <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Department</label>
+                                                        <ng-select [(ngModel)]="staffData.userAccount.department" 
+                                                            name="department" class="form-control" placeholder="Select Department">
+                                                            <ng-option value="Fleet">Fleet</ng-option>
+                                                            <ng-option value="Operations">Operations</ng-option>
+                                                            <ng-option value="Safety">Safety</ng-option>
+                                                            <ng-option value="Maintenance">Maintenance</ng-option>
+                                                            <ng-option value="Dispatch">Dispatch</ng-option>
+                                                            <ng-option value="Compliance">Compliance</ng-option>
+                                                            <ng-option value="Road Assistance">Road Assistance</ng-option>
+                                                            <ng-option value="Accounts">Accounts</ng-option> 
+                                                        </ng-select>
+                                                    </div>
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
                                                         <ng-select [(ngModel)]="staffData.userAccount.designation"
@@ -3494,17 +3508,51 @@
                                                                 <ng-option value="Manager">Manager</ng-option>
                                                         </ng-select>
                                                     </div>
+                                                </div>
+                                                <div class="checkbox-custom pt-2">
+                                                    <input
+                                                       (change)="enableLogin($event)" type="checkbox">
+                                                    <label for="enableLogin">Enable Login</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-10 offset-lg-1" *ngIf="loginDiv">
+                                                <div class="row">
                                                     <div class="col-lg-6">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Department</label>
-                                                        <ng-select [(ngModel)]="staffData.userAccount.department"
-                                                            name="department" class="form-control"
-                                                                placeholder="Select Department">
-                                                                <ng-option value="Account">Account</ng-option>
-                                                                <ng-option value="Dispatch">Dispatch</ng-option>
-                                                                <ng-option value="Sales & Operations">Sales & Operations</ng-option>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                            Username</label>
+                                                        <input [(ngModel)]="userData.username" name="username" type="text"
+                                                            placeholder="Enter Username" class="form-control">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
+                                                        <ng-select class="form-control populate" [(ngModel)]="userData.userType" name="userType">
+                                                            <ng-option value="Full Admin">Full Admin</ng-option>
+                                                            <ng-option value="Read Only Admin">Read Only Admin</ng-option>
+                                                            <ng-option value="Dispatch">Dispatch</ng-option>
+                                                            <ng-option value="Maintenance">Maintenance</ng-option>
+                                                            <ng-option value="Safety Manager">Safety Manager</ng-option>
+                                                            <ng-option value="Other">Other</ng-option>
                                                         </ng-select>
                                                     </div>
-                                                </div>
+                                                </div> 
+                                            </div>
+
+                                            <div class="col-lg-10 offset-lg-1" *ngIf="loginDiv">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                             Password</label>
+                                                        <input [(ngModel)]="userData.password" name="password" type="text"
+                                                            placeholder="Enter Password" class="form-control" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                            Confirm Password</label>
+                                                        <input [(ngModel)]="userData.confirmPassword" name="confirmPassword" type="text"
+                                                            placeholder="Enter Confirm Password" class="form-control" autocomplete="off">
+                                                    </div>
+                                                </div> 
                                             </div>
                                         </div>
                                     </div>

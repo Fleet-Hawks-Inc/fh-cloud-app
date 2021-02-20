@@ -509,8 +509,10 @@ fetchDrivers(){
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
+          this.listService.fetchCities();
           $('#addCityModal').modal('hide');
           this.toastr.success('City Added Successfully.');
+          this.listService.fetchCities();
         }
       });
   }
