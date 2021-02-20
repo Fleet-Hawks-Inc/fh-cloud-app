@@ -45,6 +45,7 @@ export class MapViewComponent implements OnInit {
     assetDataDriverUsername = '';
     assetDataCoDriverUsername = '';
     informationAsset = [];
+    OrderIDs = [];
 
   ngOnInit() {
     this.mapShow();
@@ -268,12 +269,14 @@ export class MapViewComponent implements OnInit {
     this.emptyAssetModalFields();
     
     this.spinner.show();
+    this.OrderIDs = [];
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
         result = result.Items[0];
         delete result.timeCreated;
         delete result.timeModified;
         this.tripData = result;
+        this.OrderIDs = this.tripData['orderId'];
 
         if(this.tripData.tripPlanning.length === 0) { 
           this.toastr.error('Trip plan for selected trip is empty. Please create one to assign');
@@ -296,12 +299,10 @@ export class MapViewComponent implements OnInit {
 
     const tripResponse = this.apiService.getData('trips');
     const orderResponse = this.apiService.getData('orders');
-    const observables = forkJoin([tripResponse, orderResponse]);
-    observables.subscribe(
-      value => this.orderTripValues(value),
-      err => {}
-    );
-    this.spinner.hide();
+    const observables = forkJoin([tripResponse, orderResponse]).subscribe(value => {
+      this.orderTripValues(value);
+      this.spinner.hide();
+    });
   }
 
   orderTripValues(val) {
@@ -320,6 +321,7 @@ export class MapViewComponent implements OnInit {
           deliveryLocation: '',
           tripID: element.tripID,
           tripNo: element.tripNo,
+          tripStatus: element.tripStatus,
           date: tripDate,
           time: '-',
           tripPlan: element.tripPlanning,
@@ -446,5 +448,22 @@ export class MapViewComponent implements OnInit {
         this.toastr.success('Assignment done successfully.');
       },
     });
+  }
+
+  updateOrderStatus() {
+    for (let i = 0; i < this.OrderIDs.length; i++) {
+      const orderID = this.OrderIDs[i];
+
+      this.apiService.getData('orders/' + orderID)
+        .subscribe((result: any) => {
+          let orderData = result.Items[0];
+          console.log(orderData);
+          if (orderData.orderStatus == 'confirmed') {
+            this.apiService.getData('orders/update/orderStatus/' + orderID + '/dispatched')
+              .subscribe((result: any) => {
+              });
+          }
+        });
+    }
   }
 }

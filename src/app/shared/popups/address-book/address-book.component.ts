@@ -369,7 +369,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteConsigneeAddr = [];
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
-
+  loginDiv = false;
+  userData = {
+    username: '',
+    userType: '',
+    password: '',
+    confirmPassword: ''
+  };
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
@@ -3695,5 +3701,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fcCompanyData.address[index].userLocation = '';
       this.fcCompanyData.address[index].zipCode = '';
     }
+  }
+
+  enableLogin(event) {
+    console.log('event')
+    console.log(event.target.checked)
+    this.loginDiv = event.target.checked;
   }
 }
