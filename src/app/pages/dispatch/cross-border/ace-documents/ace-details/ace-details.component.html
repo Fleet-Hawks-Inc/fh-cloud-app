@@ -116,10 +116,6 @@
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">ACE eManifest History</h4>
-                                <div class=" pull-right">
-                                    <!-- <button type="button" data-toggle="modal" data-target="#statusModal"
-                                        class="btn btn-sm btn-success">View All History</button> -->
-                                </div>
                             </div>
                             <div class="card-body border scroll-table-class">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
@@ -131,14 +127,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let response of responses; let i = index">
+                                        <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>{{response.cbpDateTime}}</td>
-                                            <td>Trip <b>{{response.sendRequest.tripNumber}}</b> &nbsp;&nbsp;
-                                                 <span *ngIf="response.tripStatus != undefined">{{response.tripStatus.description}}</span>
-                                                 &nbsp;<span *ngIf="response.validationResponses?.length">
-                                                     <span *ngFor="let validation of response.validationResponses">{{validation.description}},</span>
-                                                 </span>
+                                            <td>{{response.dateTime}}</td>
+                                            <td>Trip <b>{{response.tripNumber}}</b>&nbsp;&nbsp;
+                                                     <span *ngFor="let error of response.errors">{{error.note}},<br></span>
                                                 </td>
                                         </tr>
                                     </tbody>

@@ -9,7 +9,7 @@
 	},
 	{
 		"code": "CB",
-		"description": "Gooseneck trailer"
+		"description": "Removeable Gooseneck trailer"
 	},
 	{
 		"code": "TC",
@@ -18,10 +18,6 @@
 	{
 		"code": "BI",
 		"description": "Beverage rack trailer"
-	},
-	{
-		"code": "CH",
-		"description": "Chassis"
 	},
 	{
 		"code": "FR",
@@ -56,21 +52,13 @@
 		"description": "Flatbed/Perform trailer"
 	},
 	{
-		"code": "FH",
-		"description": "Flatbed trailer with headboards"
-	},
-	{
-		"code": "FN",
-		"description": "Flatbed trailer with no headboards"
-	},
-	{
 		"code": "RG",
 		"description": "Gondola (Closed)"
 	},
 	{
 		"code": "RO",
 		"description": "Gondola (Open)"
-	},	
+	},
 	{
 		"code": "HC",
 		"description": "Hopper car (Covered)"
@@ -109,54 +97,6 @@
 	},
 	{
 		"code": "T8",
-		"description": "Tank trailer (Chemicals) - Heated/Insulated"
-	},
-	{
-		"code": "T6",
-		"description": "Tank trailer (Chemicals) - Heated/Not insulated"
-	},
-	{
-		"code": "T7",
-		"description": "Tank trailer (Chemicals) - Not heated/Insulated"
-	},
-	{
-		"code": "T5",
-		"description": "Tank trailer (Chemicals) - Not heated/Not insulated"
-	},
-	{
-		"code": "TK",
-		"description": "Tank trailer (Food grade liquids)"
-	},
-	{
-		"code": "T4",
-		"description": "Tank trailer (Gas) - Heated/Insulated"
-	},
-	{
-		"code": "T2",
-		"description": "Tank trailer (Gas) - Heated/Not insulated"
-	},
-	{
-		"code": "T3",
-		"description": "Tank trailer (Gas) - Not heated/Insulated"
-	},
-	{
-		"code": "T1",
-		"description": "Tank trailer (Gas) - Not heated/Not insulated"
-	},
-	{
-		"code": "L4",
-		"description": "Tank trailer (Liquids) - Heated/Insulated"
-	},
-	{
-		"code": "L2",
-		"description": "Tank trailer (Liquids) - Heated/Not insulated"
-	},
-	{
-		"code": "L3",
-		"description": "Tank trailer (Liquids) - Not heated/Insulated"
-	},
-	{
-		"code": "L1",
-		"description": "Tank trailer (Liquids) - Not heated/Not insulated"
+		"description": "Tank trailer"
 	}
 ]

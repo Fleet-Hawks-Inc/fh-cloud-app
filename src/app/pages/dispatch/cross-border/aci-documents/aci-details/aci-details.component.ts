@@ -36,7 +36,7 @@ export class AciDetailsComponent implements OnInit {
       number: '',
       stateProvince: '',
     },
-    sealNumbers: []  
+    sealNumbers: []
   };
   drivers = [];
   shipmentType: string;
@@ -113,7 +113,7 @@ export class AciDetailsComponent implements OnInit {
   Error = '';
   Success = '';
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params['entryID'];
@@ -123,7 +123,6 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
-        console.log('result',result);
         this.entryID = this.entryID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -142,12 +141,11 @@ export class AciDetailsComponent implements OnInit {
         this.containers = result.containers,
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
-        this.timeCreated = moment(result.timeCreated).format("MMMM D YYYY, h:mm:ss a");
-        this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
+        this.timeCreated = moment(result.timeCreated).format(`MMMM D YYYY, h:mm:ss a`);
+        this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
-
       });
   }
 
@@ -165,64 +163,71 @@ export class AciDetailsComponent implements OnInit {
   }
 
   showShipmentDetails(shipmentID) {
-    let shipmentData = this.shipments.filter((item: any) => item.shipmentID === shipmentID); 
+    const fetchedShipmentData = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
     this.shipmentData = {
-      shipmentID: shipmentData[0].shipmentID,
-      shipmentType: shipmentData[0].shipmentType,
+      shipmentID: fetchedShipmentData[0].shipmentID,
+      shipmentType: fetchedShipmentData[0].shipmentType,
       loadedOn: {
-        type: shipmentData[0].loadedOn.type,
-        number: shipmentData[0].loadedOn.number,
+        type: fetchedShipmentData[0].loadedOn.type,
+        number: fetchedShipmentData[0].loadedOn.number,
       },
-      CCC: shipmentData[0].CCC,
-      cargoControlNumber: shipmentData[0].cargoControlNumber,
-      portOfEntry: shipmentData[0].portOfEntry,
-      releaseOffice: shipmentData[0].releaseOffice,
-      subLocation: shipmentData[0].subLocation,
-      importerCsaBusinessNumber: shipmentData[0].importerCsaBusinessNumber,
-      uniqueConsignmentReferenceNumber: shipmentData[0].uniqueConsignmentReferenceNumber,
-      estimatedArrivalDate: shipmentData[0].estimatedArrivalDate,
-      estimatedArrivalTimeZone: shipmentData[0].estimatedArrivalTimeZone,
+      CCC: fetchedShipmentData[0].CCC,
+      cargoControlNumber: fetchedShipmentData[0].cargoControlNumber,
+      portOfEntry: fetchedShipmentData[0].portOfEntry,
+      releaseOffice: fetchedShipmentData[0].releaseOffice,
+      subLocation: fetchedShipmentData[0].subLocation,
+      importerCsaBusinessNumber: fetchedShipmentData[0].importerCsaBusinessNumber,
+      uniqueConsignmentReferenceNumber: fetchedShipmentData[0].uniqueConsignmentReferenceNumber,
+      estimatedArrivalDate: fetchedShipmentData[0].estimatedArrivalDate,
+      estimatedArrivalTimeZone: fetchedShipmentData[0].estimatedArrivalTimeZone,
       cityOfLoading: {
-        cityName: shipmentData[0].cityOfLoading.cityName,
-        stateProvince: shipmentData[0].cityOfLoading.stateProvince,
+        cityName: fetchedShipmentData[0].cityOfLoading.cityName,
+        stateProvince: fetchedShipmentData[0].cityOfLoading.stateProvince,
       },
       cityOfAcceptance: {
-        cityName: shipmentData[0].cityOfAcceptance.cityName,
-        stateProvince: shipmentData[0].cityOfAcceptance.stateProvince,
+        cityName: fetchedShipmentData[0].cityOfAcceptance.cityName,
+        stateProvince: fetchedShipmentData[0].cityOfAcceptance.stateProvince,
       },
-      specialInstructions: shipmentData[0].specialInstructions,
-      shipper: shipmentData[0].shipper.name,
-      consignee: shipmentData[0].consignee.name,
-      deliveryDestinations: shipmentData[0].deliveryDestinations,
-      notifyParties: shipmentData[0].notifyParties,
-      commodities: shipmentData[0].commodities
+      specialInstructions: fetchedShipmentData[0].specialInstructions,
+      shipper: fetchedShipmentData[0].shipper.name,
+      consignee: fetchedShipmentData[0].consignee.name,
+      deliveryDestinations: fetchedShipmentData[0].deliveryDestinations,
+      notifyParties: fetchedShipmentData[0].notifyParties,
+      commodities: fetchedShipmentData[0].commodities
     }
   }
   showDriverDetails(driverID) {
-    let driverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
+    const fetchedDriverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
     this.driverData = {
-      driverID: driverData[0].driverID,
-      driverNumber: driverData[0].driverNumber,
-      firstName: driverData[0].firstName,
-      gender: driverData[0].gender,
-      lastName: driverData[0].lastName,
-      dateOfBirth: driverData[0].dateOfBirth,
-      citizenshipCountry: driverData[0].citizenshipCountry,
-      fastCardNumber: driverData[0].fastCardNumber,
-      travelDocuments: driverData[0].travelDocuments
+      driverID: fetchedDriverData[0].driverID,
+      driverNumber: fetchedDriverData[0].driverNumber,
+      firstName: fetchedDriverData[0].firstName,
+      gender: fetchedDriverData[0].gender,
+      lastName: fetchedDriverData[0].lastName,
+      dateOfBirth: fetchedDriverData[0].dateOfBirth,
+      citizenshipCountry: fetchedDriverData[0].citizenshipCountry,
+      fastCardNumber: fetchedDriverData[0].fastCardNumber,
+      travelDocuments: fetchedDriverData[0].travelDocuments
     }
   }
   showPassengerDetails(passengerID) {
-    let passengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
+    const fetchedPassengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
     this.passengerData = {
-      passengerID: passengerData[0].passengerID,
-      firstName: passengerData[0].firstName,
-      gender: passengerData[0].gender,
-      lastName: passengerData[0].lastName,
-      dateOfBirth: passengerData[0].dateOfBirth,
-      citizenshipCountry: passengerData[0].citizenshipCountry,
-      fastCardNumber: passengerData[0].fastCardNumber,
-      travelDocuments: passengerData[0].travelDocuments
-    }
+      passengerID: fetchedPassengerData[0].passengerID,
+      firstName: fetchedPassengerData[0].firstName,
+      gender: fetchedPassengerData[0].gender,
+      lastName: fetchedPassengerData[0].lastName,
+      dateOfBirth: fetchedPassengerData[0].dateOfBirth,
+      citizenshipCountry: fetchedPassengerData[0].citizenshipCountry,
+      fastCardNumber: fetchedPassengerData[0].fastCardNumber,
+      travelDocuments: fetchedPassengerData[0].travelDocuments
+    };
+  }
+  amendManifest() {
+    const amend = true;
+  this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.entryID + `?amendManifest=` + amend);
+  }
+  cancelManifest(entryID) {
+    this.apiService.getData(`ACIeManifest/cancelManifest/` + entryID).subscribe();
   }
 }
