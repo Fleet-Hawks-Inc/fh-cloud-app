@@ -77,7 +77,7 @@ export class AceDetailsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params['entryID'];
+    this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchACEEntry();
   }
   fetchACEEntry() {
@@ -93,7 +93,7 @@ export class AceDetailsComponent implements OnInit {
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
-        this.timeModified = moment(result.timeModified).format("MMMM D YYYY, h:mm:ss a");
+        this.timeModified = moment(result.timeModified).format(`MMMM D YYYY, h:mm:ss a`);
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
@@ -114,43 +114,42 @@ export class AceDetailsComponent implements OnInit {
 
   }
   showShipmentDetails(shipmentID) {
-
-    let shipmentData = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
+    const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
     this.shipmentData = {
-      shipmentControlNumber: shipmentData[0].shipmentControlNumber,
-      type: shipmentData[0].type,
-      provinceOfLoading: shipmentData[0].provinceOfLoading,
-      shipperName: shipmentData[0].shipper.name,
-      consigneeName: shipmentData[0].consignee.name,
-      commodities: shipmentData[0].commodities,
-      thirdParties: shipmentData[0].thirdParties
+      shipmentControlNumber: shipmentDataFetched[0].shipmentControlNumber,
+      type: shipmentDataFetched[0].type,
+      provinceOfLoading: shipmentDataFetched[0].provinceOfLoading,
+      shipperName: shipmentDataFetched[0].shipper.name,
+      consigneeName: shipmentDataFetched[0].consignee.name,
+      commodities: shipmentDataFetched[0].commodities,
+      thirdParties: shipmentDataFetched[0].thirdParties
     }
   }
   showDriverDetails(driverID) {
-    let driverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
+    const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
     this.driverData = {
-      driverID: driverData[0].driverID,
-      driverNumber: driverData[0].driverNumber,
-      firstName: driverData[0].firstName,
-      gender: driverData[0].gender,
-      lastName: driverData[0].lastName,
-      dateOfBirth: driverData[0].dateOfBirth,
-      citizenshipCountry: driverData[0].citizenshipCountry,
-      fastCardNumber: driverData[0].fastCardNumber,
-      travelDocuments: driverData[0].travelDocuments
+      driverID: driverDataFetched[0].driverID,
+      driverNumber: driverDataFetched[0].driverNumber,
+      firstName: driverDataFetched[0].firstName,
+      gender: driverDataFetched[0].gender,
+      lastName: driverDataFetched[0].lastName,
+      dateOfBirth: driverDataFetched[0].dateOfBirth,
+      citizenshipCountry: driverDataFetched[0].citizenshipCountry,
+      fastCardNumber: driverDataFetched[0].fastCardNumber,
+      travelDocuments: driverDataFetched[0].travelDocuments
     }
   }
   showPassengerDetails(passengerID) {
-    let passengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
+    const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
     this.passengerData = {
-      passengerID: passengerData[0].passengerID,
-      firstName: passengerData[0].firstName,
-      gender: passengerData[0].gender,
-      lastName: passengerData[0].lastName,
-      dateOfBirth: passengerData[0].dateOfBirth,
-      citizenshipCountry: passengerData[0].citizenshipCountry,
-      fastCardNumber: passengerData[0].fastCardNumber,
-      travelDocuments: passengerData[0].travelDocuments
+      passengerID: passengerDataFetched[0].passengerID,
+      firstName: passengerDataFetched[0].firstName,
+      gender: passengerDataFetched[0].gender,
+      lastName: passengerDataFetched[0].lastName,
+      dateOfBirth: passengerDataFetched[0].dateOfBirth,
+      citizenshipCountry: passengerDataFetched[0].citizenshipCountry,
+      fastCardNumber: passengerDataFetched[0].fastCardNumber,
+      travelDocuments: passengerDataFetched[0].travelDocuments
     };
   }
 
@@ -159,7 +158,7 @@ export class AceDetailsComponent implements OnInit {
   }
 
  amendManifest() {
-   const amend = 'amend';
- this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.entryID + `?manifestType=` + amend);
+   const amend = true;
+ this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.entryID + `?amendManifest=` + amend);
  }
 }
