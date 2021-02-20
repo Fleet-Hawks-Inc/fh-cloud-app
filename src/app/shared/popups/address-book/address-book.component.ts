@@ -10,6 +10,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -260,6 +261,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
    staffData = {
     entityType: 'staff',
     paymentDetails: {},
+    loginEnabled: false,
     address: [{
       addressType: '',
       countryID: '',
@@ -278,6 +280,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       userLocation: ''
     }],
     userAccount: {},
+    userData : {
+      username: '',
+      userType: '',
+      password: '',
+      confirmPassword: ''
+    }
   };
 
   userDetailData: any;
@@ -370,17 +378,18 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
   loginDiv = false;
-  userData = {
-    username: '',
-    userType: '',
-    password: '',
-    confirmPassword: ''
-  };
+  
+  errorClass = false;
+  errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
+  fieldvisibility = 'false';
+  newStaffUser = 'false';
+
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
             private modalService: NgbModal,
             private HereMap: HereMapService,
+            private spinner: NgxSpinnerService,
             private listService: ListService
             )
   { }
@@ -1690,7 +1699,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hasSuccess = false;
 
     this.hideErrors();
-
+    this.spinner.show();
     for (let i = 0; i < this.staffData.address.length; i++) {
       const element = this.staffData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
@@ -1701,7 +1710,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
     // this.removeUserLocation(this.staffData.address);
@@ -1716,8 +1724,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-
-    this.apiService.postData('staffs', formData, true).
+    
+    this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1731,6 +1739,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.spinner.hide();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
               },
@@ -1739,8 +1748,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             });
         },
         next: (res) => {
+          this.spinner.hide();
           this.response = res;
           this.hasSuccess = true;
+          if(this.staffData.loginEnabled){
+            this.saveUserData();
+          }
           $('#addStaffModal').modal('hide');
           this.staffs = [];
           this.fetchStaffsCount();
@@ -1784,7 +1797,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
 
-    this.apiService.putData('staffs', formData, true).subscribe({
+    this.apiService.putData('staffs?newUser='+this.newStaffUser, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1827,10 +1840,17 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v == 'CognitoPassword') {
+          this.errorClass = true;
+          this.errorClassMsg = this.errors[v];
+        } else {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
       });
+
+    this.spinner.hide();
     // this.vehicleForm.showErrors(this.errors);
   }
 
@@ -2338,6 +2358,16 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     } else if(type === 'staff') {
       $('#addStaffModal').modal('show');
       this.staffData = item;
+      if(item.loginEnabled){
+        this.loginDiv = true;
+        this.fieldvisibility = 'true';
+        this.newStaffUser = 'false';
+      } else {
+        this.staffData.loginEnabled = false;
+        this.loginDiv = false;
+        this.fieldvisibility = 'false';
+        this.newStaffUser = 'true';
+      }
       let result = this.assignAddressToUpdate(item.address)
       this.staffData.address = result;
 
@@ -2376,6 +2406,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.modalTitle = 'Add ';
     this.hasError = false;
     this.hasSuccess = false;
+    this.loginDiv = false;
+    this.fieldvisibility = 'false';
+    this.newStaffUser = 'false';
     if(type == 'driver') {
       this.showDriverModal = true;
     } else {
@@ -2593,6 +2626,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     // Staff Object
     this.staffData = {
       entityType: 'staff',
+      loginEnabled: false,
       paymentDetails: {},
       address: [{
         addressType: '',
@@ -2612,7 +2646,18 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         userLocation: ''
       }],
       userAccount: {},
+      userData : {
+        username: '',
+        userType: '',
+        password: '',
+        confirmPassword: ''
+      }
     };
+
+    this.loginDiv = false;
+    this.fieldvisibility = 'true';
+    this.newStaffUser = 'false';
+    
   }
 
   fetchAllStatesIDs() {
@@ -2785,7 +2830,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2820,7 +2865,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2855,7 +2900,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2890,7 +2935,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2925,7 +2970,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2960,7 +3005,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -2995,7 +3040,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -3030,7 +3075,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
+        {"targets": [0,1,2,3,4,5,6],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -3039,6 +3084,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('staffs/fetch/records?staffID='+this.filterVal.staffID+'&lastKey='+this.lastEvaluatedKeyStaff, dataTablesParameters).subscribe(resp => {
             current.staffs = resp['Items'];
+            console.log(current.staffs);
             if (resp['LastEvaluatedKey'] !== undefined) {
               this.lastEvaluatedKeyStaff = resp['LastEvaluatedKey'].staffID;
 
@@ -3065,7 +3111,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6],"orderable": false},
+        {"targets": [0,1,2,3,4,5],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -3100,7 +3146,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
+        {"targets": [0,1,2,3,4],"orderable": false},
       ],
       dom: 'lrtip',
       language: {
@@ -3704,8 +3750,63 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   enableLogin(event) {
-    console.log('event')
-    console.log(event.target.checked)
     this.loginDiv = event.target.checked;
+    // this.staffData
+  }
+
+  saveUserData() {
+    console.log('in save userdata')
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    // if (this.staffData.userData.password === this.staffData.userData.confirmPassword && this.staffData.userData.password != '') {
+      const data = {
+        firstName: this.staffData['firstName'],
+        lastName: this.staffData['lastName'],
+        employeeID: this.staffData['employeeID'],
+        dateOfBirth: this.staffData['dateOfBirth'],
+        phone: this.staffData['workPhone'],
+        email: this.staffData['workEmail'],
+        currentStatus: 'ACTIVE',
+        departmentName: this.staffData.userAccount['department'],
+        userType: this.staffData.userData.userType,
+        userName: this.staffData.userData.username,
+        password: this.staffData.userData.password,
+      };
+
+      // create form data instance
+      const formData = new FormData();
+
+      //append other fields
+      formData.append('data', JSON.stringify(data));
+
+      this.apiService.postData('users', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.toastr.error('Please see the errors');
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.errorClass = false;
+        }
+      });
+    // } else {
+    //   this.errorClass = true;
+    // }
   }
 }
