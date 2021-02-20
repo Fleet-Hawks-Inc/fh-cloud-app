@@ -221,7 +221,7 @@ vehicles= [];
   countries: any = [];
   states: any = [];
   groups = [];
-  drivers = [];
+  drivers: any;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -268,7 +268,7 @@ vehicles= [];
     this.fetchInspectionForms();
     //this.fetchVendors();
     this.fetchGroups();
-    this.fetchDrivers();
+    // this.fetchDrivers();
     this.fetchVehicles();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
@@ -277,6 +277,7 @@ vehicles= [];
     this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
+    this.listService.fetchDrivers();
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
@@ -463,6 +464,7 @@ vehicles= [];
    this.states = this.listService.stateList;
    this.ownerOperators = this.listService.ownerOperatorList;
    this.servicePrograms = this.listService.serviceProgramList;
+   this.drivers = this.listService.driversList;
   }
 
 
@@ -652,8 +654,9 @@ vehicles= [];
         measurmentUnit: this.settings.measurmentUnit,
       }
     }
-    localStorage.setItem('vehicle', JSON.stringify(data));
-    this.router.navigateByUrl('/fleet/drivers/add')
+    // localStorage.setItem('vehicle', JSON.stringify(data));
+    // this.router.navigateByUrl('/fleet/drivers/add')
+    $('#addDriverModelVehicle').modal('show');
   }
 
   fetchGroups() {

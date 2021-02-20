@@ -227,12 +227,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
      * Unsaved Changes
      */
     canLeave(): boolean {
-      // if (this.driverForm.dirty && !this.isSubmitted) {
-      //   if (!this.modalService.hasOpenModals()) {
-      //     this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
-      //   }
-      //   return false;
-      // }
+      if (this.driverForm.dirty && !this.isSubmitted) {
+        if (!this.modalService.hasOpenModals()) {
+          this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
+        }
+        return false;
+      }
       this.modalServiceOwn.triggerRedirect.next(true);
       this.takeUntil$.next();
       this.takeUntil$.complete();
@@ -390,7 +390,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async nextStep() {
     
     if(!this.driverID){
-      localStorage.setItem('driver', JSON.stringify(this.driverData));
+      // localStorage.setItem('driver', JSON.stringify(this.driverData));
       await this.onSubmit();
     }else {
       await this.updateDriver();
@@ -415,11 +415,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   prevStep() {
     this.currentTab--;
     if(this.driverID) return;
-    localStorage.setItem('driver', JSON.stringify(this.driverData));
+    // localStorage.setItem('driver', JSON.stringify(this.driverData));
   }
   async tabChange(value) {
     if(!this.driverID){
-      localStorage.setItem('driver', JSON.stringify(this.driverData));
+      // localStorage.setItem('driver', JSON.stringify(this.driverData));
       await this.onSubmit();
     }else {
       await this.updateDriver();
@@ -925,7 +925,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             emergencyAddress: '',
           },
         }
-        localStorage.setItem('driver', JSON.stringify(driver));
+        // localStorage.setItem('driver', JSON.stringify(driver));
         // this.router.navigateByUrl('/fleet/drivers/list');
         this.spinner.hide();
         this.cancel();

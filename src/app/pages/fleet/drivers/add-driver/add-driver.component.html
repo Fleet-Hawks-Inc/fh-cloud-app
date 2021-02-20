@@ -1164,7 +1164,7 @@
                                              class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Status<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.hosDetails.hosStatus"
-                                             (change)="complianceChange($event)" name="hosDetails.hosStatus"
+                                             (change)="complianceChange($event);onChangeHideErrors('hosDetails.hosStatus')" name="hosDetails.hosStatus"
                                              class="form-control populate"
                                              placeholder="Select exemption status of the driver">
 
@@ -1207,7 +1207,9 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Type<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
+                                          <ng-select 
+                                             [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
+                                             (change)="onChangeHideErrors('hosDetails.type')"
                                              placeholder="Select the record keeping type">
 
                                              <ng-option *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'"
@@ -1221,7 +1223,9 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Cycle<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.hosDetails.hosCycle"
-                                             name="hosDetails.hosCycle" class="form-control populate"
+                                             name="hosDetails.hosCycle" 
+                                             (change)="onChangeHideErrors('hosDetails.hosCycle')"
+                                             class="form-control populate"
                                              placeholder="Select the cycle for the driver">
 
                                              <ng-option class="text-capitalize" *ngFor="let cycle of cycles"
@@ -1234,6 +1238,7 @@
                                              Terminal<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.hosDetails.homeTerminal"
                                              name="hosDetails.homeTerminal" class="form-control populate"
+                                             (change)="onChangeHideErrors('hosDetails.homeTerminal')"
                                              placeholder="Select home terminal of the driver">
 
                                              <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
