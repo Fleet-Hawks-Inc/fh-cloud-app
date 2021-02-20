@@ -66,7 +66,7 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <p class="font-weight-semibold text-5 mb-0 pt-1">Mike</p>
+                                                <p class="font-weight-semibold text-5 mb-0 pt-1">{{ currentUser }}</p>
                                             </div>
                                         </div>
 
@@ -74,7 +74,9 @@
 
                                             <div class="col-lg-10">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip# 
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
 
                                                 <input type="text" class="form-control" name="tripNo"
                                                     [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
@@ -85,7 +87,8 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                                    Order Number</label>
+                                                    Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
                                                     [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
                                             </div>
@@ -96,7 +99,8 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                                    Permanent Route</label>
+                                                    Permanent Route
+                                                </label>
                                                 <ng-select [(ngModel)]="tripData.routeID" name="routeID"
                                                     placeholder="Select Route">
                                                     <ng-option *ngFor="let route of routes" value="{{ route.routeID }}">
@@ -117,19 +121,21 @@
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
                                                 <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
-
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
-
                                             <div class="col-lg-10 col-md-12">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                                    Trip Date</label>
+                                                    Trip Date
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
                                                     placeholder="Select Trip Date" (click)="from.toggle()" ngbDatepicker
                                                     #from="ngbDatepicker" class="form-control" autocomplete="off">
@@ -830,7 +836,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.driverID }}"
+                                                <td class="driverClass" id="drivr_{{ driver.userName }}"
                                                     (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
@@ -858,7 +864,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}"
+                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}"
                                                     (click)="driverChange(driver,'codriver','click')">
                                                     {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span

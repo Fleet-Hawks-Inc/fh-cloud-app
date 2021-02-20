@@ -165,19 +165,16 @@ export class DispatchOverviewComponent implements OnInit {
       subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.isDeleted === 0 && element.tripStatus === 'planned'){
-            for (let j = 0; j < element.tripPlanning.length; j++) {
-              const element2 = element.tripPlanning[j];
-              if(element2.date != '' && element2.date != undefined) {
-                let pickDate = element2.date.split("-");
+          if(element.isDeleted === 0 && element.tripStatus === 'confirmed'){
+              if(element.dateCreated != '' && element.dateCreated != undefined) {
+                let pickDate = element.dateCreated.split("-");
                 var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
-                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup") { 
+                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)) { 
                     pickupObj.todPickupCount = pickupObj.todPickupCount+1;
-                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0) && element2.type === "Pickup"){
+                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)){
                     pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
                 }
               }
-            }
             resolve(pickupObj);
           }
         }
@@ -201,7 +198,6 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('trips/status/enroute').
       subscribe((result: any) => {
-        // result = result.Items[0];
         this.activeTripsCount = result.Count;
         this.spinner.hide();
       })

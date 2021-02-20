@@ -1,13 +1,5 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pt-0 pl-0 pr-0">
             <header class="page-header pr-5">
                 <div class="row pr-1 mr-1" style="padding-top:9px;">
@@ -105,9 +97,9 @@
                                                         <div class="col-md-4">
                                                             <a class="image-popup-no-margins"
                                                                 href="javascript:;">
-                                                                <img class="img-fluid"
+                                                                <!-- <img class="img-fluid"
                                                                     src="" alt="Image"
-                                                                    width="75">
+                                                                    width="75"> -->
                                                             </a>
                                                         </div>
 
@@ -131,8 +123,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Type</th>
-                                                        <th>Date</th>
-                                                        <th>Time</th>
+                                                        <!-- <th>Date</th>
+                                                        <th>Time</th> -->
                                                         <th>Pickup Time</th>
                                                         <th>Drop Time</th>
                                                         <th>Actual Pickup Time</th>
@@ -140,6 +132,7 @@
                                                         <!-- <th>Departure Date/Time</th> -->
                                                         <th>Name</th>
                                                         <th>Location</th>
+                                                        <th>Loaded/ Empty</th>
                                                         <th>Miles</th>
                                                         <th>Vehicle</th>
                                                         <th>Trailer</th>
@@ -151,8 +144,8 @@
                                                 <tbody>
                                                     <tr *ngFor="let trip of trips">
                                                         <td>{{ trip.type }}</td>
-                                                        <td>{{ trip.date }}</td>
-                                                        <td>{{ trip.time }}</td>
+                                                        <!-- <td>{{ trip.date }}</td>
+                                                        <td>{{ trip.time }}</td> -->
                                                         <td>{{ trip.pickupTime }}</td>
                                                         <td>{{ trip.dropTime }}</td>
                                                         <td>{{ trip.actualPickupTime }}</td>
@@ -160,6 +153,11 @@
                                                         <!-- <td>6/6/2020 10:00 AM</td> -->
                                                         <td>{{ trip.name }}</td>
                                                         <td>{{ trip.locationName }}</td>
+                                                        <td>
+                                                            <span class="badge badge-dark p-1 text-uppercase" title=""
+                                                            data-original-title="Empty Miles" *ngIf="!!trip.mileType">{{
+                                                            trip.mileType }}</span>
+                                                        </td>
                                                         <td>{{ trip.miles }}</td>
                                                         <td>{{ trip.vehicleName }}</td>
                                                         <td>{{ trip.trailerName }}</td>
