@@ -329,6 +329,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
+    this.fetchStateTaxes();
     this.fetchCustomers();
     this.fetchShippers();
     this.fetchReceivers();
@@ -358,6 +359,30 @@ export class AddOrdersComponent implements OnInit {
   timpickerInit() {
    
   }
+
+  fetchStateTaxes (){
+    this.apiService.getData('stateTaxes/get/carrierStateTax').subscribe((result) => {
+      result = result.Items;
+
+      if(result.length > 0){
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: result[0].GST
+          },
+          {
+            name: 'PST',
+            amount: result[0].PST
+          },
+          {
+            name: 'HST',
+            amount: result[0].HST
+          }
+        ] 
+      }
+    })    
+  }
+
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
