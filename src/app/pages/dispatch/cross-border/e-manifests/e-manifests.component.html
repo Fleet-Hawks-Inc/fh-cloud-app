@@ -207,7 +207,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
                                        <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>-->
 
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
@@ -259,7 +259,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aciManifest of ACIList;">
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.CCC}}{{aciManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                         <!-- <td>{{aciManifest.CCC}}</td>                                          -->
 
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
