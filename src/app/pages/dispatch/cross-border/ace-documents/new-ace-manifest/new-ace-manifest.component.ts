@@ -677,8 +677,8 @@ export class NewAceManifestComponent implements OnInit {
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
         this.SCAC = result.SCAC;
-        // this.tripNumber = result.tripNumber.substring(4,(result.tripNumber.length));
-        this.tripNumber = result.tripNumber;
+        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
+        // this.tripNumber = result.tripNumber;
         this.usPortOfArrival = result.usPortOfArrival;
         this.estimatedArrivalDate = result.estimatedArrivalDate;
         this.estimatedArrivalTime = result.estimatedArrivalTime;
@@ -688,11 +688,11 @@ export class NewAceManifestComponent implements OnInit {
         this.trailers = result.trailers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
-        (this.currentStatus = result.currentStatus),
-          (this.usAddress[`addressLine`] = result.usAddress.addressLine),
-          (this.usAddress[`state`] = result.usAddress.state),
-          (this.usAddress[`city`] = result.usAddress.city),
-          (this.usAddress[`zipCode`] = result.usAddress.zipCode),
+        this.currentStatus = result.currentStatus,
+          this.usAddress[`addressLine`] = result.usAddress.addressLine,
+          this.usAddress[`state`] = result.usAddress.state,
+          this.usAddress[`city`] = result.usAddress.city,
+          this.usAddress[`zipCode`] = result.usAddress.zipCode,
           setTimeout(() => {
             this.getStates();
             this.getAddressCities();
