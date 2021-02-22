@@ -129,12 +129,12 @@ export class DriverDetailComponent implements OnInit {
     this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
-    this.fetchYardsByIDs();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
+    this.fetchAddress()
   }
 
    /**
@@ -149,7 +149,7 @@ export class DriverDetailComponent implements OnInit {
           this.driverData = await result['Items'][0];
           
           this.cycle = this.driverData.hosDetails.hosCycle;
-          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
+          await this.fetchcarrierAddressByID(this.driverData.hosDetails.homeTerminal);
           this.workEmail = this.driverData.workEmail;
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
@@ -283,6 +283,12 @@ export class DriverDetailComponent implements OnInit {
         this.cycleObjects = result;
       });
   }
+  fetchAddress() {
+    this.apiService.getData('addresses')
+      .subscribe((result: any) => {
+        console.log('addresses', result)
+    });
+  }
 
   fetchGroupsbyIDs() {
     this.apiService.getData('groups/get/list')
@@ -291,10 +297,14 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-  fetchYardsByIDs() {
-    this.apiService.getData('yards/get/list')
-    .subscribe((result: any) => {
-      this.yardsObjects = result;
+  async fetchcarrierAddressByID(id: any) {
+    console.log('id', id)
+    console.log('id', this.driverData.hosDetails.homeTerminal)
+    this.apiService.getData(`addresses/${id}`)
+    .subscribe(async (result: any) => {
+      console.log('result', result)
+      this.yardsObjects = await result;
+      console.log('yardsObjects', this.yardsObjects)
     });
   }
 

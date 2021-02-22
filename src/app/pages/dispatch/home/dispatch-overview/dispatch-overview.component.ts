@@ -148,6 +148,7 @@ export class DispatchOverviewComponent implements OnInit {
                   }
                 }
                 resolve(result.Items);
+                current.spinner.hide();
               });
             }
           }

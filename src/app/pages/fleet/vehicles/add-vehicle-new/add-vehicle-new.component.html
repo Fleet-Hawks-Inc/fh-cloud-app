@@ -185,7 +185,7 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <ng-select class="form-control populate" id="main_driver" name="driverID" [(ngModel)]="driverID" placeholder="Select driver to assign to vehicle" (click)="driverChange('main')">
                                            <optgroup label="">
-                                              <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
+                                              <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
@@ -196,7 +196,7 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team <small>(If any)</small></label>
                                         <ng-select class="form-control populate" id="team_driver" name="teamDriverID" [(ngModel)]="teamDriverID" placeholder="Select co-driver to the vehicle" (click)="driverChange('team')">
                                            <optgroup label="">
-                                                 <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
+                                                 <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
                                            </optgroup>
                                         </ng-select>
                                      </div>
