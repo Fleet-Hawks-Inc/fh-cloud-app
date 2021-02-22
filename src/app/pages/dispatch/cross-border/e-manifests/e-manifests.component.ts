@@ -34,7 +34,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
  ACIList = [];
  aceSearch: string = '';
  aciSearch: string = '';
- vehicleID: string ='';
+ vehicleID: string = '';
  vehicleIdentification: string;
  currentStatus = '';
  suggestedVehicles = [];
@@ -42,7 +42,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
  vehicleIdentificationACI: string;
  suggestedVehiclesACI = [];
  currentStatusACI = '';
- vehicles = []; 
+ vehicles = [];
  vehiclesList: any = {};
   assetsList: any = {};
   driversList: any = {};
@@ -190,7 +190,7 @@ toDate: string = '';
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
-    if(this.activeDiv == 'ace') { 
+    if(this.activeDiv == 'ace') {
       this.dtTrigger.unsubscribe();
     } else {
       this.dtTriggerACI.unsubscribe();
@@ -203,10 +203,10 @@ toDate: string = '';
   aciEndDate: string = '';
   aciFromDate: string = '';
   aciToDate: string = '';
-  searchACEFilter() {     
+  searchACEFilter() {
     if (this.vehicleID !== ''  || this.aceSearch !== '' || this.startDate !== '' || this.endDate !== '') {
       if(this.startDate !== ''){
-        this.fromDate = moment(this.startDate,'DD-MM-YYYY').format('YYYY-MM-DD');       
+        this.fromDate = moment(this.startDate,'DD-MM-YYYY').format('YYYY-MM-DD');
        }
        else{
          this.fromDate = this.startDate;
@@ -239,7 +239,7 @@ toDate: string = '';
       return false;
     }
   }
-  deleteACEEntry(entryID) {  
+  deleteACEEntry(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
       .getData(`ACEeManifest/isDeleted/${entryID}/`+1)
@@ -254,8 +254,8 @@ rerender(status=''): void {
   this.dtElement.forEach((dtElement: DataTableDirective) => {
     dtElement.dtInstance.then((dtInstance: any) => {
       let tableId = dtInstance.table().node().id;
-      if(this.activeDiv == tableId) { 
-        if(tableId == 'ace') { 
+      if(this.activeDiv == tableId) {
+        if(tableId == 'ace') {
           // Destroy the table first
           dtInstance.destroy();
           if (status === 'reset') {
@@ -277,7 +277,7 @@ rerender(status=''): void {
           this.dtTriggerACI.next();
         }
       }
-      
+
     });
   });
 }
@@ -296,7 +296,7 @@ ACIEntries() {
     },
   });
 }
-  initDataTableACI() { 
+  initDataTableACI() {
     let current = this;
     this.dtOptionsACI = { // All list options
       pagingType: 'full_numbers',
@@ -330,7 +330,7 @@ ACIEntries() {
   searchACIFilter() {
     if (this.vehicleIDACI !== '' || this.aciSearch !== '' ||  this.aciStartDate !== '' || this.aciEndDate !== '') {
       if(this.aciStartDate !== ''){
-        this.aciFromDate = moment(this.aciStartDate,'DD-MM-YYYY').format('YYYY-MM-DD');       
+        this.aciFromDate = moment(this.aciStartDate,'DD-MM-YYYY').format('YYYY-MM-DD');
        }
        else{
          this.aciFromDate = this.aciStartDate;
@@ -363,7 +363,7 @@ ACIEntries() {
       return false;
     }
   }
-  
+
   deleteACIEntry(entryID) {
       if (confirm('Are you sure you want to delete?') === true) {
         this.apiService
@@ -374,7 +374,7 @@ ACIEntries() {
         });
       }
   }
- 
+
   changeTab(tabType) {
     this.activeDiv = tabType;
     if(tabType == 'ace') {
