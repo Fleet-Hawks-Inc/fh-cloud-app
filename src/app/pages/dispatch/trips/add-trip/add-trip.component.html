@@ -9,20 +9,21 @@
         width: 100%;
     }
 
-    #assetModal .modal-dialog{
+    #assetModal .modal-dialog {
         max-width: 1200px;
     }
 
     canvas {
-         -moz-user-select: none;
-         -webkit-user-select: none;
-         -ms-user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
     }
-    .td_border{
+
+    .td_border {
         border: 2px solid black !important;
     }
 
-    #locationTable{
+    #locationTable {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
@@ -47,7 +48,8 @@
                     </div>
 
                     <div class="col-md-8  col-lg-8 text-right pr-1">
-                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default"><i class="fas fa-list"></i> All Trips</a>
+                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default"><i
+                                class="fas fa-list"></i> All Trips</a>
                     </div>
                 </div>
             </header>
@@ -60,17 +62,21 @@
                                     <div class="col-lg-5 offset-lg-1 my-2">
                                         <div class="row">
                                             <div class="col-lg-3">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Dispatcher</label>
                                             </div>
                                             <div class="col-lg-6">
-                                                <p class="font-weight-semibold text-5 mb-0 pt-1">Mike</p>
+                                                <p class="font-weight-semibold text-5 mb-0 pt-1">{{ currentUser }}</p>
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            
+
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Trip#</label>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Trip# 
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
 
                                                 <input type="text" class="form-control" name="tripNo"
                                                     [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
@@ -79,17 +85,26 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Order Number</label>
-                                                <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
+                                                <input type="text" class="form-control" (click)="showMOdal()"
+                                                    [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
                                             </div>
                                         </div>
 
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Permanent Route</label>
-                                              <ng-select [(ngModel)]="tripData.routeID" name="routeID" placeholder="Select Route">
-                                                    <ng-option *ngFor = "let route of routes" value="{{ route.routeID }}">{{ route.routeName }}</ng-option>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Permanent Route
+                                                </label>
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID"
+                                                    placeholder="Select Route">
+                                                    <ng-option *ngFor="let route of routes" value="{{ route.routeID }}">
+                                                        {{ route.routeName }}</ng-option>
                                                 </ng-select>
                                               </div>
                                             </div>
@@ -106,29 +121,33 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#</label>
-
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
-                                            
                                             <div class="col-lg-10 col-md-12">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date</label>
-
-                                                <input [(ngModel)]="tripData.dateCreated" name="dateCreated" 
-                                                    type="text" 
-                                                    placeholder="Select Trip Date"
-                                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                                    class="form-control" autocomplete="off"> 
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                    Trip Date
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                </label>
+                                                <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
+                                                    placeholder="Select Trip Date" (click)="from.toggle()" ngbDatepicker
+                                                    #from="ngbDatepicker" class="form-control" autocomplete="off">
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer Temperature</label>
+                                                <label
+                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Reefer
+                                                    Temperature</label>
                                             </div>
                                             <div class="col-lg-10 col-md-12">
                                                 <div class="row">
@@ -139,7 +158,9 @@
                                                             placeholder="Enter reefer temperature">
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
-                                                        <ng-select [(ngModel)]="tripData.reeferTemperatureUnit" name="reeferTemperatureUnit" placeholder="Select Temperature Unit">
+                                                        <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
+                                                            name="reeferTemperatureUnit"
+                                                            placeholder="Select Temperature Unit">
                                                             <ng-option value="C">C</ng-option>
                                                             <ng-option value="F">F</ng-option>
                                                         </ng-select>
@@ -149,8 +170,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                               
+
+
 
                                 <div class="row my-2">
                                     <div class="col-lg-12">
@@ -185,27 +206,36 @@
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
                                                     <!-- <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
                                                     <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
-                                                    <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime }}</td>
-                                                    <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}</td>
-                                                    <td id="labelCell15{{i}}" class="labelRow{{i}}">{{ trip.actualPickupTime }}</td>
-                                                    <td id="labelCell16{{i}}" class="labelRow{{i}}">{{ trip.actualDropTime }}</td>
+                                                    <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime
+                                                        }}</td>
+                                                    <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}
+                                                    </td>
+                                                    <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
+                                                        trip.actualPickupTime }}</td>
+                                                    <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
+                                                        trip.actualDropTime }}</td>
 
                                                     <td id="labelCell3{{i}}" class="labelRow{{i}}">
-                                                        <a class="modal-with-form">{{ trip.name }}</a></td>
+                                                        <a class="modal-with-form">{{ trip.name }}</a>
+                                                    </td>
                                                     <td id="labelCell4{{i}}" class="labelRow{{i}}">
                                                         {{ trip.locationName }}
                                                     </td>
                                                     <td id="labelCell5{{i}}" class="labelRow{{i}}">
                                                         <span class="badge badge-dark p-1 text-uppercase" title=""
-                                                            data-original-title="Empty Miles"
-                                                            *ngIf="!!trip.mileType">{{ trip.mileType }}</span>
+                                                            data-original-title="Empty Miles" *ngIf="!!trip.mileType">{{
+                                                            trip.mileType }}</span>
                                                     </td>
                                                     <td id="labelCell6{{i}}" class="labelRow{{i}}">{{ trip.miles }}
                                                     </td>
-                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ trip.vehicleName }}</td>
-                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}">{{ trip.trailerName }}</td>
-                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}">{{ trip.driverName }}</td>
-                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.coDriverName }}</td>
+                                                    <td id="labelCell7{{i}}" class="labelRow{{i}}">{{ trip.vehicleName
+                                                        }}</td>
+                                                    <td id="labelCell8{{i}}" class="labelRow{{i}}">{{ trip.trailerName
+                                                        }}</td>
+                                                    <td id="labelCell9{{i}}" class="labelRow{{i}}">{{ trip.driverName }}
+                                                    </td>
+                                                    <td id="labelCell10{{i}}" class="labelRow{{i}}">{{ trip.coDriverName
+                                                        }}</td>
                                                     <td id="labelCell11{{i}}" class="labelRow{{i}}">
                                                         {{ trip.carrierName }}
                                                     </td>
@@ -232,16 +262,20 @@
                                                     </td>-->
 
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="time" class="form-control" id="editCell13{{i}}" name="editCell13" value="{{ trip.pickupTime }}">
+                                                        <input type="time" class="form-control" id="editCell13{{i}}"
+                                                            name="editCell13" value="{{ trip.pickupTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="time" class="form-control" id="editCell14{{i}}" name="editCell14" value="{{ trip.dropTime }}">
+                                                        <input type="time" class="form-control" id="editCell14{{i}}"
+                                                            name="editCell14" value="{{ trip.dropTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="time" class="form-control" id="editCell15{{i}}" name="editCell15" value="{{ trip.actualPickupTime }}">
+                                                        <input type="time" class="form-control" id="editCell15{{i}}"
+                                                            name="editCell15" value="{{ trip.actualPickupTime }}">
                                                     </td>
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="time" class="form-control" id="editCell16{{i}}" name="editCell16" value="{{ trip.actualDropTime }}">
+                                                        <input type="time" class="form-control" id="editCell16{{i}}"
+                                                            name="editCell16" value="{{ trip.actualDropTime }}">
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -254,11 +288,12 @@
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
-                                                        <input type="text" id="editCell4{{i}}" name="editCell4{{i}}" [(ngModel)]="trip.locationName" class="form-control newRow"
+                                                        <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
+                                                            [(ngModel)]="trip.locationName" class="form-control newRow"
                                                             autocomplete="off" (keyup)="searchTerm.next($event);"
-                                                             placeholder="Start typing to get location suggestions"
+                                                            placeholder="Start typing to get location suggestions"
                                                             *ngIf="trip.fromOrder != 'yes'">
-                                                        
+
                                                         <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                             *ngIf="searchResults">
                                                             <li *ngFor="let item of searchResults;">
@@ -267,7 +302,7 @@
                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
                                                             </li>
                                                         </ul>
-                                                        
+
                                                         <span *ngIf="trip.fromOrder == 'yes'">
                                                             {{ trip.locationName }}
                                                         </span>
@@ -328,16 +363,20 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="time" class="form-control newRow" id="cell13" name="cell13">
+                                                        <input type="time" class="form-control newRow" id="cell13"
+                                                            name="cell13">
                                                     </td>
                                                     <td>
-                                                        <input type="time" class="form-control newRow" id="cell14" name="cell14">
+                                                        <input type="time" class="form-control newRow" id="cell14"
+                                                            name="cell14">
                                                     </td>
                                                     <td>
-                                                        <input type="time" class="form-control newRow" id="cell15" name="cell15">
+                                                        <input type="time" class="form-control newRow" id="cell15"
+                                                            name="cell15">
                                                     </td>
                                                     <td>
-                                                        <input type="time" class="form-control newRow" id="cell16" name="cell16">
+                                                        <input type="time" class="form-control newRow" id="cell16"
+                                                            name="cell16">
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell3" class="form-control newRow"
@@ -345,10 +384,12 @@
                                                             autocomplete="off">
                                                     </td>
                                                     <td>
-                                                        <input type="text" id="cell4" name="cell4" class="form-control newRow"
-                                                            autocomplete="off" (keyup)="searchTerm.next($event);"
-                                                            [(ngModel)]="textFieldValues.locationName" placeholder="Start typing to get location suggestions">
-                                                        
+                                                        <input type="text" id="cell4" name="cell4"
+                                                            class="form-control newRow" autocomplete="off"
+                                                            (keyup)="searchTerm.next($event);"
+                                                            [(ngModel)]="textFieldValues.locationName"
+                                                            placeholder="Start typing to get location suggestions">
+
                                                         <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                             *ngIf="searchResults">
                                                             <li *ngFor="let item of searchResults;">
@@ -374,18 +415,20 @@
                                                     <td>
                                                         <input type="text" id="cell7" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
-                                                            value="{{ textFieldValues.vehicleName }}"
-                                                            autocomplete="off" readonly>
+                                                            value="{{ textFieldValues.vehicleName }}" autocomplete="off"
+                                                            readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell8" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
-                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off" readonly>
+                                                            value="{{ textFieldValues.trailerName}}" autocomplete="off"
+                                                            readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell9" class="form-control newRow"
                                                             (click)="showAssetModal('add','')"
-                                                            value="{{ textFieldValues.driverName }}" autocomplete="off" readonly>
+                                                            value="{{ textFieldValues.driverName }}" autocomplete="off"
+                                                            readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" id="cell10" class="form-control newRow"
@@ -417,10 +460,13 @@
                                     <div class="col-lg-12">
                                         <h3 class="mb-0 text-6 font-weight-bold text-dark">Trip Info</h3>
                                         <div class="row">
-                                            <div class="col-lg-4 text-center" *ngIf="trips.length > 0; else sourceElseBlock">
+                                            <div class="col-lg-4 text-center"
+                                                *ngIf="trips.length > 0; else sourceElseBlock">
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source</p>
-                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[0].locationName }}</p>
-                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }} {{ trips[0].time }}</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                    trips[0].locationName }}</p>
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[0].date }}
+                                                    {{ trips[0].time }}</p>
                                             </div>
 
                                             <ng-template #sourceElseBlock>
@@ -435,11 +481,14 @@
                                                 <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
                                                 </p>
                                             </div>
-                                            <div class="col-lg-4 text-center" *ngIf="trips.length > 1; else destinationElseBlock">
+                                            <div class="col-lg-4 text-center"
+                                                *ngIf="trips.length > 1; else destinationElseBlock">
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
                                                 </p>
-                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{ trips[trips.length-1].locationName }}</p>
-                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{ trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">{{
+                                                    trips[trips.length-1].locationName }}</p>
+                                                <p class="mb-0 text-4 font-weight-normal text-dark">{{
+                                                    trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
                                             </div>
 
                                             <ng-template #destinationElseBlock>
@@ -456,8 +505,7 @@
                                             </div>
                                             <ul class="wizard-steps">
                                                 <li class="" *ngFor="let trip of trips">
-                                                    <a class="" href=""
-                                                        data-toggle="tab"><span></span>{{ trip.type}}
+                                                    <a class="" href="" data-toggle="tab"><span></span>{{ trip.type}}
                                                         <br>{{ trip.locationName }}
                                                         <br>{{ trip.pickupTime }}
                                                     </a>
@@ -475,9 +523,11 @@
                                         <div class="bggreyn p-3">
                                             <h3 class="font-weight-bold text-dark text-6 mt-0">Notifications</h3>
                                             <div class="row">
-                                                
+
                                                 <div class="col-lg-6 col-md-6">
-                                                    <label class="control-label font-weight-bold labelmt text-3 text-dark">Planned v/s Changed Route</label>
+                                                    <label
+                                                        class="control-label font-weight-bold labelmt text-3 text-dark">Planned
+                                                        v/s Changed Route</label>
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat1" name="changeRoute"
                                                             [(ngModel)]="tripData.notifications.changeRoute">
@@ -502,7 +552,9 @@
                                                 </div>
 
                                                 <div class="col-lg-6 col-md-6">
-                                                    <label class="control-label font-weight-    bold labelmt text-3 text-dark">Trip Details</label>
+                                                    <label
+                                                        class="control-label font-weight-    bold labelmt text-3 text-dark">Trip
+                                                        Details</label>
 
                                                     <div class="checkbox-custom checkbox-default">
                                                         <input type="checkbox" id="HazMat4" name="tripToDriver"
@@ -524,13 +576,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
+
+
                                 <div class="row text-right">
                                     <div class="col-lg-12 pr-4">
-                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;" routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1">Create Trip</a>
-                                        <a href="javascript:;" (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1">Update Trip</a>
+                                        <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
+                                            routerLink="/dispatch/trips/trip-list">Cancel</a>
+                                        <a href="javascript:;" (click)="createTrip()" *ngIf="!tripID"
+                                            class="btn btn-success mt-1">Create Trip</a>
+                                        <a href="javascript:;" (click)="updateTrip()" *ngIf="tripID"
+                                            class="btn btn-success mt-1">Update Trip</a>
                                     </div>
                                 </div>
                             </form>
@@ -557,12 +612,14 @@
                     <div class="m-2">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link pl-5 pr-5 active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL" role="tab"
-                                    aria-controls="loadFTL" aria-selected="true" (click)="changeOrderTab('FTL')">FTL</a>
+                                <a class="nav-link pl-5 pr-5 active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL"
+                                    role="tab" aria-controls="loadFTL" aria-selected="true"
+                                    (click)="changeOrderTab('FTL')">FTL</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link pl-5 pr-5" id="loadLTL-tab" data-toggle="tab" href="#loadLTL" role="tab"
-                                    aria-controls="loadLTL" aria-selected="false" (click)="changeOrderTab('LTL')">LTL</a>
+                                <a class="nav-link pl-5 pr-5" id="loadLTL-tab" data-toggle="tab" href="#loadLTL"
+                                    role="tab" aria-controls="loadLTL" aria-selected="false"
+                                    (click)="changeOrderTab('LTL')">LTL</a>
                             </li>
                         </ul>
                     </div>
@@ -575,7 +632,8 @@
                                             aria-labelledby="loadFTL-tab">
                                             <div class="tripvet-scroll-y addtrip-odnuscrollbar">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-striped mb-0 dataTable no-footer">
+                                                    <table
+                                                        class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                         <thead>
                                                             <tr class="" role="row">
                                                                 <th></th>
@@ -586,15 +644,20 @@
                                                                 <th class="text-2">Total Amount</th>
                                                                 <th class="text-2">Status</th>
                                                             </tr>
-                                                        </thead> 
+                                                        </thead>
                                                         <tbody class="ui-sortable">
                                                             <tr class="ui-sortable-handle odd" role="row"
                                                                 *ngFor="let order of ftlOrders">
                                                                 <td class="sorting_1">
-                                                                    <input type="radio" name="ftlOrderIds" value="{{ order.orderNumber }}" [checked]="order.selected" id="{{ order.orderID }}" (change)="selectOrderIDS('ftl', order)">
+                                                                    <input type="radio" name="ftlOrderIds"
+                                                                        value="{{ order.orderNumber }}"
+                                                                        [checked]="order.selected"
+                                                                        id="{{ order.orderID }}"
+                                                                        (change)="selectOrderIDS('ftl', order)">
                                                                 </td>
-                                                                
-                                                                <td class="loadid"><a href="javascript:;">{{ order.orderNumber }}</a></td>
+
+                                                                <td class="loadid"><a href="javascript:;">{{
+                                                                        order.orderNumber }}</a></td>
 
                                                                 <td>{{ customersObjects[order.customerID] }}</td>
                                                                 <td>
@@ -632,9 +695,12 @@
                                                         <td>
                                                             <!-- <input type="checkbox"> -->
                                                             <input type="checkbox" value="{{ order.orderNumber }}"
-                                                                name="ltlOrderIds" id="{{ order.orderID }}" [checked]="order.selected" (change)="selectOrderIDS('ltl')">
+                                                                name="ltlOrderIds" id="{{ order.orderID }}"
+                                                                [checked]="order.selected"
+                                                                (change)="selectOrderIDS('ltl')">
                                                         </td>
-                                                        <td class="loadid"><a href="javascript:;">{{ order.orderNumber }}</a></td>
+                                                        <td class="loadid"><a href="javascript:;">{{ order.orderNumber
+                                                                }}</a></td>
 
                                                         <td>{{ customersObjects[order.customerID] }}</td>
 
@@ -694,22 +760,26 @@
                             <tr>
                                 <td>
                                     <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
-                                    bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID" id="vehicleSelect" (change)="vehicleChange($event,'change')">
+                                        bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID"
+                                        id="vehicleSelect" (change)="vehicleChange($event,'change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset" id="informationAsset" [items]="assets" 
-                                    bindLabel="assetIdentification" [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
+                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset"
+                                        id="informationAsset" [items]="assets" bindLabel="assetIdentification"
+                                        [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername" 
-                                    id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'driver','change')">
+                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername"
+                                        id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName"
+                                        (change)="driverChange($event,'driver','change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername" 
-                                    id="coDriverSelect" [items]="codrivers" bindLabel="fullName" bindValue="userName" (change)="driverChange($event,'codriver','change')">
+                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername"
+                                        id="coDriverSelect" [items]="codrivers" bindLabel="fullName"
+                                        bindValue="userName" (change)="driverChange($event,'codriver','change')">
                                     </ng-select>
                                 </td>
                             </tr>
@@ -719,18 +789,23 @@
                                         <!-- <thead>head</thead> -->
                                         <tbody>
                                             <tr *ngFor="let vehicle of vehicles">
-                                                <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}" (click)="vehicleChange(vehicle,'click')">
+                                                <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}"
+                                                    (click)="vehicleChange(vehicle,'click')">
                                                     <div class="">
-                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i class="fas fa-truck-moving"
-                                                                data-toggle="tooltip" data-placement="bottom" title=""
-                                                                data-original-title="Vehicle"></i> {{ vehicle.vehicleIdentification }}</p>
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i
+                                                                class="fas fa-truck-moving" data-toggle="tooltip"
+                                                                data-placement="bottom" title=""
+                                                                data-original-title="Vehicle"></i> {{
+                                                            vehicle.vehicleIdentification }}</p>
                                                         <span class="driverstatus"><i class="fas fa-map-marker-alt"
-                                                            data-toggle="tooltip" data-placement="bottom" title=""
-                                                            data-original-title="Loation"></i> Kingston, Toronto, ON K7L 5K4
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Loation"></i> Kingston, Toronto, ON
+                                                            K7L 5K4
                                                         </span>
-                                                        <span class="driverstatus">Current Status: 
-                                                            <span class="badge badge-pills badge-dark p-1" data-toggle="tooltip"
-                                                                data-placement="bottom" title="" data-original-title="Current Status">ON
+                                                        <span class="driverstatus">Current Status:
+                                                            <span class="badge badge-pills badge-dark p-1"
+                                                                data-toggle="tooltip" data-placement="bottom" title=""
+                                                                data-original-title="Current Status">ON
                                                                 ROAD<span></span>
                                                             </span>
                                                         </span>
@@ -744,10 +819,13 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let asset of assets">
-                                                <td class="assetClass" id="asset_{{ asset.assetID }}" (click)="assetsChange(asset,'click')">
+                                                <td class="assetClass" id="asset_{{ asset.assetID }}"
+                                                    (click)="assetsChange(asset,'click')">
                                                     <div class="">
-                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> {{ asset.assetIdentification }}</p>
-                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston,
+                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> {{
+                                                            asset.assetIdentification }}</p>
+                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i>
+                                                            Kingston,
                                                             Toronto, ON K7L 5K4</span>
                                                     </div>
                                                 </td>
@@ -759,36 +837,45 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.driverID }}" (click)="driverChange(driver,'driver','click')">
+                                                <td class="driverClass" id="drivr_{{ driver.userName }}"
+                                                    (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
-                                                                class="offduty pull-right">OFF</span> {{ driver.fullName }}</p>
-                                                        <span class="driverstatus"> Crescent Road Vancouver, BC V6T 1Z2</span>
+                                                                class="offduty pull-right">OFF</span> {{ driver.fullName
+                                                            }}</p>
+                                                        <span class="driverstatus"> Crescent Road Vancouver, BC V6T
+                                                            1Z2</span>
                                                         <span class="driverstatus"><i class="fas fa-clock"></i> <span
-                                                                class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                                class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
+                                                            mins</span>
                                                         <span class="driverstatus"><i class="fa fa-clock"></i> <span
-                                                                class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
+                                                                class="font-weight-bold">HOS:</span> 7 hrs 30
+                                                            mins</span>
                                                         <span class="driverstatus"><i class="fas fa-user"></i> <span
-                                                                class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
-                                                    </div> 
+                                                                class="font-weight-bold">On Duty Hours:</span> 2 hr 30
+                                                            mins</span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
-                                        
+
                                     </table>
                                 </td>
                                 <td>
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.driverID }}" (click)="driverChange(driver,'codriver','click')">
-                                                     {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
+                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}"
+                                                    (click)="driverChange(driver,'codriver','click')">
+                                                    {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
-                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30 mins</span>
+                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
+                                                        mins</span>
                                                     <span class="driverstatus"><i class="fa fa-clock"></i> <span
                                                             class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
                                                     <span class="driverstatus"><i class="fas fa-user"></i> <span
-                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30 mins</span>
+                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30
+                                                        mins</span>
                                                 </td>
                                             </tr>
                                         </tbody>

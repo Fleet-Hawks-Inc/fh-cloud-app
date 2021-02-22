@@ -650,3 +650,9 @@ table.geofence-table tbody {
 .map-search__results ul{
     list-style: none;
 }
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    color: #fff !important;
+}
+label.error {
+    width: 100%;
+}

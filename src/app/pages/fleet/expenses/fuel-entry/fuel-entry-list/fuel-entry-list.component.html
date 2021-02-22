@@ -93,8 +93,6 @@
 											<th>Fuel Type</th>
 											<th>Fuel Cost</th>
 											<th>Invoice Total</th>
-											<th>Retail Total</th>
-											<th>Cost Per Mile</th>
 											<th>Actions</th>
 										</tr>
 									</thead>
@@ -123,8 +121,6 @@
 												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelType}}</td>
 												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.costPerLitre}} {{currency}}/l</td>
 												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.amountPaid}}{{currency}}</td>
-												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">Retail Total</td>
-												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">Cost Per Mile</td>
 											<td>
 												<div class="btn-group flex-wrap">
 													<button type="button" class="mb-1 mt-1 mr-1 btn"

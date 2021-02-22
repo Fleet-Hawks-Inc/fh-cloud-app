@@ -329,6 +329,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
+    this.fetchStateTaxes();
     this.fetchCustomers();
     this.fetchShippers();
     this.fetchReceivers();
@@ -358,6 +359,30 @@ export class AddOrdersComponent implements OnInit {
   timpickerInit() {
    
   }
+
+  fetchStateTaxes (){
+    this.apiService.getData('stateTaxes/get/carrierStateTax').subscribe((result) => {
+      result = result.Items;
+
+      if(result.length > 0){
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: result[0].GST
+          },
+          {
+            name: 'PST',
+            amount: result[0].PST
+          },
+          {
+            name: 'HST',
+            amount: result[0].HST
+          }
+        ] 
+      }
+    })    
+  }
+
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
@@ -382,7 +407,6 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveShipper(i) {
-
     let location = this.shippersReceivers[i].shippers.pickupLocation;
 
     let geoCodeResponse;
@@ -397,6 +421,38 @@ export class AddOrdersComponent implements OnInit {
       });
     }
     
+    //check if all required fields are filled
+    if(!this.shippersReceivers[i].shippers.shipperID ||
+      !this.shippersReceivers[i].shippers.pickupLocation ||
+      !this.shippersReceivers[i].shippers.pickupDate ||
+      !this.shippersReceivers[i].shippers.pickupTime ||
+      !this.shippersReceivers[i].shippers.contactPerson ||
+      !this.shippersReceivers[i].shippers.phone 
+      ){
+        this.toastr.error('Please fill required fields.');
+        return false;
+      }
+
+      let commoditiesFilled = true;
+      //check if selected commodities are filled
+      for(let j = 0; j < this.shippersReceivers[i].shippers.commodity.length;  j++){
+        let currentCommodity: any = this.shippersReceivers[i].shippers.commodity[j];
+
+        if(!currentCommodity.name ||
+          !currentCommodity.quantity ||
+          !currentCommodity.quantityUnit ||
+          !currentCommodity.weight ||
+          !currentCommodity.weightUnit
+          ){
+            commoditiesFilled = false;
+        }
+    }
+
+    if(!commoditiesFilled){
+      this.toastr.error('Please fill required fields.');
+      return false;
+    }
+
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupLocation: this.shippersReceivers[i].shippers.pickupLocation,
@@ -431,16 +487,55 @@ export class AddOrdersComponent implements OnInit {
 
   
   async saveReceiver(i) {
+    
     let location = this.shippersReceivers[i].receivers.dropOffLocation;
     let geoCodeResponse;
     let platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
     const service = platform.getSearchService();
-    let result = await service.geocode({ q: location })
-    result.items.forEach((res) => {
-      geoCodeResponse = res;
-    });
+    if (location !== '') {
+      let result = await service.geocode({ q: location })
+      result.items.forEach((res) => {
+        geoCodeResponse = res;
+      });
+    }
+    
+  
+     //check if all required fields are filled
+     if(!this.shippersReceivers[i].receivers.receiverID ||
+      !this.shippersReceivers[i].receivers.dropOffLocation ||
+      !this.shippersReceivers[i].receivers.dropOffDate ||
+      !this.shippersReceivers[i].receivers.dropOffTime ||
+      !this.shippersReceivers[i].receivers.contactPerson ||
+      !this.shippersReceivers[i].receivers.phone 
+      ){
+        this.toastr.error('Please fill required fields.');
+        return false;
+      }
+   
+
+      let commoditiesFilled = true;
+      //check if selected commodities are filled
+      for(let j = 0; j < this.shippersReceivers[i].receivers.commodity.length;  j++){
+        let currentCommodity: any = this.shippersReceivers[i].receivers.commodity[j];
+
+        if(!currentCommodity.name ||
+          !currentCommodity.quantity ||
+          !currentCommodity.quantityUnit ||
+          !currentCommodity.weight ||
+          !currentCommodity.weightUnit
+          ){
+            commoditiesFilled = false;
+        }
+    }
+   
+
+    if(!commoditiesFilled){
+      this.toastr.error('Please fill required fields.');
+      return false;
+    }
+
     let currentReceiver: any = {
       receiverID: this.shippersReceivers[i].receivers.receiverID,
       dropOffLocation: this.shippersReceivers[i].receivers.dropOffLocation,
@@ -504,13 +599,15 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers['BOL'] = '';
     this.shippersReceivers[i].shippers['reference'] = '';
     this.shippersReceivers[i].shippers['notes'] = '';
-    this.shippersReceivers[i].shippers['commodity'].forEach( item => {
-      item.name = '',
-      item.quantity = ''
-      item.quantityUnit = ''
-      item.weight = ''
-      item.weightUnit = ''
-    });
+    this.shippersReceivers[i].shippers['commodity'] = [
+      {
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: ''
+      }
+    ]
     this.shippersReceivers[i].shippers['minTempratureUnit'] = '';
     this.shippersReceivers[i].shippers['maxTemprature'] = '';
     this.shippersReceivers[i].shippers['maxTempratureUnit'] = '';
@@ -529,13 +626,15 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers['reference'] = '';
     this.shippersReceivers[i].receivers['notes'] = '';
 
-    this.shippersReceivers[i].receivers['commodity'].forEach( item => {
-      item.name = '',
-      item.quantity = ''
-      item.quantityUnit = ''
-      item.weight = ''
-      item.weightUnit = ''
-    });
+    this.shippersReceivers[i].receivers['commodity'] = [
+      {
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: ''
+      }
+    ]
 
     this.shippersReceivers[i].receivers['minTempratureUnit'] = '';
     this.shippersReceivers[i].receivers['maxTemprature'] = '';
@@ -1114,6 +1213,23 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addAccordian() {
+    let flag = true;
+
+    // check if exiting accoridan has atleast one shipper and one receiver
+    for(let k = 0; k < this.finalShippersReceivers.length; k++){
+      let shippers = this.finalShippersReceivers[k].shippers;
+      let receivers = this.finalShippersReceivers[k].receivers;
+
+      if(shippers.length == 0) flag = false;
+      if(receivers.length == 0) flag = false;
+    }
+
+    if(!flag) {
+      this.toastr.error('Please add atleast one shipper and receiver in existing shipment.');
+      return false; 
+    }
+
+
     let allFields = {
       shippers: {
         shipperID: '',

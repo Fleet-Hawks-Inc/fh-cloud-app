@@ -206,7 +206,6 @@ export class LoginComponent implements OnInit {
     citizenship: '',
     assignedVehicle: '',
     groupID: '',
-    abstractDocs: [],
     driverImage: '',
     gender: 'M',
     DOB: '',
@@ -387,7 +386,7 @@ export class LoginComponent implements OnInit {
         };
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
-        localStorage.setItem('driver', JSON.stringify(this.driver));
+        // localStorage.setItem('driver', JSON.stringify(this.driver));
         
 
 
