@@ -209,7 +209,7 @@ a:active {
 	/* Layout Fixed - Header */
 	html.fixed .header {
 		position: fixed;
-		z-index: 1020;
+		z-index: 1100;
 	}
 
 	/* Layout Fixed - Inner Wrapper */
@@ -2088,7 +2088,8 @@ html.no-overflowscrolling.sidebar-light:not(.dark) .inner-menu .nano {
 /* Page Header */
 .page-header {
 	/* z-index: 998; */
-	z-index: 9;
+	/* z-index: 9; */
+	z-index: 1100;
 	/* Left Breadcumb */
 	/* Mobile ;*/
 }
