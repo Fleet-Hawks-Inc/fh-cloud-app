@@ -189,9 +189,10 @@
                                     <tbody>
                                         <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>{{response.cbsaDateTime}}</td>
+                                            <td>{{response.dateTime}}</td>
                                             <td>Trip <b>{{response.tripNumber}}</b> &nbsp;&nbsp;
-                                             <span>{{response.type}}</span>
+                                             <span>{{response.status}}</span><br>
+                                             <span *ngFor="let error of response.errors">{{error.note}},<br></span>
                                             </td>
                                         </tr>
                                     </tbody>
