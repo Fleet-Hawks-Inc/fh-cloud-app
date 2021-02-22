@@ -49,7 +49,7 @@
          </header>
          <div class="card">
             <div class="card-body">
-               <form #orderForm="ngForm" (ngSubmit)="finalShippersReceivers[0].shippers.length > 0 && finalShippersReceivers[0].receivers.length > 0 && onSubmit()" novalidate>
+               <form #orderForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
                   <div class="form-group row">
                      <div class="col-lg-12 text-right">
                         <!-- <p class="mb-0"><a href="#" class="blue1 font-weight-bold"><i class="fas fa-tools"></i> Load Setting</a></p> -->
@@ -154,13 +154,13 @@
                               <label
                                  class="control-label font-weight-semibold labelmt text-3 text-dark">Customer</label>
                               <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
-                                 name="customerID" #customerID="ngModel" required customerID class="form-control">
+                                 name="orderData.customerID" #customerID="ngModel" required customerID class="form-control">
                                  <ng-option *ngFor="let customer of customers" value="{{customer.customerID}}">
                                     {{customer.companyName}}
                                  </ng-option>
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="( customerID.touched || customerID.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.customerID">
                                  This Field is required
                               </span>
                            </div>
@@ -180,41 +180,39 @@
                                     </div>
                                  </div>
                                  <div class="row pl-3 pr-3">
-                                    <div class="col-lg-12">
-                                       <div class="row" *ngFor="let item of customerSelected">
-                                          <div class="col-lg-6">
-                                             <label class="control-label"><span
-                                                   class=" font-weight-bold">Address:</span>
-                                                {{item.address[0].address1}}
-                                                {{item.address[0].address2}}</label>
+                                    <div class="col-lg-12" *ngFor="let item of customerSelected">
+                                       <div class="" *ngFor="let address of item.address">
+                                          <div class="row" *ngIf="address.addressType =='Shipping Address'">
+                                             <div class="col-lg-6">
+                                                <label class="control-label"><span class=" font-weight-bold">Address:</span>
+                                                   {{address.address1}}
+                                                   {{address.address2}}</label>
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label text-lg-right"><span class=" font-weight-bold">Phone:</span> {{address.workPhone}}</label>
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label"><span class=" font-weight-bold">City:</span>
+                                                   {{address.cityName}}</label>
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label text-lg-right"><span class=" font-weight-bold">State:</span>
+                                                   {{address.stateName}}</label>
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label"><span class=" font-weight-bold">Country:</span>
+                                                   {{countriesObjects[address.countryID]}}</label>
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <label class="control-label text-lg-right"><span class=" font-weight-bold">Email:</span>
+                                                   {{address.email}}</label>
+                                             </div>
+                                             <!-- <div class="col-lg-6">
+                                                                                             <label class="control-label"><span class=" font-weight-bold">Fax:</span>
+                                                                                                --</label>
+                                                                                          </div> -->
                                           </div>
-                                          <div class="col-lg-6">
-                                             <label class="control-label text-lg-right"><span
-                                                   class=" font-weight-bold">Phone:</span> {{item.workPhone}}</label>
-                                          </div>
-                                          <div class="col-lg-6">
-                                             <label class="control-label"><span class=" font-weight-bold">City:</span>
-                                                {{item.address[0].cityName}}</label>
-                                          </div>
-                                          <div class="col-lg-6">
-                                             <label class="control-label text-lg-right"><span
-                                                   class=" font-weight-bold">State:</span>
-                                                {{item.address[0].stateName}}</label>
-                                          </div>
-                                          <div class="col-lg-6">
-                                             <label class="control-label"><span
-                                                   class=" font-weight-bold">Country:</span>
-                                                {{countriesObjects[item.address[0].countryID]}}</label>
-                                          </div>
-                                          <div class="col-lg-6">
-                                             <label class="control-label text-lg-right"><span
-                                                   class=" font-weight-bold">Email:</span>
-                                                {{item.workEmail}}</label>
-                                          </div>
-                                          <!-- <div class="col-lg-6">
-                                             <label class="control-label"><span class=" font-weight-bold">Fax:</span>
-                                                --</label>
-                                          </div> -->
+                                          
                                        </div>
 
 
@@ -231,7 +229,7 @@
                               <input [(ngModel)]="orderData.customerPO" name="customerPO" #customerPO="ngModel" required customerPO type="text"
                                  class="form-control">
                               <span class="text-danger"
-                                 *ngIf="( customerPO.touched || customerPO.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.customerPO">
                                  This Field is required
                               </span>
                            </div>
@@ -254,7 +252,7 @@
                               type="text"
                                  class="form-control">
                               <span class="text-danger"
-                                 *ngIf="( orderNumber.touched || orderNumber.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.orderNumber">
                                  This Field is required
                               </span>
                            </div>
@@ -269,7 +267,7 @@
                                     <input type="date" [(ngModel)]="orderData.creationDate" name="creationDate" 
                                     #creationDate="ngModel" required creationDate class="form-control">
                                     <span class="text-danger"
-                                       *ngIf="( creationDate.touched || creationDate.errors?.required ) && orderForm.submitted">
+                                       *ngIf="!orderData.creationDate">
                                        This Field is required
                                     </span>
                                  </div>
@@ -278,7 +276,7 @@
                                     <input type="time" class="form-control" [(ngModel)]="orderData.creationTime" 
                                     #creationTime="ngModel" required creationTime name="creationTime">
                                     <span class="text-danger"
-                                       *ngIf="( creationTime.touched || creationTime.errors?.required ) && orderForm.submitted">
+                                       *ngIf="!orderData.creationTime">
                                        This Field is required
                                     </span>
                                        
@@ -884,7 +882,7 @@
                                                             </div>
                                                             <div class="col-lg-6">
                                                                <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i> Commodity </a> 
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', z)"><i class="fas fa-minus"></i> </a> 
+                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a> 
                                                             </div>
                                                          </div>
 
@@ -1059,9 +1057,9 @@
                            <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
 
-                                 <input name="loadType1" (change)="getLoadTypes($event.target.value)"
+                                 <input name="orderData.additionalDetails.loadType.hazMat" [(ngModel)]="orderData.additionalDetails.loadType.hazMat"
 
-                                    value="hazMat" type="checkbox" id="HazMat">
+                                     type="checkbox" id="HazMat">
                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                     for="HazMat">HazMat</label>
                               </div>
@@ -1069,11 +1067,8 @@
 
                            <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
-                                 <input name="loadType2"
-
-                                    (change)="getLoadTypes($event.target.value)"
-
-                                    value="oversize load" type="checkbox" id="Load">
+                                 <input name="orderData.additionalDetails.loadType.oversize" [(ngModel)]="orderData.additionalDetails.loadType.oversize"
+                                    type="checkbox" id="Load">
                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                     for="Load">Oversize Load</label>
                               </div>
@@ -1082,9 +1077,9 @@
                            <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
 
-                                 <input name="loadType3" (change)="getLoadTypes($event.target.value)"
+                                 <input name="orderData.additionalDetails.loadType.reefer" [(ngModel)]="orderData.additionalDetails.loadType.reefer"
 
-                                    value="reefer" type="checkbox" id="Reefer">
+                                   type="checkbox" id="Reefer">
                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                     for="Reefer">Reefer</label>
                               </div>
@@ -1092,10 +1087,8 @@
 
                            <div class="col-lg-2">
                               <div class="checkbox-custom checkbox-default">
-
-                                 <input name="loadType4" (change)="getLoadTypes($event.target.value)"
-
-                                    value="tanker" type="checkbox" id="Tanker">
+                                 <input name="orderData.additionalDetails.loadType.tanker" [(ngModel)]="orderData.additionalDetails.loadType.tanker"
+                                     type="checkbox" id="Tanker">
                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
                                     for="Tanker">Tanker</label>
                               </div>
@@ -1105,15 +1098,18 @@
                         </div>
 
                         <!--Tempratures-->
-                        <div class="row mt-2">
-                           <div class="col-lg-4 offset-lg-1 pr-0">
+                        <div class="row mt-2" *ngIf="orderData.additionalDetails.loadType.reefer">
+                           <div class="col-lg-11 offset-lg-1 ">
+                              <label class="control-label font-weight-semibold text-3 text-dark">Temprature</label>
+                           </div>
+                           <div class="col-lg-1 offset-lg-1 pr-0">
                               <input
-                                 name="minTemprature" type="text" class="form-control"
+                                 name="orderData.additionalDetails.refeerTemp.minTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTemprature" type="text" class="form-control"
                                  placeholder="From" id="inputDefault">
                            </div>
-                           <div class="col-lg-4 offset-lg-1 pr-0">
+                           <div class="col-lg-1">
                               <ng-select 
-                                 name="minTempratureUnit" data-plugin-selecttwo=""
+                              name="orderData.additionalDetails.refeerTemp.minTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTempratureUnit" data-plugin-selecttwo=""
                                  class="form-control populate" data-select2-id="10"
                                  tabindex="-1" aria-hidden="true">
                                  
@@ -1128,16 +1124,18 @@
 
 
 
-                        <div class="row mt-2">
+                        <div class="row mt-2" *ngIf="orderData.additionalDetails.loadType.reefer">
                            
-                           <div class="col-lg-4 offset-lg-1 pr-0">
+                           <div class="col-lg-1 offset-lg-1 pr-0">
                               <input 
-                                 name="maxTemprature" type="text" class="form-control"
+                              name="orderData.additionalDetails.refeerTemp.maxTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTemprature" type="text" class="form-control"
+                              type="text" class="form-control"
                                  placeholder="To" id="inputDefault">
                            </div>
-                           <div class="col-lg-4 offset-lg-1 pr-0">
+                           <div class="col-lg-1">
                               <ng-select 
-                                 name="maxTempratureUnit" data-plugin-selecttwo=""
+                              name="orderData.additionalDetails.refeerTemp.maxTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTempratureUnit" type="text" class="form-control"
+                              data-plugin-selecttwo=""
                                  class="form-control populate" data-select2-id="13"
                                  tabindex="-1" aria-hidden="true">
                                     <ng-option value="°C">°C</ng-option>
@@ -1182,21 +1180,12 @@
                               #freightType="ngModel" required freightType
 
                                  class="form-control populate" >
-
                                  <ng-option value="Flat Fee">Flat Fee</ng-option>
                                  <ng-option value="Per Mile">Per Mile</ng-option>
-                                 <ng-option value="Bag">Bag</ng-option>
-                                 <ng-option value="Barrel">Barrel</ng-option>
-                                 <ng-option value="Basket">Basket</ng-option>
-                                 <ng-option value="Bin">Bin</ng-option>
-                                 <ng-option value="Box">Box</ng-option>
-                                 <ng-option value="Bucket">Bucket</ng-option>
-                                 <ng-option value="Can">Can</ng-option>
-                                 <ng-option value="Crate">Crate</ng-option>
-
+                                 <ng-option *ngFor="let list of packagingUnitsList" value="list.name">{{list.name}}</ng-option>
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="( freightType.touched || freightType.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.charges.freightFee.type">
                                  This Field is required
                               </span>
                            </div>
@@ -1209,7 +1198,7 @@
 
                                     (blur)="calculateAmount()"  #freightAmt="ngModel" required freightAmt type="text" class="form-control" placeholder="0.00">
                                  <span class="text-danger"
-                                    *ngIf="( freightAmt.touched || freightAmt.errors?.required ) && orderForm.submitted">
+                                    *ngIf="!orderData.charges.freightFee.amount">
                                     This Field is required
                                  </span>
                               </div>
@@ -1225,7 +1214,7 @@
 
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="( freightCur.touched || freightCur.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.charges.freightFee.currency">
                                  This Field is required
                               </span>
                            </div>
@@ -1481,7 +1470,7 @@
                               <input type="text" [disabled]="orderData.milesInfo.calculateBy == 'google' || orderData.milesInfo.calculateBy == 'pcmiles'" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
                               #totalMiles="ngModel" required totalMiles class="form-control">
                               <span class="text-danger"
-                                 *ngIf="( totalMiles.touched || totalMiles.errors?.required ) && orderForm.submitted">
+                                 *ngIf="!orderData.milesInfo.totalMiles">
                                  This Field is required
                               </span>
                            </div>
