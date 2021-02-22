@@ -62,6 +62,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     address: [],
   };
   driverData = {
+    empPrefix: '',
     driverType: 'employee',
     entityType: 'driver',
     gender: 'M',
@@ -181,6 +182,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   finalPrefix = '';
   currentUser: any;
   modelID = '';
+  empPrefix: any;
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -392,14 +394,18 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(!this.driverID){
       // localStorage.setItem('driver', JSON.stringify(this.driverData));
       await this.onSubmit();
+      if(this.abstractDocs.length == 0 && this.currentTab == 1) {
+        this.abstractValid = true; 
+        return;
+      }
     }else {
+      if(this.absDocs.length == 0) {
+        this.abstractValid = true; 
+      }  
       await this.updateDriver();
     }
-   
-    if(this.abstractDocs.length == 0 && this.currentTab == 1) {
-      this.abstractValid = true; 
-      return;
-    }
+    
+    
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
@@ -739,6 +745,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.register();
     this.spinner.show();
     this.hideErrors();
+    this.driverData.empPrefix = this.prefixOutput;
+    
     this.driverData['currentTab'] = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
@@ -812,9 +820,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         // this.hasSuccess = true;
         this.toastr.success('Driver added successfully');
         this.isSubmitted = true;
-        // this.modalServiceOwn.triggerRedirect.next(true);
-        // this.takeUntil$.next();
-        // this.takeUntil$.complete();
+        this.modalServiceOwn.triggerRedirect.next(true);
+        this.takeUntil$.next();
+        this.takeUntil$.complete();
         let driver = {
           driverType: 'employee',
           entityType: 'driver',
@@ -1062,7 +1070,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         result = result.Items[0];
         
         this.driverData['driverType'] = result.driverType;
-        this.driverData['employeeId'] = result.employeeId;
+        let newEmpPrefix = result.employeeId.split('-');
+        this.driverData['employeeId'] = newEmpPrefix[1];
         this.driverData['ownerOperator'] = result.ownerOperator;
         
         this.driverData['driverStatus'] = result.driverStatus;
@@ -1235,6 +1244,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     //   //date in Y-m-d format 
     //   this.driverData.DOB = this.driverData.DOB.split('-').reverse().join('-');
     // }
+    this.driverData.empPrefix = this.prefixOutput;
     this.driverData['currentTab'] = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
