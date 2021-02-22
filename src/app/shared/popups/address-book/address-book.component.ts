@@ -390,8 +390,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             private modalService: NgbModal,
             private HereMap: HereMapService,
             private spinner: NgxSpinnerService,
-            private listService: ListService
-            )
+            private listService: ListService,
+          )
   { }
 
   ngOnInit() {
@@ -831,6 +831,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addOwnerOperatorModal').modal('hide');
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.rerender();
@@ -904,6 +905,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
         $('#addOwnerOperatorModal').modal('hide');
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.rerender();
