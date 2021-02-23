@@ -153,27 +153,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   
 
-  // fetchAssets = () => {
-   
-  //   this.totalRecords = 0;
-  //   this.spinner.show(); // loader init
-   
-  //     this.apiService.getData(`assets`).subscribe({
-  //     complete: () => {},
-  //     error: () => {},
-  //     next: (result: any) => {
-  //       this.spinner.hide(); // loader hide
-  //       for (let i = 0; i < result.Items.length; i++) {
-  //         if (result.Items[i].isDeleted === 0) {
-  //           // this.allData.push(result.Items[i]);
-  //           this.totalRecords += 1
-            
-  //         }
-  //       }
-  //     },
-  //   });
-  // }
-
   fetchAssetsCount() {
     this.apiService.getData('assets/get/count?assetID='+this.assetID+'&status='+this.currentStatus).subscribe({
       complete: () => {},
@@ -199,18 +178,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   deactivateAsset(value, assetID) {
     if (confirm('Are you sure you want to delete?') === true) {
-    //   this.apiService
-    //   .getData(`assets/isDeleted/${assetID}/${value}`)
-    //   .subscribe((result: any) => {
-    //     this.allData = [];
-    //     this.fetchAssets();
-    //     this.rerender();
-    //     this.toastr.success('Asset deleted successfully');
-        
-    //   });
-    // }
       this.apiService
-      .getData(`assets/reminderEmail/send`)
+      .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
         this.allData = [];
         this.fetchAssetsCount();
@@ -219,7 +188,6 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
         
       });
     }
-    
   }
 
 
@@ -236,30 +204,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.visible = !this.visible;
   }
 
-  uncheckCheckbox = (data, tableID) => {
-    if (data.length > 0) {
-      if (tableID === '#DataTables_Table_0_wrapper') {
-        setTimeout(() => {
-          $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
-        }, 2000);
-      } else {
-        setTimeout(() => {
-          // $('.page-buttons').find('.dt-buttons').hide();
-          $(tableID).find('.dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons').show();
-        }, 2000);
-      }
-    } else {
-      $('.page-buttons').find('.dt-buttons').hide();
-    }
-
-    // arr.forEach(item => {
-    //   item.checked = false;
-    // });
-    // this.headCheckbox = false;
-  }
-
-
   initDataTable() {
+    this.spinner.show();
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
@@ -289,7 +235,9 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
               recordsFiltered: current.totalRecords,
               data: []
             });
+            this.spinner.hide();
           });
+         
       }
     };
   }
