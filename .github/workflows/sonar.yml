@@ -1,5 +1,11 @@
-on: push
-name: SonarQube WorkFlow
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request. 
+  push:
+    branches:
+      - master
+  pull_request:
+      types: [opened, synchronize, reopened]
 jobs:
   sonarQubeTrigger:
     name: SonarQube Trigger
