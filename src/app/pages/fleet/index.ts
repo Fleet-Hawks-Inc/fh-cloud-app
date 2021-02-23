@@ -20,9 +20,6 @@ export * from './assets/asset-detail/asset-detail.component';
 export * from './expenses/fuel-entry/add-fuel-entry/add-fuel-entry.component';
 export * from './expenses/fuel-entry/fuel-entry-list/fuel-entry-list.component';
 export * from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.component';
-export * from './expenses/types/add-expense-type/add-expense-type.component';
-export * from './expenses/types/edit-expense-type/edit-expense-type.component';
-export * from './expenses/types/expense-type-list/expense-type-list.component';
 
 export * from './geofence/add-geofence/add-geofence.component';
 export * from './geofence/geofence-list/geofence-list.component';

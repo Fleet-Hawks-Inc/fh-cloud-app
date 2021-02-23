@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import { Observable} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AnyCnameRecord } from 'dns';
 declare var H: any;
 
 @Injectable({
@@ -223,6 +224,21 @@ export class HereMapService {
     return service.geocode({ q: value });
   }
 
+  /**
+   * Get coordinates for specified location
+   * @param value location name
+   */
+  public async revGeoCode(cords: any) {
+    this.platform = new H.service.Platform({
+      'apikey': this.apiKey,
+    });
+    const service = this.platform.getSearchService();
+    let result = await service.reverseGeocode({
+      at: `${cords.lat},${cords.lng},150`,
+      limit: '1'
+    });
+  }
+
   calculateRoute(coordinates) {
 
     try {
@@ -272,7 +288,7 @@ export class HereMapService {
 
             //   polyline.addEventListener('tap', function(evt) {
             //     // Log 'tap' and 'mouse' events:
-            //     console.log(evt.type, evt.currentPointer.type); 
+            //     console.log(evt.type, evt.currentPointer.type);
             // });
 
               // Total Distance in KM
@@ -280,7 +296,7 @@ export class HereMapService {
               const factor = 0.621371;
               this.totalDistance = this.totalDistance.toFixed(2) * factor + ' Miles';
               // console.log(this.totalDistance)
-              
+
             //   var bubble = new H.ui.InfoBubble(item.departure.place.location, {
             //     content: `<b>${this.totalDistance}</b>`
             //  });
@@ -293,7 +309,7 @@ export class HereMapService {
               this.totalTime = h + ' hour' + '  ' + m + ' mins';
 
               // let poly = H.geo.LineString.fromFlexiblePolyline(item.polyline).getLatLngAltArray();
-              
+
               // Create a marker for the start point:
               const startMarker = new H.map.Marker(item.departure.place.location);
 
