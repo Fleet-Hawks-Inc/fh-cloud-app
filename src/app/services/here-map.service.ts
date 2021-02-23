@@ -153,7 +153,13 @@ export class HereMapService {
           lang: 'en',
         }
       );
-      return response.items;
+      let newData = [];
+      response.items.forEach(element => {
+        if(element.address != undefined) {
+          newData.push(element);
+        }
+      });
+      return newData;
     }
     // if (query !== '') {
     //   const service = this.platform.getSearchService();
