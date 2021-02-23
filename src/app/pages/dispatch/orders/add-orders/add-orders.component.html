@@ -160,7 +160,7 @@
                                  </ng-option>
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="!orderData.customerID">
+                                 *ngIf="isSubmit && !orderData.customerID">
                                  This Field is required
                               </span>
                            </div>
@@ -229,7 +229,7 @@
                               <input [(ngModel)]="orderData.customerPO" name="customerPO" #customerPO="ngModel" required customerPO type="text"
                                  class="form-control">
                               <span class="text-danger"
-                                 *ngIf="!orderData.customerPO">
+                                 *ngIf="isSubmit && !orderData.customerPO">
                                  This Field is required
                               </span>
                            </div>
@@ -252,7 +252,7 @@
                               type="text"
                                  class="form-control">
                               <span class="text-danger"
-                                 *ngIf="!orderData.orderNumber">
+                                 *ngIf="isSubmit && !orderData.orderNumber">
                                  This Field is required
                               </span>
                            </div>
@@ -267,7 +267,7 @@
                                     <input type="date" [(ngModel)]="orderData.creationDate" name="creationDate" 
                                     #creationDate="ngModel" required creationDate class="form-control">
                                     <span class="text-danger"
-                                       *ngIf="!orderData.creationDate">
+                                       *ngIf="isSubmit && !orderData.creationDate">
                                        This Field is required
                                     </span>
                                  </div>
@@ -276,7 +276,7 @@
                                     <input type="time" class="form-control" [(ngModel)]="orderData.creationTime" 
                                     #creationTime="ngModel" required creationTime name="creationTime">
                                     <span class="text-danger"
-                                       *ngIf="!orderData.creationTime">
+                                       *ngIf="isSubmit && !orderData.creationTime">
                                        This Field is required
                                     </span>
                                        
@@ -428,7 +428,7 @@
                                                               
                                                             </ng-select>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.shipperID == ''"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.shipperID == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -455,7 +455,7 @@
                                                             </ul>
 
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.pickupLocation == ''"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupLocation == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -465,7 +465,7 @@
                                                       <div class="row mt-3">
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Date/Time</label>
+                                                               for="inputDefault">Pick Date and Time</label>
                                                          </div>
                                                          <div class="col-lg-6">
                                                             
@@ -477,7 +477,7 @@
                                                                   class="form-control ">
                                                             </div>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.pickupDate == ''"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -492,7 +492,7 @@
                                                                name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
                                                             </div>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.pickupTime == ''"
+                                                               *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.pickupTime == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -522,7 +522,7 @@
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.contactPerson == ''"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -538,7 +538,7 @@
                                                             <input [(ngModel)]="item.shippers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].shippers.phone == ''"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.phone == ''"
                                                                >
                                                                This Field is required
                                                             </span>
@@ -583,7 +583,7 @@
                                                                <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
                                                                
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].shippers.commodity[z].name == ''"
+                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].name == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
@@ -603,7 +603,7 @@
 
                                                                <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].shippers.commodity[z].quantity == ''"
+                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantity == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
@@ -626,7 +626,7 @@
                                                                </ng-select>
 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].shippers.commodity[z].quantityUnit == ''"
+                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantityUnit == ''"
 
                                                                   >
                                                                   This Field is required
@@ -643,7 +643,7 @@
 
                                                                <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].shippers.commodity[z].weight == ''"
+                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
@@ -657,7 +657,7 @@
                                                                </ng-select>
 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].shippers.commodity[z].weightUnit == ''"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].weightUnit == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
@@ -733,7 +733,7 @@
                                                                <ng-option *ngFor="let item of receivers;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
                                                             </ng-select>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.receiverID == ''">
+                                                               *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.receiverID == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -760,7 +760,7 @@
                                                             </ul>
                                                             
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.dropOffLocation == ''">
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffLocation == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -768,7 +768,7 @@
                                                       <div class="row mt-3">
                                                          <div class="col-lg-12">
                                                             <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Date/Time</label>
+                                                               for="inputDefault">Delivery Date and Time</label>
                                                          </div>
                                                          <div class="col-lg-6">
                                                             <div class="input-group">
@@ -778,7 +778,7 @@
                                                                   class="form-control">
                                                             </div>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.dropOffDate == ''">
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffDate == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -790,7 +790,7 @@
                                                                   />
                                                             </div>
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.dropOffTime == ''">
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffTime == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -820,7 +820,7 @@
                                                                name="contactPerson" type="text" class="form-control"
                                                                id="inputDefault">
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.contactPerson == ''">
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -835,7 +835,7 @@
                                                             <input [(ngModel)]="item.receivers.phone" name="phone"
                                                                type="text" class="form-control" id="inputDefault">
                                                             <span class="text-danger"
-                                                               *ngIf="shippersReceivers[i].receivers.phone == ''">
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
                                                                This Field is required
                                                             </span>
                                                          </div>
@@ -875,7 +875,7 @@
 
                                                                <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].receivers.commodity[z].name == ''">
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].name == ''">
                                                                   This Field is required
                                                                </span> 
 
@@ -894,7 +894,7 @@
 
                                                                <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].receivers.commodity[z].quantity == ''">
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantity == ''">
                                                                   This Field is required
                                                                </span>
                                                             </div>
@@ -915,7 +915,7 @@
                                                                </ng-select>
 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
                                                                   This Field is required
                                                                </span>
 
@@ -930,7 +930,7 @@
 
                                                                <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].receivers.commodity[z].weight == ''">
+                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weight == ''">
                                                                   This Field is required
                                                                </span>
                                                             </div>
@@ -943,7 +943,7 @@
                                                                </ng-select>
 
                                                                <span class="text-danger"
-                                                                  *ngIf="shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
+                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
                                                                   This Field is required
                                                                </span>
                                                             </div>
@@ -1185,7 +1185,7 @@
                                  <ng-option *ngFor="let list of packagingUnitsList" value="list.name">{{list.name}}</ng-option>
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="!orderData.charges.freightFee.type">
+                                 *ngIf="isSubmit &&  !orderData.charges.freightFee.type">
                                  This Field is required
                               </span>
                            </div>
@@ -1198,7 +1198,7 @@
 
                                     (blur)="calculateAmount()"  #freightAmt="ngModel" required freightAmt type="text" class="form-control" placeholder="0.00">
                                  <span class="text-danger"
-                                    *ngIf="!orderData.charges.freightFee.amount">
+                                    *ngIf="isSubmit &&  !orderData.charges.freightFee.amount">
                                     This Field is required
                                  </span>
                               </div>
@@ -1214,7 +1214,7 @@
 
                               </ng-select>
                               <span class="text-danger"
-                                 *ngIf="!orderData.charges.freightFee.currency">
+                                 *ngIf="isSubmit &&  !orderData.charges.freightFee.currency">
                                  This Field is required
                               </span>
                            </div>
@@ -1296,7 +1296,10 @@
 
                               </ng-select>
                            </div>
-                           <div class="col-lg-2">
+                           <div class="col-lg-1">
+                              <a *ngIf="i != 0" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessFee', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
+                           </div>
+                           <div class="col-lg-1">
                               <p class="text-right"> <span>{{item.amount}} </span></p>
                            </div>
                         </div>
@@ -1339,7 +1342,10 @@
 
                               </ng-select>
                            </div>
-                           <div class="col-lg-2">
+                           <div class="col-lg-1">
+                              <a *ngIf="i != 0" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessDeduct', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
+                           </div>
+                           <div class="col-lg-1">
                               <p class="text-right"> <span>{{item.amount}} </span></p>
                            </div>
                         </div>
@@ -1470,7 +1476,7 @@
                               <input type="text" [disabled]="orderData.milesInfo.calculateBy == 'google' || orderData.milesInfo.calculateBy == 'pcmiles'" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
                               #totalMiles="ngModel" required totalMiles class="form-control">
                               <span class="text-danger"
-                                 *ngIf="!orderData.milesInfo.totalMiles">
+                                 *ngIf="isSubmit && !orderData.milesInfo.totalMiles">
                                  This Field is required
                               </span>
                            </div>
