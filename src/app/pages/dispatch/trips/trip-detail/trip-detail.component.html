@@ -20,6 +20,15 @@
                             </div>
                         </div>
 
+                        <div class="btn-group flex-wrap mr-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                               style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                               <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
+                            </div>
+                         </div>
+
                         <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i>
                             Trips List</a>
                         <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Create Trip</a>

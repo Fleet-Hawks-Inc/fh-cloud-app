@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {AwsUploadService} from '../../../../services';
 import { DomSanitizer} from '@angular/platform-browser';
-import { async } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -138,7 +137,6 @@ export class DriverDetailComponent implements OnInit {
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
-    // this.fetchAddress();
     this.fetchDocuments();
   }
 
@@ -301,13 +299,7 @@ export class DriverDetailComponent implements OnInit {
         this.cycleObjects = result;
       });
   }
-  // fetchAddress() {
-  //   this.apiService.getData('addresses')
-  //     .subscribe((result: any) => {
-  //       console.log('addresses', result)
-  //   });
-  // }
-
+  
   fetchGroupsbyIDs() {
     this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {

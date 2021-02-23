@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, RouterStateSnapshot, RouterState} from '@angular/router';
-import { BehaviorSubject, EMPTY, from, Subject, throwError } from 'rxjs';
+import {Router, ActivatedRoute} from '@angular/router';
+import {from, Subject, throwError } from 'rxjs';
 import { ApiService, ListService } from '../../../../services';
 import { Auth } from 'aws-amplify';
 import { HereMapService } from '../../../../services';
-import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -258,85 +257,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
       this.fetchDriverByID();
-      // this.fetchAddress();
     } else {
       this.pageTitle = 'Add Driver';
-      // this.driverData.driverType = this.driverSession.driverType;
-      // this.driverData.entityType = this.driverSession.entityType;
-      // this.driverData['employeeId'] = this.driverSession.employeeId;
-      // this.driverData['ownerOperator'] = this.driverSession.ownerOperator;
-      // this.driverData['driverStatus'] = this.driverSession.driverStatus;
-      // this.driverData['userName'] = this.driverSession.userName;
-      // this.driverData['firstName'] = this.driverSession.firstName;
-      // this.driverData['middleName'] = this.driverSession.middleName;
-      // this.driverData['lastName'] = this.driverSession.lastName;
-      // this.driverData['startDate'] = this.driverSession.startDate;
-      // this.driverData['terminationDate'] = this.driverSession.terminationDate;
       
-      // this.driverData['contractStart'] = this.driverSession.contractStart;
-      // this.driverData['contractEnd'] = this.driverSession.contractEnd;
-      // this.driverData['password'] = this.driverSession.password;
-      // this.driverData['confirmPassword'] = this.driverSession.confirmPassword;
-      // this.driverData['citizenship'] = this.driverSession.citizenship;
-      // this.driverData['assignedVehicle'] = this.driverSession.assignedVehicle;
-      // this.driverData['groupID'] = this.driverSession.groupID
-      // this.driverData['driverImage'] = this.driverSession.driverImage;
-      // this.driverData['gender'] = this.driverSession.gender;
-      // this.driverData['DOB'] = this.driverSession.DOB;
-      // this.driverData['workPhone'] = this.driverSession.workPhone;
-      // this.driverData['workEmail'] = this.driverSession.workEmail;
-      // this.driverData.address = this.driverSession.address;
-      // this.driverData.documentDetails = this.driverSession.documentDetails;
-      // this.driverData.crossBorderDetails['ACI_ID'] = this.driverSession.crossBorderDetails.ACE_ID;
-      // this.driverData.crossBorderDetails['ACE_ID'] = this.driverSession.crossBorderDetails.ACE_ID;
-      // this.driverData.crossBorderDetails['fast_ID'] = this.driverSession.crossBorderDetails.fast_ID;
-      // this.driverData.crossBorderDetails['fastExpiry'] = this.driverSession.crossBorderDetails.fastExpiry;
-      // this.driverData.crossBorderDetails['csa'] = this.driverSession.crossBorderDetails.csa;
-      
-      // this.driverData.paymentDetails['paymentType'] = this.driverSession.paymentDetails.paymentType;
-      // this.driverData.paymentDetails['loadedMiles'] = this.driverSession.paymentDetails.loadedMiles;
-      // this.driverData.paymentDetails['loadedMilesTeam'] = this.driverSession.paymentDetails.loadedMilesTeam;
-      // this.driverData.paymentDetails['loadedMilesUnit'] = this.driverSession.paymentDetails.loadedMilesUnit;
-      // this.driverData.paymentDetails['loadedMilesTeamUnit'] = this.driverSession.paymentDetails.loadedMilesTeamUnit;
-      // this.driverData.paymentDetails['emptyMiles'] = this.driverSession.paymentDetails.emptyMiles;
-      // this.driverData.paymentDetails['emptyMilesTeam'] = this.driverSession.paymentDetails.emptyMilesTeam;
-      // this.driverData.paymentDetails['emptyMilesUnit'] = this.driverSession.paymentDetails.emptyMilesUnit;
-      // this.driverData.paymentDetails['emptyMilesTeamUnit'] = this.driverSession.paymentDetails.emptyMilesTeamUnit;
-      // this.driverData.paymentDetails['loadPayPercentage'] = this.driverSession.paymentDetails.loadPayPercentage;
-      // this.driverData.paymentDetails['loadPayPercentageOf'] = this.driverSession.paymentDetails.loadPayPercentageOf;
-      // this.driverData.paymentDetails['rate'] = this.driverSession.paymentDetails.rate;
-      // this.driverData.paymentDetails['rateUnit'] = this.driverSession.paymentDetails.rateUnit;
-      // this.driverData.paymentDetails['waitingPay'] = this.driverSession.paymentDetails.waitingPay;
-      // this.driverData.paymentDetails['waitingPayUnit'] = this.driverSession.paymentDetails.waitingPayUnit;
-      // this.driverData.paymentDetails['waitingHourAfter'] = this.driverSession.paymentDetails.waitingHourAfter;
-      // this.driverData.paymentDetails['deliveryRate'] = this.driverSession.paymentDetails.deliveryRate;
-      // this.driverData.paymentDetails['deliveryRateUnit'] = this.driverSession.paymentDetails.deliveryRateUnit;
-      // this.driverData.paymentDetails['SIN_Number'] = this.driverSession.paymentDetails.SIN_Number;
-      // this.driverData.paymentDetails['payPeriod'] = this.driverSession.paymentDetails.payPeriod;
-      
-      // this.driverData.licenceDetails['CDL_Number'] = this.driverSession.licenceDetails.CDL_Number;
-      // this.driverData.licenceDetails['issuedCountry'] = this.driverSession.licenceDetails.issuedCountry;
-      // this.driverData.licenceDetails['issuedState'] = this.driverSession.licenceDetails.issuedState;
-      // this.driverData.licenceDetails['licenceExpiry'] = this.driverSession.licenceDetails.licenceExpiry;
-      // this.driverData.licenceDetails['licenceNotification'] = this.driverSession.licenceDetails.licenceNotification;
-      // this.driverData.licenceDetails['WCB'] = this.driverSession.licenceDetails.WCB;
-      // this.driverData.licenceDetails['medicalCardRenewal'] = this.driverSession.licenceDetails.medicalCardRenewal;
-      // this.driverData.licenceDetails['healthCare'] = this.driverSession.licenceDetails.healthCare;
-      // this.driverData.licenceDetails['vehicleType'] = this.driverSession.licenceDetails.vehicleType;
-      
-      // this.driverData.hosDetails['hosStatus'] = this.driverSession.hosDetails.hosStatus;
-      // this.driverData.hosDetails['type'] = this.driverSession.hosDetails.type;
-      // this.driverData.hosDetails['hosRemarks'] = this.driverSession.hosDetails.hosRemarks;
-      // this.driverData.hosDetails['hosCycle'] = this.driverSession.hosDetails.hosCycle;
-      // this.driverData.hosDetails['homeTerminal'] = this.driverSession.hosDetails.homeTerminal;
-      // this.driverData.hosDetails['pcAllowed'] = this.driverSession.hosDetails.pcAllowed;
-      // this.driverData.hosDetails['ymAllowed'] = this.driverSession.hosDetails.ymAllowed;
-      
-      // this.driverData.emergencyDetails['name'] = this.driverSession.emergencyDetails.name;
-      // this.driverData.emergencyDetails['relationship'] = this.driverSession.emergencyDetails.relationship;
-      // this.driverData.emergencyDetails['phone'] = this.driverSession.emergencyDetails.phone;
-      // this.driverData.emergencyDetails['email'] = this.driverSession.emergencyDetails.email;
-      // this.driverData.emergencyDetails['emergencyAddress'] = this.driverSession.emergencyDetails.emergencyAddress;
      
     }
 
@@ -345,9 +268,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     
     this.fetchYards(); // fetch yards
     this.fetchCycles(); // fetch cycles
-    // this.fetchVehicles(); // fetch vehicles
     this.fetchDrivers();
-    // this.fetchOwnerOperators();
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
 
@@ -382,8 +303,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.apiService.getData('carriers/'+ id).subscribe(res => {
       if(res.Items.length > 0){
         let carrierPrefix = res.Items[0].businessName;
-        let toArray = carrierPrefix.match(/\b(\w)/g); // ['J','S','O','N']
-        this.prefixOutput = toArray.join('') + '-'; // JSON
+        let toArray = carrierPrefix.match(/\b(\w)/g); 
+        this.prefixOutput = toArray.join('') + '-';
       }
       this.spinner.hide();
     })
@@ -392,7 +313,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async nextStep() {
     
     if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
       await this.onSubmit();
       if(this.abstractDocs.length == 0 && this.currentTab == 1) {
         this.abstractValid = true; 
@@ -484,30 +404,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData['ownerOperator'];
       delete this.driverData['contractStart'];
       delete this.driverData['contractEnd'];
-
-      // let getDriverData = JSON.parse(localStorage.getItem('driver'));
-      
-      // delete getDriverData.ownerOperator;
-      // delete getDriverData.contractStart;
-      // delete getDriverData.contractEnd;
-      // getDriverData.employeeId = '';
-      // getDriverData.startDate = '';
-      // getDriverData.terminationDate = '';
-      
     } else {
       delete this.driverData['employeeId'];
       delete this.driverData['startDate'];
       delete this.driverData['terminationDate'];
-
-      // let getDriverData = JSON.parse(localStorage.getItem('driver'));
-      
-      // delete getDriverData.employeeId;
-      // delete getDriverData.startDate;
-      // delete getDriverData.terminationDate;
-      // getDriverData.ownerOperator = '';
-      // getDriverData.contractStart = '';
-      // getDriverData.contractEnd = '';
-      
     }
     this.driverData['driverType'] = value;
   }
@@ -538,16 +438,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.cycles = result.Items;
       });
   }
-
-  // fetchOwnerOperators() {
-  //   this.apiService.getData('ownerOperators')
-  //     .subscribe((result: any) => {
-  //       this.ownerOperators = result.Items;
-  //     });
-  // }
-
-  
-
   fetchGroups() {
     this.apiService.getData(`groups?groupType=drivers`).subscribe((result: any) => {
       this.groups = result.Items;
@@ -574,13 +464,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.countries = result.Items;
       });
   }
-
-  // fetchVehicles() {
-  //   this.apiService.getData('vehicles')
-  //     .subscribe((result: any) => {
-  //       this.vehicles = result.Items;
-  //     });
-  // }
 
   fetchYards() {
     this.apiService.getData('yards')
@@ -742,7 +625,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
-    // this.register();
     this.spinner.show();
     this.hideErrors();
     this.driverData.empPrefix = this.prefixOutput;
@@ -933,8 +815,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             emergencyAddress: '',
           },
         }
-        // localStorage.setItem('driver', JSON.stringify(driver));
-        // this.router.navigateByUrl('/fleet/drivers/list');
         this.spinner.hide();
         this.cancel();
         
@@ -957,29 +837,20 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;
     
-    // let countryID = await this.fetchCountriesByName(result.address.countryName, i);
-    // this.driverData.address[i].countryID = countryID;
     this.driverData.address[i].countryName = result.address.countryName;
 
     $('div').removeClass('show-search__result');
 
-    //let stateID = await this.fetchStatesByName(result.address.state, i);
-    // this.driverData.address[i].stateID = stateID;
     this.driverData.address[i].stateName = result.address.state;
 
-    //let cityID = await this.fetchCitiesByName(result.address.city);
-    // this.driverData.address[i].cityID = cityID;
     this.driverData.address[i].cityName = result.address.city;
-
-    // this.driverData.address[i].zipCode = result.address.postalCode;
+    
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
     if (result.address.street === undefined) {
       result.address.street = '';
     }
-    // this.driverData.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
-    
   }
 
   async fetchCountriesByName(name: string, i) {
@@ -1408,24 +1279,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     return this.concatArrayKeys;
   }
 
-
-  register = async () => {
-    try {
-      // This should go in Register component
-      let res = await Auth.signUp({
-        password: this.password,
-        username: this.userName,
-        attributes: {
-          email: this.email,
-          phone_number: this.phone,
-        },
-      });
-    } catch (err) {
-
-      // this.hasError = true;
-      // this.Error = err.message || 'Error during login';
-    }
-  }
 
   ngOnDestroy(): void {
     this.takeUntil$.next();
