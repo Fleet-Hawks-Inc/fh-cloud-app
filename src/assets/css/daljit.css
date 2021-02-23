@@ -653,3 +653,9 @@ table.geofence-table tbody {
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     color: #fff !important;
 }
+label.error {
+    width: 100%;
+}
+.dataTables_wrapper .dataTables_paginate a.paginate_button.current {
+    color: #fff !important;
+}

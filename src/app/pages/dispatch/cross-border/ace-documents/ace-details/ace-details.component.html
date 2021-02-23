@@ -11,7 +11,7 @@
             <header class="page-header pr-5">
                 <h2>ACE Details</h2>
                 <div class="right-wrapper text-right pt-2 pr-2">
-                  
+
                     <div class="btn-group btn-group1 flex-wrap mr-1">
                         <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">Actions<span class="caret"></span></button>
@@ -33,10 +33,9 @@
 
                             <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBPFn()">Send Complete
                                 eManifest</a>
-                            <a class="dropdown-item text-1"
-                                routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}">Amend Completed
+                            <a class="dropdown-item text-1" (click)="amendManifest()">Amend Completed
                                 eManifest</a>
-                            <a class="dropdown-item text-1" href="javascript:;">Cancel Completed eManifest</a>
+                            <a class="dropdown-item text-1" (click) ="cancelManifest(entryID)">Cancel Completed eManifest</a>
                         </div>
                     </div>
                     <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default mr-1 btn-sm"><i
@@ -72,7 +71,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Current Status:
-                                                         <div class="btn-group btn-group1 flex-wrap mr-1">                                                       
+                                                         <div class="btn-group btn-group1 flex-wrap mr-1">
                                                             <span class="fas fa-pencil-alt dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></span>
                                                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -117,10 +116,6 @@
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">ACE eManifest History</h4>
-                                <div class=" pull-right">
-                                    <!-- <button type="button" data-toggle="modal" data-target="#statusModal"
-                                        class="btn btn-sm btn-success">View All History</button> -->
-                                </div>
                             </div>
                             <div class="card-body border scroll-table-class">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
@@ -132,14 +127,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let response of responses; let i = index">
+                                        <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>{{response.cbpDateTime}}</td>                                   
-                                            <td>Trip <b>{{response.sendRequest.tripNumber}}</b> &nbsp;&nbsp;
-                                                 <span *ngIf="response.tripStatus != undefined">{{response.tripStatus.description}}</span>
-                                                 &nbsp;<span *ngIf="response.validationResponses?.length">
-                                                     <span *ngFor="let validation of response.validationResponses">{{validation.description}},</span>
-                                                 </span>
+                                            <td>{{response.dateTime}}</td>
+                                            <td>Trip <b>{{response.tripNumber}}</b>&nbsp;&nbsp;
+                                                     <span *ngFor="let error of response.errors">{{error.note}},<br></span>
                                                 </td>
                                         </tr>
                                     </tbody>
@@ -253,7 +245,7 @@
                                             <th>Driver Number</th>
                                             <th>Fast ID</th>
                                             <th>Travel Documents#</th>
-                                           
+
                                             <!-- <th>Address</th> -->
                                             <th width="10%">Action</th>
                                         </tr>
@@ -276,7 +268,7 @@
                                             <td><span
                                                     *ngFor="let document of driver.travelDocuments">{{document.number}},</span>
                                             </td>
-                                            
+
                                             <!-- <td>Address</td> -->
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
@@ -298,7 +290,7 @@
                                             class="modal-with-form cursor-pointer"
                                             (click)="showPassengerDetails(passenger.passengerID)"><span
                                                     *ngFor="let document of passenger.travelDocuments">{{document.number}},</span>
-                                            </td>                                           
+                                            </td>
                                             <!-- <td>Address</td> -->
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
@@ -328,12 +320,12 @@
                                     <thead>
                                         <tr>
                                             <th width="10%">Truck#</th>
-                                            <th width="10%">Type</th> 
-                                            <th width="15%">VIN#</th>   
-                                            <th width="10%">DOT Number</th>                                                                                    
+                                            <th width="10%">Type</th>
+                                            <th width="15%">VIN#</th>
+                                            <th width="10%">DOT Number</th>
                                             <th width="15%">Licence Plate</th>
                                             <th width="15%">IIT</th>
-                                            <th width="15%">Seal Numbers</th>                                            
+                                            <th width="15%">Seal Numbers</th>
                                             <th width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -342,13 +334,13 @@
                                         class="modal-with-form cursor-pointer">
                                             <td>{{truck.number}}</td>
                                             <td>{{truck.type}}</td>
-                                            <td>{{truck.vinNumber}}</td> 
+                                            <td>{{truck.vinNumber}}</td>
                                             <td>{{truck.dotNumber}}</td>
                                             <td><span
                                                 *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td>IIT Status</td>
-                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}}&nbsp;</span></td>                                            
+                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}}&nbsp;</span></td>
                                             <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
@@ -383,10 +375,10 @@
                                             <th width="15%">ACE ID</th>
                                             <th width="10%">Licence Province</th>
                                             <th width="15%">Licence Plate</th>
-                                            
-                                           
+
+
                                             <th width="15%">IIT</th>
-                                            <th width="15%">Seal Numbers</th>                                            
+                                            <th width="15%">Seal Numbers</th>
                                             <th width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -394,7 +386,7 @@
                                         <tr *ngFor="let trailer of trailers">
                                             <td>{{trailer.number}}</td>
                                             <td>{{trailer.type}}</td>
-                                            <td>{{trailer.aceId}}</td>                                            
+                                            <td>{{trailer.aceId}}</td>
                                             <td><span
                                                     *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
                                             </td>
@@ -444,7 +436,7 @@
                                         <td>This shipment is meant for the person who is really sweet.</td>
                                         <td>Demo User</td>
                                         <td>Jun 2,2020</td>
-                                        
+
                                         <td class="actions">
                                             <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
@@ -774,7 +766,7 @@
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
                                         <td>{{passengerData.citizenshipCountry}}</td>
                                     </tr>
-                                   
+
                                 </tbody>
                             </table>
                         </div>

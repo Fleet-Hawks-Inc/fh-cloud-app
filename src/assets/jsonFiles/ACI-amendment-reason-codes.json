@@ -1,0 +1,80 @@
+[
+	{
+		"code": "20",
+		"description": "Amendment to description of goods",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "25",
+		"description": "Amendment to consignee (name and/or address)",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "30",
+		"description": "In bond port/sub-location code amendments",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "35",
+		"description": "Clerical error when keying cargo data compared to shipment documentation data",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "40",
+		"description": "Clerical error when keying conveyance data",
+		"canUseForShipment": false,
+		"canUseTrip": true
+	},
+	{
+		"code": "45",
+		"description": "Duplicate CCD, need to cancel one, e.g. one shipment, 2 CCDs with 2 different CCNs for the same shipment. To be used when cargo is to be de-linked from the conveyance. If required, a request to then cancel the cargo must be provided on paper.",
+		"canUseForShipment": false,
+		"canUseTrip": true
+	},
+	{
+		"code": "50",
+		"description": "Entire shipment not laden. To be used when cargo is to be de-linked from the conveyance. If required, a request to then cancel the cargo must be provided on paper.",
+		"canUseForShipment": false,
+		"canUseTrip": true
+	},
+	{
+		"code": "60",
+		"description": "Amendment not elsewhere specified",
+		"canUseForShipment": true,
+		"canUseTrip": true
+	},
+	{
+		"code": "65",
+		"description": "Overage: any change in the number of pieces in a shipment that is higher than the quantity reported at FPOA. Note the initial quantity being amended must be greater than zero.",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "70",
+		"description": "Shortage: any change in the number of pieces in a shipment that is lower than the quantity reported at FPOA. Note the quantity cannot be reduced to zero, which would then be a cancellation, not amendment.",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "75",
+		"description": "Goods that have been imported but not released, that have been pilfered, stolen, lost or destroyed while in custody of the carrier.",
+		"canUseForShipment": true,
+		"canUseTrip": false
+	},
+	{
+		"code": "80",
+		"description": "Change request delayed by client systems outage",
+		"canUseForShipment": true,
+		"canUseTrip": true
+	},
+	{
+		"code": "85",
+		"description": "Change request delayed by CBSA systems outage",
+		"canUseForShipment": true,
+		"canUseTrip": true
+	}
+]

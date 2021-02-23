@@ -13,6 +13,7 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
   title = 'fleethawks-dashboard';
   loading = false;
   token: boolean = false;
+  currentURL = '';
   constructor(private router: Router,
               @Inject(DOCUMENT) private document: Document,
               private changeDetector: ChangeDetectorRef,
@@ -21,6 +22,8 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
     const rootHtml = document.getElementsByTagName( 'html' )[0];
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
+        this.currentURL = event.url;
+        
         if (event.url === '/Map-Dashboard') {
           rootHtml.classList.add('fixed');
           rootHtml.classList.add('sidebar-light');

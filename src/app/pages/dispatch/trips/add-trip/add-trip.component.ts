@@ -42,7 +42,7 @@ export class AddTripComponent implements OnInit {
         orderType: 'FTL',
         tripPlanning: [],
         notifications: {},
-        tripStatus: 'planned',
+        tripStatus: 'confirmed',
         dateCreated: <any>''
     };
     ltlOrders = [];
@@ -146,6 +146,7 @@ export class AddTripComponent implements OnInit {
             this.pageTitle = 'Add Trip';
         }
         this.fetchOrders();
+        this.getCurrentDate();
         this.fetchCustomerByIDs();
         this.fetchCarriers();
         this.fetchRoutes();
@@ -153,7 +154,7 @@ export class AddTripComponent implements OnInit {
         this.fetchVehicles();
         this.fetchAssets();
         this.fetchDrivers();
-        this.fetchCountries();
+        // this.fetchCountries();
         this.fetchShippersByIDs();
         this.fetchReceiversByIDs();
         this.searchLocation();
@@ -170,17 +171,17 @@ export class AddTripComponent implements OnInit {
             this.form = $('#form_').validate();
         });
 
-        $('#locationCountry').on('change', function () {
-            var curr = $(this);
-            var countryId = curr.val();
-            current.getStates(countryId);
-        })
+        // $('#locationCountry').on('change', function () {
+        //     var curr = $(this);
+        //     var countryId = curr.val();
+        //     current.getStates(countryId);
+        // })
 
-        $('#locationState').on('change', function () {
-            let curr = $(this);
-            let stateId = curr.val();
-            current.getCities(stateId);
-        })
+        // $('#locationState').on('change', function () {
+        //     let curr = $(this);
+        //     let stateId = curr.val();
+        //     current.getCities(stateId);
+        // })
     }
 
     fetchCarriers() {
@@ -309,10 +310,10 @@ export class AddTripComponent implements OnInit {
             if (dataCheck.length > 0) {
                 this.tripData.tripStatus = 'dispatched';
             } else {
-                this.tripData.tripStatus = 'planned';
+                this.tripData.tripStatus = 'confirmed';
             }
         } else {
-            this.tripData.tripStatus = 'planned';
+            this.tripData.tripStatus = 'confirmed';
         }
     }
 
@@ -689,8 +690,20 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.coDriverUsername = this.tempTextFieldValues.coDriverUsername;
             this.textFieldValues.trailerName = this.tempTextFieldValues.trailerName;
 
-            this.tripData.tripStatus = 'planned';
-            $("#cell11").prop('disabled', true);
+            this.tripData.tripStatus = 'confirmed';
+            if(this.textFieldValues.vehicleID != '' || this.textFieldValues.driverUsername != '' || this.textFieldValues.coDriverUsername != '' || this.textFieldValues.trailerName != '') {
+                $("#cell11").prop('disabled', true);
+            } else {
+                $("#cell11").prop('disabled', false);
+            }
+
+            //change trip status to dispatched if vehicle/drivr is selected
+            if (this.tripID == undefined || this.tripID == '') {
+                if(this.textFieldValues.vehicleID != '' || this.textFieldValues.driverUsername != '' || this.textFieldValues.coDriverUsername != '') {
+                    this.tripData.tripStatus = 'dispatched';
+                }    
+            }
+            
             $('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
             let index = this.tempTextFieldValues.index;
@@ -703,7 +716,23 @@ export class AddTripComponent implements OnInit {
             this.trips[index].coDriverName = this.tempTextFieldValues.coDriverName;
             this.trips[index].coDriverUsername = this.tempTextFieldValues.coDriverUsername;
             this.trips[index].trailerName = this.tempTextFieldValues.trailerName;
-            this.tripData.tripStatus = 'planned';
+            
+            if (this.tripID == undefined || this.tripID == '') {
+                this.tripData.tripStatus = 'confirmed';
+            }
+
+            //change trip status to dispatched if vehicle/drivr is selected
+            if (this.tripID == undefined || this.tripID == '') {
+                if(this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.driverUsername != '' || this.tempTextFieldValues.coDriverUsername != '') {
+                    this.tripData.tripStatus = 'dispatched';
+                }    
+            }
+
+            if(this.trips[index].vehicleID != '' || this.trips[index].driverUsername != '' || this.trips[index].coDriverUsername != '' || this.trips[index].trailerName != '') {
+                $("#editCell11"+index).prop('disabled', true);
+            } else {
+                $("#editCell11"+index).prop('disabled', false);
+            }
 
             this.emptyAssetModalFields();
             $('#assetModal').modal('hide');
@@ -729,30 +758,30 @@ export class AddTripComponent implements OnInit {
         }
     }
 
-    fetchCountries() {
-        this.apiService.getData('countries')
-            .subscribe((result: any) => {
-                this.countries = result.Items;
-            });
-    }
+    // fetchCountries() {
+    //     this.apiService.getData('countries')
+    //         .subscribe((result: any) => {
+    //             this.countries = result.Items;
+    //         });
+    // }
 
-    getStates(countryID) {
-        this.spinner.show();
-        this.apiService.getData('states/country/' + countryID)
-            .subscribe((result: any) => {
-                this.states = result.Items;
-                this.spinner.hide();
-            });
-    }
+    // getStates(countryID) {
+    //     this.spinner.show();
+    //     this.apiService.getData('states/country/' + countryID)
+    //         .subscribe((result: any) => {
+    //             this.states = result.Items;
+    //             this.spinner.hide();
+    //         });
+    // }
 
-    getCities(stateID) {
-        this.spinner.show();
-        this.apiService.getData('cities/state/' + stateID)
-            .subscribe((result: any) => {
-                this.cities = result.Items;
-                this.spinner.hide();
-            });
-    }
+    // getCities(stateID) {
+    //     this.spinner.show();
+    //     this.apiService.getData('cities/state/' + stateID)
+    //         .subscribe((result: any) => {
+    //             this.cities = result.Items;
+    //             this.spinner.hide();
+    //         });
+    // }
 
     vehicleChange($event, type) {
         if ($event === undefined) {
@@ -797,7 +826,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataDriverUsername = $event.userName;
                 }
                 $(".driverClass").removeClass('td_border');
-                $("#drivr_" + $event.driverID).addClass('td_border');
+                $("#drivr_" + $event.userName).addClass('td_border');
 
                 await this.spinner.hide();
 
@@ -808,7 +837,7 @@ export class AddTripComponent implements OnInit {
                     this.assetDataCoDriverUsername = $event.userName;
                 }
                 $(".codriverClass").removeClass('td_border');
-                $("#codrivr_" + $event.driverID).addClass('td_border');
+                $("#codrivr_" + $event.userName).addClass('td_border');
             }
         }
     }
@@ -860,9 +889,6 @@ export class AddTripComponent implements OnInit {
         } else {
             this.tripData.reeferTemperature = '';
         }
-
-        //trip creation date
-        this.tripData.dateCreated = this.tripData.dateCreated.split('-').reverse().join('-')
 
         delete this.tripData.reeferTemperatureUnit;
         this.tripData.orderId = this.OrderIDs;
@@ -968,6 +994,7 @@ export class AddTripComponent implements OnInit {
             next: (res) => {
                 this.spinner.hide();
                 this.response = res;
+                this.updateOrderStatus();
                 this.toastr.success('Trip added successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
@@ -999,6 +1026,8 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchOrders() {
+        this.ltlOrders = [];
+        this.ftlOrders = [];
         this.spinner.show();
         this.apiService.getData('orders').subscribe({
             complete: () => { },
@@ -1010,48 +1039,49 @@ export class AddTripComponent implements OnInit {
 
                 //for P\L and D\L in modal
                 data = result.Items.map((i) => {
-                    i.pickupLocations = '';
-                    i.deliveryLocations = '';
-                    if (i.shippersReceiversInfo) {
-                        let ind = 1;
-                        let ind2 = 1;
-                        i.shippersReceiversInfo.map((j) => {
-                            j.receivers.map((k) => {
-                                let dateTime = '';
-                                if (k.dateAndTime != undefined && k.dateAndTime != '') {
-                                    let dmy = k.dateAndTime.split(' ');
-                                    dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                                }
-                                i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
-                                ind++;
-                            })
-                        })
+                    const element = i;
 
-                        i.shippersReceiversInfo.map((m) => {
-                            let dateTime = '';
-                            m.shippers.map((n) => {
-                                if (n.dateAndTime != undefined && n.dateAndTime != '') {
-                                    let dmy = n.dateAndTime.split(' ');
-                                    dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                                }
-                                i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
-                                ind2++;
+                    if (element.orderStatus == 'confirmed') {
+                        i.pickupLocations = '';
+                        i.deliveryLocations = '';
+                        if (i.shippersReceiversInfo) {
+                            let ind = 1;
+                            let ind2 = 1;
+                            i.shippersReceiversInfo.map((j) => {
+                                j.receivers.map((k) => {
+                                    let dateTime = '';
+                                    if (k.dateAndTime != undefined && k.dateAndTime != '') {
+                                        let dmy = k.dateAndTime.split(' ');
+                                        dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
+                                    }
+                                    i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
+                                    ind++;
+                                })
                             })
-                        })
+
+                            i.shippersReceiversInfo.map((m) => {
+                                let dateTime = '';
+                                m.shippers.map((n) => {
+                                    if (n.dateAndTime != undefined && n.dateAndTime != '') {
+                                        let dmy = n.dateAndTime.split(' ');
+                                        dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
+                                    }
+                                    i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
+                                    ind2++;
+                                })
+                            })
+                        }
+
+                        element.selected = false;
+                        if (element.orderMode == 'FTL') {
+                            this.ftlOrders.push(element);
+                        } else if (element.orderMode == 'LTL') {
+                            this.ltlOrders.push(element);
+                        }
                     }
+
                     return i;
                 });
-                this.ltlOrders = [];
-                this.ftlOrders = [];
-                for (let index = 0; index < data.length; index++) {
-                    const element = data[index];
-                    element.selected = false;
-                    if (element.orderMode == 'FTL') {
-                        this.ftlOrders.push(element);
-                    } else if (element.orderMode == 'LTL') {
-                        this.ltlOrders.push(element);
-                    }
-                }
             }
         })
     }
@@ -1203,7 +1233,8 @@ export class AddTripComponent implements OnInit {
                 this.tripData['reeferTemperatureUnit'] = tempUnit;
                 this.tripData['orderType'] = result.orderType;
                 this.tripData['timeCreated'] = result.timeCreated;
-                this.tripData['dateCreated'] = result.dateCreated.split('-').reverse().join('-');
+                this.tripData['tripStatus'] = result.tripStatus;
+                // this.tripData['dateCreated'] = result.dateCreated.split('-').reverse().join('-');
                 this.tripData.notifications = result.notifications;
 
                 // checkbox checked of ftl orders
@@ -1274,6 +1305,10 @@ export class AddTripComponent implements OnInit {
                         assetArr.push(assObj);
                         this.trips[i].trailer = assetArr;
                     }
+
+                    let trailerNames:any = assetArr.map(function (v) { return v.name; });
+                    trailerNames = trailerNames.join();
+                    this.trips[i].trailerName = trailerNames;
                 }
                 if(locations.length > 0) {
                     this.getCoords(locations);
@@ -1293,7 +1328,7 @@ export class AddTripComponent implements OnInit {
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
-        this.tripData.dateCreated = this.tripData.dateCreated.split('-').reverse().join('-')
+        // this.tripData.dateCreated = this.tripData.dateCreated.split('-').reverse().join('-')
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1363,7 +1398,7 @@ export class AddTripComponent implements OnInit {
             this.tripData.tripPlanning.push(obj);
         }
 
-        this.spinner.show();
+        // this.spinner.show();
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
@@ -1394,6 +1429,7 @@ export class AddTripComponent implements OnInit {
             next: (res) => {
                 this.spinner.hide();
                 this.response = res;
+                this.updateOrderStatus();
                 this.toastr.success('Trip updated successfully.');
                 this.router.navigateByUrl('/dispatch/trips/trip-list');
             },
@@ -1402,7 +1438,33 @@ export class AddTripComponent implements OnInit {
 
     getCurrentuser = async () => {
         this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-        // this.userRole = this.currentUser.userType;
         this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-      }
+    }
+
+    getCurrentDate() {
+        let d = new Date();
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        let year = d.getFullYear();
+
+        this.tripData.dateCreated = year+'-'+month+'-'+day;
+    }
+
+    updateOrderStatus() {
+        for (let i = 0; i < this.OrderIDs.length; i++) {
+            const orderID = this.OrderIDs[i];
+
+            this.apiService.getData('orders/' + orderID)
+                .subscribe((result: any) => {
+                    let orderData = result.Items[0];
+                    console.log(orderData);
+                    if (orderData.orderStatus == 'confirmed') {
+                        this.apiService.getData('orders/update/orderStatus/'+orderID+'/dispatched')
+                            .subscribe((result: any) => {
+                                console.log(result);
+                            });
+                    }
+                });
+        }
+    }
 }

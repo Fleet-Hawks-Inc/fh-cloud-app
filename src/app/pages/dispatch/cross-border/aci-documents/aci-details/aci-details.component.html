@@ -51,9 +51,9 @@
                             <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBSAFn()">Send Trip and
                                 Shipments</a>
                             <a class="dropdown-item text-1" href="javascript:;">Change Trip and Shipments</a>
-                            <a class="dropdown-item text-1" href="javascript:;">Amend Trip and Shipments(Use After
+                            <a class="dropdown-item text-1" (click)="amendManifest()">Amend Trip and Shipments(Use After
                                 Arrival)</a>
-                            <a class="dropdown-item text-1" href="javascript:;">Cancel Trip and Shipments</a>
+                            <a class="dropdown-item text-1" (click) ="cancelManifest(entryID)">Cancel Trip and Shipments</a>
                             <a class="dropdown-item text-1" href="javascript:;">Send Trip Only(Shipments already on file
                                 or empty)</a>
                             <a class="dropdown-item text-1" href="javascript:;">Change Trip Only(Shipments will not be
@@ -177,7 +177,7 @@
                                     <!-- <button type="button" data-toggle="modal" data-target="#statusModal" class="btn btn-sm btn-success">View All History</button> -->
                                 </div>
                             </div>
-                            <div class="card-body border">
+                            <div class="card-body border scroll-table-class">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
@@ -187,16 +187,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let response of responses; let i = index">
+                                        <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>date</td>
-                                            <!-- <td>Trip <b>{{response.sendRequest.tripNumber}}</b> &nbsp;&nbsp;
-                                             <span *ngIf="response.tripStatus != undefined">{{response.tripStatus.description}}</span>
-                                             &nbsp;<span *ngIf="response.validationResponses?.length">
-                                                 <span *ngFor="let validation of response.validationResponses">{{validation.description}},</span>
-                                             </span>
-                                            </td> -->
-                                            <td>Status</td>
+                                            <td>{{response.dateTime}}</td>
+                                            <td>Trip <b>{{response.tripNumber}}</b> &nbsp;&nbsp;
+                                             <span>{{response.status}}</span><br>
+                                             <span *ngFor="let error of response.errors">{{error.note}},<br></span>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -420,7 +417,7 @@
 
                 </div>
                 <!-- TRAILER DIV-->
-                <div class="row mt-3">
+                <div class="row mt-3" *ngIf="trailers?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -440,7 +437,7 @@
                                             <th width="15%">Trailer#</th>
                                             <th width="15%">Trailer Type</th>
                                             <th width="15%">Licence Plate</th>
-                                            <th width="15%">Licence State/Province</th>                                            
+                                            <th width="15%">Licence State/Province</th>
                                             <th width="15%">IIT/Cargo Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Action</th>
@@ -453,7 +450,7 @@
                                             </td>
                                             <td>{{trailer.type}}</td>
                                             <td>{{trailer.licensePlate.number}}</td>
-                                            <td>{{trailer.licensePlate.stateProvince}}</td>                                            
+                                            <td>{{trailer.licensePlate.stateProvince}}</td>
                                             <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargo}}&nbsp;</span></td>
                                             <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}&nbsp;</span></td>
                                             <td class="actions">
@@ -472,7 +469,7 @@
 
 
                 <!-- CONTAINERS DIV -->
-                <div class="row mt-3">
+                <div class="row mt-3" *ngIf="containers?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -540,7 +537,7 @@
                                         <td>This shipment is meant for the person who ios really sweet.</td>
                                         <td>Demo User</td>
                                         <td>Jun 2,2020</td>
-                                        
+
                                         <td class="actions">
                                             <a href=""><i class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Remove</a>
@@ -989,7 +986,7 @@
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
                                         <td>{{passengerData.citizenshipCountry}}</td>
                                     </tr>
-                                   
+
                                 </tbody>
                             </table>
                         </div>

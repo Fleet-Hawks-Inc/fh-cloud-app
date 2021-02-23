@@ -1,13 +1,7 @@
 
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
 
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header pr-5">
                 <form class="form-horizontal" method="get">
@@ -96,8 +90,8 @@
                                     role="tab" (click)="fetchTabData('all')" aria-controls="allTrips" aria-selected="true">All</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="planned-tab" href="javascript:;" (click)="fetchTabData('planned')">
-                                    Planned : {{ plannedTripsCount }}</a>
+                                <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;" (click)="fetchTabData('confirmed')">
+                                    Confirmed : {{ confirmedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;" (click)="fetchTabData('dispatched')">
@@ -197,7 +191,7 @@
                                     <tr>
                                       <td colspan="14" class="no-data-available">No records found</td>
                                     </tr>
-                                <tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
