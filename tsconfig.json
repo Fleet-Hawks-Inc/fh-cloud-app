@@ -11,7 +11,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es5",
-	"types": ["node","googlemaps"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node", "googlemaps"],
     "typeRoots": [
       "node_modules/@types"
     ],

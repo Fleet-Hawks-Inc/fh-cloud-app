@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "buildPreprod": "ng build --preprod",
-    "buildDev": "ng build",
+    "buildDev": "ng build --configuration dev",
     "buildProd": "ng build --prod --base-href . ",
     "test": "ng test",
     "lint": "ng lint",
