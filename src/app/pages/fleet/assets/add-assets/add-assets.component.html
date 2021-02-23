@@ -280,9 +280,9 @@
 
 											<ng-select [(ngModel)]="assetsData.assetDetails.ownerOperator"
 											name="assetDetails.ownerOperator" class="form-control populate ">
-												<ng-option *ngFor="let item of ownOperators" value="{{item.operatorID}}"
+												<ng-option *ngFor="let item of ownOperators | async" value="{{item.operatorID}}"
 												>
-													{{item.firstName}} {{item.lastName}}
+													{{item.companyName}}
 												</ng-option>
 
 											</ng-select>
@@ -349,7 +349,7 @@
 												class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes&nbsp; <span
 												class="text-1 optional-label-color">(optional)</span></label>
 											<textarea [(ngModel)]="assetsData.assetDetails.remarks"
-												name="assetDetails.remarks" class="form-control" rows="3" placeholder="Enter notes about asset"></textarea>
+												name="assetDetails.remarks" class="form-control h-auto" rows="3" placeholder="Enter notes about asset"></textarea>
 										</div>
 									</div>
 								</div>
