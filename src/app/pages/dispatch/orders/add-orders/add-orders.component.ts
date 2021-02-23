@@ -1,14 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from "../../../../services/api.service";
 import { Router, ActivatedRoute } from "@angular/router";
-import { EMPTY, from, pipe, Subject, throwError } from "rxjs";
+import { from, Subject, throwError } from "rxjs";
 import { AwsUploadService } from "../../../../services/aws-upload.service";
-import { v4 as uuidv4 } from "uuid";
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { DomSanitizer } from "@angular/platform-browser";
 import {
   NgbCalendar,
-  NgbDateAdapter,
-  NgbDateStruct,
+  NgbDateAdapter
 } from "@ng-bootstrap/ng-bootstrap";
 import { GoogleMapsService } from "../../../../services/google-maps.service";
 import {
@@ -17,13 +15,11 @@ import {
   distinctUntilChanged,
   switchMap,
   catchError,
-  onErrorResumeNext,
   tap,
 } from "rxjs/operators";
 import { HereMapService } from "../../../../services";
 import { environment } from "../../../../../environments/environment.prod";
 import { NgbTimeStruct, NgbDatepickerConfig } from "@ng-bootstrap/ng-bootstrap";
-import { element } from "protractor";
 import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
@@ -281,10 +277,12 @@ export class AddOrdersComponent implements OnInit {
   stateReceiverIndex: number;
   uploadedDocs = [];
   packagingUnitsList: any = [];
+
+  isSubmit = false;
+  isShipperSubmit = false;
+  isReceiverSubmit = false;
   constructor(
     private apiService: ApiService,
-    private domSanitizer: DomSanitizer,
-    private awsUS: AwsUploadService,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private google: GoogleMapsService,
@@ -360,14 +358,10 @@ export class AddOrdersComponent implements OnInit {
             this.orderData.charges.freightFee.currency = d.freightFeecurrency;
             this.orderData.charges.freightFee.type = d.freightFeetype;
 
-            //  console.log('Order Number is ' + d.OrderNumber);
           }
         })
       )
       .subscribe((v: any) => {
-        // const data = JSON.parse(v.toString());
-        //  console.log(data.OrderNumber);
-        console.log("continue service======>" + v);
       });
   }
 
@@ -402,10 +396,7 @@ export class AddOrdersComponent implements OnInit {
       this.packagingUnitsList = data;
     });
   }
-  // userLocation(label) {
-  //   console.log(label);
-  //   this.orderData.shipperInfo['pickupLocation'] = label;
-  // }
+  
   timpickerInit() {}
 
   fetchStateTaxes() {
@@ -459,6 +450,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveShipper(i) {
+    this.isShipperSubmit = true; 
     let location = this.shippersReceivers[i].shippers.pickupLocation;
 
     let geoCodeResponse;
@@ -513,6 +505,8 @@ export class AddOrdersComponent implements OnInit {
       return false;
     }
 
+    this.isShipperSubmit = false; 
+
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupLocation: this.shippersReceivers[i].shippers.pickupLocation,
@@ -548,6 +542,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveReceiver(i) {
+    this.isReceiverSubmit = true;
+
     let location = this.shippersReceivers[i].receivers.dropOffLocation;
     let geoCodeResponse;
     let platform = new H.service.Platform({
@@ -600,6 +596,8 @@ export class AddOrdersComponent implements OnInit {
       this.toastr.error("Please fill required fields.");
       return false;
     }
+
+    this.isReceiverSubmit = false;
 
     let currentReceiver: any = {
       receiverID: this.shippersReceivers[i].receivers.receiverID,
@@ -801,14 +799,6 @@ export class AddOrdersComponent implements OnInit {
         this.googleCords.shift();
         this.destination = this.googleCords;
 
-        // if (this.googleCords.length === 2) {
-        //   this.origin = this.googleCords[0];
-        //   this.destination = this.googleCords[1];
-        // } else {
-        //   this.origin = this.googleCords[0];
-        //   this.destination = this.googleCords.shift();
-        // }
-
         this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
        
       } else if (value === "pcmiles") {
@@ -909,6 +899,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isSubmit = true;
     if (!this.checkFormErrors()) return false;
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
@@ -952,6 +943,10 @@ export class AddOrdersComponent implements OnInit {
               const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, "This Field");
               this.errors[key] = val.message;
+              if(key == 'order'){
+                this.toastr.error("This Order already exists.");
+              }
+              console.log(this.errors[key]);
             })
           )
           .subscribe({
@@ -965,7 +960,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-        this.router.navigateByUrl("/dispatch/orders");
+       // this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
@@ -1468,6 +1463,14 @@ export class AddOrdersComponent implements OnInit {
         amount: "",
         currency: "",
       });
+    }
+  }
+
+  deleteAccessFee(value: string, index) {
+    if (value === "accessFee") {
+      this.accessFeesInfo.accessFees.splice(index, 1);
+    } else {
+      this.accessorialDeductionInfo.accessDeductions.splice(index, 1);
     }
   }
 

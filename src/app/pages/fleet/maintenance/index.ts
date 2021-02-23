@@ -1,11 +1,3 @@
-export * from './vendor/add-vendor/add-vendor.component';
-export * from './vendor/edit-vendor/edit-vendor.component';
-export * from './vendor/vendors-list/vendors-list.component';
-
-export * from './vehicle-service-log/add-vehicle-service-log/add-vehicle-service-log.component';
-export * from './vehicle-service-log/edit-vehicle-service-log/edit-vehicle-service-log.component';
-export * from './vehicle-service-log/vehicle-service-logs/vehicle-service-logs.component';
-
 export * from './issues/issue-list/issue-list.component';
 export * from './issues/add-issue/add-issue.component';
 export * from './issues/issue-detail/issue-detail.component';

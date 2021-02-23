@@ -647,6 +647,8 @@ fetchDrivers(){
           $('#addAssetModelModal').modal('hide');
           this.toastr.success('Asset Model Added Successfully.');
           this.listService.fetchAssetModels();
+          this.assetModelData.manufacturerID = '';
+          this.assetMakeData.manufacturerName = '';
         }
       });
   }
