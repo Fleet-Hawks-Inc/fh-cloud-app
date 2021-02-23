@@ -1,0 +1,15 @@
+on: [pull_request]
+name: Build Angular App
+jobs:
+  build:
+    name: Sonar on PR
+    runs-on: ubuntu-latest    
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: SonarQube Scan
+        uses: kitabisa/sonarqube-action@master
+        with:
+          host: ${{ secrets.SONARQUBE_HOST }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}      
+          password: " "
