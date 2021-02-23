@@ -9,6 +9,7 @@ import {SharedServiceService} from '../../services/shared-service.service';
 export class SidebarComponent implements OnInit {
   private toggle = false;
   public active_nav = 'fleet';
+  public modulePath: any = "";
 
   constructor(private router: Router,
               private sharedService: SharedServiceService) {
@@ -17,7 +18,10 @@ export class SidebarComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.modulePath = this.router.url.split('/');
+    this.modulePath = this.modulePath[1];
+   }
 
   clickEvent(event) {
     // if you just want to toggle the class; change toggle variable.

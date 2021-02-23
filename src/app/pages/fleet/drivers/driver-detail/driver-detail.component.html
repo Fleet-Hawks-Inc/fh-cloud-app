@@ -28,31 +28,31 @@
                           </div>
                           <div class="widget-toggle-expand mb-1">
                              <div class="row  m-0">
-                                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CDL:</div>
+                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">CDL:</div>
 
-                                <div class="col-lg-6 p-2 bor_half">{{CDL}}</div>
+                                <div class="col-lg-7 p-2 bor_half">{{CDL}}</div>
 
                              </div>
                              <div class="row  m-0" >
-                                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{cycleObjects[cycle]}}</div>
+                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
+                                <div class="col-lg-7 p-2 bor_half">{{cycle ? cycleObjects[cycle] : '-'}}</div>
                              </div>
                              <!-- <div class="row  m-0">
                                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Exempted/Non-Exempted:</div>
                                 <div class="col-lg-6 p-2 bor_half">Non-Exempted</div>
                                 </div> -->
                              <div class="row  m-0">
-                                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
+                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
+                                <div class="col-lg-7 p-2 bor_half">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
                              </div>
                              <div class="row  m-0">
-                                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
+                                <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
 
-                                <div class="col-lg-6 p-2 bor_half">{{workPhone}}</div>
+                                <div class="col-lg-7 p-2 bor_half">{{workPhone}}</div>
                              </div>
                              <div class="row  m-0">
-                                <div class="col-lg-6 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
-                                <div class="col-lg-6 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
+                                <div class="col-lg-5 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
+                                <div class="col-lg-7 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
 
                              </div>
                           </div>
