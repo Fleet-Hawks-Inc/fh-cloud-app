@@ -3,20 +3,12 @@ import { ApiService } from "../../../../../services";
 import {
   NgbCalendar,
   NgbDateAdapter,
-  NgbDateParserFormatter,
-  NgbDateStruct,
-  NgbTimeStruct,
-  NgbTimeAdapter,
 } from "@ng-bootstrap/ng-bootstrap";
 import { HttpClient } from "@angular/common/http";
 import { NgbTimepickerConfig } from "@ng-bootstrap/ng-bootstrap";
-import { from, Subject, throwError } from "rxjs";
+import { from } from "rxjs";
 import {
   map,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
 } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -173,12 +165,11 @@ export class NewAciManifestComponent implements OnInit {
   amendManifest = false;
   constructor(
     private httpClient: HttpClient,
-    private router: Router,
+
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private listService: ListService,
     private apiService: ApiService,
-    private ngbCalendar: NgbCalendar,
     private location: Location,
     config: NgbTimepickerConfig,
     private dateAdapter: NgbDateAdapter<string>
@@ -304,12 +295,6 @@ export class NewAciManifestComponent implements OnInit {
         this.acceptanceCities = result.Items;
       });
   }
-  // getDocStates(){
-  //   this.apiService.getData('states')
-  //   .subscribe((result: any) => {
-  //     this.passengerDocStates = result.Items;
-  //   });
-  // }
   fetchCities() {
     this.apiService.getData("cities").subscribe((result: any) => {
       this.acceptanceCities = result.Items;

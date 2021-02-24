@@ -5,8 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, ViewChild } from '@angular/core';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, Observable, of } from 'rxjs';
-import { mergeMap, map, takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { HttpClient } from '@angular/common/http';
 
@@ -78,7 +77,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     fastNumber: false
   }
 
-  private destroy$ = new Subject();
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -185,21 +183,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.suggestedDrivers = [];
   }
-
-  // fetchDrivers() {
-
-  //   this.apiService.getData('drivers')
-  //   .subscribe({
-  //     complete: () => {
-  //       this.initDataTable();
-  //     },
-  //     error: () => { },
-  //     next: (result: any) => {
-
-  //       this.totalRecords = result.Count;
-  //     },
-  //   });
-  // }
 
   fetchDriversCount() {
     this.apiService.getData('drivers/get/count?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
@@ -326,14 +309,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.drivers = resp['Items'];
-          // let fetchedDrivers = resp['Items'].map(function(v){ return v.driverID; });
-          // for (let i = 0; i < current.drivers.length; i++) {
-          //   const element = current.drivers[i];
-          //   element.address = {};
-          //   this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
-          //     element.address = result['Items'][0];
-          //   });
-          // }
           
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
