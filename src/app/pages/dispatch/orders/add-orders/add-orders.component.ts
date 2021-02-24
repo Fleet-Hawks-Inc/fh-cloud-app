@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services/api.service";
+import { ApiService, ListService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { from, Subject, throwError } from "rxjs";
-import { AwsUploadService } from "../../../../services/aws-upload.service";
-import { DomSanitizer } from "@angular/platform-browser";
 import {
   NgbCalendar,
   NgbDateAdapter
@@ -122,7 +120,6 @@ export class AddOrdersComponent implements OnInit {
     orderMode: "FTL",
     tripType: "Regular",
     shippersReceiversInfo: [],
-    //  additionalDetails: {},
     charges: {
       freightFee: {
         type: "",
@@ -258,7 +255,7 @@ export class AddOrdersComponent implements OnInit {
     ],
   };
 
-  customers = [];
+  customers: any = [];
   shippers = [];
   receivers = [];
   finalShippersReceivers = [
@@ -293,6 +290,7 @@ export class AddOrdersComponent implements OnInit {
     private config: NgbDatepickerConfig,
     private pdfService: PdfAutomationService,
     private httpClient: HttpClient,
+    private listService: ListService
   ) {
     const current = new Date();
     config.minDate = {
@@ -370,13 +368,13 @@ export class AddOrdersComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchStateTaxes();
-    this.fetchCustomers();
     this.fetchShippers();
     this.fetchReceivers();
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
     this.fetchCountriesByIDs();
+    this.listService.fetchCustomers();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -395,6 +393,8 @@ export class AddOrdersComponent implements OnInit {
     this.httpClient.get('assets/packagingUnit.json').subscribe((data) => {
       this.packagingUnitsList = data;
     });
+
+    this.customers = this.listService.customersList;
   }
   
   timpickerInit() {}
