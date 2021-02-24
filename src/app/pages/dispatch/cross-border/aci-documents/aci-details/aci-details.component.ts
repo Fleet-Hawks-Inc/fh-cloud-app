@@ -112,7 +112,7 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-
+  sendBorderConnectOption = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
@@ -157,8 +157,15 @@ export class AciDetailsComponent implements OnInit {
   }
   sendCBSAFn() {
     this.apiService
-      .getData('ACIeManifest/CBSAdetails/' + this.entryID)
-      .subscribe((result: any) => {
+      .getData('ACIeManifest/CBSAdetails/' + this.entryID).subscribe((result: any) => {
+        this.sendBorderConnectOption = result;
+        if (this.sendBorderConnectOption === true) {
+          const val = 'Queued';
+          const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+            this.toastr.success('Status Updated Successfully!');
+             this.currentStatus = val;
+          });
+        }
       });
   }
 

@@ -34,7 +34,7 @@
                         <div class="dropdown-menu" role="menu" x-plACIment="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
-                                class="dropdown-item text-1"> Edit</a>
+                                class="dropdown-item text-1" *ngIf="currentStatus != 'Queued'"> Edit</a>
                             <a class="dropdown-item text-1" href="">Print</a>
                             <a class="dropdown-item text-1" href="">Fax</a>
                             <a class="dropdown-item text-1" href="">Email</a>
@@ -48,7 +48,7 @@
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 
 
-                            <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBSAFn()">Send Trip and
+                            <a class="dropdown-item text-1" href="javascript:;" (click)="sendCBSAFn()" *ngIf="currentStatus != 'Queued'">Send Trip and
                                 Shipments</a>
                             <a class="dropdown-item text-1" href="javascript:;">Change Trip and Shipments</a>
                             <a class="dropdown-item text-1" (click)="amendManifest()">Amend Trip and Shipments(Use After
