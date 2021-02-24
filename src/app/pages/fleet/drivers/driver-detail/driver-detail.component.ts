@@ -123,7 +123,7 @@ export class DriverDetailComponent implements OnInit {
         private httpClient: HttpClient,
       )
   {
-    this.getCarrierID();
+    // this.getCarrierID();
   }
 
   ngOnInit() {
@@ -311,6 +311,7 @@ export class DriverDetailComponent implements OnInit {
     this.apiService.getData(`addresses/${id}`)
     .subscribe(async (result: any) => {
       this.yardsObjects = await result;
+      console.log('yardsObjects', this.yardsObjects)
     });
   }
 
@@ -344,6 +345,7 @@ export class DriverDetailComponent implements OnInit {
 
   async getCarrierID(){
     this.carrierID = await this.apiService.getCarrierID();
+    console.log('this.carrierID', this.carrierID)
   }
 
   setPDFSrc(val) {
