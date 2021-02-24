@@ -74,6 +74,7 @@ export class AceDetailsComponent implements OnInit {
     fastCardNumber:'',
     travelDocuments: [],
   };
+  sendBorderConnectOption = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
@@ -110,8 +111,15 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('ACEeManifest/CBPdetails/' + this.entryID)
       .subscribe((result: any) => {
+        this.sendBorderConnectOption = result;
+        if (this.sendBorderConnectOption === true) {
+          const val = 'Queued';
+          const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+            this.toastr.success('Status Updated Successfully!');
+             this.currentStatus = val;
+          });
+        }
       });
-
   }
   showShipmentDetails(shipmentID) {
     const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);

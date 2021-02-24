@@ -4,14 +4,11 @@ import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { mergeMap, takeUntil } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, OnDestroy } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { result } from 'lodash';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -379,7 +376,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
   loginDiv = false;
-
+  
   errorClass = false;
   errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
   fieldvisibility = 'false';
@@ -450,10 +447,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     const modalRef = this.modalService.open(targetModal);
     this.userDetailData = data;
   }
-
-  // remove(data, i) {
-  //   data.address.splice(i, 1);
-  // }
 
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
@@ -608,6 +601,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
+          this.listService.fetchCustomers();
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
@@ -792,7 +786,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.ownerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -934,7 +927,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.brokerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1007,7 +999,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.vendorData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1079,7 +1070,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.vendorData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1152,7 +1142,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1220,7 +1209,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1279,30 +1267,22 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   async addShipper() {
     this.hasError = false;
     this.hasSuccess = false;
+
     this.hideErrors();
     for (let i = 0; i < this.shipperData.address.length; i++) {
-      if(this.shipperData.address[i].geoCords == undefined) {
-        this.shipperData.address[i].geoCords = {
-          lat: '',
-          lng: ''
-        };
-      }
       const element = this.shipperData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
+
         result = result.items[0];
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
-      if(this.shipperData.address[i].userLocation != '') {
-        await this.HereMap.revGeoCode(element.geoCords);
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
       }
     }
-    // this.removeUserLocation(this.shipperData.address);
+
+
     // create form data instance
     const formData = new FormData();
 
@@ -1338,7 +1318,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-           $('#addShipperModal').modal('hide');
+          $('#addShipperModal').modal('hide');
           this.listService.fetchShippers();
           this.fetchShippersCount();
           this.showMainModal();
@@ -1364,16 +1344,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
-      if(this.shipperData.address[i].userLocation != '') {
-         await this.HereMap.revGeoCode(element.geoCords);
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+
       }
     }
-    // this.removeUserLocation(this.shipperData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1441,16 +1416,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
-      if(this.shipperData.address[i].userLocation != '') {
-          await this.HereMap.revGeoCode(element.geoCords);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+
       }
     }
-    // this.removeUserLocation(this.consigneeData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1512,16 +1483,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
-      }
-      if(this.shipperData.address[i].userLocation != '') {
-         await this.HereMap.revGeoCode(element.geoCords);
+        result = result.items[0];
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+
       }
     }
-    // this.removeUserLocation(this.consigneeData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1593,7 +1560,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1660,7 +1626,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1732,7 +1697,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         element.geoCords.lng = result.position.lng;
       }
     }
-    // this.removeUserLocation(this.staffData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1744,7 +1708,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-
+    
     this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
@@ -1804,7 +1768,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.staffData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1871,7 +1834,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       });
 
     this.spinner.hide();
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -1889,7 +1851,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
    * Get all countries from api
    */
   fetchCountries() {
-    // return this.apiService.getData('countries');
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
@@ -2004,14 +1965,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchOwnerOperators() {
-  //   // return this.apiService.getData('ownerOperators');
-  //   this.apiService.getData('ownerOperators')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsOperator = result.Count;
-  //     });
-  // }
-
   fetchOwnerOperatorsCount() {
     this.apiService.getData('ownerOperators/get/count?operatorID='+this.filterVal.operatorID).subscribe({
       complete: () => {},
@@ -2032,14 +1985,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchBrokers() {
-  //   // return this.apiService.getData('brokers');
-  //   this.apiService.getData('brokers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsBroker = result.Count;
-  //   });
-  // }
-
   fetchBrokersCount() {
     this.apiService.getData('brokers/get/count?brokerID='+this.filterVal.brokerID).subscribe({
       complete: () => {},
@@ -2049,14 +1994,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchVendors() {
-  //   // return this.apiService.getData('vendors');
-  //   this.apiService.getData('vendors')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsVendor = result.Count;
-  //   });
-  // }
 
   fetchVendorsCount() {
     this.apiService.getData('vendors/get/count?vendorID='+this.filterVal.vendorID).subscribe({
@@ -2068,14 +2005,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchCarriers() {
-  //   // return this.apiService.getData('externalCarriers');
-  //   this.apiService.getData('externalCarriers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCarrier = result.Count;
-  //   });
-  // }
-
   fetchCarriersCount() {
     this.apiService.getData('externalCarriers/get/count?infoID='+this.filterVal.carrierID).subscribe({
       complete: () => {},
@@ -2085,14 +2014,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchShippers() {
-  //   // return this.apiService.getData('shippers');
-  //   this.apiService.getData('shippers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsShipper = result.Count;
-  //   });
-  // }
 
   fetchShippersCount() {
     this.apiService.getData('shippers/get/count?shipperID='+this.filterVal.shipperID).subscribe({
@@ -2104,13 +2025,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchConsignee() {
-  //   // return this.apiService.getData('receivers');
-  //   this.apiService.getData('receivers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsConsignee = result.Count;
-  //   });
-  // }
 
   fetchConsigneeCount() {
     this.apiService.getData('receivers/get/count?consigneeID='+this.filterVal.consigneeID).subscribe({
@@ -2122,14 +2036,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchStaffs() {
-  //   // return this.apiService.getData('staffs');
-  //   this.apiService.getData('staffs')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsStaff = result.Count;
-  //   });
-  // }
-
   fetchStaffsCount() {
     this.apiService.getData('staffs/get/count?staffID='+this.filterVal.staffID).subscribe({
       complete: () => {},
@@ -2140,13 +2046,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchFcCompanies() {
-  //   // return this.apiService.getData('factoringCompanies');
-  //   this.apiService.getData('factoringCompanies')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCompany = result.Count;
-  //   });
-  // }
 
   fetchFcCompaniesCount() {
     this.apiService.getData('factoringCompanies/get/count?companyID='+this.filterVal.companyID).subscribe({
@@ -2198,7 +2097,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         curr.fetchCustomersCount();
         curr.toastr.success('Customer deleted successfully');
 
-        // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
       });
     }
   }
@@ -2212,7 +2110,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchDriversCount();
         this.toastr.success('Driver deleted successfully');
-        // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
       });
     }
   }
@@ -2226,7 +2123,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchBrokersCount();
         this.toastr.success('Broker deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
@@ -2240,7 +2136,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchVendorsCount();
         this.toastr.success('Vendor deleted successfully');
-        // this.vendors = this.vendors.filter(u => u.vendorID !== item.vendorID);
       });
     }
   }
@@ -2254,7 +2149,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchShippersCount();
         this.toastr.success('Shipper deleted successfully');
-        // this.shippers = this.shippers.filter(u => u.shipperID !== item.shipperID);
       });
     }
   }
@@ -2267,7 +2161,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchConsigneeCount();
         this.toastr.success('Consignee deleted successfully');
-        // this.receivers = this.receivers.filter(u => u.receiverID !== item.receiverID);
       });
     }
   }
@@ -2281,7 +2174,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchStaffsCount();
         this.toastr.success('Staff deleted successfully');
-        // this.staffs = this.staffs.filter(u => u.staffID !== item.staffID);
       });
     }
   }
@@ -2295,7 +2187,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchFcCompaniesCount();
         this.toastr.success('Company deleted successfully');
-        // this.fcCompanies = this.fcCompanies.filter(u => u.factoringCompanyID !== item.factoringCompanyID);
       });
     }
   }
@@ -2309,7 +2200,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchOwnerOperatorsCount();
         this.toastr.success('Operator deleted successfully');
-        // this.toastr.success('Owner operator deleted successfully');
       });
     }
   }
@@ -2323,7 +2213,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchCarriersCount();
         this.toastr.success('Carrier deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
@@ -2677,7 +2566,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.loginDiv = false;
     this.fieldvisibility = 'true';
     this.newStaffUser = 'false';
-
+    
   }
 
   fetchAllStatesIDs() {
@@ -3779,7 +3668,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    // if (this.staffData.userData.password === this.staffData.userData.confirmPassword && this.staffData.userData.password != '') {
       const data = {
         firstName: this.staffData['firstName'],
         lastName: this.staffData['lastName'],
@@ -3825,8 +3713,5 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.errorClass = false;
         }
       });
-    // } else {
-    //   this.errorClass = true;
-    // }
   }
 }

@@ -49,6 +49,9 @@ export class ListService {
   driversDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   driversList = this.driversDataSource.asObservable();
 
+  customersDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  customersList = this.customersDataSource.asObservable();
+
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
@@ -143,6 +146,12 @@ fetchReceivers() {
   fetchDrivers() {
     this.apiService.getData(`drivers`).subscribe((result: any) => {
       this.driversDataSource.next(result.Items);
+    });
+  }
+
+  fetchCustomers() {
+    this.apiService.getData(`customers`).subscribe((result: any) => {
+      this.customersDataSource.next(result.Items);
     });
   }
 }
