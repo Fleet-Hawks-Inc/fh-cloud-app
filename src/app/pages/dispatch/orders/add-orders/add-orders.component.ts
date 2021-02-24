@@ -960,7 +960,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-       // this.router.navigateByUrl("/dispatch/orders");
+       this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
