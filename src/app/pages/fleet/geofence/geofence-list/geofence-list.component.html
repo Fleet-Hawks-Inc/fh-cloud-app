@@ -75,7 +75,7 @@
                               <td style="width: 20%;" class="border-0 text-left" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.geofenceName}}</td>
                               <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.location}}</td>
                               <td style="width: 20%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofencesTypes[geofence.geofenceType]}}</td>
-                              <td style="width: 30%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.description}}</td>
+                              <td style="width: 30%;" class="border-0" (click)="toggleAccordian(i, geofence.geofence.cords)">{{geofence.description ? geofence.description : '-'}}</td>
                               <td class="border-0 text-right">
                                  <div class="dropdown dropright">
                                     <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,7 +83,7 @@
                                     </button>
                                     <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                        <a class="dropdown-item" routerLink="/fleet/geofence/edit/{{geofence.geofenceID}}">Edit</a>
-                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateAsset(geofence.isDeleted, geofence.geofenceID)">Delete</a>
+                                       <a href="javascript:;" class="dropdown-item" (click)="deactivateGeofence(geofence.isDeleted, geofence.geofenceID)">Delete</a>
                                     </div>
                                     </div>
                               </td>
