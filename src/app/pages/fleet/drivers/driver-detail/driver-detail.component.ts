@@ -345,7 +345,6 @@ export class DriverDetailComponent implements OnInit {
 
   async getCarrierID(){
     this.carrierID = await this.apiService.getCarrierID();
-    console.log('this.carrierID', this.carrierID)
   }
 
   setPDFSrc(val) {
