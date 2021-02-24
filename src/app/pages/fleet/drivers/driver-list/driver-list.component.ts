@@ -308,6 +308,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   initDataTable() {
+    this.spinner.show();
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
@@ -345,6 +346,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
             recordsFiltered: current.totalRecords,
             data: []
           });
+          this.spinner.hide();
         });
       }
 
