@@ -111,14 +111,14 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('ACEeManifest/CBPdetails/' + this.entryID)
       .subscribe((result: any) => {
-        this.sendBorderConnectOption = result;
-        if (this.sendBorderConnectOption === true) {
-          const val = 'Queued';
-          const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
-            this.toastr.success('Status Updated Successfully!');
-             this.currentStatus = val;
-          });
-        }
+        // this.sendBorderConnectOption = result;
+        // if (this.sendBorderConnectOption === true) {
+        //   const val = 'Queued';
+        //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+        //     this.toastr.success('Status Updated Successfully!');
+        //      this.currentStatus = val;
+        //   });
+        // }
       });
   }
   showShipmentDetails(shipmentID) {

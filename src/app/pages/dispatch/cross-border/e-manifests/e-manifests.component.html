@@ -195,13 +195,13 @@
 
                                        <th>Shipment#</th>
                                        <th>Type</th>
-                                       <th  width="10%">Est Date</th>
+                                       <th  width="8%">Est Date</th>
                                        <th>Driver</th>
                                        <th>Truck</th>
                                        <th>Trailer</th>
                                        <th>Shipper</th>
                                        <th>Consignee</th>
-                                       <th>Status</th>
+                                       <th width="15%">Status</th>
                                        <th width="5%">Action</th>
                                     </tr>
                                  </thead>
@@ -220,7 +220,15 @@
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shippersList[shipment.shipperID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.currentStatus}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="statusBtn"
+                                        [ngClass]="[(aceManifest.currentStatus =='Cancelled Manifest') ? 'cancelBtn' :
+                                        (aceManifest.currentStatus =='Transmitted to CBP') ? 'transmittedBtn' :
+                                        (aceManifest.currentStatus =='Truck Released at Border') ? 'truckReleasedBtn' :
+                                        (aceManifest.currentStatus =='Complete Manifest and Entry Numbers On File with CBP') ? 'completeManifestEntryBtn' :
+                                        (aceManifest.currentStatus =='CBP Returned Error') ? 'CBPReturnedErrorBtn' :
+                                        (aceManifest.currentStatus =='Truck Arrived at Border') ? 'truckArrivedBtn' :
+                                        (aceManifest.currentStatus =='Preliminary Manifest On File with CBP') ? 'preliminaryBtn' :
+                                        (aceManifest.currentStatus =='Complete Manifest On File with CBP') ? 'completeBtn' :  'draftBtn']">{{aceManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
@@ -248,13 +256,13 @@
 
                                        <th>Cargo Control Number</th>
                                        <th>Type</th>
-                                       <th  width="10%">Est Date</th>
+                                       <th  width="8%">Est Date</th>
                                        <th>Driver</th>
                                        <th>Truck</th>
                                        <th>Trailer</th>
                                        <th>Shipper</th>
                                        <th>Consignee</th>
-                                       <th>Status</th>
+                                       <th width="15%">Status</th>
                                        <th width="5%">Action</th>
                                     </tr>
                                  </thead>

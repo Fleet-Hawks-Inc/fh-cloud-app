@@ -146,6 +146,7 @@ export class AciDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
+
       });
   }
 
@@ -158,14 +159,14 @@ export class AciDetailsComponent implements OnInit {
   sendCBSAFn() {
     this.apiService
       .getData('ACIeManifest/CBSAdetails/' + this.entryID).subscribe((result: any) => {
-        this.sendBorderConnectOption = result;
-        if (this.sendBorderConnectOption === true) {
-          const val = 'Queued';
-          const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
-            this.toastr.success('Status Updated Successfully!');
-             this.currentStatus = val;
-          });
-        }
+        // this.sendBorderConnectOption = result;
+        // if (this.sendBorderConnectOption === true) {
+        //   const val = 'Queued';
+        //   const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+        //     this.toastr.success('Status Updated Successfully!');
+        //      this.currentStatus = val;
+        //   });
+        // }
       });
   }
 
