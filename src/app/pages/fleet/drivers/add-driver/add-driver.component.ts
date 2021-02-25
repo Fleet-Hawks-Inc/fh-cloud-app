@@ -33,6 +33,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   pageTitle: string;
   lastElement;
   hideNextBtn: boolean = true;
+  hasBasic: boolean = false;
+  hasDocs: boolean = false;
+  hasLic: boolean = false;
+  hasPay: boolean = false;
+  hasHos: boolean = false;
   addressField = -1;
   currentTab = 1;
   userLocation: any;
@@ -310,6 +315,34 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     })
   }
 
+  validateTabErrors(){
+    if($('#addDriverBasic .error').length > 0 && this.currentTab >= 1) {
+      this.hasBasic = true;
+    } else {
+      this.hasBasic = false;
+    }
+    if($('#documents .error').length > 0 && this.currentTab >= 3) {
+      this.hasDocs = true;
+    } else {
+      this.hasDocs = false;
+    }
+    if($('#licence .error').length > 0 && this.currentTab >= 5) {
+      this.hasLic = true;
+    } else {
+      this.hasLic = false;
+    }
+    if($('#payment .error').length > 0 && this.currentTab >= 6) {
+      this.hasPay = true;
+    } else {
+      this.hasPay = false;
+    }
+    if($('#Driverhos .error').length > 0 && this.currentTab >= 7) {
+      this.hasHos = true;
+    } else {
+      this.hasHos = false;
+    }
+  }
+
   async nextStep() {
     
     if(!this.driverID){
@@ -324,9 +357,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       }  
       await this.updateDriver();
     }
-    
-    
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
+    this.validateTabErrors();
+    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;     
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
     if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
@@ -341,27 +373,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   prevStep() {
     this.currentTab--;
     if(this.driverID) return;
-    // localStorage.setItem('driver', JSON.stringify(this.driverData));
   }
   async tabChange(value) {
-    if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
-      await this.onSubmit();
-    }else {
-      await this.updateDriver();
-    }
-
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-    if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
-    if($('#documents .error').length > 0 && this.currentTab == 3) return;
-    if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
-    if($('#licence .error').length > 0 && this.currentTab == 5) return;
-    if($('#payment .error').length > 0 && this.currentTab == 6) return;
-    if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
-    if($('#emergency .error').length > 0 && this.currentTab == 8) return;
-
-    if(value != this.currentTab + 1 && value > this.currentTab) return;
-
     this.currentTab = value;
   }
 
@@ -369,8 +382,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.location.back(); // <-- go back to previous location on cancel
   }
   gotoVehiclePage() {
-    // localStorage.setItem('driver', JSON.stringify(this.driverData));
-    // this.router.navigateByUrl('/fleet/vehicles/add');
     $('#addVehicleModelDriver').modal('show');
   }
   
@@ -646,8 +657,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         
       }
     }
-    
-    
     // create form data instance
     const formData = new FormData();
 
@@ -689,8 +698,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             complete: () => {
               this.throwErrors();
               this.hasError = true;
+              
               if(err) return reject(err);
               this.spinner.hide();
+              
               //this.toastr.error('Please see the errors');
             },
             error: () => { },
@@ -895,12 +906,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   throwErrors() {
+    
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
       });
+      this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);
   }
 
