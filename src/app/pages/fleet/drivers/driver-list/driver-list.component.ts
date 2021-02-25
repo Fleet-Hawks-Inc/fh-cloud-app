@@ -1,16 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, ViewChild } from '@angular/core';
 import { HereMapService } from '../../../../services/here-map.service';
-import { forkJoin, Observable, of } from 'rxjs';
-import { mergeMap, map, takeUntil } from 'rxjs/operators';
-import { DataTableDirective } from 'angular-datatables';
+import { Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
-import { Subject } from 'rxjs';
 
 declare var $: any;
 
@@ -19,10 +14,7 @@ declare var $: any;
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css'],
 })
-export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
+export class DriverListComponent implements OnInit {
 
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
@@ -35,10 +27,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: any = {};
-
 
   statesObject: any = {};
   countriesObject: any = {};
@@ -78,7 +66,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     fastNumber: false
   }
 
-  private destroy$ = new Subject();
+  driverNext = false;
+  driverPrev = true;
+  driverDraw = 0;
+  driverPrevEvauatedKeys = [''];
+  driverStartPoint = 1;
+  driverEndPoint = this.pageLength;
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -99,35 +93,11 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchAllCitiesIDs();
     this.fetchAllGrorups();
     this.initDataTable();
-    
 
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
     });
   }
 
@@ -185,21 +155,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.suggestedDrivers = [];
   }
-
-  // fetchDrivers() {
-
-  //   this.apiService.getData('drivers')
-  //   .subscribe({
-  //     complete: () => {
-  //       this.initDataTable();
-  //     },
-  //     error: () => { },
-  //     next: (result: any) => {
-
-  //       this.totalRecords = result.Count;
-  //     },
-  //   });
-  // }
 
   fetchDriversCount() {
     this.apiService.getData('drivers/get/count?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
@@ -298,9 +253,8 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
           this.drivers = [];
           this.fetchDriversCount();
-          this.rerender();
+          this.initDataTable();
           this.toastr.success('Driver deleted successfully!');
-          // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
         }, err => {
          
         });
@@ -308,54 +262,44 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.drivers = resp['Items'];
-          // let fetchedDrivers = resp['Items'].map(function(v){ return v.driverID; });
-          // for (let i = 0; i < current.drivers.length; i++) {
-          //   const element = current.drivers[i];
-          //   element.address = {};
-          //   this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
-          //     element.address = result['Items'][0];
-          //   });
-          // }
-          
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
-          } else {
-            this.lastEvaluatedKey = '';
-          }
-          
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
+    this.spinner.show();
+    this.apiService.getData('drivers/fetch/records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.drivers = result['Items'];
 
-    };
+        if(this.driverID != '') {
+          this.driverStartPoint = this.totalRecords;
+          this.driverEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.driverNext = false;
+          // for prev button
+          if (!this.driverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].driverID)) {
+            this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
+
+        } else {
+          this.driverNext = true;
+          this.lastEvaluatedKey = '';
+          this.driverEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.driverDraw > 0) {
+          this.driverPrev = false;
+        } else {
+          this.driverPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
-      this.drivers = [];
       this.fetchDriversCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -363,15 +307,14 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   resetFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
-      // this.spinner.show();
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
 
-      this.drivers = [];
       this.fetchDriversCount();
-      this.rerender();
-      // this.spinner.hide();
+      this.initDataTable();
+      this.driverDraw = 0;
+      this.getStartandEndVal();
     } else {
       return false;
     }
@@ -515,5 +458,25 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     
 
+  }
+
+  getStartandEndVal() {
+    this.driverStartPoint = this.driverDraw * this.pageLength + 1;
+    this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.driverDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.driverDraw -= 1;
+    this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
   }
 }

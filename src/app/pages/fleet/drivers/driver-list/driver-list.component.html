@@ -464,11 +464,9 @@
                   <section class="card">
                      <div class="card-body">
                         <div class="table-responsive">
-                           <table datatable [dtOptions]="dtOptions" id="diverTbl" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                           <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
                               <thead>
                                  <tr>
-                                    <!-- <th><input type="checkbox"></th> -->
-
                                     <th class="col1">Name</th>
                                     <th class="col2">Duty Status</th>
                                     <th class="col18">Location</th>
@@ -489,7 +487,10 @@
                                     <th width="50">Actions</th>
                                  </tr>
                               </thead>
-                              <tbody *ngIf="drivers.length > 0">
+                              <tbody>
+                                 <tr *ngIf="drivers.length == 0" class="text-center">
+                                    <td colspan="6">No records found</td>
+                                </tr>
                                  <tr *ngFor="let driver of drivers;let i = index;">
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
                                        <span class="font-weight-bold line-height-lg text-capitalize">
@@ -541,14 +542,17 @@
                                        </div>
                                     </td>
                                  </tr>
-
                               </tbody>
-                              <tbody *ngIf="drivers.length === 0">
-                                 <tr>
-                                    <td colspan="12" class="no-data-available">No records found</td>
-                                 </tr>
-                              <tbody>
                            </table>
+                           <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
+                              <div class="col-6">
+                                  Showing {{ driverStartPoint }} to {{ driverEndPoint }} of {{ totalRecords }} enteries
+                              </div>
+                              <div class="col-6 text-right">
+                                  <button type="button" class="btn btn-default mr-2" (click)="prevResults('driver')" [disabled]="driverPrev">Prev</button>
+                                  <button type="button" class="btn btn-default" (click)="nextResults('driver')" [disabled]="driverNext">Next</button>
+                              </div>
+                          </div>
                         </div>
                      </div>
                   </section>
