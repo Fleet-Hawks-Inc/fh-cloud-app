@@ -192,6 +192,7 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
+        pu: '',
         commodity: [
           {
             name: "",
@@ -217,6 +218,7 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
+        pu: '',
         commodity: [
           {
             name: "",
@@ -520,6 +522,7 @@ export class AddOrdersComponent implements OnInit {
       // BOL: this.shippersReceivers[i].shippers.BOL,
       reference: this.shippersReceivers[i].shippers.reference,
       notes: this.shippersReceivers[i].shippers.notes,
+      pu: this.shippersReceivers[0].shippers.pu,
       commodity: this.shippersReceivers[i].shippers.commodity,
       minTemprature: this.shippersReceivers[i].shippers.notes,
       minTempratureUnit: this.shippersReceivers[i].shippers.minTempratureUnit,
@@ -612,6 +615,7 @@ export class AddOrdersComponent implements OnInit {
       phone: this.shippersReceivers[i].receivers.phone,
       reference: this.shippersReceivers[i].receivers.reference,
       notes: this.shippersReceivers[i].receivers.notes,
+      pu: this.shippersReceivers[0].receivers.pu,
       commodity: this.shippersReceivers[i].receivers.commodity,
       minTemprature: this.shippersReceivers[i].receivers.notes,
       minTempratureUnit: this.shippersReceivers[i].receivers.minTempratureUnit,
@@ -661,6 +665,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers["pickupInstruction"] = "";
     this.shippersReceivers[i].shippers["contactPerson"] = "";
     this.shippersReceivers[i].shippers["phone"] = "";
+    this.shippersReceivers[i].shippers["pu"] = "";
     this.shippersReceivers[i].shippers["BOL"] = "";
     this.shippersReceivers[i].shippers["reference"] = "";
     this.shippersReceivers[i].shippers["notes"] = "";
@@ -687,6 +692,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers["dropOffInstruction"] = "";
     this.shippersReceivers[i].receivers["contactPerson"] = "";
     this.shippersReceivers[i].receivers["phone"] = "";
+    this.shippersReceivers[i].receivers["pu"] = "";
     this.shippersReceivers[i].receivers["reference"] = "";
     this.shippersReceivers[i].receivers["notes"] = "";
 
@@ -780,6 +786,30 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async getMiles(value) {
+    let flag = true;
+    // check if exiting accoridan has atleast one shipper and one receiver
+    for (let k = 0; k < this.finalShippersReceivers.length; k++) {
+      let shippers = this.finalShippersReceivers[k].shippers;
+      let receivers = this.finalShippersReceivers[k].receivers;
+
+      if (shippers.length == 0) flag = false;
+      if (receivers.length == 0) flag = false;
+    }
+
+    if (!flag && (value == 'google' || value == 'pcmiles')) {
+      this.toastr.error(
+        "Please add atleast one shipper and receiver in shipments."
+      );
+
+      setTimeout(() => {
+        $(".milesCommon").removeClass('active');
+        this.orderData.milesInfo.calculateBy = 'manual';
+        $("#manual").addClass('active');
+      },200);
+
+      return false;
+    }
+    
     this.orderData.milesInfo["calculateBy"] = value;
 
     if (this.mergedArray !== undefined) {
@@ -899,6 +929,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.orderData);
     this.isSubmit = true;
     if (!this.checkFormErrors()) return false;
 
@@ -1090,6 +1121,7 @@ export class AddOrdersComponent implements OnInit {
         data.pickupInstruction;
       this.shippersReceivers[j].shippers.contactPerson = data.contactPerson;
       this.shippersReceivers[j].shippers.phone = data.phone;
+      this.shippersReceivers[j].shippers.pu = data.pu;
       this.shippersReceivers[j].shippers.commodity = data.commodity;
       this.shippersReceivers[j].shippers.reference = data.reference;
       this.shippersReceivers[j].shippers.notes = data.notes;
@@ -1112,6 +1144,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.dropOffInstruction =
         data.pickupInstruction;
       this.shippersReceivers[j].receivers.contactPerson = data.contactPerson;
+      this.shippersReceivers[j].receivers.pu = data.pu;
       this.shippersReceivers[j].receivers.phone = data.phone;
       this.shippersReceivers[j].receivers.commodity = data.commodity;
       this.shippersReceivers[j].receivers.reference = data.reference;
@@ -1153,6 +1186,8 @@ export class AddOrdersComponent implements OnInit {
       ].contactPerson = data.contactPerson;
       this.finalShippersReceivers[i].shippers[this.stateShipperIndex].phone =
         data.phone;
+      this.finalShippersReceivers[i].shippers[this.stateShipperIndex].pu =
+        data.pu;
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].commodity = data.commodity;
@@ -1198,6 +1233,9 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[i].receivers[
         this.stateShipperIndex
       ].contactPerson = data.contactPerson;
+      this.finalShippersReceivers[i].receivers[
+        this.stateShipperIndex
+      ].pu = data.pu;
       this.finalShippersReceivers[i].receivers[this.stateShipperIndex].phone =
         data.phone;
       this.finalShippersReceivers[i].receivers[
@@ -1398,6 +1436,7 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
+        pu: "",
         commodity: [
           {
             name: "",
@@ -1423,6 +1462,7 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
+        pu: "",
         commodity: [
           {
             name: "",
