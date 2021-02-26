@@ -21,7 +21,11 @@ export class MileageComponent implements OnInit {
   baseCountry: string;
   accountNumber: string;
   EIN: string;
-  signingAuthority = {};
+  signingAuthority = {
+    name: '',
+    phone: '',
+    title: '',
+  };
   totalGallons = 0;
   data = [];
   stateList = [];
@@ -60,10 +64,13 @@ export class MileageComponent implements OnInit {
     const data = {
       baseState : this.baseState,
       baseCountry: this.baseCountry,
-      accountNumber:  this.accountNumber
+      accountNumber:  this.accountNumber,
+      signingAuthority: {
+        name: '',
+        phone: '',
+        title: '',
+      }
     };
-   // console.log('data', data);
-  //  console.log('Signing Authority', this.signingAuthority);
   }
   fuelEntries() {
     this.apiService.getData('fuelEntries/group/byunit').subscribe({
@@ -88,7 +95,7 @@ export class MileageComponent implements OnInit {
         this.stateList = result;
         for(let i=0; i < this.stateList.length; i++){
            this.totalGallons = this.totalGallons + this.stateList[i].fuelGal;
-        
+
         }
       },
     });

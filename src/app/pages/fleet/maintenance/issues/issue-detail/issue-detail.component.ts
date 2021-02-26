@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AwsUploadService } from '../../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 @Component({
@@ -44,7 +43,7 @@ export class IssueDetailComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private domSanitizer: DomSanitizer, private awsUS: AwsUploadService) { }
+    private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.issueID = this.route.snapshot.params[`issueID`];
@@ -89,12 +88,12 @@ export class IssueDetailComponent implements OnInit {
         this.reportedBy = result.reportedBy;
         this.assignedTo = result.assignedTo;
 
-        if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
-          this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+          this.issueImages = result.uploadedPhotos.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
-        if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
-          this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+          this.issueDocs = result.uploadedDocs.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
       });
   }
@@ -117,12 +116,10 @@ export class IssueDetailComponent implements OnInit {
   }
   resolveIssue() {
     window.localStorage.setItem('vehicleLocalID', this.unitID);
-
     const unit = {
       unitID: this.unitID,
       unitType: this.unitType,
-    }
-
+    };
     window.localStorage.setItem('unit', JSON.stringify(unit));
     this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
@@ -150,18 +147,18 @@ export class IssueDetailComponent implements OnInit {
   }
 
   setPDFSrc(val) {
-    let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    const pieces = val.split(/[\s.]+/);
+    const ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    if (ext === 'doc' || ext === 'docx' || ext === 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
   // delete uploaded image or document
-  delete(type: string,name: string){
-    this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {     
+  delete(type: string, name: string) {
+    this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
       this.fetchIssue();
     });
   }
