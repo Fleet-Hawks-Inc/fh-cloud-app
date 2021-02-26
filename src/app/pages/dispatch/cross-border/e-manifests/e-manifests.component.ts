@@ -422,4 +422,21 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       $('#aci-emanifest').show();
     }
   }
+   /***
+    * change class of status dynamically
+    */
+   changeClass(manifestStatus){
+  //   switch(manifestStatus) {
+  //     case 'Cancelled Manifest': {
+  //        console.log('hello') ;
+  //        break;
+  //     }
+  //     default: {
+  //        console.log('default view');
+  //        break;
+  //     }
+  //  }
+  return 'redBtn';
+   }
+   manifestClass = 'statusBtn';
 }

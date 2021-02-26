@@ -121,7 +121,7 @@ export class DriverDetailComponent implements OnInit {
         private httpClient: HttpClient,
       )
   {
-    this.getCarrierID();
+    // this.getCarrierID();
   }
 
   ngOnInit() {
