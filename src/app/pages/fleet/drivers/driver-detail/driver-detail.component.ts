@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {AwsUploadService} from '../../../../services';
 import { DomSanitizer} from '@angular/platform-browser';
-import { async } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-driver-detail',
@@ -109,6 +109,8 @@ export class DriverDetailComponent implements OnInit {
   docs = [];
   assetsDocs = [];
   absDocs = [];
+  documentTypeList: any = [];
+  documentsTypesObects: any = {}
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(
@@ -117,10 +119,11 @@ export class DriverDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
         private domSanitizer: DomSanitizer,
-        private awsUS: AwsUploadService
+        private awsUS: AwsUploadService,
+        private httpClient: HttpClient,
       )
   {
-    this.getCarrierID();
+    // this.getCarrierID();
   }
 
   ngOnInit() {
@@ -129,27 +132,26 @@ export class DriverDetailComponent implements OnInit {
     this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
-    this.fetchYardsByIDs();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
+    this.fetchDocuments();
   }
 
    /**
    * fetch Asset data
    */
   fetchDriver() {
-    // this.spinner.show(); // loader init
+    this.spinner.show(); // loader init
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         if (result) {
           this.driverData = await result['Items'][0];
-          
           this.cycle = this.driverData.hosDetails.hosCycle;
-          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
+          await this.fetchcarrierAddressByID(this.driverData.hosDetails.homeTerminal);
           this.workEmail = this.driverData.workEmail;
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
@@ -270,6 +272,7 @@ export class DriverDetailComponent implements OnInit {
           this.emerEmail = this.driverData.emergencyDetails.email;
           this.emerRelationship = this.driverData.emergencyDetails.relationship;
 
+          this.spinner.hide();
           
         }
       }, (err) => {
@@ -277,13 +280,26 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
+  
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+     
+      this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
+        return a[b['code']] = b['description'], a;
+      }, {});
+      
+    })
+  }
+
+
   fetchCyclesbyIDs() {
     this.apiService.getData('cycles/get/list')
       .subscribe((result: any) => {
         this.cycleObjects = result;
       });
   }
-
+  
   fetchGroupsbyIDs() {
     this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {
@@ -291,10 +307,11 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-  fetchYardsByIDs() {
-    this.apiService.getData('yards/get/list')
-    .subscribe((result: any) => {
-      this.yardsObjects = result;
+  async fetchcarrierAddressByID(id: any) {
+    this.apiService.getData(`addresses/${id}`)
+    .subscribe(async (result: any) => {
+      this.yardsObjects = await result;
+      console.log('yardsObjects', this.yardsObjects)
     });
   }
 

@@ -15,7 +15,7 @@
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group mb-3">
                             <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control"
-                                placeholder="Search SCAC/trip/shipment#/type/status" />
+                                placeholder="Search trip number/status" />
                         </div>
                     </div>
                      <div class="col-md-2 col-lg-2">
@@ -54,7 +54,7 @@
                                 </span>
                             </span>
                             <input
-                            [(ngModel)]="startDate" name="startDate"
+                            [(ngModel)]="fromDate" name="fromDate"
                             type="text"
                             placeholder="DD-MM-YYYY"
                             (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
@@ -63,7 +63,7 @@
                                 to
                             </span>
                             <input
-                            [(ngModel)]="endDate" name="endDate"
+                            [(ngModel)]="toDate" name="toDate"
                             type="text"
                             placeholder="DD-MM-YYYY"
                             (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
@@ -95,7 +95,7 @@
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group mb-3">
                             <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control"
-                                placeholder="Search CCC/trip/shipment#/type/status" />
+                                placeholder="Search trip number/status" />
                         </div>
                     </div>
                      <div class="col-md-2 col-lg-2">
@@ -135,7 +135,7 @@
                                 </span>
                             </span>
                             <input
-                            [(ngModel)]="aciStartDate" name="aciStartDate"
+                            [(ngModel)]="aciFromDate" name="aciFromDate"
                             type="text"
                             placeholder="DD-MM-YYYY"
                             (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
@@ -144,7 +144,7 @@
                                 to
                             </span>
                             <input
-                            [(ngModel)]="aciEndDate" name="aciEndDate"
+                            [(ngModel)]="aciToDate" name="aciToDate"
                             type="text"
                             placeholder="DD-MM-YYYY"
                             (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
@@ -195,19 +195,19 @@
 
                                        <th>Shipment#</th>
                                        <th>Type</th>
-                                       <th>Est Date</th>
+                                       <th  width="8%">Est Date</th>
                                        <th>Driver</th>
                                        <th>Truck</th>
                                        <th>Trailer</th>
                                        <th>Shipper</th>
                                        <th>Consignee</th>
-                                       <th>Status</th>
-                                       <th>Action</th>
+                                       <th width="15%">Status</th>
+                                       <th width="5%">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aceManifest of ACEList;">
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}{{aceManifest.tripNumber}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
                                        <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>-->
 
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
@@ -220,12 +220,21 @@
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shippersList[shipment.shipperID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="badge badge-dark p-1">{{aceManifest.currentStatus}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="statusBtn"
+                                        [ngClass]="[(aceManifest.currentStatus =='Cancelled Manifest') ? 'cancelBtn' :
+                                        (aceManifest.currentStatus =='Transmitted to CBP') ? 'transmittedBtn' :
+                                        (aceManifest.currentStatus =='Truck Released at Border') ? 'truckReleasedBtn' :
+                                        (aceManifest.currentStatus =='Complete Manifest and Entry Numbers On File with CBP') ? 'completeManifestEntryBtn' :
+                                        (aceManifest.currentStatus =='CBP Returned Error') ? 'CBPReturnedErrorBtn' :
+                                        (aceManifest.currentStatus =='Truck Arrived at Border') ? 'truckArrivedBtn' :
+                                        (aceManifest.currentStatus =='Preliminary Manifest On File with CBP') ? 'preliminaryBtn' :
+                                        (aceManifest.currentStatus =='Complete Manifest On File with CBP') ? 'completeBtn' :  'draftBtn']">{{aceManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
-                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
-                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)">Delete</button>
+                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1" *ngIf="aceManifest.currentStatus != 'Queued'">Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)"  *ngIf="aceManifest.currentStatus != 'Queued'">Delete</button>
+                                              <button type="button" class="dropdown-item text-1"   *ngIf="aceManifest.currentStatus == 'Queued'">File is transmitted</button>
                                           </div>
                                         </div></td>
                                     </tr>
@@ -247,19 +256,19 @@
 
                                        <th>Cargo Control Number</th>
                                        <th>Type</th>
-                                       <th>Est Date</th>
+                                       <th  width="8%">Est Date</th>
                                        <th>Driver</th>
                                        <th>Truck</th>
                                        <th>Trailer</th>
                                        <th>Shipper</th>
                                        <th>Consignee</th>
-                                       <th>Status</th>
-                                       <th>Action</th>
+                                       <th width="15%">Status</th>
+                                       <th width="5%">Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                     <tr *ngFor = "let aciManifest of ACIList;">
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.CCC}}{{aciManifest.tripNumber}}</td>
+                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                         <!-- <td>{{aciManifest.CCC}}</td>                                          -->
 
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
@@ -274,8 +283,10 @@
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
-                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
-                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)">Delete</button>
+                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" *ngIf="aciManifest.currentStatus != 'Queued'">Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)" *ngIf="aciManifest.currentStatus != 'Queued'">Delete</button>
+                                              <button type="button" class="dropdown-item text-1"  *ngIf="aciManifest.currentStatus == 'Queued'">File is transmitted</button>
+
                                           </div>
                                         </div></td>
                                     </tr>

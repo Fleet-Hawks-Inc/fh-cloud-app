@@ -279,7 +279,7 @@ export class DriverListComponent implements OnInit {
             this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
-
+          
         } else {
           this.driverNext = true;
           this.lastEvaluatedKey = '';

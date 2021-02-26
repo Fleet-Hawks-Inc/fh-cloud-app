@@ -430,8 +430,8 @@ export class AddressBookComponent implements OnInit {
             private modalService: NgbModal,
             private HereMap: HereMapService,
             private spinner: NgxSpinnerService,
-            private listService: ListService
-            )
+            private listService: ListService,
+          )
   { }
 
   ngOnInit() {
@@ -643,6 +643,7 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
+          this.listService.fetchCustomers();
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
@@ -872,6 +873,7 @@ export class AddressBookComponent implements OnInit {
         $('#addOwnerOperatorModal').modal('hide');
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner Operator Added Successfully');
@@ -943,6 +945,7 @@ export class AddressBookComponent implements OnInit {
 
         $('#addOwnerOperatorModal').modal('hide');
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner operator updated successfully');
@@ -1897,7 +1900,6 @@ export class AddressBookComponent implements OnInit {
    * Get all countries from api
    */
   fetchCountries() {
-    // return this.apiService.getData('countries');
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;

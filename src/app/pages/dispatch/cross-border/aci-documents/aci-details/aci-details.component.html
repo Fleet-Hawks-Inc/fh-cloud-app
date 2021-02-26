@@ -35,10 +35,10 @@
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
                                 class="dropdown-item text-1"> Edit</a>
-                            <a class="dropdown-item text-1" href="">Print</a>
+                            <!-- <a class="dropdown-item text-1" href="">Print</a>
                             <a class="dropdown-item text-1" href="">Fax</a>
                             <a class="dropdown-item text-1" href="">Email</a>
-                            <a class="dropdown-item text-1" href="">Export</a>
+                            <a class="dropdown-item text-1" href="">Export</a> -->
                         </div>
                     </div>
                     <div class="btn-group btn-group1 flex-wrap mr-1">
@@ -183,15 +183,17 @@
                                         <tr>
                                             <th>Sr.</th>
                                             <th>Date/Time</th>
+                                            <th>Status</th>
                                             <th>Status Messages</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let response of borderResponses; let i = index">
                                             <td>{{i+1}}</td>
-                                            <td>{{response.cbsaDateTime}}</td>
-                                            <td>Trip <b>{{response.tripNumber}}</b> &nbsp;&nbsp;
-                                             <span>{{response.type}}</span>
+                                            <td>{{response.dateTime}}</td>
+                                            <td>{{response.status}}</td>
+                                            <td><b>{{response.message}}</b> <br>
+                                             <span *ngFor="let error of response.errors">{{error.note}},<br></span>
                                             </td>
                                         </tr>
                                     </tbody>
