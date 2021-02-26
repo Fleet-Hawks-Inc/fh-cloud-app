@@ -66,6 +66,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     entityType: 'driver',
     gender: 'M',
     DOB: '',
+    driverStatus: '',
+    userName: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    startDate: '',
+    terminationDate: '',
+    contractStart: '',
+    contractEnd: '',
+    password: '',
+    confirmPassword: '',
+    citizenship: '',
+    assignedVehicle: '',
+    groupID: '',
+    driverImage: '',
+    workPhone: '',
+    workEmail: '',
     address: [{
       addressType: '',
       countryID: '',
@@ -81,7 +98,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lat: '',
         lng: ''
       },
-      manual: false
+      manual: false,
+      userLocation:''
     }],
     documentDetails: [{
       documentType: '',
@@ -93,11 +111,62 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       expiryDate: '',
       uploadedDocs: []
     }],
-    crossBorderDetails: {},
-    paymentDetails: {},
-    licenceDetails: {},
-    hosDetails: {},
-    emergencyDetails: {},
+    crossBorderDetails: {
+      ACI_ID: '',
+      ACE_ID: '',
+      fast_ID: '',
+      fastExpiry: '',
+      csa: false,
+    },
+    paymentDetails: {
+      paymentType: '',
+      loadedMiles: '',
+      loadedMilesTeam: '',
+      loadedMilesUnit: '',
+      loadedMilesTeamUnit: '',
+      emptyMiles: '',
+      emptyMilesTeam: '',
+      emptyMilesUnit: '',
+      emptyMilesTeamUnit: '',
+      loadPayPercentage: '',
+      loadPayPercentageOf: '',
+      rate: '',
+      rateUnit: '',
+      waitingPay: '',
+      waitingPayUnit: '',
+      waitingHourAfter: '',
+      deliveryRate: '',
+      deliveryRateUnit: '',
+      SIN_Number: '',
+      payPeriod: '',
+    },
+    licenceDetails: {
+      CDL_Number: '',
+      issuedCountry: '',
+      issuedState: '',
+      licenceExpiry: '',
+      licenceNotification: true,
+      WCB: '',
+      medicalCardRenewal: '',
+      healthCare: '',
+      vehicleType: '',
+    },
+    hosDetails: {
+      hosStatus: '',
+      type: '',
+      hosRemarks: '',
+      hosCycle: '',
+      homeTerminal: '',
+      pcAllowed: false, 
+      ymAllowed: false,
+    },
+    emergencyDetails: {
+      name: '',
+      relationship: '',
+      phone: '',
+      email: '',
+      emergencyAddress: '',
+    },
   };
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -428,7 +497,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lat: '',
         lng: ''
       },
-      manual: false
+      manual: false,
+      userLocation: ''
     });
   }
 

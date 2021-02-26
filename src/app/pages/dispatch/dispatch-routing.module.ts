@@ -7,8 +7,6 @@ import {CreateLoadNewComponent} from './create-load-new/create-load-new.componen
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
 
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
-
-import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';

@@ -4,13 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
-import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner'; 
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service'
 @Component({
   selector: 'app-add-assets',
@@ -90,8 +88,8 @@ export class AddAssetsComponent implements OnInit {
   imageError = '';
   fileName = '';
   carrierID: any;
-  private states;
-  private countries;
+  states = [];
+  countries = [];
 
   uploadedPhotos = [];
   uploadedDocs = [];
@@ -104,7 +102,7 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
@@ -183,8 +181,8 @@ export class AddAssetsComponent implements OnInit {
       assetDetails:{
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
-        manufacturer: this.assetsData.assetDetails.manufacturer,
-        model: this.assetsData.assetDetails.model,
+        manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
+        model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
         axle: this.assetsData.assetDetails.axle,
