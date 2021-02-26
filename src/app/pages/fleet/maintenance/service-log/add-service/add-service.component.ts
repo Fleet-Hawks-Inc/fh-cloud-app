@@ -18,17 +18,17 @@ declare var $: any;
   styleUrls: ['./add-service.component.css']
 })
 export class AddServiceComponent implements OnInit {
-  private groups;
-  private vendors;
+  groups;
+  vendors;
   vehicles;
   assets;
   tasks = [];
   newTaskResp;
   reminders = [];
-  private issues;
-  private inventory = [];
-  private selectedTasks = [];
-  private selectedParts = [];
+  issues = [];
+  inventory = [];
+  selectedTasks = [];
+  selectedParts = [];
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
