@@ -126,7 +126,7 @@
                             </table>
                             <div class="row mt-3 dtPaginate" *ngIf="customers.length > 0">
                                 <div class="col-6">
-                                    Showing {{ custtStartPoint }} to {{ custtEndPoint }} of {{ totalRecords }} entries
+                                    Showing {{ custtStartPoint }} to {{ custtEndPoint }} of {{ totalRecordsCustomer }} entries
                                 </div>
                                 <div class="col-6 text-right">
                                     <button type="button" class="btn btn-default mr-2" (click)="prevResults('customer')" [disabled]="customerPrev">Prev</button>
@@ -907,7 +907,8 @@
                                             </ul>
                                           </div>
                                         <div class="checkbox-custom mt-2">
-                                            <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1">
+                                            <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)" type="checkbox" >
+                                            <!-- <input [(ngModel)]="manualAddress1" type="checkbox" name="terms1"> -->
                                             <label for="w1-terms1">Type Manually</label>
                                         </div>
                                     </div>

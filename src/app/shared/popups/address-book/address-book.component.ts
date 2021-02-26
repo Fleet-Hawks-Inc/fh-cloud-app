@@ -57,7 +57,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
   };
@@ -81,7 +82,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
   };
@@ -105,7 +107,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
   };
@@ -128,7 +131,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
   };
 
@@ -151,7 +155,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
 
@@ -175,7 +180,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
   };
@@ -198,7 +204,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     additionalContact: {}
   };
@@ -221,7 +228,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     fcDetails: {}
   };
@@ -246,7 +254,8 @@ export class AddressBookComponent implements OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
     userAccount: {},
     userData : {
@@ -278,7 +287,7 @@ export class AddressBookComponent implements OnInit {
   statesObject = [];
   countriesObject = [];
   citiesObject = [];
-  pageLength = 2;
+  pageLength = 10;
   lastEvaluatedKeyCustomer = '';
   lastEvaluatedKeyBroker = '';
   lastEvaluatedKeyVendor = '';
@@ -289,7 +298,7 @@ export class AddressBookComponent implements OnInit {
   lastEvaluatedKeyStaff = '';
   lastEvaluatedKeyCompany = '';
   lastEvaluatedKeyDriver = '';
-  totalRecords = 20;
+  totalRecordsCustomer = 20;
   totalRecordsBroker = 20;
   totalRecordsVendor = 20;
   totalRecordsCarrier = 20;
@@ -1998,7 +2007,7 @@ export class AddressBookComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.totalRecords = result.Count;
+        this.totalRecordsCustomer = result.Count;
       },
     });
   }
@@ -2399,7 +2408,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2423,7 +2433,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2447,7 +2458,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2470,7 +2482,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
     };
 
@@ -2493,7 +2506,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2516,7 +2530,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2539,7 +2554,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       additionalContact: {}
     };
@@ -2562,7 +2578,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       fcDetails: {}
     };
@@ -2587,7 +2604,8 @@ export class AddressBookComponent implements OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
       userAccount: {},
       userData : {
@@ -2632,8 +2650,8 @@ export class AddressBookComponent implements OnInit {
         this.customers = result['Items'];
 
         if(this.filterVal.customerID != '') {
-          this.custtStartPoint = this.totalRecords;
-          this.custtEndPoint = this.totalRecords;
+          this.custtStartPoint = this.totalRecordsCustomer;
+          this.custtEndPoint = this.totalRecordsCustomer;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -2648,7 +2666,7 @@ export class AddressBookComponent implements OnInit {
           // disable next button if no lastevaluated key is found
           this.customerNext = true;
           this.lastEvaluatedKeyCustomer = '';
-          this.custtEndPoint = this.totalRecords;
+          this.custtEndPoint = this.totalRecordsCustomer;
         }
 
         // disable prev btn
