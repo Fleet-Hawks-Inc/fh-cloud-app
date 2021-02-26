@@ -20,7 +20,7 @@
                   <div class="p-2 pt-4">
                      <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 1, 'tab-error': hasBasic}" (click)="tabChange(1)"
                               [routerLink]="">Basic Details</a>
                         </li>
                         <li class="nav-item">
@@ -28,7 +28,7 @@
                               [routerLink]="">Address</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 3, 'tab-error': hasDocs}" (click)="tabChange(3)"
                               [routerLink]="">Documents Details</a>
                         </li>
                         <li class="nav-item">
@@ -36,15 +36,15 @@
                               [routerLink]="">Cross Border</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 5, 'tab-error': hasLic}" (click)="tabChange(5)"
                               [routerLink]="">Licence Details</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 6}" (click)="tabChange(6)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 6, 'tab-error': hasPay}" (click)="tabChange(6)"
                               [routerLink]="">Payments</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 7}" (click)="tabChange(7)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 7, 'tab-error': hasHos}" (click)="tabChange(7)"
                               [routerLink]="">HOS Compliance</a>
                         </li>
                         <li class="nav-item">
@@ -89,22 +89,6 @@
                                                    </label>
                                                 </div>
                                              </div>
-                                             <!-- <div class="col-lg-2 px-0">
-                                                <div class="radio">
-                                                   <label>
-                                                   <input [(ngModel)]="driverData.driverType" name="driverType" type="radio" value="employee">
-                                                   Employee
-                                                   </label>
-                                                </div>
-                                             </div>
-                                             <div class="col-lg-3  pr-0">
-                                                <div class="radio">
-                                                   <label>
-                                                   <input [(ngModel)]="driverData.driverType" name="driverType" type="radio" value="contractor">
-                                                   Contractor
-                                                   </label>
-                                                </div>
-                                             </div> -->
                                           </div>
                                        </div>
 

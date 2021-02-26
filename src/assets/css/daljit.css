@@ -660,3 +660,8 @@ label.error {
 .dataTables_wrapper .dataTables_paginate a.paginate_button.current:hover {
     color: #fff !important;
 }
+.tab-error {
+    background-color: #C10000!important;
+    color: #fff !important;
+    border-color: #C10000 !important;
+}

@@ -277,7 +277,7 @@ export class NewAceManifestComponent implements OnInit {
     });
   }
   onChangeHideErrors(fieldname = '') {
-    $("[name='' + fieldname + '']")
+    $(`[name='' + fieldname + '']`)
       .removeClass('error')
       .next()
       .remove('label');

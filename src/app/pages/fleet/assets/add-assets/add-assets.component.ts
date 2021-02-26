@@ -5,12 +5,11 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
-import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner'; 
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service'
 @Component({
   selector: 'app-add-assets',
@@ -104,7 +103,7 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();

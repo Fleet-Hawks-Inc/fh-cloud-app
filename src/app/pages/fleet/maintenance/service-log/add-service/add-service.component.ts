@@ -48,7 +48,7 @@ export class AddServiceComponent implements OnInit {
   serviceLogSession = JSON.parse(localStorage.getItem('serviceLogs'));
   serviceData = {
     unitType: 'vehicle',
-    reference: '',
+    reference: `Ref-${new Date().getTime()}`,
     vehicleID: '',
     assetID: '',
     odometer: '',
