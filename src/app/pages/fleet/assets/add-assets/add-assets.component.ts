@@ -106,6 +106,7 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
 
+
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {

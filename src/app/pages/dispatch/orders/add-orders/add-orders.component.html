@@ -530,6 +530,23 @@
                                                          
                                                       </div>
                                                       <div class="row mt-3">
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                               for="inputDefault">Pu</label>
+
+                                                            <input [(ngModel)]="item.shippers.pu"
+                                                               name="pu" type="text" class="form-control"
+                                                               id="inputDefault">
+                                                            <!-- <span class="text-danger"
+                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
+                                                               >
+                                                               This Field is required
+                                                            </span> -->
+                                                         </div>
+                                                         
+                                                      </div>
+                                                      <div class="row mt-3">
 
                                                          <div class="col-lg-12 col-md-12">
                                                             <label class="control-label font-weight-semibold labelmt text-3 text-dark"
@@ -823,6 +840,21 @@
                                                                *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
                                                                This Field is required
                                                             </span>
+                                                         </div>
+                                                         
+                                                      </div>
+                                                      <div class="row mt-3">
+                                                         
+                                                         <div class="col-lg-12 col-md-12">
+                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                               for="inputDefault">Pu</label>
+
+                                                            <input [(ngModel)]="item.receivers.pu" name="pu"
+                                                               type="text" class="form-control" id="inputDefault">
+                                                            <!-- <span class="text-danger"
+                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
+                                                               This Field is required
+                                                            </span> -->
                                                          </div>
                                                          
                                                       </div>
@@ -1168,15 +1200,15 @@
                               <div class="col-lg-12 mb-3">
    
                                  <div class="btn-group-toggle btn-group-vertical" data-toggle="buttons">
-                                    <label class="btn btn-outline btn-fleet mr-2" [class.active]="orderData.milesInfo.calculateBy === 'google'"
+                                    <label class="btn btn-outline btn-fleet mr-2 milesCommon" [class.active]="orderData.milesInfo.calculateBy === 'google'" id="google"
                                        style="width:110px;" (click)="getMiles('google')">
                                        <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
                                           checked hidden value="google"> Google Miles </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    <label class="btn btn-outline btn-fleet mr-2 milesCommon" style="width:110px;" id="pcmiles"
                                        [class.active]="orderData.milesInfo.calculateBy === 'pcmiles'" (click)="getMiles('pcmiles')">
                                        <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
                                           hidden value="pcmiles"> PC Miles </label>
-                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                    <label class="btn btn-outline btn-fleet mr-2 milesCommon" style="width:110px;" id="manual"
                                        [class.active]="orderData.milesInfo.calculateBy === 'manual'" (click)="getMiles('manual')">
                                        <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
                                           hidden value="manual"> manual </label>
@@ -1225,9 +1257,17 @@
                               #freightType="ngModel" required freightType
 
                                  class="form-control populate" >
-                                 <ng-option value="Flat Fee">Flat Fee</ng-option>
-                                 <ng-option value="Per Mile">Per Mile</ng-option>
-                                 <ng-option *ngFor="let list of packagingUnitsList" value="list.name">{{list.name}}</ng-option>
+                                    <ng-option value="Flat Fee">Flat Fee</ng-option>
+                                    <ng-option value="Per Mile">Per Mile</ng-option>
+                                    <ng-option value="Bag">Bag</ng-option>
+                                    <ng-option value="Box">Box</ng-option>
+                                    <ng-option value="Carton">Carton</ng-option>
+                                    <ng-option value="Case">Case</ng-option>
+                                    <ng-option value="Container Bulk Cargo">Container Bulk Cargo</ng-option>
+                                    <ng-option value="Pieces">Pieces</ng-option>
+                                    <ng-option value="Parcel">Parcel</ng-option>
+                                    <ng-option value="Skid">Skid</ng-option>
+                                    <ng-option value="Unit">Unit</ng-option>
                               </ng-select>
                               <span class="text-danger"
                                  *ngIf="isSubmit &&  !orderData.charges.freightFee.type">

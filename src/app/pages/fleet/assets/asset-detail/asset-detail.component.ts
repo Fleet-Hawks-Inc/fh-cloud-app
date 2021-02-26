@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services';
 import {ApiService} from '../../../../services';
-import {AwsUploadService} from '../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
@@ -117,8 +116,8 @@ export class AssetDetailComponent implements OnInit {
   modelsObjects: any = {};
 
   constructor(public hereMap: HereMapService, private toastr: ToastrService,
-              private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
-              private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
+              private domSanitizer: DomSanitizer, private apiService: ApiService, 
+              private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.hereMap.mapInit(); // Initialize map

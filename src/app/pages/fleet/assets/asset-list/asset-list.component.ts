@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
@@ -95,10 +93,8 @@ export class AssetListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private modalService: NgbModal,
     private httpClient: HttpClient,
     private hereMap: HereMapService) {}
 
