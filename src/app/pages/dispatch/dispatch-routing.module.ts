@@ -8,7 +8,6 @@ import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-ma
 
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
 
-import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
@@ -20,7 +19,6 @@ import { AddLoadComponent } from './loads/add-load/add-load.component';
 import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
-import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
@@ -38,7 +36,6 @@ import { RouteDetailComponent } from './permanent-routing/route-detail/route-det
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
-import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
