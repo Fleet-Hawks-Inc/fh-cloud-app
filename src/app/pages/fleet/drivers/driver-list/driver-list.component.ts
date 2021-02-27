@@ -55,7 +55,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
+  currentStatus: any;
   hideShow = {
     name: true,
     dutyStatus: true,
