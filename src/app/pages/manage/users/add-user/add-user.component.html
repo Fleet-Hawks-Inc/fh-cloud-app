@@ -74,7 +74,7 @@
                                                    <img [src]="userProfileSrc" id="male_photo" class="w-100 h-100"
                                                       style="object-fit: cover;">
                                                       <span class="text-danger profile-cross"
-                                                      (click)="removeProfile()" *ngIf="uploadedPhotos != '' || showIcons"
+                                                      (click)="removeProfile()" *ngIf="showIcons === true"
                                                       style="cursor: pointer;"
                                                       >
                                                       <i class="fa fa-times"></i>
@@ -89,10 +89,6 @@
                                                    </div>
                                                 </div>
                                              </div>
-
-
-
-
                                             </div>
                                         </div>
                                     </div>

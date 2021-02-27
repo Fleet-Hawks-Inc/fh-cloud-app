@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
-import * as moment from "moment";
+import { Router, ActivatedRoute } from '@angular/router';;
+import * as moment from 'moment';
 declare var $: any;
 
 @Component({
@@ -20,9 +17,10 @@ export class ScorecardDetailComponent implements OnInit {
   drivers = [];
   eventData = {
     driver: {
-      licenceDetails:{
+      licenceDetails: {
         CDL_Number: ''
       },
+      fullName: '',
       workPhone: '',
       workEmail: '',
       cycleName: '',
@@ -75,26 +73,26 @@ export class ScorecardDetailComponent implements OnInit {
     this.initSpeedingGraph();
     // this.initTripsGraph();
 
-    this.driverID = this.route.snapshot.params['driverID'];
-    this.rank = this.route.snapshot.params['rank'];
+    this.driverID = this.route.snapshot.params[`driverID`];
+    this.rank = this.route.snapshot.params[`rank`];
     this.fetchDrivers();
   }
 
   fetchDrivers() {
     this.spinner.show();
-    this.apiService.getData('drivers/'+this.driverID)
+    this.apiService.getData('drivers/' + this.driverID)
       .subscribe((result: any) => {
-        result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-        
+        result.Items.map((i: any) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+
         const element = result.Items[0];
         this.driverUsername = element.userName;
 
         this.eventData.driver = element;
         this.eventData.driver.driverImage = `${this.Asseturl}/${element.carrierID}/${element.driverImage}`;
-          
+
         this.fetchCycle(element.hosDetails.hosCycle);
         this.fetchHomeTerminal(element.hosDetails.homeTerminal);
-        
+
         let eventtim = <any>'00:00:00';
         this.apiService.getData('safety/eventLogs/fetch/driver/eventData/' + element.userName)
           .subscribe((result1: any) => {
@@ -138,7 +136,7 @@ export class ScorecardDetailComponent implements OnInit {
             }
             this.eventData.rank = this.eventData.harshAcceleration + this.eventData.harshBrake + this.eventData.rollingStop + this.eventData.crashes + this.eventData.overSpeeding;
           })
-            
+
         this.spinner.hide();
       })
   }
@@ -348,7 +346,7 @@ export class ScorecardDetailComponent implements OnInit {
       legend: {
         display: false
       },
-      
+
     scales: {
       xAxes: [{
             barThickness : 40
