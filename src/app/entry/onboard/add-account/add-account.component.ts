@@ -3,7 +3,6 @@ import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 import { AwsUploadService } from '../../../services';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
@@ -39,7 +38,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
-  // uploadedLogo = '';
+   uploadedLogo = '';
   fleets = {
     curtainSide: 0,
     dryVans: 0,
@@ -106,12 +105,28 @@ export class AddAccountComponent implements OnInit {
   countries = [];
   states = [];
   cities = [];
+  public searchBankTerm = new Subject<string>();
+  public searchBankResults: any;
+  userLocationBank: any;
+  statesObjectBank: any = {};
+  countriesObjectBank: any = {};
+  citiesObjectBank: any = {};
+  newAddressBank = [];
+  addressCountriesBank = [];
+  deletedAddressBank = [];
+  selectedFilesBank: FileList;
+  selectedFileNamesBank: Map<any, any>;
+  uploadedDocsBank = [];
+  showAddressBank = false;
+  countriesBank = [];
+  statesBank = [];
+  citiesBank = [];
   errors = {};
   form;
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  errorClass: boolean = false;// to show error when password and confirm password don't match
+  errorClass = false; // to show error when password and confirm password don't match
   Error = '';
   Success = '';
   constructor(private apiService: ApiService, private toaster: ToastrService, private awsUS: AwsUploadService, private HereMap: HereMapService,) {
@@ -131,13 +146,13 @@ export class AddAccountComponent implements OnInit {
    * address
    */
   clearUserLocation(i) {
-    this.addressDetails[i]['userLocation'] = '';
+    this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
-      this.addressDetails[i]['userLocation'] = '';
+      this.addressDetails[i][`userLocation`] = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
@@ -162,7 +177,7 @@ export class AddAccountComponent implements OnInit {
       });
   }
   getCityName(i, id: any) {
-    let result = this.citiesObject[id];
+    const result = this.citiesObject[id];
     this.addressDetails[i].cityName = result;
   }
   addAddress() {
@@ -189,7 +204,7 @@ export class AddAccountComponent implements OnInit {
       .subscribe((result: any) => {
         this.countries = result.Items;
         this.countries.map(elem => {
-          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
             this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
           }
         })
@@ -197,7 +212,7 @@ export class AddAccountComponent implements OnInit {
       });
   }
   async fetchCountriesByName(name: string, i) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
+    const result = await this.apiService.getData(`countries/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
@@ -207,7 +222,7 @@ export class AddAccountComponent implements OnInit {
   }
 
   async fetchStatesByName(name: string, i) {
-    let result = await this.apiService.getData(`states/get/${name}`)
+    const result = await this.apiService.getData(`states/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getCities(result.Items[0].stateID, i);
@@ -217,7 +232,7 @@ export class AddAccountComponent implements OnInit {
   }
 
   async fetchCitiesByName(name: string) {
-    let result = await this.apiService.getData(`cities/get/${name}`)
+    const result = await this.apiService.getData(`cities/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       return result.Items[0].cityID;
@@ -276,14 +291,14 @@ export class AddAccountComponent implements OnInit {
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    this.addressDetails[i]['userLocation'] = result.address.label;
+    this.addressDetails[i][`userLocation`] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
     $('div').removeClass('show-search__result');
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryID = '';// empty the fields if manual is false (if manual was true IDs were stored)
+    this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
     this.addressDetails[i].stateID = '';
     this.addressDetails[i].cityID = '';
     this.addressDetails[i].zipCode = '';
@@ -299,25 +314,9 @@ export class AddAccountComponent implements OnInit {
    * bank address
    */
   clearBankLocation(i) {
-    this.bank.addressDetails[i]['userLocation'] = '';
+    this.bank.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
   }
-  public searchBankTerm = new Subject<string>();
-  public searchBankResults: any;
-  userLocationBank: any;
-  statesObjectBank: any = {};
-  countriesObjectBank: any = {};
-  citiesObjectBank: any = {};
-  newAddressBank = [];
-  addressCountriesBank = [];
-  deletedAddressBank = [];
-  selectedFilesBank: FileList;
-  selectedFileNamesBank: Map<any, any>;
-  uploadedDocsBank = [];
-  showAddressBank = false;
-  countriesBank = [];
-  statesBank = [];
-  citiesBank = [];
   addBankAddress() {
     this.bank.addressDetails.push({
       addressType: '',
@@ -340,7 +339,7 @@ export class AddAccountComponent implements OnInit {
   manBankAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
-      this.bank.addressDetails[i]['userLocation'] = '';
+      this.bank.addressDetails[i][`userLocation`] = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
@@ -350,7 +349,7 @@ export class AddAccountComponent implements OnInit {
       .subscribe((result: any) => {
         this.countriesBank = result.Items;
         this.countriesBank.map(elem => {
-          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
             this.addressCountriesBank.push({ countryName: elem.countryName, countryID: elem.countryID });
           }
         })
@@ -376,7 +375,7 @@ export class AddAccountComponent implements OnInit {
       });
   }
   async fetchBankCountriesByName(name: string, i) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
+    const result = await this.apiService.getData(`countries/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
@@ -386,7 +385,7 @@ export class AddAccountComponent implements OnInit {
   }
 
   async fetchBankStatesByName(name: string, i) {
-    let result = await this.apiService.getData(`states/get/${name}`)
+    const result = await this.apiService.getData(`states/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getCities(result.Items[0].stateID, i);
@@ -396,7 +395,7 @@ export class AddAccountComponent implements OnInit {
   }
 
   async fetchBankCitiesByName(name: string) {
-    let result = await this.apiService.getData(`cities/get/${name}`)
+    const result = await this.apiService.getData(`cities/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       return result.Items[0].cityID;
@@ -422,7 +421,7 @@ export class AddAccountComponent implements OnInit {
       });
   }
   getBankCityName(i, id: any) {
-    let result = this.citiesObject[id];
+    const result = this.citiesObject[id];
     this.bank.addressDetails[i].cityName = result;
   }
   public searchBankLocation() {
@@ -449,7 +448,7 @@ export class AddAccountComponent implements OnInit {
   async bankAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    this.bank.addressDetails[i]['bankLocation'] = result.address.label;
+    this.bank.addressDetails[i][`bankLocation`] = result.address.label;
     this.bank.addressDetails[i].geoCords.lat = result.position.lat;
     this.bank.addressDetails[i].geoCords.lng = result.position.lng;
     this.bank.addressDetails[i].countryName = result.address.countryName;
@@ -478,10 +477,10 @@ export class AddAccountComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if(this.password === this.confirmPassword && this.password != ''){
+    if (this.password === this.confirmPassword && this.password !== '') {
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
-      if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
     ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
@@ -494,7 +493,7 @@ export class AddAccountComponent implements OnInit {
     }
     for (let i = 0; i < this.bank.addressDetails.length; i++) {
       const element = this.bank.addressDetails[i];
-      if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObjectBank[element.cityID]}
     ${this.statesObjectBank[element.stateID]} ${this.countriesObjectBank[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
@@ -536,15 +535,14 @@ export class AddAccountComponent implements OnInit {
       },
       bank: this.bank
     };
-    
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(data));
     this.apiService.postData('carriers', formData, true).subscribe({
       complete: () => { },
@@ -569,7 +567,7 @@ export class AddAccountComponent implements OnInit {
         this.toaster.success('Account Added successfully');
       },
     });
-  }else{
+  } else {
     this.errorClass = true;
     this.activeTab = 1;
   }
@@ -601,16 +599,13 @@ export class AddAccountComponent implements OnInit {
   }
   next() {
     this.activeTab++;
-    console.log('active tab', this.activeTab);
   }
 
   previous() {
     this.activeTab--;
-    console.log('active tab', this.activeTab);
   }
 
   changeTab(value) {
     this.activeTab = value;
-    console.log('active tab', this.activeTab);
   }
 }

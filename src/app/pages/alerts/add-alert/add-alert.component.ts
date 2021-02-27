@@ -17,14 +17,23 @@ export class AddAlertComponent implements OnInit {
   title = 'Add Alert';
   alertID: string;
   alert = {
-    otherEmails: []
+    alertType: '',
+    alertName: '',
+    geofenceID: '',
+    speedLimit: 0 ,
+    drivers: [],
+    vehicles: [],
+    assets: [],
+    groups: [],
+    users: [],
+    otherEmails: [],
   };
-  vehicles = [];
+  fetchedVehicles = [];
   groups = [];
-  assets = [];
+  fetchedAssets = [];
   users  = [];
   geofences = [];
-  drivers = [];
+  fetchedDrivers = [];
   otherEmails: string;
   errors = {};
   alertForm;
@@ -43,7 +52,7 @@ export class AddAlertComponent implements OnInit {
     this.fetchUsers();
     this.fetchGeofences();
     this.fetchDrivers();
-    this.alertID = this.route.snapshot.params['alertID'];
+    this.alertID = this.route.snapshot.params[`alertID`];
     if (this.alertID) {
       this.title = 'Edit Alert';
       this.fetchAlertByID();
@@ -56,7 +65,7 @@ export class AddAlertComponent implements OnInit {
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
+      this.fetchedVehicles = result.Items;
     });
   }
   fetchGroups() {
@@ -66,12 +75,12 @@ export class AddAlertComponent implements OnInit {
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
-      this.assets = result.Items;
+      this.fetchedAssets = result.Items;
     });
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
-      this.drivers = result.Items;
+      this.fetchedDrivers = result.Items;
     });
   }
   fetchUsers() {
@@ -88,14 +97,10 @@ export class AddAlertComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   addAlert() {
-    if(this.otherEmails){
-      this.alert.otherEmails = this.otherEmails.split(',');  
-    }     
-    // if (this.fileName === '') {
-    //   this.imageError = 'Please Choose Image To Upload';
-    //   return;
-    // }
-    this.hideErrors(); 
+    if (this.otherEmails) {
+      this.alert.otherEmails = this.otherEmails.split(',');
+    }
+    this.hideErrors();
     this.apiService.postData('alerts', this.alert).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -118,6 +123,18 @@ export class AddAlertComponent implements OnInit {
         this.response = res;
         this.toastr.success('Alert Added successfully');
         this.router.navigateByUrl('/alert-list');
+        this.alert = {
+          alertType: '',
+          alertName: '',
+          geofenceID: '',
+          speedLimit: 0 ,
+          drivers: [],
+          vehicles: [],
+          assets: [],
+          groups: [],
+          users: [],
+          otherEmails: [],
+        };
       },
     });
   }
@@ -129,7 +146,6 @@ export class AddAlertComponent implements OnInit {
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -149,28 +165,24 @@ export class AddAlertComponent implements OnInit {
       .getData('alerts/' + this.alertID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.alert[`alertID`] = result.alertID;
-        this.alert[`alertName`] = result.alertName;
-        this.alert[`alertType`] = result.alertType;
-        this.alert[`assets`] = result.assets;
-        this.alert[`vehicles`] = result.vehicles;
-        this.alert[`drivers`] = result.drivers;
-        this.alert[`groups`] = result.groups;
-        this.alert[`users`] = result.users;
+        this.alertID = result.alertID;
+        this.alert.alertName = result.alertName;
+        this.alert.alertType = result.alertType;
+        this.alert.assets = result.assets;
+        this.alert.vehicles = result.vehicles;
+        this.alert.drivers = result.drivers;
+        this.alert.groups = result.groups;
+        this.alert.users = result.users;
         this.otherEmails = result.otherEmails.toString();
       });
     this.spinner.hide();
   }
 
   updateAlert() {
-    if(this.otherEmails){
-      this.alert.otherEmails = this.otherEmails.split(',');  
-    }     
-    // if (this.fileName === '') {
-    //   this.imageError = 'Please Choose Image To Upload';
-    //   return;
-    // }
-    this.hideErrors(); 
+    if(this.otherEmails) {
+      this.alert.otherEmails = this.otherEmails.split(',');
+    }
+    this.hideErrors();
     this.apiService.putData('alerts/', this.alert).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -193,6 +205,18 @@ export class AddAlertComponent implements OnInit {
         this.response = res;
         this.toastr.success('Alert Updated successfully');
         this.router.navigateByUrl('/alert-list');
+        this.alert = {
+          alertType: '',
+          alertName: '',
+          geofenceID: '',
+          speedLimit: 0 ,
+          drivers: [],
+          vehicles: [],
+          assets: [],
+          groups: [],
+          users: [],
+          otherEmails: [],
+        };
       },
     });
   }

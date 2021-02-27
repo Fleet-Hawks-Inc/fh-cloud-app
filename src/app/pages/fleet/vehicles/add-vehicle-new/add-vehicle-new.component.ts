@@ -1,20 +1,16 @@
-import { Component, OnInit, ViewChild, Injectable   } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import {concatMap, map, mergeAll, toArray} from 'rxjs/operators';
-import {from, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {from} from 'rxjs';
 import {AwsUploadService} from '../../../../services';
-import { v4 as uuidv4 } from 'uuid';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import  Constants  from '../../constants'
 import { ListService } from '../../../../services';
-import { AnyCnameRecord } from 'dns';
-
 
 declare var $: any;
 
@@ -266,13 +262,8 @@ vehicles= [];
   }
 
   ngOnInit() {
-    // console.log(this.vehicleSession);
-    // this.vehicleIdentification = this.vehicleSession.vehicleIdentification;
-  //  this.fetchServicePrograms();
     this.fetchInspectionForms();
-    //this.fetchVendors();
     this.fetchGroups();
-    // this.fetchDrivers();
     this.fetchVehicles();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
@@ -285,8 +276,6 @@ vehicles= [];
 
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     if (this.vehicleID) {
-      // this.fetchStates();
-      // this.fetchModels();
       this.title = 'Edit Vehicle';
       this.fetchVehicleByID();
     } else {
