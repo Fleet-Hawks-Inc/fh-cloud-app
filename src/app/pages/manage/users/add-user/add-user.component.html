@@ -1,6 +1,6 @@
 
 <section class="body">
-	<div class="inner-wrapper">		
+	<div class="inner-wrapper">
 		<section role="main" class="content-body pl-0 pr-0 pt-0">
 			<header class="page-header pr-5">
 				<div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -13,7 +13,7 @@
 			</header>
 			<div class="row text-dark">
 				<div class="col pr-0">
-                    <form id="userForm" class="form-horizontal form-bordered bg-white" #userForm="ngForm" (ngSubmit)="onSubmit(userForm)">
+                    <form id="userForm" class="form-horizontal form-bordered bg-white" #userForm="ngForm" (ngSubmit)="onSubmit()">
                         <div class="p-2">
                             <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                                 <li class="nav-item">
@@ -24,7 +24,7 @@
                                  </li>
                                 <li class="nav-item">
                                     <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" [routerLink]="">Account Details</a>
-                                 </li>                                   
+                                 </li>
                             </ul>
                         </div>
                         <div class="card-body">
@@ -47,13 +47,13 @@
                                                     <input type="text" class="form-control"  [(ngModel)]="employeeID" name="employeeID"> </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
-                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text" 
+                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text"
                                                   class="form-control" placeholder="Select Date">
                                                    </div>
                                                 <div class="col-lg-5">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
                                                       <ng-select [(ngModel)]="currentStatus" name="currentStatus"
-                                                      placeholder="Select user status"> 
+                                                      placeholder="Select user status">
                                                       <ng-option value="ACTIVE">Active</ng-option>
                                                       <ng-option value="INACTIVE">Inactive</ng-option>
                                                    </ng-select>
@@ -73,7 +73,7 @@
                                                    style="display: block;">
                                                    <img [src]="userProfileSrc" id="male_photo" class="w-100 h-100"
                                                       style="object-fit: cover;">
-                                                      <span class="text-danger profile-cross" 
+                                                      <span class="text-danger profile-cross"
                                                       (click)="removeProfile()" *ngIf="uploadedPhotos != '' || showIcons"
                                                       style="cursor: pointer;"
                                                       >
@@ -89,10 +89,10 @@
                                                    </div>
                                                 </div>
                                              </div>
-                                              
-                                               
-                                              
-                                               
+
+
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +112,7 @@
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                     <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
-                                                       placeholder="Select address type"> 
+                                                       placeholder="Select address type">
                                                        <ng-option value="Work">Work</ng-option>
                                                        <ng-option  value="Home">Home</ng-option>
                                                        <!-- <ng-option value="Office">Office</ng-option> -->
@@ -151,7 +151,7 @@
                                            </div>
                                         </div>
                                         <div class="address-inner" *ngIf="item.manual">
-                                           <div class="row mb-3 border-bottom pb-4">          
+                                           <div class="row mb-3 border-bottom pb-4">
                                               <div class="col-lg-5 offset-lg-1 pt-3">
                                                  <div class="row">
                                                     <div class="col-lg-5">
@@ -159,18 +159,18 @@
                                                           Country</label>
                                                        <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}"
                                                           data-plugin-selectTwo (change)="getStates($event, i)"
-                                                          class="form-control populate" placeholder="Select country">          
+                                                          class="form-control populate" placeholder="Select country">
                                                           <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                                             value="{{country.countryID}}">{{country.countryName}}</ng-option>          
+                                                             value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                           State</label>
                                                        <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                          name="stateID{{i}}" placeholder="Select state">          
+                                                          name="stateID{{i}}" placeholder="Select state">
                                                           <ng-option class="text-capitalize" *ngFor="let state of states"
-                                                             value="{{state.stateID}}">{{state.stateName}}</ng-option>          
+                                                             value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-5">
@@ -178,10 +178,10 @@
                                                           City</label>
                                                        <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID"
                                                           name="cityID{{i}}" placeholder="Select city">
-          
+
                                                           <ng-option class="text-capitalize" *ngFor="let city of cities"
                                                              value="{{city.cityID}}">{{city.cityName}}</ng-option>
-          
+
                                                        </ng-select>
                                                     </div>
                                                     <div class="col-lg-5">
@@ -210,7 +210,7 @@
                                                  </div>
                                               </div>
                                            </div>
-                                        </div>          
+                                        </div>
                                      </div>
                                 </div>
                                 <!-- User Account -->
@@ -223,7 +223,7 @@
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select Department</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName">                                                       
+                                                    <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName">
                                                             <ng-option value="Fleet">Fleet</ng-option>
                                                             <ng-option value="Operations">Operations</ng-option>
                                                             <ng-option value="Safety">Safety</ng-option>
@@ -231,34 +231,34 @@
                                                             <ng-option value="Dispatch">Dispatch</ng-option>
                                                             <ng-option value="Compliance">Compliance</ng-option>
                                                             <ng-option value="Road Assistance">Road Assistance</ng-option>
-                                                            <ng-option value="Accounts">Accounts</ng-option>                                                  
+                                                            <ng-option value="Accounts">Accounts</ng-option>
                                                     </ng-select>
-                                                </div>														
+                                                </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">                                                                
+                                                    <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">
                                                                     <ng-option value="Full Admin">Full Admin</ng-option>
                                                                     <ng-option value="Read Only Admin">Read Only Admin</ng-option>
                                                                     <ng-option value="Dispatch">Dispatch</ng-option>
                                                                     <ng-option value="Maintenance">Maintenance</ng-option>
                                                                     <ng-option value="Safety Manager">Safety Manager</ng-option>
-                                                                    <ng-option value="Other">Other</ng-option>                                                               
-                                                    </ng-select>															
+                                                                    <ng-option value="Other">Other</ng-option>
+                                                    </ng-select>
                                                 </div>
                                                 <div class="col-lg-2 mar-top-37">
                                                         <!-- <a href="#addUserTypeModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                                           </div>
-                                            
+
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Group&nbsp; <span
                                                         class="text-1 optional-label-color">(optional)</span></label>
-                                                      <ng-select  [(ngModel)]="groupID" name="groupID" style="width: 100%;" placeholder="Select group for the vehicle">                                    
+                                                      <ng-select  [(ngModel)]="groupID" name="groupID" style="width: 100%;" placeholder="Select group for the vehicle">
                                                       <optgroup label="Select Group">
                                                          <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                                                             {{group.groupName}}</ng-option>
                                                       <optgroup>
                                                    </ng-select>
-                                                
+
                                                 </div>
                                                 <div class="col-lg-2 mar-top-37">
                                                     <button type="button" data-toggle="modal" data-target="#addGroupModal"
@@ -267,7 +267,7 @@
                                                        </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5"> 
+                                        <div class="col-lg-5">
                                         <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">User Name</label>
@@ -286,7 +286,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <div class="form-group row mt-3">
@@ -299,7 +299,7 @@
                                 <button type="submit" *ngIf="currentTab == 3 && !userID"
                                    class="btn btn-success">Submit</button>
                                 <a href="javascript:;" *ngIf="currentTab == 3 && userID" (click)="updateUser()"
-                                   class="btn btn-success">Update</a>        
+                                   class="btn btn-success">Update</a>
                              </div>
                         </div>
                     </form>

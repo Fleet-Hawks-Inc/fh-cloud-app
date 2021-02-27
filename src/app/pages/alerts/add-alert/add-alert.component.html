@@ -89,7 +89,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                           Vehicle(s)</label>
                                        <ng-select [(ngModel)]="alert.vehicles" [multiple]=true name="vehicles">
-                                          <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
+                                          <ng-option *ngFor="let item of fetchedVehicles" value="{{item.vehicleID}}">
                                              {{item.vehicleIdentification}}</ng-option>
                                        </ng-select>
                                     </div>
@@ -99,7 +99,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                           Driver(s)</label>
                                        <ng-select [(ngModel)]="alert.drivers" [multiple]=true name="drivers">
-                                          <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
+                                          <ng-option *ngFor="let driver of fetchedDrivers" value="{{driver.driverID}}">
                                              {{driver.firstName}} {{driver.lastName}}</ng-option>
                                        </ng-select>
                                     </div>
@@ -110,7 +110,7 @@
                                           Asset(s)</label>
 
                                        <ng-select [(ngModel)]="alert.assets" [multiple]=true name="assets">
-                                          <ng-option *ngFor="let item of assets" value="{{item.assetID}}">
+                                          <ng-option *ngFor="let item of fetchedAssets" value="{{item.assetID}}">
                                              {{item.assetIdentification}}</ng-option>
 
                                        </ng-select>
@@ -154,14 +154,14 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Enter Email(s)
                                           <small>Separate Email Address By Comma</small></label>
-                                       <textarea class="form-control" rows="4" [(ngModel)]="otherEmails" name="otherEmails"></textarea>
+                                       <textarea class="form-control" rows="4" [(ngModel)]="alert.otherEmails" name="otherEmails"></textarea>
                                     </div>
                                  </div>
                               </div>
                            </div>
                            <div class="row">
                               <div class="col-lg-11 text-right pr-0">
-                                 <button type="button" class="btn btn-defaultmr-2 mt-4"  (click)="cancel()">Cancel</button>
+                                 <button type="button" class="btn btn-default mr-2 mt-4"  (click)="cancel()">Cancel</button>
                                  <button type="button" *ngIf="!alertID" class="btn btn-success mt-4" (click)="addAlert()">Save</button>
                                  <button type="button" *ngIf="alertID" class="btn btn-success mt-4" (click)="updateAlert()">Update</button>
                               </div>
