@@ -27,7 +27,10 @@ export class AddGeofenceComponent implements OnInit {
     }
   };
   geofenceTypes: any;
-  geofenceTypeData = {};
+  geofenceTypeData = {
+    geofenceType: '',
+    description: '',
+  };
   getGeofenceID;
   public marker;
   public map;
@@ -60,6 +63,7 @@ export class AddGeofenceComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
+  search: any;
 
   constructor(
     private route: ActivatedRoute,

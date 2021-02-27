@@ -324,717 +324,720 @@
 
                   <div class="form-group row">
                      <div class="col-lg-12 mb-4 mb-lg-0">
-                        <div *ngFor="let item of shippersReceivers; let i = index;"
-                           style="border:0.5px solid #333;border-radius: 10px; box-shadow: 2px 5px 5px #d1d1d1;"
-                           class="mb-2 order-accordian">
-                           <ngb-accordion (panelChange)="accordianChange()" [closeOthers]="true" activeIds="static-0">
-                              <ngb-panel id="static-{{i}}">
-                                 <ng-template ngbPanelTitle>
-                                    <h4 class="card-title m-0"><a class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
-                                          Shipment-{{i + 1}} </a> </h4>
-                                 </ng-template>
-                                 <ng-template ngbPanelContent>
-                                    <div class="row">
-                                       <div class="col-6">
-                                          <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
-                                             <table class="table">
-                                                <tbody>
-                  
-                                                   <tr *ngFor="let list of finalShippersReceivers[i].shippers; let j = index;">
-                                                      <td>
-                                                         {{shippersObjects[list.shipperID]}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.pickupLocation}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dateAndTime}}
-                                                      </td>
-                                                      <td>
-                                                         <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
-                                                         <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
-                                                      </td>
-                                                   </tr>
-                  
-                                                </tbody>
-                                             </table>
-                                          </div>
-                                       </div>
-                                       <div class="col-6">
-                                          <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
-                                             <table class="table">
-                                                <tbody>
-                  
-                                                   <tr *ngFor="let list of finalShippersReceivers[i].receivers; let j = index;">
-                                                      <td>
-                                                         {{receiversObjects[list.receiverID]}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dropOffLocation}}
-                                                      </td>
-                                                      <td>
-                                                         {{list.dateAndTime}}
-                                                      </td>
-                                                      <td>
-                                                         <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
-                                                         <i (click)="removeList('receiver', i, j)" class="fa fa-trash fa-fw"></i>
-                                                      </td>
-                                                   </tr>
-                  
-                                                </tbody>
-                                             </table>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="form-group row divderrel">
-                                       <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i
-                                             class="fas fa-arrow-circle-right"></i></p>
-
-                                             <div class="col-lg-6">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                        <div style="border:0.5px solid #333;border-radius: 10px; box-shadow: 2px 5px 5px #d1d1d1;"
+                        class="mb-2 order-accordian">
+                           <div *ngFor="let item of shippersReceivers; let i = index;">
+                              <ngb-accordion (panelChange)="accordianChange()" [closeOthers]="true" activeIds="static-0">
+                                 <ngb-panel id="static-{{i}}">
+                                    <ng-template ngbPanelTitle>
+                                       <h4 class="card-title m-0"><a class="accordion-toggle carcursor font-weight-bold text-4 text-dark">
+                                             Shipment-{{i + 1}} </a> </h4>
+                                    </ng-template>
+                                    <ng-template ngbPanelContent>
+                                       <div class="row">
+                                          <div class="col-6">
+                                             <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Shippers</h4>
+                                                <table class="table">
+                                                   <tbody>
+                     
+                                                      <tr *ngFor="let list of finalShippersReceivers[i].shippers; let j = index;">
+                                                         <td>
+                                                            {{shippersObjects[list.shipperID]}}
+                                                         </td>
+                                                         <td>
+                                                            {{list.pickupLocation}}
+                                                         </td>
+                                                         <td>
+                                                            {{list.dateAndTime}}
+                                                         </td>
+                                                         <td>
+                                                            <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
+                                                            <i (click)="removeList('shipper', i, j)" class="fa fa-trash fa-fw"></i>
+                                                         </td>
+                                                      </tr>
+                     
+                                                   </tbody>
+                                                </table>
                                              </div>
+                                          </div>
+                                          <div class="col-6">
+                                             <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Receivers</h4>
+                                                <table class="table">
+                                                   <tbody>
+                     
+                                                      <tr *ngFor="let list of finalShippersReceivers[i].receivers; let j = index;">
+                                                         <td>
+                                                            {{receiversObjects[list.receiverID]}}
+                                                         </td>
+                                                         <td>
+                                                            {{list.dropOffLocation}}
+                                                         </td>
+                                                         <td>
+                                                            {{list.dateAndTime}}
+                                                         </td>
+                                                         <td>
+                                                            <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
+                                                            <i (click)="removeList('receiver', i, j)" class="fa fa-trash fa-fw"></i>
+                                                         </td>
+                                                      </tr>
+                     
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="form-group row divderrel">
+                                          <p class="mb-1 mt-1 mr-1 midleicon btn btn-default"><i
+                                                class="fas fa-arrow-circle-right"></i></p>
 
-                                             <div class="col-lg-6">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
-                                              </div>
+                                                <div class="col-lg-6">
+                                                   <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                   <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                                                </div>
 
 
-                                       <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
-                                          
-                                          <div class="">
-                                             <div class="toggle toggle-primary">
-                                                <section class="toggle">
-                                                   <label (click)="toggleAccordian(i)"
-                                                      class="text-dark text-5 font-weight-bold">Shipper
-                                                      <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
-                                                            <i class="fas fa-minus fa-fw d-block m-0"></i>
-                                                         </span>  -->
-                                                   </label>
-                                                   <div class="" *ngIf="visibleIndex === i">
-                                                      <div class="row">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label
-                                                               class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Shipper</label>
-
-                                                            <ng-select [(ngModel)]="item.shippers.shipperID"
-                                                               name="shipperID" #shipperID="ngModel" required
-                                                               shipperID class="form-control">
-                                                              
-                                                                  <ng-option *ngFor="let item of shippers" value="{{item.shipperID}}">{{item.companyName}}</ng-option>
-                                                              
-                                                            </ng-select>
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.shipperID == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Location</label>
-
-                                                            <input [(ngModel)]="item.shippers.pickupLocation"
-                                                               name="pickupLocation" (keyup)="searchTerm.next($event);"
-                                                               class="form-control " #pickupLocation="ngModel" required
-                                                               pickupLocation tabindex="-1" aria-hidden="true">
-
-                                                            <ul class="p-0 m-0 text-left map-search__results bg-white">
-                                                               <li *ngFor="let item of searchResults;">
-                                                                  <a href="javascript:;"
-                                                                     (click)="assignLocation(i, 'shipper', item.address.label)"
-                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
-                                                               </li>
-                                                            </ul>
-
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupLocation == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pick Date and Time</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
+                                          <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
+                                             
+                                             <div class="">
+                                                <div class="toggle toggle-primary">
+                                                   <section class="toggle">
+                                                      <label (click)="toggleAccordian(i)"
+                                                         class="text-dark text-5 font-weight-bold">Shipper
+                                                         <!-- <span *ngIf="i != 0;" (click)="remove('shipper', i)" class="minus-sign btn btn-success btn-sm">
+                                                               <i class="fas fa-minus fa-fw d-block m-0"></i>
+                                                            </span>  -->
+                                                      </label>
+                                                      <div class="" *ngIf="visibleIndex === i">
+                                                         <div class="row">
                                                             
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label
+                                                                  class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Shipper</label>
 
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.shippers.pickupDate"
-                                                                  name="pickupDate" type="date" #pickupDate="ngModel"
-                                                                  required pickupDate placeholder=""
-                                                                  class="form-control ">
-                                                            </div>
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.shippers.pickupTime"
-                                                                  name="pickupTime" type="time" class="timepicker form-control" placeholder=""
-                                                                  #pickupTime="ngModel" required pickupTime
-                                                                  />
-                                                               <!-- <input [(ngModel)]="item.pickupTime"
-                                                               name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
-                                                            </div>
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.pickupTime == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         <!-- <div class="col-lg-3 mt-1">
-                                                         </div> -->
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pickup Instruction</label>
-
-                                                            <textarea [(ngModel)]="item.shippers.pickupInstruction"
-                                                               name="pickupInstruction" class="form-control" rows="3"
-                                                               id="textareaDefault"></textarea>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at PickUp</label>
-
-                                                            <input [(ngModel)]="item.shippers.contactPerson"
-                                                               name="contactPerson" type="text" class="form-control"
-                                                               id="inputDefault">
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pu</label>
-
-                                                            <input [(ngModel)]="item.shippers.pu"
-                                                               name="pu" type="text" class="form-control"
-                                                               id="inputDefault">
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span> -->
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone</label>
-
-                                                            <input [(ngModel)]="item.shippers.phone" name="phone"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                            <span class="text-danger"
-                                                               *ngIf="isShipperSubmit && shippersReceivers[i].shippers.phone == ''"
-                                                               >
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>                                                     
-
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Reference</label>
-
-                                                            <input [(ngModel)]="item.shippers.reference"
-                                                               name="reference" type="text" class="form-control"
-                                                               id="inputDefault">
-                                                            
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Notes</label>
-
-                                                            <input [(ngModel)]="item.shippers.notes" name="notes"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                         </div>
-                                                         
-                                                         
-                                                      </div>
-                                                      <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-
-                                                               <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
+                                                               <ng-select [(ngModel)]="item.shippers.shipperID"
+                                                                  name="shipperID" #shipperID="ngModel" required
+                                                                  shipperID class="form-control">
                                                                
+                                                                     <ng-option *ngFor="let item of shippers" value="{{item.shipperID}}">{{item.companyName}}</ng-option>
+                                                               
+                                                               </ng-select>
                                                                <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].name == ''"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.shipperID == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
-
                                                             </div>
-                                                            <div class="col-lg-6">
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i> Commodity </a> 
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a> 
-                                                            </div>
+                                                            
                                                          </div>
-                                                         
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
-                                                            </div>
-                                                            <div class="col-lg-6">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pickup Location</label>
 
-                                                               <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
+                                                               <input [(ngModel)]="item.shippers.pickupLocation"
+                                                                  name="pickupLocation" (keyup)="searchTerm.next($event);"
+                                                                  class="form-control " #pickupLocation="ngModel" required
+                                                                  pickupLocation tabindex="-1" aria-hidden="true">
+
+                                                               <ul class="p-0 m-0 text-left map-search__results bg-white">
+                                                                  <li *ngFor="let item of searchResults;">
+                                                                     <a href="javascript:;"
+                                                                        (click)="assignLocation(i, 'shipper', item.address.label)"
+                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                  </li>
+                                                               </ul>
+
                                                                <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantity == ''"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupLocation == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
                                                             </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pick Date and Time</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
                                                                
 
-                                                            <div class="col-lg-6">
-                                                               <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
-                                                                  <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
-                                                                     <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
-                                                                     <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
-                                                                     <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
-                                                                     <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
-                                                                     <ng-option value="Box" data-select2-id="289">Box</ng-option>
-                                                                     <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
-                                                                     <ng-option value="Can" data-select2-id="291">Can</ng-option>
-                                                                     <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
-                                                                     <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
-                                                                     <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
-                                                               </ng-select>
-
+                                                               <div class="input-group">
+                                                                  <input [(ngModel)]="item.shippers.pickupDate"
+                                                                     name="pickupDate" type="date" #pickupDate="ngModel"
+                                                                     required pickupDate placeholder=""
+                                                                     class="form-control ">
+                                                               </div>
                                                                <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantityUnit == ''"
-
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
-
                                                             </div>
-                                                            <div class="col-lg-3"> </div>
+                                                            <div class="col-lg-6">
+                                                               <div class="input-group">
+                                                                  <input [(ngModel)]="item.shippers.pickupTime"
+                                                                     name="pickupTime" type="time" class="timepicker form-control" placeholder=""
+                                                                     #pickupTime="ngModel" required pickupTime
+                                                                     />
+                                                                  <!-- <input [(ngModel)]="item.pickupTime"
+                                                                  name="item.pickupTime{{i}}" type="text" class="form-control" placeholder="hour:minute"  #pickupTime="ngModel" required pickupTime id="timepicker2"> -->
+                                                               </div>
+                                                               <span class="text-danger"
+                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.pickupTime == ''"
+                                                                  >
+                                                                  This Field is required
+                                                               </span>
+                                                            </div>
+                                                            <!-- <div class="col-lg-3 mt-1">
+                                                            </div> -->
                                                          </div>
                                                          <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
-                                                            </div>
-                                                            <div class="col-lg-6">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pickup Instruction</label>
 
-                                                               <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
+                                                               <textarea [(ngModel)]="item.shippers.pickupInstruction"
+                                                                  name="pickupInstruction" class="form-control" rows="3"
+                                                                  id="textareaDefault"></textarea>
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Contact Person at PickUp</label>
+
+                                                               <input [(ngModel)]="item.shippers.contactPerson"
+                                                                  name="contactPerson" type="text" class="form-control"
+                                                                  id="inputDefault">
                                                                <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
                                                             </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pu</label>
 
-                                                            <div class="col-lg-6">
-                                                               <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
-                                                                     <ng-option value="ton(s)">ton(s)</ng-option>
-                                                                     <ng-option value="Kilograms">Kilograms</ng-option>
-                                                                     <ng-option value="lbs">lbs</ng-option>
-                                                               </ng-select>
+                                                               <input [(ngModel)]="item.shippers.pu"
+                                                                  name="pu" type="text" class="form-control"
+                                                                  id="inputDefault">
+                                                               <!-- <span class="text-danger"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
+                                                                  >
+                                                                  This Field is required
+                                                               </span> -->
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
 
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Phone</label>
+
+                                                               <input [(ngModel)]="item.shippers.phone" name="phone"
+                                                                  type="text" class="form-control" id="inputDefault">
                                                                <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].weightUnit == ''"
+                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.phone == ''"
                                                                   >
                                                                   This Field is required
                                                                </span>
-
                                                             </div>
-                                                           
+                                                            
+                                                         </div>                                                     
+
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Reference</label>
+
+                                                               <input [(ngModel)]="item.shippers.reference"
+                                                                  name="reference" type="text" class="form-control"
+                                                                  id="inputDefault">
+                                                               
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Notes</label>
+
+                                                               <input [(ngModel)]="item.shippers.notes" name="notes"
+                                                                  type="text" class="form-control" id="inputDefault">
+                                                            </div>
+                                                            
+                                                            
+                                                         </div>
+                                                         <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
+                                                               </div>
+
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
+                                                                  
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].name == ''"
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+
+                                                               </div>
+                                                               <div class="col-lg-6">
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i> Commodity </a> 
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a> 
+                                                               </div>
+                                                            </div>
+                                                            
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantity == ''"
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+                                                                  
+
+                                                               <div class="col-lg-6">
+                                                                  <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
+                                                                     <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+                                                                        <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
+                                                                        <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
+                                                                        <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
+                                                                        <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
+                                                                        <ng-option value="Box" data-select2-id="289">Box</ng-option>
+                                                                        <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
+                                                                        <ng-option value="Can" data-select2-id="291">Can</ng-option>
+                                                                        <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
+                                                                        <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
+                                                                        <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                  </ng-select>
+
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].quantityUnit == ''"
+
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+
+                                                               </div>
+                                                               <div class="col-lg-3"> </div>
+                                                            </div>
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit &&  shippersReceivers[i].shippers.commodity[z].weight == ''"
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+
+                                                               <div class="col-lg-6">
+                                                                  <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
+                                                                        <ng-option value="ton(s)">ton(s)</ng-option>
+                                                                        <ng-option value="Kilograms">Kilograms</ng-option>
+                                                                        <ng-option value="lbs">lbs</ng-option>
+                                                                  </ng-select>
+
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].weightUnit == ''"
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+
+                                                               </div>
+                                                            
+                                                            </div>
+                                                         </div>
+
+                                                         <div class="row mt-3">
+                                                            <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                               <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
+                                                                  for="inputDefault">Will Driver Load ?</label>
+                                                            </div>
+                                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                               <div class="radio-custom">
+                                                                  <input [(ngModel)]="item.shippers.driverLoad"
+                                                                     name="driverLoad" type="radio" value="yes"
+                                                                     id="loadyes" checked="">
+                                                                  <label for="radioExample1">Yes</label>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                               <div class="radio-custom">
+                                                                  <input [(ngModel)]="item.shippers.driverLoad"
+                                                                     name="driverLoad" type="radio" value="no" id="loadno">
+                                                                  <label for="radioExample2">No</label>
+                                                               </div>
+                                                            </div>
+                                                         </div>
+
+                                                         <div class="divcenter mt-2">
+                                                            <a *ngIf="!showShipperUpdate" href="javascript:;" (click)="saveShipper(i)"
+                                                                  class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a>
+                                                            <a *ngIf="showShipperUpdate" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
+                                                                  class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Update</a>
                                                          </div>
                                                       </div>
-
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
-                                                            <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Load ?</label>
-                                                         </div>
-                                                         <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
-                                                            <div class="radio-custom">
-                                                               <input [(ngModel)]="item.shippers.driverLoad"
-                                                                  name="driverLoad" type="radio" value="yes"
-                                                                  id="loadyes" checked="">
-                                                               <label for="radioExample1">Yes</label>
-                                                            </div>
-                                                         </div>
-                                                         <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
-                                                            <div class="radio-custom">
-                                                               <input [(ngModel)]="item.shippers.driverLoad"
-                                                                  name="driverLoad" type="radio" value="no" id="loadno">
-                                                               <label for="radioExample2">No</label>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-
-                                                      <div class="divcenter mt-2">
-                                                         <a *ngIf="!showShipperUpdate" href="javascript:;" (click)="saveShipper(i)"
-                                                               class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Save</a>
-                                                         <a *ngIf="showShipperUpdate" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
-                                                               class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Update</a>
-                                                      </div>
-                                                   </div>
-                                                </section>
+                                                   </section>
+                                                </div>
                                              </div>
+
+                                             <!-- <a (click)="addShipper()" class="btn btn-success btn-sm"
+                                                href="javascript:;"><i class="fas fa-plus"></i> Add Next Shipper</a> -->
+
+
                                           </div>
 
-                                          <!-- <a (click)="addShipper()" class="btn btn-success btn-sm"
-                                             href="javascript:;"><i class="fas fa-plus"></i> Add Next Shipper</a> -->
 
 
-                                       </div>
-
-
-
-                                       <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
-                                          
-                                          <div class="">
-                                             <div class="toggle toggle-primary" data-plugin-toggle>
-                                                <section class="toggle">
-                                                   <label (click)="toggleAccordian(i)"
-                                                      class="text-dark text-5 font-weight-bold">Receiver
-                                                      <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
-                                                            <i class="fas fa-minus fa-fw d-block m-0"></i>
-                                                         </span> -->
-                                                   </label>
-                                                   <div class="" *ngIf="visibleIndex === i">
-                                                      <div class="row">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Receiver</label>
-
-                                                            <ng-select [(ngModel)]="item.receivers.receiverID"
-                                                               name="receiverID" #receiverID="ngModel" required
-                                                               receiverID class="form-control" data-select2-id="16"
-                                                               tabindex="-1" aria-hidden="true">
-                                                               <ng-option *ngFor="let item of receivers;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
-                                                            </ng-select>
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.receiverID == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Drop Off Location</label>
-
-                                                            <input [(ngModel)]="item.receivers.dropOffLocation"
-                                                               name="dropOffLocation" #dropOffLocation="ngModel"
-                                                               required dropOffLocation
-                                                               (keyup)="searchTerm.next($event);" class="form-control"
-                                                               tabindex="-1" aria-hidden="true">
-
-                                                            <ul class="p-0 m-0 text-left map-search__results bg-white">
-                                                               <li *ngFor="let item of searchResults;">
-                                                                  <a href="javascript:;"
-                                                                     (click)="assignLocation(i, 'receiver', item.address.label)"
-                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
-                                                               </li>
-                                                            </ul>
-                                                            
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffLocation == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                                                                               </div>
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Date and Time</label>
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.receivers.dropOffDate"
-                                                                  name="dropOffDate" #dropOffDate="ngModel" required
-                                                                  dropOffDate type="date" placeholder=""
-                                                                  class="form-control">
-                                                            </div>
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffDate == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         <div class="col-lg-6">
-                                                            <div class="input-group">
-                                                               <input [(ngModel)]="item.receivers.dropOffTime"
-                                                                  name="dropOffTime" #dropOffTime="ngModel" required
-                                                                  dropOffTime type="time" class="timepicker form-control" placeholder=""
-                                                                  />
-                                                            </div>
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffTime == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         <!-- <div class="col-lg-3 mt-1">
-                                                         </div> -->
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Delivery Instruction</label>
-
-                                                            <textarea [(ngModel)]="item.receivers.dropOffInstruction"
-                                                               name="dropOffInstruction" class="form-control" rows="3"
-                                                               id="textareaDefault"
-                                                               style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Contact Person at Delivery</label>
-
-                                                            <input [(ngModel)]="item.receivers.contactPerson"
-                                                               name="contactPerson" type="text" class="form-control"
-                                                               id="inputDefault">
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Pu</label>
-
-                                                            <input [(ngModel)]="item.receivers.pu" name="pu"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                            <!-- <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
-                                                               This Field is required
+                                          <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
+                                             
+                                             <div class="">
+                                                <div class="toggle toggle-primary" data-plugin-toggle>
+                                                   <section class="toggle">
+                                                      <label (click)="toggleAccordian(i)"
+                                                         class="text-dark text-5 font-weight-bold">Receiver
+                                                         <!-- <span *ngIf="i != 0;" (click)="remove('receiver', i)" class="minus-sign btn btn-success btn-sm">
+                                                               <i class="fas fa-minus fa-fw d-block m-0"></i>
                                                             </span> -->
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Phone</label>
+                                                      </label>
+                                                      <div class="" *ngIf="visibleIndex === i">
+                                                         <div class="row">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Receiver</label>
 
-                                                            <input [(ngModel)]="item.receivers.phone" name="phone"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                            <span class="text-danger"
-                                                               *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
-                                                               This Field is required
-                                                            </span>
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Reference</label>
-
-                                                            <input [(ngModel)]="item.receivers.reference"
-                                                               name="reference" type="text" class="form-control"
-                                                               id="inputDefault">
-                                                         </div>
-                                                         
-                                                      </div>
-                                                      <div class="row mt-3">
-                                                         
-                                                         <div class="col-lg-12 col-md-12">
-                                                            <label  class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                               for="inputDefault">Notes</label>
-
-
-                                                            <input [(ngModel)]="item.receivers.notes" name="notes"
-                                                               type="text" class="form-control" id="inputDefault">
-                                                         </div>
-                                                         
-                                                         
-                                                      </div>
-                                                      <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
-                                                            </div>
-                                                            <div class="col-lg-6">
-
-                                                               <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
-                                                               <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].name == ''">
-                                                                  This Field is required
-                                                               </span> 
-
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i> Commodity </a> 
-                                                               <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a> 
-                                                            </div>
-                                                         </div>
-
-                                                         <div class="row mt-3">
-                                                            <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
-                                                            </div>
-                                                            <div class="col-lg-6">
-
-                                                               <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
-                                                               <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantity == ''">
-                                                                  This Field is required
-                                                               </span>
-                                                            </div>
-
-                                                            <div class="col-lg-6">
-                                                               <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
-                                                                  <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
-                                                                     <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
-                                                                     <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
-                                                                     <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
-                                                                     <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
-                                                                     <ng-option value="Box" data-select2-id="289">Box</ng-option>
-                                                                     <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
-                                                                     <ng-option value="Can" data-select2-id="291">Can</ng-option>
-                                                                     <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
-                                                                     <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
-                                                                     <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                               <ng-select [(ngModel)]="item.receivers.receiverID"
+                                                                  name="receiverID" #receiverID="ngModel" required
+                                                                  receiverID class="form-control" data-select2-id="16"
+                                                                  tabindex="-1" aria-hidden="true">
+                                                                  <ng-option *ngFor="let item of receivers;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
                                                                </ng-select>
-
                                                                <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
+                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.receiverID == ''">
                                                                   This Field is required
                                                                </span>
-
                                                             </div>
                                                             
                                                          </div>
                                                          <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Drop Off Location</label>
+
+                                                               <input [(ngModel)]="item.receivers.dropOffLocation"
+                                                                  name="dropOffLocation" #dropOffLocation="ngModel"
+                                                                  required dropOffLocation
+                                                                  (keyup)="searchTerm.next($event);" class="form-control"
+                                                                  tabindex="-1" aria-hidden="true">
+
+                                                               <ul class="p-0 m-0 text-left map-search__results bg-white">
+                                                                  <li *ngFor="let item of searchResults;">
+                                                                     <a href="javascript:;"
+                                                                        (click)="assignLocation(i, 'receiver', item.address.label)"
+                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                  </li>
+                                                               </ul>
+                                                               
+                                                               <span class="text-danger"
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffLocation == ''">
+                                                                  This Field is required
+                                                               </span>
+                                                            </div>
+                                                                                                                  </div>
+                                                         <div class="row mt-3">
                                                             <div class="col-lg-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Delivery Date and Time</label>
                                                             </div>
                                                             <div class="col-lg-6">
-
-                                                               <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
+                                                               <div class="input-group">
+                                                                  <input [(ngModel)]="item.receivers.dropOffDate"
+                                                                     name="dropOffDate" #dropOffDate="ngModel" required
+                                                                     dropOffDate type="date" placeholder=""
+                                                                     class="form-control">
+                                                               </div>
                                                                <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weight == ''">
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffDate == ''">
                                                                   This Field is required
                                                                </span>
                                                             </div>
-
                                                             <div class="col-lg-6">
-                                                               <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
-                                                                     <ng-option value="ton(s)">ton(s)</ng-option>
-                                                                     <ng-option value="Kilograms">Kilograms</ng-option>
-                                                                     <ng-option value="lbs">lbs</ng-option>
-                                                               </ng-select>
-
+                                                               <div class="input-group">
+                                                                  <input [(ngModel)]="item.receivers.dropOffTime"
+                                                                     name="dropOffTime" #dropOffTime="ngModel" required
+                                                                     dropOffTime type="time" class="timepicker form-control" placeholder=""
+                                                                     />
+                                                               </div>
                                                                <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffTime == ''">
                                                                   This Field is required
                                                                </span>
                                                             </div>
-                                                           
+                                                            <!-- <div class="col-lg-3 mt-1">
+                                                            </div> -->
                                                          </div>
-                                                      </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Delivery Instruction</label>
+
+                                                               <textarea [(ngModel)]="item.receivers.dropOffInstruction"
+                                                                  name="dropOffInstruction" class="form-control" rows="3"
+                                                                  id="textareaDefault"
+                                                                  style="margin-top: 0px; margin-bottom: 0px; height: 74px;"></textarea>
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Contact Person at Delivery</label>
+
+                                                               <input [(ngModel)]="item.receivers.contactPerson"
+                                                                  name="contactPerson" type="text" class="form-control"
+                                                                  id="inputDefault">
+                                                               <span class="text-danger"
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.contactPerson == ''">
+                                                                  This Field is required
+                                                               </span>
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Pu</label>
+
+                                                               <input [(ngModel)]="item.receivers.pu" name="pu"
+                                                                  type="text" class="form-control" id="inputDefault">
+                                                               <!-- <span class="text-danger"
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
+                                                                  This Field is required
+                                                               </span> -->
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Phone</label>
+
+                                                               <input [(ngModel)]="item.receivers.phone" name="phone"
+                                                                  type="text" class="form-control" id="inputDefault">
+                                                               <span class="text-danger"
+                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
+                                                                  This Field is required
+                                                               </span>
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Reference</label>
+
+                                                               <input [(ngModel)]="item.receivers.reference"
+                                                                  name="reference" type="text" class="form-control"
+                                                                  id="inputDefault">
+                                                            </div>
+                                                            
+                                                         </div>
+                                                         <div class="row mt-3">
+                                                            
+                                                            <div class="col-lg-12 col-md-12">
+                                                               <label  class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                  for="inputDefault">Notes</label>
 
 
-                                                      <div class="row mt-3">
-                                                         <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
-                                                            <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
-                                                               for="inputDefault">Will Driver Unload ?</label>
+                                                               <input [(ngModel)]="item.receivers.notes" name="notes"
+                                                                  type="text" class="form-control" id="inputDefault">
+                                                            </div>
+                                                            
+                                                            
                                                          </div>
-                                                         <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
-                                                            <div class="radio-custom">
-                                                               <input [(ngModel)]="item.receivers.driverUnload"
-                                                                  name="driverUnload" type="radio" value="yes"
-                                                                  id="unloadyes" checked="">
-                                                               <label for="radioExample1">Yes</label>
+                                                         <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Commodity</label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control">
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].name == ''">
+                                                                     This Field is required
+                                                                  </span> 
+
+                                                               </div>
+                                                               <div class="col-lg-6">
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i> Commodity </a> 
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a> 
+                                                               </div>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Quantity</label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.quantity" name="quantity{{z}}" class="form-control"> 
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantity == ''">
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+
+                                                               <div class="col-lg-6">
+                                                                  <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
+                                                                     <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+                                                                        <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
+                                                                        <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
+                                                                        <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
+                                                                        <ng-option value="Bin" data-select2-id="288">Bin</ng-option>
+                                                                        <ng-option value="Box" data-select2-id="289">Box</ng-option>
+                                                                        <ng-option value="Bucket" data-select2-id="290">Bucket</ng-option>
+                                                                        <ng-option value="Can" data-select2-id="291">Can</ng-option>
+                                                                        <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
+                                                                        <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
+                                                                        <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                  </ng-select>
+
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].quantityUnit == ''">
+                                                                     This Field is required
+                                                                  </span>
+
+                                                               </div>
+                                                               
+                                                            </div>
+                                                            <div class="row mt-3">
+                                                               <div class="col-lg-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark">Weight</label>
+                                                               </div>
+                                                               <div class="col-lg-6">
+
+                                                                  <input type="text" [(ngModel)]="commodity.weight" name="weight{{z}}" class="form-control"> 
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weight == ''">
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+
+                                                               <div class="col-lg-6">
+                                                                  <ng-select [(ngModel)]="commodity.weightUnit" name="weightUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
+                                                                        <ng-option value="ton(s)">ton(s)</ng-option>
+                                                                        <ng-option value="Kilograms">Kilograms</ng-option>
+                                                                        <ng-option value="lbs">lbs</ng-option>
+                                                                  </ng-select>
+
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit && shippersReceivers[i].receivers.commodity[z].weightUnit == ''">
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+                                                            
                                                             </div>
                                                          </div>
-                                                         <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
-                                                            <div class="radio-custom">
-                                                               <input [(ngModel)]="item.receivers.driverUnload"
-                                                                  name="driverUnload" type="radio" value="no"
-                                                                  id="unloadno">
-                                                               <label for="radioExample2">No</label>
+
+
+                                                         <div class="row mt-3">
+                                                            <div class="col-lg-4 col-sm-12 col-xs-12 col-12">
+                                                               <label class="control-label font-weight-semibold mb-0 text-3 text-dark"
+                                                                  for="inputDefault">Will Driver Unload ?</label>
+                                                            </div>
+                                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                               <div class="radio-custom">
+                                                                  <input [(ngModel)]="item.receivers.driverUnload"
+                                                                     name="driverUnload" type="radio" value="yes"
+                                                                     id="unloadyes" checked="">
+                                                                  <label for="radioExample1">Yes</label>
+                                                               </div>
+                                                            </div>
+                                                            <div class="col-lg-2 col-sm-6 col-xs-6 col-6">
+                                                               <div class="radio-custom">
+                                                                  <input [(ngModel)]="item.receivers.driverUnload"
+                                                                     name="driverUnload" type="radio" value="no"
+                                                                     id="unloadno">
+                                                                  <label for="radioExample2">No</label>
+                                                               </div>
                                                             </div>
                                                          </div>
-                                                      </div>
 
-                                                      <div class="divcenter mt-2">
-                                                         <a *ngIf="!showReceiverUpdate" href="javascript:;"
-                                                            class="mb-1 mt-1 mr-1 btn btn-md btn-dark"
-                                                            (click)="saveReceiver(i)">Save</a>
-                                                         <a *ngIf="showReceiverUpdate" href="javascript:;" (click)="updateShipperReceiver('receiver', i)"
-                                                               class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Update</a>
+                                                         <div class="divcenter mt-2">
+                                                            <a *ngIf="!showReceiverUpdate" href="javascript:;"
+                                                               class="mb-1 mt-1 mr-1 btn btn-md btn-dark"
+                                                               (click)="saveReceiver(i)">Save</a>
+                                                            <a *ngIf="showReceiverUpdate" href="javascript:;" (click)="updateShipperReceiver('receiver', i)"
+                                                                  class="mb-1 mt-1 mr-1 btn btn-md btn-dark">Update</a>
+                                                         </div>
                                                       </div>
-                                                   </div>
-                                                </section>
+                                                   </section>
+                                                </div>
                                              </div>
+
+                                             <!-- <a class="btn btn-success btn-sm" href="javascript:"
+                                                (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a> -->
+                                             
+
                                           </div>
-
-                                          <!-- <a class="btn btn-success btn-sm" href="javascript:"
-                                             (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a> -->
-                                          
-
                                        </div>
-                                    </div>
-                                 </ng-template>
-                              </ngb-panel>
-                           </ngb-accordion>
+                                    </ng-template>
+                                 </ngb-panel>
+                              </ngb-accordion>
+                              <button (click)="addAccordian()" type="button" class="btn btn-success">Add More</button>
+                              <button *ngIf="shippersReceivers.length > 1" (click)="removeAccordian(i)" type="button" class="btn btn-success ml-2">Remove</button>
+                           </div>
                         </div>
+                        
                      </div>
                   </div>
                   <div class="form-group row">
                      <div class="col-lg-12 text-right">
-                        <button (click)="addAccordian()" type="button" class="btn btn-success">Add More</button>
-                        <button *ngIf="shippersReceivers.length > 1" (click)="removeAccordian(i)" type="button" class="btn btn-success ml-2">Remove</button>
+                        
                      </div>
                   </div>
          

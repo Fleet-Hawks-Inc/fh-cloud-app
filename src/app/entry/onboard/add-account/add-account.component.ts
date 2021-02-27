@@ -207,8 +207,7 @@ export class AddAccountComponent implements OnInit {
           if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
             this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
           }
-        })
-
+        });
       });
   }
   async fetchCountriesByName(name: string, i) {
@@ -216,8 +215,7 @@ export class AddAccountComponent implements OnInit {
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;
-    }
+      return result.Items[0].countryID;    }
     return '';
   }
 
@@ -273,7 +271,6 @@ export class AddAccountComponent implements OnInit {
       map((e: any) => {
         $('.map-search__results').hide();
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -352,7 +349,7 @@ export class AddAccountComponent implements OnInit {
           if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
             this.addressCountriesBank.push({ countryName: elem.countryName, countryID: elem.countryID });
           }
-        })
+        });
       });
   }
   async getBankStates(id: any, oid = null) {
@@ -430,7 +427,6 @@ export class AddAccountComponent implements OnInit {
       map((e: any) => {
         $('.map-search__resultsBank').hide();
         $(e.target).closest('div').addClass('show-search__resultBank');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),

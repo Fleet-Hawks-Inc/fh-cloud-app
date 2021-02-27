@@ -45,9 +45,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addState()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateState()">Update</a>
+        <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
       </div>
     </div>
   </div>
@@ -102,9 +100,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton" (click)="addCity()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateCity()">Update</a>
+        <a type="button" class="btn btn-success" href="javascript:;"  (click)="addCity()">Save</a>
       </div>
     </div>
   </div>
@@ -139,10 +135,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+        <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addVehicleMake()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateVehicleMake()">Update</a>
       </div>
     </div>
   </div>
@@ -188,10 +182,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+        <a type="button" class="btn btn-success" href="javascript:;" 
           (click)="addVehicleModel()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateVehicleModel()">Update</a>
       </div>
     </div>
   </div>
@@ -225,10 +217,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+        <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addAssetMake()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateAssetMake()">Update</a>
       </div>
     </div>
   </div>
@@ -272,10 +262,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton"
+        <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addAssetModel()">Save</a>
-        <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton"
-          (click)="updateAssetModel()">Update</a>
       </div>
     </div>
   </div>
@@ -954,7 +942,7 @@
             </div>
             <div class="modal-body">
                 <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm"
-                   (ngSubmit)="onSubmit(driverForm)" novalidate>
+                   (ngSubmit)="onSubmit()" novalidate>
                    <div class="p-2 pt-4">
                       <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                          <li class="nav-item">
@@ -1145,7 +1133,7 @@
                                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input class="form-control p-0" [ngClass]="abstractValid ? 'error' : 'err' "
                                               name="abstractDocs"
-                                              (change)="selectDocuments('abstract', $event, i);onChangeHideErrors('abstractDocs')"
+                                              (change)="selectDocuments($event, null);onChangeHideErrors('abstractDocs')"
                                               type="file" multiple>
                                            <label class="error" *ngIf="abstractValid">
                                               This Field is required
@@ -1366,7 +1354,7 @@
                                               class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
                                               Document</label>
                                            <input class="form-control p-0" name="document.uploadedDocs{{i}}"
-                                              (change)="selectDocuments('documents', $event, i)" type="file" multiple>
+                                              (change)="selectDocuments($event, null)" type="file" multiple>
                                         </div>
                                         
                                      </div>

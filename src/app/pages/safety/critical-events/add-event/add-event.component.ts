@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { from, Subject, throwError  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
-import * as moment from "moment";
+import { Router} from '@angular/router';
+import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
@@ -22,14 +21,21 @@ export class AddEventComponent implements OnInit {
     errors = {};
     event = {
         eventDate: '',
-        date: <any>'',
+        date: '',
         eventTime: '',
         location: '',
         documentID: [],
+        vehicleID: '',
+        tripID: '',
         incidentVideodocumentID: [],
         eventType: 'critical',
         modeOfOrign: 'manual',
-        coachingStatus: 'open'
+        coachingStatus: 'open',
+        driverUsername: '',
+        severity: '',
+        criticalityType: '',
+        remarks: '',
+        assignedUsername: ''
     };
     carrierID = '';
     selectedFiles: FileList;
@@ -90,10 +96,9 @@ export class AddEventComponent implements OnInit {
     uploadedVideos = [];
     uploadedDocs = [];
 
-    constructor(private apiService: ApiService, private awsUS: AwsUploadService,private toastr: ToastrService, 
-        private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) { 
-
-        this.selectedFileNames = new Map<any, any>();
+    constructor(private apiService: ApiService, private toastr: ToastrService,
+                private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
+                this.selectedFileNames = new Map<any, any>();
     }
 
     ngOnInit() {
@@ -117,9 +122,9 @@ export class AddEventComponent implements OnInit {
             result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == 0) {
+                if(element.isDeleted === 0) {
                     this.drivers.push(element);
-                }   
+                }
             }
         })
     }
@@ -127,8 +132,6 @@ export class AddEventComponent implements OnInit {
     fetchUsers() {
         this.apiService.getData('users/fetch/records')
         .subscribe((result: any) => {
-            console.log('users');
-            console.log(result.Items)
             result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             this.users = result.Items;
         })
@@ -139,42 +142,40 @@ export class AddEventComponent implements OnInit {
         .subscribe((result: any) => {
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == 0) {
+                if (element.isDeleted === 0) {
                     this.trips.push(element);
-                }   
+                }
             }
-        })
+        });
     }
 
     addEvent() {
         this.spinner.show();
         this.hideErrors();
-
         let timestamp;
-        let fdate = this.event.eventDate.split('-');
-        let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
-        timestamp = moment(date+' '+ this.event.eventTime).format("X");
-        this.event.date = timestamp*1000;
-
+        const fdate = this.event.eventDate.split('-');
+        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
+        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
+        this.event.date = (timestamp * 1000).toString();
         this.event.documentID = this.uploadedDocs;
         this.event.incidentVideodocumentID = this.uploadedVideos;
 
         // create form data instance
         const formData = new FormData();
 
-        //append videos if any
-        for(let i = 0; i < this.uploadedVideos.length; i++){
+        // append videos if any
+        for (let i = 0; i < this.uploadedVideos.length; i++){
             formData.append('uploadedVideos', this.uploadedVideos[i]);
         }
 
-        //append docs if any
-        for(let j = 0; j < this.uploadedDocs.length; j++){
+        // append docs if any
+        for (let j = 0; j < this.uploadedDocs.length; j++){
             formData.append('uploadedDocs', this.uploadedDocs[j]);
         }
 
-        //append other fields
+        // append other fields
         formData.append('data', JSON.stringify(this.event));
-        
+
         this.apiService.postData('safety/eventLogs', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
@@ -197,7 +198,6 @@ export class AddEventComponent implements OnInit {
                     });
             },
             next: (res) => {
-                // this.uploadFiles();
                 this.spinner.hide();
                 this.toastr.success('Critical event added successfully');
                 this.router.navigateByUrl('/safety/critical-events');
@@ -206,7 +206,6 @@ export class AddEventComponent implements OnInit {
     }
 
     throwErrors() {
-        console.log(this.errors);
         from(Object.keys(this.errors))
           .subscribe((v) => {
             $('[name="' + v + '"]')
@@ -214,7 +213,7 @@ export class AddEventComponent implements OnInit {
               .addClass('error')
           });
     }
-    
+
     hideErrors() {
         from(Object.keys(this.errors))
           .subscribe((v) => {
@@ -225,14 +224,12 @@ export class AddEventComponent implements OnInit {
           });
         this.errors = {};
     }
-    
+
     public searchLocation() {
-        let target;
         this.searchTerm.pipe(
           map((e: any) => {
             $('.map-search__results').hide();
             $(e.target).closest('div').addClass('show-search__result');
-            target = e;
             return e.target.value;
           }),
           debounceTime(400),
@@ -259,16 +256,15 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-
         if (obj === 'uploadedDocs') {
             this.uploadedDocs = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i])
+                this.uploadedDocs.push(files[i]);
             }
         } else {
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i])
+                this.uploadedVideos.push(files[i]);
             }
         }
     }

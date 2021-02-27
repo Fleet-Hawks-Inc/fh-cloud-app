@@ -96,10 +96,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     this.visible = !this.visible;
   }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
