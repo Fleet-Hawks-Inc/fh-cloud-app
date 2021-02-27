@@ -4,9 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner'; 
+import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer} from '@angular/platform-browser';
@@ -92,9 +91,8 @@ export class AddAssetsComponent implements OnInit {
   imageError = '';
   fileName = '';
   carrierID: any;
-  public states;
-  public countries;
-
+  states = [];
+  countries = [];
   uploadedPhotos = [];
   uploadedDocs = [];
   existingPhotos = [];
@@ -190,8 +188,8 @@ export class AddAssetsComponent implements OnInit {
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
-        manufacturer: this.assetsData.assetDetails.manufacturer,
-        model: this.assetsData.assetDetails.model,
+        manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
+        model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
         axle: this.assetsData.assetDetails.axle,

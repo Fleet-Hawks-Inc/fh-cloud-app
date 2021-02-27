@@ -240,7 +240,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddOrdersComponent,
     OrderDetailComponent,
 
-
     AceDetailsComponent,
     AciDetailsComponent,
 

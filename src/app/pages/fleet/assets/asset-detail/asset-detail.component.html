@@ -26,19 +26,23 @@
                              </div>
                              <div class="col-lg-12">
                                 <table class="table table-bordered table-responsive-lg">
+                                       <thead>
+                                          <th id=""></th>
+                                          <th id=""></th>
+                                       </thead>
                                        <tbody>
                                           <tr>
-                                             <td width="40%" class="back-color-gray font-weight-bold">Asset Name/ID</td>
-                                             <td width="60%" class="text-capitalize">{{assetIdentification}}</td>
+                                             <td class="back-color-gray font-weight-bold">Asset Name/ID</td>
+                                             <td class="text-capitalize">{{assetIdentification}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">VIN</td>
                                              <td class="text-capitalize">{{VIN}}</td>
                                           </tr>
-                                          <tr>
+                                          <!-- <tr>
                                              <td class="back-color-gray font-weight-bold">Asset Gateway S/N</td>
                                              <td class="text-capitalize">none</td>
-                                          </tr>
+                                          </tr> -->
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Type</td>
                                              <td class="text-capitalize">{{assetType}}</td>
@@ -53,7 +57,7 @@
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                             <td class="text-capitalize">{{year}}, {{manufacturersObjects[manufacturer]}} &amp; {{modelsObjects[model]}}</td>
+                                             <td class="text-capitalize">{{year}}, {{manufacturer ? manufacturersObjects[manufacturer] : '-'}} &amp; {{model ? modelsObjects[model] : '-'}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Length</td>
@@ -276,17 +280,16 @@
                                  <div class="vehicle-common-box p-3">
                                     <div class="row">
                                        <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
-                                       <!-- <div class="col-lg-6 text-right"><input type="file" hidden id="hidden_issue_document_input"><button type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Documents</button></div> -->
                                     </div>
                                     <hr class="solid mt-3">
                                     <div class="row mb-1" *ngFor="let doc of assetsDocs;let d= index">
                                        <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
                                              (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
                                        <div class="col-lg-3 text-right">
-                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                             data-target="#viewDocModal"></i>
-                                          <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
-                                                class="fas fa-times text-danger"></i></a>
+                                          <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                             data-target="#viewDocModal"></em>
+                                          <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form">
+                                             <em class="fas fa-times text-danger"></em></a>
                                        </div>
                                     </div>
                                  </div>
@@ -357,7 +360,7 @@
 				<div class="form-row">
 					<div class="form-group col-md-12">
 						<div>
-							<iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+							<iframe [src]="pdfSrc" title="" width="100%" height="400px"> </iframe>
 
 						</div>
 					</div>

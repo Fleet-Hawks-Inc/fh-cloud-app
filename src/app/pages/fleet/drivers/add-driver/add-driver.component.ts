@@ -112,7 +112,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lng: ''
       },
       manual: false,
-      userLocation: '',
+      userLocation:''
     }],
     documentDetails: [{
       documentType: '',

@@ -43,7 +43,7 @@
                                 </div> -->
                              <div class="row  m-0">
                                 <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                                <div class="col-lg-7 p-2 bor_half">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
+                                <div class="col-lg-7 p-2 bor_half">{{homeTerminal}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
@@ -818,9 +818,9 @@
                                           <div class="row mb-1" *ngFor="let item of absDocs;let d= index">
                                              <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div> 
                                              <div class="col-lg-3 text-right">
-                                                   <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                <a href="javascript:;" (click)="delete('abs',item.name, i)" class="modal-with-form"><i
-                                                      class="fas fa-times text-danger"></i></a>
+                                                <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                                <a href="javascript:;" (click)="delete('abs',item.name, d)" class="modal-with-form">
+                                                   <i class="fas fa-times text-danger"></i></a>
                                              </div>
                                           </div>
                                        </div>
@@ -1117,7 +1117,7 @@
                           </div>
                           <div class="row  m-0">
                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
-                           <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal ? yardsObjects[homeTerminal] : '-'}}</div>
+                           <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal}}</div>
                        </div>
                                 
                                 
