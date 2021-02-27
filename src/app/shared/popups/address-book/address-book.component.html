@@ -109,14 +109,14 @@
                                                    <i class="fas fa-ellipsis-v"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer, i)">Edit</a>
+                                                   <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer)">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;" (click)="deactivateCustomer(customer, customer.customerID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!customers.length > 0">
+                                <tbody *ngIf="customers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -180,7 +180,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!drivers.length > 0">
+                                <tbody *ngIf="drivers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -248,7 +248,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!brokers.length > 0">
+                                <tbody *ngIf="brokers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -315,7 +315,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!vendors.length > 0">
+                                <tbody *ngIf="vendors.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -382,7 +382,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!carriers.length > 0">
+                                <tbody *ngIf="carriers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -449,7 +449,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!ownerOperatorss.length > 0">
+                                <tbody *ngIf="ownerOperatorss.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -517,7 +517,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!shippers.length > 0">
+                                <tbody *ngIf="shippers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -584,7 +584,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!receivers.length > 0">
+                                <tbody *ngIf="receivers.length == 0">
                                     <tr>
                                         <td colspan="6" class="no-data-available">No records found</td>
                                     </tr>
@@ -654,7 +654,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!staffs.length > 0">
+                                <tbody *ngIf="staffs.length == 0">
                                     <tr>
                                         <td colspan="8" class="no-data-available">No records found</td>
                                     </tr>
@@ -725,7 +725,7 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody *ngIf="!fcCompanies.length > 0">
+                                <tbody *ngIf="fcCompanies.length == 0">
                                     <tr>
                                         <td colspan="7" class="no-data-available">No records found</td>
                                     </tr>
@@ -1256,8 +1256,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                        <input [(ngModel)]="customerData.additionalContact.phone"
-                                                        name="phone" type="text" class="form-control" placeholder="Enter Designation"> 
+                                                        <input [(ngModel)]="customerData.additionalContact.designation"
+                                                        name="designation" type="text" class="form-control" placeholder="Enter Designation"> 
                                                     </div>
                                                 </div>
                                             </div>
@@ -1266,14 +1266,14 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone</label>
-                                                        <input [(ngModel)]="customerData.additionalContact.email"
-                                                        name="email" type="text" class="form-control" placeholder="Enter Phone"> 
+                                                        <input [(ngModel)]="customerData.additionalContact.phone"
+                                                        name="phone" type="text" class="form-control" placeholder="Enter Phone"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email</label>
-                                                        <input [(ngModel)]="customerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control" placeholder="Enter Email"> 
+                                                        <input [(ngModel)]="customerData.additionalContact.email"
+                                                        name="email" type="text" class="form-control" placeholder="Enter Email"> 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1922,7 +1922,8 @@
                                                                 <label class="control-label font-weight-bold text-lg-right pt-2">WSIB
                                                                     Expiry</label>
                                                                 <input [(ngModel)]="carrierData.paymentDetails.wsibExpiry" name="wsibExpiry" type="text"
-                                                                    data-plugin-datepicker="" class="form-control" placeholder="Enter WSIB Expiry">
+                                                                    placeholder="Enter WSIB Expiry" (click)="wsibexp.toggle()" ngbDatepicker #wsibexp="ngbDatepicker"
+                                                                    class="form-control" autocomplete="off">
                                                             </div>
                                                         </div>
                                                     </div>

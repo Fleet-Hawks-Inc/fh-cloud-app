@@ -649,7 +649,7 @@
                                                                         value="{{ order.orderNumber }}"
                                                                         [checked]="order.selected"
                                                                         id="{{ order.orderID }}"
-                                                                        (change)="selectOrderIDS('ftl', order)">
+                                                                        (change)="selectOrderIDS('ftl')"> 
                                                                 </td>
 
                                                                 <td class="loadid"><a href="javascript:;">{{
@@ -895,77 +895,3 @@
     </div>
 </div>
 <!-- new asset modal end -->
-
-<!-- location modal start -->
-<div class="modal fade" id="locationModal" role="dialog" tabindex="-1">
-    <div class="modal-dialog" role="document" style="max-width: 500px;">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Add Location</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form>
-                <div class="modal-body">
-                    <div class="form-group row text-dark">
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">
-                                        Select Country
-                                    </label>
-                                    <select class="form-control" id="locationCountry" name="selectedLocationCountryId"
-                                        [(ngModel)]="selectedLocationCountryId">
-                                        <option *ngFor="let country of countries" value="{{ country.countryID }}">
-                                            {{ country.countryName }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                        State</label>
-                                    <select class="form-control" id="locationState" name="selectedLocationStateId"
-                                        [(ngModel)]="selectedLocationStateId">
-                                        <option *ngFor="let state of states" value="{{ state.stateID }}">
-                                            {{ state.stateName }}</option>
-                                    </select>
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
-                                    <select class="form-control" id="locationCity" name="selectedLocationCityId"
-                                        [(ngModel)]="selectedLocationCityId">
-                                        <option *ngFor="let city of cities" value="{{ city.cityID }}">
-                                            {{ city.cityName }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address 1</label>
-                                    <input type="text" class="form-control" id="locationAddress1"
-                                        name="selectedLocationAddress1" [(ngModel)]="selectedLocationAddress1">
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address 2</label>
-                                    <input type="text" class="form-control" id="locationAddress2"
-                                        name="selectedLocationAddress2" [(ngModel)]="selectedLocationAddress2">
-                                </div>
-                                <div class="col-lg-12">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code</label>
-                                    <input type="text" class="form-control" id="locationZipcode"
-                                        name="selectedLocationAddress3" [(ngModel)]="selectedLocationAddress3">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" (click)='saveLocation()'>Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- location modal end -->
