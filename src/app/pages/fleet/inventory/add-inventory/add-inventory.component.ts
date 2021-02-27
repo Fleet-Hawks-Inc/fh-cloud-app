@@ -1,44 +1,44 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services";
-import { Router, ActivatedRoute } from "@angular/router";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { DomSanitizer} from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
-  selector: "app-add-inventory",
-  templateUrl: "./add-inventory.component.html",
-  styleUrls: ["./add-inventory.component.css"],
+  selector: 'app-add-inventory',
+  templateUrl: './add-inventory.component.html',
+  styleUrls: ['./add-inventory.component.css'],
 })
 export class AddInventoryComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   /**
    * form props
    */
-  pageTitle = "";
-  itemID = "";
-  partNumber = "";
-  cost = "";
-  costUnit = "";
-  quantity = "";
-  itemName = "";
-  description = "";
-  categoryID = "";
-  warehouseID = "";
-  aisle = "";
-  row = "";
-  bin = "";
-  warehouseVendorID = "";
-  trackingQuantity = "";
-  reorderPoint = "";
-  reorderQuality = "";
-  leadTime = "";
-  preferredVendorID = "";
-  days = "";
-  time = "";
-  notes = "";
+  pageTitle = '';
+  itemID = '';
+  partNumber = '';
+  cost = '';
+  costUnit = '';
+  quantity = '';
+  itemName = '';
+  description = '';
+  categoryID = '';
+  warehouseID = '';
+  aisle = '';
+  row = '';
+  bin = '';
+  warehouseVendorID = '';
+  trackingQuantity = '';
+  reorderPoint = '';
+  reorderQuality = '';
+  leadTime = '';
+  preferredVendorID = '';
+  days = '';
+  time = '';
+  notes = '';
   photos = [];
   documents = [];
   vendors = [];
@@ -53,24 +53,24 @@ export class AddInventoryComponent implements OnInit {
   /**
    * group props
    */
-  groupName = "";
-  groupDescription = "";
-  groupForm = "";
+  groupName = '';
+  groupDescription = '';
+  groupForm = '';
   hasGroupSuccess = false;
-  groupSuccess: string = "";
+  groupSuccess = '';
 
   /**
    * warehouse props
    */
-  warehouseName = "";
-  countryID = "";
-  stateID = "";
-  cityID = "";
-  zipCode = "";
-  address = "";
-  warehoseForm = "";
+  warehouseName = '';
+  countryID = '';
+  stateID = '';
+  cityID = '';
+  zipCode = '';
+  address = '';
+  warehoseForm = '';
   hasWarehouseSuccess = false;
-  warehouseSuccess: string = "";
+  warehouseSuccess = '';
   pdfSrc: any;
   countries = [];
   states = [];
@@ -78,11 +78,11 @@ export class AddInventoryComponent implements OnInit {
 
   errors = {};
   form;
-  response: any = "";
-  hasError: boolean = false;
-  hasSuccess: boolean = false;
-  Error: string = "";
-  Success: string = "";
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
   constructor(
     private apiService: ApiService,
@@ -91,19 +91,19 @@ export class AddInventoryComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private toastr: ToastrService,
   ) {
-    this.itemID = this.route.snapshot.params["itemID"];
+    this.itemID = this.route.snapshot.params[`itemID`];
     console.log(this.itemID);
     if (this.itemID) {
-      this.pageTitle = "Edit Driver";
+      this.pageTitle = `Edit Driver`;
       this.getInventory();
     } else {
-      this.pageTitle = "Add Driver";
+      this.pageTitle = `Add Driver`;
     }
 
     $(document).ready(() => {
-      this.form = $("#form").validate();
-      this.groupForm = $("#groupForm").validate();
-      this.warehoseForm = $("#warehoseForm").validate();
+      this.form = $('#form').validate();
+      this.groupForm = $('#groupForm').validate();
+      this.warehoseForm = $('#warehoseForm').validate();
     });
   }
 
@@ -125,7 +125,7 @@ export class AddInventoryComponent implements OnInit {
   }
 
   getInventory() {
-    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
+    this.apiService.getData('items/' + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
 
       this.partNumber = result.partNumber;
@@ -150,12 +150,12 @@ export class AddInventoryComponent implements OnInit {
       this.notes = result.notes;
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
-      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+      if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
        // this.allImages = result.uploadedPhotos;
         this.inventoryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
 
-      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+      if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
        // this.alldocs = result.uploadedDocs;
         this.inventoryDocs = result.uploadedDocs.map(x => ({path:`${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
@@ -175,20 +175,20 @@ export class AddInventoryComponent implements OnInit {
   }
 
   fetchWarehouses() {
-    this.apiService.getData("warehouses").subscribe((result: any) => {
+    this.apiService.getData('warehouses').subscribe((result: any) => {
       this.warehouses = result.Items;
     });
   }
 
   fetchCountries() {
-    this.apiService.getData("countries").subscribe((result: any) => {
+    this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
   }
 
   getStates() {
     this.apiService
-      .getData("states/country/" + this.countryID)
+      .getData('states/country/' + this.countryID)
       .subscribe((result: any) => {
         this.states = result.Items;
       });
@@ -196,18 +196,18 @@ export class AddInventoryComponent implements OnInit {
 
   getCities() {
     this.apiService
-      .getData("cities/state/" + this.stateID)
+      .getData('cities/state/' + this.stateID)
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
   }
 
   showWarehoseModal() {
-    $("#warehouseModal").modal("show");
+    $('#warehouseModal').modal('show');
   }
 
   showCategoryModal() {
-    $("#categoryModal").modal("show");
+    $('#categoryModal').modal('show');
   }
 
   fetchVendors() {
@@ -253,17 +253,17 @@ export class AddInventoryComponent implements OnInit {
      // create form data instance
      const formData = new FormData();
 
-     //append photos if any
+     // append photos if any
      for(let i = 0; i < this.uploadedPhotos.length; i++){
        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
      }
- 
-     //append docs if any
+
+     // append docs if any
      for(let j = 0; j < this.uploadedDocs.length; j++){
        formData.append('uploadedDocs', this.uploadedDocs[j]);
      }
- 
-     //append other fields
+
+     // append other fields
      formData.append('data', JSON.stringify(data));
 
     this.apiService.postData("items", formData, true).subscribe({
@@ -289,27 +289,27 @@ export class AddInventoryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.partNumber = "";
-        this.cost = "";
-        this.costUnit = "";
-        this.quantity = "";
-        this.itemName = "";
-        this.description = "";
-        this.categoryID = "";
-        this.warehouseID = "";
-        this.aisle = "";
-        this.row = "";
-        this.bin = "";
-        this.warehouseVendorID = "";
-        this.trackingQuantity = "";
-        this.reorderPoint = "";
-        this.reorderQuality = "";
-        this.leadTime = "";
-        this.preferredVendorID = "";
-        this.days = "";
-        this.time = "";
-        this.notes = "";
-        this.Success = "Inventory Added successfully";
+        this.partNumber = '';
+        this.cost = '';
+        this.costUnit = '';
+        this.quantity = '';
+        this.itemName = '';
+        this.description = '';
+        this.categoryID = '';
+        this.warehouseID = '';
+        this.aisle = '';
+        this.row = '';
+        this.bin = '';
+        this.warehouseVendorID = '';
+        this.trackingQuantity = '';
+        this.reorderPoint = '';
+        this.reorderQuality = '';
+        this.leadTime = '';
+        this.preferredVendorID = '';
+        this.days = '';
+        this.time = '';
+        this.notes = '';
+        this.Success = 'Inventory Added successfully';
         this.toastr.success('Inventory Added Successfully');
         this.router.navigateByUrl('/fleet/inventory/list');
       },
@@ -329,9 +329,9 @@ export class AddInventoryComponent implements OnInit {
   hideErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
       $('[name="' + v + '"]')
-        .removeClass("error")
+        .removeClass('error')
         .next()
-        .remove("label");
+        .remove('label');
     });
     this.errors = {};
   }
@@ -345,13 +345,13 @@ export class AddInventoryComponent implements OnInit {
       groupDescription: this.groupDescription,
     };
 
-    this.apiService.postData("itemGroups", data).subscribe({
+    this.apiService.postData('itemGroups', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -366,11 +366,11 @@ export class AddInventoryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasGroupSuccess = true;
-        this.groupSuccess = "Group Added successfully";
-        this.groupName = "";
-        this.groupDescription = "";
+        this.groupSuccess = 'Group Added successfully';
+        this.groupName = '';
+        this.groupDescription = '';
         this.fetchItemGroups();
-        $("#categoryModal").modal("hide");
+        $('#categoryModal').modal('hide');
         this.toastr.success('Category Added successfully');
       },
     });
@@ -406,7 +406,6 @@ export class AddInventoryComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs
     };
-   
      // create form data instance
      const formData = new FormData();
 
@@ -414,16 +413,15 @@ export class AddInventoryComponent implements OnInit {
      for(let i = 0; i < this.uploadedPhotos.length; i++){
        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
      }
- 
      //append docs if any
      for(let j = 0; j < this.uploadedDocs.length; j++){
        formData.append('uploadedDocs', this.uploadedDocs[j]);
      }
- 
+
      //append other fields
      formData.append('data', JSON.stringify(data));
 
-    this.apiService.putData("items", formData, true).subscribe({
+    this.apiService.putData('items', formData, true).subscribe({
       complete: () => {},
       error: (err) => {
         this.hasError = true;
@@ -450,13 +448,13 @@ export class AddInventoryComponent implements OnInit {
       address: this.address,
     };
 
-    this.apiService.postData("warehouses", data).subscribe({
+    this.apiService.postData('warehouses', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.key] = val.message;
             })
           )
@@ -471,30 +469,29 @@ export class AddInventoryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasWarehouseSuccess = true;
-        this.warehouseSuccess = "Warehouse Added successfully";
-        this.warehouseName = "";
-        this.countryID = "";
-        this.stateID = "";
-        this.cityID = "";
-        this.zipCode = "";
-        this.address = "";
+        this.warehouseSuccess = 'Warehouse Added successfully';
+        this.warehouseName = '';
+        this.countryID = '';
+        this.stateID = '';
+        this.cityID = '';
+        this.zipCode = '';
+        this.address = '';
         this.fetchWarehouses();
-        $("#warehouseModal").modal("hide");
+        $('#warehouseModal').modal('hide');
         this.toastr.success('Warehouse Added successfully');
       },
     });
   }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    if(ext === 'doc' || ext === 'docx' || ext === 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
-  
   setSrcValue(){
     this.pdfSrc = '';
   }

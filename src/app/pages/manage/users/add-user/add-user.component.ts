@@ -435,7 +435,7 @@ removeProfile() {
   /**
    * Edit funcationality
    */
-  fetchUser(){
+  fetchUser() {
     this.apiService.getData('users' + this.userName).subscribe((result: any) => {
       result = result.Items[0];
       this.firstName = result.firstName;
