@@ -301,7 +301,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
           this.documentData.docType = '';
           this.documentData.tripID = '';
           this.documentData.documentName = '';
-          this.documentData.description = '',
+          this.documentData.description = '';
           // this.documentData.uploadedDocs = '';
           this.rerender();
         }

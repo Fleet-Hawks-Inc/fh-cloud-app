@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
-import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from, Subject } from 'rxjs';
 import {AwsUploadService} from '../../../../services/aws-upload.service';
-import { v4 as uuidv4 } from 'uuid';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { SafeResourceUrl} from '@angular/platform-browser';
 import { Auth } from 'aws-amplify';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
@@ -75,8 +73,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
-    private domSanitizer: DomSanitizer,
     private awsUS: AwsUploadService,
     private toastr: ToastrService
   ) {
@@ -186,7 +182,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
           this.documentData.docType = '';
           this.documentData.tripID = '';
           this.documentData.documentName = '';
-          this.documentData.description = '',
+          this.documentData.description = '';
           this.documentData.uploadedDocs = '';
           
         }
