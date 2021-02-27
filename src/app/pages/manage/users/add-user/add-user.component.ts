@@ -18,7 +18,7 @@ declare var $: any;
 export class AddUserComponent implements OnInit {
   @ViewChild('userForm',null) userForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
-  pageTitle = "Add User";
+  pageTitle = 'Add User';
   userID: string;
   currentTab = 1;
   nextTab: any;
@@ -31,14 +31,14 @@ export class AddUserComponent implements OnInit {
   * form data
   */
 
-      firstName= '';
-      lastName= '';
-      employeeID= '';
-      dateOfBirth= '';
-      phone= '';
+      firstName = '';
+      lastName = '';
+      employeeID = '';
+      dateOfBirth = '';
+      phone = '';
       email = '';
       currentStatus = '';
-      showIcons: boolean = false;
+      showIcons = false;
     addressDetails = [{
       addressType:'',
       countryID: '',
@@ -56,7 +56,7 @@ export class AddUserComponent implements OnInit {
       },
       manual: false
     }];
-   
+    userImage: '';
       departmentName = '';
       userType = '';
       groupID = '';
@@ -64,21 +64,30 @@ export class AddUserComponent implements OnInit {
       userPassword = '';
       confirmUserPassword = '';
       timeCreated = '';
-      disableInput: boolean = false; // to disable username nd password fields while editing 
+      disableInput = false; // to disable username nd password fields while editing
       /**
        * variable to show error
        */
-      errorClass: boolean = false;
-      isSubmitted: boolean = false;
+      errorClass = false;
+      isSubmitted = false;
       deletedAddress = [];
  /**
   * Photo data
-  *  */  
- profileTitle ='Add';
+  **/
+ profileTitle = 'Add';
  selectedFiles: FileList;
- selectedFileNames: Map<any, any>;   
+ selectedFileNames: Map<any, any>;
  public userProfileSrc: any = 'assets/img/driver/driver.png';
  uploadedPhotos = [];
+ /**
+ *Group Properties
+*/
+groupData = {
+  groupName: '',
+  groupType: Constants.GROUP_USERS,
+  description: '',
+  groupMembers: []
+};
  selectPhoto(event) {
   let files = [...event.target.files];
   const reader = new FileReader();
@@ -86,10 +95,10 @@ export class AddUserComponent implements OnInit {
   reader.readAsDataURL(files[0]);
   this.uploadedPhotos = [];
   this.uploadedPhotos.push(files[0])
-  
+
   if(this.uploadedPhotos.length > 0) {
     this.profileTitle = 'Change';
-  }  
+  }
 }
 removeProfile() {
   this.userProfileSrc = 'assets/img/driver/driver.png';
@@ -97,12 +106,7 @@ removeProfile() {
   this.profileTitle = 'Add';
   this.showIcons = false;
 }
-  /**
- *Group Properties
-*/
-  groupData = {
-    groupType: Constants.GROUP_USERS
-  };
+
   /**
    * address
    */
@@ -127,9 +131,9 @@ removeProfile() {
       return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
     }
   ngOnInit() {
-    this.userID = this.route.snapshot.params['userID'];
+    this.userID = this.route.snapshot.params[`userID`];
     if (this.userID) {
-      this.pageTitle = 'Edit User';     
+      this.pageTitle = 'Edit User';
       this.disableInput = true;
       this.fetchAddress();
       this.fetchUser();
@@ -152,7 +156,7 @@ removeProfile() {
   }
   tabChange(value) {
     this.currentTab = value;
-  }  
+  }
   fetchAddress() {
     this.apiService.getData('addresses')
       .subscribe((result: any) => {
@@ -161,7 +165,7 @@ removeProfile() {
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
-      this.addressDetails[i]['userLocation'] = '';
+      this.addressDetails[i][`userLocation`] = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
@@ -185,7 +189,7 @@ removeProfile() {
     });
   }
   async getStates(id: any, oid = null) {
-    
+
     if (oid != null) {
       this.addressDetails[oid].countryName = this.countriesObject[id];
     }
@@ -259,14 +263,14 @@ removeProfile() {
         this.deletedAddress.push(addressID)
       }
       this.addressDetails.splice(i, 1);
-    } 
+    }
   }
   getCityName(i, id: any) {
-    let result = this.citiesObject[id];
+    const result = this.citiesObject[id];
     this.addressDetails[i].cityName = result;
   }
   async fetchCountriesByName(name: string, i) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
+    const result = await this.apiService.getData(`countries/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
@@ -276,7 +280,7 @@ removeProfile() {
   }
 
   async fetchStatesByName(name: string, i) {
-    let result = await this.apiService.getData(`states/get/${name}`)
+    const result = await this.apiService.getData(`states/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getCities(result.Items[0].stateID, i);
@@ -288,11 +292,10 @@ removeProfile() {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
 
-    this.addressDetails[i]['userLocation'] = result.address.label;
+    this.addressDetails[i][`userLocation`] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
-
     $('div').removeClass('show-search__result');
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
@@ -301,10 +304,10 @@ removeProfile() {
     }
     if (result.address.street === undefined) {
       result.address.street = '';
-    }    
+    }
   }
   clearUserLocation(i) {
-    this.addressDetails[i]['userLocation'] = '';
+    this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
   }
   public searchLocation() {
@@ -339,45 +342,45 @@ removeProfile() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if(this.userPassword === this.confirmUserPassword && this.userPassword != ''){
+    if (this.userPassword === this.confirmUserPassword && this.userPassword !== ''){
       for (let i = 0; i < this.addressDetails.length; i++) {
         const element = this.addressDetails[i];
-        if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+        if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
           let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
           ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
           let result = await this.HereMap.geoCode(fullAddress);
-          if(result.items.length > 0){
+          if(result.items.length > 0) {
             result = result.items[0];
             element.geoCords.lat = result.position.lat;
             element.geoCords.lng = result.position.lng;
             }
           }
       }
-      const data = {      
+      const data = {
         firstName: this.firstName,
         lastName: this.lastName,
         employeeID: this.employeeID,
         dateOfBirth: this.dateOfBirth,
         phone: this.phone,
-        email: this.email,  
-        currentStatus: this.currentStatus,       
+        email: this.email,
+        currentStatus: this.currentStatus,
         departmentName: this.departmentName,
         userType: this.userType,
         groupID: this.groupID,
-        userName: this.userName,   
-        password : this.userPassword, 
+        userName: this.userName,
+        password : this.userPassword,
         addressDetails: this.addressDetails
-    }; 
+    };
         // create form data instance
         const formData = new FormData();
-  
+
         //append photos if any
         for(let i = 0; i < this.uploadedPhotos.length; i++){
           formData.append('uploadedPhotos', this.uploadedPhotos[i]);
         }
          //append other fields
       formData.append('data', JSON.stringify(data));
-     
+
       this.apiService.postData('users',formData, true).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -405,10 +408,10 @@ removeProfile() {
          // this.location.back();
         }
       });
-    }else{     
+    } else{
       this.errorClass = true;
     }
-  
+
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -433,28 +436,28 @@ removeProfile() {
    * Edit funcationality
    */
   fetchUser(){
-    this.apiService.getData('users'+ this.userName).subscribe((result:any) => {
+    this.apiService.getData('users' + this.userName).subscribe((result: any) => {
       result = result.Items[0];
       this.firstName = result.firstName;
       this.lastName = result.lastName;
       this.employeeID = result.employeeID;
       this.dateOfBirth = result.dateOfBirth;
       this.phone = result.phone;
-      this. email = result.email;  
-      this.currentStatus = result.currentStatus;       
+      this. email = result.email;
+      this.currentStatus = result.currentStatus;
       this.departmentName = result.departmentName;
       this.userType = result.userType;
       this.groupID = result.groupID;
       this.userName = result.userName;
-      this.timeCreated = result.timeCreated;   
-      if(result.userImage != '' && result.userImage != undefined) {
+      this.timeCreated = result.timeCreated;
+      if(result.userImage !== '' && result.userImage !== undefined) {
         this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
         this.showIcons = true;
         this.profileTitle = 'Change';
       } else {
         this.userProfileSrc = 'assets/img/driver/driver.png';
         this.showIcons = false;
-      }       
+      }
       for (let i = 0; i < result.addressDetails.length; i++) {
          this.getStates(result.addressDetails[i].countryID);
          this.getCities(result.addressDetails[i].stateID);
@@ -500,7 +503,7 @@ removeProfile() {
 
       }
 
-      this.addressDetails = this.newAddress;    
+      this.addressDetails = this.newAddress;
     });
   }
   /**
@@ -512,30 +515,30 @@ removeProfile() {
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
-      if (element.countryID != '' && element.stateID != '' && element.cityID != '') {
+      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        if(result.items.length > 0){
+        if (result.items.length > 0) {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
         }
       }
     }
-    const data = {      
+    const data = {
       firstName: this.firstName,
       lastName: this.lastName,
       employeeID: this.employeeID,
       dateOfBirth: this.dateOfBirth,
       phone: this.phone,
-      email: this.email,  
-      currentStatus: this.currentStatus,       
+      email: this.email,
+      currentStatus: this.currentStatus,
       departmentName: this.departmentName,
       userType: this.userType,
       groupID: this.groupID,
-      userName: this.userName,   
-      timeCreated : this.timeCreated,  
+      userName: this.userName,
+      timeCreated : this.timeCreated,
       addressDetails: this.addressDetails
   };
       // create form data instance
@@ -547,8 +550,8 @@ removeProfile() {
       }
        //append other fields
     formData.append('data', JSON.stringify(data));
-   
-    this.apiService.putData('users',formData, true).subscribe({
+
+    this.apiService.putData('users', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -575,7 +578,7 @@ removeProfile() {
         for (let i = 0; i < this.deletedAddress.length; i++) {
           const element = this.deletedAddress[i];
           this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-          
+
         }
         this.toastr.success('User Updated Successfully.');
         this.location.back();

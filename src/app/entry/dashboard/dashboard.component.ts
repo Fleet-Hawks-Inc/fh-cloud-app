@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
  // import * as AwsIot from 'aws-iot-device-sdk';
 // declare var fs: any;

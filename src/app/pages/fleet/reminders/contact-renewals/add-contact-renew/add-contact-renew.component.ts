@@ -4,8 +4,9 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
+import constants from '../../../constants';
 declare var $: any;
 @Component({
   selector: 'app-add-contact-renew',
@@ -16,14 +17,20 @@ export class AddContactRenewComponent implements OnInit {
   reminderID;
   pageTitle;
   reminderData = {
-    reminderType: 'contact',
+    reminderIdentification: '',
+    reminderType: constants.REMINDER_CONTACT,
     reminderTasks: {
-      remindByDays: 0
+      task: '',
+      remindByDays: 0,
+      dueDate: ''
     },
-    subscribers: []
+    subscribers: [],
+    sendEmail: false
   };
   serviceTask = {
-    taskType: 'contact'
+    taskName: '',
+    taskType: constants.TASK_CONTACT,
+    description: ''
   };
   contactRenewalForm;
   numberOfDays: number;
@@ -36,7 +43,10 @@ export class AddContactRenewComponent implements OnInit {
   test = [];
   groups = [];
   groupData = {
-    groupType : 'users'
+    groupName: '',
+    groupType : constants.GROUP_USERS,
+    description: '',
+    groupMembers: []
   };
   finalSubscribers = [];
   serviceTasks = [];
@@ -73,11 +83,10 @@ export class AddContactRenewComponent implements OnInit {
   }
   fetchServiceTaks() {
     let test = [];
-    let taskType = 'contact';
     this.apiService.getData('tasks').subscribe((result: any) => {
       test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
-    });    
+      this.serviceTasks = test.filter((s: any) => s.taskType === constants.TASK_CONTACT);
+    });
   }
   fetchUsers() {
     this.apiService.getData('users').subscribe((result: any) => {
@@ -146,7 +155,7 @@ export class AddContactRenewComponent implements OnInit {
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-
+console.log('data',this.reminderData);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -169,6 +178,17 @@ export class AddContactRenewComponent implements OnInit {
           this.response = res;
           this.toastr.success('Contact Renewal Added Successfully');
           this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
+          this.reminderData = {
+            reminderIdentification: '',
+            reminderType: constants.REMINDER_CONTACT,
+            reminderTasks: {
+              task: '',
+              remindByDays: 0,
+              dueDate: ''
+            },
+            subscribers: [],
+            sendEmail: false
+          };
         },
       });
     }
@@ -208,13 +228,13 @@ export class AddContactRenewComponent implements OnInit {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
         this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData[`reminderTasks`][`dueDate`] = result.reminderTasks.dueDate;
-        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.reminderData.reminderTasks.dueDate = result.reminderTasks.dueDate;
+        this.reminderData.reminderTasks.task = result.reminderTasks.task;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = `Day(s)`;
-        this.reminderData[`sendEmail`] = result.sendEmail;
-        this.reminderData[`subscribers`] = this.test;
-        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
+        this.reminderData.sendEmail = result.sendEmail;
+        this.reminderData.subscribers = this.test;
+        this.reminderData.reminderIdentification = result.reminderIdentification;
       });
   }
   // UPDATING REMINDER
@@ -244,7 +264,7 @@ export class AddContactRenewComponent implements OnInit {
       }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      
+
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -265,6 +285,17 @@ export class AddContactRenewComponent implements OnInit {
           this.toastr.success('Contact Renewal Reminder Updated Successfully');
           this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
           this.Success = '';
+          this.reminderData = {
+            reminderIdentification: '',
+            reminderType: constants.REMINDER_CONTACT,
+            reminderTasks: {
+              task: '',
+              remindByDays: 0,
+              dueDate: ''
+            },
+            subscribers: [],
+            sendEmail: false
+          };
         },
       });
     } else {

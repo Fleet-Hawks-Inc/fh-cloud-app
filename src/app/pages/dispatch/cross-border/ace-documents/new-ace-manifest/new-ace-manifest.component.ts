@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
@@ -6,10 +6,8 @@ import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { BooleanNullable } from 'aws-sdk/clients/glue';
 import { Auth } from 'aws-amplify';
 import { ListService } from '../../../../../services';
 declare var $: any;
@@ -42,7 +40,6 @@ export class NewAceManifestComponent implements OnInit {
   carriers: any = [];
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
-  addTruckSealBtn = true;
   currentUser: any = '';
   getcurrentDate: any;
   truck = {
@@ -168,7 +165,6 @@ export class NewAceManifestComponent implements OnInit {
   amendManifest = false;
   constructor(
     private httpClient: HttpClient,
-    private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private apiService: ApiService,
@@ -261,6 +257,7 @@ export class NewAceManifestComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
@@ -280,7 +277,7 @@ export class NewAceManifestComponent implements OnInit {
     });
   }
   onChangeHideErrors(fieldname = '') {
-    $("[name='' + fieldname + '']")
+    $(`[name='' + fieldname + '']`)
       .removeClass('error')
       .next()
       .remove('label');
@@ -324,13 +321,6 @@ export class NewAceManifestComponent implements OnInit {
         this.thirdPartyCities = result.Items;
       });
   }
-  // getStatesDoc(i, j) { //document issuing states
-  //   const countryID = this.passengers[i].travelDocuments[j].country;
-  //   this.apiService.getData('states/country/' + countryID)
-  //     .subscribe((result: any) => {
-  //       this.passengerDocStates = result.Items;
-  //     });
-  // }
   resetpassengerDocState(i, j) {
     this.passengers[i].travelDocuments[j].stateProvince = '';
     $('#passengerDocStateSelect').val('');
@@ -355,36 +345,12 @@ export class NewAceManifestComponent implements OnInit {
       this.carriers = result.Items;
     });
   }
-  // fetchShippers(){
-  // this.apiService.getData('shippers').subscribe((result:any)=> {
-  //   this.shippers = result.Items;
-  // });
-  // }
-  // fetchConsignees(){
-  //   this.apiService.getData('receivers').subscribe((result:any)=> {
-  //     this.consignees = result.Items;
-  //   });
-  //   }
   fetchBrokers() {
     this.apiService.getData('brokers').subscribe((result: any) => {
       this.brokers = result.Items;
     });
   }
-  // TRUCK DATA
-  addTruckSeal() {
-    this.truck.sealNumbers.push({ sealNumber: '' });
-    if (this.truck.sealNumbers.length <= 2) {
-      this.addTruckSealBtn = true;
-    } else {
-      this.addTruckSealBtn = false;
-    }
-  }
   // TRAILER DATA
-  addTrailerSeal(i) {
-    if (this.trailers[i].sealNumbers.length <= 3) {
-      this.trailers[i].sealNumbers.push({ sealNumber: '' });
-    }
-  }
   addTrailer() {
     this.trailers.push({
       assetID: '',
@@ -610,8 +576,6 @@ export class NewAceManifestComponent implements OnInit {
         estimatedArrivalTime: this.estimatedArrivalTime,
         truck: this.truck,
         trailers: this.trailers,
-        // mainDriver: this.mainDriver,
-        // coDrivers: this.coDrivers,
         drivers: this.coDrivers,
         usAddress: this.usAddress,
         passengers: this.passengers,
@@ -678,7 +642,6 @@ export class NewAceManifestComponent implements OnInit {
         this.timeCreated = result.timeCreated;
         this.SCAC = result.SCAC;
         this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
-        // this.tripNumber = result.tripNumber;
         this.usPortOfArrival = result.usPortOfArrival;
         this.estimatedArrivalDate = result.estimatedArrivalDate;
         this.estimatedArrivalTime = result.estimatedArrivalTime;

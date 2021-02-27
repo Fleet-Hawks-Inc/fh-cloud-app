@@ -97,8 +97,8 @@
                           <div class="col-lg-5 offset-lg-1">
                              <div class="row pt-2">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control"  placeholder="Enter reference number">
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bill No<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                   <input disabled [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control"  placeholder="Enter reference number">
                                 </div>
                              </div>
                            <div class="row pt-2">
@@ -157,7 +157,7 @@
                                          <td>{{issue.issueName}}</td>
                                          <td>{{issue.assignedTo}}</td>
                                       </tr>
-                                      <tr *ngIf="!issues?.length > 0">
+                                      <tr *ngIf="issues.length > 0">
                                           <td colspan="3">No Issue Found</td>
                                       </tr>
                                    </tbody>
@@ -194,7 +194,6 @@
                                          <th width="30%">Task</th>
                                          <th width="35%" *ngIf="serviceData.unitType != 'asset'">Schedule</th>
                                          <th width="10%">Labor</th>
-                                         <!-- <th width="10%">Subtotal</th> -->
                                          <th width="5%">Action</th>
                                       </tr>
                                    </thead>
@@ -203,14 +202,13 @@
                                          <td>{{item.taskName}}</td>
                                          <td *ngIf="serviceData.unitType != 'asset'">{{item.schedule ? item.schedule : '-'}}</td>
                                          <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
-                                         <!-- <td><input type="text" value="0.00" name="{{item.labor}}" class="form-control"></td> -->
                                          <td>
                                              <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
                                                 <i class="fas fa-times"></i>
                                              </button>
                                           </td>
                                       </tr>
-                                       <tr *ngIf="!serviceData.allServiceTasks.serviceTaskList?.length > 0">
+                                       <tr *ngIf="serviceData.allServiceTasks.serviceTaskList.length > 0">
                                           <td colspan="4">No Task Found</td>
                                        </tr>
                                    </tbody>
@@ -313,7 +311,7 @@
                                                 <i class="fas fa-times"></i></button>
                                           </td>
                                       </tr>
-                                      <tr *ngIf="!serviceData.allServiceParts.servicePartsList?.length > 0">
+                                      <tr *ngIf="serviceData.allServiceParts.servicePartsList.length > 0">
                                           <td colspan="7">No Parts Found</td>
                                        </tr>
                                    </tbody>
@@ -433,7 +431,7 @@
                         <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
                      </td>
                   </tr>
-                  <tr *ngIf="!reminders?.length > 0">
+                  <tr *ngIf="reminders.length > 0">
                      <td colspan="2">No Reminders Found</td>
                   </tr>
                </tbody>

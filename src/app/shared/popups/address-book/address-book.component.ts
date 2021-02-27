@@ -4,10 +4,8 @@ import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { mergeMap, takeUntil } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, OnDestroy } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -72,6 +70,22 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   addresses = [];
   // Customer Object
   customerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    accountNumber: '',
+    workPhone: '',
+    workEmail: '',
+    mc: '',
+    dot: '',
+    fast: '',
+    fastExpiry: '',
+    trailerPreference: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'customer',
     address: [{
       addressType: '',
@@ -90,11 +104,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      phone: '',
+      designation: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Broker Object
   brokerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    mc: '',
+    dot: '',
+    workEmail: '',
+    accountNumber: '',
+    workPhone: '',
     entityType: 'broker',
     brokerType: 'company',
     address: [{
@@ -114,12 +145,40 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // ownerOperator Object
   ownerData = {
-    paymentDetails: {},
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    paymentDetails: {
+      fast: '',
+      fastExpiry: '',
+      payrollType: '',
+      sin: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: ''
+    },
     entityType: 'ownerOperator',
     address: [{
       addressType: '',
@@ -138,11 +197,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // Vendor Object
   vendorData = {
+    companyName: '',
+    accountNumber: '',
+    firstName: '',
+    lastName: '',
+    workEmail: '',
+    workPhone: '',
+    preferedVendor: false,
     entityType: 'vendor',
     address: [{
       addressType: '',
@@ -165,8 +238,42 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
   // Carrier Object
   carrierData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'carrier',
-    paymentDetails: {},
+    paymentDetails: {
+      inBonded: false,
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      ccc: '',
+      scac: '',
+      cvor: '',
+      localTax: '',
+      federalTax: '',
+      payrollType: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: '',
+      applyTax: false,
+      wsib: false,
+      wsibAccountNumber: '',
+      wsibExpiry: ''
+    },
     address: [{
       addressType: '',
       countryID: '',
@@ -184,12 +291,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
-
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Shipper Object
   shipperData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail:'',
     entityType: 'shipper',
     address: [{
       addressType: '',
@@ -208,11 +328,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Consignee Object
   consigneeData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'consignee',
     address: [{
       addressType: '',
@@ -231,11 +365,24 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // fcCompany Object
   fcCompanyData = {
+    companyName: '',
+    isDefault: false,
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'factoring company',
     address: [{
       addressType: '',
@@ -254,13 +401,31 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    fcDetails: {}
+    fcDetails: {
+      accountNumber: '',
+      factoringRate: '',
+      factoringUnit: '',
+    }
   };
 
    // Staff Object
    staffData = {
+    firstName: '',
+    lastName: '',
+    employeeID: '',
+    dateOfBirth: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'staff',
-    paymentDetails: {},
+    paymentDetails: {
+      payrollType: '',
+      payrollRate: '',
+      payrollRateUnit: '',
+      payPeriod: '',
+      SIN: '',
+      WCB: '',
+      healthCare: ''
+    },
     loginEnabled: false,
     address: [{
       addressType: '',
@@ -279,13 +444,18 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
       userLocation: ''
     }],
-    userAccount: {},
+    userAccount: {
+      contractStartDate: '',
+      contractEndDate: '',
+      department: '',
+      designation: ''
+    },
     userData : {
       username: '',
       userType: '',
       password: '',
       confirmPassword: ''
-    }
+    },
   };
 
   userDetailData: any;
@@ -450,10 +620,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.userDetailData = data;
   }
 
-  // remove(data, i) {
-  //   data.address.splice(i, 1);
-  // }
-
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
@@ -607,6 +773,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
+          this.listService.fetchCustomers();
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
@@ -791,7 +958,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.ownerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -933,7 +1099,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.brokerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1006,7 +1171,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.vendorData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1043,10 +1207,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          this.vendorData = {
-            entityType: '',
-            address: []
-          };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
           this.listService.fetchVendors();
@@ -1078,7 +1238,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.vendorData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1151,7 +1310,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1219,7 +1377,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1293,7 +1450,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       }
     }
 
-    // this.removeUserLocation(this.shipperData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1361,7 +1517,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.shipperData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1435,7 +1590,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.consigneeData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1503,7 +1657,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.consigneeData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1575,7 +1728,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1642,7 +1794,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1714,7 +1865,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         element.geoCords.lng = result.position.lng;
       }
     }
-    // this.removeUserLocation(this.staffData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1786,7 +1936,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.staffData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1853,7 +2002,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       });
 
     this.spinner.hide();
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -1871,7 +2019,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
    * Get all countries from api
    */
   fetchCountries() {
-    // return this.apiService.getData('countries');
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
@@ -1986,14 +2133,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchOwnerOperators() {
-  //   // return this.apiService.getData('ownerOperators');
-  //   this.apiService.getData('ownerOperators')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsOperator = result.Count;
-  //     });
-  // }
-
   fetchOwnerOperatorsCount() {
     this.apiService.getData('ownerOperators/get/count?operatorID='+this.filterVal.operatorID).subscribe({
       complete: () => {},
@@ -2014,14 +2153,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchBrokers() {
-  //   // return this.apiService.getData('brokers');
-  //   this.apiService.getData('brokers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsBroker = result.Count;
-  //   });
-  // }
-
   fetchBrokersCount() {
     this.apiService.getData('brokers/get/count?brokerID='+this.filterVal.brokerID).subscribe({
       complete: () => {},
@@ -2031,14 +2162,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchVendors() {
-  //   // return this.apiService.getData('vendors');
-  //   this.apiService.getData('vendors')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsVendor = result.Count;
-  //   });
-  // }
 
   fetchVendorsCount() {
     this.apiService.getData('vendors/get/count?vendorID='+this.filterVal.vendorID).subscribe({
@@ -2050,14 +2173,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchCarriers() {
-  //   // return this.apiService.getData('externalCarriers');
-  //   this.apiService.getData('externalCarriers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCarrier = result.Count;
-  //   });
-  // }
-
   fetchCarriersCount() {
     this.apiService.getData('externalCarriers/get/count?infoID='+this.filterVal.carrierID).subscribe({
       complete: () => {},
@@ -2067,14 +2182,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchShippers() {
-  //   // return this.apiService.getData('shippers');
-  //   this.apiService.getData('shippers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsShipper = result.Count;
-  //   });
-  // }
 
   fetchShippersCount() {
     this.apiService.getData('shippers/get/count?shipperID='+this.filterVal.shipperID).subscribe({
@@ -2086,13 +2193,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchConsignee() {
-  //   // return this.apiService.getData('receivers');
-  //   this.apiService.getData('receivers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsConsignee = result.Count;
-  //   });
-  // }
 
   fetchConsigneeCount() {
     this.apiService.getData('receivers/get/count?consigneeID='+this.filterVal.consigneeID).subscribe({
@@ -2104,14 +2204,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchStaffs() {
-  //   // return this.apiService.getData('staffs');
-  //   this.apiService.getData('staffs')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsStaff = result.Count;
-  //   });
-  // }
-
   fetchStaffsCount() {
     this.apiService.getData('staffs/get/count?staffID='+this.filterVal.staffID).subscribe({
       complete: () => {},
@@ -2122,13 +2214,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchFcCompanies() {
-  //   // return this.apiService.getData('factoringCompanies');
-  //   this.apiService.getData('factoringCompanies')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCompany = result.Count;
-  //   });
-  // }
 
   fetchFcCompaniesCount() {
     this.apiService.getData('factoringCompanies/get/count?companyID='+this.filterVal.companyID).subscribe({
@@ -2180,7 +2265,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         curr.fetchCustomersCount();
         curr.toastr.success('Customer deleted successfully');
 
-        // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
       });
     }
   }
@@ -2194,7 +2278,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchDriversCount();
         this.toastr.success('Driver deleted successfully');
-        // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
       });
     }
   }
@@ -2208,7 +2291,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchBrokersCount();
         this.toastr.success('Broker deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
@@ -2222,7 +2304,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchVendorsCount();
         this.toastr.success('Vendor deleted successfully');
-        // this.vendors = this.vendors.filter(u => u.vendorID !== item.vendorID);
       });
     }
   }
@@ -2236,7 +2317,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchShippersCount();
         this.toastr.success('Shipper deleted successfully');
-        // this.shippers = this.shippers.filter(u => u.shipperID !== item.shipperID);
       });
     }
   }
@@ -2249,7 +2329,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchConsigneeCount();
         this.toastr.success('Consignee deleted successfully');
-        // this.receivers = this.receivers.filter(u => u.receiverID !== item.receiverID);
       });
     }
   }
@@ -2263,7 +2342,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchStaffsCount();
         this.toastr.success('Staff deleted successfully');
-        // this.staffs = this.staffs.filter(u => u.staffID !== item.staffID);
       });
     }
   }
@@ -2277,7 +2355,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchFcCompaniesCount();
         this.toastr.success('Company deleted successfully');
-        // this.fcCompanies = this.fcCompanies.filter(u => u.factoringCompanyID !== item.factoringCompanyID);
       });
     }
   }
@@ -2291,7 +2368,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchOwnerOperatorsCount();
         this.toastr.success('Operator deleted successfully');
-        // this.toastr.success('Owner operator deleted successfully');
       });
     }
   }
@@ -2305,12 +2381,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.rerender();
         this.fetchCarriersCount();
         this.toastr.success('Carrier deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
 
-  editUser(type: string, item: any, index:any) {
+  editUser(type: string, item: any) {
     this.modalTitle = 'Edit ';
     this.updateButton = true;
     this.hasError = false;
@@ -2441,6 +2516,22 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     // Customer Object
     this.customerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      accountNumber: '',
+      workPhone: '',
+      workEmail: '',
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      trailerPreference: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'customer',
       address: [{
         addressType: '',
@@ -2459,11 +2550,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        phone: '',
+        designation: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Broker Object
     this.brokerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      mc: '',
+      dot: '',
+      workEmail: '',
+      accountNumber: '',
+      workPhone: '',
       entityType: 'broker',
       brokerType: 'company',
       address: [{
@@ -2483,12 +2591,40 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // ownerOperator Object
     this.ownerData = {
-      paymentDetails: {},
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      paymentDetails: {
+        fast: '',
+        fastExpiry: '',
+        payrollType: '',
+        sin: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: ''
+      },
       entityType: 'ownerOperator',
       address: [{
         addressType: '',
@@ -2507,11 +2643,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: '',
+      }
     };
 
     // Vendor Object
     this.vendorData = {
+      companyName: '',
+      accountNumber: '',
+      firstName: '',
+      lastName: '',
+      workEmail: '',
+      workPhone: '',
+      preferedVendor: false,
       entityType: 'vendor',
       address: [{
         addressType: '',
@@ -2534,8 +2684,42 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     // Carrier Object
     this.carrierData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'carrier',
-      paymentDetails: {},
+      paymentDetails: {
+        inBonded: false,
+        mc: '',
+        dot: '',
+        fast: '',
+        fastExpiry: '',
+        ccc: '',
+        scac: '',
+        cvor: '',
+        localTax: '',
+        federalTax: '',
+        payrollType: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: '',
+        applyTax: false,
+        wsib: false,
+        wsibAccountNumber: '',
+        wsibExpiry: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2553,11 +2737,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Shipper Object
     this.shipperData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail:'',
       entityType: 'shipper',
       address: [{
         addressType: '',
@@ -2576,11 +2774,25 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Consignee Object
     this.consigneeData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'consignee',
       address: [{
         addressType: '',
@@ -2599,11 +2811,24 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // fcCompany Object
     this.fcCompanyData = {
+      companyName: '',
+      isDefault: false,
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'factoring company',
       address: [{
         addressType: '',
@@ -2622,14 +2847,32 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      fcDetails: {}
+      fcDetails: {
+        accountNumber: '',
+        factoringRate: '',
+        factoringUnit: '',
+      }
     };
 
     // Staff Object
     this.staffData = {
+      firstName: '',
+      lastName: '',
+      employeeID: '',
+      dateOfBirth: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'staff',
       loginEnabled: false,
-      paymentDetails: {},
+      paymentDetails: {
+        payrollType: '',
+        payrollRate: '',
+        payrollRateUnit: '',
+        payPeriod: '',
+        SIN: '',
+        WCB: '',
+        healthCare: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2647,7 +2890,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         },
         userLocation: ''
       }],
-      userAccount: {},
+      userAccount: {
+        contractStartDate: '',
+        contractEndDate: '',
+        department: '',
+        designation: ''
+      },
       userData : {
         username: '',
         userType: '',
@@ -3761,7 +4009,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    // if (this.staffData.userData.password === this.staffData.userData.confirmPassword && this.staffData.userData.password != '') {
       const data = {
         firstName: this.staffData['firstName'],
         lastName: this.staffData['lastName'],
@@ -3807,8 +4054,5 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.errorClass = false;
         }
       });
-    // } else {
-    //   this.errorClass = true;
-    // }
   }
 }

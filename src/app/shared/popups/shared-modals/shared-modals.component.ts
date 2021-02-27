@@ -230,6 +230,7 @@ vehicleID: string;
 // driver variables start
 driverData = {
   driverType: 'employee',
+  empPrefix: '',
   entityType: 'driver',
   gender: 'M',
   DOB: '',
@@ -277,6 +278,9 @@ uploadedDocs = [];
 isSubmitted: boolean = false;
 carrierID: any;
 carrierYards = [];
+absDocs = [];
+documentTypeList: any = [];
+cycles = [];
 // driver variables ends
 
 /**
@@ -303,7 +307,7 @@ taskData = {
 
 inspectionForms = [];
 groups = [];
-drivers = [];
+drivers: any;
 groupData = {
   groupType : Constants.GROUP_VEHICLES 
 };
@@ -319,16 +323,15 @@ activeTab = 1;
     this.fetchTasks();
 
     this.fetchInspectionForms();
-    //this.fetchVendors();
+    this.fetchDocuments();
     this.fetchGroups();
-    this.fetchDrivers();
+    this.fetchCycles(); // fetch cycles
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
-    // this.listService.fetchCountries();
-    // this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
+    this.listService.fetchDrivers();
 
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
@@ -345,11 +348,10 @@ activeTab = 1;
 
     this.manufacturers = this.listService.manufacturerList;
     this.models = this.listService.modelList;
+    this.drivers = this.listService.driversList;
 
     await this.getCurrentuser();
-
-    console.log('this.currentUser', this.currentUser);
-    if(this.currentUser.userType != 'Cloud Admin') {
+      if(this.currentUser.userType != 'Cloud Admin') {
       this.getCarrierDetails(this.currentUser.carrierID);
     } else {
       this.prefixOutput = 'PB-'
@@ -376,6 +378,13 @@ activeTab = 1;
     }); 
  }
  
+ fetchCycles() {
+  this.apiService.getData('cycles')
+    .subscribe((result: any) => {
+      this.cycles = result.Items;
+    });
+}
+
  fetchInspectionForms() {
   this.apiService
     .getData('inspectionForms/type/Vehicle')
@@ -1133,25 +1142,19 @@ fetchDrivers(){
     
   }
 
-  /*
+   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
+  selectDocuments(obj, event, i) {
     let files = [...event.target.files];
-    
-    
-      for (let i = 0; i < files.length; i++) {
-          this.uploadedPhotos.push(files[i])
+    if(obj === 'documents') {
+      if(this.uploadedDocs[i] == undefined) {
+        this.uploadedDocs[i] = files;
       }
-
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
-        }
-        reader.readAsDataURL(files[i]);
-      }
-    
+    } else {
+      this.abstractDocs = [];
+      this.abstractDocs = files;
+    }
   }
 
   resetModel(){
@@ -1178,13 +1181,10 @@ fetchDrivers(){
 
   
   async nextStep() {
-    
-    // if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
-      await this.onSubmit();
-    // }else {
-    //   await this.updateDriver();
-    // }
+    await this.onSubmit();
+    if(this.absDocs.length == 0) {
+      this.abstractValid = true; 
+    }
    
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
       this.abstractValid = true; 
@@ -1207,24 +1207,6 @@ fetchDrivers(){
     // localStorage.setItem('driver', JSON.stringify(this.driverData));
   }
   async tabChange(value) {
-    // if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
-      await this.onSubmit();
-    // }else {
-    //   await this.updateDriver();
-    // }
-
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-    if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
-    if($('#documents .error').length > 0 && this.currentTab == 3) return;
-    if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
-    if($('#licence .error').length > 0 && this.currentTab == 5) return;
-    if($('#payment .error').length > 0 && this.currentTab == 6) return;
-    if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
-    if($('#emergency .error').length > 0 && this.currentTab == 8) return;
-
-    if(value != this.currentTab + 1 && value > this.currentTab) return;
-
     this.currentTab = value;
   }
 
@@ -1235,7 +1217,7 @@ fetchDrivers(){
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    this.driverData['currentTab'] = this.currentTab;
+    this.driverData.empPrefix = this.prefixOutput;
     
     // create form data instance
     const formData = new FormData();
@@ -1287,128 +1269,10 @@ fetchDrivers(){
           });
       },
       next: (res) => {
-        // this.response = res;
-        // this.hasSuccess = true;
         this.toastr.success('Driver added successfully');
         this.listService.fetchDrivers();
         this.isSubmitted = true;
-        // this.modalServiceOwn.triggerRedirect.next(true);
-        // this.takeUntil$.next();
-        // this.takeUntil$.complete();
-        let driver = {
-          driverType: 'employee',
-          entityType: 'driver',
-          employeeId: '',
-          ownerOperator: '',
-          driverStatus: '',
-          userName: '',
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          startDate: '',
-          terminationDate: '',
-          contractStart: '',
-          contractEnd: '',
-          password: '',
-          confirmPassword: '',
-          citizenship: '',
-          assignedVehicle: '',
-          groupID: '',
-          driverImage: '',
-          gender: 'M',
-          DOB: '',
-          workPhone: '',
-          workEmail: '',
-          address: [{
-            addressID: '',
-            addressType: '',
-            userLocation: '',
-            countryID: '',
-            countryName: '',
-            stateID: '',
-            stateName: '',
-            cityID: '',
-            cityName: '',
-            zipCode: '',
-            address1: '',
-            address2: '',
-            geoCords : {
-              lat: null,
-              lng: null
-            },
-            manual: false,
-          }],
-          documentDetails: [{
-            documentType: '',
-            document: '',
-            issuingAuthority: '',
-            issuingCountry: '',
-            issuingState: '',
-            issueDate: '',
-            expiryDate: '',
-            uploadedDocs: [],
-          }],
-          crossBorderDetails: {
-            ACI_ID: '',
-            ACE_ID: '',
-            fast_ID: '',
-            fastExpiry: '',
-            csa: false,
-          },
-          paymentDetails: {
-            paymentType: '',
-            loadedMiles: '',
-            loadedMilesTeam: '',
-            loadedMilesUnit: '',
-            loadedMilesTeamUnit: '',
-            emptyMiles: '',
-            emptyMilesTeam: '',
-            emptyMilesUnit: '',
-            emptyMilesTeamUnit: '',
-            loadPayPercentage: '',
-            loadPayPercentageOf: '',
-            rate: '',
-            rateUnit: '',
-            waitingPay: '',
-            waitingPayUnit: '',
-            waitingHourAfter: '',
-            deliveryRate: '',
-            deliveryRateUnit: '',
-            SIN_Number: '',
-            payPeriod: '',
-          },
-          licenceDetails: {
-            CDL_Number: '',
-            issuedCountry: '',
-            issuedState: '',
-            licenceExpiry: '',
-            licenceNotification: true,
-            WCB: '',
-            medicalCardRenewal: '',
-            healthCare: '',
-            vehicleType: '',
-          },
-          hosDetails: {
-            hosStatus: '',
-            type: '',
-            hosRemarks: '',
-            hosCycle: '',
-            homeTerminal: '',
-            pcAllowed: false, 
-            ymAllowed: false,
-          },
-          emergencyDetails: {
-            name: '',
-            relationship: '',
-            phone: '',
-            email: '',
-            emergencyAddress: '',
-          },
-        }
-        // localStorage.setItem('driver', JSON.stringify(driver));
-        // this.router.navigateByUrl('/fleet/drivers/list');
         this.spinner.hide();
-        
       },
     })})
   } catch (error) {
@@ -1416,6 +1280,11 @@ fetchDrivers(){
   };
   }
 
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+    })
+  }
   adddriverDocument() {
     this.driverData.documentDetails.push({
       documentType: '',
