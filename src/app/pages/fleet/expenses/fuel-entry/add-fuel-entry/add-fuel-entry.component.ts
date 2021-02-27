@@ -28,6 +28,7 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
+    entryID: '',
     unitType: 'vehicle',
     unitID: '',
     currency: 'CAD',
@@ -42,15 +43,18 @@ export class AddFuelEntryComponent implements OnInit {
     fuelDate: '',
     fuelTime: '',
     fuelType: '',
+    DEFFuelQtyUnit: '',
     totalLitres: 0,
     countryID: '',
     stateID: '',
     cityID: '',
+    reference: '',
     tripID: '',
     vendorID : '',
     paidBy: '',
     paymentMode: '',
     fuelCardNumber: '',
+    timeCreated: '',
     reimburseToDriver: false,
     deductFromPay: false,
     additionalDetails: {
@@ -318,43 +322,43 @@ export class AddFuelEntryComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.fuelData[`entryID`] = this.entryID;
-        this.fuelData[`currency`] = result.currency,
-          this.fuelData[`unitType`] = result.unitType;
-        this.fuelData[`unitID`] = result.unitID;
-        this.fuelData[`fuelQty`] = result.fuelQty;
-        this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
-        this.fuelData[`DEFFuelQty`] = +result.DEFFuelQty;
-        this.fuelData[`DEFFuelQtyUnit`] = result.fuelQtyUnit;
-        this.fuelData[`DEFFuelQtyAmt`] = result.DEFFuelQtyAmt;
-        this.fuelData[`discount`] = result.discount;
-        this.fuelData[`totalAmount`] = result.totalAmount;
-        this.fuelData[`costPerLitre`] = result.costPerLitre;
+        this.fuelData.entryID = this.entryID;
+        this.fuelData.currency = result.currency,
+          this.fuelData.unitType = result.unitType;
+        this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelQty = result.fuelQty;
+        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
+        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
+        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
+        this.fuelData.discount = result.discount;
+        this.fuelData.totalAmount = result.totalAmount;
+        this.fuelData.costPerLitre = result.costPerLitre;
         this.costPerUnit = result.costPerLitre;
-        this.fuelData[`totalLitres`] = result.totalLitres;
-        this.fuelData[`amountPaid`] = result.amountPaid;
-        this.fuelData[`fuelDate`] = result.fuelDate.split('-').reverse().join('-');
-        this.fuelData[`fuelTime`] = result.fuelTime;
-        this.fuelData[`fuelType`] = result.fuelType;
+        this.fuelData.totalLitres = result.totalLitres;
+        this.fuelData.amountPaid = result.amountPaid;
+        this.fuelData.fuelDate = result.fuelDate.split('-').reverse().join('-');
+        this.fuelData.fuelTime = result.fuelTime;
+        this.fuelData.fuelType = result.fuelType;
 
-        this.fuelData[`paidBy`] = result.paidBy;
-        this.fuelData[`paymentMode`] = result.paymentMode;
-        this.fuelData[`fuelCardNumber`] = result.fuelCardNumber;
-        this.fuelData[`reference`] = result.reference;
-        this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
-        this.fuelData[`deductFromPay`] = result.deductFromPay;
+        this.fuelData.paidBy = result.paidBy;
+        this.fuelData.paymentMode = result.paymentMode;
+        this.fuelData.fuelCardNumber = result.fuelCardNumber;
+        this.fuelData.reference = result.reference;
+        this.fuelData.reimburseToDriver = result.reimburseToDriver;
+        this.fuelData.deductFromPay = result.deductFromPay;
 
-        this.fuelData[`vendorID`] = result.vendorID;
-        this.fuelData[`countryID`] = result.countryID;
-        this.fuelData[`stateID`] = result.stateID;
-        this.fuelData[`cityID`] = result.cityID;
-        this.fuelData[`tripID`] = result.tripID;
+        this.fuelData.vendorID = result.vendorID;
+        this.fuelData.countryID = result.countryID;
+        this.fuelData.stateID = result.stateID;
+        this.fuelData.cityID = result.cityID;
+        this.fuelData.tripID = result.tripID;
 
-        this.fuelData[`additionalDetails`][`avgGVW`] = result.additionalDetails.avgGVW;
-        this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
-        this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
-        this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
-        this.fuelData[`timeCreated`] = result.timeCreated;
+        this.fuelData.additionalDetails.avgGVW = result.additionalDetails.avgGVW;
+        this.fuelData.additionalDetails.odometer = result.additionalDetails.odometer;
+        this.fuelData.additionalDetails.description = result.additionalDetails.description;
+        this.fuelData.additionalDetails.uploadedPhotos = result.additionalDetails.uploadedPhotos;
+        this.fuelData.timeCreated = result.timeCreated;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
