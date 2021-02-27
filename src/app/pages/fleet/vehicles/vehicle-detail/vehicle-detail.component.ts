@@ -58,6 +58,8 @@ export class VehicleDetailComponent implements OnInit {
     estimatedResaleValue: "",
     outOfServiceDate: "",
     outOfServiceOdometer: 0,
+    startDate: '',
+    estimatedServiceYear: ''
   };
   specifications = {
     height: 0,
@@ -81,6 +83,7 @@ export class VehicleDetailComponent implements OnInit {
     EPACity: 0,
     EPACombined: 0,
     EPAHighway: 0,
+    tareWeight: ''
   };
   insurance = {
     dateOfIssue: "",
@@ -343,6 +346,8 @@ export class VehicleDetailComponent implements OnInit {
           estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
           outOfServiceDate: result.lifeCycle.outOfServiceDate,
           outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
+          startDate: result.lifeCycle.startDate,
+          estimatedServiceYear: result.lifeCycle.estimatedServiceYear,
         };
         this.specifications = {
           height: result.specifications.height,
@@ -367,6 +372,7 @@ export class VehicleDetailComponent implements OnInit {
           EPACity: result.specifications.EPACity,
           EPACombined: result.specifications.EPACombined,
           EPAHighway: result.specifications.EPAHighway,
+          tareWeight: result.specifications.tareWeight,
         };
         this.insurance = {
           dateOfIssue: result.insurance.dateOfIssue,
