@@ -21,8 +21,20 @@ export class FuelEntryDetailsComponent implements OnInit {
   fuelList;
   /********** Form Fields ***********/
   fuelData = {
+    unitID: '',
     unitType: 'vehicle',
+    entryID: '',
     currency: 'USD',
+    DEFFuelQtyUnit: '',
+    fuelTime: '',
+    fuelDate: '',
+    fuelType: '',
+    paidBy: '',
+    paymentMode: '',
+    reference: '',
+    vendorID: '',
+    cityID: '',
+    tripID: '',
     fuelQtyAmt: 0,
     fuelQty: 0,
     DEFFuelQty: 0,
@@ -212,37 +224,37 @@ export class FuelEntryDetailsComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         this.carrierID = result.carrierID;
-        this.fuelData[`entryID`] = this.entryID;
-        this.fuelData[`currency`] = result.currency,
-          this.fuelData[`unitType`] = result.unitType;
-        this.fuelData[`unitID`] = result.unitID;
-        this.fuelData[`fuelQty`] = result.fuelQty;
-        this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
-        this.fuelData[`DEFFuelQty`] = +result.DEFFuelQty;
-        this.fuelData[`DEFFuelQtyUnit`] = result.fuelQtyUnit;
-        this.fuelData[`DEFFuelQtyAmt`] = result.DEFFuelQtyAmt;
-        this.fuelData[`discount`] = result.discount;
-        this.fuelData[`totalAmount`] = result.totalAmount;
-        this.fuelData[`costPerGallon`] = result.costPerGallon;
-        this.fuelData[`totalGallons`] = result.totalGallons;
-        this.fuelData[`amountPaid`] = result.amountPaid;
-        this.fuelData[`fuelDate`] = result.fuelDate;
-        this.fuelData[`fuelTime`] = result.fuelTime;
-        this.fuelData[`fuelType`] = result.fuelType;
-        this.fuelData[`paidBy`] = result.paidBy;
-        this.fuelData[`paymentMode`] = result.paymentMode;
-        this.fuelData[`reference`] = result.reference;
-        this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
-        this.fuelData[`deductFromPay`] = result.deductFromPay;
-        this.fuelData[`vendorID`] = result.vendorID;
-        this.fuelData[`countryID`] = result.countryID;
-        this.fuelData[`stateID`] = result.stateID;
-        this.fuelData[`cityID`] = result.cityID;
-        this.fuelData[`tripID`] = result.tripID;
-        this.fuelData[`additionalDetails`][`avgGVW`] = result.additionalDetails.avgGVW;
-        this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
-        this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
-        this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
+        this.fuelData.entryID = this.entryID;
+        this.fuelData.currency = result.currency,
+          this.fuelData.unitType = result.unitType;
+        this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelQty = result.fuelQty;
+        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
+        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
+        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
+        this.fuelData.discount = result.discount;
+        this.fuelData.totalAmount = result.totalAmount;
+        this.fuelData.costPerGallon = result.costPerGallon;
+        this.fuelData.totalGallons = result.totalGallons;
+        this.fuelData.amountPaid = result.amountPaid;
+        this.fuelData.fuelDate = result.fuelDate;
+        this.fuelData.fuelTime = result.fuelTime;
+        this.fuelData.fuelType = result.fuelType;
+        this.fuelData.paidBy = result.paidBy;
+        this.fuelData.paymentMode = result.paymentMode;
+        this.fuelData.reference = result.reference;
+        this.fuelData.reimburseToDriver = result.reimburseToDriver;
+        this.fuelData.deductFromPay = result.deductFromPay;
+        this.fuelData.vendorID = result.vendorID;
+        this.fuelData.countryID = result.countryID;
+        this.fuelData.stateID = result.stateID;
+        this.fuelData.cityID = result.cityID;
+        this.fuelData.tripID = result.tripID;
+        this.fuelData.additionalDetails.avgGVW = result.additionalDetails.avgGVW;
+        this.fuelData.additionalDetails.odometer = result.additionalDetails.odometer;
+        this.fuelData.additionalDetails.description = result.additionalDetails.description;
+        this.fuelData.additionalDetails.uploadedPhotos = result.additionalDetails.uploadedPhotos;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
