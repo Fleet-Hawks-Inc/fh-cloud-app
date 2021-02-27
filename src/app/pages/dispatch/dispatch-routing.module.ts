@@ -5,11 +5,8 @@ import {LoadBoardComponent} from './load-board/load-board.component';
 import {LoadDetailComponent} from './load-detail/load-detail.component';
 import {CreateLoadNewComponent} from './create-load-new/create-load-new.component';
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
-
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
-
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
-
 import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
 import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
 import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
@@ -153,7 +150,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: "overview",
+    path: 'overview',
     children: [
       { path: '', component: DispatchOverviewComponent}
     ]

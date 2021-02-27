@@ -2,7 +2,7 @@
     <!-- start: header -->
     <app-header></app-header>
     <!-- end: header -->
- 
+
     <div class="inner-wrapper">
        <!-- start: sidebar -->
        <app-sidebar></app-sidebar>
@@ -12,12 +12,12 @@
           <form class="form-horizontal" method="get">
 
            <div class="row px-4" style="padding-top:10px;">
-             
-            
+
+
               <div class="col-lg-2 col-md-2">
                     <input type="text" class="form-control" placeholder="Alert Name">
-                 
-             </div>  
+
+             </div>
               <div class="col-md-2 col-lg-2">
                  <div class="input-group input-group-md mb-3">
                     <select data-plugin-selectTwo class="form-control populate">
@@ -31,13 +31,13 @@
                        </optgroup>
                     </select>
                  </div>
-              </div> 
+              </div>
               <div class="col-md-8  col-lg-8 text-right pr-5 page-buttons">
-                
+
                  <div class="btn-group flex-wrap">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                      
+
                        <a class="dropdown-item text-1" href="">Import</a>
                        <a class="dropdown-item text-1" href="">Export</a>
                     </div>
@@ -48,24 +48,24 @@
            </div>
            </form>
         </header>
-      
-       
+
+
 
         <div class="row">
 
              <div class="col">
                  <section class="card">
                      <div class="card-body">
-                         
-                   
+
+
                          <table  class="table table-bordered table-hover table-striped mb-0"  datatable [dtOptions]="dtOptions"  *ngIf="alertsList.length > 0">
                              <thead>
                                  <tr>
                                      <th>Alert Name</th>
                                      <th>Alert Type</th>
                                      <th>Vehicle(s)</th>
-                                     <th>Asset(s)</th> 
-                                     <th>Driver(s)</th> 
+                                     <th>Asset(s)</th>
+                                     <th>Driver(s)</th>
                                      <th>Recipient(s)</th>
                                      <th>Status</th>
                                      <th>Actions</th>
@@ -78,13 +78,13 @@
                                      <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let vehicle of alert.vehicles">{{vehiclesList[vehicle]}},</span></td>
                                      <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let asset of alert.assets">{{assetsList[asset]}},</span></td>
                                      <td routerLink="/alert-detail/{{alert.alertID}}"> <span *ngFor = "let driver of alert.drivers">{{driversList[driver]}},</span></td>
-                                     <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let group of alert.groups">{{groupsList[group]}},</span> 
+                                     <td routerLink="/alert-detail/{{alert.alertID}}"><span *ngFor = "let group of alert.groups">{{groupsList[group]}},</span>
                                        <span *ngFor = "let user of alert.users">{{user}},</span>
                                        <span *ngFor = "let otherEmail of alert.otherEmails">{{otherEmail}},</span></td>
                                      <td>	<div class="switch switch-sm switch-dark">
                                                                      <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
                                                                  </div>
-                                 
+
                                      </td>
                                      <td><div class="btn-group flex-wrap">
                                         <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
@@ -96,9 +96,9 @@
                                  </tr>
                              </tbody>
                          </table>
-                         <div *ngIf="!alertsList.length > 0" class="alert alert-info m-0 text-center" role="alert">
+                         <div *ngIf="alertsList.length == 0" class="alert alert-info m-0 text-center" role="alert">
                             No records found
-                            
+
                          </div>
                      </div>
                  </section>
@@ -107,6 +107,6 @@
        </div>
 
 
-     </section>  
+     </section>
     </div>
  </section>

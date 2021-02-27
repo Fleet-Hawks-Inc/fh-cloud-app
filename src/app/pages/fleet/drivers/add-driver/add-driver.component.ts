@@ -32,12 +32,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   // driverSession = JSON.parse(localStorage.getItem('driver'));
   pageTitle: string;
   lastElement;
-  hideNextBtn: boolean = true;
+  hideNextBtn = true;
   hasBasic: boolean = false;
   hasDocs: boolean = false;
   hasLic: boolean = false;
   hasPay: boolean = false;
   hasHos: boolean = false;
+
   addressField = -1;
   currentTab = 1;
   userLocation: any;
@@ -48,7 +49,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   errors = {};
   form;
   concatArrayKeys = '';
-  manualAddress: boolean = false;
+  manualAddress = false;
   nextTab: any;
   carrierID: any;
 
@@ -65,7 +66,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     description: '',
   };
 
-  driverAddress = {   
+  driverAddress = {
     address: [],
   };
   driverData = {
@@ -234,8 +235,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   visibleIndex = 0;
   getcurrentDate: any;
   birthDateMinLimit: any;
@@ -249,15 +250,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   assetsImages = []
   assetsDocs = [];
   absDocs = [];
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-  isSubmitted: boolean = false;
-  showIcons: boolean = false;
-  profileTitle: string = 'Add';
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  isSubmitted = false;
+  showIcons = false;
+  profileTitle = 'Add';
   addressCountries = [];
   carrierYards = [];
   deletedAddress = [];
   ownerOperators: any;
-  abstractValid: boolean = false;
+  abstractValid = false;
   prefixOutput: string;
   finalPrefix = '';
   currentUser: any;
@@ -333,7 +334,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async ngOnInit() {
     this.listService.fetchVehicles();
     this.listService.fetchOwnerOperators();
-    this.driverID = this.route.snapshot.params['driverID'];
+    this.driverID = this.route.snapshot.params[`driverID`];
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
       this.fetchDriverByID();
@@ -342,7 +343,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    
+
     this.fetchYards(); // fetch yards
     this.fetchCycles(); // fetch cycles
     this.fetchDrivers();
@@ -356,7 +357,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.fetchDocuments();
     await this.getCurrentuser();
 
-    if(this.currentUser.userType != 'Cloud Admin') {
+    if(this.currentUser.userType !== 'Cloud Admin') {
       this.getCarrierDetails(this.currentUser.carrierID);
     } else {
       this.prefixOutput = 'PB-'
@@ -370,7 +371,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       const element = this.driverData.documentDetails[i];
       await this.getStates(element.issuingCountry)
     }
-    
+
     this.vehicles = this.listService.vehicleList;
     this.ownerOperators = this.listService.ownerOperatorList;
   }
@@ -380,7 +381,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.apiService.getData('carriers/'+ id).subscribe(res => {
       if(res.Items.length > 0){
         let carrierPrefix = res.Items[0].businessName;
-        let toArray = carrierPrefix.match(/\b(\w)/g); 
+        let toArray = carrierPrefix.match(/\b(\w)/g);
         this.prefixOutput = toArray.join('') + '-';
       }
       this.spinner.hide();
@@ -416,21 +417,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async nextStep() {
-    
+
     if(!this.driverID){
       await this.onSubmit();
       if(this.abstractDocs.length == 0 && this.currentTab == 1) {
-        this.abstractValid = true; 
+        this.abstractValid = true;
         return;
       }
     }else {
       if(this.absDocs.length == 0) {
-        this.abstractValid = true; 
-      }  
+        this.abstractValid = true;
+      }
       await this.updateDriver();
     }
+
     this.validateTabErrors();
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;     
+    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;    
+
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
     if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
@@ -438,8 +441,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if($('#payment .error').length > 0 && this.currentTab == 6) return;
     if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
     if($('#emergency .error').length > 0 && this.currentTab == 8) return;
-    
-    this.currentTab++; 
+
+    this.currentTab++;
 
   }
   prevStep() {
@@ -456,7 +459,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   gotoVehiclePage() {
     $('#addVehicleModelDriver').modal('show');
   }
-  
+
 
   clearUserLocation(i) {
     this.driverData.address[i]['userLocation'] = '';
@@ -535,10 +538,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.countries = result.Items;
         this.countries.map(elem => {
           if(elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
-            this.addressCountries.push({countryName: elem.countryName, countryID: elem.countryID})    
+            this.addressCountries.push({countryName: elem.countryName, countryID: elem.countryID})
           }
         })
-        
+
       });
   }
 
@@ -625,7 +628,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.abstractDocs = files;
     }
   }
-  
+
   selectPhoto(event) {
     let files = [...event.target.files];
     const reader = new FileReader();
@@ -633,11 +636,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0])
-    
+
     if(this.uploadedPhotos.length > 0) {
       this.profileTitle = 'Change';
     }
-    
+
   }
 
   removeProfile() {
@@ -715,6 +718,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData.empPrefix = this.prefixOutput;
     
     this.driverData.currentTab = this.currentTab;
+
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
@@ -722,7 +726,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
         result = result.items[0];
-        
+
         if(result != undefined) {
           element.geoCords.lat = result.position.lat;
           element.geoCords.lng = result.position.lng;
@@ -753,8 +757,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
-    
-    
+
+
     try {
       return await new Promise((resolve, reject) => {this.apiService.postData('drivers',formData, true).subscribe({
       complete: () => { },
@@ -789,9 +793,121 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.modalServiceOwn.triggerRedirect.next(true);
         this.takeUntil$.next();
         this.takeUntil$.complete();
+
+        let driver = {
+          driverType: 'employee',
+          entityType: 'driver',
+          employeeId: '',
+          ownerOperator: '',
+          driverStatus: '',
+          userName: '',
+          firstName: '',
+          middleName: '',
+          lastName: '',
+          startDate: '',
+          terminationDate: '',
+          contractStart: '',
+          contractEnd: '',
+          password: '',
+          confirmPassword: '',
+          citizenship: '',
+          assignedVehicle: '',
+          groupID: '',
+          driverImage: '',
+          gender: 'M',
+          DOB: '',
+          workPhone: '',
+          workEmail: '',
+          address: [{
+            addressID: '',
+            addressType: '',
+            userLocation: '',
+            countryID: '',
+            countryName: '',
+            stateID: '',
+            stateName: '',
+            cityID: '',
+            cityName: '',
+            zipCode: '',
+            address1: '',
+            address2: '',
+            geoCords : {
+              lat: null,
+              lng: null
+            },
+            manual: false,
+          }],
+          documentDetails: [{
+            documentType: '',
+            document: '',
+            issuingAuthority: '',
+            issuingCountry: '',
+            issuingState: '',
+            issueDate: '',
+            expiryDate: '',
+            uploadedDocs: [],
+          }],
+          crossBorderDetails: {
+            ACI_ID: '',
+            ACE_ID: '',
+            fast_ID: '',
+            fastExpiry: '',
+            csa: false,
+          },
+          paymentDetails: {
+            paymentType: '',
+            loadedMiles: '',
+            loadedMilesTeam: '',
+            loadedMilesUnit: '',
+            loadedMilesTeamUnit: '',
+            emptyMiles: '',
+            emptyMilesTeam: '',
+            emptyMilesUnit: '',
+            emptyMilesTeamUnit: '',
+            loadPayPercentage: '',
+            loadPayPercentageOf: '',
+            rate: '',
+            rateUnit: '',
+            waitingPay: '',
+            waitingPayUnit: '',
+            waitingHourAfter: '',
+            deliveryRate: '',
+            deliveryRateUnit: '',
+            SIN_Number: '',
+            payPeriod: '',
+          },
+          licenceDetails: {
+            CDL_Number: '',
+            issuedCountry: '',
+            issuedState: '',
+            licenceExpiry: '',
+            licenceNotification: true,
+            WCB: '',
+            medicalCardRenewal: '',
+            healthCare: '',
+            vehicleType: '',
+          },
+          hosDetails: {
+            hosStatus: '',
+            type: '',
+            hosRemarks: '',
+            hosCycle: '',
+            homeTerminal: '',
+            pcAllowed: false,
+            ymAllowed: false,
+          },
+          emergencyDetails: {
+            name: '',
+            relationship: '',
+            phone: '',
+            email: '',
+            emergencyAddress: '',
+          },
+        }
         this.spinner.hide();
-        // this.cancel();
-        
+        this.cancel();
+
+
       },
     })})
   } catch (error) {
@@ -807,18 +923,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
 
+
     this.driverData.address[i].userLocation = result.address.label;
+
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;
-    
     this.driverData.address[i].countryName = result.address.countryName;
-
     $('div').removeClass('show-search__result');
 
     this.driverData.address[i].stateName = result.address.state;
-
     this.driverData.address[i].cityName = result.address.city;
-    
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
@@ -828,7 +942,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async fetchCountriesByName(name: string, i) {
-    let result = await this.apiService.getData(`countries/get/${name}`)
+    const result = await this.apiService.getData(`countries/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
@@ -838,7 +952,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async fetchStatesByName(name: string, i) {
-    let result = await this.apiService.getData(`states/get/${name}`)
+  const result = await this.apiService.getData(`states/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       this.getCities(result.Items[0].stateID, i);
@@ -848,7 +962,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   async fetchCitiesByName(name: string) {
-    let result = await this.apiService.getData(`cities/get/${name}`)
+    const result = await this.apiService.getData(`cities/get/${name}`)
       .toPromise();
     if (result.Items.length > 0) {
       return result.Items[0].cityID;
@@ -915,6 +1029,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+
         
         this.driverData.driverType = result.driverType;
         let newEmpPrefix = result.employeeId.split('-');
@@ -936,6 +1051,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
+
         if(result.driverImage != '' && result.driverImage != undefined) {
           this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
           this.showIcons = true;
@@ -947,6 +1063,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         if(result.abstractDocs != undefined && result.abstractDocs.length > 0) {
           this.driverData['abstractDocs'] = result.abstractDocs;
           this.absDocs = result.abstractDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+
          
         }        
         
@@ -955,6 +1072,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.workEmail = result.workEmail;
         this.driverData.workPhone = result.workPhone;
         
+
         for (let i = 0; i < result.address.length; i++) {
           await this.getStates(result.address[i].countryID);
           await this.getCities(result.address[i].stateID);
@@ -1009,7 +1127,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           if(result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0){
             docmnt = result.documentDetails[i].uploadedDocs;
           }
-          
+
           this.newDocuments.push({
             documentType: result.documentDetails[i].documentType,
             document: result.documentDetails[i].document,
@@ -1026,7 +1144,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
 
         this.driverData.documentDetails = this.newDocuments;
-
         this.driverData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.driverData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.driverData.crossBorderDetails.fast_ID = result.crossBorderDetails.fast_ID;
@@ -1078,6 +1195,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
         this.driverData.emergencyDetails.email = result.emergencyDetails.email;
         this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
+
       });
   }
 
@@ -1093,7 +1211,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        
+
         result = result.items[0];
         if(result != undefined) {
             element.geoCords.lat = result.position.lat;
@@ -1106,7 +1224,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     // create form data instance
     const formData = new FormData();
-    
+
     //append photos if any
     for(let i = 0; i < this.uploadedPhotos.length; i++){
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
@@ -1127,7 +1245,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
-    
+
     try {
       return await new Promise((resolve, reject) => {this.apiService.putData('drivers', formData, true).subscribe({
       complete: () => { },
@@ -1157,7 +1275,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         for (let i = 0; i < this.deletedAddress.length; i++) {
           const element = this.deletedAddress[i];
           this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-          
+
         }
         this.toastr.success('Driver updated successfully');
         // this.router.navigateByUrl('/fleet/drivers/list');
@@ -1166,7 +1284,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       },
     })})
     } catch (error) {
-      
+
     };;
   }
 
@@ -1191,6 +1309,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.paymentDetails.deliveryRate;
       delete this.driverData.paymentDetails.deliveryRateUnit;
     } else if (value === 'Percentage') {
+
       delete this.driverData.paymentDetails.loadedMiles;
       delete this.driverData.paymentDetails.loadedMilesUnit;
       delete this.driverData.paymentDetails.loadedMilesTeam;
@@ -1205,8 +1324,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.paymentDetails.rateUnit;
       delete this.driverData.paymentDetails.waitingPay;
       delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;
-      
+      delete this.driverData.paymentDetails.waitingHourAfter;      
+
     } else if (value === 'Pay Per Hour') {
       delete this.driverData.paymentDetails.deliveryRate;
       delete this.driverData.paymentDetails.deliveryRateUnit;
@@ -1235,7 +1354,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.paymentDetails.waitingPayUnit;
       delete this.driverData.paymentDetails.waitingHourAfter;
     }
-    
+
   }
 
   concatArray(path) {
@@ -1264,7 +1383,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
   }
 
-  // delete uploaded images and documents 
+  // delete uploaded images and documents
   delete(type: string,name: string, index:string){
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
       this.absDocs.splice(parseInt(index), 1);

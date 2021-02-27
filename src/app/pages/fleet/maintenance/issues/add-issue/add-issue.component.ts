@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import {AwsUploadService} from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { v4 as uuidv4 } from 'uuid';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -14,7 +13,7 @@ declare var $: any;
 @Component({
   selector: 'app-add-issue',
   templateUrl: './add-issue.component.html',
-  styleUrls: ['./add-issue.component.css'] 
+  styleUrls: ['./add-issue.component.css']
 })
 export class AddIssueComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
@@ -65,10 +64,10 @@ export class AddIssueComponent implements OnInit {
               private route: ActivatedRoute,
               private awsUS: AwsUploadService, private toaster: ToastrService,
               private spinner: NgxSpinnerService,
-              private _location: Location, private domSanitizer: DomSanitizer,
+              private location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
                 this.selectedFileNames = new Map<any, any>();
-                
+
               }
     get today() {
       return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -78,7 +77,7 @@ export class AddIssueComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    this.issueID = this.route.snapshot.params['issueID'];
+    this.issueID = this.route.snapshot.params[`issueID`];
     if (this.issueID) {
       this.title = 'Edit Issue';
       this.fetchIssueByID();
@@ -91,7 +90,7 @@ export class AddIssueComponent implements OnInit {
   }
   cancel() {
     console.log('back', window.history)
-    this._location.back(); // <-- go back to previous location on cancel
+    this.location.back(); // <-- go back to previous location on cancel
   }
 
   fetchVehicles() {
@@ -133,19 +132,19 @@ export class AddIssueComponent implements OnInit {
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for(let i = 0; i < this.uploadedPhotos.length; i++){
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
-    //append docs if any
+    // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(data));
-    
+
     // this.apiService.postData('issues/', data).subscribe({
     this.apiService.postData('issues', formData, true).subscribe({
         complete: () => { },
@@ -167,10 +166,8 @@ export class AddIssueComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          // this.uploadFiles(); // upload selected files to bucket
           this.toaster.success('Issue Added successfully');
-          //this.router.navigateByUrl('/fleet/maintenance/issues/list');
-         this.cancel();
+          this.cancel();
         }
       });
   }
@@ -182,7 +179,6 @@ export class AddIssueComponent implements OnInit {
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
 hideErrors() {
@@ -211,7 +207,7 @@ hideErrors() {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
           this.uploadedPhotos.push(files[i])
-      } 
+      }
     }
   }
   /*
@@ -246,22 +242,22 @@ hideErrors() {
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
 
-      if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+      if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
         this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
 
-      if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+      if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
         this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
     });
   this.spinner.hide();
 }
 setPDFSrc(val) {
-  let pieces = val.split(/[\s.]+/);
-  let ext = pieces[pieces.length-1];
+  const pieces = val.split(/[\s.]+/);
+  const ext = pieces[pieces.length - 1];
   this.pdfSrc = '';
-  if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-    this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+  if(ext === 'doc' || ext === 'docx' || ext === 'xlsx') {
+    this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
   } else {
     this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
   }
@@ -277,7 +273,6 @@ setSrcValue(){
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-
     const data = {
       issueID: this.issueID,
       issueName: this.issueName,
@@ -296,17 +291,17 @@ setSrcValue(){
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
-    //append docs if any
+    // append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(data));
 
     this.apiService.putData('issues/', formData, true).subscribe({
@@ -335,17 +330,17 @@ setSrcValue(){
     });
   }
 
-  // delete uploaded images and documents 
-  delete(type: string,name: string){
+  // delete uploaded images and documents
+  delete(type: string,name: string) {
     this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
       this.fetchIssueByID();
       let alertmsg = '';
-      if(type == 'doc') {
+      if(type === 'doc') {
         alertmsg = 'Document';
       } else {
         alertmsg = 'Image';
       }
-      this.toaster.success(alertmsg+ ' Deleted Successfully');
+      this.toaster.success(alertmsg + ' Deleted Successfully');
     });
   }
 }

@@ -6,7 +6,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import {ChartsModule} from 'ng2-charts'; 
+import {ChartsModule} from 'ng2-charts';
 
 import { AddShipperComponent } from './shipper/add-shipper/add-shipper.component';
 import { ShipperListComponent } from './shipper/shipper-list/shipper-list.component';
@@ -109,9 +109,9 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     if (!value)
       return null
     let parts = value.split(this.DELIMITER);
-    return { 
-      year: + parseInt(parts[0]), 
-      month: + parseInt(parts[1]), 
+    return {
+      year: + parseInt(parts[0]),
+      month: + parseInt(parts[1]),
       day: + parseInt(parts[2]) }
   }
 
@@ -132,12 +132,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
         year : parseInt(date[2], 10),
         month : parseInt(date[1], 10),
         day : parseInt(date[0], 10),
-       
+
       };
     }
     return null;
@@ -164,7 +164,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
     MatExpansionModule,
 
-    DragDropModule,   
+    DragDropModule,
     NgSelectModule,
     NgxMaterialTimepickerModule,
 
@@ -229,7 +229,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     DispatchPlannerComponent,
     AddDispatchComponent,
 
-    EManifestsComponent,   
+    EManifestsComponent,
     NewAciManifestComponent,
     CompanyDocumentsComponent,
 
