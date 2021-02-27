@@ -617,9 +617,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
    /*
    * Selecting files before uploading
    */
-  selectDocuments(obj, event, i) {
+  selectDocuments(event: any, i: number) {
     let files = [...event.target.files];
-    if(obj === 'documents') {
+    if(i != null) {
       if(this.uploadedDocs[i] == undefined) {
         this.uploadedDocs[i] = files;
       }
@@ -651,12 +651,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -793,117 +791,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.modalServiceOwn.triggerRedirect.next(true);
         this.takeUntil$.next();
         this.takeUntil$.complete();
-
-        let driver = {
-          driverType: 'employee',
-          entityType: 'driver',
-          employeeId: '',
-          ownerOperator: '',
-          driverStatus: '',
-          userName: '',
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          startDate: '',
-          terminationDate: '',
-          contractStart: '',
-          contractEnd: '',
-          password: '',
-          confirmPassword: '',
-          citizenship: '',
-          assignedVehicle: '',
-          groupID: '',
-          driverImage: '',
-          gender: 'M',
-          DOB: '',
-          workPhone: '',
-          workEmail: '',
-          address: [{
-            addressID: '',
-            addressType: '',
-            userLocation: '',
-            countryID: '',
-            countryName: '',
-            stateID: '',
-            stateName: '',
-            cityID: '',
-            cityName: '',
-            zipCode: '',
-            address1: '',
-            address2: '',
-            geoCords : {
-              lat: null,
-              lng: null
-            },
-            manual: false,
-          }],
-          documentDetails: [{
-            documentType: '',
-            document: '',
-            issuingAuthority: '',
-            issuingCountry: '',
-            issuingState: '',
-            issueDate: '',
-            expiryDate: '',
-            uploadedDocs: [],
-          }],
-          crossBorderDetails: {
-            ACI_ID: '',
-            ACE_ID: '',
-            fast_ID: '',
-            fastExpiry: '',
-            csa: false,
-          },
-          paymentDetails: {
-            paymentType: '',
-            loadedMiles: '',
-            loadedMilesTeam: '',
-            loadedMilesUnit: '',
-            loadedMilesTeamUnit: '',
-            emptyMiles: '',
-            emptyMilesTeam: '',
-            emptyMilesUnit: '',
-            emptyMilesTeamUnit: '',
-            loadPayPercentage: '',
-            loadPayPercentageOf: '',
-            rate: '',
-            rateUnit: '',
-            waitingPay: '',
-            waitingPayUnit: '',
-            waitingHourAfter: '',
-            deliveryRate: '',
-            deliveryRateUnit: '',
-            SIN_Number: '',
-            payPeriod: '',
-          },
-          licenceDetails: {
-            CDL_Number: '',
-            issuedCountry: '',
-            issuedState: '',
-            licenceExpiry: '',
-            licenceNotification: true,
-            WCB: '',
-            medicalCardRenewal: '',
-            healthCare: '',
-            vehicleType: '',
-          },
-          hosDetails: {
-            hosStatus: '',
-            type: '',
-            hosRemarks: '',
-            hosCycle: '',
-            homeTerminal: '',
-            pcAllowed: false,
-            ymAllowed: false,
-          },
-          emergencyDetails: {
-            name: '',
-            relationship: '',
-            phone: '',
-            email: '',
-            emergencyAddress: '',
-          },
-        }
         this.spinner.hide();
         this.cancel();
 
@@ -912,8 +799,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     })})
   } catch (error) {
     return 'error found';
-  };
-  }
+  }}
 
   getCityName(i, id: any) {
     let result = this.citiesObject[id];
@@ -1285,8 +1171,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     })})
     } catch (error) {
 
-    };;
-  }
+}}
 
 
 

@@ -37,7 +37,10 @@ export class AddVehicleNewComponent implements OnInit {
  *Group Properties
 */
 groupData = {
-  groupType : Constants.GROUP_VEHICLES 
+  groupType : Constants.GROUP_VEHICLES,
+  groupName: '',
+  groupMembers: '',
+  description: '', 
 };
 vehicles= [];
 
