@@ -61,7 +61,6 @@ import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-ma
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
-import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
@@ -88,7 +87,6 @@ import { RouteDetailComponent } from './permanent-routing/route-detail/route-det
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
-import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
@@ -236,7 +234,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NewAceManifestComponent,
     RouteListComponent,
     AddRouteComponent,
-    EditRouteComponent,
     NewDocumentsComponent,
     MyDocumentListComponent,
     OrdersListComponent,
@@ -256,7 +253,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     TripListComponent,
     AddTripComponent,
     TripDetailComponent,
-    EditTripComponent,
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,

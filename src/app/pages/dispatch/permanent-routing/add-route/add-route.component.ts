@@ -27,9 +27,21 @@ export class AddRouteComponent implements OnInit {
   mapVisible = false;
   errors = {};
   routeData = {
-    miles: 0,
+    routeNo: '',
+    routeName: '',
+    notes: '',
+    VehicleID: '',
+    AssetID: '',
+    driverUserName: '',
     coDriverUserName: '',
-    sourceInformation: {},
+    miles: 0,
+    sourceInformation: {
+      sourceAddress: '',
+      sourceCity: '',
+      sourceState: '',
+      sourceCountry: '',
+      sourceZipCode: ''
+    },
     recurring: {
       recurringRoute: false,
       recurringType: '',
@@ -42,7 +54,13 @@ export class AddRouteComponent implements OnInit {
       friday: false,
       saturday: false
     },
-    destinationInformation: {},
+    destinationInformation: {
+      destinationAddress: '',
+      destinationCity: '',
+      destinationState: '',
+      destinationCountry: '',
+      destinationZipCode: ''
+    },
     stops: []
   };
   form;

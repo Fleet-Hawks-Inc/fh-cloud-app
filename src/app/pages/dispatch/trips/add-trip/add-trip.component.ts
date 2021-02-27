@@ -36,12 +36,22 @@ export class AddTripComponent implements OnInit {
     drivers = [];
     codrivers = [];
     tripData = {
+        tripNo: '',
+        orderNo: '',
+        routeID: '',
+        bol: '',
         reeferTemperature: '',
         reeferTemperatureUnit: null,
         orderId: {},
         orderType: 'FTL',
         tripPlanning: [],
-        notifications: {},
+        notifications: {
+            changeRoute: false,
+            pickUp: false,
+            dropOff: false,
+            tripToDriver: false,
+            tripToDispatcher: false,
+        },
         tripStatus: 'confirmed',
         dateCreated: <any>''
     };
