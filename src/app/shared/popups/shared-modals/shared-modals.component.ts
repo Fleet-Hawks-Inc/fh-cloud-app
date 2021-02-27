@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { from, Subject, throwError } from 'rxjs';
+import { from, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -33,8 +32,16 @@ export class SharedModalsComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
+  deletedAddress = [];
+
   constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
-    ) { }
+    ) {
+      const date = new Date();
+      this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
+      this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+      this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+     }
+
 stateData = {
   countryID : '',
   stateName: '',
@@ -60,6 +67,8 @@ assetModelData = {
   modelName:''
 }
 test: any = [];
+statesObject: any;
+
 
 // Vehicles variables start
 vehicleID: string;
@@ -229,6 +238,22 @@ vehicleID: string;
 // Vehicles variables end
 // driver variables start
 driverData = {
+  userName: '',
+  middleName: '',
+  lastName: '',
+  workPhone: '',
+  workEmail: '',
+  firstName: '',
+  password: '',
+  confirmPassword: '',
+  citizenship: '',
+  driverStatus: '',
+  ownerOperator: '',
+  startDate: '',
+  terminationDate: '',
+  contractStart: '',
+  contractEnd: '',
+  employeeId: '',
   driverType: 'employee',
   empPrefix: '',
   entityType: 'driver',
@@ -262,9 +287,46 @@ driverData = {
     uploadedDocs: []
   }],
   crossBorderDetails: {},
-  paymentDetails: {},
-  licenceDetails: {},
-  hosDetails: {},
+  paymentDetails: {
+    rate: '',
+    rateUnit: '',
+    waitingPay: '',
+    waitingPayUnit: '',
+    waitingHourAfter: '',
+    deliveryRate: '',
+    deliveryRateUnit: '',
+    loadPayPercentage: '',
+    loadPayPercentageOf: '',
+    loadedMiles: '',
+    loadedMilesUnit: '',
+    emptyMiles: '',
+    emptyMilesUnit: '',
+    loadedMilesTeam: '',
+    loadedMilesTeamUnit: '',
+    emptyMilesTeam: '',
+    emptyMilesTeamUnit: '',
+    paymentType: '',
+    SIN_Number: '',
+    payPeriod: '',
+  },
+  licenceDetails: {
+    CDL_Number: '',
+    licenceExpiry: '',
+    licenceNotification: '',
+    issuedCountry: '',
+    issuedState: '',
+    vehicleType: '',
+
+  },
+  hosDetails: {
+    pcAllowed: '',
+    ymAllowed: '',
+    hosCycle: '',
+    hosStatus: '',
+    hosRemarks: '',
+    type: '',
+    homeTerminal: ''
+  },
   emergencyDetails: {},
 };
 
@@ -281,6 +343,11 @@ carrierYards = [];
 absDocs = [];
 documentTypeList: any = [];
 cycles = [];
+ownerOperators: any = [];
+getcurrentDate: any;
+birthDateMinLimit: any;
+futureDatesLimit: any;
+countriesObject: any;
 // driver variables ends
 
 /**
@@ -293,6 +360,9 @@ tasks = [];
 uploadedPhotos = [];
 private programID;
 serviceData = {
+  programName: '',
+  description: '',
+  vehicles: [],
   serviceScheduleDetails: [{
     serviceTask: '',
     repeatByTime: '',
@@ -303,6 +373,8 @@ serviceData = {
 
 taskData = {
   taskType: 'service',
+  taskName: '',
+  description: ''
 };
 
 inspectionForms = [];
@@ -358,6 +430,7 @@ activeTab = 1;
     }
     // this.countries = this.listService.countryList;
     // this.states = this.listService.stateList;
+    this.listService.ownerOperatorList;
   }
   /**
    * fetch vehicle manufacturers
@@ -429,19 +502,7 @@ fetchDrivers(){
         this.countries = result.Items;
       });
   }
-  getStates(id) {
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
 
-  getCities(id) {
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
   // Add state
   addState() {
     this.hideErrors();  
@@ -1145,9 +1206,9 @@ fetchDrivers(){
    /*
    * Selecting files before uploading
    */
-  selectDocuments(obj, event, i) {
+  selectDocuments(event, i) {
     let files = [...event.target.files];
-    if(obj === 'documents') {
+    if(i != null) {
       if(this.uploadedDocs[i] == undefined) {
         this.uploadedDocs[i] = files;
       }
@@ -1338,5 +1399,97 @@ fetchDrivers(){
         }
       })
     });
+  }
+
+  remove(obj, i, addressID = null) {
+    if (obj === 'address') {
+      if (addressID != null) {
+        this.deletedAddress.push(addressID)
+      }
+      this.driverData.address.splice(i, 1);
+    } else {
+      this.driverData.documentDetails.splice(i, 1);
+    }
+  }
+  
+  changePaymentModeForm(value) {
+    if (value === 'Pay Per Mile') {
+      delete this.driverData.paymentDetails.loadPayPercentage;
+      delete this.driverData.paymentDetails.loadPayPercentageOf;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+    } else if (value === 'Percentage') {
+
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;      
+
+    } else if (value === 'Pay Per Hour') {
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+      delete this.driverData.paymentDetails.loadPayPercentage;
+      delete this.driverData.paymentDetails.loadPayPercentageOf;
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+    } else {
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;
+    }
+
+  }
+
+  async getStates(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].countryName = this.countriesObject[id];
+    }
+    this.apiService.getData('states/country/' + id)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  async getCities(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].stateName = this.statesObject[id];
+    }
+
+    this.apiService.getData('cities/state/' + id)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
 }
