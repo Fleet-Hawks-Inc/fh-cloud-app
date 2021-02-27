@@ -101,13 +101,18 @@ export class AddOrdersComponent implements OnInit {
     shipperInfo: [],
     receiverInfo: [],
     freightDetails: {},
+    additionalContact: '',
+    invoiceEmail: false,
     additionalDetails: {
+      trailerType: '',
+      dropTrailer: false,
       loadType: {
         hazMat: false,
         oversize: false,
         reefer: false,
         tanker: false,
       },
+      uploadedDocs: [],
       refeerTemp: {
         maxTemprature: "",
         maxTempratureUnit: "",
@@ -160,6 +165,7 @@ export class AddOrdersComponent implements OnInit {
       totalMiles: null,
       calculateBy: 'manual'
     },
+    remarks: ''
   };
   response: any = "";
   hasError: boolean = false;

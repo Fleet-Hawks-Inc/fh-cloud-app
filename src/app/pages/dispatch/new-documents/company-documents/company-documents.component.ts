@@ -53,6 +53,7 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
     docType: '',
     documentName: '',
     description: '',
+    uploadedDocs: []
   };
   totalRecords = 20;
   pageLength = 10;
