@@ -222,7 +222,7 @@
               <div class="row mt-2">
                 <div class="col-lg-10">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Select Base State/Province</label>
-                  <select data-plugin-selectTwo class="form-control populate" name="baseState" [(ngModel)]="baseState">
+                  <select data-plugin-selectTwo class="form-control populate" >
                     <optgroup label="Select state">
                       <option value="1">state 1</option>
                       <option value="2">state 2</option>
@@ -269,7 +269,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success" (click)="addIftaAccount()">Save</button>
+          <button type="button" class="btn btn-success">Save</button>
         </div>
       </form>
     </div>

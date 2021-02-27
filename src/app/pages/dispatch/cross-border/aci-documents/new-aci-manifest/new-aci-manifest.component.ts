@@ -670,25 +670,25 @@ export class NewAciManifestComponent implements OnInit {
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
         this.sendId = result.sendId;
-        (this.CCC = result.CCC),
-          (this.tripNumber = result.tripNumber.substring(
+        this.CCC = result.CCC,
+          this.tripNumber = result.tripNumber.substring(
             4,
             result.tripNumber.length
-          ));
-        // this.tripNumber = result.tripNumber,
-        (this.portOfEntry = result.portOfEntry),
-          (this.subLocation = result.subLocation),
-          (this.estimatedArrivalDate = result.estimatedArrivalDate),
-          (this.estimatedArrivalTime = result.estimatedArrivalTime),
-          (this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone),
-          (this.truck = result.truck),
-          (this.mainDriver = result.drivers[0]);
-        this.coDrivers = result.drivers.slice(1);
-        (this.trailers = result.trailers),
-          (this.containers = result.containers),
-          (this.passengers = result.passengers),
-          (this.shipments = result.shipments),
-          (this.currentStatus = result.currentStatus),
+          );
+          // this.tripNumber = result.tripNumber,
+          this.portOfEntry = result.portOfEntry;
+          this.subLocation = result.subLocation;
+          this.estimatedArrivalDate = result.estimatedArrivalDate;
+          this.estimatedArrivalTime = result.estimatedArrivalTime;
+          this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
+          this.truck = result.truck;
+          this.mainDriver = result.drivers[0];
+          this.coDrivers = result.drivers.slice(1);
+          this.trailers = result.trailers;
+          this.containers = result.containers;
+          this.passengers = result.passengers;
+          this.shipments = result.shipments;
+          this.currentStatus = result.currentStatus;
           setTimeout(() => {
             this.fetchUSStates();
           }, 2000);
