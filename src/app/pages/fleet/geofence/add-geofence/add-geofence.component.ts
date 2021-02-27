@@ -17,6 +17,10 @@ declare var L: any;
 export class AddGeofenceComponent implements OnInit {
   pageTitle = 'Add Geofence';
   geofenceData = {
+    geofenceName: '',
+    location: '',
+    geofenceType: '',
+    description: '',
     geofence: {
       type: '',
       cords: []
@@ -30,7 +34,6 @@ export class AddGeofenceComponent implements OnInit {
   destinationLocation;
   polygonData = [];
   showDestination = true;
-  private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchResults: any;
 
@@ -240,10 +243,10 @@ export class AddGeofenceComponent implements OnInit {
         result = result.Items[0];
         
         this.geofenceData['geofenceID'] = this.getGeofenceID;
-        this.geofenceData['geofenceName'] = result.geofenceName;
-        this.geofenceData['location'] = result.location;
-        this.geofenceData['description'] = result.description;
-        this.geofenceData['geofenceType'] = result.geofenceType;
+        this.geofenceData.geofenceName = result.geofenceName;
+        this.geofenceData.location = result.location;
+        this.geofenceData.description = result.description;
+        this.geofenceData.geofenceType = result.geofenceType;
         this.geofenceData.geofence.type = result.geofence.type;
         this.geofenceData.geofence.cords = result.geofence.cords;
         if (result.geofence.cords[0]) {
@@ -352,7 +355,7 @@ export class AddGeofenceComponent implements OnInit {
 
   searchDestination(loc, lat, lng) {
     this.destinationLocation = loc;
-    this.geofenceData['location'] = this.destinationLocation;
+    this.geofenceData.location = this.destinationLocation;
     // this.map.removeLayer(this.marker)
     this.marker = L.marker([lat, lng]).addTo(this.map);
     this.map.flyTo([lat, lng], 14, {
