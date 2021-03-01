@@ -876,7 +876,12 @@
                             <div id="address_div" style="float: left;" [style.width]="address.length > 1 ? '50%' : '100%'" *ngFor="let item of address;">
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.address1 ? item.address1 : '-'}} {{item.address2}}</div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual == undefined || item.manual == false">
+                                       {{item.userLocation}}
+                                    </div>
+                                    <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="item.manual">
+                                       {{item.address1 ? item.address1 : '-'}} {{item.address2}}
+                                    </div>
                                 </div>
                                 <div class="row m-0">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Address Type:</div>
@@ -898,6 +903,7 @@
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
                                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.countryName ? item.countryName : '-'}}</div>
                                 </div>
+                                
                             </div>
                         </div>
                         <!-- Document -->
