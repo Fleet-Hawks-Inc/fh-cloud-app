@@ -41,6 +41,22 @@ export class AddressBookComponent implements OnInit {
   addresses = [];
   // Customer Object
   customerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    accountNumber: '',
+    workPhone: '',
+    workEmail: '',
+    mc: '',
+    dot: '',
+    fast: '',
+    fastExpiry: '',
+    trailerPreference: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'customer',
     address: [{
       addressType: '',
@@ -60,11 +76,28 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      phone: '',
+      designation: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Broker Object
   brokerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    mc: '',
+    dot: '',
+    workEmail: '',
+    accountNumber: '',
+    workPhone: '',
     entityType: 'broker',
     brokerType: 'company',
     address: [{
@@ -85,12 +118,40 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // ownerOperator Object
   ownerData = {
-    paymentDetails: {},
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    paymentDetails: {
+      fast: '',
+      fastExpiry: '',
+      payrollType: '',
+      sin: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: ''
+    },
     entityType: 'ownerOperator',
     address: [{
       addressType: '',
@@ -110,11 +171,25 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // Vendor Object
   vendorData = {
+    companyName: '',
+    accountNumber: '',
+    firstName: '',
+    lastName: '',
+    workEmail: '',
+    workPhone: '',
+    preferedVendor: false,
     entityType: 'vendor',
     address: [{
       addressType: '',
@@ -138,8 +213,42 @@ export class AddressBookComponent implements OnInit {
 
   // Carrier Object
   carrierData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'carrier',
-    paymentDetails: {},
+    paymentDetails: {
+      inBonded: false,
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      ccc: '',
+      scac: '',
+      cvor: '',
+      localTax: '',
+      federalTax: '',
+      payrollType: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: '',
+      applyTax: false,
+      wsib: false,
+      wsibAccountNumber: '',
+      wsibExpiry: ''
+    },
     address: [{
       addressType: '',
       countryID: '',
@@ -158,12 +267,25 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
-
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Shipper Object
   shipperData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail:'',
     entityType: 'shipper',
     address: [{
       addressType: '',
@@ -183,11 +305,25 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Consignee Object
   consigneeData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'consignee',
     address: [{
       addressType: '',
@@ -207,11 +343,24 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // fcCompany Object
   fcCompanyData = {
+    companyName: '',
+    isDefault: false,
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'factoring company',
     address: [{
       addressType: '',
@@ -231,13 +380,31 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    fcDetails: {}
+    fcDetails: {
+      accountNumber: '',
+      factoringRate: '',
+      factoringUnit: '',
+    }
   };
 
    // Staff Object
    staffData = {
+    firstName: '',
+    lastName: '',
+    employeeID: '',
+    dateOfBirth: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'staff',
-    paymentDetails: {},
+    paymentDetails: {
+      payrollType: '',
+      payrollRate: '',
+      payrollRateUnit: '',
+      payPeriod: '',
+      SIN: '',
+      WCB: '',
+      healthCare: ''
+    },
     loginEnabled: false,
     address: [{
       addressType: '',
@@ -257,13 +424,18 @@ export class AddressBookComponent implements OnInit {
       userLocation: '',
       manual: false
     }],
-    userAccount: {},
+    userAccount: {
+      contractStartDate: '',
+      contractEndDate: '',
+      department: '',
+      designation: ''
+    },
     userData : {
       username: '',
       userType: '',
       password: '',
       confirmPassword: ''
-    }
+    },
   };
 
   userDetailData: any;
@@ -1078,10 +1250,6 @@ export class AddressBookComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          this.vendorData = {
-            entityType: '',
-            address: []
-          };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
           this.listService.fetchVendors();
@@ -2264,7 +2432,7 @@ export class AddressBookComponent implements OnInit {
     }
   }
 
-  editUser(type: string, item: any, index:any) {
+  editUser(type: string, item: any) {
     this.modalTitle = 'Edit ';
     this.updateButton = true;
     this.hasError = false;
@@ -2394,6 +2562,22 @@ export class AddressBookComponent implements OnInit {
 
     // Customer Object
     this.customerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      accountNumber: '',
+      workPhone: '',
+      workEmail: '',
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      trailerPreference: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'customer',
       address: [{
         addressType: '',
@@ -2413,11 +2597,28 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        phone: '',
+        designation: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Broker Object
     this.brokerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      mc: '',
+      dot: '',
+      workEmail: '',
+      accountNumber: '',
+      workPhone: '',
       entityType: 'broker',
       brokerType: 'company',
       address: [{
@@ -2438,12 +2639,40 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // ownerOperator Object
     this.ownerData = {
-      paymentDetails: {},
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      paymentDetails: {
+        fast: '',
+        fastExpiry: '',
+        payrollType: '',
+        sin: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: ''
+      },
       entityType: 'ownerOperator',
       address: [{
         addressType: '',
@@ -2463,11 +2692,25 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: '',
+      }
     };
 
     // Vendor Object
     this.vendorData = {
+      companyName: '',
+      accountNumber: '',
+      firstName: '',
+      lastName: '',
+      workEmail: '',
+      workPhone: '',
+      preferedVendor: false,
       entityType: 'vendor',
       address: [{
         addressType: '',
@@ -2491,8 +2734,42 @@ export class AddressBookComponent implements OnInit {
 
     // Carrier Object
     this.carrierData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'carrier',
-      paymentDetails: {},
+      paymentDetails: {
+        inBonded: false,
+        mc: '',
+        dot: '',
+        fast: '',
+        fastExpiry: '',
+        ccc: '',
+        scac: '',
+        cvor: '',
+        localTax: '',
+        federalTax: '',
+        payrollType: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: '',
+        applyTax: false,
+        wsib: false,
+        wsibAccountNumber: '',
+        wsibExpiry: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2511,11 +2788,25 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Shipper Object
     this.shipperData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail:'',
       entityType: 'shipper',
       address: [{
         addressType: '',
@@ -2535,11 +2826,25 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Consignee Object
     this.consigneeData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'consignee',
       address: [{
         addressType: '',
@@ -2559,11 +2864,24 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // fcCompany Object
     this.fcCompanyData = {
+      companyName: '',
+      isDefault: false,
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'factoring company',
       address: [{
         addressType: '',
@@ -2583,14 +2901,32 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      fcDetails: {}
+      fcDetails: {
+        accountNumber: '',
+        factoringRate: '',
+        factoringUnit: '',
+      }
     };
 
     // Staff Object
     this.staffData = {
+      firstName: '',
+      lastName: '',
+      employeeID: '',
+      dateOfBirth: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'staff',
       loginEnabled: false,
-      paymentDetails: {},
+      paymentDetails: {
+        payrollType: '',
+        payrollRate: '',
+        payrollRateUnit: '',
+        payPeriod: '',
+        SIN: '',
+        WCB: '',
+        healthCare: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2609,7 +2945,12 @@ export class AddressBookComponent implements OnInit {
         userLocation: '',
         manual: false
       }],
-      userAccount: {},
+      userAccount: {
+        contractStartDate: '',
+        contractEndDate: '',
+        department: '',
+        designation: ''
+      },
       userData : {
         username: '',
         userType: '',

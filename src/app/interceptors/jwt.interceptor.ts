@@ -1,11 +1,11 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import {Router} from '@angular/router';
 import {GoogleMapsService} from '../services/google-maps.service';
 
-import {EMPTY, from, Observable, throwError} from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { from, Observable} from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 
 /**
@@ -26,11 +26,11 @@ export class JwtInterceptor implements HttpInterceptor {
 
         if((arr[5] == 'countries' || arr[5] == 'states' || arr[5] == 'cities') && request.method != 'POST') return next.handle(request);
         if(arr[5] == 'carriers' && request.method == 'POST') return next.handle(request);
-      
+
         return from(Auth.currentSession())
             .pipe(
                 switchMap((auth: any) => { // switchMap() is used instead of map().
-                  
+
                     const jwt = auth.accessToken.jwtToken;
                     const withAuthRequest = request.clone({
                         setHeaders: {

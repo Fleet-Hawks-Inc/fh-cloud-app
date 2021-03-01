@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { from, Subject, throwError } from 'rxjs';
+import { from, Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -33,8 +32,16 @@ export class SharedModalsComponent implements OnInit {
   Success: string = '';
   private destroy$ = new Subject();
   errors = {};
+  deletedAddress = [];
+
   constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
-    ) { }
+    ) {
+      const date = new Date();
+      this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
+      this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+      this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+     }
+
 stateData = {
   countryID : '',
   stateName: '',
@@ -60,6 +67,8 @@ assetModelData = {
   modelName:''
 }
 test: any = [];
+statesObject: any;
+
 
 // Vehicles variables start
 vehicleID: string;
@@ -229,7 +238,24 @@ vehicleID: string;
 // Vehicles variables end
 // driver variables start
 driverData = {
+  userName: '',
+  middleName: '',
+  lastName: '',
+  workPhone: '',
+  workEmail: '',
+  firstName: '',
+  password: '',
+  confirmPassword: '',
+  citizenship: '',
+  driverStatus: '',
+  ownerOperator: '',
+  startDate: '',
+  terminationDate: '',
+  contractStart: '',
+  contractEnd: '',
+  employeeId: '',
   driverType: 'employee',
+  empPrefix: '',
   entityType: 'driver',
   gender: 'M',
   DOB: '',
@@ -261,9 +287,46 @@ driverData = {
     uploadedDocs: []
   }],
   crossBorderDetails: {},
-  paymentDetails: {},
-  licenceDetails: {},
-  hosDetails: {},
+  paymentDetails: {
+    rate: '',
+    rateUnit: '',
+    waitingPay: '',
+    waitingPayUnit: '',
+    waitingHourAfter: '',
+    deliveryRate: '',
+    deliveryRateUnit: '',
+    loadPayPercentage: '',
+    loadPayPercentageOf: '',
+    loadedMiles: '',
+    loadedMilesUnit: '',
+    emptyMiles: '',
+    emptyMilesUnit: '',
+    loadedMilesTeam: '',
+    loadedMilesTeamUnit: '',
+    emptyMilesTeam: '',
+    emptyMilesTeamUnit: '',
+    paymentType: '',
+    SIN_Number: '',
+    payPeriod: '',
+  },
+  licenceDetails: {
+    CDL_Number: '',
+    licenceExpiry: '',
+    licenceNotification: '',
+    issuedCountry: '',
+    issuedState: '',
+    vehicleType: '',
+
+  },
+  hosDetails: {
+    pcAllowed: '',
+    ymAllowed: '',
+    hosCycle: '',
+    hosStatus: '',
+    hosRemarks: '',
+    type: '',
+    homeTerminal: ''
+  },
   emergencyDetails: {},
 };
 
@@ -277,6 +340,14 @@ uploadedDocs = [];
 isSubmitted: boolean = false;
 carrierID: any;
 carrierYards = [];
+absDocs = [];
+documentTypeList: any = [];
+cycles = [];
+ownerOperators: any = [];
+getcurrentDate: any;
+birthDateMinLimit: any;
+futureDatesLimit: any;
+countriesObject: any;
 // driver variables ends
 
 /**
@@ -289,6 +360,9 @@ tasks = [];
 uploadedPhotos = [];
 private programID;
 serviceData = {
+  programName: '',
+  description: '',
+  vehicles: [],
   serviceScheduleDetails: [{
     serviceTask: '',
     repeatByTime: '',
@@ -299,11 +373,13 @@ serviceData = {
 
 taskData = {
   taskType: 'service',
+  taskName: '',
+  description: ''
 };
 
 inspectionForms = [];
 groups = [];
-drivers = [];
+drivers: any;
 groupData = {
   groupType : Constants.GROUP_VEHICLES 
 };
@@ -319,16 +395,15 @@ activeTab = 1;
     this.fetchTasks();
 
     this.fetchInspectionForms();
-    //this.fetchVendors();
+    this.fetchDocuments();
     this.fetchGroups();
-    this.fetchDrivers();
+    this.fetchCycles(); // fetch cycles
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
-    // this.listService.fetchCountries();
-    // this.listService.fetchStates();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
+    this.listService.fetchDrivers();
 
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
@@ -345,17 +420,17 @@ activeTab = 1;
 
     this.manufacturers = this.listService.manufacturerList;
     this.models = this.listService.modelList;
+    this.drivers = this.listService.driversList;
 
     await this.getCurrentuser();
-
-    console.log('this.currentUser', this.currentUser);
-    if(this.currentUser.userType != 'Cloud Admin') {
+      if(this.currentUser.userType != 'Cloud Admin') {
       this.getCarrierDetails(this.currentUser.carrierID);
     } else {
       this.prefixOutput = 'PB-'
     }
     // this.countries = this.listService.countryList;
     // this.states = this.listService.stateList;
+    this.listService.ownerOperatorList;
   }
   /**
    * fetch vehicle manufacturers
@@ -376,6 +451,13 @@ activeTab = 1;
     }); 
  }
  
+ fetchCycles() {
+  this.apiService.getData('cycles')
+    .subscribe((result: any) => {
+      this.cycles = result.Items;
+    });
+}
+
  fetchInspectionForms() {
   this.apiService
     .getData('inspectionForms/type/Vehicle')
@@ -420,19 +502,7 @@ fetchDrivers(){
         this.countries = result.Items;
       });
   }
-  getStates(id) {
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
 
-  getCities(id) {
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
   // Add state
   addState() {
     this.hideErrors();  
@@ -1133,25 +1203,19 @@ fetchDrivers(){
     
   }
 
-  /*
+   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
+  selectDocuments(event, i) {
     let files = [...event.target.files];
-    
-    
-      for (let i = 0; i < files.length; i++) {
-          this.uploadedPhotos.push(files[i])
+    if(i != null) {
+      if(this.uploadedDocs[i] == undefined) {
+        this.uploadedDocs[i] = files;
       }
-
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
-        }
-        reader.readAsDataURL(files[i]);
-      }
-    
+    } else {
+      this.abstractDocs = [];
+      this.abstractDocs = files;
+    }
   }
 
   resetModel(){
@@ -1178,13 +1242,10 @@ fetchDrivers(){
 
   
   async nextStep() {
-    
-    // if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
-      await this.onSubmit();
-    // }else {
-    //   await this.updateDriver();
-    // }
+    await this.onSubmit();
+    if(this.absDocs.length == 0) {
+      this.abstractValid = true; 
+    }
    
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
       this.abstractValid = true; 
@@ -1207,24 +1268,6 @@ fetchDrivers(){
     // localStorage.setItem('driver', JSON.stringify(this.driverData));
   }
   async tabChange(value) {
-    // if(!this.driverID){
-      // localStorage.setItem('driver', JSON.stringify(this.driverData));
-      await this.onSubmit();
-    // }else {
-    //   await this.updateDriver();
-    // }
-
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-    if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
-    if($('#documents .error').length > 0 && this.currentTab == 3) return;
-    if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
-    if($('#licence .error').length > 0 && this.currentTab == 5) return;
-    if($('#payment .error').length > 0 && this.currentTab == 6) return;
-    if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
-    if($('#emergency .error').length > 0 && this.currentTab == 8) return;
-
-    if(value != this.currentTab + 1 && value > this.currentTab) return;
-
     this.currentTab = value;
   }
 
@@ -1235,7 +1278,7 @@ fetchDrivers(){
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    this.driverData['currentTab'] = this.currentTab;
+    this.driverData.empPrefix = this.prefixOutput;
     
     // create form data instance
     const formData = new FormData();
@@ -1287,128 +1330,10 @@ fetchDrivers(){
           });
       },
       next: (res) => {
-        // this.response = res;
-        // this.hasSuccess = true;
         this.toastr.success('Driver added successfully');
         this.listService.fetchDrivers();
         this.isSubmitted = true;
-        // this.modalServiceOwn.triggerRedirect.next(true);
-        // this.takeUntil$.next();
-        // this.takeUntil$.complete();
-        let driver = {
-          driverType: 'employee',
-          entityType: 'driver',
-          employeeId: '',
-          ownerOperator: '',
-          driverStatus: '',
-          userName: '',
-          firstName: '',
-          middleName: '',
-          lastName: '',
-          startDate: '',
-          terminationDate: '',
-          contractStart: '',
-          contractEnd: '',
-          password: '',
-          confirmPassword: '',
-          citizenship: '',
-          assignedVehicle: '',
-          groupID: '',
-          driverImage: '',
-          gender: 'M',
-          DOB: '',
-          workPhone: '',
-          workEmail: '',
-          address: [{
-            addressID: '',
-            addressType: '',
-            userLocation: '',
-            countryID: '',
-            countryName: '',
-            stateID: '',
-            stateName: '',
-            cityID: '',
-            cityName: '',
-            zipCode: '',
-            address1: '',
-            address2: '',
-            geoCords : {
-              lat: null,
-              lng: null
-            },
-            manual: false,
-          }],
-          documentDetails: [{
-            documentType: '',
-            document: '',
-            issuingAuthority: '',
-            issuingCountry: '',
-            issuingState: '',
-            issueDate: '',
-            expiryDate: '',
-            uploadedDocs: [],
-          }],
-          crossBorderDetails: {
-            ACI_ID: '',
-            ACE_ID: '',
-            fast_ID: '',
-            fastExpiry: '',
-            csa: false,
-          },
-          paymentDetails: {
-            paymentType: '',
-            loadedMiles: '',
-            loadedMilesTeam: '',
-            loadedMilesUnit: '',
-            loadedMilesTeamUnit: '',
-            emptyMiles: '',
-            emptyMilesTeam: '',
-            emptyMilesUnit: '',
-            emptyMilesTeamUnit: '',
-            loadPayPercentage: '',
-            loadPayPercentageOf: '',
-            rate: '',
-            rateUnit: '',
-            waitingPay: '',
-            waitingPayUnit: '',
-            waitingHourAfter: '',
-            deliveryRate: '',
-            deliveryRateUnit: '',
-            SIN_Number: '',
-            payPeriod: '',
-          },
-          licenceDetails: {
-            CDL_Number: '',
-            issuedCountry: '',
-            issuedState: '',
-            licenceExpiry: '',
-            licenceNotification: true,
-            WCB: '',
-            medicalCardRenewal: '',
-            healthCare: '',
-            vehicleType: '',
-          },
-          hosDetails: {
-            hosStatus: '',
-            type: '',
-            hosRemarks: '',
-            hosCycle: '',
-            homeTerminal: '',
-            pcAllowed: false, 
-            ymAllowed: false,
-          },
-          emergencyDetails: {
-            name: '',
-            relationship: '',
-            phone: '',
-            email: '',
-            emergencyAddress: '',
-          },
-        }
-        // localStorage.setItem('driver', JSON.stringify(driver));
-        // this.router.navigateByUrl('/fleet/drivers/list');
         this.spinner.hide();
-        
       },
     })})
   } catch (error) {
@@ -1416,6 +1341,11 @@ fetchDrivers(){
   };
   }
 
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+    })
+  }
   adddriverDocument() {
     this.driverData.documentDetails.push({
       documentType: '',
@@ -1469,5 +1399,97 @@ fetchDrivers(){
         }
       })
     });
+  }
+
+  remove(obj, i, addressID = null) {
+    if (obj === 'address') {
+      if (addressID != null) {
+        this.deletedAddress.push(addressID)
+      }
+      this.driverData.address.splice(i, 1);
+    } else {
+      this.driverData.documentDetails.splice(i, 1);
+    }
+  }
+  
+  changePaymentModeForm(value) {
+    if (value === 'Pay Per Mile') {
+      delete this.driverData.paymentDetails.loadPayPercentage;
+      delete this.driverData.paymentDetails.loadPayPercentageOf;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+    } else if (value === 'Percentage') {
+
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;      
+
+    } else if (value === 'Pay Per Hour') {
+      delete this.driverData.paymentDetails.deliveryRate;
+      delete this.driverData.paymentDetails.deliveryRateUnit;
+      delete this.driverData.paymentDetails.loadPayPercentage;
+      delete this.driverData.paymentDetails.loadPayPercentageOf;
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+    } else {
+      delete this.driverData.paymentDetails.loadedMiles;
+      delete this.driverData.paymentDetails.loadedMilesUnit;
+      delete this.driverData.paymentDetails.loadedMilesTeam;
+      delete this.driverData.paymentDetails.loadedMilesTeamUnit;
+      delete this.driverData.paymentDetails.emptyMiles;
+      delete this.driverData.paymentDetails.emptyMilesTeam;
+      delete this.driverData.paymentDetails.emptyMilesUnit;
+      delete this.driverData.paymentDetails.emptyMilesTeamUnit;
+      delete this.driverData.paymentDetails.rate;
+      delete this.driverData.paymentDetails.rateUnit;
+      delete this.driverData.paymentDetails.waitingPay;
+      delete this.driverData.paymentDetails.waitingPayUnit;
+      delete this.driverData.paymentDetails.waitingHourAfter;
+    }
+
+  }
+
+  async getStates(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].countryName = this.countriesObject[id];
+    }
+    this.apiService.getData('states/country/' + id)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  async getCities(id: any, oid = null) {
+    if(oid != null) {
+      this.driverData.address[oid].stateName = this.statesObject[id];
+    }
+
+    this.apiService.getData('cities/state/' + id)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
 }

@@ -3,7 +3,6 @@ import { HereMapService } from '../../../../services';
 import {ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {AwsUploadService} from '../../../../services';
 import { DomSanitizer} from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 
@@ -119,7 +118,6 @@ export class DriverDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
         private domSanitizer: DomSanitizer,
-        private awsUS: AwsUploadService,
         private httpClient: HttpClient,
       )
   {
@@ -151,7 +149,7 @@ export class DriverDetailComponent implements OnInit {
         if (result) {
           this.driverData = await result['Items'][0];
           this.cycle = this.driverData.hosDetails.hosCycle;
-          await this.fetchcarrierAddressByID(this.driverData.hosDetails.homeTerminal);
+          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.workEmail = this.driverData.workEmail;
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
@@ -218,7 +216,6 @@ export class DriverDetailComponent implements OnInit {
           }
   
           this.documents = newDocuments;
-          // this.documents = this.driverData.documentDetails
           
           this.liceIssueSate = this.driverData.licenceDetails.issuedState;
           this.liceIssueCountry = this.driverData.licenceDetails.issuedCountry;
@@ -229,15 +226,11 @@ export class DriverDetailComponent implements OnInit {
           this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
           this.liceContractStart = this.driverData.licenceDetails.contractStart;
           this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-         
-
           this.paymentType = this.driverData.paymentDetails.paymentType;
           this.loadedMiles = this.driverData.paymentDetails.loadedMiles;
           this.loadedMilesUnit = this.driverData.paymentDetails.loadedMilesUnit;
           this.loadedMilesTeam = this.driverData.paymentDetails.loadedMilesTeam;
           this.loadedMilesTeamUnit = this.driverData.paymentDetails.loadedMilesTeamUnit;
-          
-          
           
           this.emptyMiles = this.driverData.paymentDetails.emptyMiles;
           this.emptyMilesUnit = this.driverData.paymentDetails.emptyMilesUnit;
@@ -247,18 +240,12 @@ export class DriverDetailComponent implements OnInit {
           this.rate = this.driverData.paymentDetails.rate + this.driverData.paymentDetails.rateUnit;
           this.waitingPay = this.driverData.paymentDetails.waitingPay + this.driverData.paymentDetails.waitingPayUnit;
           this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
-          
-          
           this.deliveryRate = this.driverData.paymentDetails.deliveryRate + this.driverData.paymentDetails.deliveryRateUnit;
-          
-          // this.calculateMiles = this.driverData.paymentDetails.calculateMiles;
           this.sinNumber = this.driverData.paymentDetails.SIN_Number;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
           this.payPeriod = this.driverData.paymentDetails.payPeriod;
-          // this.federalTax = this.driverData.paymentDetails.federalTax;
-          // this.localTax = this.driverData.paymentDetails.localTax;
-
+          
           this.hosStatus = this.driverData.hosDetails.hosStatus;
           this.hosRemarks = this.driverData.hosDetails.hosRemarks;
           this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -286,6 +273,7 @@ export class DriverDetailComponent implements OnInit {
       this.documentTypeList = data;
      
       this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
+        console.log('ab', a, b)
         return a[b['code']] = b['description'], a;
       }, {});
       
@@ -305,14 +293,6 @@ export class DriverDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.groupsObjects = result;
       });
-  }
-
-  async fetchcarrierAddressByID(id: any) {
-    this.apiService.getData(`addresses/${id}`)
-    .subscribe(async (result: any) => {
-      this.yardsObjects = await result;
-      console.log('yardsObjects', this.yardsObjects)
-    });
   }
 
   fetchAllStatesIDs() {

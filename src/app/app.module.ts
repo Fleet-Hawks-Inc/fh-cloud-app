@@ -54,7 +54,6 @@ import { AlertListComponent } from './pages/alerts/alert-list/alert-list.compone
 import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
-import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 import { AddAccountComponent  } from './entry/onboard/add-account/add-account.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {

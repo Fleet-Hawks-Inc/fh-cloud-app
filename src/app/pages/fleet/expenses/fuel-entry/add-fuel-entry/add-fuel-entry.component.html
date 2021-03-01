@@ -126,14 +126,14 @@
                           <div class="col-lg-2 qtumbtn px-0">
                           </div>
                           <div class="col-lg-4">
-                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount({{currency}})<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount({{fuelData.currency}})<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="number" class="form-control" min='0' name="discount" [(ngModel)]="fuelData.discount" (change)="calculate()">
                           </div>
                        </div>
                        <div class="row">
                           <div class="col-lg-4">
                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Cost Per {{fuelQtyUnit}}:</label>
-                             <label class="control-label font-weight-bold text-4"> <span *ngIf="fuelData.costPerGallon"></span>{{costPerUnit}} {{currency}}</label>
+                             <label class="control-label font-weight-bold text-4"> <span></span>{{costPerUnit}} {{fuelData.currency}}</label>
                           </div>
                           <div class="col-lg-2 qtumbtn px-0">
                           </div>

@@ -30,8 +30,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   partDetails = '';
   quantity = '';
   date = '';
-  warehouseID1 :any = '';
-  warehouseID2 :any = '';
+  warehouseID1: any = '';
+  warehouseID2: any = '';
 
   hideShow = {
     part: true,
@@ -51,7 +51,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-  partNo = [1,2,3,4,5,6,7,8,9,10];
+  partNo = [1, 2 , 3, 4, 5, 6, 7, 8, 9, 10];
 
   /**
    * search props
@@ -67,8 +67,18 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   suggestedItemGroups = [];
   requiredItems = [];
   allItems = [];
-  itemDetail = {};
-  itemPrevData = {};
+  itemDetail = {
+    itemID: '',
+    reqItemID: '',
+    partNumber: '',
+    itemName: '',
+    prevQuantity: '',
+    reqQuantity: '',
+    totalQuantity: ''
+  };
+  itemPrevData = {
+    quantity: ''
+  };
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
 
@@ -87,7 +97,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       .getData(`vendors/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVendors = result.Items;
-        if(this.suggestedVendors.length == 0){
+        if(this.suggestedVendors.length === 0) {
           this.vendorID = '';
         }
       });
@@ -104,7 +114,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       .getData(`items/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedItems = result.Items;
-        if(this.suggestedItems.length == 0){
+        if(this.suggestedItems.length === 0) {
           this.itemID = '';
         }
       });
@@ -121,7 +131,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       .getData(`itemGroups/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedItemGroups = result.Items;
-        if(this.suggestedItemGroups.length == 0){
+        if(this.suggestedItemGroups.length === 0) {
           this.itemGroupID = '';
         }
       });
@@ -132,8 +142,6 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     this.itemGroupID = itemGroupID;
     this.suggestedItemGroups = [];
   }
-  
-  
   resetFilter(){
     if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
       this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
@@ -148,13 +156,13 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   fetchVendors(){
     this.apiService.getData(`vendors/get/list`).subscribe((result) => {
       this.vendors = result;
-    })
+    });
   }
 
   fetchItemGroups(){
     this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
       this.itemGroups = result;
-    })
+    });
   }
 
 
@@ -162,15 +170,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     $('#transferModal').modal('show');
   }
 
-  // fetchItems(){
-  //   this.apiService.getData('items?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe((result) => {
-  //     // this.items = result.Items;
-  //     this.totalRecords = result.Count;
-  //   })
-  // }
-
   fetchItemsCount() {
-    this.apiService.getData('items/get/count?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID).subscribe({
+    this.apiService.getData('items/get/count?itemID=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.itemGroupID).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -205,37 +206,37 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   initDataTable() {
-    let current = this;
+    const current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: this.pageLength,
       serverSide: true,
       processing: true,
       order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11], "orderable": false },
+      columnDefs: [ // sortable false
+        { 'targets': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 'orderable': false },
       ],
       dom: 'lrtip',
       language: {
-        "emptyTable": "No records found"
+        'emptyTable': 'No records found'
       },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('items/fetch-records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          //record number
-          if(dataTablesParameters.start >=2) {
+          // record number
+          if (dataTablesParameters.start >= 2) {
             current.partNo = [];
-            let val = parseInt(dataTablesParameters.start+'0');
-            let start = dataTablesParameters.start-1;
-            start = parseInt(start+'1')
+            let val = parseInt(dataTablesParameters.start + '0');
+            let start = dataTablesParameters.start - 1;
+            start = parseInt(start + '1')
             for (let index = start; index <= val; index++) {
               current.partNo.push(index);
             }
           } else {
-            current.partNo = [1,2,3,4,5,6,7,8,9,10]
+            current.partNo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
           }
-          current.items = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].itemID;
+          current.items = resp[`Items`];
+          if (resp[`LastEvaluatedKey`] !== undefined) {
+            this.lastEvaluatedKey = resp[`LastEvaluatedKey`].itemID;
 
           } else {
             this.lastEvaluatedKey = '';
@@ -275,82 +276,81 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
   }
 
   hideShowColumn() {
-    //for headers
-    if(this.hideShow.part == false) {
-      $('.col1').css('display','none');
+    // for headers
+    if(this.hideShow.part === false) {
+      $('.col1').css('display', 'none');
     } else {
-      $('.col1').css('display','');
+      $('.col1').css('display', '');
     }
 
-    if(this.hideShow.name == false) {
-      $('.col2').css('display','none');
+    if(this.hideShow.name === false) {
+      $('.col2').css('display', 'none');
     } else {
-      $('.col2').css('display','');
+      $('.col2').css('display', '');
     }
 
-    if(this.hideShow.category == false) {
-      $('.col3').css('display','none');
+    if(this.hideShow.category === false) {
+      $('.col3').css('display', 'none');
     } else {
-      $('.col3').css('display','');
+      $('.col3').css('display', '');
     }
 
-    if(this.hideShow.vendor == false) {
-      $('.col4').css('display','none');
+    if(this.hideShow.vendor === false) {
+      $('.col4').css('display', 'none');
     } else {
-      $('.col4').css('display','');
+      $('.col4').css('display', '');
     }
 
-    if(this.hideShow.quantity == false) {
-      $('.col5').css('display','none');
+    if(this.hideShow.quantity === false) {
+      $('.col5').css('display', 'none');
     } else {
-      $('.col5').css('display','');
+      $('.col5').css('display', '');
     }
 
-    if(this.hideShow.onHand == false) {
-      $('.col6').css('display','none');
+    if(this.hideShow.onHand === false) {
+      $('.col6').css('display', 'none');
     } else {
-      $('.col6').css('display','');
+      $('.col6').css('display', '');
     }
 
-    if(this.hideShow.unitCost == false) {
-      $('.col7').css('display','none');
+    if(this.hideShow.unitCost === false) {
+      $('.col7').css('display', 'none');
     } else {
-      $('.col7').css('display','');
+      $('.col7').css('display', '');
     }
 
-    if(this.hideShow.warehouse == false) {
-      $('.col8').css('display','none');
+    if(this.hideShow.warehouse === false) {
+      $('.col8').css('display', 'none');
     } else {
-      $('.col8').css('display','');
+      $('.col8').css('display', '');
     }
 
-    //extra columns
-    if(this.hideShow.warranty == false) {
-      $('.col9').css('display','none');
-    } else { 
+    // extra columns
+    if(this.hideShow.warranty === false) {
+      $('.col9').css('display', 'none');
+    } else {
       $('.col9').removeClass('extra');
-      $('.col9').css('display','');
+      $('.col9').css('display', '');
     }
 
-    if(this.hideShow.reorderPoint == false) {
-      $('.col10').css('display','none');
-    } else { 
+    if(this.hideShow.reorderPoint === false) {
+      $('.col10').css('display', 'none');
+    } else {
       $('.col10').removeClass('extra');
-      $('.col10').css('display','');
+      $('.col10').css('display', '');
     }
 
-    if(this.hideShow.reorderQuantity == false) {
-      $('.col11').css('display','none');
-    } else { 
+    if(this.hideShow.reorderQuantity === false) {
+      $('.col11').css('display', 'none');
+    } else {
       $('.col11').removeClass('extra');
-      $('.col11').css('display','');
+      $('.col11').css('display', '');
     }
-    
-    if(this.hideShow.preferredVendor == false) {
-      $('.col12').css('display','none');
-    } else { 
+    if(this.hideShow.preferredVendor === false) {
+      $('.col12').css('display', 'none');
+    } else {
       $('.col12').removeClass('extra');
-      $('.col12').css('display','');
+      $('.col12').css('display', '');
     }
   }
 
@@ -384,34 +384,31 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
 
   addInventory(partData) {
     this.apiService.getData('items/partNumber/details/'+partData.partNumber).subscribe((result: any) => {
-      let data = result.Items[0];
+      const data = result.Items[0];
       this.itemPrevData = result.Items[0];
-      let actualQuantity = result.Items[0].quantity;
-      this.itemDetail['itemID'] = data.itemID;
-      this.itemDetail['reqItemID'] = partData.itemID;
-      this.itemDetail['partNumber'] = data.partNumber;
-      this.itemDetail['itemName'] = data.itemName;
-      this.itemDetail['prevQuantity'] = data.quantity;
-      this.itemDetail['reqQuantity'] = partData.quantity;
-      this.itemDetail['totalQuantity'] = partData.quantity + data.quantity;
-      this.itemPrevData['quantity'] = this.itemDetail['totalQuantity'];
-
-      if(actualQuantity > 0) {
-        $("#existingInvModal").modal('show');  
+      const actualQuantity = result.Items[0].quantity;
+      this.itemDetail.itemID = data.itemID;
+      this.itemDetail.reqItemID = partData.itemID;
+      this.itemDetail.partNumber = data.partNumber;
+      this.itemDetail.itemName = data.itemName;
+      this.itemDetail.prevQuantity = data.quantity;
+      this.itemDetail.reqQuantity = partData.quantity;
+      this.itemDetail.totalQuantity = partData.quantity + data.quantity;
+      this.itemPrevData.quantity = this.itemDetail.totalQuantity;
+      if (actualQuantity > 0) {
+        $('#existingInvModal').modal('show');
       } else {
-        this.updateItem(this.itemDetail['reqItemID']);
+        this.updateItem(this.itemDetail.reqItemID);
       }
-      
     });
   }
 
   updateItem(reqItemID) {
-    this.apiService.putData("items/update/item", this.itemPrevData).subscribe({
+    this.apiService.putData('items/update/item', this.itemPrevData).subscribe({
       complete: () => { },
       error: (err) => { },
       next: (res) => {
-        $("#existingInvModal").modal('hide');
-
+        $('#existingInvModal').modal('hide');
         this.apiService.deleteData(`requiredItems/${reqItemID}`).subscribe((result: any) => {
           this.requiredItems = [];
           this.fetchRequiredItems();

@@ -5,30 +5,36 @@ import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
-import * as moment from "moment";
+import { Router } from '@angular/router';
+import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-incident',
   templateUrl: './add-incident.component.html',
-  styleUrls: ['./add-incident.component.css'] 
+  styleUrls: ['./add-incident.component.css']
 })
 export class AddIncidentComponent implements OnInit {
 
     errors = {};
     event = {
         eventDate: '',
-        date: <any>'',
+        date: '',
         eventTime: '',
         location: '',
         documentID: [],
+        vehicleID: '',
+        tripID: '',
         incidentVideodocumentID: [],
         eventType: 'incident',
         modeOfOrign: 'manual',
-        coachingStatus: 'open'
+        coachingStatus: 'open',
+        driverUsername: '',
+        severity: '',
+        criticalityType: '',
+        remarks: '',
+        assignedUsername: ''
     };
     carrierID = '';
     selectedFiles: FileList;
@@ -73,10 +79,10 @@ export class AddIncidentComponent implements OnInit {
     uploadedVideos = [];
     uploadedDocs = [];
 
-    constructor(private apiService: ApiService, private awsUS: AwsUploadService,private toastr: ToastrService, 
-        private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) { 
-
-        this.selectedFileNames = new Map<any, any>();
+    constructor(private apiService: ApiService, private toastr: ToastrService,
+                private spinner: NgxSpinnerService,
+                private router: Router, private hereMap: HereMapService) {
+                this.selectedFileNames = new Map<any, any>();
     }
 
     ngOnInit() {
@@ -100,9 +106,9 @@ export class AddIncidentComponent implements OnInit {
             result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == 0) {
+                if (element.isDeleted === 0) {
                     this.drivers.push(element);
-                }   
+                }
             }
         })
     }
@@ -110,8 +116,6 @@ export class AddIncidentComponent implements OnInit {
     fetchUsers() {
         this.apiService.getData('users/fetch/records')
         .subscribe((result: any) => {
-            console.log('users');
-            console.log(result.Items)
             result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
             this.users = result.Items;
         })
@@ -122,9 +126,9 @@ export class AddIncidentComponent implements OnInit {
         .subscribe((result: any) => {
             for (let i = 0; i < result.Items.length; i++) {
                 const element = result.Items[i];
-                if(element.isDeleted == 0) {
+                if(element.isDeleted === 0) {
                     this.trips.push(element);
-                }   
+                }
             }
         })
     }
@@ -132,12 +136,11 @@ export class AddIncidentComponent implements OnInit {
     addEvent() {
         this.spinner.show();
         this.hideErrors();
-
         let timestamp;
-        let fdate = this.event.eventDate.split('-');
-        let date = fdate[2]+'-'+fdate[1]+'-'+fdate[0];
-        timestamp = moment(date+' '+ this.event.eventTime).format("X");
-        this.event.date = timestamp*1000;
+        const fdate = this.event.eventDate.split('-');
+        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
+        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
+        this.event.date = (timestamp * 1000).toString();
 
         this.event.documentID = this.uploadedDocs;
         this.event.incidentVideodocumentID = this.uploadedVideos;
@@ -145,17 +148,17 @@ export class AddIncidentComponent implements OnInit {
         // create form data instance
         const formData = new FormData();
 
-        //append videos if any
+        // append videos if any
         for(let i = 0; i < this.uploadedVideos.length; i++){
             formData.append('uploadedVideos', this.uploadedVideos[i]);
         }
 
-        //append docs if any
+        // append docs if any
         for(let j = 0; j < this.uploadedDocs.length; j++){
             formData.append('uploadedDocs', this.uploadedDocs[j]);
         }
 
-        //append other fields
+        // append other fields
         formData.append('data', JSON.stringify(this.event));
 
         this.apiService.postData('safety/eventLogs', formData, true).subscribe({
@@ -188,7 +191,6 @@ export class AddIncidentComponent implements OnInit {
     }
 
     throwErrors() {
-        console.log(this.errors);
         from(Object.keys(this.errors))
           .subscribe((v) => {
             $('[name="' + v + '"]')
@@ -207,14 +209,12 @@ export class AddIncidentComponent implements OnInit {
         });
         this.errors = {};
     }
-    
+
     public searchLocation() {
-        let target;
         this.searchTerm.pipe(
           map((e: any) => {
             $('.map-search__results').hide();
             $(e.target).closest('div').addClass('show-search__result');
-            target = e;
             return e.target.value;
           }),
           debounceTime(400),

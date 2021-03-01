@@ -6,10 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import constants from '../../../constants';
 declare var $: any;
-
-
 @Component({
   selector: 'app-add-reminder',
   templateUrl: './add-reminder.component.html',
@@ -19,30 +17,39 @@ export class AddReminderComponent implements OnInit {
   reminderID;
   pageTitle;
   reminderData = {
-    reminderType: 'service',
+    reminderIdentification: '',
+    reminderType: constants.REMINDER_SERVICE,
     reminderTasks: {
+      task: '',
       remindByDays: 0,
+      odometer: 0,
     },
     subscribers: [],
+    sendEmail: false
   };
   numberOfDays: number;
   time = 1;
   timeType = 'Day(s)';
   serviceTask = {
-    taskType: 'service'
+    taskType: constants.TASK_SERVICE,
+    taskName: '',
+    description: ''
   };
   vehicles = [];
   users = [];
   groups = [];
   groupData = {
-    groupType : 'users'
+    groupName: '',
+    groupType : constants.GROUP_USERS,
+    description: '',
+    groupMembers: []
   };
   finalSubscribers = [];
   serviceTasks = [];
   serviceForm;
   errors = {};
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -71,12 +78,11 @@ export class AddReminderComponent implements OnInit {
   }
   fetchServiceTaks() {
     let test = [];
-    let taskType = 'service';
     this.apiService.getData('tasks').subscribe((result: any) => {
       // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
-    });    
+    });
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -106,14 +112,14 @@ export class AddReminderComponent implements OnInit {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
         this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData[`reminderType`] = result.reminderType;
-        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
-        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
-        this.reminderData[`reminderTasks`][`odometer`] = result.reminderTasks.odometer;
+        this.reminderData.reminderType = result.reminderType;
+        this.reminderData.reminderIdentification = result.reminderIdentification;
+        this.reminderData.reminderTasks.task = result.reminderTasks.task;
+        this.reminderData.reminderTasks.odometer = result.reminderTasks.odometer;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
-        this.reminderData[`sendEmail`] = result.sendEmail;
-        this.reminderData[`subscribers`] = this.test;
+        this.reminderData.sendEmail = result.sendEmail;
+        this.reminderData.subscribers = this.test;
       });
 
   }
@@ -166,9 +172,9 @@ export class AddReminderComponent implements OnInit {
             break;
           }
       }
-      
+
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);    
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -190,11 +196,21 @@ export class AddReminderComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.toastr.success('Reminder added successfully');
-          this.router.navigateByUrl('/fleet/reminders/service-reminder/list');
+          this.cancel();
+          this.reminderData = {
+            reminderIdentification: '',
+            reminderType: constants.REMINDER_SERVICE,
+            reminderTasks: {
+              task: '',
+              remindByDays: 0,
+              odometer: 0,
+            },
+            subscribers: [],
+            sendEmail: false
+          };
         },
       });
-    }
-    else {
+    } else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }
@@ -208,7 +224,7 @@ export class AddReminderComponent implements OnInit {
       });
     // this.vehicleForm.showErrors(this.errors);
   }
-  
+
   hideErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -249,7 +265,7 @@ export class AddReminderComponent implements OnInit {
       }
 
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);      
+      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -271,12 +287,22 @@ export class AddReminderComponent implements OnInit {
         next: (res) => {
           this.response = res;
           this.toastr.success('Reminder Updated Successfully');
-          this.router.navigateByUrl('/fleet/reminders/service-reminder/list');
           this.Success = '';
+          this.cancel();
+          this.reminderData = {
+            reminderIdentification: '',
+            reminderType: constants.REMINDER_SERVICE,
+            reminderTasks: {
+              task: '',
+              remindByDays: 0,
+              odometer: 0,
+            },
+            subscribers: [],
+            sendEmail: false
+          };
         },
       });
-    }
-    else {
+    } else {
       this.toastr.warning('Time Must Be Positive Value');
     }
   }
@@ -337,8 +363,7 @@ export class AddReminderComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
-      this.fetchGroups();
-
+        this.fetchGroups();
       },
     });
   }
