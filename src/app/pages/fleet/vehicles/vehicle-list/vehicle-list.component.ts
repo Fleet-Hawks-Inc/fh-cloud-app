@@ -1,23 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject,timer } from 'rxjs';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import { HereMapService } from '../../../../services';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css'],
 })
-export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class VehicleListComponent implements OnInit {
 
   title = 'Vehicle List';
   vehicles = [];
@@ -63,8 +56,14 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     fuelUnit: false,
   }
 
+  vehicleNext = false;
+  vehiclePrev = true;
+  vehicleDraw = 0;
+  vehiclePrevEvauatedKeys = [''];
+  vehicleStartPoint = 1;
+  vehicleEndPoint = this.pageLength;
 
-  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService) {}
+  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -174,69 +173,81 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
     $('.buttons-excel').trigger('click');
   }
 
+  // initDataTable() {
+  //   let current = this;
+  //   this.dtOptions = { // All list options
+  //     pagingType: 'full_numbers',
+  //     pageLength: this.pageLength,
+  //     serverSide: true,
+  //     processing: true,
+  //     order: [],
+  //     columnDefs: [ //sortable false
+  //       { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "orderable": false },
+  //     ],
+  //     dom: 'lrtip',
+  //     language: {
+  //       "emptyTable": "No records found"
+  //     },
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       current.apiService.getDatatablePostData('vehicles/fetch-records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
+  //         current.vehicles = resp['Items'];
+  //         if (resp['LastEvaluatedKey'] !== undefined) {
+  //           this.lastEvaluatedKey = resp['LastEvaluatedKey'].vehicleID;
+
+  //         } else {
+  //           this.lastEvaluatedKey = '';
+  //         }
+
+  //         callback({
+  //           recordsTotal: current.totalRecords,
+  //           recordsFiltered: current.totalRecords,
+  //           data: []
+  //         });
+  //       });
+  //     }
+  //   };
+  // }
+
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('vehicles/fetch-records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.vehicles = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].vehicleID;
+    this.spinner.show();
+    this.apiService.getData('vehicles/fetch/records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.vehicles = result['Items'];
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if(this.vehicleID != '') {
+          this.vehicleStartPoint = this.totalRecords;
+          this.vehicleEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.vehicleNext = false;
+          // for prev button
+          if (!this.vehiclePrevEvauatedKeys.includes(result['LastEvaluatedKey'].vehicleID)) {
+            this.vehiclePrevEvauatedKeys.push(result['LastEvaluatedKey'].vehicleID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].vehicleID;
+          
+        } else {
+          this.vehicleNext = true;
+          this.lastEvaluatedKey = '';
+          this.vehicleEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.vehicleDraw > 0) {
+          this.vehiclePrev = false;
+        } else {
+          this.vehiclePrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if (this.vehicleID !== '' || this.currentStatus !== '') {
       this.vehicles = [];
       this.fetchVehiclesCount();
-      this.rerender('reset');
+      // this.rerender('reset');
     } else {
       return false;
     }
@@ -249,7 +260,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.currentStatus = '';
       this.vehicles = [];
       this.fetchVehiclesCount();
-      this.rerender();
+      // this.rerender();
     } else {
       return false;
     }
@@ -263,7 +274,7 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
 
         this.vehicles = [];
         this.fetchVehiclesCount();
-        this.rerender();
+        // this.rerender();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
@@ -399,5 +410,25 @@ export class VehicleListComponent implements AfterViewInit, OnDestroy, OnInit {
       $('.col20').removeClass('extra');
       $('.col20').css('display','');
     }
+  }
+
+  getStartandEndVal() {
+    this.vehicleStartPoint = this.vehicleDraw * this.pageLength + 1;
+    this.vehicleEndPoint = this.vehicleStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.vehicleDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.vehicleDraw -= 1;
+    this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
   }
 }
