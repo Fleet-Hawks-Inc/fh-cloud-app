@@ -264,7 +264,6 @@ export class NewAceManifestComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('assets', this.assets);
     });
   }
   /***
@@ -273,8 +272,13 @@ export class NewAceManifestComponent implements OnInit {
  async getBorderAssetTypes(e) {
     const assetID = e;
     let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
-    this.borderAssetTypes = resultData.Items;
+    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border asset types are fetched whose parent is asset type of selected asset
+    if (resultData.Items.length > 0) {// if parent asset type exists
+      this.borderAssetTypes = resultData.Items;
+    } else {
+      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
+      this.borderAssetTypes = fetchedBorderAssets.Items;
+    }
   }
   getStates() {
     this.apiService
