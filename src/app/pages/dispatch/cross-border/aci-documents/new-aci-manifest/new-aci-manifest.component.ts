@@ -9,7 +9,7 @@ import {
 } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ListService } from '../../../../../services';
 
@@ -89,6 +89,7 @@ export class NewAciManifestComponent implements OnInit {
   trailers = [
     {
       assetID: '',
+      assetTypeCode: '',
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -153,6 +154,7 @@ export class NewAciManifestComponent implements OnInit {
       ],
     },
   ];
+  borderAssetTypes = [];
   packagingUnitsList: any = [];
   loadedType = 'TRAILER';
   containerLoaded = 'TRAILER';
@@ -326,7 +328,15 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
-
+ /***
+   * fetch asset types from mapped table
+   */
+  async getBorderAssetTypes(e) {
+    const assetID = e;
+    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
+    this.borderAssetTypes = resultData.Items;
+  }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -360,6 +370,7 @@ export class NewAciManifestComponent implements OnInit {
   addTrailer() {
     this.trailers.push({
       assetID: '',
+      assetTypeCode: '',
       cargoExemptions: [],
       sealNumbers: [{ sealNumber: '' }],
     });
