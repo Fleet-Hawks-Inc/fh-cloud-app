@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
-import { Router } from '@angular/router';
-import { timer } from 'rxjs';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
@@ -27,8 +23,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   dtTrigger: Subject<any> = new Subject();
 
   title = 'Fuel Entries List';
-  // fromDate: NgbDateStruct;
-  // toDate: NgbDateStruct;
   fromDate: any = '';
   toDate: any = '';
   entryId = '';
@@ -63,8 +57,6 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
 
   constructor(
     private apiService: ApiService,
-    private route: Router,
-    private spinner: NgxSpinnerService,
     private toastr: ToastrService) {
   }
   ngOnInit() {
@@ -156,12 +148,12 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   //     error: () => { },
   //     next: (result: any) => {
   //       this.spinner.hide(); // loader hide
-  //       // this.fuelList = result.Items; 
+  //       // this.fuelList = result.Items;
   //       this.totalRecords = result.Count;
   //     },
   //   });
   //   this.unitID = '';
-  // } 
+  // }
 
   fuelEntriesCount() {
     this.apiService.getData('fuelEntries/get/count?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
@@ -181,7 +173,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
     };
     return;
   }
- 
+
   deleteFuelEntry(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
@@ -204,12 +196,12 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       serverSide: true,
       processing: true,
       order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], "orderable": false },
+      columnDefs: [ // sortable false
+        { 'targets': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'orderable': false },
       ],
       dom: 'lrtip',
       language: {
-        "emptyTable": "No records found"
+        'emptyTable': 'No records found'
       },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
@@ -279,7 +271,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.unitName = '';
       this.start = '';
       this.end = '';
-      
+
       this.fuelList = [];
       this.fuelEntriesCount();
       this.rerender();

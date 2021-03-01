@@ -100,7 +100,6 @@ export class AceDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
       });
   }
-
   setStatus(entryID, val) {
     this.apiService.getData('ACEeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');

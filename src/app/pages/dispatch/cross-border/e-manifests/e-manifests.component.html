@@ -232,9 +232,8 @@
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
-                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1" *ngIf="aceManifest.currentStatus != 'Queued'">Edit</a>
-                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)"  *ngIf="aceManifest.currentStatus != 'Queued'">Delete</button>
-                                              <button type="button" class="dropdown-item text-1"   *ngIf="aceManifest.currentStatus == 'Queued'">File is transmitted</button>
+                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1">Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)"  >Delete</button>
                                           </div>
                                         </div></td>
                                     </tr>
@@ -279,14 +278,22 @@
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shippersList[shipment.shipperID]}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="badge badge-dark p-1">{{aciManifest.currentStatus}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="statusBtn"
+                                        [ngClass]="[(aciManifest.currentStatus =='Cancelled Manifest') ? 'ACIcancelBtn' :
+                                        (aciManifest.currentStatus =='Transmitted to CBSA') ? 'ACItransmittedBtn' :
+                                        (aciManifest.currentStatus =='On File with CBSA') ? 'ACIonFileCBSABtn' :
+                                        (aciManifest.currentStatus =='Released') ? 'ACIReleasedBtn' :
+                                        (aciManifest.currentStatus =='CBSA Returned Error') ? 'CBSAReturnedErrorBtn' :
+                                        (aciManifest.currentStatus =='On File with Match Notice') ? 'ACIMatchNoticeBtn' :
+                                        (aciManifest.currentStatus =='On File with Transaction Number(s)') ? 'ACIOnFileTransactionBtn' :
+                                        (aciManifest.currentStatus =='Arrival Reported at Border') ? 'ACIArrivalBorderBtn' :
+                                        (aciManifest.currentStatus =='Rejected After Arrival at Border') ? 'ACIRejectedAtBorderBtn' :
+                                          'ACIdraftBtn']">{{aciManifest.currentStatus}}</span></td>
                                        <td><div class="btn-group flex-wrap">
                                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                           <div class="dropdown-menu" role="menu">
-                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" *ngIf="aciManifest.currentStatus != 'Queued'">Edit</a>
-                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)" *ngIf="aciManifest.currentStatus != 'Queued'">Delete</button>
-                                              <button type="button" class="dropdown-item text-1"  *ngIf="aciManifest.currentStatus == 'Queued'">File is transmitted</button>
-
+                                             <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)" >Delete</button>
                                           </div>
                                         </div></td>
                                     </tr>

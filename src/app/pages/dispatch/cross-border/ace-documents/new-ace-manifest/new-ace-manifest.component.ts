@@ -54,6 +54,7 @@ export class NewAceManifestComponent implements OnInit {
   trailers = [
     {
       assetID: '',
+      assetTypeCode: '',
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -80,7 +81,7 @@ export class NewAceManifestComponent implements OnInit {
   shipmentTypeList: any = [];
   brokersList: any = [];
   timeList: any = [];
-  tripNumber: string = '';
+  tripNumber = '';
   SCAC: string;
   shipmentControlNumber: string;
   currentStatus: string;
@@ -154,6 +155,7 @@ export class NewAceManifestComponent implements OnInit {
     state: '',
     zipCode: '',
   };
+  borderAssetTypes = [];
   /**
    * for front end validation of US address
    */
@@ -190,7 +192,7 @@ export class NewAceManifestComponent implements OnInit {
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
       this.route.queryParams.subscribe((params) => {
-        if(params.amendManifest != undefined){
+        if(params.amendManifest !== undefined){
           this.amendManifest = params.amendManifest; // to get query parameter amend
         }
        });
@@ -262,7 +264,17 @@ export class NewAceManifestComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
+      console.log('assets', this.assets);
     });
+  }
+  /***
+   * fetch asset types from mapped table
+   */
+ async getBorderAssetTypes(e) {
+    const assetID = e;
+    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
+    this.borderAssetTypes = resultData.Items;
   }
   getStates() {
     this.apiService
@@ -354,6 +366,7 @@ export class NewAceManifestComponent implements OnInit {
   addTrailer() {
     this.trailers.push({
       assetID: '',
+      assetTypeCode: '',
       sealNumbers: [
         { sealNumber: '' },
         { sealNumber: '' },
@@ -547,12 +560,12 @@ export class NewAceManifestComponent implements OnInit {
       } else {
         this.errorClassCity = false;
       }
-      if (this.usAddress.addressLine == '') {
+      if (this.usAddress.addressLine === '') {
         this.errorClassAddress = true;
       } else {
         this.errorClassAddress = false;
       }
-      if (this.usAddress.zipCode == '') {
+      if (this.usAddress.zipCode === '') {
         this.errorClassZip = true;
       } else {
         this.errorClassZip = false;
@@ -634,8 +647,7 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('ACEeManifest/' + this.entryID)
-      .subscribe((result: any) => {
+      .getData('ACEeManifest/' + this.entryID).subscribe((result: any) => {
         result = result.Items[0];
         this.entryID = this.entryID;
         this.sendId = result.sendId;
@@ -651,12 +663,12 @@ export class NewAceManifestComponent implements OnInit {
         this.trailers = result.trailers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
-        this.currentStatus = result.currentStatus,
-          this.usAddress[`addressLine`] = result.usAddress.addressLine,
-          this.usAddress[`state`] = result.usAddress.state,
-          this.usAddress[`city`] = result.usAddress.city,
-          this.usAddress[`zipCode`] = result.usAddress.zipCode,
-          setTimeout(() => {
+        this.currentStatus = result.currentStatus;
+        this.usAddress.addressLine = result.usAddress.addressLine;
+        this.usAddress.state = result.usAddress.state;
+        this.usAddress.city = result.usAddress.city;
+        this.usAddress.zipCode = result.usAddress.zipCode;
+        setTimeout(() => {
             this.getStates();
             this.getAddressCities();
           }, 2000);

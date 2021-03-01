@@ -1,19 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { AfterViewInit, OnDestroy, ViewChild } from "@angular/core";
-import { ApiService } from "../../../../services";
-import { Router } from "@angular/router";
-import { DataTableDirective } from "angular-datatables";
-import { Subject, timer } from "rxjs";
-import { ToastrService } from "ngx-toastr";
-import { NgxSpinnerService } from "ngx-spinner";
-import { QueryList, ViewChildren } from "@angular/core";
-import * as moment from "moment";
+import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, OnDestroy } from '@angular/core';
+import { ApiService } from '../../../../services';
+import { Router } from '@angular/router';
+import { DataTableDirective } from 'angular-datatables';
+import { Subject, timer } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { QueryList, ViewChildren } from '@angular/core';
+import * as moment from 'moment';
 
 declare var $: any;
 @Component({
-  selector: "app-e-manifests",
-  templateUrl: "./e-manifests.component.html",
-  styleUrls: ["./e-manifests.component.css"],
+  selector: 'app-e-manifests',
+  templateUrl: './e-manifests.component.html',
+  styleUrls: ['./e-manifests.component.css'],
 })
 export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChildren(DataTableDirective)
@@ -27,20 +27,20 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   dtOptionsACI: any = {};
   dtTriggerACI: Subject<any> = new Subject();
 
-  activeDiv = "ace";
+  activeDiv = 'ace';
   countries = [];
   ACEList = [];
   ACIList = [];
-  aceSearch: string = "";
-  aciSearch: string = "";
-  vehicleID: string = "";
+  aceSearch = '';
+  aciSearch = '';
+  vehicleID = '';
   vehicleIdentification: string;
-  currentStatus = "";
+  currentStatus = '';
   suggestedVehicles = [];
-  vehicleIDACI: string = "";
+  vehicleIDACI = '';
   vehicleIdentificationACI: string;
   suggestedVehiclesACI = [];
-  currentStatusACI = "";
+  currentStatusACI = '';
   vehicles = [];
   vehiclesList: any = {};
   assetsList: any = {};
@@ -66,7 +66,6 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   toDate = '';
   constructor(
     private apiService: ApiService,
-    private route: Router,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService
   ) {}
@@ -88,8 +87,8 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVehicles = result.Items;
-        if (this.suggestedVehicles.length == 0) {
-          this.vehicleID = "";
+        if (this.suggestedVehicles.length === 0) {
+          this.vehicleID = '';
         }
       });
   }
@@ -104,7 +103,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVehiclesACI = result.Items;
-        if (this.suggestedVehiclesACI.length == 0) {
+        if (this.suggestedVehiclesACI.length === 0) {
           this.vehicleIDACI = '';
         }
       });
@@ -166,10 +165,10 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       processing: true,
       order: [],
       columnDefs: [
-        //sortable false
+        // sortable false
         { targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], orderable: false },
       ],
-      dom: "lrtip",
+      dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService
           .getDatatablePostData(
@@ -227,24 +226,11 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       this.fromDate !== '' ||
       this.toDate !== ''
     ) {
-      // if (this.startDate !== '') {
-      //   this.fromDate = moment(this.startDate, 'DD-MM-YYYY').format(
-      //     'YYYY-MM-DD'
-      //   );
-      // } else {
-      //   this.fromDate = this.startDate;
-      // }
-      // if (this.endDate !== '') {
-      //   this.toDate = moment(this.endDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
-      // } else {
-      //   this.toDate = this.endDate;
-      // }
 
       this.rerender('reset');
     } else {
       return false;
     }
-    // console.log('fromdate', this.fromDate, 'to date', this.toDate);
   }
 
   resetACEFilter() {
@@ -281,10 +267,10 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       dtElement.dtInstance.then((dtInstance: any) => {
         let tableId = dtInstance.table().node().id;
         if (this.activeDiv == tableId) {
-          if (tableId == "ace") {
+          if (tableId == 'ace') {
             // Destroy the table first
             dtInstance.destroy();
-            if (status === "reset") {
+            if (status === 'reset') {
               this.dtOptions.pageLength = this.totalRecords;
             } else {
               this.dtOptions.pageLength = 10;
@@ -294,7 +280,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
           } else {
             // Destroy the table first
             dtInstance.destroy();
-            if (status === "reset") {
+            if (status === 'reset') {
               this.dtOptionsACI.pageLength = this.totalACIRecords;
             } else {
               this.dtOptionsACI.pageLength = 10;
@@ -311,7 +297,7 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
   ACIEntries() {
     // this.activeDiv = 'aci';
     this.spinner.show(); // loader init
-    this.apiService.getData("ACIeManifest").subscribe({
+    this.apiService.getData('ACIeManifest').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -325,16 +311,16 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
     let current = this;
     this.dtOptionsACI = {
       // All list options
-      pagingType: "full_numbers",
+      pagingType: 'full_numbers',
       pageLength: this.pageLengthACI,
       serverSide: true,
       processing: true,
       order: [],
       columnDefs: [
-        //sortable false
+        // sortable false
         { targets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], orderable: false },
       ],
-      dom: "lrtip",
+      dom: 'lrtip',
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService
           .getDatatablePostData(
@@ -357,7 +343,6 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
             } else {
               this.lastEvaluatedKeyACI = '';
             }
-
             callback({
               recordsTotal: current.totalACIRecords,
               recordsFiltered: current.totalACIRecords,
@@ -422,21 +407,4 @@ export class EManifestsComponent implements AfterViewInit, OnDestroy, OnInit {
       $('#aci-emanifest').show();
     }
   }
-   /***
-    * change class of status dynamically
-    */
-   changeClass(manifestStatus){
-  //   switch(manifestStatus) {
-  //     case 'Cancelled Manifest': {
-  //        console.log('hello') ;
-  //        break;
-  //     }
-  //     default: {
-  //        console.log('default view');
-  //        break;
-  //     }
-  //  }
-  return 'redBtn';
-   }
-   manifestClass = 'statusBtn';
 }

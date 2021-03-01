@@ -1010,8 +1010,9 @@
                     <table class="table table-bordered table-responsive-lg">
                       <thead>
                         <tr>
-                          <th width="25%">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                          <th width="40%">Seal Numbers&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                          <th width="15%">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                          <th width="20%">Asset Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                          <th width="30%">Seal Numbers&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                           </th>
                           <th width="30%">Add IIT or Exemption&nbsp; <span
                               class="text-1 optional-label-color">(optional)</span></th>
@@ -1023,17 +1024,25 @@
                           <td>
                             <div class="row">
                               <div class="col-lg-12">
-                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}"
+                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}" (change)="getBorderAssetTypes($event)"
                                   [attr.name]="'trailers['+t+'].assetID'">
                                   <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
                                     {{asset.assetIdentification}}</ng-option>
                                 </ng-select>
                               </div>
-                              <!-- <div class="col-lg-2">
-                                                <a href="#addAssetModal"
-                                                   class="modal-with-form btn btn-sm btn-success"><i
-                                                      class="fas fa-plus"></i></a>
-                                             </div> -->
+                            </div>
+                          </td>
+                          <td>
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <ng-select [(ngModel)]="trailer.assetTypeCode" [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'trailers['+t+'].assetTypeCode'">
+                                    <ng-option *ngFor="let assetType of borderAssetTypes" [value]="assetType.borderAssetTypeCode" >
+                                      {{assetType.borderAssetTypeName}}</ng-option>
+                                      <ng-option  value="OE">Other</ng-option>
+
+                                </ng-select>
+                              </div>
                             </div>
                           </td>
                           <td>
