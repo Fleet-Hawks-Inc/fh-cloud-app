@@ -66,21 +66,21 @@
                                        <div class="col-lg-10">
                                           <label class="control-label  font-weight-bold text-lg-right pt-2">First
                                              Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="firstName"
+                                          <input id="firstName"type="text" class="form-control" [(ngModel)]="firstName"
                                              name="firstName">
 
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label  font-weight-bold text-lg-right pt-2">Last
                                              Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="lastName"
+                                          <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName"
                                              name="lasttName">
 
                                        </div>
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label  font-weight-bold text-lg-right pt-2">Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="phone" name="phone">
+                                          <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone">
                                        </div>
                                     </div>
                                  </div>
@@ -90,14 +90,14 @@
                                        <div class="col-lg-10">
                                           <label class="control-label  font-weight-bold text-lg-right pt-2">Business
                                              Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="carrierBusinessName"
+                                          <input id="bussinesname" type="text" class="form-control" [(ngModel)]="carrierBusinessName"
                                              name="carrierBusinessName">
                                        </div>
                                        <div class="col-lg-2"></div>
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label  font-weight-bold text-lg-right pt-2">Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="email"
+                                          <input id="mail"type="text" class="form-control" [(ngModel)]="email"
                                              name="email">
                                        </div>
                                        <div class="col-lg-2"></div>
@@ -128,7 +128,7 @@
                                        <div class="col-lg-10 form-group">
                                           <label
                                              class="control-label  font-weight-bold text-lg-right pt-2">User Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" class="form-control" [(ngModel)]="userName"  [class.error]='errorClass'
+                                          <input id="un" type="text" class="form-control" [(ngModel)]="userName"  [class.error]='errorClass'
                                              name="userName">
                                        </div>
                                     </div>
@@ -141,7 +141,7 @@
                                        <div class="col-lg-10 form-group">
                                           <label
                                              class="control-label  font-weight-bold text-lg-right pt-2">Password<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="password" class="form-control" [(ngModel)]="password"  [class.error]='errorClass'
+                                          <input id="pd" type="password" class="form-control" [(ngModel)]="password"  [class.error]='errorClass'
                                              name="password">
                                        </div>
                                     </div>
@@ -152,19 +152,19 @@
                                        <div class="col-lg-10 form-group">
                                           <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm
                                              Password<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="password" class="form-control" name="confirmPassword"   [class.error]='errorClass'
+                                          <input id="cnf"type="password" class="form-control" name="confirmPassword"   [class.error]='errorClass'
                                              [(ngModel)]="confirmPassword">
                                        </div>
                                     </div>
 
                                  </div>
-                                 <div *ngIf="errorClass" class="col-lg-10 offset-lg-2 text-danger">Password and Confirm Password must match and can not be empty.</div>
+                                 <div id="errormsg" *ngIf="errorClass" class="col-lg-10 offset-lg-2 text-danger">Password and Confirm Password must match and can not be empty.</div>
 
                               </div>
                               <div class=" row mt-4">
                                  <div class="col-md-10 col-lg-10 text-right">
-                                    <button type="reset" class="btn btn-default mr-1">Reset</button>
-                                    <button type="button" class="btn btn-success" (click)="next()">Next</button>
+                                    <button name="rstbtn" type="reset" class="btn btn-default mr-1">Reset</button>
+                                    <button id='nxt' type="button" class="btn btn-success" (click)="next()">Next</button>
                                  </div>
                               </div>
                            </div>
