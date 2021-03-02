@@ -156,11 +156,12 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   // }
 
   fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
+    this.apiService.getData('fuelEntries/get/count?unitID= ' + this.unitID + '&from=' +  this.start + '&to=' + this.end).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+        console.log('result', result);
       },
     });
   }
@@ -206,6 +207,7 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
           current.fuelList = resp['Items'];
+          console.log('current.fuelList',current.fuelList);
           if (resp['LastEvaluatedKey'] !== undefined) {
             this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
 
