@@ -26,7 +26,6 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
-    entryID: '',
     unitType: 'vehicle',
     unitID: '',
     currency: 'CAD',
@@ -41,7 +40,6 @@ export class AddFuelEntryComponent implements OnInit {
     fuelDate: '',
     fuelTime: '',
     fuelType: '',
-    DEFFuelQtyUnit: '',
     totalLitres: 0,
     countryID: '',
     stateID: '',
@@ -52,15 +50,13 @@ export class AddFuelEntryComponent implements OnInit {
     paidBy: '',
     paymentMode: '',
     fuelCardNumber: '',
-    timeCreated: '',
     reimburseToDriver: false,
     deductFromPay: false,
-    additionalDetails: {
       avgGVW: '',
       odometer: 0,
       description: '',
        uploadedPhotos: [],
-    }
+
   };
 
   fuelQtyUnit = 'litre';
@@ -234,12 +230,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerLitre = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
-
-    // if (this.fuelData.fuelDate !== '') {
-    //   //date in Y-m-d format
-    //   this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
-    // }
-
+   // console.log('fuel data', this.fuelData); return;
       // create form data instance
       const formData = new FormData();
 
@@ -318,14 +309,13 @@ export class AddFuelEntryComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.fuelData.entryID = this.entryID;
+        this.fuelData[`entryID`] = this.entryID;
         this.fuelData.currency = result.currency,
           this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
         this.fuelData.discount = result.discount;
         this.fuelData.totalAmount = result.totalAmount;
@@ -350,14 +340,14 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData.cityID = result.cityID;
         this.fuelData.tripID = result.tripID;
 
-        this.fuelData.additionalDetails.avgGVW = result.additionalDetails.avgGVW;
-        this.fuelData.additionalDetails.odometer = result.additionalDetails.odometer;
-        this.fuelData.additionalDetails.description = result.additionalDetails.description;
-        this.fuelData.additionalDetails.uploadedPhotos = result.additionalDetails.uploadedPhotos;
-        this.fuelData.timeCreated = result.timeCreated;
-        this.existingPhotos = result.additionalDetails.uploadedPhotos;
-        if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        this.fuelData.avgGVW = result.avgGVW;
+        this.fuelData.odometer = result.odometer;
+        this.fuelData.description = result.description;
+        this.fuelData.uploadedPhotos = result.uploadedPhotos;
+        this.fuelData[`timeCreated`] = result.timeCreated;
+        this.existingPhotos = result.uploadedPhotos;
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         setTimeout(() => {
           this.fillCountry();
@@ -365,7 +355,7 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
    deleteImage(i: number) {
-     this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
+     this.fuelData.uploadedPhotos.splice(i, 1);
      this.fuelEntryImages.splice(i, 1);
  }
   updateFuelEntry() {
@@ -376,14 +366,13 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.DEFFuelQty = this.fuelData.DEFFuelQty;
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerLitre = this.fuelData.amountPaid / this.fuelData.totalLitres;
-    }
-    else {
+    } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty / 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty / 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.costPerLitre = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
-     this.fuelData.additionalDetails.uploadedPhotos = this.existingPhotos;
+     this.fuelData.uploadedPhotos = this.existingPhotos;
     if (this.fuelData.fuelDate !== '') {
       //date in Y-m-d format
       this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
