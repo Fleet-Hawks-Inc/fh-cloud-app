@@ -96,7 +96,6 @@ export class ServiceProgramDetailComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/'([^']+)'/)[1];
                 
@@ -203,7 +202,7 @@ export class ServiceProgramDetailComponent implements OnInit {
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();
-      };
+      }
     });
     this.vehicleData = [];
     this.updateServiceProgram();

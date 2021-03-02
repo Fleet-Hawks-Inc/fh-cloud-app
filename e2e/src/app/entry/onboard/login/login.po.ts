@@ -1,9 +1,8 @@
 import { browser, by, element } from 'protractor';
-
-export class AppPage {
+export class LoginPage{
   private credentias = {
-    username: 'param',
-    password: 'FleetHawks@2020'
+    username: 'e2etestcarrier',
+    password: 'FleetHawks@2502'
   };
 
   navigateTo() {
@@ -21,6 +20,7 @@ export class AppPage {
   fillCredentials(credentias: any = this.credentias) {
     element(by.css('[name="username"]')).sendKeys(credentias.username);
     element(by.css('[name="pwd"]')).sendKeys(credentias.password);
-    element(by.css('.btn-primary')).click();
+    element(by.css('[href="#/onboard"]')).click();
   }
 }
+ 

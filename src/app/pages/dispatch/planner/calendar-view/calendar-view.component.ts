@@ -154,7 +154,7 @@ export class CalendarViewComponent implements OnInit {
         // alert('here')
         await this.spinner.show();
         this.assetDataCoDriverUsername = ''; //reset the codriver selected
-        await this.fetchCoDriver($event.driverID);
+        this.fetchCoDriver($event.driverID);
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.assetDataCoDriverUsername = '';
@@ -182,11 +182,12 @@ export class CalendarViewComponent implements OnInit {
     if ($event === undefined) {
       $(".assetClass").removeClass('td_border');
     } else {
+      let arayy = [];
       if (type === 'change') {
         this.tempTextFieldValues.trailer = [];
-
+        arayy = []
         $(".assetClass").removeClass('td_border');
-        let arayy = [];
+        
         for (let i = 0; i < $event.length; i++) {
           const element = $event[i];
 
@@ -199,7 +200,7 @@ export class CalendarViewComponent implements OnInit {
           this.tempTextFieldValues.trailer.push(objj);
         }
       } else {
-        let arayy = [];
+        arayy = [];
         $("#asset_" + $event.assetID).addClass('td_border');
         let objj = {
           id: $event.assetID,
@@ -243,7 +244,6 @@ export class CalendarViewComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/"([^']+)"/)[1];
                 val.message = val.message.replace(/".*"/, 'This Field');
@@ -305,7 +305,7 @@ export class CalendarViewComponent implements OnInit {
 
     const tripResponse = this.apiService.getData('trips');
     const orderResponse = this.apiService.getData('orders');
-    const observables = forkJoin([tripResponse, orderResponse]).subscribe(value => {
+    forkJoin([tripResponse, orderResponse]).subscribe(value => {
       this.orderTripValues(value);
       this.spinner.hide();
     });
@@ -351,7 +351,6 @@ export class CalendarViewComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
               // We Can Use This Method
               const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, 'This Field');

@@ -146,7 +146,6 @@ export class AciDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
-
       });
   }
 

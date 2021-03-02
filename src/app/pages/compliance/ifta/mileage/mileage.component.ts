@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { timer } from 'rxjs';
-import { async } from '@angular/core/testing';
 declare var $: any;
 @Component({
   selector: 'app-mileage',
@@ -61,16 +60,16 @@ export class MileageComponent implements OnInit {
       });
   }
   addIftaAccount() {
-    const data = {
-      baseState : this.baseState,
-      baseCountry: this.baseCountry,
-      accountNumber:  this.accountNumber,
-      signingAuthority: {
-        name: '',
-        phone: '',
-        title: '',
-      }
-    };
+    // const data = {
+    //   baseState : this.baseState,
+    //   baseCountry: this.baseCountry,
+    //   accountNumber:  this.accountNumber,
+    //   signingAuthority: {
+    //     name: '',
+    //     phone: '',
+    //     title: '',
+    //   }
+    // };
   }
   fuelEntries() {
     this.apiService.getData('fuelEntries/group/byunit').subscribe({
