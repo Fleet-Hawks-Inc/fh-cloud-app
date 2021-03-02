@@ -273,7 +273,6 @@ export class DriverDetailComponent implements OnInit {
       this.documentTypeList = data;
      
       this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
-        console.log('ab', a, b)
         return a[b['code']] = b['description'], a;
       }, {});
       

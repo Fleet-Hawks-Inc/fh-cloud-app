@@ -658,7 +658,7 @@ export class AddressBookComponent implements OnInit {
     }
     $('.modal').modal('hide');
     this.userDetailTitle = data.firstName;
-    const modalRef = this.modalService.open(targetModal);
+    this.modalService.open(targetModal);
     this.userDetailData = data;
   }
 
@@ -670,17 +670,8 @@ export class AddressBookComponent implements OnInit {
     data.address[i].userLocation = result.address.label;
     data.address[i].geoCords.lat = result.position.lat;
     data.address[i].geoCords.lng = result.position.lng;
-
-    let countryID = await this.fetchCountriesByName(result.address.countryName);
-    data.address[i].countryID = countryID;
     data.address[i].countryName = result.address.countryName;
-
-    let stateID = await this.fetchStatesByName(result.address.state);
-    data.address[i].stateID = stateID;
     data.address[i].stateName = result.address.state;
-
-    let cityID = await this.fetchCitiesByName(result.address.city);
-    data.address[i].cityID = cityID;
     data.address[i].cityName = result.address.city;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
@@ -688,8 +679,6 @@ export class AddressBookComponent implements OnInit {
     if (result.address.street === undefined) {
       result.address.street = '';
     }
-    data.address[i].zipCode = result.address.postalCode;
-    data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
   }
 
   async fetchCountriesByName(name: string) {
@@ -736,13 +725,11 @@ export class AddressBookComponent implements OnInit {
   }
 
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -765,6 +752,7 @@ export class AddressBookComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
+    this.spinner.show();
 
     for (let i = 0; i < this.customerData.address.length; i++) {
       const element = this.customerData.address[i];
@@ -779,7 +767,7 @@ export class AddressBookComponent implements OnInit {
 
       }
     }
-
+    this.lastEvaluatedKeyCustomer = '';
     // create form data instance
     const formData = new FormData();
 
@@ -804,6 +792,7 @@ export class AddressBookComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
+                this.spinner.hide();
                 this.throwErrors();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
@@ -820,8 +809,9 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.customers = [];
           this.fetchCustomersCount();
+          this.initDataTable();
           this.activeDiv = 'customerTable';
-          // this.rerender();
+          this.spinner.hide();
           this.toastr.success('Customer Added Successfully');
         }
       });
@@ -914,8 +904,10 @@ export class AddressBookComponent implements OnInit {
 
         $('#addCustomerModal').modal('hide');
         this.showMainModal();
-        this.customers = [];
+        // this.customers = [];
         this.activeDiv = 'customerTable';
+        this.fetchCustomersCount();
+        this.initDataTable();
         this.toastr.success('Customer updated successfully');
       },
     });
@@ -952,6 +944,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.brokerData));
 
+    this.lastEvaluatedKeyBroker = '';
     this.apiService.postData('brokers', formData, true).
     subscribe({
       complete: () => { },
@@ -979,6 +972,7 @@ export class AddressBookComponent implements OnInit {
         $('#addBrokerModal').modal('hide');
         this.fetchBrokersCount();
         this.showMainModal();
+        this.initDataTableBroker();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
         this.toastr.success('Broker Added Successfully');
@@ -1003,7 +997,6 @@ export class AddressBookComponent implements OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
 
@@ -1017,6 +1010,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.ownerData));
+    this.lastEvaluatedKeyOperator = '';
 
     this.apiService.postData('ownerOperators', formData, true).
     subscribe({
@@ -1046,6 +1040,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
         this.listService.fetchOwnerOperators();
+        this.initDataTableOperator();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner Operator Added Successfully');
@@ -1119,6 +1114,7 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
+        this.initDataTableOperator();
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner operator updated successfully');
       },
@@ -1189,7 +1185,8 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
-        // this.rerender();
+        this.fetchBrokersCount();
+        this.initDataTableBroker();
         this.toastr.success('Broker updated successfully');
       },
     });
@@ -1225,6 +1222,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.vendorData));
+    this.lastEvaluatedKeyVendor = '';
 
     this.apiService.postData('vendors', formData, true).
       subscribe({
@@ -1256,6 +1254,7 @@ export class AddressBookComponent implements OnInit {
           this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
+          this.initDataTableVendor();
           this.activeDiv = 'vendorTable';
         }
       });
@@ -1325,6 +1324,8 @@ export class AddressBookComponent implements OnInit {
         $('#addVendorModal').modal('hide');
         this.showMainModal();
         this.vendors = [];
+        this.fetchVendorsCount();
+        this.initDataTableVendor();
         this.activeDiv = 'vendorTable';
         this.toastr.success('Vendor updated successfully');
       },
@@ -1362,6 +1363,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.carrierData));
+    this.lastEvaluatedKeyCarrier = '';
 
     this.apiService.postData('externalCarriers', formData, true).
       subscribe({
@@ -1389,6 +1391,7 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           $('#addCarrierModal').modal('hide');
           this.fetchCarriersCount();
+          this.initDataTableCarrier();
           this.showMainModal();
           this.carriers = [];
           this.activeDiv = 'carrierTable';
@@ -1464,7 +1467,8 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.carriers = [];
         this.activeDiv = 'carrierTable';
-        // this.rerender();
+        this.fetchCarriersCount();
+        this.initDataTableCarrier();
         this.toastr.success('Carrier updated successfully');
       },
     });
@@ -1509,6 +1513,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.shipperData));
+    this.lastEvaluatedKeyShipper = '';
 
     this.apiService.postData('shippers', formData, true).
       subscribe({
@@ -1539,6 +1544,7 @@ export class AddressBookComponent implements OnInit {
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
+          this.initDataTableShipper();
           this.activeDiv = 'shipperTable';
           this.toastr.success('Shipper Added Successfully');
 
@@ -1618,6 +1624,8 @@ export class AddressBookComponent implements OnInit {
         $('#addShipperModal').modal('hide');
         this.shippers = [];
         this.showMainModal();
+        this.fetchShippersCount();
+        this.initDataTableShipper();
         this.activeDiv = 'shipperTable';
         this.toastr.success('Shipper updated successfully');
       },
@@ -1656,6 +1664,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.consigneeData));
+    this.lastEvaluatedKeyConsignee = '';
 
     this.apiService.postData('receivers', formData, true).
       subscribe({
@@ -1687,6 +1696,7 @@ export class AddressBookComponent implements OnInit {
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
           this.fetchConsigneeCount();
+          this.initDataTableConsignee();
           this.toastr.success('Consignee Added Successfully');
         }
       });
@@ -1756,6 +1766,8 @@ export class AddressBookComponent implements OnInit {
         $('#addConsigneeModal').modal('hide');
         this.receivers = [];
         this.showMainModal();
+        this.fetchConsigneeCount();
+        this.initDataTableConsignee();
         this.activeDiv = 'consigneeTable';
         this.toastr.success('Consignee updated successfully');
       },
@@ -1792,6 +1804,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.fcCompanyData));
+    this.lastEvaluatedKeyCompany = '';
 
     this.apiService.postData('factoringCompanies', formData, true).
       subscribe({
@@ -1821,6 +1834,7 @@ export class AddressBookComponent implements OnInit {
           this.fetchFcCompaniesCount();
           this.showMainModal();
           this.brokers = [];
+          this.initDataTableCompany();
           this.activeDiv = 'brokerTable';
           this.toastr.success('Company Added Successfully');
         }
@@ -1891,6 +1905,8 @@ export class AddressBookComponent implements OnInit {
         $('#addFCModal').modal('hide');
         this.showMainModal();
         this.fcCompanies = [];
+        this.fetchFcCompaniesCount();
+        this.initDataTableCompany();
         this.activeDiv = 'companyTable';
         this.toastr.success('Company updated successfully');
       },
@@ -1927,6 +1943,7 @@ export class AddressBookComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
+    this.lastEvaluatedKeyStaff = '';
     
     this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
       subscribe({
@@ -1961,6 +1978,7 @@ export class AddressBookComponent implements OnInit {
           this.staffs = [];
           this.fetchStaffsCount();
           this.showMainModal();
+          this.initDataTableStaff();
           this.activeDiv = 'staffTable';
           this.toastr.success('Staff Added Successfully');
         }
@@ -2030,7 +2048,9 @@ export class AddressBookComponent implements OnInit {
 
         $('#addStaffModal').modal('hide');
         this.staffs = [];
+        this.fetchStaffsCount();
         this.showMainModal();
+        this.initDataTableStaff();
         this.activeDiv = 'staffTable';
         this.toastr.success('Staff updated successfully');
       },
@@ -2295,8 +2315,12 @@ export class AddressBookComponent implements OnInit {
         zipCode: entityAddresses[i].zipCode,
         address1: entityAddresses[i].address1,
         address2: entityAddresses[i].address2,
-        userLocation: entityAddresses[i].userLocation
+        userLocation: entityAddresses[i].userLocation,
+        manual: entityAddresses[i].manual
       })
+
+      this.getEditStates(entityAddresses[i].countryID);
+      this.getEditCities(entityAddresses[i].stateID);
     }
     return this.newAddress;
   }
@@ -4157,5 +4181,205 @@ export class AddressBookComponent implements OnInit {
       this.companyStartPoint = this.companyDraw*this.pageLength+1;
       this.companyEndPoint = this.companyStartPoint+this.pageLength-1;
     }
+  }
+
+  manAddress(event, i, type) {
+    console.log('type', type);
+    if(type == 'customer') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.customerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.customerData.address[i].countryID = '';
+        this.customerData.address[i].countryName = '';
+        this.customerData.address[i].stateID = '';
+        this.customerData.address[i].stateName = '';
+        this.customerData.address[i].cityID = '';
+        this.customerData.address[i].cityName = '';
+        this.customerData.address[i].zipCode = '';
+        this.customerData.address[i].address1 = '';
+        this.customerData.address[i].address2 = '';
+        if(this.customerData.address[i].geoCords != undefined){
+          this.customerData.address[i].geoCords.lat = '';
+          this.customerData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'broker') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.brokerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.brokerData.address[i].countryID = '';
+        this.brokerData.address[i].countryName = '';
+        this.brokerData.address[i].stateID = '';
+        this.brokerData.address[i].stateName = '';
+        this.brokerData.address[i].cityID = '';
+        this.brokerData.address[i].cityName = '';
+        this.brokerData.address[i].zipCode = '';
+        this.brokerData.address[i].address1 = '';
+        this.brokerData.address[i].address2 = '';
+        if(this.brokerData.address[i].geoCords != undefined){
+          this.brokerData.address[i].geoCords.lat = '';
+          this.brokerData.address[i].geoCords.lng = '';
+        }
+        
+      }
+    } else if(type == 'vendor') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.vendorData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.vendorData.address[i].countryID = '';
+        this.vendorData.address[i].countryName = '';
+        this.vendorData.address[i].stateID = '';
+        this.vendorData.address[i].stateName = '';
+        this.vendorData.address[i].cityID = '';
+        this.vendorData.address[i].cityName = '';
+        this.vendorData.address[i].zipCode = '';
+        this.vendorData.address[i].address1 = '';
+        this.vendorData.address[i].address2 = '';
+        if(this.vendorData.address[i].geoCords != undefined){
+          this.vendorData.address[i].geoCords.lat = '';
+          this.vendorData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'carrier') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.carrierData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.carrierData.address[i].countryID = '';
+        this.carrierData.address[i].countryName = '';
+        this.carrierData.address[i].stateID = '';
+        this.carrierData.address[i].stateName = '';
+        this.carrierData.address[i].cityID = '';
+        this.carrierData.address[i].cityName = '';
+        this.carrierData.address[i].zipCode = '';
+        this.carrierData.address[i].address1 = '';
+        this.carrierData.address[i].address2 = '';
+        if(this.carrierData.address[i].geoCords != undefined){
+          this.carrierData.address[i].geoCords.lat = '';
+          this.carrierData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'owner') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.ownerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.ownerData.address[i].countryID = '';
+        this.ownerData.address[i].countryName = '';
+        this.ownerData.address[i].stateID = '';
+        this.ownerData.address[i].stateName = '';
+        this.ownerData.address[i].cityID = '';
+        this.ownerData.address[i].cityName = '';
+        this.ownerData.address[i].zipCode = '';
+        this.ownerData.address[i].address1 = '';
+        this.ownerData.address[i].address2 = '';
+        if(this.ownerData.address[i].geoCords != undefined){
+          this.ownerData.address[i].geoCords.lat = '';
+          this.ownerData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'shipper') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipperData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipperData.address[i].countryID = '';
+        this.shipperData.address[i].countryName = '';
+        this.shipperData.address[i].stateID = '';
+        this.shipperData.address[i].stateName = '';
+        this.shipperData.address[i].cityID = '';
+        this.shipperData.address[i].cityName = '';
+        this.shipperData.address[i].zipCode = '';
+        this.shipperData.address[i].address1 = '';
+        this.shipperData.address[i].address2 = '';
+        if(this.shipperData.address[i].geoCords != undefined){
+          this.shipperData.address[i].geoCords.lat = '';
+          this.shipperData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'consignee') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.consigneeData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.consigneeData.address[i].countryID = '';
+        this.consigneeData.address[i].countryName = '';
+        this.consigneeData.address[i].stateID = '';
+        this.consigneeData.address[i].stateName = '';
+        this.consigneeData.address[i].cityID = '';
+        this.consigneeData.address[i].cityName = '';
+        this.consigneeData.address[i].zipCode = '';
+        this.consigneeData.address[i].address1 = '';
+        this.consigneeData.address[i].address2 = '';
+        if(this.consigneeData.address[i].geoCords != undefined){
+          this.consigneeData.address[i].geoCords.lat = '';
+          this.consigneeData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'staff') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.staffData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.staffData.address[i].countryID = '';
+        this.staffData.address[i].countryName = '';
+        this.staffData.address[i].stateID = '';
+        this.staffData.address[i].stateName = '';
+        this.staffData.address[i].cityID = '';
+        this.staffData.address[i].cityName = '';
+        this.staffData.address[i].zipCode = '';
+        this.staffData.address[i].address1 = '';
+        this.staffData.address[i].address2 = '';
+        if(this.staffData.address[i].geoCords != undefined){
+          this.staffData.address[i].geoCords.lat = '';
+          this.staffData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'fcCompany') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.fcCompanyData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.fcCompanyData.address[i].countryID = '';
+        this.fcCompanyData.address[i].countryName = '';
+        this.fcCompanyData.address[i].stateID = '';
+        this.fcCompanyData.address[i].stateName = '';
+        this.fcCompanyData.address[i].cityID = '';
+        this.fcCompanyData.address[i].cityName = '';
+        this.fcCompanyData.address[i].zipCode = '';
+        this.fcCompanyData.address[i].address1 = '';
+        this.fcCompanyData.address[i].address2 = '';
+        if(this.fcCompanyData.address[i].geoCords != undefined){
+          this.fcCompanyData.address[i].geoCords.lat = '';
+          this.fcCompanyData.address[i].geoCords.lng = '';
+        }
+      }
+    }
+  }
+
+  getEditStates(id) {
+    this.apiService.getData('states/country/' + id)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  getEditCities(id) {
+    this.apiService.getData('cities/state/' + id)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
 }

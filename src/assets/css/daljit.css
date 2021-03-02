@@ -665,3 +665,12 @@ label.error {
     color: #fff !important;
     border-color: #C10000 !important;
 }
+.minWidth200 {
+    min-width: 200px;
+}
+.minWidth120 {
+    min-width: 120px;
+}
+.minWidth50 {
+    min-width: 50px;
+}
