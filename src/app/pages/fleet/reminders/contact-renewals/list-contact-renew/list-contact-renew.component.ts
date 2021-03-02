@@ -168,7 +168,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       serverSide: true,
       processing: true,
       order: [],
-      columnDefs: [ //sortable false
+      columnDefs: [ // sortable false
         { "targets": [0], "orderable": false },
         { "targets": [1], "orderable": false },
         { "targets": [2], "orderable": false },
