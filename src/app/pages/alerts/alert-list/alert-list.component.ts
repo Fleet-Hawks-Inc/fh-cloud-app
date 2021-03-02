@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
@@ -65,7 +62,7 @@ export class AlertListComponent implements OnInit {
         this.initDataTable();
       },
       error: () => { },
-      next: (result: any) => {     
+      next: (result: any) => {
         this.alertsList = result.Items;
       },
     });

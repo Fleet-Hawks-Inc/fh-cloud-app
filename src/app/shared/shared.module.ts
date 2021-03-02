@@ -9,13 +9,11 @@ import {HeaderComponent} from './header/header.component';
 import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
 import {AddressBookComponent} from './popups/address-book/address-book.component';
 import { SharedModalsComponent} from './popups/shared-modals/shared-modals.component';
-import {DriverComponent} from './popups/driver/driver.component';
-import {VehicleComponent} from './popups/vehicle/vehicle.component';
 // DataTable
 import { DataTablesModule } from 'angular-datatables';
 import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.component'
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbDate, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
@@ -107,8 +105,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     HeaderComponent,
     FixedRightSidebarComponent,
     AddressBookComponent,
-    DriverComponent,
-    VehicleComponent,
     AddDriverComponent,
     AddServiceProgramComponent,
     AddVehicleNewComponent,
@@ -124,8 +120,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SidebarComponent,
     MultiSidebarComponents,
     HeaderComponent,
-    DriverComponent,
-    VehicleComponent,
     SidebarComponent,
     FixedRightSidebarComponent
   ],

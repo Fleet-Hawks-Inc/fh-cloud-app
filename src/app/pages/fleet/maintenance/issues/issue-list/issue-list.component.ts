@@ -64,7 +64,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-        
+
         this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
@@ -88,7 +88,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
           });
         }
       });
-    if (this.suggestedUnits.length == 0) {
+    if (this.suggestedUnits.length === 0) {
       this.unitID = '';
     }
   }
@@ -107,18 +107,6 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.assetList = result;
     });
   }
-
-  // fetchIssues() {
-  //   this.apiService.getData('issues?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
-  //     complete: () => { },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       // this.issues = result.Items;
-  //       this.totalRecords = result.Count;
-  //     },
-  //   });
-  // }
-
   fetchIssuesCount() {
     this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
       complete: () => {},
@@ -132,7 +120,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteIssue(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`issues/isDeleted/${entryID}/`+1)
+      .getData(`issues/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
         this.fetchIssuesCount();
         this.issues = [];
@@ -141,27 +129,27 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       });
     }
   }
-  
+
   initDataTable() {
-    let current = this;
+    const current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
       pageLength: this.pageLength,
       serverSide: true,
       processing: true,
       order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7], "orderable": false },
+      columnDefs: [ // sortable false
+        { 'targets': [0, 1, 2, 3, 4, 5, 6, 7], 'orderable': false },
       ],
       dom: 'lrtip',
       language: {
-        "emptyTable": "No records found"
+        'emptyTable': 'No records found'
       },
       ajax: (dataTablesParameters: any, callback) => {
         current.apiService.getDatatablePostData('issues/fetchRecords?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.issues = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].issueID;
+          current.issues = resp[`Items`];
+          if (resp[`LastEvaluatedKey`] !== undefined) {
+            this.lastEvaluatedKey = resp[`LastEvaluatedKey`].issueID;
 
           } else {
             this.lastEvaluatedKey = '';

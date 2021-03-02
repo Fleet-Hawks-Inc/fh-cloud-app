@@ -4,12 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../../services';
-import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter,  NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { ListService } from '../../../../../services/list.service'
 declare var $: any;
 
 @Component({
@@ -18,17 +17,17 @@ declare var $: any;
   styleUrls: ['./add-service.component.css']
 })
 export class AddServiceComponent implements OnInit {
-  private groups;
-  private vendors;
+  groups;
+  vendors;
   vehicles;
   assets;
   tasks = [];
   newTaskResp;
   reminders = [];
-  private issues;
-  private inventory = [];
-  private selectedTasks = [];
-  private selectedParts = [];
+  issues: any;
+  inventory = [];
+  selectedTasks = [];
+  selectedParts = [];
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -48,7 +47,7 @@ export class AddServiceComponent implements OnInit {
   serviceLogSession = JSON.parse(localStorage.getItem('serviceLogs'));
   serviceData = {
     unitType: 'vehicle',
-    reference: '',
+    reference: `Ref-${new Date().getTime()}`,
     vehicleID: '',
     assetID: '',
     odometer: '',
@@ -126,14 +125,14 @@ export class AddServiceComponent implements OnInit {
   
   constructor(
     private apiService: ApiService,
-    private awsUS: AwsUploadService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
-    private hereMap: HereMapService
+    private hereMap: HereMapService,
+    private listService: ListService
   ) {
     this.selectedFileNames = new Map<any, any>();
     localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
@@ -239,7 +238,6 @@ export class AddServiceComponent implements OnInit {
     
     this.hideErrors();
     this.spinner.show();
-    
     this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
       delete elem.existQuantity;
       delete elem.partName;
@@ -259,7 +257,7 @@ export class AddServiceComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.serviceData));
-    return;
+
     this.apiService.postData('serviceLogs', formData, true).subscribe({
       complete: () => { },
        error: (err: any) => {
@@ -424,16 +422,11 @@ export class AddServiceComponent implements OnInit {
     });
   }
   
-
-  async getVehicleIssues(id: any) {
-    this.spinner.show();
-    const vehicleID = id;
-    await this.getReminders(vehicleID);
-    // this.fetchVehicleByID(vehicleID);
-    
-    let promise = await this.apiService.getData(`issues/vehicle/${vehicleID}`).toPromise()
-    this.issues = promise.Items;
-
+  async getIssuesByVehicle(vehicleID) {
+    await this.listService.fetchVehicleIssues(vehicleID);
+    this.listService.issuesList.subscribe(res => {
+      this.issues = res;
+    });
     for (let z = 0; z < this.savedIssues.length; z++) {
       this.issues.map(elem => {
         if (elem.issueID == this.savedIssues[z]) {
@@ -441,7 +434,30 @@ export class AddServiceComponent implements OnInit {
         }
       })
     }
-
+  }
+  async getIssuesByAsset(assetID) {
+    // this.fetchAssetByID(assetID);
+    // let promise = await this.apiService.getData(`issues/assets/${assetID}`).toPromise();
+    // this.issues = promise.Items;
+    await this.listService.fetchAssetsIssues(assetID);
+    this.listService.issuesList.subscribe(res => {
+      this.issues = res;
+    });
+    for (let z = 0; z < this.savedIssues.length; z++) {
+      this.issues.map(elem => {
+        if (elem.issueID == this.savedIssues[z]) {
+          elem.selected = true;
+        }
+      })
+    }
+  }
+  async getVehicleIssues(id: any) {
+    localStorage.setItem('issueVehicleID', JSON.stringify(id));
+    this.spinner.show();
+    const vehicleID = id;
+    await this.getReminders(vehicleID);
+    await this.getIssuesByVehicle(vehicleID);
+    
     this.spinner.hide();
   }
 
@@ -449,17 +465,7 @@ export class AddServiceComponent implements OnInit {
     this.spinner.show();
     const assetID = id;
     await this.getReminders(assetID);
-    // this.fetchAssetByID(assetID);
-    let promise = await this.apiService.getData(`issues/asset/${assetID}`).toPromise();
-    this.issues = promise.Items;
-
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
+    
     this.spinner.hide();
   }
 
@@ -535,7 +541,7 @@ export class AddServiceComponent implements OnInit {
     }
     
     this.serviceData.allServiceTasks.serviceTaskList.push({
-      // taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
+      taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
       taskID: this.selectedTasks[this.selectedTasks.length - 1].taskID,
       reminderID: remindID,
       schedule: newSchedule,
@@ -633,7 +639,7 @@ export class AddServiceComponent implements OnInit {
   calculateTasks() {
     let discountPercent = Number(this.serviceData.allServiceTasks.discountPercent);
     let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
-    let total = Number(this.serviceData.allServiceTasks.total);
+    // let total = Number(this.serviceData.allServiceTasks.total);
     let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
     
     let sum = 0;
@@ -665,7 +671,7 @@ export class AddServiceComponent implements OnInit {
   calculateParts() {
     let discountPercent = Number(this.serviceData.allServiceParts.discountPercent);
     let taxPercent = Number(this.serviceData.allServiceParts.taxPercent);
-    let total = Number(this.serviceData.allServiceParts.total);
+    // let total = Number(this.serviceData.allServiceParts.total);
     let subTotal = Number(this.serviceData.allServiceParts.subTotal);
     // if (isNaN(discountPercent)) {
     //   discountPercent = 0;
@@ -756,15 +762,15 @@ export class AddServiceComponent implements OnInit {
         
         this.serviceData.allServiceTasks.serviceTaskList = newTasks;
         let newParts = [];
-        for (var i = 0; i < result.allServiceParts.servicePartsList.length; i++) {
+        for (var j = 0; j < result.allServiceParts.servicePartsList.length; j++) {
           newParts.push({
-            description: result.allServiceParts.servicePartsList[i].description,
-            partCost: result.allServiceParts.servicePartsList[i].partCost,
-            partNumber: result.allServiceParts.servicePartsList[i].partNumber,
-            quantity: result.allServiceParts.servicePartsList[i].quantity,
-            rate: result.allServiceParts.servicePartsList[i].rate,
+            description: result.allServiceParts.servicePartsList[j].description,
+            partCost: result.allServiceParts.servicePartsList[j].partCost,
+            partNumber: result.allServiceParts.servicePartsList[j].partNumber,
+            quantity: result.allServiceParts.servicePartsList[j].quantity,
+            rate: result.allServiceParts.servicePartsList[j].rate,
           });
-          this.selectedParts.push(result.allServiceParts.servicePartsList[i].partID);
+          this.selectedParts.push(result.allServiceParts.servicePartsList[j].partID);
         }
         this.serviceData.allServiceParts.servicePartsList = newParts;
         
@@ -895,8 +901,9 @@ export class AddServiceComponent implements OnInit {
   }
 
   gotoIssuePage() {
-    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
-    this.router.navigateByUrl('/fleet/maintenance/issues/add')
+    localStorage.setItem('issueVehicleID', JSON.stringify(this.serviceData.vehicleID));
+    // this.router.navigateByUrl('/fleet/maintenance/issues/add')
+    $('#addIssuesModal').modal('show');
   }
   
   currencyChange(value: string) {

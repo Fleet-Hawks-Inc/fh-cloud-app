@@ -12,10 +12,6 @@
 		"name": "Box truck"
 	},
 	{
-		"code": "BU",
-		"name": "Bus"
-	},
-	{
 		"code": "BV",
 		"name": "Beverage truck"
 	},
@@ -52,10 +48,6 @@
 		"name": "Pick-up truck"
 	},
 	{
-		"code": "PV",
-		"name": "Passenger, van"
-	},
-	{
 		"code": "RV",
 		"name": "Recreation vehicle"
 	},
@@ -66,5 +58,13 @@
 	{
 		"code": "TV",
 		"name": "Van"
+	},
+  {
+		"code": "BU",
+		"name": "Bus"
+	},
+  {
+		"code": "PV",
+		"name": "Passenger, van"
 	}
 ]

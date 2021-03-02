@@ -4,44 +4,15 @@ import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { mergeMap, takeUntil } from 'rxjs/operators';
-import { forkJoin, Observable, of } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { QueryList, ViewChildren } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
   templateUrl: './address-book.component.html',
   styleUrls: ['./address-book.component.css']
 })
-export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChildren(DataTableDirective)
-  dtElement: QueryList<DataTableDirective>;
-
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject();
-  dtOptionsBroker: any = {};
-  dtTriggerBroker: Subject<any> = new Subject();
-  dtOptionsVendor: any = {};
-  dtTriggerVendor: Subject<any> = new Subject();
-  dtOptionsCarrier: any = {};
-  dtTriggerCarrier: Subject<any> = new Subject();
-  dtOptionsOperator: any = {};
-  dtTriggerOperator: Subject<any> = new Subject();
-  dtOptionsShipper: any = {};
-  dtTriggerShipper: Subject<any> = new Subject();
-  dtOptionsConsignee: any = {};
-  dtTriggerConsignee: Subject<any> = new Subject();
-  dtOptionsStaff: any = {};
-  dtTriggerStaff: Subject<any> = new Subject();
-  dtOptionsCompany: any = {};
-  dtTriggerCompany: Subject<any> = new Subject();
-
-  dtOptionsDriver: any = {};
-  dtTriggerDriver: Subject<any> = new Subject();
+export class AddressBookComponent implements OnInit {
 
   Asseturl = this.apiService.AssetUrl;
   customers = [];
@@ -65,12 +36,27 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   userLocation;
   manualAddress: boolean;
   manualAddress1: boolean;
-  // dtOptions: DataTables.Settings = {};
   wsib: false;
   updateButton: boolean = false;
   addresses = [];
   // Customer Object
   customerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    accountNumber: '',
+    workPhone: '',
+    workEmail: '',
+    mc: '',
+    dot: '',
+    fast: '',
+    fastExpiry: '',
+    trailerPreference: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'customer',
     address: [{
       addressType: '',
@@ -87,13 +73,31 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      phone: '',
+      designation: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Broker Object
   brokerData = {
+    companyName: '',
+    dbaName: '',
+    firstName: '',
+    lastName: '',
+    ein: '',
+    mc: '',
+    dot: '',
+    workEmail: '',
+    accountNumber: '',
+    workPhone: '',
     entityType: 'broker',
     brokerType: 'company',
     address: [{
@@ -111,14 +115,43 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // ownerOperator Object
   ownerData = {
-    paymentDetails: {},
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    paymentDetails: {
+      fast: '',
+      fastExpiry: '',
+      payrollType: '',
+      sin: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: ''
+    },
     entityType: 'ownerOperator',
     address: [{
       addressType: '',
@@ -135,13 +168,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    }
   };
 
   // Vendor Object
   vendorData = {
+    companyName: '',
+    accountNumber: '',
+    firstName: '',
+    lastName: '',
+    workEmail: '',
+    workPhone: '',
+    preferedVendor: false,
     entityType: 'vendor',
     address: [{
       addressType: '',
@@ -158,14 +206,49 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
   };
 
   // Carrier Object
   carrierData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
+    csa: false,
+    ctpat: false,
+    pip: false,
     entityType: 'carrier',
-    paymentDetails: {},
+    paymentDetails: {
+      inBonded: false,
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      ccc: '',
+      scac: '',
+      cvor: '',
+      localTax: '',
+      federalTax: '',
+      payrollType: '',
+      payrollRate: '',
+      payrollRateCurrency: '',
+      payrollPercent: '',
+      percentType: '',
+      loadedMiles: '',
+      loadedMilesCurrency: '',
+      emptyMiles: '',
+      emptyMilesCurrency: '',
+      deliveryRate: '',
+      deliveryRateCurrency: '',
+      applyTax: false,
+      wsib: false,
+      wsibAccountNumber: '',
+      wsibExpiry: ''
+    },
     address: [{
       addressType: '',
       countryID: '',
@@ -181,14 +264,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
-
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Shipper Object
   shipperData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail:'',
     entityType: 'shipper',
     address: [{
       addressType: '',
@@ -205,13 +302,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // Consignee Object
   consigneeData = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    mc: '',
+    dot: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'consignee',
     address: [{
       addressType: '',
@@ -228,13 +340,27 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    additionalContact: {}
+    additionalContact: {
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: ''
+    }
   };
 
   // fcCompany Object
   fcCompanyData = {
+    companyName: '',
+    isDefault: false,
+    firstName: '',
+    lastName: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'factoring company',
     address: [{
       addressType: '',
@@ -251,15 +377,35 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    fcDetails: {}
+    fcDetails: {
+      accountNumber: '',
+      factoringRate: '',
+      factoringUnit: '',
+    }
   };
 
    // Staff Object
    staffData = {
+    firstName: '',
+    lastName: '',
+    employeeID: '',
+    dateOfBirth: '',
+    workPhone: '',
+    workEmail: '',
     entityType: 'staff',
-    paymentDetails: {},
+    paymentDetails: {
+      payrollType: '',
+      payrollRate: '',
+      payrollRateUnit: '',
+      payPeriod: '',
+      SIN: '',
+      WCB: '',
+      healthCare: ''
+    },
+    loginEnabled: false,
     address: [{
       addressType: '',
       countryID: '',
@@ -275,9 +421,21 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         lat: '',
         lng: ''
       },
-      userLocation: ''
+      userLocation: '',
+      manual: false
     }],
-    userAccount: {},
+    userAccount: {
+      contractStartDate: '',
+      contractEndDate: '',
+      department: '',
+      designation: ''
+    },
+    userData : {
+      username: '',
+      userType: '',
+      password: '',
+      confirmPassword: ''
+    },
   };
 
   userDetailData: any;
@@ -312,7 +470,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   lastEvaluatedKeyStaff = '';
   lastEvaluatedKeyCompany = '';
   lastEvaluatedKeyDriver = '';
-  totalRecords = 20;
+  totalRecordsCustomer = 20;
   totalRecordsBroker = 20;
   totalRecordsVendor = 20;
   totalRecordsCarrier = 20;
@@ -370,19 +528,82 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
   loginDiv = false;
-  userData = {
-    username: '',
-    userType: '',
-    password: '',
-    confirmPassword: ''
-  };
+  
+  errorClass = false;
+  errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
+  fieldvisibility = 'false';
+  newStaffUser = 'false';
+  
+  // manual pagination
+  customerNext = false;
+  customerPrev = true;
+  customerDraw = 0;
+  customerPrevEvauatedKeys = [''];
+  custtStartPoint = 1;
+  custtEndPoint = this.pageLength;
+  driverNext = false;
+  driverPrev = true;
+  driverDraw = 0;
+  driverPrevEvauatedKeys = [''];
+  driverStartPoint = 1;
+  driverEndPoint = this.pageLength;
+  brokerNext = false;
+  brokerPrev = true;
+  brokerDraw = 0;
+  brokerPrevEvauatedKeys = [''];
+  brokerStartPoint = 1;
+  brokerEndPoint = this.pageLength;
+  vendorNext = false;
+  vendorPrev = true;
+  vendorDraw = 0;
+  vendorPrevEvauatedKeys = [''];
+  vendorStartPoint = 1;
+  vendorEndPoint = this.pageLength;
+  carrierNext = false;
+  carrierPrev = true;
+  carrierDraw = 0;
+  carrierPrevEvauatedKeys = [''];
+  carrierStartPoint = 1;
+  carrierEndPoint = this.pageLength;
+  ownerOperatorNext = false;
+  ownerOperatorPrev = true;
+  ownerOperatorDraw = 0;
+  ownerOperatorPrevEvauatedKeys = [''];
+  ownerOperatorStartPoint = 1;
+  ownerOperatorEndPoint = this.pageLength;
+  shipperNext = false;
+  shipperPrev = true;
+  shipperDraw = 0;
+  shipperPrevEvauatedKeys = [''];
+  shipperStartPoint = 1;
+  shipperEndPoint = this.pageLength;
+  consigneeNext = false;
+  consigneePrev = true;
+  consigneeDraw = 0;
+  consigneePrevEvauatedKeys = [''];
+  consigneeStartPoint = 1;
+  consigneeEndPoint = this.pageLength;
+  staffNext = false;
+  staffPrev = true;
+  staffDraw = 0;
+  staffPrevEvauatedKeys = [''];
+  staffStartPoint = 1;
+  staffEndPoint = this.pageLength;
+  companyNext = false;
+  companyPrev = true;
+  companyDraw = 0;
+  companyPrevEvauatedKeys = [''];
+  companyStartPoint = 1;
+  companyEndPoint = this.pageLength;
+
   constructor(
             private apiService: ApiService,
             private toastr: ToastrService,
             private modalService: NgbModal,
             private HereMap: HereMapService,
-            private listService: ListService
-            )
+            private spinner: NgxSpinnerService,
+            private listService: ListService,
+          )
   { }
 
   ngOnInit() {
@@ -437,13 +658,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     $('.modal').modal('hide');
     this.userDetailTitle = data.firstName;
-    const modalRef = this.modalService.open(targetModal);
+    this.modalService.open(targetModal);
     this.userDetailData = data;
   }
-
-  // remove(data, i) {
-  //   data.address.splice(i, 1);
-  // }
 
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
@@ -453,17 +670,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     data.address[i].userLocation = result.address.label;
     data.address[i].geoCords.lat = result.position.lat;
     data.address[i].geoCords.lng = result.position.lng;
-
-    let countryID = await this.fetchCountriesByName(result.address.countryName);
-    data.address[i].countryID = countryID;
     data.address[i].countryName = result.address.countryName;
-
-    let stateID = await this.fetchStatesByName(result.address.state);
-    data.address[i].stateID = stateID;
     data.address[i].stateName = result.address.state;
-
-    let cityID = await this.fetchCitiesByName(result.address.city);
-    data.address[i].cityID = cityID;
     data.address[i].cityName = result.address.city;
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
@@ -471,8 +679,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     if (result.address.street === undefined) {
       result.address.street = '';
     }
-    data.address[i].zipCode = result.address.postalCode;
-    data.address[i].address1 = `${result.title}, ${result.address.houseNumber} ${result.address.street}`;
   }
 
   async fetchCountriesByName(name: string) {
@@ -519,13 +725,11 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -548,6 +752,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
+    this.spinner.show();
 
     for (let i = 0; i < this.customerData.address.length; i++) {
       const element = this.customerData.address[i];
@@ -562,7 +767,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-
+    this.lastEvaluatedKeyCustomer = '';
     // create form data instance
     const formData = new FormData();
 
@@ -587,6 +792,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             )
             .subscribe({
               complete: () => {
+                this.spinner.hide();
                 this.throwErrors();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
@@ -598,12 +804,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
+          this.listService.fetchCustomers();
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
           this.fetchCustomersCount();
+          this.initDataTable();
           this.activeDiv = 'customerTable';
-          this.rerender();
+          this.spinner.hide();
           this.toastr.success('Customer Added Successfully');
         }
       });
@@ -631,19 +839,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.removeAddressFields(this.customerData);
 
     for (let i = 0; i < this.customerData.address.length; i++) {
+      if(this.customerData.address[i].geoCords == undefined) {
+        this.customerData.address[i].geoCords = {
+          lat: '',
+          lng: ''
+        };
+      }
+    
       const element = this.customerData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-
+        element['geoCords']['lat'] = '';
+        element['geoCords']['lng'] = '';
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        
+        if(result != undefined) {
+          element['geoCords']['lat'] = result.position.lat;
+          element['geoCords']['lng'] = result.position.lng;
+        }
       }
     }
-    // this.removeUserLocation(this.customerData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -687,9 +904,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
         $('#addCustomerModal').modal('hide');
         this.showMainModal();
-        this.customers = [];
+        // this.customers = [];
         this.activeDiv = 'customerTable';
-        this.rerender();
+        this.fetchCustomersCount();
+        this.initDataTable();
         this.toastr.success('Customer updated successfully');
       },
     });
@@ -714,7 +932,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.brokerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -727,6 +944,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.brokerData));
 
+    this.lastEvaluatedKeyBroker = '';
     this.apiService.postData('brokers', formData, true).
     subscribe({
       complete: () => { },
@@ -754,9 +972,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addBrokerModal').modal('hide');
         this.fetchBrokersCount();
         this.showMainModal();
+        this.initDataTableBroker();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
-        this.rerender();
         this.toastr.success('Broker Added Successfully');
       }
     });
@@ -779,10 +997,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
-    // this.removeUserLocation(this.ownerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -794,6 +1010,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.ownerData));
+    this.lastEvaluatedKeyOperator = '';
 
     this.apiService.postData('ownerOperators', formData, true).
     subscribe({
@@ -822,9 +1039,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addOwnerOperatorModal').modal('hide');
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
+        this.initDataTableOperator();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
-        this.rerender();
         this.toastr.success('Owner Operator Added Successfully');
       }
     });
@@ -847,7 +1065,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
 
@@ -895,9 +1112,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
         $('#addOwnerOperatorModal').modal('hide');
         this.showMainModal();
+        this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
+        this.initDataTableOperator();
         this.activeDiv = 'operatorTable';
-        this.rerender();
         this.toastr.success('Owner operator updated successfully');
       },
     });
@@ -919,10 +1137,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
-    // this.removeUserLocation(this.brokerData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -969,7 +1185,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
-        this.rerender();
+        this.fetchBrokersCount();
+        this.initDataTableBroker();
         this.toastr.success('Broker updated successfully');
       },
     });
@@ -992,10 +1209,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
-    // this.removeUserLocation(this.vendorData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1007,6 +1222,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.vendorData));
+    this.lastEvaluatedKeyVendor = '';
 
     this.apiService.postData('vendors', formData, true).
       subscribe({
@@ -1032,18 +1248,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          this.vendorData = {
-            entityType: '',
-            address: []
-          };
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
           this.listService.fetchVendors();
           this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
+          this.initDataTableVendor();
           this.activeDiv = 'vendorTable';
-          this.rerender();
         }
       });
   }
@@ -1067,7 +1279,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.vendorData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1113,8 +1324,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addVendorModal').modal('hide');
         this.showMainModal();
         this.vendors = [];
+        this.fetchVendorsCount();
+        this.initDataTableVendor();
         this.activeDiv = 'vendorTable';
-        this.rerender();
         this.toastr.success('Vendor updated successfully');
       },
     });
@@ -1140,7 +1352,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1152,6 +1363,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.carrierData));
+    this.lastEvaluatedKeyCarrier = '';
 
     this.apiService.postData('externalCarriers', formData, true).
       subscribe({
@@ -1179,10 +1391,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.hasSuccess = true;
           $('#addCarrierModal').modal('hide');
           this.fetchCarriersCount();
+          this.initDataTableCarrier();
           this.showMainModal();
           this.carriers = [];
           this.activeDiv = 'carrierTable';
-          this.rerender();
           this.toastr.success('Carrier Added Successfully');
         }
       });
@@ -1208,7 +1420,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.carrierData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1256,7 +1467,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.showMainModal();
         this.carriers = [];
         this.activeDiv = 'carrierTable';
-        this.rerender();
+        this.fetchCarriersCount();
+        this.initDataTableCarrier();
         this.toastr.success('Carrier updated successfully');
       },
     });
@@ -1270,6 +1482,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.hideErrors();
     for (let i = 0; i < this.shipperData.address.length; i++) {
+      if(this.shipperData.address[i].geoCords == undefined) {
+        this.shipperData.address[i].geoCords = {
+          lat: '',
+          lng: ''
+        };
+      }
+
       const element = this.shipperData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
@@ -1277,12 +1496,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
-
-    // this.removeUserLocation(this.shipperData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1294,6 +1513,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.shipperData));
+    this.lastEvaluatedKeyShipper = '';
 
     this.apiService.postData('shippers', formData, true).
       subscribe({
@@ -1324,13 +1544,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
+          this.initDataTableShipper();
           this.activeDiv = 'shipperTable';
-          this.rerender();
           this.toastr.success('Shipper Added Successfully');
 
         }
       });
   }
+
   async updateShipper() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -1338,6 +1559,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hideErrors();
     this.removeAddressFields(this.shipperData);
     for (let i = 0; i < this.shipperData.address.length; i++) {
+      if(this.shipperData.address[i].geoCords == undefined) {
+        this.shipperData.address[i].geoCords = {
+          lat: '',
+          lng: ''
+        };
+      }
+
       const element = this.shipperData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
@@ -1345,12 +1573,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
       }
     }
-    // this.removeUserLocation(this.shipperData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1396,8 +1624,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addShipperModal').modal('hide');
         this.shippers = [];
         this.showMainModal();
+        this.fetchShippersCount();
+        this.initDataTableShipper();
         this.activeDiv = 'shipperTable';
-        this.rerender();
         this.toastr.success('Shipper updated successfully');
       },
     });
@@ -1424,7 +1653,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.consigneeData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1436,6 +1664,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.consigneeData));
+    this.lastEvaluatedKeyConsignee = '';
 
     this.apiService.postData('receivers', formData, true).
       subscribe({
@@ -1467,7 +1696,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
           this.fetchConsigneeCount();
-          this.rerender();
+          this.initDataTableConsignee();
           this.toastr.success('Consignee Added Successfully');
         }
       });
@@ -1492,7 +1721,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.consigneeData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1538,8 +1766,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addConsigneeModal').modal('hide');
         this.receivers = [];
         this.showMainModal();
+        this.fetchConsigneeCount();
+        this.initDataTableConsignee();
         this.activeDiv = 'consigneeTable';
-        this.rerender();
         this.toastr.success('Consignee updated successfully');
       },
     });
@@ -1564,7 +1793,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1576,6 +1804,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.fcCompanyData));
+    this.lastEvaluatedKeyCompany = '';
 
     this.apiService.postData('factoringCompanies', formData, true).
       subscribe({
@@ -1605,8 +1834,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           this.fetchFcCompaniesCount();
           this.showMainModal();
           this.brokers = [];
+          this.initDataTableCompany();
           this.activeDiv = 'brokerTable';
-          this.rerender();
           this.toastr.success('Company Added Successfully');
         }
       });
@@ -1631,7 +1860,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.fcCompanyData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1677,8 +1905,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         $('#addFCModal').modal('hide');
         this.showMainModal();
         this.fcCompanies = [];
+        this.fetchFcCompaniesCount();
+        this.initDataTableCompany();
         this.activeDiv = 'companyTable';
-        this.rerender();
         this.toastr.success('Company updated successfully');
       },
     });
@@ -1690,7 +1919,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.hasSuccess = false;
 
     this.hideErrors();
-
+    this.spinner.show();
     for (let i = 0; i < this.staffData.address.length; i++) {
       const element = this.staffData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
@@ -1701,10 +1930,8 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
     }
-    // this.removeUserLocation(this.staffData.address);
 
     // create form data instance
     const formData = new FormData();
@@ -1716,8 +1943,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-
-    this.apiService.postData('staffs', formData, true).
+    this.lastEvaluatedKeyStaff = '';
+    
+    this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1731,6 +1959,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.spinner.hide();
                 this.hasError = true;
                 this.Error = 'Please see the errors';
               },
@@ -1739,14 +1968,18 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
             });
         },
         next: (res) => {
+          this.spinner.hide();
           this.response = res;
           this.hasSuccess = true;
+          if(this.staffData.loginEnabled){
+            this.saveUserData();
+          }
           $('#addStaffModal').modal('hide');
           this.staffs = [];
           this.fetchStaffsCount();
           this.showMainModal();
+          this.initDataTableStaff();
           this.activeDiv = 'staffTable';
-          this.rerender();
           this.toastr.success('Staff Added Successfully');
         }
       });
@@ -1771,7 +2004,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
       }
     }
-    // this.removeUserLocation(this.staffData.address)
 
     // create form data instance
     const formData = new FormData();
@@ -1784,7 +2016,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
 
-    this.apiService.putData('staffs', formData, true).subscribe({
+    this.apiService.putData('staffs?newUser='+this.newStaffUser, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1816,9 +2048,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
         $('#addStaffModal').modal('hide');
         this.staffs = [];
+        this.fetchStaffsCount();
         this.showMainModal();
+        this.initDataTableStaff();
         this.activeDiv = 'staffTable';
-        this.rerender();
         this.toastr.success('Staff updated successfully');
       },
     });
@@ -1827,11 +2060,17 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        if(v == 'CognitoPassword') {
+          this.errorClass = true;
+          this.errorClassMsg = this.errors[v];
+        } else {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
+        }
       });
-    // this.vehicleForm.showErrors(this.errors);
+
+    this.spinner.hide();
   }
 
   hideErrors() {
@@ -1849,7 +2088,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
    * Get all countries from api
    */
   fetchCountries() {
-    // return this.apiService.getData('countries');
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
@@ -1959,18 +2197,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.totalRecords = result.Count;
+        this.totalRecordsCustomer = result.Count;
       },
     });
   }
-
-  // fetchOwnerOperators() {
-  //   // return this.apiService.getData('ownerOperators');
-  //   this.apiService.getData('ownerOperators')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsOperator = result.Count;
-  //     });
-  // }
 
   fetchOwnerOperatorsCount() {
     this.apiService.getData('ownerOperators/get/count?operatorID='+this.filterVal.operatorID).subscribe({
@@ -1992,14 +2222,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchBrokers() {
-  //   // return this.apiService.getData('brokers');
-  //   this.apiService.getData('brokers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsBroker = result.Count;
-  //   });
-  // }
-
   fetchBrokersCount() {
     this.apiService.getData('brokers/get/count?brokerID='+this.filterVal.brokerID).subscribe({
       complete: () => {},
@@ -2009,14 +2231,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchVendors() {
-  //   // return this.apiService.getData('vendors');
-  //   this.apiService.getData('vendors')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsVendor = result.Count;
-  //   });
-  // }
 
   fetchVendorsCount() {
     this.apiService.getData('vendors/get/count?vendorID='+this.filterVal.vendorID).subscribe({
@@ -2028,14 +2242,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchCarriers() {
-  //   // return this.apiService.getData('externalCarriers');
-  //   this.apiService.getData('externalCarriers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCarrier = result.Count;
-  //   });
-  // }
-
   fetchCarriersCount() {
     this.apiService.getData('externalCarriers/get/count?infoID='+this.filterVal.carrierID).subscribe({
       complete: () => {},
@@ -2045,14 +2251,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchShippers() {
-  //   // return this.apiService.getData('shippers');
-  //   this.apiService.getData('shippers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsShipper = result.Count;
-  //   });
-  // }
 
   fetchShippersCount() {
     this.apiService.getData('shippers/get/count?shipperID='+this.filterVal.shipperID).subscribe({
@@ -2064,14 +2262,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchConsignee() {
-  //   // return this.apiService.getData('receivers');
-  //   this.apiService.getData('receivers')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsConsignee = result.Count;
-  //   });
-  // }
-
   fetchConsigneeCount() {
     this.apiService.getData('receivers/get/count?consigneeID='+this.filterVal.consigneeID).subscribe({
       complete: () => {},
@@ -2082,14 +2272,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  // fetchStaffs() {
-  //   // return this.apiService.getData('staffs');
-  //   this.apiService.getData('staffs')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsStaff = result.Count;
-  //   });
-  // }
-
   fetchStaffsCount() {
     this.apiService.getData('staffs/get/count?staffID='+this.filterVal.staffID).subscribe({
       complete: () => {},
@@ -2099,14 +2281,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       },
     });
   }
-
-  // fetchFcCompanies() {
-  //   // return this.apiService.getData('factoringCompanies');
-  //   this.apiService.getData('factoringCompanies')
-  //     .subscribe((result: any) => {
-  //       this.totalRecordsCompany = result.Count;
-  //   });
-  // }
 
   fetchFcCompaniesCount() {
     this.apiService.getData('factoringCompanies/get/count?companyID='+this.filterVal.companyID).subscribe({
@@ -2141,8 +2315,12 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         zipCode: entityAddresses[i].zipCode,
         address1: entityAddresses[i].address1,
         address2: entityAddresses[i].address2,
-        userLocation: entityAddresses[i].userLocation
+        userLocation: entityAddresses[i].userLocation,
+        manual: entityAddresses[i].manual
       })
+
+      this.getEditStates(entityAddresses[i].countryID);
+      this.getEditCities(entityAddresses[i].stateID);
     }
     return this.newAddress;
   }
@@ -2154,11 +2332,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`customers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe(async(result: any) => {
         curr.customers = [];
-        curr.rerender();
         curr.fetchCustomersCount();
+        curr.initDataTable();
         curr.toastr.success('Customer deleted successfully');
 
-        // this.customers = this.customers.filter(u => u.customerID !== item.customerID);
       });
     }
   }
@@ -2169,10 +2346,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`drivers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.drivers = [];
-        this.rerender();
         this.fetchDriversCount();
+        this.initDataTableDriver();
         this.toastr.success('Driver deleted successfully');
-        // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
       });
     }
   }
@@ -2183,10 +2359,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`brokers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.brokers = [];
-        this.rerender();
         this.fetchBrokersCount();
+        this.initDataTableBroker();
         this.toastr.success('Broker deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
@@ -2197,10 +2372,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`vendors/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.vendors = [];
-        this.rerender();
         this.fetchVendorsCount();
+        this.initDataTableVendor();
         this.toastr.success('Vendor deleted successfully');
-        // this.vendors = this.vendors.filter(u => u.vendorID !== item.vendorID);
       });
     }
   }
@@ -2211,10 +2385,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`shippers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.shippers = [];
-        this.rerender();
         this.fetchShippersCount();
+        this.initDataTableShipper();
         this.toastr.success('Shipper deleted successfully');
-        // this.shippers = this.shippers.filter(u => u.shipperID !== item.shipperID);
       });
     }
   }
@@ -2224,10 +2397,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`receivers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.receivers = [];
-        this.rerender();
         this.fetchConsigneeCount();
+        this.initDataTableConsignee();
         this.toastr.success('Consignee deleted successfully');
-        // this.receivers = this.receivers.filter(u => u.receiverID !== item.receiverID);
       });
     }
   }
@@ -2238,10 +2410,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`staffs/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.staffs = [];
-        this.rerender();
         this.fetchStaffsCount();
+        this.initDataTableStaff();
         this.toastr.success('Staff deleted successfully');
-        // this.staffs = this.staffs.filter(u => u.staffID !== item.staffID);
       });
     }
   }
@@ -2252,10 +2423,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`factoringCompanies/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.fcCompanies = [];
-        this.rerender();
         this.fetchFcCompaniesCount();
+        this.initDataTableCompany();
         this.toastr.success('Company deleted successfully');
-        // this.fcCompanies = this.fcCompanies.filter(u => u.factoringCompanyID !== item.factoringCompanyID);
       });
     }
   }
@@ -2266,10 +2436,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`ownerOperators/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.ownerOperatorss = [];
-        this.rerender();
         this.fetchOwnerOperatorsCount();
+        this.initDataTableOperator();
         this.toastr.success('Operator deleted successfully');
-        // this.toastr.success('Owner operator deleted successfully');
       });
     }
   }
@@ -2280,15 +2449,14 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`externalCarriers/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
         this.carriers = [];
-        this.rerender();
         this.fetchCarriersCount();
+        this.initDataTableCarrier();
         this.toastr.success('Carrier deleted successfully');
-        // this.brokers = this.brokers.filter(u => u.brokerID !== item.brokerID);
       });
     }
   }
 
-  editUser(type: string, item: any, index:any) {
+  editUser(type: string, item: any) {
     this.modalTitle = 'Edit ';
     this.updateButton = true;
     this.hasError = false;
@@ -2338,6 +2506,16 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     } else if(type === 'staff') {
       $('#addStaffModal').modal('show');
       this.staffData = item;
+      if(item.loginEnabled){
+        this.loginDiv = true;
+        this.fieldvisibility = 'true';
+        this.newStaffUser = 'false';
+      } else {
+        this.staffData.loginEnabled = false;
+        this.loginDiv = false;
+        this.fieldvisibility = 'false';
+        this.newStaffUser = 'true';
+      }
       let result = this.assignAddressToUpdate(item.address)
       this.staffData.address = result;
 
@@ -2359,7 +2537,6 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       let result = this.assignAddressToUpdate(item.address)
       this.carrierData.address = result;
     }
-
   }
 
   nextStep() {
@@ -2376,6 +2553,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.modalTitle = 'Add ';
     this.hasError = false;
     this.hasSuccess = false;
+    this.loginDiv = false;
+    this.fieldvisibility = 'false';
+    this.newStaffUser = 'false';
     if(type == 'driver') {
       this.showDriverModal = true;
     } else {
@@ -2406,6 +2586,22 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     // Customer Object
     this.customerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      accountNumber: '',
+      workPhone: '',
+      workEmail: '',
+      mc: '',
+      dot: '',
+      fast: '',
+      fastExpiry: '',
+      trailerPreference: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'customer',
       address: [{
         addressType: '',
@@ -2422,13 +2618,31 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        phone: '',
+        designation: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Broker Object
     this.brokerData = {
+      companyName: '',
+      dbaName: '',
+      firstName: '',
+      lastName: '',
+      ein: '',
+      mc: '',
+      dot: '',
+      workEmail: '',
+      accountNumber: '',
+      workPhone: '',
       entityType: 'broker',
       brokerType: 'company',
       address: [{
@@ -2446,14 +2660,43 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // ownerOperator Object
     this.ownerData = {
-      paymentDetails: {},
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      paymentDetails: {
+        fast: '',
+        fastExpiry: '',
+        payrollType: '',
+        sin: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: ''
+      },
       entityType: 'ownerOperator',
       address: [{
         addressType: '',
@@ -2470,13 +2713,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: '',
+      }
     };
 
     // Vendor Object
     this.vendorData = {
+      companyName: '',
+      accountNumber: '',
+      firstName: '',
+      lastName: '',
+      workEmail: '',
+      workPhone: '',
+      preferedVendor: false,
       entityType: 'vendor',
       address: [{
         addressType: '',
@@ -2493,14 +2751,49 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
     };
 
     // Carrier Object
     this.carrierData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
+      csa: false,
+      ctpat: false,
+      pip: false,
       entityType: 'carrier',
-      paymentDetails: {},
+      paymentDetails: {
+        inBonded: false,
+        mc: '',
+        dot: '',
+        fast: '',
+        fastExpiry: '',
+        ccc: '',
+        scac: '',
+        cvor: '',
+        localTax: '',
+        federalTax: '',
+        payrollType: '',
+        payrollRate: '',
+        payrollRateCurrency: '',
+        payrollPercent: '',
+        percentType: '',
+        loadedMiles: '',
+        loadedMilesCurrency: '',
+        emptyMiles: '',
+        emptyMilesCurrency: '',
+        deliveryRate: '',
+        deliveryRateCurrency: '',
+        applyTax: false,
+        wsib: false,
+        wsibAccountNumber: '',
+        wsibExpiry: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2516,13 +2809,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Shipper Object
     this.shipperData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail:'',
       entityType: 'shipper',
       address: [{
         addressType: '',
@@ -2539,13 +2847,28 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // Consignee Object
     this.consigneeData = {
+      companyName: '',
+      firstName: '',
+      lastName: '',
+      mc: '',
+      dot: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'consignee',
       address: [{
         addressType: '',
@@ -2562,13 +2885,27 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      additionalContact: {}
+      additionalContact: {
+        firstName: '',
+        lastName: '',
+        designation: '',
+        phone: '',
+        email: '',
+        fax: ''
+      }
     };
 
     // fcCompany Object
     this.fcCompanyData = {
+      companyName: '',
+      isDefault: false,
+      firstName: '',
+      lastName: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'factoring company',
       address: [{
         addressType: '',
@@ -2585,15 +2922,35 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      fcDetails: {}
+      fcDetails: {
+        accountNumber: '',
+        factoringRate: '',
+        factoringUnit: '',
+      }
     };
 
     // Staff Object
     this.staffData = {
+      firstName: '',
+      lastName: '',
+      employeeID: '',
+      dateOfBirth: '',
+      workPhone: '',
+      workEmail: '',
       entityType: 'staff',
-      paymentDetails: {},
+      loginEnabled: false,
+      paymentDetails: {
+        payrollType: '',
+        payrollRate: '',
+        payrollRateUnit: '',
+        payPeriod: '',
+        SIN: '',
+        WCB: '',
+        healthCare: ''
+      },
       address: [{
         addressType: '',
         countryID: '',
@@ -2609,10 +2966,27 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
           lat: '',
           lng: ''
         },
-        userLocation: ''
+        userLocation: '',
+        manual: false
       }],
-      userAccount: {},
+      userAccount: {
+        contractStartDate: '',
+        contractEndDate: '',
+        department: '',
+        designation: ''
+      },
+      userData : {
+        username: '',
+        userType: '',
+        password: '',
+        confirmPassword: ''
+      }
     };
+
+    this.loginDiv = false;
+    this.fieldvisibility = 'false';
+    this.newStaffUser = 'false';
+    
   }
 
   fetchAllStatesIDs() {
@@ -2636,497 +3010,368 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
       });
   }
 
-  //dtb
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-    this.dtTriggerBroker.next();
-    this.dtTriggerVendor.next();
-    this.dtTriggerCarrier.next();
-    this.dtTriggerOperator.next();
-    this.dtTriggerShipper.next();
-    this.dtTriggerConsignee.next();
-    this.dtTriggerStaff.next();
-    this.dtTriggerCompany.next();
-    this.dtTriggerDriver.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    if(this.activeDiv == 'customerTable') {
-      this.dtTrigger.unsubscribe();
-    } else if(this.activeDiv == 'brokerTable') {
-      this.dtTriggerBroker.unsubscribe();
-    } else if(this.activeDiv == 'vendorTable') {
-      this.dtTriggerVendor.unsubscribe();
-    } else if(this.activeDiv == 'carrierTable') {
-      this.dtTriggerCarrier.unsubscribe();
-    } else if(this.activeDiv == 'operatorTable') {
-      this.dtTriggerOperator.unsubscribe();
-    } else if(this.activeDiv == 'shipperTable') {
-      this.dtTriggerShipper.unsubscribe();
-    } else if(this.activeDiv == 'consigneeTable') {
-      this.dtTriggerConsignee.unsubscribe();
-    } else if(this.activeDiv == 'staffTable') {
-      this.dtTriggerStaff.unsubscribe();
-    } else if(this.activeDiv == 'companyTable') {
-      this.dtTriggerCompany.unsubscribe();
-    } else if(this.activeDiv == 'driverTable') {
-      this.dtTriggerDriver.unsubscribe();
-    }
-  }
-
-  rerender() {
-    let curr = this;
-    this.dtElement.forEach((dtElement: DataTableDirective) => {
-      dtElement.dtInstance.then((dtInstance: any) => {
-        let tableId = dtInstance.table().node().id;
-        if(this.activeDiv == tableId) {
-          if(tableId == 'customerTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptions.pageLength = this.totalRecords;
-            } else {
-              this.dtOptions.pageLength = this.pageLength;
-            }
-            curr.dtTrigger.next();
-
-          } else if(tableId == 'brokerTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsBroker.pageLength = this.totalRecordsBroker;
-            } else {
-              this.dtOptionsBroker.pageLength = this.pageLength;
-            }
-            curr.dtTriggerBroker.next();
-
-          } else if(tableId == 'vendorTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsVendor.pageLength = this.totalRecordsVendor;
-            } else {
-              this.dtOptionsVendor.pageLength = this.pageLength;
-            }
-            curr.dtTriggerVendor.next();
-
-          } else if(tableId == 'carrierTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsCarrier.pageLength = this.totalRecordsCarrier;
-            } else {
-              this.dtOptionsCarrier.pageLength = this.pageLength;
-            }
-            curr.dtTriggerCarrier.next();
-
-          } else if(tableId == 'operatorTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsOperator.pageLength = this.totalRecordsOperator;
-            } else {
-              this.dtOptionsOperator.pageLength = this.pageLength;
-            }
-            curr.dtTriggerOperator.next();
-
-          } else if(tableId == 'shipperTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsShipper.pageLength = this.totalRecordsShipper;
-            } else {
-              this.dtOptionsShipper.pageLength = this.pageLength;
-            }
-            curr.dtTriggerShipper.next();
-
-          } else if(tableId == 'consigneeTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsConsignee.pageLength = this.totalRecordsConsignee;
-            } else {
-              this.dtOptionsConsignee.pageLength = this.pageLength;
-            }
-            curr.dtTriggerConsignee.next();
-
-          } else if(tableId == 'staffTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsStaff.pageLength = this.totalRecordsStaff;
-            } else {
-              this.dtOptionsStaff.pageLength = this.pageLength;
-            }
-            curr.dtTriggerStaff.next();
-
-          } else if(tableId == 'companyTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsCompany.pageLength = this.totalRecordsCompany;
-            } else {
-              this.dtOptionsCompany.pageLength = this.pageLength;
-            }
-            curr.dtTriggerCompany.next();
-
-          } else if(tableId == 'driverTable') {
-            dtInstance.destroy();
-            if (status === 'reset') {
-              this.dtOptionsDriver.pageLength = this.totalRecordsDriver;
-            } else {
-              this.dtOptionsDriver.pageLength = this.pageLength;
-            }
-            curr.dtTriggerDriver.next();
-          }
-        }
-      });
-    });
-  }
-
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('customers/fetch/records?customer='+this.filterVal.customerID+'&lastKey='+this.lastEvaluatedKeyCustomer, dataTablesParameters).subscribe(resp => {
-            current.customers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyCustomer = resp['LastEvaluatedKey'].customerID;
+    this.spinner.show();
+    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID+'&lastKey='+this.lastEvaluatedKeyCustomer)
+      .subscribe((result: any) => {
+        this.customers = result['Items'];
 
-            } else {
-              this.lastEvaluatedKeyCustomer = '';
-            }
+        if(this.filterVal.customerID != '') {
+          this.custtStartPoint = this.totalRecordsCustomer;
+          this.custtEndPoint = this.totalRecordsCustomer;
+        }
 
-            callback({
-              recordsTotal: current.totalRecords,
-              recordsFiltered: current.totalRecords,
-              data: []
-            });
-          });
-      }
-    };
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.customerNext = false;
+          // for prev button
+          if(!this.customerPrevEvauatedKeys.includes(result['LastEvaluatedKey'].customerID)){
+            this.customerPrevEvauatedKeys.push(result['LastEvaluatedKey'].customerID);
+          }
+          this.lastEvaluatedKeyCustomer = result['LastEvaluatedKey'].customerID;
+
+        } else {
+          // disable next button if no lastevaluated key is found
+          this.customerNext = true;
+          this.lastEvaluatedKeyCustomer = '';
+          this.custtEndPoint = this.totalRecordsCustomer;
+        }
+
+        // disable prev btn
+        if(this.customerDraw > 0){
+          this.customerPrev = false;
+        } else{
+          this.customerPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableBroker() {
-    let current = this;
-    this.dtOptionsBroker = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('brokers/fetch/records?brokerID='+this.filterVal.brokerID+'&lastKey='+this.lastEvaluatedKeyBroker, dataTablesParameters).subscribe(resp => {
-            current.brokers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyBroker = resp['LastEvaluatedKey'].brokerID;
 
-            } else {
-              this.lastEvaluatedKeyBroker = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('brokers/fetch/records?brokerID='+this.filterVal.brokerID+'&lastKey='+this.lastEvaluatedKeyBroker)
+      .subscribe((result: any) => {
+        this.brokers = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsBroker,
-              recordsFiltered: current.totalRecordsBroker,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.brokerID != '') {
+          this.brokerStartPoint = this.totalRecordsBroker;
+          this.brokerEndPoint = this.totalRecordsBroker;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.brokerNext = false;
+          // for prev button
+          if (!this.brokerPrevEvauatedKeys.includes(result['LastEvaluatedKey'].brokerID)) {
+            this.brokerPrevEvauatedKeys.push(result['LastEvaluatedKey'].brokerID);
+          }
+          this.lastEvaluatedKeyBroker = result['LastEvaluatedKey'].brokerID;
+
+        } else {
+          this.brokerNext = true;
+          this.lastEvaluatedKeyBroker = '';
+          this.brokerEndPoint = this.totalRecordsBroker;
+        }
+
+        // disable prev btn
+        if (this.brokerDraw > 0) {
+          this.brokerPrev = false;
+        } else {
+          this.brokerPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableVendor() {
-    let current = this;
-    this.dtOptionsVendor = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('vendors/fetch/records?vendorID='+this.filterVal.vendorID+'&lastKey='+this.lastEvaluatedKeyVendor, dataTablesParameters).subscribe(resp => {
-            current.vendors = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyVendor = resp['LastEvaluatedKey'].vendorID;
 
-            } else {
-              this.lastEvaluatedKeyVendor = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('vendors/fetch/records?vendorID='+this.filterVal.vendorID+'&lastKey='+this.lastEvaluatedKeyVendor)
+      .subscribe((result: any) => {
+        this.vendors = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsVendor,
-              recordsFiltered: current.totalRecordsVendor,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.vendorID != '') {
+          this.vendorStartPoint = this.totalRecordsVendor;
+          this.vendorEndPoint = this.totalRecordsVendor;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.vendorNext = false;
+          // for prev button
+          if (!this.vendorPrevEvauatedKeys.includes(result['LastEvaluatedKey'].vendorID)) {
+            this.vendorPrevEvauatedKeys.push(result['LastEvaluatedKey'].vendorID);
+          }
+          this.lastEvaluatedKeyVendor = result['LastEvaluatedKey'].vendorID;
+
+        } else {
+          this.vendorNext = true;
+          this.lastEvaluatedKeyVendor = '';
+          this.vendorEndPoint = this.totalRecordsVendor;
+        }
+
+        // disable prev btn
+        if (this.vendorDraw > 0) {
+          this.vendorPrev = false;
+        } else {
+          this.vendorPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableCarrier() {
-    let current = this;
-    this.dtOptionsCarrier = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('externalCarriers/fetch/records?infoID='+this.filterVal.carrierID+'&lastKey='+this.lastEvaluatedKeyCarrier, dataTablesParameters).subscribe(resp => {
-            current.carriers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyCarrier = resp['LastEvaluatedKey'].infoID;
 
-            } else {
-              this.lastEvaluatedKeyCarrier = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('externalCarriers/fetch/records?infoID='+this.filterVal.carrierID+'&lastKey='+this.lastEvaluatedKeyCarrier)
+      .subscribe((result: any) => {
+        this.carriers = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsCarrier,
-              recordsFiltered: current.totalRecordsCarrier,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.carrierID != '') {
+          this.carrierStartPoint = this.totalRecordsCarrier;
+          this.carrierEndPoint = this.totalRecordsCarrier;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.carrierNext = false;
+          // for prev button
+          if (!this.carrierPrevEvauatedKeys.includes(result['LastEvaluatedKey'].infoID)) {
+            this.carrierPrevEvauatedKeys.push(result['LastEvaluatedKey'].infoID);
+          }
+          this.lastEvaluatedKeyCarrier = result['LastEvaluatedKey'].infoID;
+
+        } else {
+          this.carrierNext = true;
+          this.lastEvaluatedKeyCarrier = '';
+          this.carrierEndPoint = this.totalRecordsCarrier;
+        }
+
+        // disable prev btn
+        if (this.carrierDraw > 0) {
+          this.carrierPrev = false;
+        } else {
+          this.carrierPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableOperator() {
-    let current = this;
-    this.dtOptionsOperator = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('ownerOperators/fetch/records?operatorID='+this.filterVal.operatorID+'&lastKey='+this.lastEvaluatedKeyOperator, dataTablesParameters).subscribe(resp => {
-            current.ownerOperatorss = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyOperator = resp['LastEvaluatedKey'].operatorID;
 
-            } else {
-              this.lastEvaluatedKeyOperator = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('ownerOperators/fetch/records?operatorID='+this.filterVal.operatorID+'&lastKey='+this.lastEvaluatedKeyOperator)
+      .subscribe((result: any) => {
+        this.ownerOperatorss = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsOperator,
-              recordsFiltered: current.totalRecordsOperator,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.operatorID != '') {
+          this.ownerOperatorStartPoint = this.totalRecordsOperator;
+          this.ownerOperatorEndPoint = this.totalRecordsOperator;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.ownerOperatorNext = false;
+          // for prev button
+          if (!this.ownerOperatorPrevEvauatedKeys.includes(result['LastEvaluatedKey'].operatorID)) {
+            this.ownerOperatorPrevEvauatedKeys.push(result['LastEvaluatedKey'].operatorID);
+          }
+          this.lastEvaluatedKeyOperator = result['LastEvaluatedKey'].operatorID;
+
+        } else {
+          this.ownerOperatorNext = true;
+          this.lastEvaluatedKeyOperator = '';
+          this.ownerOperatorEndPoint = this.totalRecordsOperator;
+        }
+
+        // disable prev btn
+        if (this.ownerOperatorDraw > 0) {
+          this.ownerOperatorPrev = false;
+        } else {
+          this.ownerOperatorPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableShipper() {
-    let current = this;
-    this.dtOptionsShipper = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('shippers/fetch/records?shipperID='+this.filterVal.shipperID+'&lastKey='+this.lastEvaluatedKeyShipper, dataTablesParameters).subscribe(resp => {
-            current.shippers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyShipper = resp['LastEvaluatedKey'].shipperID;
 
-            } else {
-              this.lastEvaluatedKeyShipper = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('shippers/fetch/records?shipperID='+this.filterVal.shipperID+'&lastKey='+this.lastEvaluatedKeyShipper)
+      .subscribe((result: any) => {
+        this.shippers = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsShipper,
-              recordsFiltered: current.totalRecordsShipper,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.shipperID != '') {
+          this.shipperStartPoint = this.totalRecordsShipper;
+          this.shipperEndPoint = this.totalRecordsShipper;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.shipperNext = false;
+          // for prev button
+          if (!this.shipperPrevEvauatedKeys.includes(result['LastEvaluatedKey'].shipperID)) {
+            this.shipperPrevEvauatedKeys.push(result['LastEvaluatedKey'].shipperID);
+          }
+          this.lastEvaluatedKeyShipper = result['LastEvaluatedKey'].shipperID;
+
+        } else {
+          this.shipperNext = true;
+          this.lastEvaluatedKeyShipper = '';
+          this.shipperEndPoint = this.totalRecordsShipper;
+        }
+
+        // disable prev btn
+        if (this.shipperDraw > 0) {
+          this.shipperPrev = false;
+        } else {
+          this.shipperPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableConsignee() {
-    let current = this;
-    this.dtOptionsConsignee = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('receivers/fetch/records?consigneeID='+this.filterVal.consigneeID+'&lastKey='+this.lastEvaluatedKeyConsignee, dataTablesParameters).subscribe(resp => {
-            current.receivers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyConsignee = resp['LastEvaluatedKey'].receiverID;
 
-            } else {
-              this.lastEvaluatedKeyConsignee = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('receivers/fetch/records?consigneeID='+this.filterVal.consigneeID+'&lastKey='+this.lastEvaluatedKeyConsignee)
+      .subscribe((result: any) => {
+        this.receivers = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsConsignee,
-              recordsFiltered: current.totalRecordsConsignee,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.consigneeID != '') {
+          this.consigneeStartPoint = this.totalRecordsConsignee;
+          this.consigneeEndPoint = this.totalRecordsConsignee;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.consigneeNext = false;
+          // for prev button
+          if (!this.consigneePrevEvauatedKeys.includes(result['LastEvaluatedKey'].receiverID)) {
+            this.consigneePrevEvauatedKeys.push(result['LastEvaluatedKey'].receiverID);
+          }
+          this.lastEvaluatedKeyConsignee = result['LastEvaluatedKey'].receiverID;
+
+        } else {
+          this.consigneeNext = true;
+          this.lastEvaluatedKeyConsignee = '';
+          this.consigneeEndPoint = this.totalRecordsConsignee;
+        }
+
+        // disable prev btn
+        if (this.consigneeDraw > 0) {
+          this.consigneePrev = false;
+        } else {
+          this.consigneePrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableStaff() {
-    let current = this;
-    this.dtOptionsStaff = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('staffs/fetch/records?staffID='+this.filterVal.staffID+'&lastKey='+this.lastEvaluatedKeyStaff, dataTablesParameters).subscribe(resp => {
-            current.staffs = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyStaff = resp['LastEvaluatedKey'].staffID;
 
-            } else {
-              this.lastEvaluatedKeyStaff = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('staffs/fetch/records?staffID='+this.filterVal.staffID+'&lastKey='+this.lastEvaluatedKeyStaff)
+      .subscribe((result: any) => {
+        this.staffs = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsStaff,
-              recordsFiltered: current.totalRecordsStaff,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.staffID != '') {
+          this.staffStartPoint = this.totalRecordsStaff;
+          this.staffEndPoint = this.totalRecordsStaff;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.staffNext = false;
+          // for prev button
+          if (!this.staffPrevEvauatedKeys.includes(result['LastEvaluatedKey'].staffID)) {
+            this.staffPrevEvauatedKeys.push(result['LastEvaluatedKey'].staffID);
+          }
+          this.lastEvaluatedKeyStaff = result['LastEvaluatedKey'].staffID;
+
+        } else {
+          this.staffNext = true;
+          this.lastEvaluatedKeyStaff = '';
+          this.staffEndPoint = this.totalRecordsStaff;
+        }
+
+        // disable prev btn
+        if (this.staffDraw > 0) {
+          this.staffPrev = false;
+        } else {
+          this.staffPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableCompany() {
-    let current = this;
-    this.dtOptionsCompany = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('factoringCompanies/fetch/records?companyID='+this.filterVal.companyID+'&lastKey='+this.lastEvaluatedKeyCompany, dataTablesParameters).subscribe(resp => {
-            current.fcCompanies = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].factoringCompanyID;
 
-            } else {
-              this.lastEvaluatedKeyCompany = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('factoringCompanies/fetch/records?companyID='+this.filterVal.companyID+'&lastKey='+this.lastEvaluatedKeyCompany)
+      .subscribe((result: any) => {
+        this.fcCompanies = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsCompany,
-              recordsFiltered: current.totalRecordsCompany,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.companyID != '') {
+          this.companyStartPoint = this.totalRecordsCompany;
+          this.companyEndPoint = this.totalRecordsCompany;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.companyNext = false;
+          // for prev button
+          if (!this.companyPrevEvauatedKeys.includes(result['LastEvaluatedKey'].factoringCompanyID)) {
+            this.companyPrevEvauatedKeys.push(result['LastEvaluatedKey'].factoringCompanyID);
+          }
+          this.lastEvaluatedKeyCompany = result['LastEvaluatedKey'].factoringCompanyID;
+
+        } else {
+          this.companyNext = true;
+          this.lastEvaluatedKeyCompany = '';
+          this.companyEndPoint = this.totalRecordsCompany;
+        }
+
+        // disable prev btn
+        if (this.companyDraw > 0) {
+          this.companyPrev = false;
+        } else {
+          this.companyPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   initDataTableDriver() {
-    let current = this;
-    this.dtOptionsDriver = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.filterVal.driverID+'&dutyStatus=&lastKey='+this.lastEvaluatedKeyCompany, dataTablesParameters).subscribe(resp => {
-            current.drivers = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKeyCompany = resp['LastEvaluatedKey'].driverID;
 
-            } else {
-              this.lastEvaluatedKeyCompany = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('drivers/fetch/records?driverID='+this.filterVal.driverID+'&dutyStatus=&lastKey='+this.lastEvaluatedKeyDriver)
+      .subscribe((result: any) => {
+        this.drivers = result['Items'];
 
-            callback({
-              recordsTotal: current.totalRecordsDriver,
-              recordsFiltered: current.totalRecordsDriver,
-              data: []
-            });
-          });
-      }
-    };
+        if(this.filterVal.driverID != '') {
+          this.driverStartPoint = this.totalRecordsDriver;
+          this.driverEndPoint = this.totalRecordsDriver;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.driverNext = false;
+          // for prev button
+          if (!this.driverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].driverID)) {
+            this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
+          }
+          this.lastEvaluatedKeyDriver = result['LastEvaluatedKey'].driverID;
+
+        } else {
+          this.driverNext = true;
+          this.lastEvaluatedKeyDriver = '';
+          this.driverEndPoint = this.totalRecordsDriver;
+        }
+
+        // disable prev btn
+        if (this.driverDraw > 0) {
+          this.driverPrev = false;
+        } else {
+          this.driverPrev = true;
+        }
+        this.spinner.hide();
+      });
   }
 
   getSuggestions(value, type) {
+    value = value.toLowerCase()
     if (type == 'customer') {
       this.apiService
         .getData(`customers/suggestion/${value}`)
@@ -3149,7 +3394,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         .subscribe((result) => {
           this.suggestedBrokers = result.Items;
           if (this.suggestedBrokers.length == 0) {
-            this.filterVal.brokerID = '';
+            this.filterVal.staffID = '';
             this.filterVal.brokerName = '';
           } else {
             this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
@@ -3226,7 +3471,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         .subscribe((result) => {
           this.suggestedCompany = result.Items;
             this.suggestedCompany = this.suggestedCompany.map(function (v) {
-              v.name = v.firstName + ' ' + v.lastName;
+              v.name = v.companyName;
               return v;
             })
         });
@@ -3302,7 +3547,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.customers = [];
         this.activeDiv = 'customerTable';
         this.fetchCustomersCount();
-        await this.rerender();
+        this.initDataTable();
       } else {
         return false
       }
@@ -3312,7 +3557,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.brokers = [];
         this.activeDiv = 'brokerTable';
         this.fetchBrokersCount();
-        await this.rerender();
+        this.initDataTableBroker();
       } else {
         return false
       }
@@ -3322,7 +3567,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.vendors = [];
         this.activeDiv = 'vendorTable';
         this.fetchVendorsCount();
-        await this.rerender();
+        this.initDataTableVendor();
       } else {
         return false
       }
@@ -3332,7 +3577,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.carriers = [];
         this.activeDiv = 'carrierTable';
         this.fetchCarriersCount();
-        await this.rerender();
+        this.initDataTableCarrier();
       } else {
         return false
       }
@@ -3342,7 +3587,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.fetchOwnerOperatorsCount();
-        await this.rerender();
+        this.initDataTableOperator();
       } else {
         return false
       }
@@ -3352,7 +3597,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.shippers = [];
         this.activeDiv = 'shipperTable';
         this.fetchShippersCount();
-        await this.rerender();
+        this.initDataTableShipper();
       } else {
         return false
       }
@@ -3362,7 +3607,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.receivers = [];
         this.activeDiv = 'consigneeTable';
         this.fetchConsigneeCount();
-        await this.rerender();
+        this.initDataTableConsignee();
       } else {
         return false
       }
@@ -3372,7 +3617,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.staffs = [];
         this.activeDiv = 'staffTable';
         this.fetchStaffsCount();
-        await this.rerender();
+        this.initDataTableStaff();
       } else {
         return false
       }
@@ -3382,7 +3627,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.fcCompanies = [];
         this.activeDiv = 'companyTable';
         this.fetchFcCompaniesCount()
-        await this.rerender();
+        this.initDataTableCompany();
       } else {
         return false
       }
@@ -3392,7 +3637,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.drivers = [];
         this.activeDiv = 'driverTable';
         this.fetchDriversCount();
-        await this.rerender();
+        this.initDataTableDriver();
       } else {
         return false
       }
@@ -3409,7 +3654,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.customerName = '';
         this.suggestedCustomers = [];
         this.fetchCustomersCount();
-        await this.rerender();
+        this.initDataTable();
+        this.customerDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3422,8 +3669,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.brokerName = '';
         this.suggestedBrokers = [];
         this.fetchBrokersCount();
-        await this.rerender();
-
+        this.initDataTableBroker();
+        this.brokerDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3436,7 +3684,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.vendorName = '';
         this.suggestedVendors = [];
         this.fetchVendorsCount();
-        await this.rerender();
+        this.initDataTableVendor();
+        this.vendorDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3449,7 +3699,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.carrierName = '';
         this.suggestedCarriers = [];
         this.fetchCarriersCount();
-        await this.rerender();
+        this.initDataTableCarrier();
+        this.carrierDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3462,7 +3714,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.operatorName = '';
         this.suggestedOperators = [];
         this.fetchOwnerOperatorsCount();
-        await this.rerender();
+        this.initDataTableOperator();
+        this.ownerOperatorDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3475,7 +3729,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.shipperName = '';
         this.suggestedShipper = [];
         this.fetchShippersCount();
-        await this.rerender();
+        this.initDataTableShipper();
+        this.shipperDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3488,7 +3744,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.consigneeName = '';
         this.suggestedConsignees = [];
         this.fetchConsigneeCount();
-        await this.rerender();
+        this.initDataTableConsignee();
+        this.consigneeDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3501,7 +3759,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.staffName = '';
         this.suggestedStaffs = [];
         this.fetchStaffsCount();
-        await this.rerender();
+        this.initDataTableStaff();
+        this.staffDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3513,8 +3773,10 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.companyID = '';
         this.filterVal.fcompanyName = '';
         this.suggestedCompany = [];
-        this.fetchStaffsCount();
-        await this.rerender();
+        this.fetchFcCompaniesCount();
+        this.initDataTableCompany();
+        this.companyDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3527,7 +3789,9 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         this.filterVal.driverName = '';
         this.suggestedDriver = [];
         this.fetchDriversCount();
-        await this.rerender();
+        this.initDataTableDriver();
+        this.driverDraw = 0;
+        this.getStartandEndVal(type);
       } else {
         return false
       }
@@ -3704,8 +3968,418 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   enableLogin(event) {
-    console.log('event')
-    console.log(event.target.checked)
     this.loginDiv = event.target.checked;
+  }
+
+  saveUserData() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+      const data = {
+        firstName: this.staffData['firstName'],
+        lastName: this.staffData['lastName'],
+        employeeID: this.staffData['employeeID'],
+        dateOfBirth: this.staffData['dateOfBirth'],
+        phone: this.staffData['workPhone'],
+        email: this.staffData['workEmail'],
+        currentStatus: 'ACTIVE',
+        departmentName: this.staffData.userAccount['department'],
+        userType: this.staffData.userData.userType,
+        userName: this.staffData.userData.username,
+        password: this.staffData.userData.password,
+      };
+
+      // create form data instance
+      const formData = new FormData();
+
+      //append other fields
+      formData.append('data', JSON.stringify(data));
+
+      this.apiService.postData('users', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.toastr.error('Please see the errors');
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.errorClass = false;
+        }
+      });
+  }
+
+  // next button func
+  nextResults(type) {
+    if(type == 'customer') {
+      this.customerDraw += 1;
+      this.initDataTable();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'driver') {
+      this.driverDraw += 1;
+      this.initDataTableDriver();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'broker') {
+      this.brokerDraw += 1;
+      this.initDataTableBroker();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'vendor') {
+      this.vendorDraw += 1;
+      this.initDataTableVendor();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'carrier') {
+      this.carrierDraw += 1;
+      this.initDataTableCarrier();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'operator') {
+      this.ownerOperatorDraw += 1;
+      this.initDataTableOperator();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'shipper') {
+      this.shipperDraw += 1;
+      this.initDataTableShipper();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'consignee') {
+      this.consigneeDraw += 1;
+      this.initDataTableConsignee();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'staff') {
+      this.staffDraw += 1;
+      this.initDataTableStaff();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'company') {
+      this.companyDraw += 1;
+      this.initDataTableCompany();
+      this.getStartandEndVal(type);
+    }
+  }
+
+  // prev button func
+  prevResults(type) {
+    if(type == 'customer') {
+      this.customerDraw -= 1;
+      this.lastEvaluatedKeyCustomer = this.customerPrevEvauatedKeys[this.customerDraw];
+      this.initDataTable();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'driver') {
+      this.driverDraw -= 1;
+      this.lastEvaluatedKeyDriver = this.driverPrevEvauatedKeys[this.driverDraw];
+      this.initDataTableDriver();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'broker') {
+      this.brokerDraw -= 1;
+      this.lastEvaluatedKeyBroker = this.brokerPrevEvauatedKeys[this.brokerDraw];
+      this.initDataTableBroker();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'vendor') {
+      this.vendorDraw -= 1;
+      this.lastEvaluatedKeyVendor = this.vendorPrevEvauatedKeys[this.vendorDraw];
+      this.initDataTableVendor();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'carrier') {
+      this.carrierDraw -= 1;
+      this.lastEvaluatedKeyCarrier = this.carrierPrevEvauatedKeys[this.carrierDraw];
+      this.initDataTableCarrier();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'operator') {
+      this.ownerOperatorDraw -= 1;
+      this.lastEvaluatedKeyOperator = this.ownerOperatorPrevEvauatedKeys[this.ownerOperatorDraw];
+      this.initDataTableOperator();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'shipper') {
+      this.shipperDraw -= 1;
+      this.lastEvaluatedKeyShipper = this.shipperPrevEvauatedKeys[this.shipperDraw];
+      this.initDataTableShipper();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'consignee') {
+      this.consigneeDraw -= 1;
+      this.lastEvaluatedKeyConsignee = this.consigneePrevEvauatedKeys[this.consigneeDraw];
+      this.initDataTableConsignee();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'staff') {
+      this.staffDraw -= 1;
+      this.lastEvaluatedKeyStaff = this.staffPrevEvauatedKeys[this.staffDraw];
+      this.initDataTableStaff();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'company') {
+      this.companyDraw -= 1;
+      this.lastEvaluatedKeyCompany = this.companyPrevEvauatedKeys[this.companyDraw];
+      this.initDataTableCompany();
+      this.getStartandEndVal(type);
+    }
+  }
+
+  getStartandEndVal(type) {
+    if(type == 'customer') {
+      this.custtStartPoint = this.customerDraw*this.pageLength+1;
+      this.custtEndPoint = this.custtStartPoint+this.pageLength-1;
+
+    } else if(type == 'driver') {
+      this.driverStartPoint = this.driverDraw*this.pageLength+1;
+      this.driverEndPoint = this.driverStartPoint+this.pageLength-1;
+
+    } else if(type == 'broker') {
+      this.brokerStartPoint = this.brokerDraw*this.pageLength+1;
+      this.brokerEndPoint = this.brokerStartPoint+this.pageLength-1;
+
+    } else if(type == 'vendor') {
+      this.vendorStartPoint = this.vendorDraw*this.pageLength+1;
+      this.vendorEndPoint = this.vendorStartPoint+this.pageLength-1;
+
+    } else if(type == 'carrier') {
+      this.carrierStartPoint = this.carrierDraw*this.pageLength+1;
+      this.carrierEndPoint = this.carrierStartPoint+this.pageLength-1;
+
+    } else if(type == 'operator') {
+      this.ownerOperatorStartPoint = this.ownerOperatorDraw*this.pageLength+1;
+      this.ownerOperatorEndPoint = this.ownerOperatorStartPoint+this.pageLength-1;
+
+    } else if(type == 'shipper') {
+      this.shipperStartPoint = this.shipperDraw*this.pageLength+1;
+      this.shipperEndPoint = this.shipperStartPoint+this.pageLength-1;
+      
+    } else if(type == 'consignee') {
+      this.consigneeStartPoint = this.consigneeDraw*this.pageLength+1;
+      this.consigneeEndPoint = this.consigneeStartPoint+this.pageLength-1;
+
+    } else if(type == 'staff') {
+      this.staffStartPoint = this.staffDraw*this.pageLength+1;
+      this.staffEndPoint = this.staffStartPoint+this.pageLength-1;
+
+    } else if(type == 'company') {
+      this.companyStartPoint = this.companyDraw*this.pageLength+1;
+      this.companyEndPoint = this.companyStartPoint+this.pageLength-1;
+    }
+  }
+
+  manAddress(event, i, type) {
+    console.log('type', type);
+    if(type == 'customer') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.customerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.customerData.address[i].countryID = '';
+        this.customerData.address[i].countryName = '';
+        this.customerData.address[i].stateID = '';
+        this.customerData.address[i].stateName = '';
+        this.customerData.address[i].cityID = '';
+        this.customerData.address[i].cityName = '';
+        this.customerData.address[i].zipCode = '';
+        this.customerData.address[i].address1 = '';
+        this.customerData.address[i].address2 = '';
+        if(this.customerData.address[i].geoCords != undefined){
+          this.customerData.address[i].geoCords.lat = '';
+          this.customerData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'broker') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.brokerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.brokerData.address[i].countryID = '';
+        this.brokerData.address[i].countryName = '';
+        this.brokerData.address[i].stateID = '';
+        this.brokerData.address[i].stateName = '';
+        this.brokerData.address[i].cityID = '';
+        this.brokerData.address[i].cityName = '';
+        this.brokerData.address[i].zipCode = '';
+        this.brokerData.address[i].address1 = '';
+        this.brokerData.address[i].address2 = '';
+        if(this.brokerData.address[i].geoCords != undefined){
+          this.brokerData.address[i].geoCords.lat = '';
+          this.brokerData.address[i].geoCords.lng = '';
+        }
+        
+      }
+    } else if(type == 'vendor') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.vendorData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.vendorData.address[i].countryID = '';
+        this.vendorData.address[i].countryName = '';
+        this.vendorData.address[i].stateID = '';
+        this.vendorData.address[i].stateName = '';
+        this.vendorData.address[i].cityID = '';
+        this.vendorData.address[i].cityName = '';
+        this.vendorData.address[i].zipCode = '';
+        this.vendorData.address[i].address1 = '';
+        this.vendorData.address[i].address2 = '';
+        if(this.vendorData.address[i].geoCords != undefined){
+          this.vendorData.address[i].geoCords.lat = '';
+          this.vendorData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'carrier') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.carrierData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.carrierData.address[i].countryID = '';
+        this.carrierData.address[i].countryName = '';
+        this.carrierData.address[i].stateID = '';
+        this.carrierData.address[i].stateName = '';
+        this.carrierData.address[i].cityID = '';
+        this.carrierData.address[i].cityName = '';
+        this.carrierData.address[i].zipCode = '';
+        this.carrierData.address[i].address1 = '';
+        this.carrierData.address[i].address2 = '';
+        if(this.carrierData.address[i].geoCords != undefined){
+          this.carrierData.address[i].geoCords.lat = '';
+          this.carrierData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'owner') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.ownerData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.ownerData.address[i].countryID = '';
+        this.ownerData.address[i].countryName = '';
+        this.ownerData.address[i].stateID = '';
+        this.ownerData.address[i].stateName = '';
+        this.ownerData.address[i].cityID = '';
+        this.ownerData.address[i].cityName = '';
+        this.ownerData.address[i].zipCode = '';
+        this.ownerData.address[i].address1 = '';
+        this.ownerData.address[i].address2 = '';
+        if(this.ownerData.address[i].geoCords != undefined){
+          this.ownerData.address[i].geoCords.lat = '';
+          this.ownerData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'shipper') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipperData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipperData.address[i].countryID = '';
+        this.shipperData.address[i].countryName = '';
+        this.shipperData.address[i].stateID = '';
+        this.shipperData.address[i].stateName = '';
+        this.shipperData.address[i].cityID = '';
+        this.shipperData.address[i].cityName = '';
+        this.shipperData.address[i].zipCode = '';
+        this.shipperData.address[i].address1 = '';
+        this.shipperData.address[i].address2 = '';
+        if(this.shipperData.address[i].geoCords != undefined){
+          this.shipperData.address[i].geoCords.lat = '';
+          this.shipperData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'consignee') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.consigneeData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.consigneeData.address[i].countryID = '';
+        this.consigneeData.address[i].countryName = '';
+        this.consigneeData.address[i].stateID = '';
+        this.consigneeData.address[i].stateName = '';
+        this.consigneeData.address[i].cityID = '';
+        this.consigneeData.address[i].cityName = '';
+        this.consigneeData.address[i].zipCode = '';
+        this.consigneeData.address[i].address1 = '';
+        this.consigneeData.address[i].address2 = '';
+        if(this.consigneeData.address[i].geoCords != undefined){
+          this.consigneeData.address[i].geoCords.lat = '';
+          this.consigneeData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'staff') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.staffData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.staffData.address[i].countryID = '';
+        this.staffData.address[i].countryName = '';
+        this.staffData.address[i].stateID = '';
+        this.staffData.address[i].stateName = '';
+        this.staffData.address[i].cityID = '';
+        this.staffData.address[i].cityName = '';
+        this.staffData.address[i].zipCode = '';
+        this.staffData.address[i].address1 = '';
+        this.staffData.address[i].address2 = '';
+        if(this.staffData.address[i].geoCords != undefined){
+          this.staffData.address[i].geoCords.lat = '';
+          this.staffData.address[i].geoCords.lng = '';
+        }
+      }
+    } else if(type == 'fcCompany') {
+      if (event.target.checked) {
+        $(event.target).closest('.address-item').addClass('open');
+        this.fcCompanyData.address[i]['userLocation'] = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.fcCompanyData.address[i].countryID = '';
+        this.fcCompanyData.address[i].countryName = '';
+        this.fcCompanyData.address[i].stateID = '';
+        this.fcCompanyData.address[i].stateName = '';
+        this.fcCompanyData.address[i].cityID = '';
+        this.fcCompanyData.address[i].cityName = '';
+        this.fcCompanyData.address[i].zipCode = '';
+        this.fcCompanyData.address[i].address1 = '';
+        this.fcCompanyData.address[i].address2 = '';
+        if(this.fcCompanyData.address[i].geoCords != undefined){
+          this.fcCompanyData.address[i].geoCords.lat = '';
+          this.fcCompanyData.address[i].geoCords.lng = '';
+        }
+      }
+    }
+  }
+
+  getEditStates(id) {
+    this.apiService.getData('states/country/' + id)
+      .subscribe((result: any) => {
+        this.states = result.Items;
+      });
+  }
+
+  getEditCities(id) {
+    this.apiService.getData('cities/state/' + id)
+      .subscribe((result: any) => {
+        this.cities = result.Items;
+      });
   }
 }

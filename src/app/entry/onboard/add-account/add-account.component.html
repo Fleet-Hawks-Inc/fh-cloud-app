@@ -1,5 +1,5 @@
 <form id="carrierForm" class="form-horizontal form-bordered bg-white" #carrierForm="ngForm"
-   (ngSubmit)="onSubmit(carrierForm)">
+   (ngSubmit)="onSubmit()">
    <section class="body" style="background:white;"
       [ngClass]="{'showDiv':  activeTab == 1, 'hideDiv':  activeTab != 1 }">
       <div class="">
@@ -109,7 +109,7 @@
                                                 <ng-option value="Email" data-select2-id="3">Email</ng-option>
                                                 <ng-option value="Internet">Internet</ng-option>
                                                 <ng-option value="Advertisement">Advertisement</ng-option>
-                                            
+
                                           </ng-select>
                                        </div>
                                     </div>
@@ -377,7 +377,7 @@
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                    <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
-                                                      placeholder="Select address type"> 
+                                                      placeholder="Select address type">
                                                       <ng-option value="Mailing">Mailing</ng-option>
                                                       <ng-option  value="Yard">Yard</ng-option>
                                                    </ng-select>
@@ -405,39 +405,39 @@
                                           </div>
                                           <div class="col-lg-3 mar-top-37">
                                              <a class="btn btn-dark mr-2" href="javascript:;"
-                                                (click)="clearUserLocation(i);">Clear</a>                                             
+                                                (click)="clearUserLocation(i);">Clear</a>
                                              <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)" class="btn btn-success"
                                                 href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                           </div>
                                        </div>
                                        <div class="address-inner" *ngIf="item.manual">
-                                          <div class="row mb-3 border-bottom pb-4">          
+                                          <div class="row mb-3 border-bottom pb-4">
                                              <div class="col-lg-5 offset-lg-1 pt-3">
                                                 <div class="row">
                                                    <div class="col-lg-5">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
                                                       <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}" (change)="getStates($event, i)"
-                                                         class="form-control populate" placeholder="Select country">          
+                                                         class="form-control populate" placeholder="Select country">
                                                          <ng-option class="text-capitalize" *ngFor="let country of countries"
-                                                            value="{{country.countryID}}">{{country.countryName}}</ng-option>          
+                                                            value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                                       </ng-select>
                                                    </div>
                                                    <div class="col-lg-5">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select State</label>
                                                       <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                         name="stateID{{i}}" placeholder="Select state">          
+                                                         name="stateID{{i}}" placeholder="Select state">
                                                          <ng-option class="text-capitalize" *ngFor="let state of states"
-                                                            value="{{state.stateID}}">{{state.stateName}}</ng-option>          
+                                                            value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                                       </ng-select>
                                                    </div>
                                                    <div class="col-lg-5">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
                                                       <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID"
                                                          name="cityID{{i}}" placeholder="Select city">
-         
+
                                                          <ng-option class="text-capitalize" *ngFor="let city of cities"
                                                             value="{{city.cityID}}">{{city.cityName}}</ng-option>
-         
+
                                                       </ng-select>
                                                    </div>
                                                    <div class="col-lg-5">
@@ -463,7 +463,7 @@
                                                 </div>
                                              </div>
                                           </div>
-                                       </div>          
+                                       </div>
                                     </div>
                                     <div class="row">
                                        <div class="col-lg-12 text-right">
@@ -481,13 +481,13 @@
                                        <div class="col-lg-5 offset-lg-1">
                                            <div class="row">
                                               <div class="col-lg-10">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Branch Name</label>											
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Branch Name</label>
                                                  <input type="text" class="form-control"  [(ngModel)]="bank.branchName" name="branchName">
                                               </div>
                                            </div>
                                            <div class="row">
                                               <div class="col-lg-10">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Account Number</label>											
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Account Number</label>
                                                  <input type="text" class="form-control"  [(ngModel)]="bank.accountNumber" name="accountNumber">
                                               </div>
                                            </div>
@@ -495,13 +495,13 @@
                                         <div class="col-lg-5 offset-lg-1">
                                            <div class="row">
                                               <div class="col-lg-10">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Routing/Transit Number</label>											
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Routing/Transit Number</label>
                                                  <input type="text" class="form-control"  [(ngModel)]="bank.routingNumber" name="routingNumber">
                                               </div>
                                            </div>
                                            <div class="row">
                                               <div class="col-lg-10">
-                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Institutional Number</label>											
+                                                 <label class="control-label font-weight-bold text-lg-right pt-2" >Institutional Number</label>
                                                  <input type="text" class="form-control"  [(ngModel)]="bank.institutionalNumber" name="institutionalNumber">
                                               </div>
                                            </div>
@@ -520,7 +520,7 @@
                                                    <div class="col-lg-10">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                       <ng-select [(ngModel)]="item.addressType" name="bank.addressDetails[{{i}}].addressType"
-                                                         placeholder="Select address type"> 
+                                                         placeholder="Select address type">
                                                          <ng-option value="Mailing">Mailing</ng-option>
                                                       </ng-select>
                                                    </div>
@@ -538,7 +538,7 @@
                                                 <div class="map-search__resultsBank bg-white">
                                                    <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchBankResults;">
-                                                         <a href="javascript:;" 
+                                                         <a href="javascript:;"
                                                          (click)="bankAddress(i, item)">
                                                          {{item.address.label}}</a>
                                                       </li>
@@ -546,32 +546,32 @@
                                                 </div>
                                              </div>
                                              <div class="col-lg-1 mar-top-37">
-                                                <a class="btn btn-dark mr-2" href="javascript:;" (click)="clearBankLocation(i);">Clear</a>                                               
+                                                <a class="btn btn-dark mr-2" href="javascript:;" (click)="clearBankLocation(i);">Clear</a>
                                              </div>
                                           </div>
                                           <div class="address-inner" *ngIf="item.manual">
-                                             <div class="row mb-3 border-bottom pb-4">          
+                                             <div class="row mb-3 border-bottom pb-4">
                                                 <div class="col-lg-5 offset-lg-1 pt-3">
                                                    <div class="row">
                                                       <div class="col-lg-5">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
                                                          <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}" (change)="getBankStates($event, i)"
-                                                            class="form-control populate" placeholder="Select country">          
-                                                            <ng-option class="text-capitalize" *ngFor="let country of addressCountriesBank" value="{{country.countryID}}">{{country.countryName}}</ng-option>          
+                                                            class="form-control populate" placeholder="Select country">
+                                                            <ng-option class="text-capitalize" *ngFor="let country of addressCountriesBank" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                                          </ng-select>
                                                       </div>
                                                       <div class="col-lg-5">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select State</label>
-                                                         <ng-select (change)="getBankCities($event, i)" [(ngModel)]="item.stateID"  name="stateID{{i}}" placeholder="Select state">          
+                                                         <ng-select (change)="getBankCities($event, i)" [(ngModel)]="item.stateID"  name="stateID{{i}}" placeholder="Select state">
                                                             <ng-option class="text-capitalize" *ngFor="let state of statesBank"
-                                                               value="{{state.stateID}}">{{state.stateName}}</ng-option>          
+                                                               value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                                          </ng-select>
                                                       </div>
                                                       <div class="col-lg-5">
                                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
                                                          <ng-select (change)="getBankCityName(i, $event)" [(ngModel)]="item.cityID"
-                                                            name="cityID{{i}}" placeholder="Select city">            
-                                                            <ng-option class="text-capitalize" *ngFor="let city of citiesBank" value="{{city.cityID}}">{{city.cityName}}</ng-option>            
+                                                            name="cityID{{i}}" placeholder="Select city">
+                                                            <ng-option class="text-capitalize" *ngFor="let city of citiesBank" value="{{city.cityID}}">{{city.cityName}}</ng-option>
                                                          </ng-select>
                                                       </div>
                                                       <div class="col-lg-5">
@@ -596,8 +596,8 @@
                                                    </div>
                                                 </div>
                                              </div>
-                                          </div>          
-                                       </div>                                  
+                                          </div>
+                                       </div>
                                  </div>
                               </div>
                            </div>

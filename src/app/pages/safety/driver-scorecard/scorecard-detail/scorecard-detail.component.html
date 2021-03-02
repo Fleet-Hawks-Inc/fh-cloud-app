@@ -205,7 +205,7 @@
                                             </div>
                                             <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
                                             [legend]="chartLegend" [chartType]="chartType">
-                                            </canvas> 
+                                            </canvas>
                                         </div>
                                         <div class="tab-pane " id="harsh-count" role="tabpanel"
                                             aria-labelledby="harsh-count-tab">
@@ -309,7 +309,7 @@
                                             </tr>
                                         </tbody>
 
-                                        <tbody *ngIf="!totalEvents.length > 0">
+                                        <tbody *ngIf="totalEvents.length == 0">
                                             <tr style="text-align: center;">
                                                 <td colspan="3">No record found</td>
                                             </tr>

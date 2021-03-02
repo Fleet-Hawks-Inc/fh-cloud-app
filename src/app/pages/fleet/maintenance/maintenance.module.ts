@@ -8,12 +8,6 @@ import {SlickCarouselModule} from 'ngx-slick-carousel';
 import {
   AddServiceProgramComponent,
   ServiceProgramListComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   ServiceListComponent,
   AddServiceComponent,
   ServiceDetailComponent,
@@ -26,12 +20,6 @@ import {
 const COMPONENTS = [
   // AddServiceProgramComponent,
   ServiceProgramListComponent,
-  AddVendorComponent,
-  VendorsListComponent,
-  EditVendorComponent,
-  AddVehicleServiceLogComponent,
-  VehicleServiceLogsComponent,
-  EditVehicleServiceLogComponent,
   ServiceListComponent,
   AddServiceComponent,
   ServiceDetailComponent,
@@ -48,7 +36,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import { AddVehicleNewComponent } from '../vehicles/add-vehicle-new/add-vehicle-new.component';
 
 const routes: Routes = [
   {
@@ -80,40 +67,6 @@ const routes: Routes = [
       {
         path: 'detail/:programID',
         component: ServiceProgramDetailComponent,
-      },
-    ],
-  },
-  {
-    path: 'vendor',
-    children: [
-      {
-        path: 'Add-Vendor',
-        component: AddVendorComponent,
-      },
-      {
-        path: 'Vendors-List',
-        component: VendorsListComponent,
-      },
-      {
-        path: 'Edit-Vendor/:vendorID',
-        component: EditVendorComponent,
-      },
-    ],
-  },
-  {
-    path: 'vehicle-service-log',
-    children: [
-      {
-        path: 'Add-Vehicle-Service-Log',
-        component: AddVehicleServiceLogComponent,
-      },
-      {
-        path: 'Vehicle-Service-Logs-List',
-        component: VehicleServiceLogsComponent,
-      },
-      {
-        path: 'Edit-Vehicle-Service-Log/:logID',
-        component: EditVehicleServiceLogComponent,
       },
     ],
   },

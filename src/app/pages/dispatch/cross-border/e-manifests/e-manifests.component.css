@@ -1,0 +1,68 @@
+.statusBtn {
+  padding: 4px;
+  color: #FFF;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* ACE button classes */
+.cancelBtn {
+  background-color: #D91714;
+}
+.draftBtn {
+  background-color: #000;
+}
+.transmittedBtn {
+  background-color: #DFD936;
+}
+.preliminaryBtn {
+  background-color: #B1E984;
+}
+.completeBtn {
+  background-color: #5cb85c;
+}
+.truckArrivedBtn {
+  background-color: #52AA0C;
+}
+.truckReleasedBtn {
+  background-color: #66C31D;
+}
+.CBPReturnedErrorBtn {
+  background-color: #F93121;
+}
+.completeManifestEntryBtn {
+  background-color: #43EA20;
+}
+
+/* ACI Button classes */
+.ACIcancelBtn {
+  background-color: #D91714;
+}
+.ACIdraftBtn {
+  background-color: #000;
+}
+.ACItransmittedBtn {
+  background-color: #DFD936;
+}
+.ACIonFileCBSABtn {
+  background-color: #ffff00;
+}
+.ACIReleasedBtn {
+  background-color: #66C31D;
+}
+.CBSAReturnedErrorBtn {
+  background-color: #F93121;
+}
+.ACIRejectedAtBorderBtn {
+  background-color: #e20000;
+}
+.ACIMatchNoticeBtn {
+  background-color: #eeee11;
+}
+.ACIOnFileTransactionBtn {
+  background-color: #ffe400;
+}
+.ACIArrivalBorderBtn {
+  background-color: #52AA0C;
+}

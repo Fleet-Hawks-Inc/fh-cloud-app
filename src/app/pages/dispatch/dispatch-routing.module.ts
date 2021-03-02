@@ -1,26 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import {LoadBoardComponent} from './load-board/load-board.component';
-import {LoadDetailComponent} from './load-detail/load-detail.component';
-import {CreateLoadNewComponent} from './create-load-new/create-load-new.component';
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
-
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
-
-import { MyDocumentsComponent } from './documents/my-documents/my-documents.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
-
-import { AllDispatchComponent } from './dispatch/all-dispatch/all-dispatch.component';
-import { DispatchPlannerComponent } from './dispatch/dispatch-planner/dispatch-planner.component';
-import { AllLoadsComponent } from './loads/all-loads/all-loads.component';
 import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
 import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
-import { AddLoadComponent } from './loads/add-load/add-load.component';
-import { AddDispatchComponent } from './dispatch/add-dispatch/add-dispatch.component';
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
-import { EditRouteComponent } from './permanent-routing/edit-route/edit-route.component';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
 import { OrdersListComponent } from './orders/orders-list/orders-list.component';
@@ -38,7 +24,6 @@ import { RouteDetailComponent } from './permanent-routing/route-detail/route-det
 import { TripListComponent } from './trips/trip-list/trip-list.component';
 import { AddTripComponent } from './trips/add-trip/add-trip.component';
 import { TripDetailComponent } from './trips/trip-detail/trip-detail.component';
-import { EditTripComponent } from './trips/edit-trip/edit-trip.component';
 
 import { CalendarViewComponent } from './planner/calendar-view/calendar-view.component';
 import { MapViewComponent } from './planner/map-view/map-view.component';
@@ -60,21 +45,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'loads',
-    children: [
-      { path: 'All-Loads', component:  AllLoadsComponent },
-      { path: 'Add-Load', component:  AddLoadComponent }
-    ]
-  },
-  {
-    path: 'dispatch',
-    children: [
-      { path: 'All-Dispatch', component:  AllDispatchComponent },
-      { path: 'Dispatch-Planner', component: DispatchPlannerComponent },
-      { path: 'Add-Dispatch', component: AddDispatchComponent }
-        ]
-  },
-  {
     path: 'cross-border',
     children: [
       {path: 'eManifests', component: EManifestsComponent},
@@ -86,10 +56,6 @@ const routes: Routes = [
       {path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent},
       {path: 'ACI-details/:entryID', component: AciDetailsComponent},
     ]
-  },
-  {
-    path: 'load-board',
-    component: LoadBoardComponent
   },
   {
     path: 'documents',
@@ -119,15 +85,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'create-load',
-    component: CreateLoadNewComponent
-  },
-
-  {
-    path: 'load-detail',
-    component: LoadDetailComponent
-  },
-  {
     path: 'routes',
     children: [
       { path: 'list', component: RouteListComponent},
@@ -154,7 +111,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: "overview",
+    path: 'overview',
     children: [
       { path: '', component: DispatchOverviewComponent}
     ]
