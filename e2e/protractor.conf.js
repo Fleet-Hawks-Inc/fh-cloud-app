@@ -11,7 +11,7 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     './src/**/*.ts',
-    //'./src/app/entry/onboard/add-account.po.ts'
+    //'./src/app/entry/map-dashboard/*.ts'
   ],
   capabilities: {
     browserName: 'chrome'
@@ -21,7 +21,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
+    defaultTimeoutInterval: 100000,
     print: function() {}
   },
   onPrepare() {
