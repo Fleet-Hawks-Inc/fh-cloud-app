@@ -8,13 +8,13 @@ export class MapDashBoardPage {
     }
 
     getTitleText() {
-        let titletext = element(by.id('txtdashboard')).getText();
-        //var EC = ExpectedConditions;
-        // Waits for the element with id 'abc' to be visible on the dom.
-        //browser.wait(EC.visibilityOf(titletext), 10000);
+        let titleText = element(by.id('txtdashboard'));
+        var EC = ExpectedConditions;
+        // // Waits for the element with id 'abc' to be visible on the dom.
+        browser.wait(EC.visibilityOf(titleText), 10000);
         //return titletext.getText();
-        return titletext;
-        
+        return titleText.getText();
+
     }
 
 }
