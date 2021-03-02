@@ -325,7 +325,7 @@ export class HereMapService {
               });
             });
           });
-        };
+        }
       })
   } catch (erro) {
     console.log('calculateroute', erro);

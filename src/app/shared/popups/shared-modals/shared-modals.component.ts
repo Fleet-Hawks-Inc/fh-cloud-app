@@ -8,6 +8,7 @@ import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../../app/pages/fleet/constants';
 import { Auth } from 'aws-amplify';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 @Component({
@@ -68,6 +69,7 @@ assetModelData = {
 }
 test: any = [];
 statesObject: any;
+assets: any = [];
 
 
 // Vehicles variables start
@@ -350,6 +352,21 @@ futureDatesLimit: any;
 countriesObject: any;
 // driver variables ends
 
+// Issues variables ends
+issuesData = {
+  issueName: '',
+  currentStatus: 'OPEN',
+  unitID: '',
+  unitType: 'vehicle',
+  reportedDate: '',
+  description: '',
+  odometer: null,
+  reportedBy: '',
+  assignedTo: '',
+}
+
+
+
 /**
  * service program props
  */
@@ -398,6 +415,7 @@ activeTab = 1;
     this.fetchDocuments();
     this.fetchGroups();
     this.fetchCycles(); // fetch cycles
+    this.fetchAssets();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
@@ -491,6 +509,13 @@ fetchDrivers(){
     this.apiService.getData('assetModels')
       .subscribe((result: any) => {
         this.assetModels = result.Items;
+      })
+  }
+
+  fetchAssets() {
+    this.apiService.getData('assets')
+      .subscribe((result: any) => {
+        this.assets = result.Items;
       })
   }
  /*
@@ -1338,8 +1363,7 @@ fetchDrivers(){
     })})
   } catch (error) {
     return 'error found';
-  };
-  }
+  }}
 
   fetchDocuments() {
     this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
@@ -1383,7 +1407,6 @@ fetchDrivers(){
       delete this.driverData['employeeId'];
       delete this.driverData['startDate'];
       delete this.driverData['terminationDate'];
-      
     }
     this.driverData['driverType'] = value;
   }
@@ -1491,5 +1514,48 @@ fetchDrivers(){
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
+  }
+
+  addIssue() {
+    this.hideErrors();
+    
+    // create form data instance
+    const formData = new FormData();
+
+    // append other fields
+    formData.append('data', JSON.stringify(this.issuesData));
+
+    // this.apiService.postData('issues/', data).subscribe({
+    this.apiService.postData('issues', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.toastr.success('Issue Added successfully');
+          $('#addIssuesModal').modal('hide');
+          let issueVehicleID = localStorage.getItem('issueVehicleID');
+          issueVehicleID = issueVehicleID.slice(1, -1);
+          this.listService.fetchVehicleIssues(issueVehicleID)
+        }
+      });
+  }
+
+  issuesUnitType(value: string) {
+    this.issuesData.unitType = value;
   }
 }

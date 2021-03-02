@@ -658,7 +658,7 @@ export class AddressBookComponent implements OnInit {
     }
     $('.modal').modal('hide');
     this.userDetailTitle = data.firstName;
-    const modalRef = this.modalService.open(targetModal);
+    this.modalService.open(targetModal);
     this.userDetailData = data;
   }
 
@@ -736,13 +736,11 @@ export class AddressBookComponent implements OnInit {
   }
 
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $('div').removeClass('show-search__result');
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),

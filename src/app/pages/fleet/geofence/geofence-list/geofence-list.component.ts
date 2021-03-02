@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import { Subject, timer } from 'rxjs';
+import { Subject} from 'rxjs';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
-import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';

@@ -52,6 +52,9 @@ export class ListService {
   customersDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   customersList = this.customersDataSource.asObservable();
 
+  issuesDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  issuesList = this.issuesDataSource.asObservable();
+
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
@@ -153,5 +156,17 @@ fetchReceivers() {
     this.apiService.getData(`customers`).subscribe((result: any) => {
       this.customersDataSource.next(result.Items);
     });
+  }
+
+  async fetchVehicleIssues(id: any) {
+    let promise: any = await this.apiService.getData(`issues/vehicle/${id}`).toPromise();
+    this.issuesDataSource.next(promise.Items);
+    
+  }
+
+  async fetchAssetsIssues(id: any) {
+    let promise: any = await this.apiService.getData(`issues/assets/${id}`).toPromise();
+    this.issuesDataSource.next(promise.Items);
+    
   }
 }
