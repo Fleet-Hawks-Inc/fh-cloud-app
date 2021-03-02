@@ -36,7 +36,6 @@ import {DataTablesModule} from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {NgxSpinnerModule} from 'ngx-spinner';
-import { AddVehicleNewComponent } from '../vehicles/add-vehicle-new/add-vehicle-new.component';
 
 const routes: Routes = [
   {

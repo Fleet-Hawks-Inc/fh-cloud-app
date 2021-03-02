@@ -240,7 +240,6 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       from(err.error)
         .pipe(
           map((val: any) => {
-            const path = val.path;
             // We Can Use This Method
             const key = val.message.match(/'([^']+)'/)[1];
             
