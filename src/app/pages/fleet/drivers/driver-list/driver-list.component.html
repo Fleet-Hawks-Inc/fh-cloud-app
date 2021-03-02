@@ -38,16 +38,6 @@
                         <ng-option value="Driving">Driving</ng-option>
                         
                   </ng-select>
-                     <!-- <div class="btn-group flex-wrap" style="min-width:190px;">
-                        <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Search by Duty Status <span class="caret"></span></button>
-                        <div class="dropdown-menu dutystatwd" role="menu">
-                           <a class="dropdown-item text-1" [routerLink]="">All</a>
-                           <a class="dropdown-item text-1" [routerLink]="">On Duty</a>
-                           <a class="dropdown-item text-1" [routerLink]="">Off Duty</a>
-                           <a class="dropdown-item text-1" [routerLink]="">Sleeper</a>
-                           <a class="dropdown-item text-1" [routerLink]="">Driving</a>
-                        </div>
-                     </div> -->
                   </div>
 
                   <div class="col-md-2  col-lg-2">
@@ -119,14 +109,6 @@
                               <label><input type="checkbox" [(ngModel)]="hideShow.sin"
                                  name="sin" (change)="hideShowColumn()"> SIN Number </label>
                            </a>
-                           <!-- <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.contractStart"
-                                 name="contractStart" (change)="hideShowColumn()"> Contract Start Date </label>
-                           </a>
-                           <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.homeTerminal"
-                                 name="homeTerminal" (change)="hideShowColumn()"> Home Terminal </label>
-                           </a> -->
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.fastNumber"
                                  name="fastNumber" (change)="hideShowColumn()"> Fast Number </label>
@@ -141,8 +123,6 @@
                            aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                           <!-- <a (click)="editDriver()" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                        <a (click)="deleteDriver()" class="dropdown-item text-1" href="javascript:;">Delete</a> -->
                            <a class="dropdown-item text-1" href="javascript:;">Import</a>
                            <a class="dropdown-item text-1" href="javascript:;" (click)="export()">Export</a>
                         </div>
@@ -156,10 +136,10 @@
          <div class="mapclass drivermain" id="map_view" *ngIf="mapView">
             <div id="map" style="height: calc(100vh - 110px);"></div>
             <div class="vehicleRmini" *ngIf="visible" id="arrowRvehicle">
-               <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-right"></i></a>
+               <a href="javascript:;" (click)="valuechange()"><em class="fas fa-arrow-right"></em></a>
             </div>
             <div class="vehicleLmini" *ngIf="!visible" id="arrowLvehicle">
-               <a href="javascript:;" (click)="valuechange()"><i class="fas fa-arrow-left"></i></a>
+               <a href="javascript:;" (click)="valuechange()"><em class="fas fa-arrow-left"></em></a>
             </div>
 
             <!-- ENTIRE FLEET DROP DOWN ON MAP -->
@@ -169,7 +149,7 @@
                      <div class="card-actions">
                         <a class="card-action card-action-toggle" href="javascript:;" data-card-toggle=""></a>
                      </div>
-                     <h2 class="card-title" style="width:230px;"><i class="fas fa-sitemap"></i>&nbsp;&nbsp;&nbsp; Entire Fleet</h2>
+                     <h2 class="card-title" style="width:230px;"><em class="fas fa-sitemap"></em>&nbsp;&nbsp;&nbsp; Entire Fleet</h2>
                      <div class="mt-3">
                         <select data-plugin-selectTwo class="form-control populate">
                            <optgroup label="Select Truck">
@@ -278,7 +258,7 @@
             <div class="driverminilist" *ngIf="visible" style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
                id="driverMiniList">
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
                         Manjit Singh</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L
@@ -292,7 +272,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span>
                         Roshan Prince</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T
@@ -306,7 +286,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
                         Bachitar</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
@@ -319,7 +299,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span>
                         Kapil Sharma</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
@@ -333,7 +313,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span>
                         Rohit Aggarwal</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J
@@ -347,7 +327,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
                         Manjot Birdi</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
@@ -361,7 +341,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
                         Ricky Clerk</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K
@@ -375,7 +355,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
                         Manjit Singh</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L
@@ -389,7 +369,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="offduty pull-right">OFF</span>
                         Roshan Prince</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T
@@ -403,7 +383,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="dutyonly pull-right">D</span>
                         Bachitar</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
@@ -416,7 +396,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="pcduty pull-right">PC</span>
                         Kapil Sharma</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S
@@ -430,7 +410,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="ymduty pull-right">YM</span>
                         Rohit Aggarwal</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J
@@ -444,7 +424,7 @@
                   </a>
                </div>
                <div class="driverdetailMap">
-                  <a href="driver-profile2.php">
+                  <a href="javascript:;">
                      <p class="mb-1 text-4 font-weight-semibold text-dark"><span class="onduty pull-right">ON</span>
                         Manjot Birdi</p>
                      <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
@@ -467,24 +447,24 @@
                            <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
                               <thead>
                                  <tr>
-                                    <th class="col1">Name</th>
-                                    <th class="col2">Duty Status</th>
-                                    <th class="col18">Location</th>
-                                    <th class="col11">Current Cycle</th>
-                                    <th class="col12 extra">Current Vehicle</th>
-                                    <th class="col13 extra">Assets</th>
-                                    <th class="col14 extra">Phone Number</th>
-                                    <th class="col15 extra">CDL Number</th>
-                                    <th class="col16 extra">Document</th>
-                                    <th class="col3 extra">Group</th>
-                                    <th class="col4 extra">Citizenship</th>
-                                    <th class="col5 extra">Address</th>
-                                    <th class="col6 extra">Payment Type</th>
-                                    <th class="col7 extra">SIN Number</th>
+                                    <th id="" class="col1 minWidth200">Name</th>
+                                    <th id="" class="col2 minWidth120">Duty Status</th>
+                                    <th id="" class="col18 minWidth200">Location</th>
+                                    <th id="" class="col11 minWidth200">Current Cycle</th>
+                                    <th id="" class="col12 extra">Current Vehicle</th>
+                                    <th id="" class="col13 extra">Assets</th>
+                                    <th id="" class="col14 extra">Phone Number</th>
+                                    <th id="" class="col15 extra">CDL Number</th>
+                                    <th id="" class="col16 extra">Document</th>
+                                    <th id="" class="col3 extra">Group</th>
+                                    <th id="" class="col4 extra">Citizenship</th>
+                                    <th id="" class="col5 extra">Address</th>
+                                    <th id="" class="col6 extra">Payment Type</th>
+                                    <th id="" class="col7 extra">SIN Number</th>
                                     
-                                    <th class="col10 extra">Fast Number</th>
-                                    <th class="col17">Status</th>
-                                    <th width="50">Actions</th>
+                                    <th id="" class="col10 extra">Fast Number</th>
+                                    <th id="" class="minWidth120 col17">Status</th>
+                                    <th id="" class="minWidth50" style="min-width: 50px;">Actions</th>
                                  </tr>
                               </thead>
                               <tbody>

@@ -3,7 +3,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from "../../../../../services/here-map.service";
-import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 
 

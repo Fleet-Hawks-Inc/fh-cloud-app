@@ -111,23 +111,23 @@ export class AddGeofenceComponent implements OnInit {
       // alert('pm:create event fired. See console for details');
       const layer = e.layer;
 
-      const polyEdit = layer.toGeoJSON();
-      this.geofenceData.geofence.type = polyEdit.geometry.type;
-      this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+      const polyCreate = layer.toGeoJSON();
+      this.geofenceData.geofence.type = polyCreate.geometry.type;
+      this.geofenceData.geofence.cords = polyCreate.geometry.coordinates;
 
-      layer.on('pm:edit', ({ layer }) => {
+      layer.on('pm:edit', ({ edlayer }) => {
 
-        const polyEdit = layer.toGeoJSON();
+        const polyEdit = edlayer.toGeoJSON();
         this.geofenceData.geofence.type = polyEdit.geometry.type;
         this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
 
       });
 
-      layer.on('pm:update', ({ layer }) => {
+      layer.on('pm:update', ({ uplayer }) => {
 
-        const polyEdit = layer.toGeoJSON();
-        this.geofenceData.geofence.type = polyEdit.geometry.type;
-        this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+        const polyUpdate = uplayer.toGeoJSON();
+        this.geofenceData.geofence.type = polyUpdate.geometry.type;
+        this.geofenceData.geofence.cords = polyUpdate.geometry.coordinates;
       });
 
 
@@ -283,9 +283,6 @@ export class AddGeofenceComponent implements OnInit {
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
           });
           polylayer.on('pm:remove', (e) => {
-            const layer = e.layer;
-            
-            const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];
           });
@@ -328,12 +325,10 @@ export class AddGeofenceComponent implements OnInit {
   });
 }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
