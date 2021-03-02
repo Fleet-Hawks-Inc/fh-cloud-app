@@ -42,14 +42,7 @@
                                  </div>
                               </div>
                            </div>
-                             <!-- <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Group of Vehicle</label>
-                                   <ng-select [(ngModel)]="serviceData.vehicleGroup" name="vehicleGroup" style="width: 100%;" class="form-control populate">
-                                      <ng-option *ngFor="let group of groups;" value="{{group.groupID}}">{{group.groupName}}</ng-option>
-                                   </ng-select>
-                                </div>
-                             </div> -->
+                            
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -84,14 +77,11 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
                                        <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
-                                          
                                    </ng-select>
                                 </div>
                                 <div class="col-lg-2  mar-top-37 pl-0">
-
-                                   <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-
-                                </div>
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
@@ -171,12 +161,21 @@
                           </div>
                           <div class="col-lg-5 offset-lg-1 pl-0">
                              <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
-                                    <ng-select [items]="tasks" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
+                                    <ng-select [items]="tasks | async" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
                                          (add)="addTasks()" [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
-                                    ></ng-select>
-                                </div>
+                                    >                                    
+                                 </ng-select>
+                                 <!-- <ng-container *ngFor="let task of tasks | async;">
+                                       <ng-option *ngIf="task.taskType == 'service'" value="{{task.taskID}}">
+                                          {{task.taskName}}
+                                       </ng-option>
+                                    </ng-container> -->
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37 pl-0">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'"> 
@@ -191,16 +190,14 @@
                                 <table class="table table-bordered table-striped">
                                    <thead>
                                       <tr>
-                                         <th width="30%">Task</th>
-                                         <th width="35%" *ngIf="serviceData.unitType != 'asset'">Schedule</th>
-                                         <th width="10%">Labor</th>
-                                         <th width="5%">Action</th>
+                                         <th id="">Task</th>
+                                         <th id="">Labor</th>
+                                         <th id="">Action</th>
                                       </tr>
                                    </thead>
                                    <tbody> 
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
-                                         <td *ngIf="serviceData.unitType != 'asset'">{{item.schedule ? item.schedule : '-'}}</td>
                                          <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
                                          <td>
                                              <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
@@ -216,12 +213,15 @@
                              </div>
                              <div class="row pt-2">
                                 <table class="table">
+                                   <thead>
+                                      <th id="" colspan="5"></th>
+                                   </thead>
                                    <tbody>
                                       <tr>
-                                         <td width="30%"></td>
-                                         <td width="35%" class="text-right"></td>
-                                         <td width="10%"><label class="control-label font-weight-bold text-5"></label></td>
-                                         <td width="15%" colspan="2">
+                                         <td id=""></td>
+                                         <td id="" class="text-right"></td>
+                                         <td id=""><label class="control-label font-weight-bold text-5"></label></td>
+                                         <td id="" colspan="2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="control-label font-weight-bold text-5 m-0"><span [innerHtml]="totalLabors">0.00</span></label>
                                                 <ng-select [(ngModel)]="serviceData.allServiceTasks.currency" [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
@@ -286,13 +286,13 @@
                                 <table class="table table-bordered table-striped">
                                    <thead>
                                       <tr>
-                                         <th width="15%">Item</th>
-                                         <th width="15%">Existing Quantity</th>
-                                         <th width="35%">Description</th>
-                                         <th width="10%">Quantity</th>
-                                         <th width="10%">Rate</th>
-                                         <th width="10%">Amount</th>
-                                         <th width="5%">Action</th>
+                                         <th id="">Item</th>
+                                         <th id="">Existing Quantity</th>
+                                         <th id="">Description</th>
+                                         <th id="">Quantity</th>
+                                         <th id="">Rate</th>
+                                         <th id="">Amount</th>
+                                         <th id="">Action</th>
                                       </tr>
                                    </thead>
                                    <tbody>
