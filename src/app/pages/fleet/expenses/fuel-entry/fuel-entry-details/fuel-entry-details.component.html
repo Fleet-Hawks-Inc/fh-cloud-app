@@ -1,7 +1,7 @@
 <section class="body">
-  
+
     <div class="inner-wrapper">
-   
+
       <section role="main" class="content-body pl-0">
         <header class="page-header pr-5">
          <div class="row pr-1 mr-1" style="padding-top:10px;">
@@ -9,7 +9,7 @@
                <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
               </div>
               <div class="col-md-8 col-lg-8 text-right pr-1">
-                 <a routerLink="/fleet/expenses/fuel/list" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Fuel List</a>  
+                 <a routerLink="/fleet/expenses/fuel/list" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Fuel List</a>
                  <div class="btn-group flex-wrap mr-2">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -54,7 +54,7 @@
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>{{fuelData.additionalDetails.odometer}} mi</td>
+                                         <td>{{fuelData.odometer}} mi</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
@@ -108,9 +108,9 @@
                                 </table>
                              </div>
                           </div>
-                        
+
                        </div>
-                       <div class="col-lg-6">                         
+                       <div class="col-lg-6">
                           <!-- MAP -->
                           <div class="row">
                              <div class="col-lg-12">
@@ -207,7 +207,7 @@
                        </footer>
                     </section>
                  </div>
-               
+
                  </form>
               </div>
            </div>
@@ -215,5 +215,5 @@
      </section>
     </div>
   </section>
-  
+
 
