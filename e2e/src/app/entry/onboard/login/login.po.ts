@@ -1,8 +1,8 @@
 import { browser, by, element } from 'protractor';
-export class AppPage {
+export class LoginPage{
   private credentias = {
-    username: '',
-    password: 'FleetHawks@1302'
+    username: 'e2etestcarrier',
+    password: 'FleetHawks@2502'
   };
 
   navigateTo() {
