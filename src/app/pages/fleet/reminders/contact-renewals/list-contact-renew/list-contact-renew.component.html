@@ -97,7 +97,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngIf="!remindersData.length > 0" class="text-center">
+                                        <tr *ngIf="remindersData.length == 0" class="text-center">
 											<td colspan="6">No records found</td>
 										</tr>
                                         <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
