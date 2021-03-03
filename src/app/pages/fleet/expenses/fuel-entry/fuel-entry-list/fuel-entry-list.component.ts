@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 declare var $: any;
 
@@ -15,12 +12,7 @@ declare var $: any;
   styleUrls: ['./fuel-entry-list.component.css'],
   providers: [DatePipe]
 })
-export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class FuelEntryListComponent implements OnInit {
 
   title = 'Fuel Entries List';
   fromDate: any = '';
@@ -55,9 +47,17 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
   pageLength = 10;
   lastEvaluatedKey = '';
 
+  fuelNext = false;
+  fuelPrev = true;
+  fuelDraw = 0;
+  fuelPrevEvauatedKeys = [''];
+  fuelStartPoint = 1;
+  fuelEndPoint = this.pageLength;
+
   constructor(
     private apiService: ApiService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService) {
   }
   ngOnInit() {
     this.fuelEntriesCount();
@@ -141,27 +141,13 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.countries = result.Items;
     });
   }
-  // fuelEntries() {
-  //   this.spinner.show(); // loader init
-  //   this.apiService.getData('fuelEntries?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
-  //     complete: () => {},
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       this.spinner.hide(); // loader hide
-  //       // this.fuelList = result.Items;
-  //       this.totalRecords = result.Count;
-  //     },
-  //   });
-  //   this.unitID = '';
-  // }
-
+  
   fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID= ' + this.unitID + '&from=' +  this.start + '&to=' + this.end).subscribe({
+    this.apiService.getData('fuelEntries/get/count?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-        console.log('result', result);
       },
     });
   }
@@ -183,83 +169,61 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
 
         this.fuelList = [];
         this.fuelEntriesCount();
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
 
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ // sortable false
-        { 'targets': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], 'orderable': false },
-      ],
-      dom: 'lrtip',
-      language: {
-        'emptyTable': 'No records found'
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('fuelEntries/fetch-records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.fuelList = resp['Items'];
-          console.log('current.fuelList',current.fuelList);
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].entryID;
+    this.spinner.show();
+    this.apiService.getData('fuelEntries/fetch/records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.fuelList = result['Items'];
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if(this.unitID != '') {
+          this.fuelStartPoint = 1;
+          this.fuelEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.fuelNext = false;
+          // for prev button
+          if (!this.fuelPrevEvauatedKeys.includes(result['LastEvaluatedKey'].entryID)) {
+            this.fuelPrevEvauatedKeys.push(result['LastEvaluatedKey'].entryID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].entryID;
+          
+        } else {
+          this.fuelNext = true;
+          this.lastEvaluatedKey = '';
+          this.fuelEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.fuelDraw > 0) {
+          this.fuelPrev = false;
+        } else {
+          this.fuelPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
       if(this.fromDate !== '') {
-        this.start = this.fromDate.split('-').reverse().join('-');
+        this.start = this.fromDate;
       }
       if(this.toDate !== '') {
-        this.end = this.toDate.split('-').reverse().join('-');
+        this.end = this.toDate;
       }
 
       this.fuelList = [];
       this.fuelEntriesCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -276,9 +240,36 @@ export class FuelEntryListComponent implements AfterViewInit, OnDestroy, OnInit 
 
       this.fuelList = [];
       this.fuelEntriesCount();
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
+  }
+
+  getStartandEndVal() {
+    this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
+    this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.fuelDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.fuelDraw -= 1;
+    this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.fuelStartPoint = 1;
+    this.fuelEndPoint = this.pageLength;
+    this.fuelDraw = 0;
   }
 }

@@ -1,25 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-inventory-list',
   templateUrl: './inventory-list.component.html',
   styleUrls: ['./inventory-list.component.css']
 })
-export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class InventoryListComponent implements OnInit {
 
   items = [];
   itemGroups = {};
@@ -80,7 +71,14 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     quantity: ''
   };
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) {}
+  inventoryNext = false;
+  inventoryPrev = true;
+  inventoryDraw = 0;
+  inventoryPrevEvauatedKeys = [''];
+  inventoryStartPoint = 1;
+  inventoryEndPoint = this.pageLength;
+
+  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.fetchItemsCount();
@@ -147,7 +145,8 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
       this.fetchItemsCount();
       this.items = [];
-      this.rerender('reset');
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -164,7 +163,6 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       this.itemGroups = result;
     });
   }
-
 
   openTransferModal(){
     $('#transferModal').modal('show');
@@ -199,80 +197,46 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
       .subscribe((result: any) => {
         this.items = [];
         this.fetchItemsCount();
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
     }
   }
 
   initDataTable() {
-    const current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ // sortable false
-        { 'targets': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 'orderable': false },
-      ],
-      dom: 'lrtip',
-      language: {
-        'emptyTable': 'No records found'
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('items/fetch-records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          // record number
-          if (dataTablesParameters.start >= 2) {
-            current.partNo = [];
-            let val = parseInt(dataTablesParameters.start + '0');
-            let start = dataTablesParameters.start - 1;
-            start = parseInt(start + '1')
-            for (let index = start; index <= val; index++) {
-              current.partNo.push(index);
-            }
-          } else {
-            current.partNo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    this.spinner.show();
+    this.apiService.getData('items/fetch/records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.items = result['Items'];
+        if (this.vendorID != '') {
+          this.inventoryStartPoint = 1;
+          this.inventoryEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.inventoryNext = false;
+          // for prev button
+          if (!this.inventoryPrevEvauatedKeys.includes(result['LastEvaluatedKey'].itemID)) {
+            this.inventoryPrevEvauatedKeys.push(result['LastEvaluatedKey'].itemID);
           }
-          current.items = resp[`Items`];
-          if (resp[`LastEvaluatedKey`] !== undefined) {
-            this.lastEvaluatedKey = resp[`LastEvaluatedKey`].itemID;
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].itemID;
+          
+        } else {
+          this.inventoryNext = true;
+          this.lastEvaluatedKey = '';
+          this.inventoryEndPoint = this.totalRecords;
+        }
 
-          } else {
-            this.lastEvaluatedKey = '';
-          }
-
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.inventoryDraw > 0) {
+          this.inventoryPrev = false;
+        } else {
+          this.inventoryPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   hideShowColumn() {
@@ -358,7 +322,7 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
     if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
       this.fetchItemsCount();
       this.items = [];
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -416,5 +380,31 @@ export class InventoryListComponent implements AfterViewInit, OnDestroy, OnInit 
         });
       },
     });
+  }
+
+  getStartandEndVal() {
+    this.inventoryStartPoint = this.inventoryDraw * this.pageLength + 1;
+    this.inventoryEndPoint = this.inventoryStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.inventoryDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.inventoryDraw -= 1;
+    this.lastEvaluatedKey = this.inventoryPrevEvauatedKeys[this.inventoryDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.inventoryStartPoint = 1;
+    this.inventoryEndPoint = this.pageLength;
+    this.inventoryDraw = 0;
   }
 }

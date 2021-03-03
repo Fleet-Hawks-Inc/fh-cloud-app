@@ -3017,7 +3017,7 @@ export class AddressBookComponent implements OnInit {
         this.customers = result['Items'];
 
         if(this.filterVal.customerID != '') {
-          this.custtStartPoint = this.totalRecordsCustomer;
+          this.custtStartPoint = 1;
           this.custtEndPoint = this.totalRecordsCustomer;
         }
 
@@ -3043,6 +3043,8 @@ export class AddressBookComponent implements OnInit {
           this.customerPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3054,7 +3056,7 @@ export class AddressBookComponent implements OnInit {
         this.brokers = result['Items'];
 
         if(this.filterVal.brokerID != '') {
-          this.brokerStartPoint = this.totalRecordsBroker;
+          this.brokerStartPoint = 1;
           this.brokerEndPoint = this.totalRecordsBroker;
         }
 
@@ -3079,6 +3081,8 @@ export class AddressBookComponent implements OnInit {
           this.brokerPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3090,7 +3094,7 @@ export class AddressBookComponent implements OnInit {
         this.vendors = result['Items'];
 
         if(this.filterVal.vendorID != '') {
-          this.vendorStartPoint = this.totalRecordsVendor;
+          this.vendorStartPoint = 1;
           this.vendorEndPoint = this.totalRecordsVendor;
         }
 
@@ -3115,6 +3119,8 @@ export class AddressBookComponent implements OnInit {
           this.vendorPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3126,7 +3132,7 @@ export class AddressBookComponent implements OnInit {
         this.carriers = result['Items'];
 
         if(this.filterVal.carrierID != '') {
-          this.carrierStartPoint = this.totalRecordsCarrier;
+          this.carrierStartPoint = 1;
           this.carrierEndPoint = this.totalRecordsCarrier;
         }
 
@@ -3151,6 +3157,8 @@ export class AddressBookComponent implements OnInit {
           this.carrierPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3162,7 +3170,7 @@ export class AddressBookComponent implements OnInit {
         this.ownerOperatorss = result['Items'];
 
         if(this.filterVal.operatorID != '') {
-          this.ownerOperatorStartPoint = this.totalRecordsOperator;
+          this.ownerOperatorStartPoint = 1;
           this.ownerOperatorEndPoint = this.totalRecordsOperator;
         }
 
@@ -3187,6 +3195,8 @@ export class AddressBookComponent implements OnInit {
           this.ownerOperatorPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3198,7 +3208,7 @@ export class AddressBookComponent implements OnInit {
         this.shippers = result['Items'];
 
         if(this.filterVal.shipperID != '') {
-          this.shipperStartPoint = this.totalRecordsShipper;
+          this.shipperStartPoint = 1;
           this.shipperEndPoint = this.totalRecordsShipper;
         }
 
@@ -3223,6 +3233,8 @@ export class AddressBookComponent implements OnInit {
           this.shipperPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3234,7 +3246,7 @@ export class AddressBookComponent implements OnInit {
         this.receivers = result['Items'];
 
         if(this.filterVal.consigneeID != '') {
-          this.consigneeStartPoint = this.totalRecordsConsignee;
+          this.consigneeStartPoint = 1;
           this.consigneeEndPoint = this.totalRecordsConsignee;
         }
 
@@ -3259,6 +3271,8 @@ export class AddressBookComponent implements OnInit {
           this.consigneePrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3270,7 +3284,7 @@ export class AddressBookComponent implements OnInit {
         this.staffs = result['Items'];
 
         if(this.filterVal.staffID != '') {
-          this.staffStartPoint = this.totalRecordsStaff;
+          this.staffStartPoint = 1;
           this.staffEndPoint = this.totalRecordsStaff;
         }
 
@@ -3295,6 +3309,8 @@ export class AddressBookComponent implements OnInit {
           this.staffPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3306,7 +3322,7 @@ export class AddressBookComponent implements OnInit {
         this.fcCompanies = result['Items'];
 
         if(this.filterVal.companyID != '') {
-          this.companyStartPoint = this.totalRecordsCompany;
+          this.companyStartPoint = 1;
           this.companyEndPoint = this.totalRecordsCompany;
         }
 
@@ -3331,6 +3347,8 @@ export class AddressBookComponent implements OnInit {
           this.companyPrev = true;
         }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
       });
   }
 
@@ -3342,7 +3360,7 @@ export class AddressBookComponent implements OnInit {
         this.drivers = result['Items'];
 
         if(this.filterVal.driverID != '') {
-          this.driverStartPoint = this.totalRecordsDriver;
+          this.driverStartPoint = 1;
           this.driverEndPoint = this.totalRecordsDriver;
         }
 
@@ -3366,6 +3384,8 @@ export class AddressBookComponent implements OnInit {
         } else {
           this.driverPrev = true;
         }
+        this.spinner.hide();
+      }, err => {
         this.spinner.hide();
       });
   }
