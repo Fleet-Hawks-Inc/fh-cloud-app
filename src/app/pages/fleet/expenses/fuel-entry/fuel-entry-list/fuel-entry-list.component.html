@@ -18,8 +18,7 @@
 								<input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName" class="form-control"
 									(input)="getSuggestions($event.target.value)" placeholder="Search Fuel Entry by Unit" />
 							</div>
-							<div *ngIf="suggestedUnits?.length > 0" class="result-suggestions"
-								(click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
+							<div *ngIf="suggestedUnits?.length > 0" class="result-suggestions">
 								<ul>
 									<li *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer;"
 										(click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"> {{ suggestedUnit.unitName }}</li>
@@ -89,7 +88,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr *ngIf="!fuelList.length > 0" class="text-center">
+										<tr *ngIf="fuelList.length == 0" class="text-center">
 											<td colspan="13">No records found</td>
 										</tr>
 										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">

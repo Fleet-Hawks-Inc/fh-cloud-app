@@ -86,7 +86,7 @@
                                                             </thead>
                                         
                                                             <tbody>
-                                                                <tr *ngIf="!logs.length > 0" class="text-center">
+                                                                <tr *ngIf="logs.length == 0" class="text-center">
                                                                     <td colspan="5">No records found</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
