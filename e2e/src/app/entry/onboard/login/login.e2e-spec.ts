@@ -12,11 +12,11 @@ describe('Login/Logout Tests', () => {
     loginPage = new LoginPage();
   });
 
-  // it('when login is successful', () => {
-  //   loginPage.navigateTo();
-  //   loginPage.fillCredentials();
-  //   loginPage.navigateToHomepage();
-  // });
+   it('when login is successful', () => {
+    loginPage.navigateTo();
+    loginPage.fillCredentials();
+     loginPage.navigateToHomepage();
+   });
   it('when user clicks logout , app logs out successfully', () => {
 
     loginPage.navigateTo();
