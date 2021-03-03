@@ -76,10 +76,11 @@ export class AddAssetsComponent implements OnInit {
     groupType : 'assets'
   };
 
-  vendors: any = [];;
+  vendors: any = [];
   manufacturers: any = [];
   models: any = [];
   groups = [];
+  
 
   response: any = '';
   hasError = false;
@@ -101,7 +102,7 @@ export class AddAssetsComponent implements OnInit {
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
-  ownOperators = [];
+  ownOperators: any = [];
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private awsUS: AwsUploadService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -114,17 +115,15 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    // this.fetchManufactuer();
-    // this.fetchVendors();
     this.listService.fetchAssetManufacturers();
     this.listService.fetchAssetModels();
     this.listService.fetchVendors();
+    this.listService.fetchOwnerOperators();
     this.fetchCountries(); // fetch countries
     this.fetchAllAssetTypes();
     this.fetchGroups();
     this.fetchAssets();
-    this.fetchOwnerOperators();
-
+    
     this.assetID = this.route.snapshot.params['assetID'];
     if (this.assetID) {
       this.pageTitle = 'Edit Asset';
@@ -139,7 +138,7 @@ export class AddAssetsComponent implements OnInit {
     this.vendors = this.listService.vendorList;
     this.manufacturers = this.listService.assetManufacturesList;
     this.models = this.listService.assetModelsList;
-    
+    this.ownOperators = this.listService.ownerOperatorList;
   }
 
   getYears() {
@@ -161,35 +160,7 @@ export class AddAssetsComponent implements OnInit {
       this.allAssetTypes = data;
     })
   }
-  /*
-   * Get all manufacturers from api
-   */
-  // fetchManufactuer() {
-  //   this.apiService.getData('assetManufacturers').subscribe((result: any) => {
-  //     this.manufacturers = result.Items;
-  //   });
-  // }
-  /*
-   * Get all vendors from api
-   */
-  // fetchVendors() {
-  //   this.apiService.getData('vendors').subscribe((result: any) => {
-  //     this.vendors = result.Items;
-  //   });
-  // }
-  /*
-   * Get all models from api
-   */
-  // getModels(id) {
-
-  //   this.apiService
-  //     .getData(`assetModels/${id}`)
-  //     .subscribe((result: any) => {
-  //       this.models = result.Items;
-  //       console.log("models", this.models)
-  //       this.spinner.hide(); // loader hide
-  //     });
-  // }
+  
 
   resetModel(){
     this.assetsData.assetDetails.model = '';
@@ -324,44 +295,44 @@ export class AddAssetsComponent implements OnInit {
         result = result.Items[0];
         
         this.assetsData['assetID'] = this.assetID;
-        this.assetsData['assetIdentification'] = result.assetIdentification;
-        this.assetsData['groupID'] = result.groupID;
-        this.assetsData['VIN'] = result.VIN;
-        this.assetsData['startDate'] = result.startDate;
-        this.assetsData['assetDetails']['assetType'] = result.assetDetails.assetType;
-        this.assetsData['assetDetails']['year'] = result.assetDetails.year;
-        this.assetsData['assetDetails']['manufacturer'] = result.assetDetails.manufacturer;
+        this.assetsData.assetIdentification = result.assetIdentification;
+        this.assetsData.groupID = result.groupID;
+        this.assetsData.VIN = result.VIN;
+        this.assetsData.startDate = result.startDate;
+        this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
+        this.assetsData.assetDetails.year = result.assetDetails.year;
+        this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
         // this.getModels(result.assetDetails.manufacturer);
-        this.assetsData['assetDetails']['model'] = result.assetDetails.model;
-        this.assetsData['assetDetails']['length'] = result.assetDetails.length;
-        this.assetsData['assetDetails']['lengthUnit'] = result.assetDetails.lengthUnit;
-        this.assetsData['assetDetails']['axle'] = result.assetDetails.axle;
-        this.assetsData['assetDetails']['GVWR'] = result.assetDetails.GVWR;
-        this.assetsData['assetDetails']['GVWR_Unit'] = result.assetDetails.GVWR_Unit;
-        this.assetsData['assetDetails']['GAWR'] = result.assetDetails.GAWR;
-        this.assetsData['assetDetails']['GAWR_Unit'] = result.assetDetails.GAWR_Unit;
-        this.assetsData['assetDetails']['ownerShip'] = result.assetDetails.ownerShip;
+        this.assetsData.assetDetails.model = result.assetDetails.model;
+        this.assetsData.assetDetails.length = result.assetDetails.length;
+        this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
+        this.assetsData.assetDetails.axle = result.assetDetails.axle;
+        this.assetsData.assetDetails.GVWR = result.assetDetails.GVWR;
+        this.assetsData.assetDetails.GVWR_Unit = result.assetDetails.GVWR_Unit;
+        this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
+        this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
+        this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
         if (result.assetDetails.ownerShip == 'Owner Operator') {
           this.assetsData['assetDetails']['ownerOperator'] = result.assetDetails.ownerOperator;
         }
-        this.assetsData['assetDetails']['currentStatus'] = result.assetDetails.currentStatus;
-        this.assetsData['assetDetails']['licenceCountryID'] = result.assetDetails.licenceCountryID;
+        this.assetsData.assetDetails.currentStatus = result.assetDetails.currentStatus;
+        this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
         this.getStates(result.assetDetails.licenceCountryID);
-        this.assetsData['assetDetails']['licenceStateID'] = result.assetDetails.licenceStateID;
-        this.assetsData['assetDetails']['licencePlateNumber'] = result.assetDetails.licencePlateNumber;
-        this.assetsData['assetDetails']['annualSafetyDate'] = result.assetDetails.annualSafetyDate;
-        this.assetsData['assetDetails']['annualSafetyReminder'] = result.assetDetails.annualSafetyReminder;
-        this.assetsData['assetDetails']['remarks'] = result.assetDetails.remarks;
-        this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
-        this.assetsData['insuranceDetails']['premiumAmount'] = result.insuranceDetails.premiumAmount;
-        this.assetsData['insuranceDetails']['premiumCurrency'] = result.insuranceDetails.premiumCurrency;
-        this.assetsData['insuranceDetails']['dateOfExpiry'] = result.insuranceDetails.dateOfExpiry;
-        this.assetsData['insuranceDetails']['dateOfIssue'] = result.insuranceDetails.dateOfIssue;
-        this.assetsData['insuranceDetails']['reminderBefore'] = result.insuranceDetails.reminderBefore;
-        this.assetsData['insuranceDetails']['reminderBeforeUnit'] = result.insuranceDetails.reminderBeforeUnit;
-        this.assetsData['insuranceDetails']['vendor'] = result.insuranceDetails.vendor;
-        this.assetsData['crossBorderDetails']['ACE_ID'] = result.crossBorderDetails.ACE_ID;
-        this.assetsData['crossBorderDetails']['ACI_ID'] = result.crossBorderDetails.ACI_ID;
+        this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
+        this.assetsData.assetDetails.licencePlateNumber = result.assetDetails.licencePlateNumber;
+        this.assetsData.assetDetails.annualSafetyDate = result.assetDetails.annualSafetyDate;
+        this.assetsData.assetDetails.annualSafetyReminder = result.assetDetails.annualSafetyReminder;
+        this.assetsData.assetDetails.remarks = result.assetDetails.remarks;
+        this.assetsData.insuranceDetails.dateOfIssue = result.insuranceDetails.dateOfIssue;
+        this.assetsData.insuranceDetails.premiumAmount = result.insuranceDetails.premiumAmount;
+        this.assetsData.insuranceDetails.premiumCurrency = result.insuranceDetails.premiumCurrency;
+        this.assetsData.insuranceDetails.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
+        this.assetsData.insuranceDetails.dateOfIssue = result.insuranceDetails.dateOfIssue;
+        this.assetsData.insuranceDetails.reminderBefore = result.insuranceDetails.reminderBefore;
+        this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
+        this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
+        this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
+        this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
 
@@ -514,15 +485,6 @@ export class AddAssetsComponent implements OnInit {
         this.countries = result.Items;
       });
   }
-
-  fetchOwnerOperators() {
-    this.apiService.getData('ownerOperators')
-      .subscribe((result: any) => {
-        this.ownOperators = result.Items;
-      });
-  }
-  
-
   
   fetchGroups() {
     this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {

@@ -58,7 +58,6 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    // this.fetchGeofences();
     this.fetchLogsCount();
     this.initDataTable();
 
@@ -188,30 +187,15 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedGeofences = [];
   }
 
-  fetchGeofences() {
-    this.geofences = [];
-    this.spinner.show();
-    this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
-      complete: () => {},
-      error: () => { },
-      next: (result: any) => {
-        for (const iterator of result.Items) {
-          if (iterator.isDeleted === 0) {
-            this.geofences.push(iterator);
-          }
-        }
-        this.spinner.hide();
-        this.map = this.LeafletMap.initGeoFenceMap();
-      },
-    });
-  }
 
-  deactivateAsset(value, geofenceID) {
+  deactivateGeofence(value, geofenceID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
       .getData(`geofences/isDeleted/${geofenceID}/${value}`)
       .subscribe((result: any) => {
-        this.fetchGeofences();
+        this.geofences = [];
+        this.fetchLogsCount();
+        this.rerender();
       });
     }
   }
@@ -244,22 +228,8 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   }
 
-  deleteGeofence() {
-    const selectedAssets = this.geofences.filter(product => product.checked);
-    console.log(selectedAssets)
-    if (selectedAssets && selectedAssets.length > 0) {
-      for (const i of selectedAssets) {
-        this.apiService.deleteData('geofences/' + i.geofenceID)
-          .subscribe((result: any) => {
-            this.toastr.success('Geofence Deleted Successfully!');
-            this.fetchGeofences();
-          })
-      }
-    }
-    
-  }
-
   initDataTable() {
+    this.spinner.show();
     let current = this;
     this.dtOptions = { // All list options
       pagingType: 'full_numbers',
@@ -290,6 +260,7 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
               data: []
             });
           });
+        this.spinner.hide();
       }
     };
   }

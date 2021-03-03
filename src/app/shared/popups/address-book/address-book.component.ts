@@ -11,6 +11,7 @@ import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { QueryList, ViewChildren } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { result } from 'lodash';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -378,7 +379,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteStaffAddr = [];
   deleteCompanyAddr = [];
   loginDiv = false;
-  
+
   errorClass = false;
   errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
   fieldvisibility = 'false';
@@ -1278,23 +1279,30 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
   async addShipper() {
     this.hasError = false;
     this.hasSuccess = false;
-
     this.hideErrors();
     for (let i = 0; i < this.shipperData.address.length; i++) {
+      if(this.shipperData.address[i].geoCords == undefined) {
+        this.shipperData.address[i].geoCords = {
+          lat: '',
+          lng: ''
+        };
+      }
       const element = this.shipperData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
-
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
+      }
+      if(this.shipperData.address[i].userLocation != '') {
+        await this.HereMap.revGeoCode(element.geoCords);
       }
     }
-
     // this.removeUserLocation(this.shipperData.address);
-
     // create form data instance
     const formData = new FormData();
 
@@ -1330,7 +1338,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         next: (res) => {
           this.response = res;
           this.hasSuccess = true;
-          $('#addShipperModal').modal('hide');
+           $('#addShipperModal').modal('hide');
           this.listService.fetchShippers();
           this.fetchShippersCount();
           this.showMainModal();
@@ -1356,9 +1364,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
+      }
+      if(this.shipperData.address[i].userLocation != '') {
+         await this.HereMap.revGeoCode(element.geoCords);
       }
     }
     // this.removeUserLocation(this.shipperData.address)
@@ -1429,10 +1441,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
+      }
+      if(this.shipperData.address[i].userLocation != '') {
+          await this.HereMap.revGeoCode(element.geoCords);
       }
     }
     // this.removeUserLocation(this.consigneeData.address);
@@ -1497,10 +1512,13 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
-
+        if(result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
+        }
+      }
+      if(this.shipperData.address[i].userLocation != '') {
+         await this.HereMap.revGeoCode(element.geoCords);
       }
     }
     // this.removeUserLocation(this.consigneeData.address)
@@ -1726,7 +1744,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
-    
+
     this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
@@ -2659,7 +2677,7 @@ export class AddressBookComponent implements AfterViewInit, OnDestroy, OnInit {
     this.loginDiv = false;
     this.fieldvisibility = 'true';
     this.newStaffUser = 'false';
-    
+
   }
 
   fetchAllStatesIDs() {

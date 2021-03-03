@@ -32,9 +32,6 @@ import {
   AddFuelEntryComponent,
   FuelEntryListComponent,
   FuelEntryDetailsComponent,
-  AddExpenseTypeComponent,
-  ExpenseTypeListComponent,
-  EditExpenseTypeComponent,
   ListingComponent,
   AddReminderComponent,
   ServiceRemindDetailComponent,
@@ -45,7 +42,6 @@ import {
   AddContactRenewComponent,
   ContactRenewDetailComponent,
   AddGeofenceComponent,
-  // EditGeofenceComponent,
   GeofenceListComponent,
   GraphComponent,
   DashboardDriverComponent,
@@ -69,9 +65,6 @@ const COMPONENTS = [
   AddFuelEntryComponent,
   FuelEntryListComponent,
   FuelEntryDetailsComponent,
-  AddExpenseTypeComponent,
-  ExpenseTypeListComponent,
-  EditExpenseTypeComponent,
   ListingComponent,
   AddReminderComponent,
   ServiceRemindDetailComponent,
@@ -104,8 +97,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     if (!value)
       return null
     let parts = value.split(this.DELIMITER);
-    return { 
-      year: + parseInt(parts[0]), 
+    return {
+      year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
       day: + parseInt(parts[2]) }
   }

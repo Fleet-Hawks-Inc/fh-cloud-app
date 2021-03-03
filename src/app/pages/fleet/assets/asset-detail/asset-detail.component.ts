@@ -52,7 +52,7 @@ export class AssetDetailComponent implements OnInit {
   reminderBeforeUnit: string;
   vendor: string;
   
-  devices;
+  devices: any;
   allDevices = [];
 
   errors = {};
@@ -254,18 +254,6 @@ export class AssetDetailComponent implements OnInit {
     }
   }
 
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i <= this.assetData.length; i++) {
-      // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      // await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
-      // this.assetsDocs.push(this.docs)
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedPhotos[i]));
-      this.assetsImages.push(this.image);
-    }
-
-  }
-  
   removeDevices(i) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.assetData.devices.splice(i, 1);
