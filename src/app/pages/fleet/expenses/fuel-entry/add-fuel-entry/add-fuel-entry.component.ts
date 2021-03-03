@@ -5,15 +5,13 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { AwsUploadService } from '../../../../../services/aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer} from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { ListService } from '../../../../../services';
 
-declare var jquery: any;
 declare var $: any;
 
 @Component({
@@ -28,6 +26,7 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
+    entryID: '',
     unitType: 'vehicle',
     unitID: '',
     currency: 'CAD',
@@ -42,15 +41,18 @@ export class AddFuelEntryComponent implements OnInit {
     fuelDate: '',
     fuelTime: '',
     fuelType: '',
+    DEFFuelQtyUnit: '',
     totalLitres: 0,
     countryID: '',
     stateID: '',
     cityID: '',
+    reference: '',
     tripID: '',
     vendorID : '',
     paidBy: '',
     paymentMode: '',
     fuelCardNumber: '',
+    timeCreated: '',
     reimburseToDriver: false,
     deductFromPay: false,
     additionalDetails: {
@@ -86,8 +88,8 @@ export class AddFuelEntryComponent implements OnInit {
   MPG: number;
   costPerMile: number;
   miles: number;
-  uploadedPhotos = [];  
-  existingPhotos = []; 
+  uploadedPhotos = [];
+  existingPhotos = [];
   /******************/
 
   errors = {};
@@ -103,9 +105,7 @@ export class AddFuelEntryComponent implements OnInit {
   constructor(private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
-    private location: Location,
-    private awsUS: AwsUploadService, private toaster: ToastrService,
+    private location: Location, private toaster: ToastrService,
     private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -236,10 +236,10 @@ export class AddFuelEntryComponent implements OnInit {
     }
 
     // if (this.fuelData.fuelDate !== '') {
-    //   //date in Y-m-d format 
+    //   //date in Y-m-d format
     //   this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
     // }
-  
+
       // create form data instance
       const formData = new FormData();
 
@@ -247,8 +247,8 @@ export class AddFuelEntryComponent implements OnInit {
       for(let i = 0; i < this.uploadedPhotos.length; i++){
         formData.append('uploadedPhotos', this.uploadedPhotos[i]);
       }
-      
-  
+
+
       //append other fields
       formData.append('data', JSON.stringify(this.fuelData));
     this.apiService.postData('fuelEntries', formData, true).subscribe({
@@ -318,43 +318,43 @@ export class AddFuelEntryComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.fuelData[`entryID`] = this.entryID;
-        this.fuelData[`currency`] = result.currency,
-          this.fuelData[`unitType`] = result.unitType;
-        this.fuelData[`unitID`] = result.unitID;
-        this.fuelData[`fuelQty`] = result.fuelQty;
-        this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
-        this.fuelData[`DEFFuelQty`] = +result.DEFFuelQty;
-        this.fuelData[`DEFFuelQtyUnit`] = result.fuelQtyUnit;
-        this.fuelData[`DEFFuelQtyAmt`] = result.DEFFuelQtyAmt;
-        this.fuelData[`discount`] = result.discount;
-        this.fuelData[`totalAmount`] = result.totalAmount;
-        this.fuelData[`costPerLitre`] = result.costPerLitre;
+        this.fuelData.entryID = this.entryID;
+        this.fuelData.currency = result.currency,
+          this.fuelData.unitType = result.unitType;
+        this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelQty = result.fuelQty;
+        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
+        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
+        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
+        this.fuelData.discount = result.discount;
+        this.fuelData.totalAmount = result.totalAmount;
+        this.fuelData.costPerLitre = result.costPerLitre;
         this.costPerUnit = result.costPerLitre;
-        this.fuelData[`totalLitres`] = result.totalLitres;
-        this.fuelData[`amountPaid`] = result.amountPaid;
-        this.fuelData[`fuelDate`] = result.fuelDate.split('-').reverse().join('-');
-        this.fuelData[`fuelTime`] = result.fuelTime;
-        this.fuelData[`fuelType`] = result.fuelType;
+        this.fuelData.totalLitres = result.totalLitres;
+        this.fuelData.amountPaid = result.amountPaid;
+        this.fuelData.fuelDate = result.fuelDate.split('-').reverse().join('-');
+        this.fuelData.fuelTime = result.fuelTime;
+        this.fuelData.fuelType = result.fuelType;
 
-        this.fuelData[`paidBy`] = result.paidBy;
-        this.fuelData[`paymentMode`] = result.paymentMode;
-        this.fuelData[`fuelCardNumber`] = result.fuelCardNumber;
-        this.fuelData[`reference`] = result.reference;
-        this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
-        this.fuelData[`deductFromPay`] = result.deductFromPay;
+        this.fuelData.paidBy = result.paidBy;
+        this.fuelData.paymentMode = result.paymentMode;
+        this.fuelData.fuelCardNumber = result.fuelCardNumber;
+        this.fuelData.reference = result.reference;
+        this.fuelData.reimburseToDriver = result.reimburseToDriver;
+        this.fuelData.deductFromPay = result.deductFromPay;
 
-        this.fuelData[`vendorID`] = result.vendorID;
-        this.fuelData[`countryID`] = result.countryID;
-        this.fuelData[`stateID`] = result.stateID;
-        this.fuelData[`cityID`] = result.cityID;
-        this.fuelData[`tripID`] = result.tripID;
+        this.fuelData.vendorID = result.vendorID;
+        this.fuelData.countryID = result.countryID;
+        this.fuelData.stateID = result.stateID;
+        this.fuelData.cityID = result.cityID;
+        this.fuelData.tripID = result.tripID;
 
-        this.fuelData[`additionalDetails`][`avgGVW`] = result.additionalDetails.avgGVW;
-        this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
-        this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
-        this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
-        this.fuelData[`timeCreated`] = result.timeCreated;
+        this.fuelData.additionalDetails.avgGVW = result.additionalDetails.avgGVW;
+        this.fuelData.additionalDetails.odometer = result.additionalDetails.odometer;
+        this.fuelData.additionalDetails.description = result.additionalDetails.description;
+        this.fuelData.additionalDetails.uploadedPhotos = result.additionalDetails.uploadedPhotos;
+        this.fuelData.timeCreated = result.timeCreated;
         this.existingPhotos = result.additionalDetails.uploadedPhotos;
         if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
@@ -385,7 +385,7 @@ export class AddFuelEntryComponent implements OnInit {
     }
      this.fuelData.additionalDetails.uploadedPhotos = this.existingPhotos;
     if (this.fuelData.fuelDate !== '') {
-      //date in Y-m-d format 
+      //date in Y-m-d format
       this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
     }
      // create form data instance
@@ -394,8 +394,8 @@ export class AddFuelEntryComponent implements OnInit {
      //append photos if any
      for(let i = 0; i < this.uploadedPhotos.length; i++){
        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-     } 
- 
+     }
+
      //append other fields
      formData.append('data', JSON.stringify(this.fuelData));
     this.apiService.putData('fuelEntries', formData, true).subscribe({

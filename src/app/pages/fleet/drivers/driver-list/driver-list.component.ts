@@ -1,15 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, ViewChild } from '@angular/core';
 import { HereMapService } from '../../../../services/here-map.service';
-import { Observable } from 'rxjs';
-import { DataTableDirective } from 'angular-datatables';
+import { Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-
-import { Subject } from 'rxjs';
 
 declare var $: any;
 
@@ -18,10 +14,7 @@ declare var $: any;
   templateUrl: './driver-list.component.html',
   styleUrls: ['./driver-list.component.css'],
 })
-export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
+export class DriverListComponent implements OnInit {
 
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
@@ -34,10 +27,6 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
-
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: any = {};
-
 
   statesObject: any = {};
   countriesObject: any = {};
@@ -55,7 +44,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
+  currentStatus: any;
   hideShow = {
     name: true,
     dutyStatus: true,
@@ -77,6 +66,13 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     fastNumber: false
   }
 
+  driverNext = false;
+  driverPrev = true;
+  driverDraw = 0;
+  driverPrevEvauatedKeys = [''];
+  driverStartPoint = 1;
+  driverEndPoint = this.pageLength;
+
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -97,40 +93,12 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchAllCitiesIDs();
     this.fetchAllGrorups();
     this.initDataTable();
-    
 
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
-  fetchAddress() {
-    return this.apiService.getData('addresses');
   }
 
   fetchAllDocumentsTypes() {
@@ -281,9 +249,8 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
           this.drivers = [];
           this.fetchDriversCount();
-          this.rerender();
+          this.initDataTable();
           this.toastr.success('Driver deleted successfully!');
-          // this.drivers = this.drivers.filter(u => u.driverID !== item.driverID);
         }, err => {
          
         });
@@ -292,47 +259,45 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   initDataTable() {
     this.spinner.show();
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('drivers/fetch-records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.drivers = resp['Items'];
-          
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].driverID;
-          } else {
-            this.lastEvaluatedKey = '';
-          }
-          
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-          this.spinner.hide();
-        });
-      }
+    this.apiService.getData('drivers/fetch/records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.drivers = result['Items'];
 
-    };
+        if(this.driverID != '') {
+          this.driverStartPoint = this.totalRecords;
+          this.driverEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.driverNext = false;
+          // for prev button
+          if (!this.driverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].driverID)) {
+            this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
+          
+        } else {
+          this.driverNext = true;
+          this.lastEvaluatedKey = '';
+          this.driverEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.driverDraw > 0) {
+          this.driverPrev = false;
+        } else {
+          this.driverPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
-      this.drivers = [];
       this.fetchDriversCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -340,15 +305,14 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   resetFilter() {
     if(this.driverID !== '' || this.dutyStatus !== '') {
-      // this.spinner.show();
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
 
-      this.drivers = [];
       this.fetchDriversCount();
-      this.rerender();
-      // this.spinner.hide();
+      this.initDataTable();
+      this.driverDraw = 0;
+      this.getStartandEndVal();
     } else {
       return false;
     }
@@ -385,7 +349,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
-      $('.col12').css('width','200px');
+      $('.col12').css('min-width','200px');
     }
 
     if(this.hideShow.assets == false) {
@@ -393,7 +357,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
-      $('.col13').css('width','200px');
+      $('.col13').css('min-width','200px');
     }
 
     if(this.hideShow.contact == false) {
@@ -401,7 +365,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
-      $('.col14').css('width','200px');
+      $('.col14').css('min-width','200px');
     }
 
     if(this.hideShow.dl == false) {
@@ -409,7 +373,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       $('.col15').removeClass('extra');
       $('.col15').css('display','');
-      $('.col15').css('width','200px');
+      $('.col15').css('min-width','200px');
     }
 
     if(this.hideShow.document == false) {
@@ -417,7 +381,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       $('.col16').removeClass('extra');
       $('.col16').css('display','');
-      $('.col16').css('width','200px');
+      $('.col16').css('min-width','200px');
     }
 
     if(this.hideShow.status == false) {
@@ -432,7 +396,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col3').removeClass('extra');
       $('.col3').css('display','');
-      $('.col3').css('width','200px');
+      $('.col3').css('min-width','200px');
     }
 
     if(this.hideShow.citizenship == false) {
@@ -440,7 +404,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col4').removeClass('extra');
       $('.col4').css('display','');
-      $('.col4').css('width','200px');
+      $('.col4').css('min-width','200px');
     }
 
     if(this.hideShow.address == false) {
@@ -448,7 +412,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col5').removeClass('extra');
       $('.col5').css('display','');
-      $('.col5').css('width','200px');
+      $('.col5').css('min-width','200px');
     }
     
     if(this.hideShow.paymentType == false) {
@@ -456,7 +420,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col6').removeClass('extra');
       $('.col6').css('display','');
-      $('.col6').css('width','200px');
+      $('.col6').css('min-width','200px');
     }
 
     if(this.hideShow.sin == false) {
@@ -464,7 +428,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col7').removeClass('extra');
       $('.col7').css('display','');
-      $('.col7').css('width','200px');
+      $('.col7').css('min-width','200px');
     }
 
     if(this.hideShow.contractStart == false) {
@@ -472,7 +436,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col8').removeClass('extra');
       $('.col8').css('display','');
-      $('.col8').css('width','200px');
+      $('.col8').css('min-width','200px');
     }
 
     if(this.hideShow.homeTerminal == false) {
@@ -480,7 +444,7 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col9').removeClass('extra');
       $('.col9').css('display','');
-      $('.col9').css('width','200px');
+      $('.col9').css('min-width','200px');
     }
 
     if(this.hideShow.fastNumber == false) {
@@ -488,9 +452,29 @@ export class DriverListComponent implements AfterViewInit, OnDestroy, OnInit {
     } else { 
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
-      $('.col10').css('width','200px');
+      $('.col10').css('min-width','200px');
     }
     
 
+  }
+
+  getStartandEndVal() {
+    this.driverStartPoint = this.driverDraw * this.pageLength + 1;
+    this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.driverDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.driverDraw -= 1;
+    this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
   }
 }

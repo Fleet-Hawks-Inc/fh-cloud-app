@@ -6,6 +6,7 @@
   font-weight: bold;
 }
 
+/* ACE button classes */
 .cancelBtn {
   background-color: #D91714;
 }
@@ -32,4 +33,36 @@
 }
 .completeManifestEntryBtn {
   background-color: #43EA20;
+}
+
+/* ACI Button classes */
+.ACIcancelBtn {
+  background-color: #D91714;
+}
+.ACIdraftBtn {
+  background-color: #000;
+}
+.ACItransmittedBtn {
+  background-color: #DFD936;
+}
+.ACIonFileCBSABtn {
+  background-color: #ffff00;
+}
+.ACIReleasedBtn {
+  background-color: #66C31D;
+}
+.CBSAReturnedErrorBtn {
+  background-color: #F93121;
+}
+.ACIRejectedAtBorderBtn {
+  background-color: #e20000;
+}
+.ACIMatchNoticeBtn {
+  background-color: #eeee11;
+}
+.ACIOnFileTransactionBtn {
+  background-color: #ffe400;
+}
+.ACIArrivalBorderBtn {
+  background-color: #52AA0C;
 }

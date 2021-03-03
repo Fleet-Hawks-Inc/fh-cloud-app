@@ -7,12 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChartAccountsComponent implements OnInit {
   form;
-  account = {};
+  account = {
+    accountType: ''
+  };
   constructor() { }
 
   ngOnInit() {
   }
   addAccount() {
-  console.log("account", this.account);
   }
 }

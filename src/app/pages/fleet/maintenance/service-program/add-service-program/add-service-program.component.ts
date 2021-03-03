@@ -19,8 +19,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   vehicleModal: boolean = false; 
   vehicles: any;
   tasks = [];
-  private programID;
+  programID = '';
   serviceData = {
+    programID: '',
+    programName: '',
+    description: '',
+    vehicles: [],
     serviceScheduleDetails: [{
       serviceTask: '',
       repeatByTime: '',
@@ -31,6 +35,9 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   taskData = {
     taskType: 'service',
+    taskName: '',
+    description: '',
+    
   };
 
   errors = {};
@@ -202,10 +209,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         
-        this.serviceData['programID'] = this.programID;
-        this.serviceData['programName'] = result.programName;
-        this.serviceData['description'] = result.description;
-        this.serviceData['vehicles'] = result.vehicles;
+        this.serviceData.programID= this.programID;
+        this.serviceData.programName = result.programName;
+        this.serviceData.description = result.description;
+        this.serviceData.vehicles = result.vehicles;
         let newTasks = [];
         for (var i = 0; i < result.serviceScheduleDetails.length; i++) {
           newTasks.push({
@@ -233,7 +240,6 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       from(err.error)
         .pipe(
           map((val: any) => {
-            const path = val.path;
             // We Can Use This Method
             const key = val.message.match(/'([^']+)'/)[1];
             

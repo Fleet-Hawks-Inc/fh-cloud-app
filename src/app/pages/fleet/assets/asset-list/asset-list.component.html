@@ -5,9 +5,9 @@
    }
 </style>
 <section class="body">
-  
+
   <div class="inner-wrapper">
-    
+
     <section role="main" class="content-body pl-1 pt-0 pr-0">
       <header class="page-header pr-5">
          <form class="form-horizontal" method="get">
@@ -16,7 +16,7 @@
                   <div class="input-group input-group-md mb-3">
                      <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
                    </div>
-                   
+
                   <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
                      <ul>
                         <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;" (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)"
@@ -24,10 +24,10 @@
                      </ul>
                   </div>
                </div>
-               
+
                <div class="col-md-2 col-lg-2">
                   <ng-select
-                     [(ngModel)]="currentStatus" 
+                     [(ngModel)]="currentStatus"
                      name="currentStatus"
                      placeholder="Select Type"
                      class="form-control populate">
@@ -216,9 +216,9 @@
                   <thead>
                      <tr>
                         <th class="col1">Asset Name/Number</th>
-                        <th class="col2">Type</th>                                          
+                        <th class="col2">Type</th>
                         <th class="col3">Plate Number</th>
-                        <th class="col4">Last Known Location</th>                                          
+                        <th class="col4">Last Known Location</th>
                         <th class="col5">Year</th>
                         <th class="col6">Make</th>
                         <th class="col7">Model</th>
@@ -230,16 +230,12 @@
                         <th class="col14 extra">GAWR</th>
                         <th class="col9">Status</th>
                         <th>Actions</th>
-                     </tr> 
+                     </tr>
                   </thead>
-
-
                   <tbody *ngIf="allData.length > 0">
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
-
-
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                        <td *ngIf="hideShow.type">{{assetTypesObjects[item.assetDetails.assetType]}}</td>                                          
+                        <td *ngIf="hideShow.type">{{assetTypeList[item.assetDetails.assetType]}}</td>
                         <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                         <td *ngIf="hideShow.lastLocation" >Live Location</td>
                         <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
@@ -291,7 +287,7 @@
        </div>
        <div class="modal-footer">
          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-         <button type="button" (click)="deleteAsset()" class="btn btn-primary">Yes</button>
+         <button type="button" class="btn btn-primary">Yes</button>
        </div>
      </div>
    </div>

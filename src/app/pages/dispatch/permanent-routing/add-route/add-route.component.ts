@@ -21,15 +21,26 @@ export class AddRouteComponent implements OnInit {
   pageTitle: string;
   public searchResults: any;
   public searchResults1: any;
-  private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchTerm1 = new Subject<string>();
   mapVisible = false;
   errors = {};
   routeData = {
-    miles: 0,
+    routeNo: '',
+    routeName: '',
+    notes: '',
+    VehicleID: '',
+    AssetID: '',
+    driverUserName: '',
     coDriverUserName: '',
-    sourceInformation: {},
+    miles: 0,
+    sourceInformation: {
+      sourceAddress: '',
+      sourceCity: '',
+      sourceState: '',
+      sourceCountry: '',
+      sourceZipCode: ''
+    },
     recurring: {
       recurringRoute: false,
       recurringType: '',
@@ -42,7 +53,13 @@ export class AddRouteComponent implements OnInit {
       friday: false,
       saturday: false
     },
-    destinationInformation: {},
+    destinationInformation: {
+      destinationAddress: '',
+      destinationCity: '',
+      destinationState: '',
+      destinationCountry: '',
+      destinationZipCode: ''
+    },
     stops: []
   };
   form;
@@ -135,7 +152,6 @@ export class AddRouteComponent implements OnInit {
       map((e: any) => {
         $('.map-search__results').hide();
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -512,9 +528,7 @@ export class AddRouteComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const path = val.path;
               const key = val.message.match(/'([^']+)'/)[1];
-
               val.message = val.message.replace(/'.*'/, 'This Field');
               this.errors[key] = val.message;
               this.spinner.hide();

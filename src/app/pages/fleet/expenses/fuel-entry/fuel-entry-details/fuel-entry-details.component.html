@@ -57,16 +57,16 @@
                                          <td>{{fuelData.additionalDetails.odometer}} mi</td>
                                       </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">{{unitType | titlecase}} Fuel Quantity</td>
+                                         <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
                                          <td>{{fuelData.fuelQty}} Gallon</td>
                                       </tr>
                                       <tr>
-                                       <td class="back-color-gray font-weight-bold">{{unitType | titlecase}} Fuel Amount</td>
+                                       <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
                                        <td>{{fuelData.fuelQtyAmt}} {{fuelData.currency}}</td>
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{fuelData.DEFFuelQty}} {{fuelQtyUnit | titlecase}}</td>
+                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelQtyUnit | titlecase}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>

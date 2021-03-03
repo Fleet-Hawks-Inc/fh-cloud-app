@@ -3,7 +3,6 @@ import {ApiService} from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
 import { HereMapService } from '../../../../services/here-map.service';
 declare var $: any;
 
