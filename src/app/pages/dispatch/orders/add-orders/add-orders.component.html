@@ -311,13 +311,13 @@
                               <label class="control-label font-weight-semibold labelmt text-3 text-dark">Email</label>
                               <input [(ngModel)]="orderData.email" name="email" type="text" class="form-control">
                            </div>
-                           <div class="col-lg-12 mt-2">
+                           <!-- <div class="col-lg-12 mt-2">
                               <div class="checkbox-custom checkbox-default">
                                  <input [(ngModel)]="orderData.invoiceEmail" name="invoiceEmail" type="checkbox"
                                     name="terms" id="checkboxExample1">
                                  <label for="checkboxExample1">CC - Invoice Email</label>
                               </div>
-                           </div>
+                           </div> -->
                         </div>
                      </div>
                   </div>
@@ -530,23 +530,6 @@
                                                             
                                                          </div>
                                                          <div class="row mt-3">
-                                                            
-                                                            <div class="col-lg-12 col-md-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                  for="inputDefault">Pu</label>
-
-                                                               <input [(ngModel)]="item.shippers.pu"
-                                                                  name="pu" type="text" class="form-control"
-                                                                  id="inputDefault">
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
-                                                                  >
-                                                                  This Field is required
-                                                               </span> -->
-                                                            </div>
-                                                            
-                                                         </div>
-                                                         <div class="row mt-3">
 
                                                             <div class="col-lg-12 col-md-12">
                                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark"
@@ -576,7 +559,7 @@
                                                             </div>
                                                             
                                                          </div>
-                                                         <div class="row mt-3">
+                                                         <!-- <div class="row mt-3">
                                                             
 
                                                             <div class="col-lg-12 col-md-12">
@@ -588,7 +571,7 @@
                                                             </div>
                                                             
                                                             
-                                                         </div>
+                                                         </div> -->
                                                          <div *ngFor="let commodity of item.shippers.commodity; let z = index;">
                                                             <div class="row mt-3">
                                                                <div class="col-lg-12">
@@ -610,6 +593,24 @@
                                                                   <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i> Commodity </a> 
                                                                   <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a> 
                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                            
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                     for="inputDefault">#PU</label>
+   
+                                                                  <input [(ngModel)]="commodity.pu"
+                                                                     name="pu{{z}}" type="text" class="form-control"
+                                                                     id="inputDefault">
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].pu == ''"
+                                                                     >
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+                                                               
                                                             </div>
                                                             
                                                             <div class="row mt-3">
@@ -843,21 +844,7 @@
                                                             </div>
                                                             
                                                          </div>
-                                                         <div class="row mt-3">
-                                                            
-                                                            <div class="col-lg-12 col-md-12">
-                                                               <label class="control-label font-weight-semibold labelmt text-3 text-dark"
-                                                                  for="inputDefault">Pu</label>
-
-                                                               <input [(ngModel)]="item.receivers.pu" name="pu"
-                                                                  type="text" class="form-control" id="inputDefault">
-                                                               <!-- <span class="text-danger"
-                                                                  *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.phone == ''">
-                                                                  This Field is required
-                                                               </span> -->
-                                                            </div>
-                                                            
-                                                         </div>
+                                                         
                                                          <div class="row mt-3">
                                                             
                                                             <div class="col-lg-12 col-md-12">
@@ -885,7 +872,7 @@
                                                             </div>
                                                             
                                                          </div>
-                                                         <div class="row mt-3">
+                                                         <!-- <div class="row mt-3">
                                                             
                                                             <div class="col-lg-12 col-md-12">
                                                                <label  class="control-label font-weight-semibold labelmt text-3 text-dark"
@@ -897,7 +884,7 @@
                                                             </div>
                                                             
                                                             
-                                                         </div>
+                                                         </div> -->
                                                          <div *ngFor="let commodity of item.receivers.commodity; let z = index;">
                                                             <div class="row mt-3">
                                                                <div class="col-lg-12">
@@ -916,6 +903,22 @@
                                                                   <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i> Commodity </a> 
                                                                   <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a> 
                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mt-3">
+                                                            
+                                                               <div class="col-lg-12 col-md-12">
+                                                                  <label class="control-label font-weight-semibold labelmt text-3 text-dark"
+                                                                     for="inputDefault">#PU</label>
+   
+                                                                  <input [(ngModel)]="commodity.pu" name="pu{{z}}"
+                                                                     type="text" class="form-control" id="inputDefault">
+                                                                  <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].pu == ''">
+                                                                     This Field is required
+                                                                  </span>
+                                                               </div>
+                                                               
                                                             </div>
 
                                                             <div class="row mt-3">
@@ -1451,16 +1454,31 @@
                         </div>
                         
 
+                        <div class="row mt-3">
+                           <div class="col-lg-9 offset-lg-2 pl-0">
+                              <label class="control-label font-weight-semibold text-3 text-dark"
+                                 for="inputDefault">States</label>
+                           </div>
+                           <div class="col-lg-3 offset-lg-2 pl-0">
+                              <ng-select 
+                              [(ngModel)]="stateTaxID"
+                              name="stateTaxID"
+                               (change)="stateSelectChange()"
+                                 class="form-control populate">
+                                 <ng-option *ngFor="let stateTax of stateTaxes" selected value="{{stateTax.stateTaxID}}">{{stateTax.stateName}}</ng-option>
+                              </ng-select>
+                           </div>
+                        </div>
+
                         <div class="row">
                            <div class="col-lg-8">
                               <div class="row mt-3" *ngFor="let item of orderData.taxesInfo; let i = index;">
                                  <div class="col-lg-2 offset-lg-3 pl-0">
-                                    <label class="control-label font-weight-semibold text-3 text-dark pt-2">Tax
-                                       {{i + 1}}</label>
+                                    <label class="control-label font-weight-semibold text-3 text-dark pt-2">{{item.name}}</label>
                                  </div>
-                                 <div class="col-lg-2">
+                                 <!-- <div class="col-lg-2">
                                     <input type="text" class="form-control" value="{{item.name}}" disabled>
-                                 </div>
+                                 </div> -->
                                  <div class="col-lg-3">
                                     <div class="input-group">
                                        <input type="text" class="form-control" value="{{item.amount}}" placeholder="0" disabled>
@@ -1473,7 +1491,7 @@
                                  </div>
                               </div>
                               
-                              <div class="row mt-3">
+                              <!-- <div class="row mt-3">
                                  <div class="col-lg-2 offset-lg-3 pl-0">
                                     <label class="control-label font-weight-semibold text-3 text-dark pt-2">Discount</label>
                                  </div>
@@ -1493,7 +1511,7 @@
 
                                     </ng-select>
                                  </div>
-                              </div>
+                              </div> -->
                            </div>
                            <div class="col-lg-4">
                               <div class="row mt-3">
