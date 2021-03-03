@@ -76,7 +76,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngIf="!issues.length > 0" class="text-center">
+                                        <tr *ngIf="issues.length == 0" class="text-center">
 											<td colspan="8">No records found</td>
 										</tr>
                                         <tr *ngFor="let issue of issues" style="cursor: pointer;">

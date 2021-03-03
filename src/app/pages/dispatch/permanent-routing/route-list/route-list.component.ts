@@ -3,9 +3,6 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -14,32 +11,27 @@ declare var $: any;
   styleUrls: ['./route-list.component.css']
 })
 
-export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
+export class RouteListComponent implements OnInit {
   
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
-
   title = "Permanent Routes";
   routes = [];
   suggestedRoutes = [];
-  // dtOptions: any = {};
-  // dtOptions: DataTables.Settings = {};
-
   searchedRouteId = '';
   searchedRouteName = '';
-
   hasError = false;
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
   routesLength = 0;
+  routeNext = false;
+  routePrev = true;
+  routeDraw = 0;
+  routePrevEvauatedKeys = [''];
+  routeStartPoint = 1;
+  routeEndPoint = this.pageLength;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -50,13 +42,13 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   fetchRoutes() {
-    this.apiService.getData('routes/get/active').subscribe({
+    this.apiService.getData('routes/get/count?search=' + this.searchedRouteId).subscribe({
       complete: () => {},
-      error: () => { },
+      error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-      }
-    })
+      },
+    });
   }
 
   deleteRoute(routeID) {
@@ -65,7 +57,8 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        this.rerender();
+        this.fetchRoutes();
+        this.initDataTable();
         this.spinner.hide();
         this.hasSuccess = true;
         this.toastr.success('Route deleted successfully.');
@@ -74,50 +67,39 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   initDataTable() {
+    this.spinner.show();
+    this.apiService.getData('routes/fetch/records?search=' + this.searchedRouteId + '&lastEvaluatedKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.routes = result['Items'];
+        if (this.searchedRouteId != '') {
+          this.routeStartPoint = 1;
+          this.routeEndPoint = this.totalRecords;
+        }
 
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('routes/fetch-records?lastEvaluatedKey='+this.lastEvaluatedKey+'&search='+this.searchedRouteId, dataTablesParameters).subscribe(resp => {
-          
-          this.routes = resp['Items'].map((i) => { 
-            i.stopNames = '';
-            if(i.stops) {
-              let ind = 1;
-              i.stops.map((j) => {
-                i.stopNames += ind + '. '+j.stopName+' ';
-                ind++;
-              })
-            }
-            return i;
-          });
-
-          this.routesLength = this.routes.length;
-          if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].routeID
-          } else {
-            this.lastEvaluatedKey = ''
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.routeNext = false;
+          // for prev button
+          if (!this.routePrevEvauatedKeys.includes(result['LastEvaluatedKey'].routeID)) {
+            this.routePrevEvauatedKeys.push(result['LastEvaluatedKey'].routeID);
           }
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      },
-    };
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].routeID;
+          
+        } else {
+          this.routeNext = true;
+          this.lastEvaluatedKey = '';
+          this.routeEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.routeDraw > 0) {
+          this.routePrev = false;
+        } else {
+          this.routePrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   getSuggestions(searchvalue='') {
@@ -148,42 +130,47 @@ export class RouteListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.suggestedRoutes = [];
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
   searchFilter() {
     if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
-      this.rerender('reset');
+      this.initDataTable();
+    } else {
+      return false;
     }
-    return false;
   }
 
   resetFilter() {
     if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
       this.searchedRouteId = '';
       this.searchedRouteName = '';
-      this.rerender();
+      this.resetCountResult();
+    } else {
+      return false;
     }
-    return false;
+  }
+
+  getStartandEndVal() {
+    this.routeStartPoint = this.routeDraw * this.pageLength + 1;
+    this.routeEndPoint = this.routeStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.routeDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.routeDraw -= 1;
+    this.lastEvaluatedKey = this.routePrevEvauatedKeys[this.routeDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.routeStartPoint = 1;
+    this.routeEndPoint = this.pageLength;
+    this.routeDraw = 0;
   }
 }

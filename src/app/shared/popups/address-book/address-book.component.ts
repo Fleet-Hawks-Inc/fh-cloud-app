@@ -3676,7 +3676,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchCustomersCount();
         this.initDataTable();
         this.customerDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3691,7 +3691,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchBrokersCount();
         this.initDataTableBroker();
         this.brokerDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3706,7 +3706,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchVendorsCount();
         this.initDataTableVendor();
         this.vendorDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3721,7 +3721,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchCarriersCount();
         this.initDataTableCarrier();
         this.carrierDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3736,7 +3736,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchOwnerOperatorsCount();
         this.initDataTableOperator();
         this.ownerOperatorDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3751,7 +3751,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchShippersCount();
         this.initDataTableShipper();
         this.shipperDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3766,7 +3766,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchConsigneeCount();
         this.initDataTableConsignee();
         this.consigneeDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3781,7 +3781,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchStaffsCount();
         this.initDataTableStaff();
         this.staffDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3796,7 +3796,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchFcCompaniesCount();
         this.initDataTableCompany();
         this.companyDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -3811,7 +3811,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchDriversCount();
         this.initDataTableDriver();
         this.driverDraw = 0;
-        this.getStartandEndVal(type);
+        this.resetCountResult(type);
       } else {
         return false
       }
@@ -4401,5 +4401,58 @@ export class AddressBookComponent implements OnInit {
       .subscribe((result: any) => {
         this.cities = result.Items;
       });
+  }
+
+  resetCountResult(type) {
+    if(type == 'customer') {
+      this.custtStartPoint = 1;
+      this.custtEndPoint = this.pageLength;
+      this.customerDraw = 0;
+
+    } else if(type == 'driver') {
+      this.driverStartPoint = 1;
+      this.driverEndPoint = this.pageLength;
+      this.driverDraw = 0;
+
+    } else if(type == 'broker') {
+      this.brokerStartPoint = 1;
+      this.brokerEndPoint = this.pageLength;
+      this.brokerDraw = 0;
+
+    } else if(type == 'vendor') {
+      this.vendorStartPoint = 1;
+      this.vendorEndPoint = this.pageLength;
+      this.vendorDraw = 0;
+
+    } else if(type == 'carrier') {
+      this.carrierStartPoint = 1;
+      this.carrierEndPoint = this.pageLength;
+      this.carrierDraw = 0;
+
+    } else if(type == 'operator') {
+      this.ownerOperatorStartPoint = 1;
+      this.ownerOperatorEndPoint = this.pageLength;
+      this.ownerOperatorDraw = 0;
+
+    } else if(type == 'shipper') {
+      this.shipperStartPoint = 1;
+      this.shipperEndPoint = this.pageLength;
+      this.shipperDraw = 0;
+      
+    } else if(type == 'consignee') {
+      this.consigneeStartPoint = 1;
+      this.consigneeEndPoint = this.pageLength;
+      this.consigneeDraw = 0;
+
+    } else if(type == 'staff') {
+      this.staffStartPoint = 1;
+      this.staffEndPoint = this.pageLength;
+      this.staffDraw = 0;
+
+    } else if(type == 'company') {
+      this.companyStartPoint = 1;
+      this.companyEndPoint = this.pageLength;
+      this.companyDraw = 0;
+    }
   }
 }
