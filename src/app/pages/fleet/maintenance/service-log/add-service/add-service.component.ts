@@ -21,7 +21,7 @@ export class AddServiceComponent implements OnInit {
   vendors;
   vehicles;
   assets;
-  tasks = [];
+  tasks: any;
   newTaskResp;
   reminders = [];
   issues: any;
@@ -44,7 +44,6 @@ export class AddServiceComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  serviceLogSession = JSON.parse(localStorage.getItem('serviceLogs'));
   serviceData = {
     unitType: 'vehicle',
     reference: `Ref-${new Date().getTime()}`,
@@ -150,40 +149,6 @@ export class AddServiceComponent implements OnInit {
     } else {
       this.pageTitle = 'New Service Log';
       
-      this.serviceData = {
-        unitType: this.serviceLogSession.unitType,
-        vehicleID: this.serviceLogSession.vehicleID,
-        assetID: this.serviceLogSession.assetID,
-        reference: this.serviceLogSession.reference,
-        odometer: this.serviceLogSession.odometer,
-        description: this.serviceLogSession.description,
-        completionDate: this.serviceLogSession.completionDate,
-        vendorID: this.serviceLogSession.vendorID, 
-        allServiceTasks: {
-          serviceTaskList: this.serviceLogSession.allServiceTasks.serviceTaskList,
-          subTotal: this.serviceLogSession.allServiceTasks.subTotal,
-          discountPercent: this.serviceLogSession.allServiceTasks.discountPercent,
-          discountAmount: this.serviceLogSession.allServiceTasks.discountAmount,
-          taxPercent: this.serviceLogSession.allServiceTasks.taxPercent,
-          taxAmount: this.serviceLogSession.allServiceTasks.taxAmount,
-          total: this.serviceLogSession.allServiceTasks.total,
-          currency: this.serviceLogSession.allServiceTasks.currency,
-        },
-        allServiceParts: {
-          servicePartsList: this.serviceLogSession.allServiceParts.servicePartsList,
-          totalQuantity: this.serviceLogSession.allServiceParts.totalQuantity,
-          subTotal: this.serviceLogSession.allServiceParts.subTotal,
-          discountPercent: this.serviceLogSession.allServiceParts.discountPercent,
-          discountAmount: this.serviceLogSession.allServiceParts.discountAmount,
-          taxPercent: this.serviceLogSession.allServiceParts.taxPercent,
-          taxAmount: this.serviceLogSession.allServiceParts.taxAmount,
-          total: this.serviceLogSession.allServiceParts.total,
-          currency: this.serviceLogSession.allServiceParts.currency,
-        },
-        selectedIssues: this.serviceLogSession.selectedIssues,
-        location: this.serviceLogSession.location,
-        geoCords: this.serviceLogSession.geoCords,
-      };
     }
 
 
@@ -193,7 +158,8 @@ export class AddServiceComponent implements OnInit {
     this.fetchVendors();
     this.fetchInventory();
     this.fetchAssets();
-    this.fetchTasks();
+    // this.fetchTasks();
+    this.listService.fetchTasks();
     this.fetchAllTasksIDs();    
     this.searchLocation();
     this.fetchInventoryItems();
@@ -223,12 +189,16 @@ export class AddServiceComponent implements OnInit {
       window.localStorage.removeItem('reminderUnitID');
      }
 
-     if(this.serviceData.vehicleID != '') {
-       this.getVehicleIssues(this.serviceData.vehicleID)
-     } 
-     if(this.serviceData.assetID != '') {
-       this.getAssetIssues(this.serviceData.assetID);
-     }
+    //  if(this.serviceData.vehicleID != '') {
+    //    this.getVehicleIssues(this.serviceData.vehicleID)
+    //  } 
+    //  if(this.serviceData.assetID != '') {
+    //    this.getAssetIssues(this.serviceData.assetID);
+    //  }
+
+     this.tasks = this.listService.tasksList;
+     
+     
   }
 
   /*
@@ -427,7 +397,7 @@ export class AddServiceComponent implements OnInit {
     this.listService.issuesList.subscribe(res => {
       this.issues = res;
     });
-    for (let z = 0; z < this.savedIssues.length; z++) {
+      for (let z = 0; z < this.savedIssues.length; z++) {
       this.issues.map(elem => {
         if (elem.issueID == this.savedIssues[z]) {
           elem.selected = true;
@@ -436,9 +406,7 @@ export class AddServiceComponent implements OnInit {
     }
   }
   async getIssuesByAsset(assetID) {
-    // this.fetchAssetByID(assetID);
-    // let promise = await this.apiService.getData(`issues/assets/${assetID}`).toPromise();
-    // this.issues = promise.Items;
+    
     await this.listService.fetchAssetsIssues(assetID);
     this.listService.issuesList.subscribe(res => {
       this.issues = res;
@@ -452,6 +420,7 @@ export class AddServiceComponent implements OnInit {
     }
   }
   async getVehicleIssues(id: any) {
+    this.spinner.show();
     localStorage.setItem('issueVehicleID', JSON.stringify(id));
     this.spinner.show();
     const vehicleID = id;
@@ -465,6 +434,7 @@ export class AddServiceComponent implements OnInit {
     this.spinner.show();
     const assetID = id;
     await this.getReminders(assetID);
+    await this.getIssuesByAsset(assetID);
     
     this.spinner.hide();
   }
@@ -536,10 +506,9 @@ export class AddServiceComponent implements OnInit {
         newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
         remindID = ' ';
-        newSchedule = ' ';
+        newSchedule = '-';
       }
     }
-    
     this.serviceData.allServiceTasks.serviceTaskList.push({
       taskName: this.selectedTasks[this.selectedTasks.length - 1].taskName,
       taskID: this.selectedTasks[this.selectedTasks.length - 1].taskID,

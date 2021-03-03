@@ -83,8 +83,7 @@
                     <section class="card">
                         <div class="card-body pt-1">
                             <div class="table-responsive">
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                    class="row-border hover table table-bordered table-striped mb-0">
+                                <table class="row-border hover table table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
                                             <th>Vehicle</th>
@@ -95,7 +94,10 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngIf="remindersData.length > 0">
+                                    <tbody>
+                                        <tr *ngIf="!remindersData.length > 0" class="text-center">
+											<td colspan="6">No records found</td>
+										</tr>
                                         <tr *ngFor="let item of remindersData" style="cursor: pointer;">
                                             <td>{{vehicleList[item.reminderIdentification]}}</td>
                                             <td><span class="text-warning font-weight-bold font-size-12"
@@ -141,12 +143,16 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tbody *ngIf="remindersData.length === 0">
-                                        <tr>
-                                            <td colspan="10" class="no-data-available">No records found</td>
-                                        </tr>
-                                    </tbody>
                                 </table>
+                                <div class="row mt-3 dtPaginate" *ngIf="remindersData.length > 0">
+									<div class="col-6">
+										Showing {{ serviceStartPoint }} to {{ serviceEndPoint }} of {{ totalRecords }} enteries
+									</div>
+									<div class="col-6 text-right">
+										<button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="servicePrev">Prev</button>
+										<button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="serviceNext">Next</button>
+									</div>
+								</div>
                             </div>
                         </div>
                     </section>
