@@ -22,6 +22,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   /********** Form Fields ***********/
   fuelData = {
     unitID: '',
+    fuelQtyUnit: '',
     unitType: '',
     entryID: '',
     currency: '',
