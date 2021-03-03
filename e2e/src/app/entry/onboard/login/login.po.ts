@@ -1,8 +1,10 @@
-import { browser, by, element } from 'protractor';
-export class LoginPage{
+import { browser, by, element, ExpectedConditions } from 'protractor';
+import { Auth } from 'aws-amplify';
+
+export class LoginPage {
   private credentias = {
-    username: 'e2etestcarrier',
-    password: 'FleetHawks@2502'
+    username: 'param',
+    password: 'FleetHawks@1302'
   };
 
   navigateTo() {
@@ -10,17 +12,37 @@ export class LoginPage{
   }
 
   navigateToHomepage() {
-    return browser.get('/Map-Dashboard') as Promise<any>;
+    return browser.get('#/Map-Dashboard') as Promise<any>;
   }
 
   getTitleText() {
-    return element(by.css('app-root .content span')).getText() as Promise<string>;
+    return element(by.id('loginTitle')).getText() as Promise<string>;
   }
-  
+
   fillCredentials(credentias: any = this.credentias) {
     element(by.css('[name="username"]')).sendKeys(credentias.username);
     element(by.css('[name="pwd"]')).sendKeys(credentias.password);
-    element(by.css('[href="#/onboard"]')).click();
+    element(by.id("btnsubmit")).click();
+  }
+
+  logout() {
+    let profileBtn = element(by.className('fa custom-caret'));
+    var EC = ExpectedConditions;
+    // // Waits for the element with id 'abc' to be visible on the dom.
+    browser.wait(EC.visibilityOf(profileBtn), 10000);
+    browser.actions().mouseMove(profileBtn).click().perform();
+    
+    let logoutBtn = element(by.id('lnkLogout'));
+    browser.wait(EC.visibilityOf(logoutBtn), 10000);
+    browser.actions().mouseMove(logoutBtn).click().perform();
+
+
   }
 }
- 
+
+
+
+
+
+
+
