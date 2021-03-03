@@ -51,7 +51,7 @@
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Completion Date</td>
-                                            <td>{{completionDate ? completionDate : '-'}}</td>
+                                            <td>{{completionDate ? (completionDate | date:'dd-MM-yyyy') : '-'}}</td>
                                          </tr>
                                          <tr *ngIf="vehicle">
                                             <td class="back-color-gray font-weight-bold">Odometer</td>
