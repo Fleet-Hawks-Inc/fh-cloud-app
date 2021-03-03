@@ -14,7 +14,7 @@ export class LoginPage{
     return browser.get('/Map-Dashboard') as Promise<any>;
   }  
   fillCredentials(credentias: any = this.credentias) {
-    element(by.css('[name="username"]')).sendKeys(credentias.username);
+    element(by.id('userName')).sendKeys(credentias.username);
     element(by.css('[name="pwd"]')).sendKeys(credentias.password);
     element(by.id('btnLogin')).click();
   }
