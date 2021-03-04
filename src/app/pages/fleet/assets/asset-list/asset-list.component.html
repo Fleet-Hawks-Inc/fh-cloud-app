@@ -212,7 +212,7 @@
       <div id="list_view" *ngIf="listView">
          <div class="p-2">
             <div class="table-responsive">
-               <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+               <table class="row-border hover table table-bordered table-striped mb-0">
                   <thead>
                      <tr>
                         <th class="col1">Asset Name/Number</th>
@@ -232,7 +232,10 @@
                         <th>Actions</th>
                      </tr>
                   </thead>
-                  <tbody *ngIf="allData.length > 0">
+                  <tbody>
+                     <tr *ngIf="allData.length == 0" class="text-center">
+                        <td colspan="15">No records found</td>
+                    </tr>
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                         <td *ngIf="hideShow.type">{{assetTypeList[item.assetDetails.assetType]}}</td>
@@ -262,12 +265,16 @@
                         </td>
                      </tr>
                   </tbody>
-                  <tbody *ngIf="allData.length === 0">
-                     <tr>
-                        <td colspan="15" class="no-data-available">No records found.</td>
-                     </tr>
-               <tbody>
                </table>
+               <div class="row mt-3 dtPaginate" *ngIf="allData.length > 0">
+                  <div class="col-6">
+                      Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
+                  </div>
+                  <div class="col-6 text-right">
+                      <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="assetPrev">Prev</button>
+                      <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="assetNext">Next</button>
+                  </div>
+              </div>
             </div>
          </div>
       </div>
