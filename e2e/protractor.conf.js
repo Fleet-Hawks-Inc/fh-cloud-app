@@ -2,7 +2,7 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
-const { SpecReporter } = require('jasmine-spec-reporter');
+const { SpecReporter } = require("jasmine-spec-reporter");
 
 /**
  * @type { import("protractor").Config }
@@ -10,24 +10,31 @@ const { SpecReporter } = require('jasmine-spec-reporter');
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './src/**/*.ts',
-    //'./src/app/entry/onboard/add-account.po.ts'
+    "./src/**/*.ts",
+    //'./src/app/entry/onboard/login/*.ts'
   ],
   capabilities: {
-    browserName: 'chrome'
+    browserName: "chrome",
+    'chromeOptions' : {
+      args: ['--lang=en',
+             '--window-size=1024,720']
+     }
+   
   },
   directConnect: true,
-  baseUrl: 'http://localhost:4200/',
-  framework: 'jasmine',
+  baseUrl: "http://localhost:4200/",
+  framework: "jasmine",
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 30000,
-    print: function() {}
+    defaultTimeoutInterval: 100000,
+    print: function () {},
   },
   onPrepare() {
-    require('ts-node').register({
-      project: require('path').join(__dirname, './tsconfig.json')
+    require("ts-node").register({
+      project: require("path").join(__dirname, "./tsconfig.json"),
     });
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
-  }
-};
+    jasmine
+      .getEnv()
+      .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+  },
+}; 
