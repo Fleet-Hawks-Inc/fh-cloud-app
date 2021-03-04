@@ -62,6 +62,7 @@ export class AddOrdersComponent implements OnInit {
   mergedArray = [];
   getAllCords = [];
   googleCords = [];
+  assetTypes = [];
   form;
   visibleIndex = 0;
   customerSelected;
@@ -371,6 +372,7 @@ export class AddOrdersComponent implements OnInit {
     this.fetchReceiversByIDs();
     this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
+    this.fetchAssetTypes();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -392,6 +394,12 @@ export class AddOrdersComponent implements OnInit {
 
     this.customers = this.listService.customersList;
   }
+
+  fetchAssetTypes(){
+    this.apiService.getData('assetTypes').subscribe((result) => {
+      this.assetTypes = result.Items;
+    });
+  }
   
   timpickerInit() {}
 
@@ -399,25 +407,22 @@ export class AddOrdersComponent implements OnInit {
     this.apiService
       .getData("stateTaxes")
       .subscribe((result) => {
-     //   result = result.Items;
         this.stateTaxes = result.Items;
-        console.log('this.stateTaxes are', this.stateTaxes);
-        // if (result.length > 0) {
-        //   this.orderData.taxesInfo = [
-        //     {
-        //       name: "GST",
-        //       amount: result[0].GST,
-        //     },
-        //     {
-        //       name: "PST",
-        //       amount: result[0].PST,
-        //     },
-        //     {
-        //       name: "HST",
-        //       amount: result[0].HST,
-        //     },
-        //   ];
-        // }
+        this.stateTaxID = this.stateTaxes[0].stateTaxID;
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: result.Items[0].GST,
+          },
+          {
+            name: 'HST',
+            amount: result.Items[0].HST,
+          },
+          {
+            name: 'PST',
+            amount: result.Items[0].PST,
+          },
+        ];
       });
   }
 
@@ -989,7 +994,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-       this.router.navigateByUrl("/dispatch/orders");
+      this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
