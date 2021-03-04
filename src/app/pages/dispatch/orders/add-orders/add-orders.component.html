@@ -1069,7 +1069,7 @@
 
 
 
-                        <div class="row mt-3" *ngIf="!orderData.additionalDetails.dropTrailer">
+                        <div class="row mt-3">
                            
                            <div class="col-lg-8 offset-lg-2 pr-0">
                               <label class="control-label font-weight-semibold text-3 text-dark"
@@ -1078,10 +1078,8 @@
                               <ng-select [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                  class="form-control populate">
 
-                                 <ng-option value="Refer" data-select2-id="51">Refer</ng-option>
-                                 <ng-option value="Dry Van">Dry Van</ng-option>
-                                 <ng-option value="Flat Bed">Flat Bed</ng-option>
-
+                                 <ng-option *ngFor="let type of assetTypes" value="{{type.assetTypeID}}" data-select2-id="51">{{type.assetTypeName}}</ng-option>
+                               
                               </ng-select>
                            </div>
                            <div class="col-lg-3">
