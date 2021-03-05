@@ -1,25 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
-import { Router } from '@angular/router';
-import { timer } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-service-program-list',
   templateUrl: './service-program-list.component.html',
   styleUrls: ['./service-program-list.component.css'],
 })
-export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class ServiceProgramListComponent implements  OnInit {
 
   title = 'Service Program List';
   // dtOptions: any = {};
@@ -29,9 +19,15 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
   pageLength = 10;
   lastEvaluatedKey = '';
 
+  serviceProgramNext = false;
+  serviceProgramPrev = true;
+  serviceProgramDraw = 0;
+  serviceProgramPrevEvauatedKeys = [''];
+  serviceProgramStartPoint = 1;
+  serviceProgramEndPoint = this.pageLength;
+
   constructor(
       private apiService: ApiService,
-      private router: Router,
       private spinner: NgxSpinnerService,
       private toastr: ToastrService
     ) {}
@@ -52,68 +48,46 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
   }
 
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0,1,2], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('servicePrograms/fetch-records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.programs = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].programID;
+    this.spinner.show();
+    this.apiService.getData('servicePrograms/fetch/records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.programs = result['Items'];
+        if (this.programeName != '') {
+          this.serviceProgramStartPoint = 1;
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.serviceProgramNext = false;
+          // for prev button
+          if (!this.serviceProgramPrevEvauatedKeys.includes(result['LastEvaluatedKey'].programID)) {
+            this.serviceProgramPrevEvauatedKeys.push(result['LastEvaluatedKey'].programID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].programID;
+          
+        } else {
+          this.serviceProgramNext = true;
+          this.lastEvaluatedKey = '';
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.serviceProgramDraw > 0) {
+          this.serviceProgramPrev = false;
+        } else {
+          this.serviceProgramPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if (this.programeName !== '') {
       this.programs = [];
       this.fetchProgramsCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -124,7 +98,8 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
       this.programeName = '';
       this.programs = [];
       this.fetchProgramsCount();
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -137,9 +112,35 @@ export class ServiceProgramListComponent implements AfterViewInit, OnDestroy, On
       .subscribe((result: any) => {
         this.programs = [];
         this.fetchProgramsCount();
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Service Program Deleted Successfully!');
       });
     }
+  }
+
+  getStartandEndVal() {
+    this.serviceProgramStartPoint = this.serviceProgramDraw * this.pageLength + 1;
+    this.serviceProgramEndPoint = this.serviceProgramStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.serviceProgramDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.serviceProgramDraw -= 1;
+    this.lastEvaluatedKey = this.serviceProgramPrevEvauatedKeys[this.serviceProgramDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.serviceProgramStartPoint = 1;
+    this.serviceProgramEndPoint = this.pageLength;
+    this.serviceProgramDraw = 0;
   }
 }

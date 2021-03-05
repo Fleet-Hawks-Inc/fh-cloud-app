@@ -815,6 +815,7 @@ fetchDrivers(){
           $('#addServiceTaskModal').modal('hide');
           this.taskData['taskName'] = '';
           this.taskData['description'] = '';
+          this.listService.fetchTasks();
         }
       });
   }

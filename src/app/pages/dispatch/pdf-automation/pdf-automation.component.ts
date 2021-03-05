@@ -80,7 +80,7 @@ export class PdfAutomationComponent implements OnInit {
 
   drag = false;
 
-  private selectOpt;
+  selectOpt = '';
   selectfile(value) {
     console.log(value);
   }

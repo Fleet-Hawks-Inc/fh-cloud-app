@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {ApiService} from '../../../../../services';
+import {ApiService, ListService} from '../../../../../services';
 import { map} from 'rxjs/operators';
 import {from} from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -18,7 +18,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
   vehicleModal: boolean = false; 
   vehicles: any;
-  tasks = [];
+  tasks: any;
   programID = '';
   serviceData = {
     programID: '',
@@ -63,7 +63,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     private router: Router,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private listService: ListService
   ) {}
 
 
@@ -75,11 +76,15 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     } else {
       this.pageTitle = 'New Service Program';
     }
-    this.fetchVehicles();
-    this.fetchTasks();
+    // this.fetchVehicles();
+    this.listService.fetchTasks();
+    this.listService.fetchVehicles();
     $(document).ready(() => {
       this.form = $('#form_, #form1_').validate();
     });
+
+    this.tasks =  this.listService.tasksList;
+    this.vehicles = this.listService.vehicleList;
   }
 
 
@@ -126,57 +131,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       });
   }
 
-  addServiceTask() {
-   
-    this.hideErrors();
-    this.apiService.postData('tasks', this.taskData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-        next: (res) => {
-          this.fetchTasks();
-          this.toastr.success('Service Task added successfully');
-          $('#addServiceTaskModal').modal('hide');
-          this.taskData['taskName'] = '';
-          this.taskData['description'] = '';
-        }
-      });
-  }
-
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe({
       error: () => {},
       next: (result: any) => {
         this.vehicles = result.Items;
-      },
-    });
-  }
-
-  fetchTasks() {
-    this.tasks = [];
-    this.apiService.getData('tasks').subscribe({
-      error: () => {},
-      next: (result: any) => {
-       // this.tasks = result.Items;
-       result.Items.forEach(element => {
-        if (element.taskType === 'service') {
-          this.tasks.push(element);
-        }
-       });
       },
     });
   }
