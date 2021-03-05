@@ -14,22 +14,35 @@ describe('add driver Tests', () => {
     
     });
 
-    it('when login is successful display dashboard page and then display driver form', () => {
+    it('when carrier adds a driver it should  successfully add a driver', () => {
+
         loginPage.navigateTo();
         loginPage.fillCredentials();
-        dashBoardPage.navigateToDashBoard();
-        browser.sleep(5000);
-        let text = dashBoardPage.getTitleText();
-        expect(text).toEqual('Driver Dashboard');
-        addDriverPage.navigateToAddDriverPage();
-        let drive = addDriverPage.getTitleText();
-        expect(drive).toEqual('Add Driver');
-    });
-    it('Check Credential',() =>{
+        //dashBoardPage.navigateToDashBoard();
+        addDriverPage.navigateToDriverPage();
+        //browser.sleep(5000);
+        //let text = dashBoardPage.getNavBar();
+        //expect(text).toEqual('Driver Dashboard');
+        addDriverPage.clickAddDriverBtn();
+       // let drive = addDriverPage.getTitleText();
+        //expect(drive).toEqual('Add Driver');
         addDriverPage.basicDetailform();
-        addDriverPage.getcredentials();
-    })
+        addDriverPage.credentials();
+        addDriverPage.basicDetailform();
+        addDriverPage.documentdetailsForm();
+        addDriverPage.crossBorder();
+        addDriverPage.licenceDetailsForm();
+        addDriverPage.payMentForm();
+        addDriverPage.hosCompliance();
+        addDriverPage.emergencyForm();
 
-    
+        
+    });
+    it('when carrier is on add driver screen and click cancels, it should redirect to  driver list page', () =>
+    { 
+    });    
+    it('when carrier is on add driver screen and is able to navigate', () =>
+    { 
+    });    
 });
 

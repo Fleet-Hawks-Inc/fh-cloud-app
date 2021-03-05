@@ -78,7 +78,7 @@
                                                    <label class="btn btn-outline btn-fleet mr-2"
                                                       [class.active]="driverData.driverType === 'employee'"
                                                       style="width:110px;" (click)="onChangeUnitType('employee')">
-                                                      <input type="radio" [(ngModel)]="driverData.driverType"
+                                                      <input id="rdemployee"type="radio" [(ngModel)]="driverData.driverType"
                                                          name="driverType" checked hidden value="employee"> Employee
                                                    </label>
                                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
@@ -125,7 +125,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Status<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus"
+                                          <ng-select id="statusdriver" [(ngModel)]="driverData.driverStatus" name="driverStatus"
                                              class="form-control form-control-sm" placeholder="Select driver status"
                                              (change)="onChangeHideErrors('driverStatus')">
                                              <ng-option value="Active">Active</ng-option>
@@ -232,7 +232,7 @@
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Citizenship<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
+                                          <ng-select id="nginput" [(ngModel)]="driverData.citizenship" name="citizenship"
                                              placeholder="Select the citizenship country of driver"
                                              (change)="onChangeHideErrors('citizenship')">
                                              <ng-option class="text-capitalize" *ngFor="let country of countries"
@@ -372,7 +372,7 @@
 
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Birth
                                              Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker
+                                          <input id="date" (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker
                                              #d6="ngbDatepicker" [maxDate]="getcurrentDate"
                                              [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB"
                                              type="text" data-plugin-datepicker="" class="form-control"
@@ -381,14 +381,14 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
+                                          <input id="workphonee"[(ngModel)]="driverData.workPhone" name="workPhone" type="text"
                                              class="form-control"
                                              placeholder="Enter the official phone number of the driver">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [(ngModel)]="driverData.workEmail" name="workEmail" type="text"
+                                          <input id="mailwork" [(ngModel)]="driverData.workEmail" name="workEmail" type="text"
                                              class="form-control"
                                              placeholder="Enter the official email address of the driver">
                                        </div>
@@ -545,7 +545,7 @@
                                              <label class="control-label font-weight-bold text-lg-right pt-2">
                                                 Document Type<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <ng-select [(ngModel)]="document.documentType"
+                                             <ng-select  [(ngModel)]="document.documentType"
                                                 [attr.name]="'documentDetails['+i+'].documentType'"
                                                 [ngModelOptions]="{standalone: true}" placeholder="Select document type"
                                                 (change)="onChangeHideErrors('documentDetails['+i+'].documentType')">
@@ -564,7 +564,7 @@
                                                 <label
                                                    class="control-label font-weight-bold text-lg-right pt-2">Document#<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="document.document"
+                                                <input id="dcNumber"[(ngModel)]="document.document"
                                                    [attr.name]="'documentDetails['+i+'].document'"
                                                    [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                                                    placeholder="Enter the document number"
@@ -636,7 +636,7 @@
                                           <div class="col-5" *ngIf="document.documentType != 'BCN'">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Expiry
                                                 Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input [(ngModel)]="document.expiryDate"
+                                             <input id="expDate" [(ngModel)]="document.expiryDate"
                                                 [attr.name]="'documentDetails['+i+'].expiryDate'"
                                                 [ngModelOptions]="{standalone: true}"
                                                 (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()"
@@ -653,7 +653,7 @@
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
                                                 Document</label>
-                                             <input class="form-control p-0" name="document.uploadedDocs{{i}}"
+                                             <input id="attchDoc" class="form-control p-0" name="document.uploadedDocs{{i}}"
                                                 (change)="selectDocuments($event, i)" type="file" multiple>
                                           </div>
                                           <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
@@ -779,7 +779,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">CDL Number<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
+                                          <input id="cdlnumber" [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                              name="licenceDetails.CDL_Number" type="text" class="form-control"
                                              placeholder="Enter CDL(Commercial Driving Licence) number"
                                              (change)="onChangeHideErrors('CDL_Number')">
@@ -787,7 +787,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Licence
                                              Expiration<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()"
+                                          <input id="epiryl" (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()"
                                              ngbDatepicker #d3="ngbDatepicker"
                                              [(ngModel)]="driverData.licenceDetails.licenceExpiry"
                                              name="licenceDetails.licenceExpiry" [maxDate]="futureDatesLimit"
@@ -904,7 +904,7 @@
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">SIN
                                                 Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input (change)="onChangeHideErrors('paymentDetails.SIN_Number')"
+                                             <input id="sinNumber"(change)="onChangeHideErrors('paymentDetails.SIN_Number')"
                                                 [(ngModel)]="driverData.paymentDetails.SIN_Number"
                                                 name="paymentDetails.SIN_Number" type="text" class="form-control"
                                                 placeholder="Enter the SIN (Social Insurance Number)">
@@ -1089,7 +1089,7 @@
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Pay
                                                    Period<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod"
+                                                <ng-select id="payP"[(ngModel)]="driverData.paymentDetails.payPeriod"
                                                    name="paymentDetails.payPeriod"
                                                    placeholder="Select pay period of the driver"
                                                    (change)="onChangeHideErrors('paymentDetails.payPeriod')">
@@ -1121,7 +1121,7 @@
                                              <label
                                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Status<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <ng-select [(ngModel)]="driverData.hosDetails.hosStatus"
+                                             <ng-select id="sts" [(ngModel)]="driverData.hosDetails.hosStatus"
                                                 (change)="complianceChange($event);onChangeHideErrors('hosDetails.hosStatus')" name="hosDetails.hosStatus"
                                                 class="form-control populate"
                                                 placeholder="Select exemption status of the driver">
@@ -1166,6 +1166,7 @@
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Type<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <ng-select 
+                                                 id="tyyP"
                                                 [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                                                 (change)="onChangeHideErrors('hosDetails.type')"
                                                 placeholder="Select the record keeping type">
@@ -1277,8 +1278,8 @@
 
                      <div class="form-group row mt-3">
                         <div class="col-lg-12 text-right pb-4 pr-5">
-                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
-                           <button type="button" *ngIf="currentTab > 1" (click)="prevStep()"
+                           <a id="cancelBtn"type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+                           <button id="prev"type="button" *ngIf="currentTab > 1" (click)="prevStep()"
                               class="btn btn-default btnPrevious mr-2">Prev</button>
                            <a id="save&btn" href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 8"
                               class="btn btn-success btnNext">Save & Next</a>
