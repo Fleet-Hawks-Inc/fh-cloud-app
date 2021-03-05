@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -43,7 +41,7 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       private apiService: ApiService,
       private router: Router,
       private spinner: NgxSpinnerService,
-      private toastr: ToastrService
+      private toastr: ToastrService,
     ) {}
 
   ngOnInit() {
@@ -119,6 +117,15 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
+  gotoIssue(issue){
+    localStorage.setItem('issueID', issue);
+    this.router.navigateByUrl('/fleet/maintenance/issues/detail/')
+  }
+
+  openComponent(vendorID) {
+    localStorage.setItem('vendorID', vendorID);
+    $('#vendorDtlModal').modal('show');
+  }
   initDataTable() {
     let current = this;
     this.dtOptions = { // All list options

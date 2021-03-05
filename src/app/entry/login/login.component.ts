@@ -384,17 +384,22 @@ export class LoginComponent implements OnInit {
           lastName: 'User',
           role: Role.FleetManager
         };
+        if(isActivatedUser.userType == 'Cloud Admin') {
+          await this.router.navigateByUrl('/carriers');
+        }else {
+          await this.router.navigate(['/Map-Dashboard']);
+          // localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
+        }
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
-        // localStorage.setItem('driver', JSON.stringify(this.driver));
+        
+        /**
+           * set local and redirect
+           **/
+          localStorage.setItem('LoggedIn', 'true');
         
 
 
-        /**
-         * set local and redirect
-         **/
-        localStorage.setItem('LoggedIn', 'true');
-        await this.router.navigate(['/Map-Dashboard']);
+        
       }
     } catch (err) {
 

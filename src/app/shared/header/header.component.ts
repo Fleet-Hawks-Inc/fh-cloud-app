@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';
   currentUser:any = '';
+  carrierName: any;
   userRole:any = '';
   carriers: any = [];
   logoSrc: any = 'assets/img/logo.png';
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.getCurrentuser();
     this.fetchCarrier();
+    this.getLoggedUserForCloud();
   }
 
   onNavSelected(nav: string) { 
@@ -62,6 +64,25 @@ fetchCarrier(){
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.userRole = this.currentUser.userType;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+  }
+  /**
+   * show 'login as' div for cloud admin
+   */
+  async getLoggedUserForCloud() {
+    let isCarrierID = localStorage.getItem('carrierID');
+    await this.getSpecificCarrier(isCarrierID);
+  }
+
+  async getSpecificCarrier(id){
+    this.apiService.getData(`carriers/${id}`)
+      .subscribe((result: any) => {
+        this.carrierName = result.Items[0].businessName
+      });
+  }
+
+  switchCarrier(){
+    localStorage.removeItem('carrierID');
+    this.router.navigateByUrl('/carriers');
   }
 
 }

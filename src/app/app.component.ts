@@ -23,7 +23,6 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentURL = event.url;
-        
         if (event.url === '/Map-Dashboard') {
           rootHtml.classList.add('fixed');
           rootHtml.classList.add('sidebar-light');

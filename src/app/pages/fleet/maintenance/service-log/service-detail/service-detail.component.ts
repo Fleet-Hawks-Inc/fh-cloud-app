@@ -47,6 +47,7 @@ export class ServiceDetailComponent implements OnInit {
   partsTaxPercent: number;
   partsTotal: number;
 
+  currency: any;
   photos: any = [];
   docs: any = [];
 
@@ -79,7 +80,6 @@ export class ServiceDetailComponent implements OnInit {
         this.logsData = result.Items[0];
        
         result = result.Items[0];
-        
         this.vehicle = result.vehicleID;
         this.assetID = result.assetID;
         this.vendorID = result.vendorID;
@@ -105,6 +105,8 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTaxAmount = result.allServiceParts.taxAmount;
         this.partsTaxPercent = result.allServiceParts.taxPercent;
         this.partsTotal = result.allServiceParts.total;
+
+        this.currency = result.allServiceParts.currency;
         
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
           this.photos = result.uploadedPhotos.map(x => ({

@@ -2087,9 +2087,9 @@ html.no-overflowscrolling.sidebar-light:not(.dark) .inner-menu .nano {
 }
 /* Page Header */
 .page-header {
-	/* z-index: 998; */
+	z-index: 998;
 	/* z-index: 9; */
-	z-index: 1100;
+	/* z-index: 1100; */
 	/* Left Breadcumb */
 	/* Mobile ;*/
 }
@@ -14357,7 +14357,7 @@ p.drop-caps.drop-caps-style-2:first-letter {
 	        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
 	-webkit-box-sizing: content-box;
 	        box-sizing: content-box;
-	left: -120px !important;
+	left: -10px !important;
 	padding: 45px 10px 0;
 	top: -10px !important;
 	-webkit-transform: none !important;

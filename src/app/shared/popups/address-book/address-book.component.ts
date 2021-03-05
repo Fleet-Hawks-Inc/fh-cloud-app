@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
-
+  @ViewChild("content", {static: false}) modalContent: TemplateRef<any>;
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   drivers = [];
@@ -4184,7 +4184,6 @@ export class AddressBookComponent implements OnInit {
   }
 
   manAddress(event, i, type) {
-    console.log('type', type);
     if(type == 'customer') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
