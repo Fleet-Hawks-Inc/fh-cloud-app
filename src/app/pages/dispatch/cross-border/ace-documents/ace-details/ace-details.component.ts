@@ -3,7 +3,7 @@ import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-declare var $: any;
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-ace-details',
@@ -50,8 +50,37 @@ export class AceDetailsComponent implements OnInit {
     shipperName: '',
     consigneeName: '',
     provinceOfLoading: '',
-    commodities: [],
+    commodities: [
+      {
+        loadedOn: {
+          type: '',
+          number: '',
+        },
+        description: '',
+        quantity: '',
+        packagingUnit: '',
+        weight: '',
+        weightUnit: '',
+        marksAndNumbers: [
+          { markNumber: '' },
+          { markNumber: '' },
+          { markNumber: '' },
+          { markNumber: '' },
+        ],
+        c4LineReleaseNumber: '',
+        harmonizedCode: '',
+        value: '',
+        countryOfOrigin: '',
+        hazmatDetails: {
+          unCode: '',
+          emergencyContactName: '',
+          contactPhone: '',
+          contactEmail: '',
+        }
+      }
+    ],
     thirdParties: [],
+    inBondDetails: {}
   };
   driverData = {
     driverID: '',
@@ -61,7 +90,7 @@ export class AceDetailsComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     citizenshipCountry: '',
-    fastCardNumber:'',
+    fastCardNumber: '',
     travelDocuments: [],
   };
   passengerData = {
@@ -75,13 +104,14 @@ export class AceDetailsComponent implements OnInit {
     travelDocuments: [],
   };
   sendBorderConnectOption = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchACEEntry();
   }
   fetchACEEntry() {
+    this.spinner.show(); // loader init
     this.apiService
       .getData('ACEeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
@@ -98,6 +128,8 @@ export class AceDetailsComponent implements OnInit {
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
+        console.log('hello', result.shipments);
+        this.spinner.hide(); // loader hide
       });
   }
   setStatus(entryID, val) {
@@ -129,8 +161,32 @@ export class AceDetailsComponent implements OnInit {
       shipperName: shipmentDataFetched[0].shipper.name,
       consigneeName: shipmentDataFetched[0].consignee.name,
       commodities: shipmentDataFetched[0].commodities,
-      thirdParties: shipmentDataFetched[0].thirdParties
+      thirdParties: shipmentDataFetched[0].thirdParties,
+      inBondDetails: shipmentDataFetched[0].inBondDetails
+    };
+    for (let c = 0; c < this.shipmentData.commodities.length; c++) {
+      if (shipmentDataFetched[0].commodities[c].hazmatDetails === undefined) {
+        this.shipmentData.commodities[c][`hazmatDetails`] = {
+        unCode: '',
+        emergencyContactName: '',
+        contactPhone: '',
+        contactEmail: ''
+      };
+      }
     }
+    if (shipmentDataFetched[0][`inBondDetails`] === undefined) {
+      this.shipmentData.inBondDetails = {
+        type: '',
+        paperInBondNumber: '',
+        usDestination: '',
+        foreignDestination: '',
+        onwardCarrierScac: '',
+        irsNumber: '',
+        estimatedDepartureDate: '',
+        fda: '',
+      };
+    }
+    console.log('shipment0', this.shipmentData);
   }
   showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);

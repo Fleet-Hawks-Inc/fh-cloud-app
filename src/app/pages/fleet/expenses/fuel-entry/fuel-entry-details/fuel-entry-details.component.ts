@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AwsUploadService } from '../../../../../services';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import Constants from '../../../constants';
 import { HereMapService } from '../../../../../services';
-import { MarketplaceEntitlementService } from 'aws-sdk/clients/all';
 declare var H: any;
 @Component({
   selector: 'app-fuel-entry-details',
@@ -47,6 +44,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     totalGallons: 0,
     countryID: '',
     stateID: '',
+    lineItems: [],
     reimburseToDriver: false,
     deductFromPay: false,
       avgGVW: '',
@@ -59,6 +57,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   assetList: any = {};
   tripList: any = {};
   vendorList: any = {};
+  WEXTaxCodeList: any = {};
+  WEXDiscountCodeList: any = {};
   public fuelEntryImages = [];
   existingPhotos = [];
   tripID = '';
@@ -101,6 +101,10 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
+    this.fetchFuelTypeList();
+    this.fetchFuelTypeWEXCode();
+    this.fetchTaxWEXCode();
+    this.fetchWEXDiscountCode();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
     this.map = this.HereMap.mapInit();
@@ -115,9 +119,29 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.vendorList = result;
     });
   }
+  fetchTaxWEXCode() {
+    this.apiService.getData('fuelTaxes/get/WEXCode').subscribe((result: any) => {
+this.WEXTaxCodeList = result;
+    });
+  }
+  fetchWEXDiscountCode() {
+    this.apiService.getData('fuelDiscounts/get/WEXCode').subscribe((result: any) => {
+      this.WEXDiscountCodeList = result;
+    });
+  }
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
+    });
+  }
+  fetchFuelTypeList() {
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      console.log('result list', result);
+    });
+  }
+  fetchFuelTypeWEXCode() {
+    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
+      console.log('WEX Code', result);
     });
   }
   fetchTripList() {
@@ -201,18 +225,18 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
   fetchVendorData(vendorID) {
     this.apiService.getData('vendors/' + vendorID).subscribe((result: any) => {
-      this.vendorAddress = result.Items[0].address;
-      const lat = this.vendorAddress[0].geoCords.lat;
-      const lng = this.vendorAddress[0].geoCords.lng;
-      const markers = new H.map.Marker(
-        {
-          lat: lat, lng: lng
-        });
-      this.map.addObject(markers);
-      this.map.setCenter({
-        lat: lat,
-        lng: lng
-      });
+      // this.vendorAddress = result.Items[0].address;
+      // const lat = this.vendorAddress[0].geoCords.lat;
+      // const lng = this.vendorAddress[0].geoCords.lng;
+      // const markers = new H.map.Marker(
+      //   {
+      //     lat: lat, lng: lng
+      //   });
+      // this.map.addObject(markers);
+      // this.map.setCenter({
+      //   lat: lat,
+      //   lng: lng
+      // });
     });
 
   }
@@ -255,6 +279,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.description = result.description;
         this.fuelData.uploadedPhotos = result.uploadedPhotos;
         this.existingPhotos = result.uploadedPhotos;
+        this.fuelData.lineItems = result.lineItems;
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }

@@ -24,6 +24,8 @@ export class FuelEntryListComponent implements OnInit {
   assetList: any = {};
   driverList: any  = {};
   vendorList: any  = {};
+  WEXCodeList: any  = {};
+  fuelCodeList: any = {};
   countries = [];
   checked = false;
   isChecked = false;
@@ -63,6 +65,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
+    this.fetchWEXCode();
+    this.fetchFuelTypeList();
     this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
@@ -141,9 +145,18 @@ export class FuelEntryListComponent implements OnInit {
       this.countries = result.Items;
     });
   }
-  
+  fetchFuelTypeList() {
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelCodeList = result;
+    });
+  }
+  fetchWEXCode() {
+    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
+      this.WEXCodeList = result;
+    });
+  }
   fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID='+this.unitID+'&from='+this.start+'&to='+this.end).subscribe({
+    this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -164,7 +177,7 @@ export class FuelEntryListComponent implements OnInit {
   deleteFuelEntry(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`fuelEntries/isDeleted/${entryID}/`+1)
+      .getData(`fuelEntries/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
 
         this.fuelList = [];
@@ -179,21 +192,21 @@ export class FuelEntryListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('fuelEntries/fetch/records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.fuelList = result['Items'];
-
-        if(this.unitID != '') {
+        this.fuelList = result[`Items`];
+  console.log('this.fuelList', this.fuelList);
+        if (this.unitID !== '') {
           this.fuelStartPoint = 1;
           this.fuelEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
           this.fuelNext = false;
           // for prev button
-          if (!this.fuelPrevEvauatedKeys.includes(result['LastEvaluatedKey'].entryID)) {
-            this.fuelPrevEvauatedKeys.push(result['LastEvaluatedKey'].entryID);
+          if (!this.fuelPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
+            this.fuelPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].entryID;
-          
+          this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
+
         } else {
           this.fuelNext = true;
           this.lastEvaluatedKey = '';

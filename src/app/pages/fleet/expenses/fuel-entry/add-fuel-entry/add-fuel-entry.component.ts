@@ -28,15 +28,16 @@ export class AddFuelEntryComponent implements OnInit {
   fuelData = {
     unitType: 'vehicle',
     unitID: '',
-    currency: 'CAD',
+    billingCurrency: 'CAD',
     fuelQtyAmt: 0,
     fuelQty: 0,
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
     totalAmount: 0,
-    discount: 0,
+    discType: '',
+    discAmount: 0,
     amountPaid: 0,
-    costPerLitre: 0,
+    pricePerUnit: 0,
     fuelDate: '',
     fuelTime: '',
     fuelType: '',
@@ -48,6 +49,12 @@ export class AddFuelEntryComponent implements OnInit {
     tripID: '',
     vendorID : '',
     paidBy: '',
+    taxes : [
+      {
+      taxType: '',
+      taxAmount: 0
+      }
+    ],
     paymentMode: '',
     fuelCardNumber: '',
     reimburseToDriver: false,
@@ -61,7 +68,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   fuelQtyUnit = 'litre';
   DEFFuelQtyUnit = 'litre';
-  costPerUnit = 0;
+  // costPerUnit = 0;
   fuelDate: NgbDateStruct;
 
   selectedFiles: FileList;
@@ -78,11 +85,15 @@ export class AddFuelEntryComponent implements OnInit {
   reeferArray = [];
   trips = [];
   fuelEntryImages = [];
+  fuelDiscounts = [];
+  fuelTypes = [];
+  fuelTaxes = [];
   image;
   vehicleData: any;
   LastOdometerMiles: number;
   MPG: number;
   costPerMile: number;
+  getcurrentDate: any;
   miles: number;
   uploadedPhotos = [];
   existingPhotos = [];
@@ -99,11 +110,17 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private location: Location, private toaster: ToastrService,
-    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
+              private router: Router,
+              private route: ActivatedRoute,
+              private location: Location, private toaster: ToastrService,
+              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
+    const date = new Date();
+    this.getcurrentDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
@@ -114,6 +131,9 @@ export class AddFuelEntryComponent implements OnInit {
     this.fetchTrips();
     this.fetchAssets();
     this.fetchDrivers();
+    this.fetchFuelTypes();
+    this.fetchFuelTaxes();
+    this.fetchFuelDiscounts();
     this.listService.fetchVendors();
     this.listService.fetchCountries();
     this.listService.fetchStates();
@@ -147,6 +167,32 @@ export class AddFuelEntryComponent implements OnInit {
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
       this.vehicles = result.Items;
+    });
+  }
+  addFuelTaxRow() {
+    this.fuelData.taxes.push({
+        taxType: '',
+        taxAmount: 0
+    });
+  }
+  deleteTaxRow(t){
+    this.fuelData.taxes.splice(t, 1);
+  }
+  fetchFuelTypes() {
+    this.apiService.getData('fuelTypes').subscribe((result: any) => {
+      this.fuelTypes = result.Items;
+    });
+  }
+  fetchFuelTaxes() {
+    this.apiService.getData('fuelTaxes').subscribe((result: any) => {
+      this.fuelTaxes = result.Items;
+      console.log('fuel taxes', this.fuelTaxes);
+    });
+  }
+  fetchFuelDiscounts() {
+    this.apiService.getData('fuelDiscounts').subscribe((result: any) => {
+      this.fuelDiscounts = result.Items;
+      console.log('fuel discounts', this.fuelDiscounts);
     });
   }
   fetchDrivers() {
@@ -189,8 +235,8 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.fuelQtyAmt = 0;
     this.fuelData.fuelQty = 0;
     this.calculate();
-    if (isNaN(this.costPerUnit)) {
-      this.costPerUnit = 0;
+    if (isNaN(this.fuelData.pricePerUnit)) {
+      this.fuelData.pricePerUnit = 0;
     }
   }
   changeFuelUnit() {
@@ -200,17 +246,17 @@ export class AddFuelEntryComponent implements OnInit {
       this.DEFFuelQtyUnit = 'litre';
     }
   }
-  changeCurrency(val) {
-    this.fuelData.currency = val;
+  changebillingCurrency(val) {
+    this.fuelData.billingCurrency = val;
   }
   calculate() {
     this.fuelData.totalAmount = 0;
-    this.costPerUnit = 0;
+    this.fuelData.pricePerUnit = 0;
     this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
-    let units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
-    this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discount;
-    const test = (this.fuelData.amountPaid / units);
-    this.costPerUnit = +(test.toFixed(2));
+    const units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
+    this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discAmount;
+    this.fuelData.pricePerUnit = (this.fuelData.amountPaid / units);
+
   }
   addFuelEntry() {
     // if (this.fileName === '') {
@@ -222,25 +268,21 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.fuelQty = this.fuelData.fuelQty;
       this.fuelData.DEFFuelQty = this.fuelData.DEFFuelQty;
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.costPerLitre = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
-    }
-    else {
+      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
+    } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.costPerLitre = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
+      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
-   // console.log('fuel data', this.fuelData); return;
+    console.log('data', this.fuelData);
       // create form data instance
-      const formData = new FormData();
-
-      //append photos if any
+    const formData = new FormData();
+      // append photos if any
       for(let i = 0; i < this.uploadedPhotos.length; i++){
         formData.append('uploadedPhotos', this.uploadedPhotos[i]);
       }
-
-
-      //append other fields
+      // append other fields
       formData.append('data', JSON.stringify(this.fuelData));
     this.apiService.postData('fuelEntries', formData, true).subscribe({
       complete: () => { },
@@ -310,20 +352,21 @@ export class AddFuelEntryComponent implements OnInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         this.fuelData[`entryID`] = this.entryID;
-        this.fuelData.currency = result.currency,
-          this.fuelData.unitType = result.unitType;
+        this.fuelData.billingCurrency = result.billingCurrency,
+        this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.fuelData.discount = result.discount;
+        this.fuelData.discType = result.discType;
+        this.fuelData.discAmount = result.discAmount;
         this.fuelData.totalAmount = result.totalAmount;
-        this.fuelData.costPerLitre = result.costPerLitre;
-        this.costPerUnit = result.costPerLitre;
+        this.fuelData.pricePerUnit = result.pricePerUnit;
+        this.fuelData.taxes = result.taxes;
         this.fuelData.totalLitres = result.totalLitres;
         this.fuelData.amountPaid = result.amountPaid;
-        this.fuelData.fuelDate = result.fuelDate.split('-').reverse().join('-');
+        this.fuelData.fuelDate = result.fuelDate;
         this.fuelData.fuelTime = result.fuelTime;
         this.fuelData.fuelType = result.fuelType;
 
@@ -365,12 +408,12 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.fuelQty = this.fuelData.fuelQty;
       this.fuelData.DEFFuelQty = this.fuelData.DEFFuelQty;
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.costPerLitre = this.fuelData.amountPaid / this.fuelData.totalLitres;
+      this.fuelData.pricePerUnit = this.fuelData.amountPaid / this.fuelData.totalLitres;
     } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty / 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty / 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.costPerLitre = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
+      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
      this.fuelData.uploadedPhotos = this.existingPhotos;
     if (this.fuelData.fuelDate !== '') {

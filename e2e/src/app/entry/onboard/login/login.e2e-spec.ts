@@ -1,5 +1,3 @@
-
-import { browser, logging } from 'protractor';
 import { LoginPage } from './login.po';
 
 
