@@ -300,7 +300,9 @@
                               <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
                                
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Shipper {{j+1}} </label>
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Shipper {{j+1}} 
+                                      <!-- <i class="fas fa-caret-down caret_icon"></i> -->
+                                    </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
 
@@ -686,6 +688,8 @@
                               <div class="col-lg-6">
                                 <input
                                   type="file"
+                                  (change)="selectDocuments($event)"
+                                  multiple
                                   class="p-0 form-control mb-2"
                                 />
                               </div>
@@ -701,31 +705,21 @@
 
                         <div class="widgetlinfo">
                           <ul class="d-flex p-0 m-0 order-attachment__preview">
-                            <li>
+                            <li *ngFor="let doc of docs">
                               <img
-                                src="assets/img/doc.jpg"
+                                src="{{doc}}"
                                 class="img-fluid"
                                 height="150"
                               />
                             </li>
-                            <li>
+                            <li *ngFor="let localPhoto of localPhotos">
                               <img
-                                src="assets/img/doc.jpg"
+                                src="{{localPhoto}}"
                                 class="img-fluid"
                                 height="150"
                               />
                             </li>
                           </ul>
-                          <!-- <table class="table table-bordered table-responsive-lg">
-                                                <tbody>
-                                                   <tr>
-                                                      <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>
-                                                      <td width="33%"><img src="img/cpp.jpg" height="250" width="100%"></td>
-                                                      <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>                                                        
-                                                   </tr>
-                                                 
-                                                </tbody>
-                                             </table> -->
                         </div>
                       </div>
                     </div>

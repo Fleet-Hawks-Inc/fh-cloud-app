@@ -150,6 +150,8 @@ export class AddOrdersComponent implements OnInit {
       amount: "",
       unit: "",
     },
+    advance: 0,
+    finalAmount: 0,
     milesInfo: {
       totalMiles: null,
       calculateBy: 'manual'
@@ -994,7 +996,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-      this.router.navigateByUrl("/dispatch/orders");
+        //this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
@@ -1076,9 +1078,18 @@ export class AddOrdersComponent implements OnInit {
 
       this.tax = ((this.subTotal - this.discount) * totalTax) / 100;
     }
-
     this.totalAmount = (this.subTotal - this.discount + this.tax).toFixed(2);
-    this.orderData["totalAmount"] = this.totalAmount;
+    let gst =this.orderData.taxesInfo[0].amount ? this.orderData.taxesInfo[0].amount : 0;
+    let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
+    let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
+    console.log('gst', gst);
+    console.log('pst', pst);
+    console.log('hst', hst);
+    let advance:any = this.orderData.advance;
+
+    let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
+    this.orderData["totalAmount"] = final;
+    this.orderData.finalAmount = final - parseInt(advance)
   }
 
   // getLoadTypes(value) {
