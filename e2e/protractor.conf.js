@@ -11,10 +11,15 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     "./src/**/*.ts",
-    //'./src/app/entry/map-dashboard/*.ts'
+    //'./src/app/entry/onboard/login/*.ts'
   ],
   capabilities: {
     browserName: "chrome",
+    'chromeOptions' : {
+      args: ['--lang=en',
+             '--window-size=1024,720']
+     }
+   
   },
   directConnect: true,
   baseUrl: "http://localhost:4200/",
@@ -32,4 +37,4 @@ exports.config = {
       .getEnv()
       .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   },
-};
+}; 
