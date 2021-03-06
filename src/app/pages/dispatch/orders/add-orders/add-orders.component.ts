@@ -55,12 +55,14 @@ export class AddOrdersComponent implements OnInit {
   tax: any = 0;
   shipperList = [];
   receiverList = [];
-
+  stateTaxes = [];
+  stateTaxID = "";
   shipperLocation;
   receiverLocation;
   mergedArray = [];
   getAllCords = [];
   googleCords = [];
+  assetTypes = [];
   form;
   visibleIndex = 0;
   customerSelected;
@@ -143,24 +145,13 @@ export class AddOrdersComponent implements OnInit {
         accessorialDeduction: [],
       },
     },
-    taxesInfo: [
-      {
-        name: "GST",
-        amount: "5",
-      },
-      {
-        name: "PST",
-        amount: "5",
-      },
-      {
-        name: "HST",
-        amount: "0",
-      },
-    ],
+    taxesInfo: [],
     discount: {
       amount: "",
       unit: "",
     },
+    advance: 0,
+    finalAmount: 0,
     milesInfo: {
       totalMiles: null,
       calculateBy: 'manual'
@@ -198,7 +189,6 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
-        pu: '',
         commodity: [
           {
             name: "",
@@ -206,6 +196,7 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
+            pu: ""
           },
         ],
         minTemprature: "",
@@ -224,7 +215,6 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
-        pu: '',
         commodity: [
           {
             name: "",
@@ -232,6 +222,7 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
+            pu: ""
           },
         ],
         minTemprature: "",
@@ -383,6 +374,7 @@ export class AddOrdersComponent implements OnInit {
     this.fetchReceiversByIDs();
     this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
+    this.fetchAssetTypes();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -404,31 +396,35 @@ export class AddOrdersComponent implements OnInit {
 
     this.customers = this.listService.customersList;
   }
+
+  fetchAssetTypes(){
+    this.apiService.getData('assetTypes').subscribe((result) => {
+      this.assetTypes = result.Items;
+    });
+  }
   
   timpickerInit() {}
 
   fetchStateTaxes() {
     this.apiService
-      .getData("stateTaxes/get/carrierStateTax")
+      .getData("stateTaxes")
       .subscribe((result) => {
-        result = result.Items;
-
-        if (result.length > 0) {
-          this.orderData.taxesInfo = [
-            {
-              name: "GST",
-              amount: result[0].GST,
-            },
-            {
-              name: "PST",
-              amount: result[0].PST,
-            },
-            {
-              name: "HST",
-              amount: result[0].HST,
-            },
-          ];
-        }
+        this.stateTaxes = result.Items;
+        this.stateTaxID = this.stateTaxes[0].stateTaxID;
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: result.Items[0].GST,
+          },
+          {
+            name: 'HST',
+            amount: result.Items[0].HST,
+          },
+          {
+            name: 'PST',
+            amount: result.Items[0].PST,
+          },
+        ];
       });
   }
 
@@ -505,7 +501,9 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit
+        !currentCommodity.weightUnit ||
+        !currentCommodity.pu
+
       ) {
         commoditiesFilled = false;
       }
@@ -531,7 +529,6 @@ export class AddOrdersComponent implements OnInit {
       // BOL: this.shippersReceivers[i].shippers.BOL,
       reference: this.shippersReceivers[i].shippers.reference,
       notes: this.shippersReceivers[i].shippers.notes,
-      pu: this.shippersReceivers[0].shippers.pu,
       commodity: this.shippersReceivers[i].shippers.commodity,
       minTemprature: this.shippersReceivers[i].shippers.notes,
       minTempratureUnit: this.shippersReceivers[i].shippers.minTempratureUnit,
@@ -598,7 +595,8 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit
+        !currentCommodity.weightUnit ||
+        !currentCommodity.pu
       ) {
         commoditiesFilled = false;
       }
@@ -624,7 +622,6 @@ export class AddOrdersComponent implements OnInit {
       phone: this.shippersReceivers[i].receivers.phone,
       reference: this.shippersReceivers[i].receivers.reference,
       notes: this.shippersReceivers[i].receivers.notes,
-      pu: this.shippersReceivers[0].receivers.pu,
       commodity: this.shippersReceivers[i].receivers.commodity,
       minTemprature: this.shippersReceivers[i].receivers.notes,
       minTempratureUnit: this.shippersReceivers[i].receivers.minTempratureUnit,
@@ -674,7 +671,6 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers["pickupInstruction"] = "";
     this.shippersReceivers[i].shippers["contactPerson"] = "";
     this.shippersReceivers[i].shippers["phone"] = "";
-    this.shippersReceivers[i].shippers["pu"] = "";
     this.shippersReceivers[i].shippers["BOL"] = "";
     this.shippersReceivers[i].shippers["reference"] = "";
     this.shippersReceivers[i].shippers["notes"] = "";
@@ -685,6 +681,7 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
+        pu: ""
       },
     ];
     this.shippersReceivers[i].shippers["minTempratureUnit"] = "";
@@ -701,7 +698,6 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers["dropOffInstruction"] = "";
     this.shippersReceivers[i].receivers["contactPerson"] = "";
     this.shippersReceivers[i].receivers["phone"] = "";
-    this.shippersReceivers[i].receivers["pu"] = "";
     this.shippersReceivers[i].receivers["reference"] = "";
     this.shippersReceivers[i].receivers["notes"] = "";
 
@@ -712,6 +708,7 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
+        pu: ""
       },
     ];
 
@@ -870,6 +867,7 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
+        pu : ""
       });
     } else {
       this.shippersReceivers[parentIndex].receivers.commodity.push({
@@ -878,6 +876,7 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
+        pu : ""
       });
     }
   }
@@ -1000,7 +999,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-       this.router.navigateByUrl("/dispatch/orders");
+        //this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
@@ -1082,9 +1081,18 @@ export class AddOrdersComponent implements OnInit {
 
       this.tax = ((this.subTotal - this.discount) * totalTax) / 100;
     }
-
     this.totalAmount = (this.subTotal - this.discount + this.tax).toFixed(2);
-    this.orderData["totalAmount"] = this.totalAmount;
+    let gst =this.orderData.taxesInfo[0].amount ? this.orderData.taxesInfo[0].amount : 0;
+    let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
+    let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
+    console.log('gst', gst);
+    console.log('pst', pst);
+    console.log('hst', hst);
+    let advance:any = this.orderData.advance;
+
+    let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
+    this.orderData["totalAmount"] = final;
+    this.orderData.finalAmount = final - parseInt(advance)
   }
 
   // getLoadTypes(value) {
@@ -1130,7 +1138,6 @@ export class AddOrdersComponent implements OnInit {
         data.pickupInstruction;
       this.shippersReceivers[j].shippers.contactPerson = data.contactPerson;
       this.shippersReceivers[j].shippers.phone = data.phone;
-      this.shippersReceivers[j].shippers.pu = data.pu;
       this.shippersReceivers[j].shippers.commodity = data.commodity;
       this.shippersReceivers[j].shippers.reference = data.reference;
       this.shippersReceivers[j].shippers.notes = data.notes;
@@ -1153,7 +1160,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.dropOffInstruction =
         data.pickupInstruction;
       this.shippersReceivers[j].receivers.contactPerson = data.contactPerson;
-      this.shippersReceivers[j].receivers.pu = data.pu;
       this.shippersReceivers[j].receivers.phone = data.phone;
       this.shippersReceivers[j].receivers.commodity = data.commodity;
       this.shippersReceivers[j].receivers.reference = data.reference;
@@ -1195,8 +1201,6 @@ export class AddOrdersComponent implements OnInit {
       ].contactPerson = data.contactPerson;
       this.finalShippersReceivers[i].shippers[this.stateShipperIndex].phone =
         data.phone;
-      this.finalShippersReceivers[i].shippers[this.stateShipperIndex].pu =
-        data.pu;
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].commodity = data.commodity;
@@ -1242,9 +1246,6 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[i].receivers[
         this.stateShipperIndex
       ].contactPerson = data.contactPerson;
-      this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
-      ].pu = data.pu;
       this.finalShippersReceivers[i].receivers[this.stateShipperIndex].phone =
         data.phone;
       this.finalShippersReceivers[i].receivers[
@@ -1445,7 +1446,6 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
-        pu: "",
         commodity: [
           {
             name: "",
@@ -1453,6 +1453,7 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
+            pu : ""
           },
         ],
         minTemprature: "",
@@ -1471,7 +1472,6 @@ export class AddOrdersComponent implements OnInit {
         phone: "",
         reference: "",
         notes: "",
-        pu: "",
         commodity: [
           {
             name: "",
@@ -1479,6 +1479,7 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
+            pu : ""
           },
         ],
         minTemprature: "",
@@ -1540,5 +1541,28 @@ export class AddOrdersComponent implements OnInit {
     this.accessorialDeductionInfo.accessDeductions.forEach((item) => {
       item.currency = value;
     });
+  }
+
+  stateSelectChange(){
+    let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.stateTaxID);
+    this.orderData.taxesInfo = [];
+    
+          this.orderData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: selected.GST,
+            },
+            {
+              name: 'HST',
+              amount: selected.HST,
+            },
+            {
+              name: 'PST',
+              amount: selected.PST,
+            },
+          ];
+          console.log(selected);
+        this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
+
   }
 }

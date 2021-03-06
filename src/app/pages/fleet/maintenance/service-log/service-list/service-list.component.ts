@@ -3,21 +3,13 @@ import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
   styleUrls: ['./service-list.component.css']
 })
-export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class ServiceListComponent implements OnInit {
 
   title = 'Service Logs';
   // dtOptions: any = {};
@@ -36,6 +28,13 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+
+  serviceLogNext = false;
+  serviceLogPrev = true;
+  serviceLogDraw = 0;
+  serviceLogPrevEvauatedKeys = [''];
+  serviceLogStartPoint = 1;
+  serviceLogEndPoint = this.pageLength;
 
   constructor(
       private apiService: ApiService,
@@ -127,68 +126,46 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
     $('#vendorDtlModal').modal('show');
   }
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0,1,2,3,4], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('serviceLogs/fetch-records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.logs = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].logID;
+    this.spinner.show();
+    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.logs = result['Items'];
+        if (this.vehicleID != '') {
+          this.serviceLogStartPoint = 1;
+          this.serviceLogEndPoint = this.totalRecords;
+        }
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.serviceLogNext = false;
+          // for prev button
+          if (!this.serviceLogPrevEvauatedKeys.includes(result['LastEvaluatedKey'].logID)) {
+            this.serviceLogPrevEvauatedKeys.push(result['LastEvaluatedKey'].logID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].logID;
+          
+        } else {
+          this.serviceLogNext = true;
+          this.lastEvaluatedKey = '';
+          this.serviceLogEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.serviceLogDraw > 0) {
+          this.serviceLogPrev = false;
+        } else {
+          this.serviceLogPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if (this.vehicleID !== '') {
       this.logs = [];
       this.fetchLogsCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -200,7 +177,8 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.vehicleIdentification = '';
       this.logs = [];
       this.fetchLogsCount();
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -213,11 +191,35 @@ export class ServiceListComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.logs = [];
         this.fetchLogsCount();
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Service Log Deleted Successfully!');
       });
     }
   }
   
+  getStartandEndVal() {
+    this.serviceLogStartPoint = this.serviceLogDraw * this.pageLength + 1;
+    this.serviceLogEndPoint = this.serviceLogStartPoint + this.pageLength - 1;
+  }
 
+  // next button func
+  nextResults() {
+    this.serviceLogDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.serviceLogDraw -= 1;
+    this.lastEvaluatedKey = this.serviceLogPrevEvauatedKeys[this.serviceLogDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.serviceLogStartPoint = 1;
+    this.serviceLogEndPoint = this.pageLength;
+    this.serviceLogDraw = 0;
+  }
 }

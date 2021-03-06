@@ -264,7 +264,7 @@ export class DriverListComponent implements OnInit {
         this.drivers = result['Items'];
 
         if(this.driverID != '') {
-          this.driverStartPoint = this.totalRecords;
+          this.driverStartPoint = 1;
           this.driverEndPoint = this.totalRecords;
         }
 
@@ -312,7 +312,7 @@ export class DriverListComponent implements OnInit {
       this.fetchDriversCount();
       this.initDataTable();
       this.driverDraw = 0;
-      this.getStartandEndVal();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -476,5 +476,11 @@ export class DriverListComponent implements OnInit {
     this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
     this.initDataTable();
     this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.driverStartPoint = 1;
+    this.driverEndPoint = this.pageLength;
+    this.driverDraw = 0;
   }
 }

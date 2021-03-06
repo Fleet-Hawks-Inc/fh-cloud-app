@@ -38,8 +38,6 @@
                         </div>
 
                         <div class="col-md-6 col-lg-6 text-right pr-1 text-right">
-
-            
                             <div class="btn-group flex-wrap mr-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
@@ -49,34 +47,12 @@
                                     <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
-                            
-
                             <a routerLink="/fleet/maintenance/service-log/add-service" class="btn btn-success btn-sm ml-2" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Service Log</a>
-
-            
                         </div>
-
-
                     </div>
                 </form>
-            
             </header>
-            
-            <!-- <section class="card">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="wtopnav">
-                        <ul>
-                        <li><a routerLink="/fleet/maintenance/issues/list">Issues</a></li>
-                        <li><a routerLink="/fleet/maintenance/services/list" class="active">Services </a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 pt-1 text-right">
-                </div>
-            </div>
-            </section> -->
             <div class="row">
                 <div class="col">
                     <section class="card">
@@ -98,8 +74,7 @@
                                             <section class="card">
                                                 <div class="card-body p-0">
                                                     <div class="table-responsive">
-                                                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                                            class="row-border hover table table-bordered table-striped mb-0">
+                                                        <table class="row-border hover table table-bordered table-striped mb-0">
                                                             <thead>
                                                                 <tr>
                                                                     <th width="20%">Vehicle</th>
@@ -110,7 +85,10 @@
                                                                 </tr>
                                                             </thead>
                                         
-                                                            <tbody *ngIf="logs.length > 0">
+                                                            <tbody>
+                                                                <tr *ngIf="logs.length == 0" class="text-center">
+                                                                    <td colspan="5">No records found</td>
+                                                                </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
                                         
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
@@ -165,14 +143,18 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
-                                        
+
                                                             </tbody>
-                                                            <tbody *ngIf="logs.length === 0">
-                                                                <tr>
-                                                                    <td colspan="5" class="no-data-available">No records found</td>
-                                                                </tr>
-                                                            <tbody>
                                                         </table>
+                                                        <div class="row mt-3 dtPaginate" *ngIf="logs.length > 0">
+                                                            <div class="col-6">
+                                                                Showing {{ serviceLogStartPoint }} to {{ serviceLogEndPoint }} of {{ totalRecords }} enteries
+                                                            </div>
+                                                            <div class="col-6 text-right">
+                                                                <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="serviceLogPrev">Prev</button>
+                                                                <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="serviceLogNext">Next</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </section>

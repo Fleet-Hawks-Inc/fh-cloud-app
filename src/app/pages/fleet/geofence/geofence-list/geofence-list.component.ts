@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
-import { Subject} from 'rxjs';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
 declare var $: any;
 declare var L: any;
 
@@ -16,12 +13,8 @@ declare var L: any;
   templateUrl: './geofence-list.component.html',
   styleUrls: ['./geofence-list.component.css']
 })
-export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject();
-  
+export class GeofenceListComponent implements OnInit {
+ 
   private map: any;
   selectID;
   private geofenceSelectCount;
@@ -38,7 +31,6 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
     { value: 3, label: 'Pavilnys' }
   ];
 
-
   suggestedGeofences = [];
   geofenceID = '';
   type = '';
@@ -48,6 +40,13 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+
+  geoNext = false;
+  geoPrev = true;
+  geoDraw = 0;
+  geoPrevEvauatedKeys = [''];
+  geoStartPoint = 1;
+  geoEndPoint = this.pageLength;
 
   constructor(
     private apiService: ApiService,
@@ -86,29 +85,6 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
   toggleAccordian(ind, cords) {
     if (this.visibleIndex === ind) {
       this.visibleIndex = -1;
@@ -138,7 +114,7 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
     if(this.geofenceID !== '' || this.type !== '') {
       this.geofences = [];
       this.fetchLogsCount();
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -146,15 +122,14 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   resetFilter() {
     if(this.geofenceID !== '' || this.type !== '') {
-      // this.spinner.show();
       this.geofenceID = '';
       this.geofenceName = '';
       this.type = '';
 
       this.geofences = [];
       this.fetchLogsCount();
-      this.rerender();
-      // this.spinner.hide();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -194,7 +169,7 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((result: any) => {
         this.geofences = [];
         this.fetchLogsCount();
-        this.rerender();
+        this.initDataTable();
       });
     }
   }
@@ -229,39 +204,38 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   initDataTable() {
     this.spinner.show();
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`, dataTablesParameters).subscribe(resp => {
-            current.geofences = resp['Items'];
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKey = resp['LastEvaluatedKey'].geofenceID;
-              
-            } else {
-              this.lastEvaluatedKey = '';
-            }
+    this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
+      .subscribe((result: any) => {
+        this.geofences = result['Items'];
+        if (this.geofenceID != '' || this.type != '') {
+          this.geoStartPoint = 1;
+          this.geoEndPoint = this.totalRecords;
+        }
 
-            callback({
-              recordsTotal: current.totalRecords,
-              recordsFiltered: current.totalRecords,
-              data: []
-            });
-          });
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.geoNext = false;
+          // for prev button
+          if (!this.geoPrevEvauatedKeys.includes(result['LastEvaluatedKey'].geofenceID)) {
+            this.geoPrevEvauatedKeys.push(result['LastEvaluatedKey'].geofenceID);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].geofenceID;
+          
+        } else {
+          this.geoNext = true;
+          this.lastEvaluatedKey = '';
+          this.geoEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.geoDraw > 0) {
+          this.geoPrev = false;
+        } else {
+          this.geoPrev = true;
+        }
         this.spinner.hide();
-      }
-    };
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   fetchLogsCount() {
@@ -274,5 +248,30 @@ export class GeofenceListComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
+  getStartandEndVal() {
+    this.geoStartPoint = this.geoDraw * this.pageLength + 1;
+    this.geoEndPoint = this.geoStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.geoDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.geoDraw -= 1;
+    this.lastEvaluatedKey = this.geoPrevEvauatedKeys[this.geoDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.geoStartPoint = 1;
+    this.geoEndPoint = this.pageLength;
+    this.geoDraw = 0;
+  }
 
 }

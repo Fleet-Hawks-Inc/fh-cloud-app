@@ -5,21 +5,14 @@ import { Router } from '@angular/router';
 declare var $: any;
 import * as moment from 'moment';
 import Constants from '../../../constants';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
   styleUrls: ['./list-contact-renew.component.css']
 })
-export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class ListContactRenewComponent implements OnInit {
 
   public remindersData: any = [];
   contacts: [];
@@ -28,7 +21,6 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   allRemindersData = [];
   subcribersArray = [];
   groups: any = {};
-  // dtOptions: any = {};
   currentDate = moment();
   newData = [];
   filterStatus: string;
@@ -42,7 +34,14 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   pageLength = 10;
   lastEvaluatedKey = '';
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
+  contactRenewNext = false;
+  contactRenewPrev = true;
+  contactRenewDraw = 0;
+  contactRenewPrevEvauatedKeys = [''];
+  contactRenewStartPoint = 1;
+  contactRenewEndPoint = this.pageLength;
+
+  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.getRemindersCount();
@@ -141,15 +140,6 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
 
   }
 
-
-  // getReminders() {
-  //   this.apiService
-  //     .getData('reminders/get-reminders/contact')
-  //     .subscribe((result) => {
-  //       this.totalRecords = result.Count;
-  //     });
-  // }
-
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact').subscribe({
       complete: () => {},
@@ -161,67 +151,40 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ // sortable false
-        { "targets": [0], "orderable": false },
-        { "targets": [1], "orderable": false },
-        { "targets": [2], "orderable": false },
-        { "targets": [3], "orderable": false },
-        { "targets": [4], "orderable": false },
-        { "targets": [5], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.allRemindersData = resp['Items'];
-          current.fetchRenewals();
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
+    this.spinner.show();
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.allRemindersData = result['Items'];
+        this.fetchRenewals();
+        if (this.contactID !== '' || this.searchServiceTask !== '' ) {
+          this.contactRenewStartPoint = 1;
+          this.contactRenewEndPoint = this.totalRecords;
+        }
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.contactRenewNext = false;
+          // for prev button
+          if (!this.contactRenewPrevEvauatedKeys.includes(result['LastEvaluatedKey'].reminderID)) {
+            this.contactRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
+          
+        } else {
+          this.contactRenewNext = true;
+          this.lastEvaluatedKey = '';
+          this.contactRenewEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.contactRenewDraw > 0) {
+          this.contactRenewPrev = false;
+        } else {
+          this.contactRenewPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
@@ -229,7 +192,7 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
       this.getRemindersCount()
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -245,7 +208,8 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
 
       this.remindersData = [];
       this.getRemindersCount()
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -256,11 +220,10 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       this.apiService
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-        // console.log('result', result);
 
         this.remindersData = [];
         this.getRemindersCount()
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });
     }
@@ -275,5 +238,31 @@ export class ListContactRenewComponent implements AfterViewInit, OnDestroy, OnIn
       this.toastr.error('Contact renewal is upto date');
       return false;
     }
+  }
+
+  getStartandEndVal() {
+    this.contactRenewStartPoint = this.contactRenewDraw * this.pageLength + 1;
+    this.contactRenewEndPoint = this.contactRenewStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.contactRenewDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.contactRenewDraw -= 1;
+    this.lastEvaluatedKey = this.contactRenewPrevEvauatedKeys[this.contactRenewDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.contactRenewStartPoint = 1;
+    this.contactRenewEndPoint = this.pageLength;
+    this.contactRenewDraw = 0;
   }
 }
