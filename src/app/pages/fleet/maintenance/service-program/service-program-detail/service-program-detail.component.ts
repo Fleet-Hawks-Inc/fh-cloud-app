@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {Title} from "@angular/platform-browser";
 declare var $: any;
 
 @Component({
@@ -16,12 +15,17 @@ declare var $: any;
 export class ServiceProgramDetailComponent implements OnInit {
   Title = 'Add';
   allVehicles = [];
-  private programs;
-  private vehicles;
-  private programID;
-  private tasks;
+  programs = [];
+  vehicles = [];
+  programID;
+  tasks = [];
   allTasks = [];
-  programData = {};
+  programData = {
+    serviceTask: '',
+    repeatByTime: '',
+    repeatByTimeUnit: '',
+    repeatByOdometer: ''
+  };
   vehicleData = [];
   errors: any;
   form;
@@ -92,7 +96,6 @@ export class ServiceProgramDetailComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                const path = val.path;
                 // We Can Use This Method
                 const key = val.message.match(/'([^']+)'/)[1];
                 
@@ -110,7 +113,12 @@ export class ServiceProgramDetailComponent implements OnInit {
         },
         next: (res) => {
           this.toastr.success('Service Updated Successfully');
-          this.programData = {}
+          this.programData = {
+            serviceTask: '',
+            repeatByTime: '',
+            repeatByTimeUnit: '',
+            repeatByOdometer: ''
+          };
           $('#editServiceScheduleModal').modal('hide');
           this.taskEdit = true;
         },
@@ -145,10 +153,10 @@ export class ServiceProgramDetailComponent implements OnInit {
     this.Title = 'Edit';
     $('#editServiceScheduleModal').modal('show');
     
-    this.programData['serviceTask'] = task.serviceTask;
-    this.programData['repeatByTime'] = task.repeatByTime;
-    this.programData['repeatByTimeUnit'] = task.repeatByTimeUnit;
-    this.programData['repeatByOdometer'] = task.repeatByOdometer;
+    this.programData.serviceTask = task.serviceTask;
+    this.programData.repeatByTime = task.repeatByTime;
+    this.programData.repeatByTimeUnit = task.repeatByTimeUnit;
+    this.programData.repeatByOdometer = task.repeatByOdometer;
 
     this.programs[0].serviceScheduleDetails[i] = this.programData;
     this.taskEdit = true;
@@ -194,7 +202,7 @@ export class ServiceProgramDetailComponent implements OnInit {
         this.programs[0].vehicles.push(element);
         $('#addVehicleModal').modal('hide');
         this.fetchAllVehicles();
-      };
+      }
     });
     this.vehicleData = [];
     this.updateServiceProgram();

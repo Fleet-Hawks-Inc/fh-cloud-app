@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services';
 import {ApiService} from '../../../../services';
-import {AwsUploadService} from '../../../../services';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
@@ -52,7 +51,7 @@ export class AssetDetailComponent implements OnInit {
   reminderBeforeUnit: string;
   vendor: string;
   
-  devices;
+  devices: any;
   allDevices = [];
 
   errors = {};
@@ -117,8 +116,8 @@ export class AssetDetailComponent implements OnInit {
   modelsObjects: any = {};
 
   constructor(public hereMap: HereMapService, private toastr: ToastrService,
-              private domSanitizer: DomSanitizer, private awsUS: AwsUploadService,
-              private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
+              private domSanitizer: DomSanitizer, private apiService: ApiService,
+              private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.hereMap.mapInit(); // Initialize map
@@ -131,13 +130,13 @@ export class AssetDetailComponent implements OnInit {
   }
 
   fetchManufacturesByIDs() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetManufacturers/get/list').subscribe((result: any) => {
       this.manufacturersObjects = result;
     });
   }
 
   fetchModalsByIDs() {
-    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
     });
   }
@@ -232,7 +231,6 @@ export class AssetDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           this.deviceData = result['Items'];
-          console.log("this.deviceData", this.deviceData);
         }
       }, (err) => {});
   }
@@ -254,18 +252,6 @@ export class AssetDetailComponent implements OnInit {
     }
   }
 
-  getImages = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    for (let i = 0; i <= this.assetData.length; i++) {
-      // this.docs = this.domSanitizer.bypassSecurityTrustResourceUrl(
-      // await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedDocs[i]));
-      // this.assetsDocs.push(this.docs)
-      this.image = this.domSanitizer.bypassSecurityTrustUrl(await this.awsUS.getFiles(this.carrierID, this.assetData[0].uploadedPhotos[i]));
-      this.assetsImages.push(this.image);
-    }
-
-  }
-  
   removeDevices(i) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.assetData.devices.splice(i, 1);
@@ -288,7 +274,6 @@ export class AssetDetailComponent implements OnInit {
   addDevice() {
     delete this.assetData.carrierID;
     delete this.assetData.timeModified;
-    console.log('this.assetData', this.assetData);
     this.apiService.postData('assets/' + this.assetID, this.assetData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -320,7 +305,6 @@ export class AssetDetailComponent implements OnInit {
   }
 
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')

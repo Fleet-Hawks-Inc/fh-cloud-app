@@ -4,9 +4,9 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
-
+import constants from '../../../constants';
 declare var $: any;
 
 @Component({
@@ -18,20 +18,30 @@ export class VehicleRenewAddComponent implements OnInit {
   reminderID;
   pageTitle;
   reminderData = {
-    reminderType: 'vehicle',
+    reminderIdentification: '',
+    reminderType: constants.REMINDER_VEHICLE,
     reminderTasks: {
-      remindByDays: 0
+      task: '',
+      remindByDays: 0,
+      odometer: 0,
+      dueDate: ''
     },
-    subscribers: []
+    subscribers: [],
+    sendEmail: false
   };
   serviceTask = {
-    taskType: 'vehicle'
+    taskName: '',
+    taskType: constants.TASK_VEHICLE,
+    description: ''
   };
   test = [];
   midArray = [];
   numberOfDays: number;
   groupData = {
-    groupType : 'users'
+    groupName: '',
+    groupType : constants.GROUP_USERS,
+    description: '',
+    groupMembers: []
   };
   time = 1;
   timeType = 'Day(s)';
@@ -55,7 +65,7 @@ export class VehicleRenewAddComponent implements OnInit {
   }
   ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
     this.fetchVehicles();
     this.fetchUsers();
     this.fetchGroups();
@@ -63,7 +73,7 @@ export class VehicleRenewAddComponent implements OnInit {
       this.pageTitle = 'Edit Vehicle Renewal Reminder';
       this.fetchReminderByID();
     } else {
-      this.pageTitle = 'Add Vehicle Renewal Reminder'; 
+      this.pageTitle = 'Add Vehicle Renewal Reminder';
     }
 
     $(document).ready(() => {
@@ -71,14 +81,13 @@ export class VehicleRenewAddComponent implements OnInit {
       this.serviceTaskForm = $('#serviceTaskForm').validate();
     });
   }
-  fetchServiceTaks() {
+  fetchServiceTasks() {
     let test = [];
-    let taskType = 'vehicle';
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
-    });    
+        this.apiService.getData('tasks').subscribe((result: any) => {
+    // this.apiService.getData(`tasks?taskType=${constants.TASK_VEHICLE}`).subscribe((result: any) => {
+     test = result.Items;
+     this.serviceTasks = test.filter((s: any) => s.taskType === constants.TASK_VEHICLE);
+    });
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -134,7 +143,7 @@ export class VehicleRenewAddComponent implements OnInit {
       }
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-    
+
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -157,6 +166,18 @@ export class VehicleRenewAddComponent implements OnInit {
           this.response = res;
           this.toastr.success('Vehicle Renewal Added Successfully');
           this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
+          this.reminderData = {
+            reminderIdentification: '',
+            reminderType: constants.REMINDER_VEHICLE,
+            reminderTasks: {
+              task: '',
+              remindByDays: 0,
+              odometer: 0,
+              dueDate: ''
+            },
+            subscribers: [],
+            sendEmail: false
+          };
         },
       });
     }
@@ -176,13 +197,13 @@ export class VehicleRenewAddComponent implements OnInit {
           this.test.push(result.subscribers[i].subscriberIdentification);
         }
         this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData[`reminderTasks`][`dueDate`] = result.reminderTasks.dueDate;
-        this.reminderData[`reminderTasks`][`task`] = result.reminderTasks.task;
+        this.reminderData.reminderTasks.dueDate = result.reminderTasks.dueDate;
+        this.reminderData.reminderTasks.task = result.reminderTasks.task;
         this.time = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
-        this.reminderData[`sendEmail`] = result.sendEmail;
-        this.reminderData[`reminderIdentification`] = result.reminderIdentification;
-        this.reminderData[`subscribers`] = this.test;
+        this.reminderData.sendEmail = result.sendEmail;
+        this.reminderData.reminderIdentification = result.reminderIdentification;
+        this.reminderData.subscribers = this.test;
       });
 
   }
@@ -199,7 +220,7 @@ export class VehicleRenewAddComponent implements OnInit {
       });
     // this.vehicleForm.showErrors(this.errors);
   }
-  
+
   hideErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -286,10 +307,10 @@ export class VehicleRenewAddComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          $('#addServiceTasks').modal('toggle');
           this.toastr.success('Renewal Type Added Successfully');
-          this.fetchServiceTaks();
           this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/add');
+          $('#addServiceTasks').modal('toggle');
+          this.fetchServiceTasks();
         },
       });
     }
@@ -319,7 +340,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.fetchGroups();
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
-  this.fetchGroups();
+        this.fetchGroups();
 
       },
     });

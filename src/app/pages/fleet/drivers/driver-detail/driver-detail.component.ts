@@ -3,9 +3,8 @@ import { HereMapService } from '../../../../services';
 import {ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {AwsUploadService} from '../../../../services';
 import { DomSanitizer} from '@angular/platform-browser';
-import { async } from '@angular/core/testing';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-driver-detail',
@@ -109,6 +108,8 @@ export class DriverDetailComponent implements OnInit {
   docs = [];
   assetsDocs = [];
   absDocs = [];
+  documentTypeList: any = [];
+  documentsTypesObects: any = {}
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(
@@ -117,10 +118,10 @@ export class DriverDetailComponent implements OnInit {
         private route: ActivatedRoute,
         private spinner: NgxSpinnerService,
         private domSanitizer: DomSanitizer,
-        private awsUS: AwsUploadService
+        private httpClient: HttpClient,
       )
   {
-    this.getCarrierID();
+    // this.getCarrierID();
   }
 
   ngOnInit() {
@@ -129,25 +130,24 @@ export class DriverDetailComponent implements OnInit {
     this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
-    this.fetchYardsByIDs();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
     this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
+    this.fetchDocuments();
   }
 
    /**
    * fetch Asset data
    */
   fetchDriver() {
-    // this.spinner.show(); // loader init
+    this.spinner.show(); // loader init
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         if (result) {
           this.driverData = await result['Items'][0];
-          
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.workEmail = this.driverData.workEmail;
@@ -216,7 +216,6 @@ export class DriverDetailComponent implements OnInit {
           }
   
           this.documents = newDocuments;
-          // this.documents = this.driverData.documentDetails
           
           this.liceIssueSate = this.driverData.licenceDetails.issuedState;
           this.liceIssueCountry = this.driverData.licenceDetails.issuedCountry;
@@ -227,15 +226,11 @@ export class DriverDetailComponent implements OnInit {
           this.liceVehicleType = this.driverData.licenceDetails.vehicleType;
           this.liceContractStart = this.driverData.licenceDetails.contractStart;
           this.liceContractEnd = this.driverData.licenceDetails.contractEnd;
-         
-
           this.paymentType = this.driverData.paymentDetails.paymentType;
           this.loadedMiles = this.driverData.paymentDetails.loadedMiles;
           this.loadedMilesUnit = this.driverData.paymentDetails.loadedMilesUnit;
           this.loadedMilesTeam = this.driverData.paymentDetails.loadedMilesTeam;
           this.loadedMilesTeamUnit = this.driverData.paymentDetails.loadedMilesTeamUnit;
-          
-          
           
           this.emptyMiles = this.driverData.paymentDetails.emptyMiles;
           this.emptyMilesUnit = this.driverData.paymentDetails.emptyMilesUnit;
@@ -245,18 +240,12 @@ export class DriverDetailComponent implements OnInit {
           this.rate = this.driverData.paymentDetails.rate + this.driverData.paymentDetails.rateUnit;
           this.waitingPay = this.driverData.paymentDetails.waitingPay + this.driverData.paymentDetails.waitingPayUnit;
           this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
-          
-          
           this.deliveryRate = this.driverData.paymentDetails.deliveryRate + this.driverData.paymentDetails.deliveryRateUnit;
-          
-          // this.calculateMiles = this.driverData.paymentDetails.calculateMiles;
           this.sinNumber = this.driverData.paymentDetails.SIN_Number;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
           this.payPeriod = this.driverData.paymentDetails.payPeriod;
-          // this.federalTax = this.driverData.paymentDetails.federalTax;
-          // this.localTax = this.driverData.paymentDetails.localTax;
-
+          
           this.hosStatus = this.driverData.hosDetails.hosStatus;
           this.hosRemarks = this.driverData.hosDetails.hosRemarks;
           this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
@@ -270,6 +259,7 @@ export class DriverDetailComponent implements OnInit {
           this.emerEmail = this.driverData.emergencyDetails.email;
           this.emerRelationship = this.driverData.emergencyDetails.relationship;
 
+          this.spinner.hide();
           
         }
       }, (err) => {
@@ -277,25 +267,31 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
+  
+  fetchDocuments() {
+    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+      this.documentTypeList = data;
+     
+      this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
+        return a[b['code']] = b['description'], a;
+      }, {});
+      
+    })
+  }
+
+
   fetchCyclesbyIDs() {
     this.apiService.getData('cycles/get/list')
       .subscribe((result: any) => {
         this.cycleObjects = result;
       });
   }
-
+  
   fetchGroupsbyIDs() {
     this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {
         this.groupsObjects = result;
       });
-  }
-
-  fetchYardsByIDs() {
-    this.apiService.getData('yards/get/list')
-    .subscribe((result: any) => {
-      this.yardsObjects = result;
-    });
   }
 
   fetchAllStatesIDs() {

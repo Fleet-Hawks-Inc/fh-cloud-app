@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
-import { timer } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -14,11 +10,7 @@ declare var $: any;
   templateUrl: './issue-list.component.html',
   styleUrls: ['./issue-list.component.css']
 })
-export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtTrigger: Subject<any> = new Subject();
+export class IssueListComponent implements OnInit {
 
   title = 'Issues List';
   issues = [];
@@ -37,6 +29,13 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
+
+  issuesNext = false;
+  issuesPrev = true;
+  issuesDraw = 0;
+  issuesPrevEvauatedKeys = [''];
+  issuesStartPoint = 1;
+  issuesEndPoint = this.pageLength;
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -64,7 +63,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-        
+
         this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
@@ -88,7 +87,7 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
           });
         }
       });
-    if (this.suggestedUnits.length == 0) {
+    if (this.suggestedUnits.length === 0) {
       this.unitID = '';
     }
   }
@@ -107,18 +106,6 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.assetList = result;
     });
   }
-
-  // fetchIssues() {
-  //   this.apiService.getData('issues?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
-  //     complete: () => { },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       // this.issues = result.Items;
-  //       this.totalRecords = result.Count;
-  //     },
-  //   });
-  // }
-
   fetchIssuesCount() {
     this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
       complete: () => {},
@@ -132,81 +119,57 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
   deleteIssue(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`issues/isDeleted/${entryID}/`+1)
+      .getData(`issues/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
         this.fetchIssuesCount();
         this.issues = [];
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Issue Deleted Successfully!');
       });
     }
   }
-  
+
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        { "targets": [0, 1, 2, 3, 4, 5, 6, 7], "orderable": false },
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('issues/fetchRecords?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          current.issues = resp['Items'];
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].issueID;
+    this.spinner.show();
+    this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.issues = result['Items'];
+        if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
+          this.issuesStartPoint = 1;
+          this.issuesEndPoint = this.totalRecords;
+        }
 
-          } else {
-            this.lastEvaluatedKey = '';
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.issuesNext = false;
+          // for prev button
+          if (!this.issuesPrevEvauatedKeys.includes(result['LastEvaluatedKey'].issueID)) {
+            this.issuesPrevEvauatedKeys.push(result['LastEvaluatedKey'].issueID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].issueID;
+          
+        } else {
+          this.issuesNext = true;
+          this.lastEvaluatedKey = '';
+          this.issuesEndPoint = this.totalRecords;
+        }
 
-          // $(".dataTables_empty").css('display','none')
-
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status = ''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if (status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.issuesDraw > 0) {
+          this.issuesPrev = false;
+        } else {
+          this.issuesPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
     if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
       this.fetchIssuesCount();
       this.issues = [];
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -221,9 +184,36 @@ export class IssueListComponent implements AfterViewInit, OnDestroy, OnInit {
 
       this.fetchIssuesCount();
       this.issues = [];
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
+  }
+
+  getStartandEndVal() {
+    this.issuesStartPoint = this.issuesDraw * this.pageLength + 1;
+    this.issuesEndPoint = this.issuesStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.issuesDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.issuesDraw -= 1;
+    this.lastEvaluatedKey = this.issuesPrevEvauatedKeys[this.issuesDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.issuesStartPoint = 1;
+    this.issuesEndPoint = this.pageLength;
+    this.issuesDraw = 0;
   }
 }

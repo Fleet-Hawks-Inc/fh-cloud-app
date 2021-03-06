@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor, HttpResponse
 } from '@angular/common/http';
-import {EMPTY, from, Observable, of, throwError} from 'rxjs';
+import { Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {HttpLoadingService} from '../services';
 

@@ -21,8 +21,20 @@ export class FuelEntryDetailsComponent implements OnInit {
   fuelList;
   /********** Form Fields ***********/
   fuelData = {
-    unitType: 'vehicle',
-    currency: 'USD',
+    unitID: '',
+    unitType: '',
+    entryID: '',
+    currency: '',
+    DEFFuelQtyUnit: '',
+    fuelTime: '',
+    fuelDate: '',
+    fuelType: '',
+    paidBy: '',
+    paymentMode: '',
+    reference: '',
+    vendorID: '',
+    cityID: '',
+    tripID: '',
     fuelQtyAmt: 0,
     fuelQty: 0,
     DEFFuelQty: 0,
@@ -36,12 +48,10 @@ export class FuelEntryDetailsComponent implements OnInit {
     stateID: '',
     reimburseToDriver: false,
     deductFromPay: false,
-    additionalDetails: {
       avgGVW: '',
       odometer: 0,
       description: '',
-      uploadedPhotos: [],
-    }
+      uploadedPhotos: []
   };
   carrierID;
   vehicleList: any = {};
@@ -70,8 +80,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   ReeferData = [];
   unit: boolean;
   MPG: number;
-  costPerMile: number
-  vendorAddress: any;;
+  costPerMile: number;
+  vendorAddress: any;
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -81,8 +91,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService,
-    private domSanitizer: DomSanitizer, private HereMap: HereMapService) {
+    private toastr: ToastrService, private HereMap: HereMapService) {
   }
 
   ngOnInit() {
@@ -137,9 +146,9 @@ export class FuelEntryDetailsComponent implements OnInit {
         }
         let avgCostPerGallon = +((sumCostPerGallon / (sortedArray.length - 1)).toFixed(2));
 
-        const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
+        const firstEntry = sortedArray.pop(); // First entry means when vehicle got fuel for first time
 
-        const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
+        const latestEntry = sortedArray.shift(); // Latest entry means the last ododmter reading
 
         const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
 
@@ -175,9 +184,9 @@ export class FuelEntryDetailsComponent implements OnInit {
         }
         let avgCostPerGallon = +((sumCostPerGallon / (sortedArray.length - 1)).toFixed(2));
 
-        const firstEntry = sortedArray.pop(); //First entry means when vehicle got fuel for first time
+        const firstEntry = sortedArray.pop(); // First entry means when vehicle got fuel for first time
 
-        const latestEntry = sortedArray.shift(); //Latest entry means the last ododmter reading 
+        const latestEntry = sortedArray.shift(); // Latest entry means the last ododmter reading
 
         const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
 
@@ -202,50 +211,51 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.map.setCenter({
         lat: lat,
         lng: lng
-      });     
+      });
     });
-   
+
   }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
+        console.log('Details', result);
         this.carrierID = result.carrierID;
-        this.fuelData[`entryID`] = this.entryID;
-        this.fuelData[`currency`] = result.currency,
-          this.fuelData[`unitType`] = result.unitType;
-        this.fuelData[`unitID`] = result.unitID;
-        this.fuelData[`fuelQty`] = result.fuelQty;
-        this.fuelData[`fuelQtyAmt`] = +result.fuelQtyAmt;
-        this.fuelData[`DEFFuelQty`] = +result.DEFFuelQty;
-        this.fuelData[`DEFFuelQtyUnit`] = result.fuelQtyUnit;
-        this.fuelData[`DEFFuelQtyAmt`] = result.DEFFuelQtyAmt;
-        this.fuelData[`discount`] = result.discount;
-        this.fuelData[`totalAmount`] = result.totalAmount;
-        this.fuelData[`costPerGallon`] = result.costPerGallon;
-        this.fuelData[`totalGallons`] = result.totalGallons;
-        this.fuelData[`amountPaid`] = result.amountPaid;
-        this.fuelData[`fuelDate`] = result.fuelDate;
-        this.fuelData[`fuelTime`] = result.fuelTime;
-        this.fuelData[`fuelType`] = result.fuelType;
-        this.fuelData[`paidBy`] = result.paidBy;
-        this.fuelData[`paymentMode`] = result.paymentMode;
-        this.fuelData[`reference`] = result.reference;
-        this.fuelData[`reimburseToDriver`] = result.reimburseToDriver;
-        this.fuelData[`deductFromPay`] = result.deductFromPay;
-        this.fuelData[`vendorID`] = result.vendorID;
-        this.fuelData[`countryID`] = result.countryID;
-        this.fuelData[`stateID`] = result.stateID;
-        this.fuelData[`cityID`] = result.cityID;
-        this.fuelData[`tripID`] = result.tripID;
-        this.fuelData[`additionalDetails`][`avgGVW`] = result.additionalDetails.avgGVW;
-        this.fuelData[`additionalDetails`][`odometer`] = result.additionalDetails.odometer;
-        this.fuelData[`additionalDetails`][`description`] = result.additionalDetails.description;
-        this.fuelData[`additionalDetails`][`uploadedPhotos`] = result.additionalDetails.uploadedPhotos;
-        this.existingPhotos = result.additionalDetails.uploadedPhotos;
-        if(result.additionalDetails.uploadedPhotos != undefined && result.additionalDetails.uploadedPhotos.length > 0){
-          this.fuelEntryImages = result.additionalDetails.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        this.fuelData.entryID = this.entryID;
+        this.fuelData.currency = result.currency,
+          this.fuelData.unitType = result.unitType;
+        this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelQty = result.fuelQty;
+        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
+        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
+        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
+        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
+        this.fuelData.discount = result.discount;
+        this.fuelData.totalAmount = result.totalAmount;
+        this.fuelData.costPerGallon = result.costPerGallon;
+        this.fuelData.totalGallons = result.totalGallons;
+        this.fuelData.amountPaid = result.amountPaid;
+        this.fuelData.fuelDate = result.fuelDate;
+        this.fuelData.fuelTime = result.fuelTime;
+        this.fuelData.fuelType = result.fuelType;
+        this.fuelData.paidBy = result.paidBy;
+        this.fuelData.paymentMode = result.paymentMode;
+        this.fuelData.reference = result.reference;
+        this.fuelData.reimburseToDriver = result.reimburseToDriver;
+        this.fuelData.deductFromPay = result.deductFromPay;
+        this.fuelData.vendorID = result.vendorID;
+        this.fuelData.countryID = result.countryID;
+        this.fuelData.stateID = result.stateID;
+        this.fuelData.cityID = result.cityID;
+        this.fuelData.tripID = result.tripID;
+        this.fuelData.avgGVW = result.avgGVW;
+        this.fuelData.odometer = result.odometer;
+        this.fuelData.description = result.description;
+        this.fuelData.uploadedPhotos = result.uploadedPhotos;
+        this.existingPhotos = result.uploadedPhotos;
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
         if (result.unitType === Constants.VEHICLE) {
           this.fetchAllVehicles(result.unitID);
@@ -260,7 +270,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   deleteImage(i: number) {
     // this.carrierID =  this.apiService.getCarrierID();
     // this.awsUS.deleteFile(this.carrierID, this.fuelData.additionalDetails.uploadedPhotos[i]);
-    this.fuelData.additionalDetails.uploadedPhotos.splice(i, 1);
+    this.fuelData.uploadedPhotos.splice(i, 1);
     this.fuelEntryImages.splice(i, 1);
     this.toastr.success('Image Deleted Successfully!');
   }

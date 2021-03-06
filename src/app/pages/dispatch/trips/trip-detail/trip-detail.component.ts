@@ -24,7 +24,10 @@ export class TripDetailComponent implements OnInit {
       this.selectedFileNames = new Map<any, any>();
      }
 
-  tripData = {};
+  tripData = {
+    tripNo: '',
+    tripStatus: ''
+  };
   tripID = '';
   allAssetName = '';
   errors: {};

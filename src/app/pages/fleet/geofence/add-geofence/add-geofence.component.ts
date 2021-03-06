@@ -17,20 +17,26 @@ declare var L: any;
 export class AddGeofenceComponent implements OnInit {
   pageTitle = 'Add Geofence';
   geofenceData = {
+    geofenceName: '',
+    location: '',
+    geofenceType: '',
+    description: '',
     geofence: {
       type: '',
       cords: []
     }
   };
   geofenceTypes: any;
-  geofenceTypeData = {};
+  geofenceTypeData = {
+    geofenceType: '',
+    description: '',
+  };
   getGeofenceID;
   public marker;
   public map;
   destinationLocation;
   polygonData = [];
   showDestination = true;
-  private readonly search: any;
   public searchTerm = new Subject<string>();
   public searchResults: any;
 
@@ -57,6 +63,7 @@ export class AddGeofenceComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
+  search: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -104,23 +111,23 @@ export class AddGeofenceComponent implements OnInit {
       // alert('pm:create event fired. See console for details');
       const layer = e.layer;
 
-      const polyEdit = layer.toGeoJSON();
-      this.geofenceData.geofence.type = polyEdit.geometry.type;
-      this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+      const polyCreate = layer.toGeoJSON();
+      this.geofenceData.geofence.type = polyCreate.geometry.type;
+      this.geofenceData.geofence.cords = polyCreate.geometry.coordinates;
 
-      layer.on('pm:edit', ({ layer }) => {
+      layer.on('pm:edit', ({ edlayer }) => {
 
-        const polyEdit = layer.toGeoJSON();
+        const polyEdit = edlayer.toGeoJSON();
         this.geofenceData.geofence.type = polyEdit.geometry.type;
         this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
 
       });
 
-      layer.on('pm:update', ({ layer }) => {
+      layer.on('pm:update', ({ uplayer }) => {
 
-        const polyEdit = layer.toGeoJSON();
-        this.geofenceData.geofence.type = polyEdit.geometry.type;
-        this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+        const polyUpdate = uplayer.toGeoJSON();
+        this.geofenceData.geofence.type = polyUpdate.geometry.type;
+        this.geofenceData.geofence.cords = polyUpdate.geometry.coordinates;
       });
 
 
@@ -240,10 +247,10 @@ export class AddGeofenceComponent implements OnInit {
         result = result.Items[0];
         
         this.geofenceData['geofenceID'] = this.getGeofenceID;
-        this.geofenceData['geofenceName'] = result.geofenceName;
-        this.geofenceData['location'] = result.location;
-        this.geofenceData['description'] = result.description;
-        this.geofenceData['geofenceType'] = result.geofenceType;
+        this.geofenceData.geofenceName = result.geofenceName;
+        this.geofenceData.location = result.location;
+        this.geofenceData.description = result.description;
+        this.geofenceData.geofenceType = result.geofenceType;
         this.geofenceData.geofence.type = result.geofence.type;
         this.geofenceData.geofence.cords = result.geofence.cords;
         if (result.geofence.cords[0]) {
@@ -276,9 +283,6 @@ export class AddGeofenceComponent implements OnInit {
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
           });
           polylayer.on('pm:remove', (e) => {
-            const layer = e.layer;
-            
-            const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = '';
             this.geofenceData.geofence.cords[0] = [];
           });
@@ -321,12 +325,10 @@ export class AddGeofenceComponent implements OnInit {
   });
 }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
         $(e.target).closest('div').addClass('show-search__result');
-        target = e;
         return e.target.value;
       }),
       debounceTime(400),
@@ -352,7 +354,7 @@ export class AddGeofenceComponent implements OnInit {
 
   searchDestination(loc, lat, lng) {
     this.destinationLocation = loc;
-    this.geofenceData['location'] = this.destinationLocation;
+    this.geofenceData.location = this.destinationLocation;
     // this.map.removeLayer(this.marker)
     this.marker = L.marker([lat, lng]).addTo(this.map);
     this.map.flyTo([lat, lng], 14, {

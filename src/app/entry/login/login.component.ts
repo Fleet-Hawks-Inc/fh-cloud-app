@@ -386,7 +386,7 @@ export class LoginComponent implements OnInit {
         };
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
-        localStorage.setItem('driver', JSON.stringify(this.driver));
+        // localStorage.setItem('driver', JSON.stringify(this.driver));
         
 
 
