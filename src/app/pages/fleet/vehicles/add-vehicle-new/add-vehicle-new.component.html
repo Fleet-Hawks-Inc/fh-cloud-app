@@ -1216,15 +1216,9 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Fuel
                                              Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select class="form-control populate" name="fluid.fuelType"
-                                             [(ngModel)]="fluid.fuelType" placeholder="Select fuel type">
-                                             <optgroup label="">
-                                                <ng-option value="CNG">CNG</ng-option>
-                                                <ng-option value="Diesel">Diesel</ng-option>
-                                                <ng-option value="Gasoline">Gasoline</ng-option>
-                                                <ng-option value="Propane">Propane</ng-option>
-                                             </optgroup>
-                                          </ng-select>
+                                          <ng-select class="form-control populate" placeholder="Select Fuel Type" name="fluid.fuelType" [(ngModel)]="fluid.fuelType">
+                                            <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">{{fuelType.fuelTypeName}}</ng-option>
+                                      </ng-select>
                                        </div>
                                        <!-- <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>

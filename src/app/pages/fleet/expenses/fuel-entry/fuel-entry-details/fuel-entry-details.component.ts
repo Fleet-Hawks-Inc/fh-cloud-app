@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AwsUploadService } from '../../../../../services';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import Constants from '../../../constants';
 import { HereMapService } from '../../../../../services';
-import { MarketplaceEntitlementService } from 'aws-sdk/clients/all';
 declare var H: any;
 @Component({
   selector: 'app-fuel-entry-details',
@@ -25,7 +22,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     fuelQtyUnit: '',
     unitType: '',
     entryID: '',
-    currency: '',
+    billingCurrency: '',
     DEFFuelQtyUnit: '',
     fuelTime: '',
     fuelDate: '',
@@ -41,12 +38,22 @@ export class FuelEntryDetailsComponent implements OnInit {
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
     totalAmount: 0,
-    discount: 0,
+    discType: '',
+    discAmount: 0,
     amountPaid: 0,
     costPerGallon: 0,
     totalGallons: 0,
     countryID: '',
     stateID: '',
+    lineItems : [{
+        fuelType: '',
+        quantity: '',
+        amount: '',
+        pricePerUnit: '',
+        retailAmount: '',
+        retailPricePerUnit: '',
+        useType: ''
+    }],
     reimburseToDriver: false,
     deductFromPay: false,
       avgGVW: '',
@@ -59,6 +66,10 @@ export class FuelEntryDetailsComponent implements OnInit {
   assetList: any = {};
   tripList: any = {};
   vendorList: any = {};
+  WEXTaxCodeList: any = {};
+  WEXDiscountCodeList: any = {};
+  fuelTypeWEXCode: any  = {};
+  fuelTypeListCode: any  = {};
   public fuelEntryImages = [];
   existingPhotos = [];
   tripID = '';
@@ -96,14 +107,18 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
-    this.fetchFuelEntry();
+    this.entryID = this.route.snapshot.params[`entryID`];    
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
+    this.fetchFuelTypeList();
+    this.fetchFuelTypeWEXCode();
+    this.fetchTaxWEXCode();
+    this.fetchWEXDiscountCode();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
     this.map = this.HereMap.mapInit();
+    this.fetchFuelEntry();
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -115,9 +130,29 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.vendorList = result;
     });
   }
+  fetchTaxWEXCode() {
+    this.apiService.getData('fuelTaxes/get/WEXCode').subscribe((result: any) => {
+    this.WEXTaxCodeList = result;
+    });
+  }
+  fetchWEXDiscountCode() {
+    this.apiService.getData('fuelDiscounts/get/WEXCode').subscribe((result: any) => {
+      this.WEXDiscountCodeList = result;
+    });
+  }
   fetchAssetList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetList = result;
+    });
+  }
+  fetchFuelTypeList() {
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypeListCode = result;
+    });
+  }
+  fetchFuelTypeWEXCode() {
+    this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
+      this.fuelTypeWEXCode = result;
     });
   }
   fetchTripList() {
@@ -201,30 +236,39 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
   fetchVendorData(vendorID) {
     this.apiService.getData('vendors/' + vendorID).subscribe((result: any) => {
-      this.vendorAddress = result.Items[0].address;
-      const lat = this.vendorAddress[0].geoCords.lat;
-      const lng = this.vendorAddress[0].geoCords.lng;
-      const markers = new H.map.Marker(
-        {
-          lat: lat, lng: lng
-        });
-      this.map.addObject(markers);
-      this.map.setCenter({
-        lat: lat,
-        lng: lng
-      });
+      // this.vendorAddress = result.Items[0].address;
+      // const lat = this.vendorAddress[0].geoCords.lat;
+      // const lng = this.vendorAddress[0].geoCords.lng;
+      // const markers = new H.map.Marker(
+      //   {
+      //     lat: lat, lng: lng
+      //   });
+      // this.map.addObject(markers);
+      // this.map.setCenter({
+      //   lat: lat,
+      //   lng: lng
+      // });
     });
-
+  }
+  showFn() {    
+    $('#seeFull').show(400);
+    $('#showBtn').hide(200);
+    $('#hideBtn').show(200);
+  }
+   hideFn() {    
+    $('#seeFull').hide(400);
+     $('#showBtn').show(200);
+    $('#hideBtn').hide(200);
   }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Details', result);
+        console.log('result',result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
-        this.fuelData.currency = result.currency,
+        this.fuelData.billingCurrency = result.billingCurrency,
           this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
         this.fuelData.fuelQty = result.fuelQty;
@@ -232,7 +276,8 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
         this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.fuelData.discount = result.discount;
+        this.fuelData.discType = result.discType;
+        this.fuelData.discAmount = result.discAmount;
         this.fuelData.totalAmount = result.totalAmount;
         this.fuelData.costPerGallon = result.costPerGallon;
         this.fuelData.totalGallons = result.totalGallons;
@@ -255,6 +300,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.description = result.description;
         this.fuelData.uploadedPhotos = result.uploadedPhotos;
         this.existingPhotos = result.uploadedPhotos;
+        this.fuelData.lineItems = result.lineItems;
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }

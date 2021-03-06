@@ -84,7 +84,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
-  readonly DELIMITER = '-';
+  readonly DELIMITER = '/';
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
@@ -100,7 +100,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 
   format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+    return date ? date.year + this.DELIMITER + date.month  + this.DELIMITER +  date.day : '';
   }
 }
 

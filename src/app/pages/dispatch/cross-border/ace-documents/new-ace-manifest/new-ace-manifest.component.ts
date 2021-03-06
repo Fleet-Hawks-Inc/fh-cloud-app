@@ -144,10 +144,10 @@ export class NewAceManifestComponent implements OnInit {
             emergencyContactName: '',
             contactPhone: '',
             contactEmail: '',
-          },
-        },
-      ],
-    },
+          }
+        }
+      ]
+    }
   ];
   usAddress = {
     addressLine: '',
