@@ -336,7 +336,19 @@ export class OrderDetailComponent implements OnInit {
         }
         reader.readAsDataURL(files[i]);
       }
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedDocs.length; i++){
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
     }
+
+    this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+
+    })
+  }
   
 
   setSrcValue(){}
