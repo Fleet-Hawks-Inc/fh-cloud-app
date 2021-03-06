@@ -177,7 +177,7 @@ fetchReceivers() {
   }
 
   async fetchAssetsIssues(id: any) {
-    let promise: any = await this.apiService.getData(`issues/assets/${id}`).toPromise();
+    let promise: any = await this.apiService.getData(`issues/asset/${id}`).toPromise();
     this.issuesDataSource.next(promise.Items);
   }
 }

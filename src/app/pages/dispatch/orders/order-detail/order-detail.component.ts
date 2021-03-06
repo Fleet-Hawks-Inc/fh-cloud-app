@@ -12,6 +12,9 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  docs = [];
+  localPhotos = [];
+  uploadedDocs = [];
 
   selectedItem = '';
   consineeData = [];
@@ -175,6 +178,15 @@ export class OrderDetailComponent implements OnInit {
           parseInt(this.taxesTotal);
 
           this.balance = this.totalCharges - this.advances;
+
+          if (
+            result.uploadedDocs != undefined &&
+            result.uploadedDocs.length > 0
+          ) {
+            this.docs = result.uploadedDocs.map(
+              (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+            );
+          }
           // this.orderData = result['Items'];
           
           // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
@@ -305,6 +317,39 @@ export class OrderDetailComponent implements OnInit {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
+
+   /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
+    let files = [...event.target.files];
+    
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedDocs.push(files[i])
+    }
+ 
+
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.localPhotos.push(e.target.result);
+        }
+        reader.readAsDataURL(files[i]);
+      }
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedDocs.length; i++){
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+
+    })
+  }
+  
 
   setSrcValue(){}
 }

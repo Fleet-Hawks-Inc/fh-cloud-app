@@ -25,6 +25,8 @@ import { ErrorComponent } from './error/error.component';
 import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { AllCarriersComponent } from './shared/all-carriers/all-carriers.component';
+import { CheckUserService } from './services/check-user.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -55,7 +57,7 @@ const routes: Routes = [
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
     data: { preload: true },
-    canActivate: [AuthService],
+    canActivate: [AuthService, CheckUserService],
   },
   {
     path: 'compliance',
@@ -89,6 +91,10 @@ const routes: Routes = [
   {
     path: "404",
     component: ErrorComponent
+  },
+  {
+    path: "carriers",
+    component: AllCarriersComponent
   },
   {
     path: "**",

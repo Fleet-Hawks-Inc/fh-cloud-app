@@ -86,7 +86,7 @@
                                                             </thead>
                                         
                                                             <tbody>
-                                                                <tr *ngIf="!logs.length > 0" class="text-center">
+                                                                <tr *ngIf="logs.length == 0" class="text-center">
                                                                     <td colspan="5">No records found</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
@@ -97,20 +97,35 @@
                                                                             class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
                                                                         <span class="text-success text-capitalize">{{item.unitStatus}}</span>
                                                                     </td>
-                                                                    <td>{{item.completionDate}}<br><span *ngIf="item?.vehicleID"
+                                                                    <td>{{item.completionDate | date : 'dd-MM-yyyy'}}<br><span *ngIf="item?.vehicleID"
                                                                             class="font-size-12">{{item.odometer}} miles</span></td>
                                                                     <td>
-                                                                        <span title="Service Task"
-                                                                            *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index">{{task.taskName}},
-                                                                            <br></span>
-                                                                        <div *ngIf="item?.selectedIssues.length > 0">
-                                                                            <a *ngFor="let issue of item.selectedIssues;" href="javascript:;"
-                                                                                class="text-info font-size-12" title="Issue"> {{issuesObject[issue]}} <br></a>
+                                                                        <div>
+                                                                            <span class="font-weight-bold">Service Task(s): </span>
+                                                                            <span 
+                                                                                title="Service Task"
+                                                                                *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last"
+                                                                                >{{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">, </span>
+                                                                            </span>
                                                                         </div>
-                                                                        <a href="javascript:;" class="text-info font-size-12" title="Vendor">
-                                                                            {{vendorsObject[item.vendorID]}}</a>
+                                                                        <div *ngIf="item?.selectedIssues.length > 0">
+                                                                            <span class="font-weight-bold">Issue(s): </span>
+                                                                                <a  title="Issue"
+                                                                                    class="text-info font-size-12"
+                                                                                    *ngFor="let issue of item.selectedIssues;let $last = last"
+                                                                                >
+                                                                                <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
+                                                                                <span *ngIf="!$last" class="list-format">, </span>
+                                                                            </a>
+                                                                        </div>
+                                                                       <div>
+                                                                            <span class="font-weight-bold">Vendor: </span> 
+                                                                            <a (click)="openComponent(item.vendorID)" class="text-info font-size-12" href="javascript:;" title="Vendor">
+                                                                                {{vendorsObject[item.vendorID]}}
+                                                                            </a>
+                                                                       </div>
                                                                     </td>
-                                                                    <td>$ {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 +
+                                                                    <td>{{item.allServiceParts.currency}} {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 +
                                                                         item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>
                                                                     <td>
                                         
@@ -128,6 +143,7 @@
                                                                         </div>
                                                                     </td>
                                                                 </tr>
+
                                                             </tbody>
                                                         </table>
                                                         <div class="row mt-3 dtPaginate" *ngIf="logs.length > 0">
@@ -153,4 +169,110 @@
         </section>
     </div>
 </section>
+
+<div class="modal fade" id="vendorDtlModal" tabindex="-1" role="dialog" aria-labelledby="vendorDtlModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 700px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vendor's Details</h5>
+                <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
+                    <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body text-dark">
+                    <ul class="nav top-tabs nav-tabs wizard-steps">
+                        <li class="nav-item active"> <a href="#vndrBasicDetails" data-toggle="tab"
+                                class="nav-link text-center active">
+                                Basic Details
+                            </a>
+                        </li>
+                        <li class="nav-item"> <a href="#vndrAddressDetails" data-toggle="tab" class="nav-link text-center">
+                                Address
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="vndrBasicDetails" class="tab-pane active">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="thumb-info text-center mb-3"> 
+                                        <img alt="" class="rounded img-fluid"
+                                             style="max-width: 200px;"> </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <table class="table table-bordered m-0">
+                                        <tbody>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Company Name:</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Account Number:</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Vendor Name:</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Work Phone:</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Work Email:</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th width="40%" class="back-color-gray">Prefered Vendor:</th>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="vndrAddressDetails" class="tab-pane ">
+                            <table style="float: left;" class="table table-bordered mb-2" *ngFor="let item of">
+                                <tbody>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Address Type:</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray"> Country:</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">State:</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray"> City:</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Zip Code:</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Address:</th>
+                                        <td> </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-12 text-right">
+                                <button type="button" class="btn btn-default" (click)="modal.dismiss()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
   

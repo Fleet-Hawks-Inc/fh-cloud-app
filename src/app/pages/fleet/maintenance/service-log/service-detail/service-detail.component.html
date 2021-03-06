@@ -6,7 +6,7 @@
            <header class="page-header">
               <div class="row pr-5 " style="padding-top:10px;">
                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    1100 [2018 Toyota Prius] <span class="text-">Service Entry #7385613</span>                    
+                    
                  </div>
                  <div class="col-md-8  col-lg-8 text-right pr-4">
                     <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Service Log</a>  
@@ -88,35 +88,35 @@
                                       <thead>
                                          <tr>
                                             <th>Task</th>
-                                            <th>Schedule</th>
+                                            <th></th>
                                             <th>Labor</th>
                                          </tr>
                                       </thead>
                                       <tbody>
                                          <tr *ngFor="let item of allServiceTasks;">
                                             <td width="60%"><i class="fas fa-wrench"></i> {{item.taskName}}</td>
-                                            <td>{{item.schedule}}</td>
-                                            <td>${{item.laborCost}}</td>
+                                            <td></td>
+                                            <td>&nbsp;{{currency}} {{item.laborCost}}</td>
                                           </tr>
                                           <tr>
                                              <td width="60%"></td>
                                              <th>Subtotal</th>
-                                             <td>${{taskSubTotal}}</td>
+                                             <td>&nbsp;{{currency}} {{taskSubTotal}}</td>
                                           </tr>
                                           <tr>
                                              <td width="60%"></td>
                                              <th>Discount</th>
-                                              <td>- ${{taskDiscountAmount}}<br>(<span class="font-size-12">{{taskDiscountPercent}}%</span>)</td>
+                                              <td>- {{currency}} {{taskDiscountAmount}}<br>(<span class="font-size-12">{{taskDiscountPercent}}%</span>)</td>
                                           </tr>
                                           <tr>
                                              <td width="60%"></td>
                                              <th>Tax</th>
-                                             <td>+ ${{taskTaxAmount}}<br>(<span class="font-size-12">{{taskTaxPercent}}%</span>)</td>
+                                             <td>+ {{currency}} {{taskTaxAmount}}<br>(<span class="font-size-12">{{taskTaxPercent}}%</span>)</td>
                                           </tr>
                                           <tr>
                                              <td width="60%"></td>
                                              <th class="font-weight-bold">Total</th>
-                                             <td class="font-weight-bold" *ngIf="taskTotal">${{taskTotal.toFixed(2)}}</td>
+                                             <td class="font-weight-bold" *ngIf="taskTotal">&nbsp;{{currency}} {{taskTotal.toFixed(2)}}</td>
                                           </tr>
                                       </tbody>
                                    </table>
@@ -136,8 +136,8 @@
                                           <td width="60%"><i class="fas fa-wrench"></i> {{item.partNumber}}</td>
                                           <td>{{item.description}}</td>
                                           <td>{{item.quantity}}</td>
-                                          <td>${{item.rate}}</td>
-                                          <td>${{item.partCost}}</td>
+                                          <td>{{currency}} {{item.rate}}</td>
+                                          <td>{{currency}} {{item.partCost}}</td>
                                         </tr>
                                         <tr>
                                           <td width="60%"></td>
@@ -151,28 +151,28 @@
                                            <td></td>
                                            <td></td>
                                            <th>Subtotal</th>
-                                           <td>${{partsSubTotal}}</td>
+                                           <td>{{currency}} {{partsSubTotal}}</td>
                                         </tr>
                                         <tr>
                                            <td width="60%"></td>
                                            <td></td>
                                            <td></td>
                                            <th>Discount</th>
-                                            <td>- ${{partsDiscountAmount}}<br>(<span class="font-size-12">{{partsDiscountPercent}}%</span>)</td>
+                                            <td>- {{currency}} {{partsDiscountAmount}}<br>(<span class="font-size-12">{{partsDiscountPercent}}%</span>)</td>
                                         </tr>
                                         <tr>
                                            <td width="60%"></td>
                                            <td></td>
                                            <td></td>
                                            <th>Tax</th>
-                                           <td>+ ${{partsTaxAmount}}<br>(<span class="font-size-12">{{partsTaxPercent}}%</span>)</td>
+                                           <td>+ {{currency}} {{partsTaxAmount}}<br>(<span class="font-size-12">{{partsTaxPercent}}%</span>)</td>
                                         </tr>
                                         <tr>
                                            <td width="60%"></td>
                                            <td></td>
                                            <td></td>
                                            <th class="font-weight-bold">Total</th>
-                                           <td class="font-weight-bold" *ngIf="partsTotal">${{partsTotal.toFixed(2)}}</td>
+                                           <td class="font-weight-bold" *ngIf="partsTotal">{{currency}} {{partsTotal.toFixed(2)}}</td>
                                         </tr>
                                     </tbody>
                                  </table>
@@ -180,22 +180,18 @@
                              </div>
                           </div>
                           <div class="col-lg-6">
-                             <div class="row">
+                             <div class="row mb-2" *ngIf="photos?.length > 0">
                                 <div class="col-lg-12">
                                    <div class="vehicle-common-box p-3">
                                       <div class="row">
                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                                         <!-- <div class="col-lg-6 text-right">
-                                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div>
-                                         </div> -->
                                       </div>
                                       <hr class="solid mt-3">
-                                      <div class="row" *ngIf="photos?.length > 0">
+                                      <div class="row">
 
                                          <div class="col-lg-6" *ngFor="let photo of photos;  let i = index;">
                                           <div class="vehicle-photo-box"> 
                                              <img [src]="photo.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                                             <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
                                              <hr class="m-3">
                                              <div class="row">
                                                 <div class="col-lg-8"> Image {{i+1}}</div>
@@ -218,9 +214,6 @@
                                    <div class="vehicle-common-box p-3">
                                       <div class="row">
                                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
-                                         <!-- <div class="col-lg-6 text-right">
-                                            <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i><input type="file" class="hidden_input"> Add Documents</div>
-                                         </div> -->
                                       </div>
                                       <hr class="solid mt-3">
                                       <div class="row mb-1" *ngFor="let doc of docs;let d= index">
@@ -237,7 +230,7 @@
                                 </div>
                              </div>
                              <!-- MAP -->
-                             <div class="row mt-2">
+                             <div class="row">
                                 <div class="col-lg-12">
                                    <div class="vehicle-common-box p-3">
                                       <div class="row">
@@ -254,68 +247,6 @@
                              </div>
                           </div>
                        </div>
-                       <!-- Delete MODAL -->
-                       <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
-                          <section class="card">
-                             <header class="card-header">
-                                <h2 class="card-title">Corfirm Action</h2>
-                             </header>
-                             <div class="card-body text-dark">
-                    <form>
-                    <div class="form-row">
-                    <div class="form-group col-md-12">
-                    <label for="inputEmail4">Are you sure?</label>
-                    </div>
-                    </div>
-                    </form>
-                    </div>
-                    <footer class="card-footer">
-                    <div class="row">
-                    <div class="col-md-12 text-right">
-                    <button class="btn btn-danger modal-confirm">OK</button>
-                    <button class="btn btn-default modal-dismiss">Cancel</button>
-                    </div>
-                    </div>
-                    </footer>
-                    </section>
-                    </div>
-                    <!--   edit photo -->
-                    <div id="editPhoto" class="modal-block modal-block-primary mfp-hide">
-                       <section class="card">
-                          <header class="card-header">
-                             <h2 class="card-title">Edit Photo</h2>
-                          </header>
-                          <div class="card-body text-dark">
-                             <form>
-                                <div class="form-row">
-                                   <div class="form-group col-lg-12">
-                                      <label class="control-label font-weight-bold">Old Name of Photo</label>
-                                   </div>
-                                </div>
-                                <div class="form-row">
-                                   <div class="form-group col-lg-12">
-                                      <label class="control-label font-weight-bold">Name</label>
-                                      <input type="text" class="form-control"  >
-                                   </div>
-                                </div>
-                                <div class="form-row">
-                                   <div class="form-group col-lg-12">
-                                      <label class="control-label font-weight-bold">Description</label>
-                                      <textarea class="form-control" rows="3"></textarea>
-                                   </div>
-                                </div>
-                             </form>
-                          </div>
-                          <footer class="card-footer">
-                             <div class="row">
-                                <div class="col-md-12 text-right">
-                                   <button class="btn btn-success modal-confirm">Save</button>
-                                   <button class="btn btn-default modal-dismiss">Cancel</button>
-                                </div>
-                             </div>
-                          </footer>
-                       </section>
-                    </div>
                     </form>
                  </div>
               </div>
