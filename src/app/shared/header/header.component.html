@@ -82,7 +82,17 @@
 
 
         <!-- <span class="separator"></span> -->
-
+        <div style="display: inline-block;color: #000011;font-size: .9rem;" *ngIf="isCarrierID != null">
+           
+            <div class="dropdown d-inline-block mx-3">
+                <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Login as: {{carrierName}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="javascript:;" (click)="switchCarrier()">Switch Carrier</a>
+                </div>
+              </div>
+        </div>
         <div id="userbox" class="userbox">
             <a href="#" data-toggle="dropdown">
                 <figure class="profile-picture">
@@ -106,7 +116,7 @@
                        <a role="menuitem" tabindex="-1" href="#"><i class="fas fa-user"></i> Account Setting</a>
                     </li>
                     <li>
-                       <a role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off"></i> Logout</a>
+                       <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off"></i> Logout</a>
                     </li>
                  </ul>
             </div>

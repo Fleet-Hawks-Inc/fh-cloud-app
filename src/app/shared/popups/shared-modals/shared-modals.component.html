@@ -1863,7 +1863,7 @@
                                     <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                  </ng-select>
                            </div>
-                           {{unitType}}
+                           {{issuesData.unitType}}
                            <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
                                  <label
                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1932,7 +1932,7 @@
                <div class="form-group row">
                      <div class="col-lg-12 text-right">
                         <a type="button" data-dismiss="modal" class="btn btn-default btnPrevious mr-2">Cancel</a>
-                        <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
+                        <button type="button" (click)="addIssue()" class="btn btn-success">Save</button>
                      </div>
                </div>
             </form>

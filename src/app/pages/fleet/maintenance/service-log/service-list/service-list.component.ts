@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -41,7 +40,7 @@ export class ServiceListComponent implements OnInit {
       private apiService: ApiService,
       private router: Router,
       private spinner: NgxSpinnerService,
-      private toastr: ToastrService
+      private toastr: ToastrService,
     ) {}
 
   ngOnInit() {
@@ -117,6 +116,15 @@ export class ServiceListComponent implements OnInit {
     });
   }
 
+  gotoIssue(issue){
+    localStorage.setItem('issueID', issue);
+    this.router.navigateByUrl('/fleet/maintenance/issues/detail/')
+  }
+
+  openComponent(vendorID) {
+    localStorage.setItem('vendorID', vendorID);
+    $('#vendorDtlModal').modal('show');
+  }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)

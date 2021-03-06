@@ -8,7 +8,6 @@ import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../../app/pages/fleet/constants';
 import { Auth } from 'aws-amplify';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 declare var $: any;
 @Component({
@@ -1551,7 +1550,8 @@ fetchDrivers(){
           $('#addIssuesModal').modal('hide');
           let issueVehicleID = localStorage.getItem('issueVehicleID');
           issueVehicleID = issueVehicleID.slice(1, -1);
-          this.listService.fetchVehicleIssues(issueVehicleID)
+          this.listService.fetchVehicleIssues(issueVehicleID);
+          this.listService.fetchAssetsIssues(issueVehicleID);
         }
       });
   }

@@ -285,14 +285,14 @@
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                                Shipper
+                              Consignor
                               </h4>
                             </div>
                             <div class="col-lg-6">
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                                Receiver
+                              Consignee
                               </h4>
                             </div>
 
@@ -300,7 +300,9 @@
                               <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
                                
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Shipper {{j+1}} </label>
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Consignor {{j+1}} 
+                                      <!-- <i class="fas fa-caret-down caret_icon"></i> -->
+                                    </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
 
@@ -333,15 +335,6 @@
                                             {{shipperReceiversInfo.shippers[j].phone}}
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Reference:</strong> 
-                                            {{shipperReceiversInfo.shippers[j].reference}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Notes:</strong> 
-                                            {{shipperReceiversInfo.shippers[j].notes}}
-
-                                          </p>
-                                          <p class="mb-0 text-dark">
                                             <strong>Commodity:</strong> Cakes
                                           </p>
                                           <p class="mb-0 text-dark">
@@ -368,7 +361,7 @@
                               <div class="pl-0 pr-5" *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
                               
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Receiver {{k+1}} </label>
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Consignee {{k+1}} </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
                                   
@@ -404,14 +397,6 @@
                                           <p class="mb-0 text-dark">
                                             <strong>Phone:</strong> 
                                             {{shipperReceiversInfo.receivers[k].phone}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Reference:</strong> 
-                                            {{shipperReceiversInfo.receivers[k].reference}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Notes:</strong> 
-                                            {{shipperReceiversInfo.receivers[k].notes}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Commodity:</strong> Cakes
@@ -686,6 +671,8 @@
                               <div class="col-lg-6">
                                 <input
                                   type="file"
+                                  (change)="selectDocuments($event)"
+                                  multiple
                                   class="p-0 form-control mb-2"
                                 />
                               </div>
@@ -701,31 +688,21 @@
 
                         <div class="widgetlinfo">
                           <ul class="d-flex p-0 m-0 order-attachment__preview">
-                            <li>
+                            <li *ngFor="let doc of docs">
                               <img
-                                src="assets/img/doc.jpg"
+                                src="{{doc}}"
                                 class="img-fluid"
                                 height="150"
                               />
                             </li>
-                            <li>
+                            <li *ngFor="let localPhoto of localPhotos">
                               <img
-                                src="assets/img/doc.jpg"
+                                src="{{localPhoto}}"
                                 class="img-fluid"
                                 height="150"
                               />
                             </li>
                           </ul>
-                          <!-- <table class="table table-bordered table-responsive-lg">
-                                                <tbody>
-                                                   <tr>
-                                                      <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>
-                                                      <td width="33%"><img src="img/cpp.jpg" height="250" width="100%"></td>
-                                                      <td width="33%"><img src="img/doc.jpg" height="250" width="100%"></td>                                                        
-                                                   </tr>
-                                                 
-                                                </tbody>
-                                             </table> -->
                         </div>
                       </div>
                     </div>
