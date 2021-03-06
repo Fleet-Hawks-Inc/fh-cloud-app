@@ -210,7 +210,6 @@ export class AddServiceComponent implements OnInit {
     this.spinner.show();
     this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
       delete elem.existQuantity;
-      delete elem.partName;
     })
     // create form data instance
     const formData = new FormData();
@@ -397,7 +396,7 @@ export class AddServiceComponent implements OnInit {
     this.listService.issuesList.subscribe(res => {
       this.issues = res;
     });
-      for (let z = 0; z < this.savedIssues.length; z++) {
+    for (let z = 0; z < this.savedIssues.length; z++) {
       this.issues.map(elem => {
         if (elem.issueID == this.savedIssues[z]) {
           elem.selected = true;
@@ -432,6 +431,7 @@ export class AddServiceComponent implements OnInit {
 
   async getAssetIssues(id) {
     this.spinner.show();
+    localStorage.setItem('issueVehicleID', JSON.stringify(id));
     const assetID = id;
     await this.getReminders(assetID);
     await this.getIssuesByAsset(assetID);
@@ -506,7 +506,7 @@ export class AddServiceComponent implements OnInit {
         newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
         remindID = ' ';
-        newSchedule = '-';
+        newSchedule = ' ';
       }
     }
     this.serviceData.allServiceTasks.serviceTaskList.push({
@@ -738,8 +738,9 @@ export class AddServiceComponent implements OnInit {
             partNumber: result.allServiceParts.servicePartsList[j].partNumber,
             quantity: result.allServiceParts.servicePartsList[j].quantity,
             rate: result.allServiceParts.servicePartsList[j].rate,
+            partName: result.allServiceParts.servicePartsList[j].partName,
           });
-          this.selectedParts.push(result.allServiceParts.servicePartsList[j].partID);
+          this.selectedParts.push(result.allServiceParts.servicePartsList[j].partName);
         }
         this.serviceData.allServiceParts.servicePartsList = newParts;
         
@@ -755,6 +756,7 @@ export class AddServiceComponent implements OnInit {
         this.totalQuantity = result.allServiceParts['totalQuantity'];
         
         this.selectedIssues = result.selectedIssues;
+        this.serviceData['timeCreated'] = result.timeCreated;
       });
   }
 
@@ -870,7 +872,6 @@ export class AddServiceComponent implements OnInit {
   }
 
   gotoIssuePage() {
-    localStorage.setItem('issueVehicleID', JSON.stringify(this.serviceData.vehicleID));
     // this.router.navigateByUrl('/fleet/maintenance/issues/add')
     $('#addIssuesModal').modal('show');
   }

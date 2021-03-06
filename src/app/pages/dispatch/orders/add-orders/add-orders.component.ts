@@ -464,9 +464,12 @@ export class AddOrdersComponent implements OnInit {
     const service = platform.getSearchService();
     if (location !== "") {
       let result = await service.geocode({ q: location });
+      console.log('result', result);
       result.items.forEach((res) => {
+        console.log('res', res);
         geoCodeResponse = res;
       });
+      console.log('geoCodeResponse', geoCodeResponse);
     }
 
     //check if all required fields are filled
