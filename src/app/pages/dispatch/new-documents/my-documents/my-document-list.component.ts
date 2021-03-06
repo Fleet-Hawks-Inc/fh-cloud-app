@@ -1,28 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { map } from 'rxjs/operators';
-import { from, Subject } from 'rxjs';
+import { from } from 'rxjs';
 import {AwsUploadService} from '../../../../services/aws-upload.service';
 import { SafeResourceUrl} from '@angular/platform-browser';
 import { Auth } from 'aws-amplify';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
 import * as moment from "moment";
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-my-document-list',
   templateUrl: './my-document-list.component.html',
   styleUrls: ['./my-document-list.component.css']
 })
-export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject();
+export class MyDocumentListComponent implements OnInit {
 
   public documents = [];
   trips;
@@ -71,10 +64,18 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   suggestions = [];
   tripsObjects: any = {};
 
+  docNext = false;
+  docPrev = true;
+  docDraw = 0;
+  docPrevEvauatedKeys = [''];
+  docStartPoint = 1;
+  docEndPoint = this.pageLength;
+
   constructor(
     private apiService: ApiService,
     private awsUS: AwsUploadService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {
     this.selectedFileNames = new Map<any, any>();
    }
@@ -91,44 +92,17 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
 
   fetchDocuments = () => {
     // this.spinner.show(); // loader init
-    this.totalRecords = 0;
-    this.apiService.getData('documents').subscribe({
-      complete: () => {},
-      error: () => {},
+    // this.totalRecords = 0;
+    this.apiService.getData('documents?userType=user').subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
-        console.log('result', result);
-        for (let i = 0; i < result.Items.length; i++) {
-            this.totalRecords += 1 ;
-        }
-        // this.spinner.hide(); // loader hide
-        
-        }
-      });
+        console.log('result11', result);
+        this.totalRecords = result.Count;
+      }
+    });
   };
 
-  
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
@@ -153,7 +127,6 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   addDocument() {
-    console.log("documentData", this.documentData);
     this.hideErrors();
     this.apiService.postData('documents', this.documentData).
     subscribe({
@@ -177,7 +150,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
         next: (res) => {
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
-          this.rerender();
+          this.initDataTable();
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
@@ -276,7 +249,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       next: (res) => {
         this.toastr.success('Document Updated successfully');
         $('#addDocumentModal').modal('hide');
-       this.rerender();
+       this.initDataTable();
       }
     });
   }
@@ -286,88 +259,123 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
       this.apiService
       .getData(`documents/isDeleted/${docID}/${value}`)
       .subscribe((result: any) => {
-        this.rerender();
+        this.initDataTable();
       });
     }
   }
 
+  // initDataTable() {
+  //   let current = this;
+  //   this.dtOptions = { // All list options
+  //     pagingType: 'full_numbers',
+  //     pageLength: current.pageLength,
+  //     serverSide: true,
+  //     processing: true,
+  //     order: [],
+  //     buttons: [
+  //       {
+  //         extend: 'colvis',
+  //         columns: ':not(.noVis)'
+  //       }
+  //     ],
+  //     columnDefs: [
+  //       {
+  //         targets: 0,
+  //         className: 'noVis',
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 1,
+  //         className: 'noVis',
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 2,
+  //         className: 'noVis',
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 3,
+  //         className: 'noVis',
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 4,
+  //         className: 'noVis',
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 5,
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 6,
+  //         "orderable": false
+  //       },
+  //       {
+  //         targets: 7,
+  //         "orderable": false
+  //       },
+  //     ],
+  //     dom: 'Bfrtip',
+  //     ajax: (dataTablesParameters: any, callback) => {
+  //       current.apiService.getDatatablePostData('documents/fetch-records?categoryType=user&value1=' + current.lastEvaluatedKey +
+  //         '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start + 
+  //         "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
+  //           current.documents = resp['Items'];
+  //           console.log('documents', current.documents)
+  //           // console.log(resp)
+  //           if (resp['LastEvaluatedKey'] !== undefined) {
+  //             current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
+  //           } else {
+  //             current.lastEvaluatedKey = ''
+  //           }
+
+  //           callback({
+  //             recordsTotal: current.totalRecords,
+  //             recordsFiltered: current.totalRecords,
+  //             data: []
+  //           });
+  //         });
+  //     }
+  //   };
+  // }
+
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: current.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      buttons: [
-        {
-          extend: 'colvis',
-          columns: ':not(.noVis)'
+    this.spinner.show();
+    this.apiService.getData('documents/fetch/records?categoryType=user&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.documents = result['Items'];
+        if (this.filterValues.docID !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
+          this.docStartPoint = 1;
+          this.docEndPoint = this.totalRecords;
         }
-      ],
-      columnDefs: [
-        {
-          targets: 0,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 1,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 2,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 3,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 4,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 5,
-          "orderable": false
-        },
-        {
-          targets: 6,
-          "orderable": false
-        },
-        {
-          targets: 7,
-          "orderable": false
-        },
-      ],
-      dom: 'Bfrtip',
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('documents/fetch-records?categoryType=user&value1=' + current.lastEvaluatedKey +
-          '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start + 
-          "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
-            current.documents = resp['Items'];
-            console.log('documents', current.documents)
-            // console.log(resp)
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
-            } else {
-              current.lastEvaluatedKey = ''
-            }
 
-            callback({
-              recordsTotal: current.totalRecords,
-              recordsFiltered: current.totalRecords,
-              data: []
-            });
-          });
-      }
-    };
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.docNext = false;
+          // for prev button
+          if (!this.docPrevEvauatedKeys.includes(result['LastEvaluatedKey'].docID)) {
+            this.docPrevEvauatedKeys.push(result['LastEvaluatedKey'].docID);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].docID;
+          
+        } else {
+          this.docNext = true;
+          this.lastEvaluatedKey = '';
+          this.docEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.docDraw > 0) {
+          this.docPrev = false;
+        } else {
+          this.docPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
-
 
   searchFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
@@ -382,7 +390,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
         this.filterValues.end = this.filterValues.end*1000;
       }
       this.pageLength = this.totalRecords;
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -400,7 +408,7 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
         end: <any> ''
       };
       this.pageLength = 10;
-      this.rerender();
+      this.initDataTable();
       // this.spinner.hide();
     } else {
       return false;
@@ -433,7 +441,31 @@ export class MyDocumentListComponent implements AfterViewInit, OnDestroy, OnInit
     this.filterValues.docID = document.id;
     this.filterValues.searchValue = document.name;
     this.suggestions = [];
+  }
 
-    // this.rerender('reset');
+  getStartandEndVal() {
+    this.docStartPoint = this.docDraw * this.pageLength + 1;
+    this.docEndPoint = this.docStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.docDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.docDraw -= 1;
+    this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.docStartPoint = 1;
+    this.docEndPoint = this.pageLength;
+    this.docDraw = 0;
   }
 }

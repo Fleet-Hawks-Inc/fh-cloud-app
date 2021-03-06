@@ -303,7 +303,7 @@ export class CalendarViewComponent implements OnInit {
   fetchTrips() {
     this.spinner.show();
 
-    const tripResponse = this.apiService.getData('trips');
+    const tripResponse = this.apiService.getData('trips/status/confirmed');
     const orderResponse = this.apiService.getData('orders');
     forkJoin([tripResponse, orderResponse]).subscribe(value => {
       this.orderTripValues(value);

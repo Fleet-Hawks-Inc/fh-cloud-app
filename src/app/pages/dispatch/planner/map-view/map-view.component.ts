@@ -297,7 +297,7 @@ export class MapViewComponent implements OnInit {
   fetchTrips() {
     this.spinner.show();
 
-    const tripResponse = this.apiService.getData('trips');
+    const tripResponse = this.apiService.getData('trips/status/confirmed');
     const orderResponse = this.apiService.getData('orders');
     const observables = forkJoin([tripResponse, orderResponse]).subscribe(value => {
       this.orderTripValues(value);
