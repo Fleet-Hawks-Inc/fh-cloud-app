@@ -13,7 +13,7 @@ export class PdfAutomationComponent implements OnInit {
   pageTitle = 'Pdf Automation';
   @ViewChild('canva', { static: true })
   canva: ElementRef<HTMLCanvasElement>;
-  private selectOpt;
+  selectOpt = '';
   constructor() {
 
 

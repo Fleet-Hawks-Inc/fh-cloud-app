@@ -51,6 +51,11 @@ export class IssueDetailComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchDriverList();
     this.fetchAssetList();
+    if(localStorage.getItem('issueID') != null) {
+      this.route.paramMap.subscribe(res=> {
+        console.log('res', res);
+      })
+    }
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {

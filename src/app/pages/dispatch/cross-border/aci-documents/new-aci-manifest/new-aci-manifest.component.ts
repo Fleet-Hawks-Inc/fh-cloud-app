@@ -335,7 +335,12 @@ export class NewAciManifestComponent implements OnInit {
     const assetID = e;
     let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
     let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
-    this.borderAssetTypes = resultData.Items;
+    if (resultData.Items.length > 0) {// if parent asset type exists
+      this.borderAssetTypes = resultData.Items;
+    } else {
+      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
+      this.borderAssetTypes = fetchedBorderAssets.Items;
+    }
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {

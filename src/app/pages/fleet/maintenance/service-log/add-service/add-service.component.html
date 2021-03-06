@@ -42,14 +42,7 @@
                                  </div>
                               </div>
                            </div>
-                             <!-- <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Group of Vehicle</label>
-                                   <ng-select [(ngModel)]="serviceData.vehicleGroup" name="vehicleGroup" style="width: 100%;" class="form-control populate">
-                                      <ng-option *ngFor="let group of groups;" value="{{group.groupID}}">{{group.groupName}}</ng-option>
-                                   </ng-select>
-                                </div>
-                             </div> -->
+                            
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -84,14 +77,11 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
                                        <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
-                                          
                                    </ng-select>
                                 </div>
                                 <div class="col-lg-2  mar-top-37 pl-0">
-
-                                   <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-
-                                </div>
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
@@ -157,7 +147,7 @@
                                          <td>{{issue.issueName}}</td>
                                          <td>{{issue.assignedTo}}</td>
                                       </tr>
-                                      <tr *ngIf="!issues.length > 0">
+                                      <tr *ngIf="issues.length > 0">
                                           <td colspan="3">No Issue Found</td>
                                       </tr>
                                    </tbody>
@@ -171,12 +161,21 @@
                           </div>
                           <div class="col-lg-5 offset-lg-1 pl-0">
                              <div class="row pt-2">
-                                <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
-                                    <ng-select [items]="tasks" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
+                                 <div class="col-lg-10">
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
+                                    <ng-select [items]="tasks | async" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
                                          (add)="addTasks()" [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
-                                    ></ng-select>
-                                </div>
+                                    >                                    
+                                 </ng-select>
+                                 <!-- <ng-container *ngFor="let task of tasks | async;">
+                                       <ng-option *ngIf="task.taskType == 'service'" value="{{task.taskID}}">
+                                          {{task.taskName}}
+                                       </ng-option>
+                                    </ng-container> -->
+                                 </div>
+                                 <div class="col-lg-2  mar-top-37 pl-0">
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                 </div>
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'"> 
@@ -191,16 +190,14 @@
                                 <table class="table table-bordered table-striped">
                                    <thead>
                                       <tr>
-                                         <th width="30%">Task</th>
-                                         <th width="35%" *ngIf="serviceData.unitType != 'asset'">Schedule</th>
-                                         <th width="10%">Labor</th>
-                                         <th width="5%">Action</th>
+                                         <th id="" width="65%">Task</th>
+                                         <th id="" width="25%">Labor</th>
+                                         <th id="" width="10%">Action</th>
                                       </tr>
                                    </thead>
                                    <tbody> 
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
-                                         <td *ngIf="serviceData.unitType != 'asset'">{{item.schedule ? item.schedule : '-'}}</td>
                                          <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
                                          <td>
                                              <button class="btn btn-sm btn-danger" type="button" (click)="remove('tasks', item, i)">
@@ -208,7 +205,7 @@
                                              </button>
                                           </td>
                                       </tr>
-                                       <tr *ngIf="!serviceData.allServiceTasks.serviceTaskList.length > 0">
+                                       <tr *ngIf="serviceData.allServiceTasks.serviceTaskList.length > 0">
                                           <td colspan="4">No Task Found</td>
                                        </tr>
                                    </tbody>
@@ -216,15 +213,20 @@
                              </div>
                              <div class="row pt-2">
                                 <table class="table">
+                                   <thead>
+                                      <th class="border-0 p-0" id="" colspan="5"></th>
+                                   </thead>
                                    <tbody>
                                       <tr>
-                                         <td width="30%"></td>
-                                         <td width="35%" class="text-right"></td>
-                                         <td width="10%"><label class="control-label font-weight-bold text-5"></label></td>
-                                         <td width="15%" colspan="2">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <label class="control-label font-weight-bold text-5 m-0"><span [innerHtml]="totalLabors">0.00</span></label>
-                                                <ng-select [(ngModel)]="serviceData.allServiceTasks.currency" [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
+                                          <td id="" width="65%" class="text-right"></td>
+                                          <td id="" width="25%" ><label class="control-label font-weight-bold text-5"></label>
+                                             <label class="control-label font-weight-bold text-5 m-0"><span [innerHtml]="totalLabors">0.00</span></label>
+                                          </td>
+                                         <td id="" width="15%" colspan="2">
+                                            <div class="d-flex justify-content-end align-items-center">
+                                                <ng-select [(ngModel)]="serviceData.allServiceTasks.currency" 
+                                                   [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)"
+                                                >
                                                    <ng-option value="CAD">CAD</ng-option>
                                                    <ng-option value="USD">USD</ng-option>
                                                 </ng-select>
@@ -234,7 +236,7 @@
                                    </tbody>
                                 </table>
                              </div>
-                             <div class="row">
+                             <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
                                 </div>
@@ -249,7 +251,7 @@
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedTasks.length == 0" (blur)="calculateTasks()" [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" class="form-control">
                                 </div>
-                             </div>
+                             </div> -->
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total($)</label>                                           
@@ -286,13 +288,13 @@
                                 <table class="table table-bordered table-striped">
                                    <thead>
                                       <tr>
-                                         <th width="15%">Item</th>
-                                         <th width="15%">Existing Quantity</th>
-                                         <th width="35%">Description</th>
-                                         <th width="10%">Quantity</th>
-                                         <th width="10%">Rate</th>
-                                         <th width="10%">Amount</th>
-                                         <th width="5%">Action</th>
+                                         <th width="25%" id="">Item</th>
+                                         <th width="15%" id="">Existing Quantity</th>
+                                         <th width="25%" id="">Description</th>
+                                         <th width="10%" id="">Quantity</th>
+                                         <th width="10%" id="">Rate</th>
+                                         <th width="10%" id="">Amount</th>
+                                         <th width="10%" id="">Action</th>
                                       </tr>
                                    </thead>
                                    <tbody>
@@ -311,7 +313,7 @@
                                                 <i class="fas fa-times"></i></button>
                                           </td>
                                       </tr>
-                                      <tr *ngIf="!serviceData.allServiceParts.servicePartsList.length > 0">
+                                      <tr *ngIf="serviceData.allServiceParts.servicePartsList.length > 0">
                                           <td colspan="7">No Parts Found</td>
                                        </tr>
                                    </tbody>
@@ -321,12 +323,10 @@
                                 <table class="table">
                                    <tbody>
                                       <tr>
-                                         <td width="15%"></td>
-                                         <td width="15%"></td>
-                                         <td width="35%" class="text-right"></td>
+                                         <td colspan="4"></td>
                                          <td width="10%"><label [innerHtml]="totalQuantity" class="control-label font-weight-bold text-5">0</label></td>
                                          <td width="10%"></td>
-                                         <td width="15%" colspan="2">
+                                         <td width="10%">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label [innerHtml]="totalPartsPrice"  class="control-label font-weight-bold text-5 m-0">0.00</label>
                                                 <ng-select [(ngModel)]="serviceData.allServiceParts.currency" [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
@@ -339,7 +339,7 @@
                                    </tbody>
                                 </table>
                              </div>
-                             <div class="row">
+                             <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
                                 </div>
@@ -354,7 +354,7 @@
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
                                 </div>
-                             </div>
+                             </div> -->
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>                                           
@@ -418,14 +418,13 @@
                      <td width="80%">
                         <span class="text-dark text-4 font-weight-bold">{{tasksObject[reminder.reminderTasks.task]}}</span><br>
                         <span class="font-size-12">{{reminder.reminderTasks.remindByDays}} days or {{reminder.reminderTasks.odometer}} miles</span><br>
-                        <!-- <span class="text-warning">Due: 3 months from now · 467 mi from now</span> -->
                      </td>
                      <td width="20%" class="text-right">
                         <a href="javascript:;" *ngIf="!reminder.buttonShow" (click)="addListedTasks(reminder)" class="btn btn-default btn-xs"><i class="fas fa-plus text-success"></i> Add</a>
                         <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
                      </td>
                   </tr>
-                  <tr *ngIf="reminders.length > 0">
+                  <tr *ngIf="!reminders.length > 0">
                      <td colspan="2">No Reminders Found</td>
                   </tr>
                </tbody>

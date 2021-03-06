@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 declare var $: any;
@@ -12,12 +12,18 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  docs = [];
+  localPhotos = [];
+  uploadedDocs = [];
 
+  selectedItem = '';
+  consineeData = [];
+  shipperData = [];
   Asseturl = this.apiService.AssetUrl;
   orderID: string;
   orderData;
-  shipperReceiversInfo = [];
-  charges : any;
+  shipperReceiversInfos = [];
+  // charges : any;
   totalFreightFee: any;
   totalFuelSurcharge: any;
   totalAccessotial: any;
@@ -52,6 +58,77 @@ export class OrderDetailComponent implements OnInit {
   orderDocs = [];
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
+
+  /**
+   * Form props
+   */
+  customerID = '';
+  customerName = '';
+  customerAddress = '';
+  customerCityName = '';
+  customerStateName = '';
+  customerCountryName = '';
+  customerPhone = '';
+  customerEmail = '';
+  customerfax = '';
+  customerPo = '';
+  reference = '';
+  creation = '';
+  additionalContactName = '';
+  additionalPhone  = '';
+  additionalEmail = '';
+
+  additionalDetails = {
+    dropTrailer: false,
+    loadType: {
+      hazMat: false,
+      oversize: false,
+      reefer: false,
+      tanker: false
+    },
+    refeerTemp: {
+      maxTemprature: '',
+      maxTempratureUnit: '',
+      minTemprature: '',
+      minTempratureUnit: ''
+    },
+    trailerType: '',
+    uploadedDocs: [],
+  }
+
+  charges: any = {
+    freightFee: {
+      amount: 0,
+      currency: '',
+      type: ''
+    },
+    fuelSurcharge: {
+      amount: 0,
+      currency: "",
+      type: ""
+    },
+    accessorialFeeInfo: {
+      accessorialFee: [],
+      total: 0
+    },
+    accessorialDeductionInfo: {
+      accessorialDeduction: [],
+      total: 0
+    }
+  }
+  discount: any = {
+    amount: 0,
+    unit: ''
+  }
+  milesInfo = {
+    calculateBy: '',
+    totalMiles: ''
+  }
+  taxesInfo = [];
+  taxesTotal: any = 0;
+  totalCharges: any = 0;
+  advances = 0;
+  balance = 0;
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -59,7 +136,6 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
-    this.fetchCustomersByIDs();
   }
 
   /**
@@ -69,54 +145,97 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
-        if (result) {
-          this.orderData = result['Items'];
-          
-          this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
+          result = result.Items[0];
+          this.customerID = result.customerID;
+          this.customerPo = result.customerPO;
+          this.reference = '';
+          this.creation = `${result.creationDate } ${result.creationTime }`;
+          this.additionalContactName = result.additionalContact;
+          this.additionalPhone  = result.phone;
+          this.additionalEmail = result.email;
+          this.shipperReceiversInfos = result.shippersReceiversInfo;
+          this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
+          this.additionalDetails.loadType = result.additionalDetails.loadType;
+          this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
+          this.additionalDetails.trailerType = result.additionalDetails.trailerType;
+          this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
+          this.charges.freightFee = result.charges.freightFee;
+          this.discount = result.discount;
+          this.milesInfo = result.milesInfo;
+          this.taxesInfo = result.taxesInfo;
 
-          this.shipperReceiversInfo.forEach(element => {
-            element.shippers.forEach(item => {
-              this.totalPickups++;
-            });
-            element.receivers.forEach(item1 => {
-              this.totalDrops++;
-            });
-          });
-          
-          let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
-          this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
+          for(let i = 0; i < this.taxesInfo.length; i++){
+            if(this.taxesInfo[i].amount){
+              this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
+            }
+          }
 
-          let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
-          this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
+          this.totalCharges = parseInt(this.charges.freightFee.amount) +
+          parseInt(this.charges.fuelSurcharge.amount) + 
+          parseInt(this.charges.accessorialFeeInfo.total) +
+          parseInt(this.charges.accessorialDeductionInfo.total) +
+          parseInt(this.discount.amount) +
+          parseInt(this.taxesTotal);
+
+          this.balance = this.totalCharges - this.advances;
+
+          if (
+            result.uploadedDocs != undefined &&
+            result.uploadedDocs.length > 0
+          ) {
+            this.docs = result.uploadedDocs.map(
+              (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+            );
+          }
+          // this.orderData = result['Items'];
+          
+          // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
+
+          // this.shipperReceiversInfo.forEach(element => {
+          //   element.shippers.forEach(item => {
+          //     this.totalPickups++;
+          //   });
+          //   element.receivers.forEach(item1 => {
+          //     this.totalDrops++;
+          //   });
+          // });
+          
+          // let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
+          // this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
+
+          // let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
+          // this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
          
-          this.totalMiles = this.orderData[0].milesInfo.totalMiles;
-          this.calculateBy = this.orderData[0].milesInfo.calculateBy;
+          // this.totalMiles = this.orderData[0].milesInfo.totalMiles;
+          // this.calculateBy = this.orderData[0].milesInfo.calculateBy;
 
-          this.charges = this.orderData[0].charges;
-          this.accessrialData = this.charges.accessorialFeeInfo.accessorialFee;
-          this.deductionsData = this.charges.accessorialDeductionInfo.accessorialDeduction;
-          this.totalFreightFee = this.orderData[0].charges.freightFee.amount;
+          // this.charges = this.orderData[0].charges;
+          // this.accessrialData = this.charges.accessorialFeeInfo.accessorialFee;
+          // this.deductionsData = this.charges.accessorialDeductionInfo.accessorialDeduction;
+          // this.totalFreightFee = this.orderData[0].charges.freightFee.amount;
 
-          this.getCurrency = this.orderData[0].charges.freightFee.currency;
+          // this.getCurrency = this.orderData[0].charges.freightFee.currency;
 
-          this.totalFuelSurcharge = this.orderData[0].charges.fuelSurcharge.amount;
-          this.totalAccessotial = this.orderData[0].charges.accessorialFeeInfo.total;
-          this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
-          this.discountAmount = this.orderData[0].discount.amount;
-          this.discountAmtUnit = this.orderData[0].discount.unit;
+          // this.totalFuelSurcharge = this.orderData[0].charges.fuelSurcharge.amount;
+          // this.totalAccessotial = this.orderData[0].charges.accessorialFeeInfo.total;
+          // this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
+          // this.discountAmount = this.orderData[0].discount.amount;
+          // this.discountAmtUnit = this.orderData[0].discount.unit;
           
-          this.orderData[0].taxesInfo.forEach(item => {
-            this.totalTax += parseFloat(item.amount);
-          });
-          this.taxesData = this.orderData[0].taxesInfo;
-          this.totalAmount = this.orderData[0].totalAmount;
+          // this.orderData[0].taxesInfo.forEach(item => {
+          //   this.totalTax += parseFloat(item.amount);
+          // });
+          // this.taxesData = this.orderData[0].taxesInfo;
+          // this.totalAmount = this.orderData[0].totalAmount;
 
 
-          if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
-            this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
-          }     
+          // if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
+          //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
+          // }     
+        
+          this.fetchCustomersByID();
 
-        }
+        
       }, (err) => {        
       });
   }
@@ -142,9 +261,17 @@ export class OrderDetailComponent implements OnInit {
      /*
    * Get all customers's IDs of names from api
    */
-  fetchCustomersByIDs() {
-    this.apiService.getData('customers/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
+  fetchCustomersByID() {
+    this.apiService.getData(`customers/${this.customerID}`).subscribe((result: any) => {
+      result = result.Items[0];
+
+      this.customerName = `${result.firstName} ${result.lastName}`
+      this.customerAddress = result.address[0].address1;
+      this.customerCityName = result.address[0].cityName;
+      this.customerStateName = result.address[0].stateName;
+      this.customerCountryName = result.address[0].countryName;
+      this.customerPhone = result.address[0].phone;
+      this.customerEmail = result.address[0].email;
     });
   }
 
@@ -190,4 +317,39 @@ export class OrderDetailComponent implements OnInit {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
+
+   /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
+    let files = [...event.target.files];
+    
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedDocs.push(files[i])
+    }
+ 
+
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.localPhotos.push(e.target.result);
+        }
+        reader.readAsDataURL(files[i]);
+      }
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadedDocs.length; i++){
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
+
+    this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+
+    })
+  }
+  
+
+  setSrcValue(){}
 }

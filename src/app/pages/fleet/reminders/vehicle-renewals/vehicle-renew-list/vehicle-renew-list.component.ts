@@ -6,21 +6,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import Constants from '../../../constants';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-renew-list',
   templateUrl: './vehicle-renew-list.component.html',
   styleUrls: ['./vehicle-renew-list.component.css']
 })
-export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class VehicleRenewListComponent implements OnInit {
 
   public remindersData = [];
   // dtOptions: any = {};
@@ -47,13 +39,18 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   pageLength = 10;
   lastEvaluatedKey = '';
 
+  vehicleRenewNext = false;
+  vehicleRenewPrev = true;
+  vehicleRenewDraw = 0;
+  vehicleRenewPrevEvauatedKeys = [''];
+  vehicleRenewStartPoint = 1;
+  vehicleRenewEndPoint = this.pageLength;
+
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    // this.getReminders();
     this.getRemindersCount();
     this.fetchServiceTaks();
-    // this.fetchRenewals();
     this.fetchVehicles();
     this.fetchGroupsList();
     this.fetchVehicleList();
@@ -69,7 +66,6 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
-      //   console.log('Groups Data', this.groups);
     });
   }
   
@@ -103,8 +99,6 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   
   fetchRenewals = async () => {    
     this.remindersData = [];
-    console.log('this.allRemindersData')
-    console.log(this.allRemindersData.length)
     for(let j=0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
         const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
@@ -145,10 +139,9 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       this.apiService
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-        // console.log('result', result);
         this.remindersData = [];
         this.getRemindersCount()
-        this.rerender();
+        this.initDataTable();
         this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
       });
     }
@@ -182,68 +175,40 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
   initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0],"orderable": false},
-        {"targets": [1],"orderable": false},
-        {"targets": [2],"orderable": false},
-        {"targets": [3],"orderable": false},
-        {"targets": [4],"orderable": false},
-        {"targets": [5],"orderable": false},
-      ],
-      dom: 'lrtip',
-      language: {
-        "emptyTable": "No records found"
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('reminders/fetch/records?reminderIdentification='+this.vehicleID+'&serviceTask='+this.searchServiceTask+'&reminderType=vehicle'+'&lastKey='+this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-            current.allRemindersData = resp['Items'];
-            current.fetchRenewals();
-            // console.log(resp)
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              this.lastEvaluatedKey = resp['LastEvaluatedKey'].assetID;
-              
-            } else {
-              this.lastEvaluatedKey = '';
-            }
+    this.spinner.show();
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.allRemindersData = result['Items'];
+        this.fetchRenewals();
+        if (this.vehicleID !== '' || this.searchServiceTask !== '' ) {
+          this.vehicleRenewStartPoint = 1;
+          this.vehicleRenewEndPoint = this.totalRecords;
+        }
 
-            callback({
-              recordsTotal: current.totalRecords,
-              recordsFiltered: current.totalRecords,
-              data: []
-            });
-          });
-      }
-    };
-  }
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.vehicleRenewNext = false;
+          // for prev button
+          if (!this.vehicleRenewPrevEvauatedKeys.includes(result['LastEvaluatedKey'].reminderID)) {
+            this.vehicleRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
+          
+        } else {
+          this.vehicleRenewNext = true;
+          this.lastEvaluatedKey = '';
+          this.vehicleRenewEndPoint = this.totalRecords;
+        }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+        // disable prev btn
+        if (this.vehicleRenewDraw > 0) {
+          this.vehicleRenewPrev = false;
+        } else {
+          this.vehicleRenewPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   searchFilter() {
@@ -251,7 +216,7 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
     || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
       this.getRemindersCount()
-      this.rerender('reset');
+      this.initDataTable();
     } else {
       return false;
     }
@@ -267,7 +232,8 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
 
       this.remindersData = [];
       this.getRemindersCount()
-      this.rerender();
+      this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -282,5 +248,31 @@ export class VehicleRenewListComponent implements AfterViewInit, OnDestroy, OnIn
       this.toastr.error('Vehicle renewal is upto date');
       return false;
     }
+  }
+
+  getStartandEndVal() {
+    this.vehicleRenewStartPoint = this.vehicleRenewDraw * this.pageLength + 1;
+    this.vehicleRenewEndPoint = this.vehicleRenewStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.vehicleRenewDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.vehicleRenewDraw -= 1;
+    this.lastEvaluatedKey = this.vehicleRenewPrevEvauatedKeys[this.vehicleRenewDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.vehicleRenewStartPoint = 1;
+    this.vehicleRenewEndPoint = this.pageLength;
+    this.vehicleRenewDraw = 0;
   }
 }
