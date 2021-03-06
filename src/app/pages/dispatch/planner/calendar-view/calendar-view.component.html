@@ -48,6 +48,11 @@
                            <div id="external-trips">
                               <div class="schedule-trips">
                                  <ul class="m-0 p-0 mt-4">
+                                    <li class=" mb-2 border" *ngIf="tempTrips.length == 0">
+                                        <p>
+                                            There are no trips to plan. Click <a href="javascript:;" routerLink="/dispatch/trips/add-trip"> here </a> to create a new one.
+                                        </p>
+                                    </li>
                                     <li class=" mb-2 border" *ngFor="let trip of tempTrips">
                                        <div class="fc-event-main">
                                           <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">

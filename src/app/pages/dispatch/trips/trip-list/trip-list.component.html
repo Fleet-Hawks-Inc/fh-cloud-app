@@ -87,39 +87,37 @@
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active navtabs" id="allTrips-tab" href="javascript:;"
-                                    role="tab" (click)="fetchTabData('all')" aria-controls="allTrips" aria-selected="true">All</a>
+                                    role="tab" (click)="setActiveDiv('all')" aria-controls="allTrips" aria-selected="true" [ngClass]="{'active': activeTab == 'all'}">All</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;" (click)="fetchTabData('confirmed')">
+                                <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;"  (click)="setActiveDiv('confirmed')" [ngClass]="{'active': activeTab == 'confirmed'}">
                                     Confirmed : {{ confirmedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;" (click)="fetchTabData('dispatched')">
+                                <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;" (click)="setActiveDiv('dispatched')" [ngClass]="{'active': activeTab == 'dispatched'}">
                                     Dispatched : {{ dispatchedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="started-tab" href="javascript:;" (click)="fetchTabData('started')">
+                                <a class="nav-link navtabs" id="started-tab" href="javascript:;" (click)="setActiveDiv('started')" [ngClass]="{'active': activeTab == 'started'}">
                                     Started : {{ startedTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="enroute-tab" href="javascript:;" (click)="fetchTabData('enroute')">
+                                <a class="nav-link navtabs" id="enroute-tab" href="javascript:;" (click)="setActiveDiv('enroute')" [ngClass]="{'active': activeTab == 'enroute'}">
                                     En-Route : {{ enrouteTripsCount }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="fetchTabData('cancelled')">
+                                <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="setActiveDiv('cancelled')" [ngClass]="{'active': activeTab == 'cancelled'}">
                                     Cancelled : {{ cancelledTripsCount }}</a>
                             </li>
                             <li class="nav-item navtabs">
-                                <a class="nav-link" id="delivered-tab" href="javascript:;" (click)="fetchTabData('delivered')">
+                                <a class="nav-link" id="delivered-tab" href="javascript:;" (click)="setActiveDiv('delivered')" [ngClass]="{'active': activeTab == 'delivered'}">
                                     Delivered : {{ deliveredTripsCount }}</a>
                             </li>
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <div class="tab-pane show active table-responsive" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab">
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                class="row-border hover table table-bordered table-striped mb-0"
-                                 id="allTripsDT">
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'all'}" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab" *ngIf="activeTab == 'all'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="allTripsDT">
                                 <thead>
                                     <tr>
                                         <th>Trip</th>
@@ -128,8 +126,6 @@
                                         <th>Date</th>
                                         <th>Pick-up Location</th>
                                         <th>Drop Location</th>
-                                        <!-- <th>Pick-up Time</th>
-                                        <th>Drop Time</th> -->
                                         <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Assets</th>
@@ -138,9 +134,11 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="trips.length > 0">
+                                <tbody>
+                                    <tr *ngIf="trips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of trips; let i= index">
-                                        <!-- <td><input type="checkbox"></td> -->
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
                                             {{ trip.tripNo }}
                                         </td>
@@ -155,8 +153,6 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <!-- <td>{{ trip.pickupTime }}</td>
-                                        <td>{{ trip.dropTime }}</td> -->
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
@@ -186,13 +182,478 @@
                                         </td>
                                     </tr>
                                 </tbody>
-
-                                <tbody *ngIf="trips.length === 0">
+                            </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="trips.length > 0">
+                                <div class="col-6">
+                                    Showing {{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="tripPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="tripNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'confirmed'}" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab" *ngIf="activeTab == 'confirmed'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="confirmedTripsDT">
+                                <thead>
                                     <tr>
-                                      <td colspan="14" class="no-data-available">No records found</td>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="confirmedTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of confirmedTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="confirmedTrips.length > 0">
+                                <div class="col-6">
+                                    Showing {{ tripConfirmedStartPoint }} to {{ tripConfirmedEndPoint }} of {{ confirmedTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('confirmed')" [disabled]="tripConfirmedPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('confirmed')" [disabled]="tripConfirmedNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'dispatched'}" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="dispatchedTripsDT">
+                                <thead>
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="dispatchedTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of dispatchedTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="dispatchedTrips.length > 0">
+                                <div class="col-6">
+                                    Showing {{ tripDispatchedStartPoint }} to {{ tripDispatchedEndPoint }} of {{ dispatchedTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('dispatched')" [disabled]="tripDispatchedPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('dispatched')" [disabled]="tripDispatchedNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'started'}" id="started" role="tabpanel" aria-labelledby="started-tab" *ngIf="activeTab == 'started'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="startedTripsDT">
+                                <thead>
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="startedTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of startedTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate" >
+                                <div class="col-6">
+                                    Showing {{ tripStartedStartPoint }} to {{ tripStartedEndPoint }} of {{ startedTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('started')" [disabled]="tripStartedPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('started')" [disabled]="tripStartedNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'enroute'}" id="enroute" role="tabpanel" aria-labelledby="enroute-tab" *ngIf="activeTab == 'enroute'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="enrouteTripsDT">
+                                <thead>
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="enrouteTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of enrouteTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate" >
+                                <div class="col-6">
+                                    Showing {{ tripEnrouteStartPoint }} to {{ tripEnrouteEndPoint }} of {{ enrouteTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('enroute')" [disabled]="tripEnroutePrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('enroute')" [disabled]="tripEnrouteNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'cancelled'}" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab" *ngIf="activeTab == 'cancelled'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="cancelledTripsDT">
+                                <thead>
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="cancelledTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of cancelledTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate">
+                                <div class="col-6">
+                                    Showing {{ tripCancelStartPoint }} to {{ tripCancelEndPoint }} of {{ cancelledTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('cancelled')" [disabled]="tripCancelPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('cancelled')" [disabled]="tripCancelNext">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'delivered'}" id="delivered" role="tabpanel" aria-labelledby="delivered-tab" *ngIf="activeTab == 'delivered'">
+                            <table class="row-border hover table table-bordered table-striped mb-0" id="deliveredTripsDT">
+                                <thead>
+                                    <tr>
+                                        <th>Trip</th>
+                                        <th>Type</th>
+                                        <th>Order No.</th>
+                                        <th>Date</th>
+                                        <th>Pick-up Location</th>
+                                        <th>Drop Location</th>
+                                        <th>Driver</th>
+                                        <th>Vehicle</th>
+                                        <th>Assets</th>
+                                        <th>Carrier</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="deliveredTrips.length == 0" class="text-center">
+                                        <td colspan="12">No records found</td>
+                                    </tr>
+                                    <tr class="cursorpoint" *ngFor="let trip of deliveredTrips; let i= index">
+                                        <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                            {{ trip.tripNo }}
+                                        </td>
+                                        <td>{{ trip.orderType }}</td>
+                                        <td>
+                                            <span *ngFor="let ordr of trip.orderId">
+                                                {{ ordersObject[ordr] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.dropLocation }}
+                                        </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
+                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
+                                        <td>
+                                            <span *ngFor="let asst of trip.assetId">
+                                                {{ assetsObject[asst] }},
+                                            </span>
+                                        </td>
+                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate">
+                                <div class="col-6">
+                                    Showing {{ tripDeliverStartPoint }} to {{ tripDeliverEndPoint }} of {{ deliveredTripsCount }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('delivered')" [disabled]="tripDeliverPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('delivered')" [disabled]="tripDeliverNext">Next</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
