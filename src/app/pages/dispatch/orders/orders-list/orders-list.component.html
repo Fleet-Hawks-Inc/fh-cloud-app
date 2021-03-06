@@ -1,13 +1,5 @@
 <section class="body">
-
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
             <header class="page-header pr-5">
                 <form class="form-horizontal" method="get">
@@ -115,12 +107,6 @@
                                     (click)="fetchTabData('cancelled')">Cancelled Dispatch :
                                     {{ cancelledOrdersCount }}</a>
                             </li>
-                            <!--
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="quoted-tab" (click)="fetchTabData('quoted')">Quoted :
-                                    {{ quotedOrdersCount }}</a>
-                            </li>
-                            -->
 
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="invoiced-tab"
@@ -134,11 +120,8 @@
                         </ul>
                     </div>
                     <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <div class="tab-pane show active" id="allOrders" role="tabpanel"
-                            aria-labelledby="allOrders-tab">
-
-                            <!-- <table class="table table-bordered table-responsive-lg table-striped mb-0"> -->
-                            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover table table-bordered table-striped mb-0">
+                        <div class="tab-pane show active" id="allOrders" role="tabpanel" aria-labelledby="allOrders-tab">
+                            <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
                                         <th>Order</th>
@@ -153,6 +136,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr *ngIf="orders.length == 0" class="text-center">
+                                        <td colspan="9">No records found</td>
+                                    </tr>
                                     <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
@@ -174,21 +160,8 @@
                                         <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
                                             Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
                                             {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                            <!-- Rate:- -->
                                         </td>
                                         <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                            <!-- <td>Date: {{order.shipperInfo[i].locationDateTime}}<br>
-                                            Location: {{order.shipperInfo[i].pickupLocation}}</td>
-                                        <td>Date: {{order.receiverInfo[i].locationDateTime}}<br>
-                                            Location: {{order.receiverInfo[i].dropOffLocation}}</td>
-                                        <td>Name: {{order.freightDetails.commodity}}<br>
-                                            Qty: {{order.freightDetails.quantity}} {{order.freightDetails.quantityUnit}} <br>
-                                            Rate: {{order.freightDetails.rate}} {{order.freightDetails.rateUnit}}</td>
-                                        <td>T Amt: CAD {{order.freightDetails.amount}}<br> 
-                                        Received: 0<br>
-                                            Balance: 0
-                                        -->
-                                            
                                         </td>
                                         <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                         <td>
@@ -209,13 +182,16 @@
                                         </td>
                                     </tr>
                                 </tbody>
-
-                                <tbody *ngIf="orders.length === 0">
-                                    <tr>
-                                        <td colspan="8" class="no-data-available">No record(s) found</td>
-                                    </tr>
-                                <tbody>
                             </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="orders.length > 0">
+                                <div class="col-6">
+                                    Showing {{ ordersStartPoint }} to {{ ordersEndPoint }} of {{ totalRecords }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="ordersNext">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="ordersNext">Next</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
