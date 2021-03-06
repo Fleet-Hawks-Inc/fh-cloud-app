@@ -15,6 +15,7 @@ export class HeaderComponent implements OnInit {
   navSelected = '';
   currentUser:any = '';
   carrierName: any;
+  isCarrierID: any;
   userRole:any = '';
   carriers: any = [];
   logoSrc: any = 'assets/img/logo.png';
@@ -55,6 +56,7 @@ fetchCarrier(){
     localStorage.removeItem('driver');
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
+    localStorage.removeItem('carrierID')
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
      
@@ -69,8 +71,11 @@ fetchCarrier(){
    * show 'login as' div for cloud admin
    */
   async getLoggedUserForCloud() {
-    let isCarrierID = localStorage.getItem('carrierID');
-    await this.getSpecificCarrier(isCarrierID);
+    this.isCarrierID = localStorage.getItem('carrierID');
+    if(this.isCarrierID != undefined && this.isCarrierID != null) {
+      await this.getSpecificCarrier(this.isCarrierID);
+    }
+    
   }
 
   async getSpecificCarrier(id){

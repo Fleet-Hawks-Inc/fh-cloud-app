@@ -84,7 +84,8 @@ export class ApiService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
+    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'FHCarrierID': isCarrier})
     };
     
     return this.http.get<any>(this.BaseUrl + url , headers);

@@ -34,6 +34,7 @@ export class AllCarriersComponent implements OnInit {
     localStorage.removeItem('driver');
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
+    localStorage.removeItem('carrierID')
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
      

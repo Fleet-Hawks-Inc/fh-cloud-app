@@ -31,6 +31,7 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
           rootHtml.classList.add('fixed');
           rootHtml.classList.remove('sidebar-left-collapsed');
         }
+       
         if(localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn')) {
           this.token = true;
         } else {
