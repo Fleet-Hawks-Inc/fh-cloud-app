@@ -186,13 +186,11 @@ export class AddFuelEntryComponent implements OnInit {
   fetchFuelTaxes() {
     this.apiService.getData('fuelTaxes').subscribe((result: any) => {
       this.fuelTaxes = result.Items;
-      console.log('fuel taxes', this.fuelTaxes);
     });
   }
   fetchFuelDiscounts() {
     this.apiService.getData('fuelDiscounts').subscribe((result: any) => {
       this.fuelDiscounts = result.Items;
-      console.log('fuel discounts', this.fuelDiscounts);
     });
   }
   fetchDrivers() {
@@ -246,7 +244,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.DEFFuelQtyUnit = 'litre';
     }
   }
-  changebillingCurrency(val) {
+  changeCurrency(val) {
     this.fuelData.billingCurrency = val;
   }
   calculate() {
@@ -275,7 +273,6 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
-    console.log('data', this.fuelData);
       // create form data instance
     const formData = new FormData();
       // append photos if any

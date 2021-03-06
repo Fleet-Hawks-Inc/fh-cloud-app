@@ -80,7 +80,6 @@ export class FuelEntryListComponent implements OnInit {
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
-
     this.suggestedUnits = [];
   }
   getSuggestions(value) {
@@ -179,7 +178,6 @@ export class FuelEntryListComponent implements OnInit {
       this.apiService
       .getData(`fuelEntries/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
-
         this.fuelList = [];
         this.fuelEntriesCount();
         this.initDataTable();
@@ -190,10 +188,8 @@ export class FuelEntryListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
+    this.apiService.getData('fuelEntries/fetch/records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
         this.fuelList = result[`Items`];
-  console.log('this.fuelList', this.fuelList);
         if (this.unitID !== '') {
           this.fuelStartPoint = 1;
           this.fuelEndPoint = this.totalRecords;

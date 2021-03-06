@@ -55,13 +55,13 @@
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
                                          <td>{{fuelData.odometer}} mi</td>
                                       </tr>
-                                      <tr>
+                                      <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
-                                         <td>{{fuelData.fuelQty}} Gallon</td>
+                                         <td>{{fuelData.fuelQty}} litre(s)</td>
                                       </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
-                                       <td>{{fuelData.fuelQtyAmt}} {{fuelData.currency}}</td>
+                                       <td>{{fuelData.fuelQtyAmt}} {{fuelData.billingCurrency}}</td>
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
@@ -69,19 +69,19 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
-                                       <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.currency}} </td>
+                                       <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
                                     </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Price/Gallon</td>
-                                         <td>{{fuelData.costPerGallon}} {{fuelData.currency}}</td>
+                                         <td>{{fuelData.costPerGallon}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
-                                         <td>{{fuelData.amountPaid}} {{fuelData.currency}}  &nbsp;&nbsp; (Discount {{fuelData.discount}} {{fuelData.currency}})</td>
+                                         <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}  &nbsp;&nbsp; <span *ngIf="fuelData.discType === ''">(Discount)- {{WEXDiscountCodeList[fuelData.discType]}} &nbsp; {{fuelData.discAmount}} {{fuelData.billingCurrency}}</span></td>
                                       </tr>
-                                      <tr>
+                                      <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">Fuel Type</td>
-                                         <td>{{fuelData.fuelType}}</td>
+                                         <td>{{fuelTypeListCode[fuelData.fuelType]}}</td>
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Vendor</td>
@@ -101,7 +101,7 @@
                                       </tr>
                                       <tr *ngIf ="costPerMile != 0">
                                          <td class="back-color-gray font-weight-bold">Cost/Mile</td>
-                                         <td> {{costPerMile}} {{fuelData.currency}}</td>
+                                         <td> {{costPerMile}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                    </tbody>
                                 </table>
@@ -175,17 +175,16 @@
                         <tbody>
                          <tr *ngFor="let item of fuelData.lineItems; let i=index;">
                             <td>{{i+1}}</td>
-                            <td>{{item.fuelType}}</td>
+                            <td>{{fuelTypeWEXCode[item.fuelType]}}</td>
                             <td>{{item.quantity}}</td>
                             <td>{{item.amount}}</td>
                             <td>{{item.pricePerUnit}}</td>
                             <td>{{item.retailAmount}}</td>
                             <td>{{item.retailPricePerUnit}}</td>
                             <td>{{item.useType}}</td>
-                            <td>
-
-
-
+                            <td><span *ngFor="let tax of item.tax">{{WEXTaxCodeList[tax.taxCode]}}({{tax.taxCode}}) - {{tax.amount}}<br></span>
+                            <!-- <button type="button" class="btn btn-success btn-sm" (click)="showFn()" id="showBtn">Read More..</button> -->
+                            <!-- <button type="button" class="btn btn-success btn-sm" (click)="hideFn()" id="hideBtn">Read Less...</button> -->
                             </td>
                          </tr><tr>
                         </tr></tbody>

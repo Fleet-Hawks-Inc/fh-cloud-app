@@ -80,7 +80,18 @@ export class AceDetailsComponent implements OnInit {
       }
     ],
     thirdParties: [],
-    inBondDetails: {}
+    inBondDetails: {
+      
+        type: '',
+        paperInBondNumber: '',
+        usDestination: '',
+        foreignDestination: '',
+        onwardCarrierScac: '',
+        irsNumber: '',
+        estimatedDepartureDate: '',
+        fda: '',
+      
+    }
   };
   driverData = {
     driverID: '',
@@ -128,7 +139,6 @@ export class AceDetailsComponent implements OnInit {
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
-        console.log('hello', result.shipments);
         this.spinner.hide(); // loader hide
       });
   }
@@ -186,7 +196,6 @@ export class AceDetailsComponent implements OnInit {
         fda: '',
       };
     }
-    console.log('shipment0', this.shipmentData);
   }
   showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);

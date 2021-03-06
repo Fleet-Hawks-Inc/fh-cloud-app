@@ -22,7 +22,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     fuelQtyUnit: '',
     unitType: '',
     entryID: '',
-    currency: '',
+    billingCurrency: '',
     DEFFuelQtyUnit: '',
     fuelTime: '',
     fuelDate: '',
@@ -38,13 +38,22 @@ export class FuelEntryDetailsComponent implements OnInit {
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
     totalAmount: 0,
-    discount: 0,
+    discType: '',
+    discAmount: 0,
     amountPaid: 0,
     costPerGallon: 0,
     totalGallons: 0,
     countryID: '',
     stateID: '',
-    lineItems: [],
+    lineItems : [{
+        fuelType: '',
+        quantity: '',
+        amount: '',
+        pricePerUnit: '',
+        retailAmount: '',
+        retailPricePerUnit: '',
+        useType: ''
+    }],
     reimburseToDriver: false,
     deductFromPay: false,
       avgGVW: '',
@@ -59,6 +68,8 @@ export class FuelEntryDetailsComponent implements OnInit {
   vendorList: any = {};
   WEXTaxCodeList: any = {};
   WEXDiscountCodeList: any = {};
+  fuelTypeWEXCode: any  = {};
+  fuelTypeListCode: any  = {};
   public fuelEntryImages = [];
   existingPhotos = [];
   tripID = '';
@@ -96,8 +107,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
-    this.fetchFuelEntry();
+    this.entryID = this.route.snapshot.params[`entryID`];    
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
@@ -108,6 +118,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
     this.map = this.HereMap.mapInit();
+    this.fetchFuelEntry();
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -121,7 +132,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
   fetchTaxWEXCode() {
     this.apiService.getData('fuelTaxes/get/WEXCode').subscribe((result: any) => {
-this.WEXTaxCodeList = result;
+    this.WEXTaxCodeList = result;
     });
   }
   fetchWEXDiscountCode() {
@@ -136,12 +147,12 @@ this.WEXTaxCodeList = result;
   }
   fetchFuelTypeList() {
     this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
-      console.log('result list', result);
+      this.fuelTypeListCode = result;
     });
   }
   fetchFuelTypeWEXCode() {
     this.apiService.getData('fuelTypes/get/WEXCode').subscribe((result: any) => {
-      console.log('WEX Code', result);
+      this.fuelTypeWEXCode = result;
     });
   }
   fetchTripList() {
@@ -238,17 +249,26 @@ this.WEXTaxCodeList = result;
       //   lng: lng
       // });
     });
-
+  }
+  showFn() {    
+    $('#seeFull').show(400);
+    $('#showBtn').hide(200);
+    $('#hideBtn').show(200);
+  }
+   hideFn() {    
+    $('#seeFull').hide(400);
+     $('#showBtn').show(200);
+    $('#hideBtn').hide(200);
   }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('Details', result);
+        console.log('result',result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
-        this.fuelData.currency = result.currency,
+        this.fuelData.billingCurrency = result.billingCurrency,
           this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
         this.fuelData.fuelQty = result.fuelQty;
@@ -256,7 +276,8 @@ this.WEXTaxCodeList = result;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
         this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.fuelData.discount = result.discount;
+        this.fuelData.discType = result.discType;
+        this.fuelData.discAmount = result.discAmount;
         this.fuelData.totalAmount = result.totalAmount;
         this.fuelData.costPerGallon = result.costPerGallon;
         this.fuelData.totalGallons = result.totalGallons;
