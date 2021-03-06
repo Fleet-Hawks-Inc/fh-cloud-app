@@ -1516,13 +1516,13 @@
                         
 
                         <div class="row mt-3">
-                           <div class="col-lg-9 offset-lg-2 pl-0">
+                           <div class="col-lg-9 offset-lg-1">
                               <label class="control-label font-weight-semibold text-3 text-dark"
                                  for="inputDefault">States</label>
                            </div>
-                           <div class="col-lg-3 offset-lg-2 pl-0">
+                           <div class="col-lg-6 offset-lg-1">
                               <ng-select 
-                              [(ngModel)]="stateTaxID"
+                              [(ngModel)]="orderData.stateTaxID"
                               name="stateTaxID"
                                (change)="stateSelectChange()"
                                  class="form-control populate">
@@ -1618,7 +1618,7 @@
                                     <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
                                  </div>
                                  <div class="col-lg-3 bordtop pt-1">
-                                    <p class="text-right">$ <span [innerHTML]="orderData.totalAmount"> </span></p>
+                                    <p class="text-right">$ <span [innerHTML]="totalAmount"> </span></p>
                                  </div>
                               </div>
                               <div class="row">
