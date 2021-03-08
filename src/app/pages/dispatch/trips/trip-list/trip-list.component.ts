@@ -67,12 +67,6 @@ export class TripListComponent implements OnInit {
     },
   ]
 
-  dispatchedOptions: any = {};
-  startedOptions: any = {};
-  enrouteOptions: any = {};
-  cancelledOptions: any = {};
-  deliveredOptions: any = {};
-
   hasError = false;
   hasSuccess = false;
   Error: string = '';

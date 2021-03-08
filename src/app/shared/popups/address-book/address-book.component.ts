@@ -3397,15 +3397,10 @@ export class AddressBookComponent implements OnInit {
         .getData(`customers/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestedCustomers = result.Items;
-          if (this.suggestedCustomers.length == 0) {
-            this.filterVal.customerID = '';
-            this.filterVal.customerName = '';
-          } else {
-            this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
-              v.name = v.firstName + ' ' + v.lastName;
-              return v;
-            })
-          }
+          this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
+            v.name = v.firstName + ' ' + v.lastName;
+            return v;
+          })
         });
 
     } else if (type == 'broker') {
@@ -3413,15 +3408,10 @@ export class AddressBookComponent implements OnInit {
         .getData(`brokers/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestedBrokers = result.Items;
-          if (this.suggestedBrokers.length == 0) {
-            this.filterVal.staffID = '';
-            this.filterVal.brokerName = '';
-          } else {
-            this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
-              v.name = v.firstName + ' ' + v.lastName;
-              return v;
-            })
-          }
+          this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
+            v.name = v.firstName + ' ' + v.lastName;
+            return v;
+          })
         });
 
     } else if (type == 'vendor') {

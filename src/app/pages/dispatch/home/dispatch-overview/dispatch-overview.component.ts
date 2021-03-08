@@ -206,7 +206,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAllTrips() { 
     this.spinner.show();
-    this.apiService.getData('trips/active/all').
+    this.apiService.getData('trips').
       subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
@@ -250,7 +250,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAllRoutes() {
     this.spinner.show();
-    this.apiService.getData('routes/get/active').
+    this.apiService.getData('routes').
       subscribe((result: any) => {
         // result = result.Items[0];
         this.permanentRoutesCount = result.Count;
