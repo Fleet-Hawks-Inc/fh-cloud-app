@@ -1402,20 +1402,20 @@ export class AddOrdersComponent implements OnInit {
     let flag = true;
 
     // check if exiting accoridan has atleast one shipper and one receiver
-    // for (let k = 0; k < this.finalShippersReceivers.length; k++) {
-    //   let shippers = this.finalShippersReceivers[k].shippers;
-    //   let receivers = this.finalShippersReceivers[k].receivers;
+    for (let k = 0; k < this.finalShippersReceivers.length; k++) {
+      let shippers = this.finalShippersReceivers[k].shippers;
+      let receivers = this.finalShippersReceivers[k].receivers;
 
-    //   if (shippers.length == 0) flag = false;
-    //   if (receivers.length == 0) flag = false;
-    // }
+      if (shippers.length == 0) flag = false;
+      if (receivers.length == 0) flag = false;
+    }
 
-    // if (!flag) {
-    //   this.toastr.error(
-    //     "Please add atleast one shipper and receiver in existing shipment."
-    //   );
-    //   return false;
-    // }
+    if (!flag) {
+      this.toastr.error(
+        "Please add atleast one shipper and receiver in existing shipment."
+      );
+      return false;
+    }
 
     let allFields = {
       shippers: {
