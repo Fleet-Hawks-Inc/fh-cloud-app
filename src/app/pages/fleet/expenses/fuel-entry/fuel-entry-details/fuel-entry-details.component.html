@@ -95,15 +95,14 @@
                                          <td class="back-color-gray font-weight-bold">Miles</td>
                                          <td>{{miles}} <span class="font-size-12">since previous fuel entry</span></td>
                                       </tr> -->
-                                      <tr *ngIf ="MPG != 0">
+                                      <!-- <tr *ngIf ="MPG != 0">
                                          <td class="back-color-gray font-weight-bold">MPG (US)</td>
                                          <td>{{MPG}}</td>
                                       </tr>
                                       <tr *ngIf ="costPerMile != 0">
                                          <td class="back-color-gray font-weight-bold">Cost/Mile</td>
                                          <td> {{costPerMile}} {{fuelData.billingCurrency}}</td>
-                                      </tr>
-                                      
+                                      </tr> -->
                                    </tbody>
                                 </table>
                              </div>
@@ -182,7 +181,7 @@
                             <td>{{item.pricePerUnit}}</td>
                             <td>{{item.retailAmount}}</td>
                             <td>{{item.retailPricePerUnit}}</td>
-                            <td>{{item.useType}}</td>
+                            <td>{{WEXuseTypeCodeList[item.useType]}}</td>
                             <td><span *ngFor="let tax of item.tax">{{WEXTaxCodeList[tax.taxCode]}}({{tax.taxCode}}) - {{tax.amount}}<br></span>
                             <!-- <button type="button" class="btn btn-success btn-sm" (click)="showFn()" id="showBtn">Read More..</button> -->
                             <!-- <button type="button" class="btn btn-success btn-sm" (click)="hideFn()" id="hideBtn">Read Less...</button> -->
