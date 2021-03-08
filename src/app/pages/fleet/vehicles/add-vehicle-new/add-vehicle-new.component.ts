@@ -20,7 +20,7 @@ declare var $: any;
   styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
-  showDriverModal: boolean = false
+  showDriverModal = false
   title = 'Add Vehicle';
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
@@ -40,7 +40,7 @@ groupData = {
   groupType : Constants.GROUP_VEHICLES,
   groupName: '',
   groupMembers: '',
-  description: '', 
+  description: '',
 };
 vehicles= [];
 
@@ -224,6 +224,7 @@ vehicles= [];
   countries: any = [];
   states: any = [];
   groups = [];
+  fuelTypes = [];
   drivers: any;
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -261,13 +262,14 @@ vehicles= [];
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
     });
-  
+
   }
 
   ngOnInit() {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
+    this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchCountries();
@@ -437,7 +439,7 @@ vehicles= [];
       };
       this.title = 'Add Vehicle';
     }
-    
+
     this.apiService.getData('devices').subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
@@ -475,7 +477,7 @@ vehicles= [];
     $('#stateSelect').val('');
   }
 
-  
+
   resetModel(){
     this.modelID = '';
     $('#vehicleSelect').val('');
@@ -490,7 +492,11 @@ vehicles= [];
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
+  fetchFuelTypes(){
+    this.apiService.getData('fuelTypes').subscribe((result: any) => {
+      this.fuelTypes = result.Items;
+    });
+  }
   gotoVehiclePage() {
     const data = {
       vehicleIdentification: this.vehicleIdentification,
@@ -836,23 +842,21 @@ vehicles= [];
       },
       activeTab: this.activeTab
     };
-    
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for(let i = 0; i < this.uploadedPhotos.length; i++){
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
-    //append docs if any
+    // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(data));
-
     try {
       return await new Promise((resolve, reject) => {this.apiService.postData('vehicles', formData, true).subscribe({
         complete: () => {},
@@ -1050,7 +1054,7 @@ vehicles= [];
     } catch (error) {
       return 'error found';
     }
-    
+
   }
 
   throwErrors() {
@@ -1081,7 +1085,7 @@ vehicles= [];
    */
   selectDocuments(event, obj) {
     let files = [...event.target.files];
-    
+
     if (obj === 'uploadedDocs') {
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
@@ -1110,7 +1114,7 @@ vehicles= [];
     });
   }
 
-  // EDIT 
+  // EDIT
   fetchVehicleByID(){
     this.apiService
       .getData('vehicles/' + this.vehicleID)
@@ -1472,12 +1476,12 @@ vehicles= [];
      for(let i = 0; i < this.uploadedPhotos.length; i++){
        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
      }
- 
+
      //append docs if any
      for(let j = 0; j < this.uploadedDocs.length; j++){
        formData.append('uploadedDocs', this.uploadedDocs[j]);
      }
- 
+
      //append other fields
      formData.append('data', JSON.stringify(data));
 
@@ -1510,7 +1514,7 @@ vehicles= [];
         }
       })});
      } catch (error) {
-       
+
      }
 
   }
@@ -1714,7 +1718,7 @@ vehicles= [];
         measurmentUnit: this.settings.measurmentUnit,
       }
     }
-   
+
     if(!this.vehicleID){
       localStorage.setItem('vehicle', JSON.stringify(data));
       await this.addVehicle();
@@ -1732,7 +1736,7 @@ vehicles= [];
     if($('#engine .error').length > 0 && this.activeTab == 7) return;
     if($('#purchase .error').length > 0 && this.activeTab == 8) return;
     if($('#loan .error').length > 0 && this.activeTab == 9) return;
-   
+
 
 
     this.activeTab++;
@@ -2099,7 +2103,7 @@ vehicles= [];
     //     measurmentUnit: this.settings.measurmentUnit,
     //   }
     // }
-    
+
     // if(!this.vehicleID){
     //   localStorage.setItem('vehicle', JSON.stringify(data));
       // await this.addVehicle();
@@ -2119,7 +2123,7 @@ vehicles= [];
     // if($('#loan .error').length > 0 && this.activeTab == 9) return;
 
     // if(value != this.activeTab + 1 && value > this.activeTab) return;
-   
+
 
     this.activeTab = value;
   }
@@ -2155,7 +2159,7 @@ vehicles= [];
             this.toastr.success('Group added successfully');
             $('#addGroupModal').modal('hide');
       this.fetchGroups();
-    
+
           },
         });
       }

@@ -4,10 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner'; 
+import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
-import { HttpClient } from '@angular/common/http';
 import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service'
 @Component({

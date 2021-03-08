@@ -31,6 +31,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   totalRecords = 20;
   pageLength = 10;
   serviceUrl = '';
+  activeTab = 'all';
 
   allordersCount = 0;
   confirmedOrdersCount = 0;
@@ -40,8 +41,56 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
   quotedOrdersCount = 0;
   invoicedOrdersCount = 0;
   partiallyPaidOrdersCount = 0;
-
   customersObjects: any = {};
+
+  ordersNext = false;
+  ordersPrev = true;
+  ordersDraw = 0;
+  ordersPrevEvauatedKeys = [''];
+  ordersStartPoint = 1;
+  ordersEndPoint = this.pageLength;
+
+  confirmOrdersNext = false;
+  confirmOrdersPrev = true;
+  confirmOrdersDraw = 0;
+  confirmOrdersPrevEvauatedKeys = [''];
+  confirmOrdersStartPoint = 1;
+  confirmOrdersEndPoint = this.pageLength;
+
+  dispatchOrdersNext = false;
+  dispatchOrdersPrev = true;
+  dispatchOrdersDraw = 0;
+  dispatchOrdersPrevEvauatedKeys = [''];
+  dispatchOrdersStartPoint = 1;
+  dispatchOrdersEndPoint = this.pageLength;
+
+  deliverOrdersNext = false;
+  deliverOrdersPrev = true;
+  deliverOrdersDraw = 0;
+  deliverOrdersPrevEvauatedKeys = [''];
+  deliverOrdersStartPoint = 1;
+  deliverOrdersEndPoint = this.pageLength;
+
+  cancelOrdersNext = false;
+  cancelOrdersPrev = true;
+  cancelOrdersDraw = 0;
+  cancelOrdersPrevEvauatedKeys = [''];
+  cancelOrdersStartPoint = 1;
+  cancelOrdersEndPoint = this.pageLength;
+
+  invoiceOrdersNext = false;
+  invoiceOrdersPrev = true;
+  invoiceOrdersDraw = 0;
+  invoiceOrdersPrevEvauatedKeys = [''];
+  invoiceOrdersStartPoint = 1;
+  invoiceOrdersEndPoint = this.pageLength;
+
+  partialPaidOrdersNext = false;
+  partialPaidOrdersPrev = true;
+  partialPaidOrdersDraw = 0;
+  partialPaidOrdersPrevEvauatedKeys = [''];
+  partialPaidOrdersStartPoint = 1;
+  partialPaidOrdersEndPoint = this.pageLength;
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -156,60 +205,40 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     current.initDataTable(tabType, 'reload');
   }
 
+  initDataTable(tabType, ddd=null) {
+    this.spinner.show();
+    this.orders = [];
+    this.apiService.getData('orders/fetch/records/' + tabType + '?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.orders = result['Items'];
+        if (this.orderFiltr.searchValue !== '' || this.orderFiltr.start !== '' ) {
+          this.ordersStartPoint = 1;
+          this.ordersEndPoint = this.totalRecords;
+        }
 
-  initDataTable(tabType, check = '', filters:any = '') {
-    let current = this;
-    
-    if(tabType !== 'all') {
-      this.lastEvaluatedKey = ''
-    }
-
-    if(tabType === 'all') {
-      this.serviceUrl = 'orders/fetch-records/'+tabType;
-    } else {
-      this.serviceUrl = 'orders/fetch-records/'+tabType + "?recLimit="+this.allordersCount+"&value1=";
-    }
-
-    // this.orderFiltr.category = 'orderNumber';
-    this.serviceUrl = this.serviceUrl+'?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category+"&value1=";
-
-    if (check !== '') {
-      current.rerender();
-    }
-
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: current.pageLength,
-      serverSide: true,
-      processing: true,
-      dom: 'lrtip',
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
-      ],
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-          this.orders = resp['Items'];
-          console.log('this.orders', this.orders)
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            // if (resp['LastEvaluatedKey'].carrierID !== undefined) {
-              current.lastEvaluatedKey = resp['LastEvaluatedKey'].orderID
-            // } else {
-            //   current.lastEvaluatedKey = ''
-            // }
-
-          } else {
-            current.lastEvaluatedKey = ''
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.ordersNext = false;
+          // for prev button
+          if (!this.ordersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.ordersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
           }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.ordersNext = true;
+          this.lastEvaluatedKey = '';
+          this.ordersEndPoint = this.totalRecords;
+        }
 
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
+        // disable prev btn
+        if (this.ordersDraw > 0) {
+          this.ordersPrev = false;
+        } else {
+          this.ordersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
 
   selectCategory(type) {
@@ -241,7 +270,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.totalRecords = this.allordersCount;
       this.orderFiltr.category = 'orderNumber';
 
-      this.initDataTable('all', 'reload','yes');
+      this.initDataTable('all', 'reload');
     }
   }
 
@@ -258,7 +287,7 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       };
       $("#categorySelect").text('Search by category');
       this.pageLength = 10;
-      this.initDataTable('all', 'reload','yes');
+      this.initDataTable('all', 'reload');
       this.spinner.hide();
     } else {
       return false;
@@ -277,5 +306,38 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
           
         });
     }
+  }
+
+  getStartandEndVal(type) {
+    if(type == 'all') {
+      this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
+      this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
+
+    } 
+  }
+
+  // next button func
+  nextResults(type) {
+    if(type == 'all') {
+      this.ordersDraw += 1;
+      this.initDataTable('all');
+      this.getStartandEndVal(type);
+
+    }
+  }
+
+  // prev button func
+  prevResults(type) {
+    if(type == 'all') {
+      this.ordersDraw -= 1;
+      this.lastEvaluatedKey = this.ordersPrevEvauatedKeys[this.ordersDraw];
+      this.initDataTable('all');
+      this.getStartandEndVal(type);
+
+    }
+  }
+
+  setActiveDiv(type){
+    this.activeTab = type;
   }
 }

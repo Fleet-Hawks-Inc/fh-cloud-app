@@ -22,6 +22,7 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 declare var $: any;
 declare var H: any;
@@ -69,10 +70,11 @@ export class AddOrdersComponent implements OnInit {
   orderMode: string = "FTL";
 
   orderData = {
+    stateTaxID: "",
     customerID: "",
     orderNumber: "",
-    creationDate: "",
-    creationTime: "",
+    creationDate: moment().format('YYYY-MM-DD'),
+    creationTime: moment().format('HH:mm'),
     customerPO: "",
     reference: "",
     phone: "",
@@ -130,12 +132,12 @@ export class AddOrdersComponent implements OnInit {
     charges: {
       freightFee: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       fuelSurcharge: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       accessorialFeeInfo: {
@@ -153,7 +155,7 @@ export class AddOrdersComponent implements OnInit {
     advance: 0,
     finalAmount: 0,
     milesInfo: {
-      totalMiles: null,
+      totalMiles: null, 
       calculateBy: 'manual'
     },
     remarks: ''
@@ -410,7 +412,8 @@ export class AddOrdersComponent implements OnInit {
       .getData("stateTaxes")
       .subscribe((result) => {
         this.stateTaxes = result.Items;
-        this.stateTaxID = this.stateTaxes[0].stateTaxID;
+        this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
+        console.log('this.orderData.stateTaxID', this.orderData.stateTaxID);
         this.orderData.taxesInfo = [
           {
             name: 'GST',
@@ -464,9 +467,12 @@ export class AddOrdersComponent implements OnInit {
     const service = platform.getSearchService();
     if (location !== "") {
       let result = await service.geocode({ q: location });
+      console.log('result', result);
       result.items.forEach((res) => {
+        console.log('res', res);
         geoCodeResponse = res;
       });
+      console.log('geoCodeResponse', geoCodeResponse);
     }
 
     //check if all required fields are filled
@@ -996,7 +1002,7 @@ export class AddOrdersComponent implements OnInit {
       },
       next: (res) => {
         this.toastr.success("Order added successfully");
-        //this.router.navigateByUrl("/dispatch/orders");
+        this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
@@ -1069,40 +1075,18 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.discount = discountAmount;
     }
-
-    if (this.orderData.discount["amount"] !== "") {
-      let totalTax = 0;
-      this.orderData.taxesInfo.forEach((elem) => {
-        totalTax += parseFloat(elem.amount) || 0;
-      });
-
-      this.tax = ((this.subTotal - this.discount) * totalTax) / 100;
-    }
-    this.totalAmount = (this.subTotal - this.discount + this.tax).toFixed(2);
+    
+    this.totalAmount = (this.subTotal).toFixed(2);
     let gst =this.orderData.taxesInfo[0].amount ? this.orderData.taxesInfo[0].amount : 0;
     let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
     let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
-    console.log('gst', gst);
-    console.log('pst', pst);
-    console.log('hst', hst);
     let advance:any = this.orderData.advance;
 
     let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
     this.orderData["totalAmount"] = final;
-    this.orderData.finalAmount = final - parseInt(advance)
+    this.totalAmount = final;
+    this.orderData.finalAmount = final - parseInt(advance);
   }
-
-  // getLoadTypes(value) {
-  //   var index = this.loadTypeData.indexOf(value);
-  //   if(index === -1){
-  //     this.loadTypeData.push(value);
-
-  //   }else{
-  //     this.loadTypeData.splice(index,1);
-  //   }
-  //   this.orderData.additionalDetails['loadType'] = this.loadTypeData;
-
-  // }
 
   removeList(elem, parentIndex, i) {
     if (elem === "shipper") {
@@ -1296,6 +1280,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["phone"] = result.phone;
         this.orderData["reference"] = result.reference;
         this.orderData["remarks"] = result.remarks;
+        this.orderData.advance = result.advance;
         this.orderData.milesInfo["totalMiles"] = result.milesInfo.totalMiles;
         this.orderData.milesInfo["calculateBy"] = result.milesInfo.calculateBy;
 
@@ -1541,7 +1526,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   stateSelectChange(){
-    let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.stateTaxID);
+    let selected:any = this.stateTaxes.find(o => o.stateTaxID == this.orderData.stateTaxID);
     this.orderData.taxesInfo = [];
     
           this.orderData.taxesInfo = [
@@ -1560,6 +1545,7 @@ export class AddOrdersComponent implements OnInit {
           ];
           console.log(selected);
         this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
+        this.calculateAmount();
 
   }
 }

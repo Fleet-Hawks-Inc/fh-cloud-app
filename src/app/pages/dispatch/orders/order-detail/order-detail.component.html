@@ -285,14 +285,14 @@
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                                Shipper
+                              Consignor
                               </h4>
                             </div>
                             <div class="col-lg-6">
                               <h4
                                 class="mt-0 text-dark font-weight-bold text-4"
                               >
-                                Receiver
+                              Consignee
                               </h4>
                             </div>
 
@@ -300,7 +300,7 @@
                               <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
                                
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Shipper {{j+1}} 
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Consignor {{j+1}} 
                                       <!-- <i class="fas fa-caret-down caret_icon"></i> -->
                                     </label>
                                     <div class="expand_caret caret"></div>
@@ -335,15 +335,6 @@
                                             {{shipperReceiversInfo.shippers[j].phone}}
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Reference:</strong> 
-                                            {{shipperReceiversInfo.shippers[j].reference}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Notes:</strong> 
-                                            {{shipperReceiversInfo.shippers[j].notes}}
-
-                                          </p>
-                                          <p class="mb-0 text-dark">
                                             <strong>Commodity:</strong> Cakes
                                           </p>
                                           <p class="mb-0 text-dark">
@@ -370,7 +361,7 @@
                               <div class="pl-0 pr-5" *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
                               
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Receiver {{k+1}} </label>
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn">Consignee {{k+1}} </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
                                   
@@ -406,14 +397,6 @@
                                           <p class="mb-0 text-dark">
                                             <strong>Phone:</strong> 
                                             {{shipperReceiversInfo.receivers[k].phone}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Reference:</strong> 
-                                            {{shipperReceiversInfo.receivers[k].reference}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Notes:</strong> 
-                                            {{shipperReceiversInfo.receivers[k].notes}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Commodity:</strong> Cakes
@@ -645,10 +628,10 @@
                               Accessorial Deduction Amount
                               <span class="pull-right">${{charges.accessorialDeductionInfo.total}}</span>
                             </p>
-                            <p class="mb-0 text-dark">
+                            <!-- <p class="mb-0 text-dark">
                               Discount Amount
                               <span class="pull-right">${{discount.amount}}</span>
-                            </p>
+                            </p> -->
                             <p class="mb-0 text-dark">
                               Tax Amount <span class="pull-right">${{taxesTotal}}</span>
                             </p>

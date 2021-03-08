@@ -196,7 +196,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Birth<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input class="form-control" type="date" placeholder="mm-dd-yyyy"
+                            <input class="form-control" type="text" placeholder="mm-dd-yyyy" ngbDatepicker #d7="ngbDatepicker" [maxDate]="getcurrentDate" (click)="d7.toggle()"
                               [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].dateOfBirth'"
                               [(ngModel)]="passenger.dateOfBirth" />
                           </div>
