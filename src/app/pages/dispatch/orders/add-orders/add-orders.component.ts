@@ -22,6 +22,7 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 declare var $: any;
 declare var H: any;
@@ -72,8 +73,8 @@ export class AddOrdersComponent implements OnInit {
     stateTaxID: "",
     customerID: "",
     orderNumber: "",
-    creationDate: "",
-    creationTime: "",
+    creationDate: moment().format('YYYY-MM-DD'),
+    creationTime: moment().format('HH:mm'),
     customerPO: "",
     reference: "",
     phone: "",
@@ -131,12 +132,12 @@ export class AddOrdersComponent implements OnInit {
     charges: {
       freightFee: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       fuelSurcharge: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       accessorialFeeInfo: {
@@ -154,7 +155,7 @@ export class AddOrdersComponent implements OnInit {
     advance: 0,
     finalAmount: 0,
     milesInfo: {
-      totalMiles: null,
+      totalMiles: null, 
       calculateBy: 'manual'
     },
     remarks: ''
@@ -1401,20 +1402,20 @@ export class AddOrdersComponent implements OnInit {
     let flag = true;
 
     // check if exiting accoridan has atleast one shipper and one receiver
-    for (let k = 0; k < this.finalShippersReceivers.length; k++) {
-      let shippers = this.finalShippersReceivers[k].shippers;
-      let receivers = this.finalShippersReceivers[k].receivers;
+    // for (let k = 0; k < this.finalShippersReceivers.length; k++) {
+    //   let shippers = this.finalShippersReceivers[k].shippers;
+    //   let receivers = this.finalShippersReceivers[k].receivers;
 
-      if (shippers.length == 0) flag = false;
-      if (receivers.length == 0) flag = false;
-    }
+    //   if (shippers.length == 0) flag = false;
+    //   if (receivers.length == 0) flag = false;
+    // }
 
-    if (!flag) {
-      this.toastr.error(
-        "Please add atleast one shipper and receiver in existing shipment."
-      );
-      return false;
-    }
+    // if (!flag) {
+    //   this.toastr.error(
+    //     "Please add atleast one shipper and receiver in existing shipment."
+    //   );
+    //   return false;
+    // }
 
     let allFields = {
       shippers: {
