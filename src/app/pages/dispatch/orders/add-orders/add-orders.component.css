@@ -16,3 +16,6 @@
 .show-search__result .map-search__results {
     display: block !important;
 }
+.order-accordian__inner {
+    border:0.5px solid #333;border-radius: 10px; box-shadow: 2px 5px 5px #d1d1d1;
+}

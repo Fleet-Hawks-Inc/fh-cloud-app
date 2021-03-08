@@ -170,13 +170,19 @@ export class OrderDetailComponent implements OnInit {
             }
           }
 
-          this.totalCharges = parseInt(this.charges.freightFee.amount) +
-          parseInt(this.charges.fuelSurcharge.amount) + 
-          parseInt(this.charges.accessorialFeeInfo.total) +
-          parseInt(this.charges.accessorialDeductionInfo.total) +
-          parseInt(this.discount.amount) +
-          parseInt(this.taxesTotal);
+          let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
+          let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
+          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.amount) ? 0 : this.charges.accessorialFeeInfo.amount;
+          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.amount) ? 0 : this.charges.accessorialDeductionInfo.amount;
 
+          console.log('freightFee', freightFee);
+          console.log('fuelSurcharge',fuelSurcharge);
+          console.log('accessorialFeeInfo', accessorialFeeInfo);
+          console.log('accessorialDeductionInfo', accessorialDeductionInfo);
+          console.log('tax', this.taxesTotal);
+
+          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(accessorialDeductionInfo) + parseInt(this.taxesTotal);
+          this.advances = result.advance;
           this.balance = this.totalCharges - this.advances;
 
           if (
