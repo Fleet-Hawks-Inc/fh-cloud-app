@@ -8,11 +8,6 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {ChartsModule} from 'ng2-charts';
 
-import { AddDocumentsComponent } from './document/add-documents/add-documents.component';
-import { EditDocumentsComponent } from './document/edit-documents/edit-documents.component';
-import { DocumentsComponent } from './document/documents/documents.component';
-import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
-import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
 
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
@@ -23,7 +18,6 @@ import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables';
 import {Injectable} from '@angular/core';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
 import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
@@ -112,8 +106,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
-    DataTablesModule,
-
     NgSelectModule,
     HttpClientModule,
 
@@ -130,15 +122,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   ],
 
   declarations: [
-
-    AddDocumentsComponent,
-    EditDocumentsComponent,
-    DocumentsComponent,
-
-    RoutePlannerComponent,
-
-    RoutePlaybackComponent,
-
     EManifestsComponent,
     NewAciManifestComponent,
     CompanyDocumentsComponent,

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { map } from 'rxjs/operators';
-import { from, Subject } from 'rxjs';
-import { AwsUploadService } from '../../../../services';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { from } from 'rxjs';
+import {SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
+import { AfterViewInit, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
@@ -18,12 +16,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnInit {
   Asseturl = this.apiService.AssetUrl;
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject();
 
   public documents = [];
   trips;
@@ -79,8 +71,6 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
 
   constructor(
     private apiService: ApiService,
-    private domSanitizer: DomSanitizer,
-    private awsUS: AwsUploadService,
     private toastr: ToastrService,
   ) {
     this.selectedFileNames = new Map<any, any>();
@@ -204,16 +194,6 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   //     this.documentData.uploadedDocs.push(fileName);
   //   }
   // }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    console.log(this.selectedFileNames)
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
 
   /*
    * Get all trips from api
@@ -321,78 +301,6 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
 
   initDataTable() {
     let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: current.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      buttons: [
-        {
-          extend: 'colvis',
-          columns: ':not(.noVis)'
-        }
-      ],
-      columnDefs: [
-        {
-          targets: 0,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 1,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 2,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 3,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 4,
-          className: 'noVis',
-          "orderable": false
-        },
-        {
-          targets: 5,
-          "orderable": false
-        },
-        {
-          targets: 6,
-          "orderable": false
-        },
-        {
-          targets: 7,
-          "orderable": false
-        },
-      ],
-      dom: 'Bfrtip',
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('documents/fetch-records?categoryType=company&value1=' + current.lastEvaluatedKey +
-          '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +
-          "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
-            current.documents = resp['Items'];
-            console.log('docum', current.documents)
-            if (resp['LastEvaluatedKey'] !== undefined) {
-              current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
-            } else {
-              current.lastEvaluatedKey = ''
-            }
-
-            callback({
-              recordsTotal: current.totalRecords,
-              recordsFiltered: current.totalRecords,
-              data: []
-            });
-          });
-      }
-    };
   }
 
   getCurrentuser = async () => {
@@ -401,26 +309,15 @@ export class CompanyDocumentsComponent implements AfterViewInit, OnDestroy, OnIn
   }
 
   ngAfterViewInit(): void {
-    this.dtTrigger.next();
+    
   }
 
   ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
+    
   }
 
   rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
+    
   }
 
   searchFilter() {

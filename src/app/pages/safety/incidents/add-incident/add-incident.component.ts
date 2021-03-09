@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-
+declare var $: any;
 @Component({
   selector: 'app-add-incident',
   templateUrl: './add-incident.component.html',

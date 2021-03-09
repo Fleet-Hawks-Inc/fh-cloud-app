@@ -29,10 +29,6 @@
               "src/styles.css",
               "src/assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
-              "node_modules/datatables.net-colreorder-dt/css/colReorder.dataTables.css",
-              "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css",
-              "node_modules/datatables.net-select-dt/css/select.dataTables.css",
               "node_modules/jstree/dist/themes/default/style.min.css",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
@@ -41,22 +37,12 @@
             "scripts": [
               "src/assets/vendor/jquery/jquery.js",
               "src/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/datatables.net-colreorder/js/dataTables.colReorder.js",
               "node_modules/jszip/dist/jszip.js",
-              "node_modules/datatables.net-buttons/js/dataTables.buttons.js",
-              "node_modules/datatables.net-select/js/dataTables.select.js",
-              "node_modules/datatables.net-buttons/js/buttons.colVis.js",
-              "node_modules/datatables.net-buttons/js/buttons.flash.js",
-              "node_modules/datatables.net-buttons/js/buttons.html5.js",
-              "node_modules/datatables.net-buttons/js/buttons.print.js",
               "src/assets/vendor/modernizr/modernizr.min.js",
               "src/assets/vendor/popper/umd/popper.min.js",
               "src/assets/vendor/bootstrap/js/bootstrap.js",
               "src/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js",
               "src/assets/vendor/common/common.js",
-              "src/assets/vendor/nanoscroller/nanoscroller.js",
-              "src/assets/vendor/magnific-popup/jquery.magnific-popup.js",
               "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
               "src/assets/js/theme.js",
               "node_modules/jstree/dist/jstree.min.js",
@@ -89,13 +75,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "9mb",
-                  "maximumError": "9mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "4mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "4mb"
                 }
               ]
             },

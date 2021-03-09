@@ -3,7 +3,6 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import {from} from 'rxjs';
-import {AwsUploadService} from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
@@ -257,7 +256,7 @@ vehicles= [];
 
   vendorModalStatus = false;
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private awsUS: AwsUploadService,private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
+  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -1103,15 +1102,6 @@ vehicles= [];
         reader.readAsDataURL(files[i]);
       }
     }
-  }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
   }
 
   // EDIT

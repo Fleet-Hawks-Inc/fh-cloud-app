@@ -2,9 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ChartsModule} from 'ng2-charts';
 import {
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
   AddAssetsComponent,
   AssetListComponent,
   AssetDetailComponent,
@@ -22,7 +19,6 @@ import {
   ContactRenewDetailComponent,
   AddGeofenceComponent,
   GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
 
   AddInventoryComponent,
@@ -33,9 +29,6 @@ import {
 
 
 const COMPONENTS = [
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
   AddAssetsComponent,
   AssetListComponent,
   AssetDetailComponent,
@@ -53,7 +46,6 @@ const COMPONENTS = [
   ContactRenewDetailComponent,
   AddGeofenceComponent,
   GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
 
 
@@ -70,14 +62,6 @@ const routes: Routes = [
   {
     path: 'vehicles',
     loadChildren: () => import('./vehicles/vehicles.module').then((m) => m.VehiclesModule) ,
-  },
-  {
-    path: 'fleet-manager',
-    children: [
-      { path: 'Add-User', component: AddUserComponent },
-      { path: 'Edit-User/:userName', component: EditUserComponent },
-      { path: 'User-List', component: UserListComponent },
-    ],
   },
   {
     path: 'assets',
@@ -159,10 +143,6 @@ const routes: Routes = [
       { path: 'edit/:fenceID', component: AddGeofenceComponent },
       { path: 'list', component: GeofenceListComponent },
     ],
-  },
-  {
-    path: 'graphs',
-    children: [{ path: 'view-graph', component: GraphComponent }],
   },
   {
     path: 'live-driver',

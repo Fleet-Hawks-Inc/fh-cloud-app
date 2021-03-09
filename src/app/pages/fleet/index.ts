@@ -4,10 +4,6 @@
 
 export * from './vehicles/vehicle-list/vehicle-list.component';
 
-export * from './fleet-manager/user-list/user-list.component';
-export * from './fleet-manager/add-user/add-user.component';
-export * from './fleet-manager/edit-user/edit-user.component';
-
 export * from './drivers/add-driver/add-driver.component';
 export * from './drivers/driver-list/driver-list.component';
 export * from './drivers/driver-detail/driver-detail.component';
@@ -23,8 +19,6 @@ export * from './expenses/fuel-entry/fuel-entry-details/fuel-entry-details.compo
 
 export * from './geofence/add-geofence/add-geofence.component';
 export * from './geofence/geofence-list/geofence-list.component';
-
-export * from './graphs/graph/graph.component';
 
 export * from './dashboard-driver/dashboard-driver.component';
 

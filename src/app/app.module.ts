@@ -39,19 +39,12 @@ import { environment } from '../environments/environment';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { NgSelect2Module } from 'ng-select2';
-import {DataTablesModule} from 'angular-datatables';
 import {PreLoadStrategy} from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
 import {DynamicModalDirective} from './directives/dynamic-modal.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxTagsInputModule } from 'ngx-tags-input';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
-import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
-import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
-import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
-import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
@@ -76,10 +69,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     PdfAutomationComponent,
     DynamicModalDirective,
     ConfirmEqualValidatorDirective,
-    AddAlertComponent,
-    AlertDetailComponent,
-    AlertListComponent,
-    AlertTypeDetailComponent,
     ErrorComponent,
     UnsavedChangesComponent,  
     AddAccountComponent 
@@ -104,9 +93,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgMultiSelectDropDownModule.forRoot(),
     SlickCarouselModule,
     NgxSpinnerModule,
-    NgSelect2Module,
-    DataTablesModule,
-    NgxTagsInputModule,
     NgSelectModule,
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],

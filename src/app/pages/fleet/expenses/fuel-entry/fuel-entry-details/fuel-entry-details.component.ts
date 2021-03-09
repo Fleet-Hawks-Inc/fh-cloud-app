@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import Constants from '../../../constants';
 import { HereMapService } from '../../../../../services';
 declare var H: any;
+declare var $: any;
 @Component({
   selector: 'app-fuel-entry-details',
   templateUrl: './fuel-entry-details.component.html',

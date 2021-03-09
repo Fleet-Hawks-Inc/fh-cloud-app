@@ -5,7 +5,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
@@ -26,7 +25,7 @@ export class AddTripComponent implements OnInit {
     public searchTerm = new Subject<string>();
     carriers = [];
     routes = [];
-    constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
+    constructor(private apiService: ApiService, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
     errors = {};

@@ -1,12 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ApiService } from '../../../../services';
-import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
-// import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,8 +14,8 @@ declare var $: any;
 })
 export class TripDetailComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
+  constructor(private apiService: ApiService, private route: ActivatedRoute,
+    private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
       this.selectedFileNames = new Map<any, any>();
      }
 
@@ -363,13 +358,6 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
-
   selectDocuments(event) {
     this.selectedFiles = event.target.files;
     for (let i = 0; i < this.selectedFiles.item.length; i++) {
@@ -378,6 +366,5 @@ export class TripDetailComponent implements OnInit {
       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
       this.documentID.push(fileName);
     }
-    this.uploadFiles();
   }
 }

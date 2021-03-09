@@ -1,9 +1,6 @@
-import { HttpClient, JsonpClientBackend } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { functions } from 'lodash';
-import { createWorker } from 'tesseract.js';
 import { PdfAutomationService } from './pdf-automation.service';
-import * as AWS from 'aws-sdk/global';
 import * as S3 from 'aws-sdk/clients/s3';
 
 declare var Tesseract: any;

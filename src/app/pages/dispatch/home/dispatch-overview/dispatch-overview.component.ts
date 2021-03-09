@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-// import { EventActivitiesService } from '../../../../services/event-activities.service';
 import {forkJoin} from 'rxjs';
 declare var $: any;
 import * as moment from 'moment';
@@ -103,7 +100,7 @@ export class DispatchOverviewComponent implements OnInit {
   aceGraphData = [];
   aciGraphData = [];
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
+  constructor(private apiService: ApiService,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {

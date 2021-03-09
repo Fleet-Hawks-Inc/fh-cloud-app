@@ -3,12 +3,10 @@ import { ApiService } from '../../../../../services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
-import { AwsUploadService } from '../../../../../services/aws-upload.service';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
-import { DomSanitizer} from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { ListService } from '../../../../../services';
 

@@ -9,8 +9,6 @@ import {HeaderComponent} from './header/header.component';
 import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
 import {AddressBookComponent} from './popups/address-book/address-book.component';
 import { SharedModalsComponent} from './popups/shared-modals/shared-modals.component';
-// DataTable
-import { DataTablesModule } from 'angular-datatables';
 import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.component'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -95,7 +93,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    DataTablesModule,
     NgSelectModule,
     NgbModule,
     SlickCarouselModule

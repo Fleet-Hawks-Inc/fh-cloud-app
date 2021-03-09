@@ -5,7 +5,6 @@ import { SafetyRoutingModule } from './safety-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables'
 import {Injectable} from '@angular/core';
 import { ɵs } from '@ng-select/ng-select';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -92,7 +91,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ReactiveFormsModule,
     SafetyRoutingModule, 
-    DataTablesModule,
     NgSelectModule,
     NgbModule,
     NgxMaterialTimepickerModule,

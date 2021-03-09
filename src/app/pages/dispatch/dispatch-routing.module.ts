@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { NewAceManifestComponent } from './cross-border/ace-documents/new-ace-manifest/new-ace-manifest.component';
 import { NewAciManifestComponent } from './cross-border/aci-documents/new-aci-manifest/new-aci-manifest.component';
 import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
-import { RoutePlannerComponent } from './routing/route-planner/route-planner.component';
-import { RoutePlaybackComponent } from './routing/route-playback/route-playback.component';
 import { RouteListComponent } from './permanent-routing/route-list/route-list.component';
 import { AddRouteComponent } from './permanent-routing/add-route/add-route.component';
 import { NewDocumentsComponent } from './new-documents/new-documents.component';
@@ -36,14 +34,6 @@ import { PdfAutomationComponent } from './pdf-automation/pdf-automation.componen
 
 
 const routes: Routes = [
-  {
-    path: 'routing',
-    children: [
-      { path: 'Route-Planner', component:  RoutePlannerComponent },
-      { path: 'Route-Playback', component: RoutePlaybackComponent}
-
-    ]
-  },
   {
     path: 'cross-border',
     children: [

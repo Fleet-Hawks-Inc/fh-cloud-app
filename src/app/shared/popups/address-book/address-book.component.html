@@ -94,7 +94,7 @@
                                         <td colspan="5">No records found</td>
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;">
-                                        <td (click)="6(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
+                                        <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td *ngIf="customer.address[0]">

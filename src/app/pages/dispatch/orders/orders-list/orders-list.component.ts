@@ -1,23 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
   styleUrls: ['./orders-list.component.css']
 })
-export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
-
+export class OrdersListComponent implements OnInit {
   orders = [];
   lastEvaluatedKey = '';
   orderFiltr = {
@@ -100,23 +91,6 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.fetchOrders();
     this.initDataTable('all');
     this.fetchCustomersByIDs();
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
   }
 
   fetchOrders = () => {
@@ -301,7 +275,6 @@ export class OrdersListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.apiService
         .getData(`orders/isDeleted/${orderID}/${status}`)
         .subscribe((result: any) => {
-          this.rerender();
           this.toastr.success('Order deleted successfully!');
           
         });
