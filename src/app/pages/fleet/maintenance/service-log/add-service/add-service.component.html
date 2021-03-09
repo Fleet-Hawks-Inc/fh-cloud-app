@@ -424,7 +424,7 @@
                         <a href="javascript:;" *ngIf="reminder.buttonShow" (click)="removeListedTasks(reminder)" class="btn btn-danger btn-xs"><i class="fas fa-minus text-white"></i> Remove</a>
                      </td>
                   </tr>
-                  <tr *ngIf="!reminders.length > 0">
+                  <tr *ngIf="reminders.length == 0">
                      <td colspan="2">No Reminders Found</td>
                   </tr>
                </tbody>

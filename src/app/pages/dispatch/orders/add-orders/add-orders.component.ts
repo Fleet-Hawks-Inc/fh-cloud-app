@@ -22,6 +22,7 @@ import { NgForm } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 import { HttpClient } from '@angular/common/http';
+import * as moment from 'moment';
 
 declare var $: any;
 declare var H: any;
@@ -71,9 +72,9 @@ export class AddOrdersComponent implements OnInit {
   orderData = {
     stateTaxID: "",
     customerID: "",
-    orderNumber: "",
-    creationDate: "",
-    creationTime: "",
+    orderNumber: Math.floor(Math.random() * 15) + 100,
+    creationDate: moment().format('YYYY-MM-DD'),
+    creationTime: moment().format('HH:mm'),
     customerPO: "",
     reference: "",
     phone: "",
@@ -131,12 +132,12 @@ export class AddOrdersComponent implements OnInit {
     charges: {
       freightFee: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       fuelSurcharge: {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
       accessorialFeeInfo: {
@@ -154,7 +155,7 @@ export class AddOrdersComponent implements OnInit {
     advance: 0,
     finalAmount: 0,
     milesInfo: {
-      totalMiles: null,
+      totalMiles: null, 
       calculateBy: 'manual'
     },
     remarks: ''
@@ -239,7 +240,7 @@ export class AddOrdersComponent implements OnInit {
     accessFees: [
       {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
     ],
@@ -249,7 +250,7 @@ export class AddOrdersComponent implements OnInit {
     accessDeductions: [
       {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
     ],
@@ -939,7 +940,6 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.orderData);
     this.isSubmit = true;
     if (!this.checkFormErrors()) return false;
 
@@ -1046,14 +1046,14 @@ export class AddOrdersComponent implements OnInit {
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
     let sum = 0;
 
-    this.accessFeesInfo.accessFees.forEach((item) => {
+    this.accessFeesInfo.accessFees.forEach((item: any) => {
       sum += parseFloat(item.amount) || 0;
     });
     this.orderData.charges.accessorialFeeInfo["total"] = sum;
     this.orderData.charges.accessorialFeeInfo.accessorialFee = this.accessFeesInfo.accessFees;
 
     let totalDeductions = 0;
-    this.accessorialDeductionInfo.accessDeductions.forEach((item) => {
+    this.accessorialDeductionInfo.accessDeductions.forEach((item: any) => {
       sum -= parseFloat(item.amount) || 0;
       totalDeductions += parseFloat(item.amount) || 0;
     });
@@ -1282,7 +1282,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.advance = result.advance;
         this.orderData.milesInfo["totalMiles"] = result.milesInfo.totalMiles;
         this.orderData.milesInfo["calculateBy"] = result.milesInfo.calculateBy;
-
+        this.orderData.stateTaxID = result.stateTaxID;
         this.orderData["tripType"] = result.tripType;
 
         this.orderData.additionalDetails["dropTrailer"] =
@@ -1479,19 +1479,20 @@ export class AddOrdersComponent implements OnInit {
 
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
+    this.finalShippersReceivers.splice(i, 1);
   }
 
   addAccessFee(value: string) {
     if (value === "accessFee") {
       this.accessFeesInfo.accessFees.push({
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       });
     } else {
       this.accessorialDeductionInfo.accessDeductions.push({
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       });
     }

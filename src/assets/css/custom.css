@@ -1964,3 +1964,44 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .bggreyn{background: #f6f6f6 !important;}
+
+
+
+/* miles buttons */
+.btn-miles {
+  color: rgb(0, 0, 0); float:left;
+  background-color: #fff; border-radius:2px; padding:8px; min-width: 149px;
+  font-size:13px; border: solid 1px #dedede;
+  font-weight: 600;
+}
+
+.btn-miles.active, .btn-miles:active {
+  color: rgb(255, 255, 255) !important; float:left;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+
+
+/* load type in new order page */
+.wltype{width:135px;}
+
+.btnw200px{width: 200px;}
+.btnw100px{width: 100px;}
+.btnw90px{width: 90px;}
+
+/* load type in new order page */
+.wltype{width:135px;}
+/* yes/no buttons */
+.btn-yesno {
+  color:#000 !important; float:left;
+  background-color: #fff; border-radius:2px; padding:8px; min-width: 80px;
+  font-size:13px; border: solid 1px #dedede !important;
+  font-weight: 600;
+}
+
+.btn-yesno.active, .btn-miles:active {
+  color: #fff !important; float:left;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+ 

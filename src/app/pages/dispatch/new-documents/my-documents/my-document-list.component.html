@@ -1,22 +1,16 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
         <section role="main" class="content-body p-0">
             <header class="page-header pr-5">
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
-                    
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
-                            <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
-                            (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
+                            <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue"
+                                name="searchValue" (input)="getSuggestions($event.target.value)" autocomplete="off"
+                                placeholder="Search Document#">
                         </div>
-                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
+                        <div *ngFor="let data of suggestions" style="cursor: pointer"
+                            (click)="searchSelectedRoute(data)">
                             {{ data.name }}
                         </div>
                     </div>
@@ -28,38 +22,26 @@
                                     <i class="fas fa-calendar-alt"></i>
                                 </span>
                             </span>
-                            <input 
-                                [(ngModel)]="filterValues.startDate" name="fromDate" 
-                                type="text" 
-                                placeholder="DD-MM-YYYY"
-                                (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                class="form-control" autocomplete="off"> 
+                            <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
+                                placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off">
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                 to
                             </span>
-                            <input 
-                                [(ngModel)]="filterValues.endDate" name="toDate" 
-                                type="text" 
-                                placeholder="DD-MM-YYYY"
-                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                                class="form-control" autocomplete="off"> 
+                            <input [(ngModel)]="filterValues.endDate" name="toDate" type="text" placeholder="DD-MM-YYYY"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                                autocomplete="off">
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
-                        <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="button" (click)="searchFilter()"
+                            class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
                     <div class="col-lg-5 pr-1">
-                        
-
-                        <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;"
-                            class="modal-with-form btn btn-success btn-sm pull-right"><i class="fas fa-plus"></i> Add Document</a>
-                        <button type="button" class="btn btn-success pull-right btn-sm mr-2"><i class="fas fa-download"></i> Download</button>
-                        <!-- <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-envelope"></i> Email</a> -->
-
                         <div class="btn-group flex-wrap pull-right">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2" data-toggle="dropdown"
-                                aria-expanded="false">Actions<span class="caret"></span></button>
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
+                                data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                 <a class="dropdown-item text-1" href="#">Print</a>
@@ -69,72 +51,74 @@
                         </div>
 
                         <a data-toggle="modal" data-target="#addDocumentModal" href="javascript:;"
-                            class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
+                            class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
                                 class="fas fa-plus"></i> Add Document</a>
-                        <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
+                        <button type="button" class="mb-1 mr-1 btn btn-success pull-right btn-sm"><i
                                 class="fas fa-download"></i> Download</button>
-                        <!-- <a href="#emailForm" class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i class="fas fa-envelope"></i> Email</a> -->
-
-
                     </div>
                 </div>
-                <div class="right-wrapper text-right">
-
-
-                </div>
+                <div class="right-wrapper text-right"></div>
             </header>
             <div class="row text-dark">
+                <div class="col">
+                    <section class="card">
+                        <div class="card-body">
+                            <table class="table table-bordered table-responsive-lg table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Document#</th>
+                                        <th width="10%">Trip ID</th>
+                                        <th width="10%">Type</th>
+                                        <th width="10%">Document Name</th>
+                                        <th width="10%">Uploaded By</th>
+                                        <th width="10%">Uploaded On</th>
+                                        <th width="20%">Description</th>
+                                        <th width="5%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="documents.length == 0" class="text-center">
+                                        <td colspan="8">No records found</td>
+                                    </tr>
+                                    <tr *ngFor="let document of documents;let i = index;">
+                                        <td>{{document.documentNumber}}</td>
+                                        <td>{{tripsObjects[document.tripID]}}</td>
+                                        <td>{{document.docType}}</td>
+                                        <td>{{document.documentName}}</td>
+                                        <td>{{document.uploadedBy}}</td>
+                                        <td>{{document.timeCreated | date: 'dd-MM-yyyy'}}</td>
+                                        <td>{{document.description ? document.description : '-'}}</td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
 
-               <div class="col">
-                  <section class="card">
-                     
-                     <div class="card-body">
-                         
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        (click)="editDocument(document.docID)">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:;"
+                                                        (click)="deactivateDoc(document.isDeleted, document.docID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;">Download File</a>
+                                                </div>
 
-                        <table datatable [dtOptions]="dtOptions"  class="table table-bordered table-responsive-lg table-striped mb-0">
-                                     <thead>
-                                         <tr>
-                                             <th width="10%">Document#</th>
-                                             <th width="10%">Trip ID</th>
-                                             <th width="10%">Type</th>
-                                             <th width="10%">Document Name</th>
-                                             <th width="10%">Uploaded By</th>
-                                             <th width="10%">Uploaded On</th>
-                                             <th width="20%">Description</th>
-                                             <th width="5%">Actions</th>
-
-
-                                         </tr>
-                                     </thead>
-                                     <tbody>
-                                         <tr *ngFor="let document of documents;let i = index;">
-                                            <td>{{document.documentNumber}}</td>
-                                            <td>{{tripsObjects[document.tripID]}}</td>
-                                            <td>{{document.docType}}</td>
-                                            <td>{{document.documentName}}</td>
-                                            <td>{{document.uploadedBy}}</td>
-                                            <td>{{document.timeCreated | date: 'dd-MM-yyyy'}}</td>
-                                            <td>{{document.description ? document.description : '-'}}</td>
-                                            <td>
-                                                <div class="dropdown dropright">
-                                                   <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                      <i class="fas fa-ellipsis-v"></i>
-                                                   </button>
-
-                                                   <div class="dropdown-menu"
-                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                        <a class="dropdown-item"
-                                                            (click)="editDocument(document.docID)">Edit</a>
-                                                        <a class="dropdown-item" href="javascript:;"
-                                                            (click)="deactivateDoc(document.isDeleted, document.docID)">Delete</a>
-                                                        <a class="dropdown-item" href="javascript:;">Download File</a>
-                                                    </div>
-
-                                                 </div>
-                                             </td>
-                                         </tr>
-                                         </tbody> 
-</table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
+                                <div class="col-6">
+                                    Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="docPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="docNext">Next</button>
+                                </div>
+                            </div>
 
                             <!-- email modal Form -->
                             <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
@@ -177,91 +161,19 @@
                                 </section>
                             </div>
                         </div>
-
                     </section>
                 </div>
             </div>
         </section>
     </div>
-
-
-
 </section>
-
-
-<!-- Modal -->
-<div class="modal fade" id="addSequenceModal" tabindex="-1" role="dialog" aria-labelledby="addSequenceModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 600px;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addSequenceModalLabel">Sequence</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-row">
-                        
-                          <div class="form-group col-lg-6 col-md-12">
-                                <div class="btn-group-toggle" data-toggle="buttons">
-                                    <!-- <label class="btn btn-outline btn-fleet mr-2 active" style="width:125px;" id="stop">
-                                        <input value="manual" name="mode" type="radio"> Manual </label>
-                                        <label class="btn btn-outline btn-fleet mr-2 " style="width:125px;" id="yard">
-                                        <input value="auto" name="mode" type="radio"> Automatic</label> -->
-                                    
-                                </div>
-                                <label>
-                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Manual">Manual
-                                </label>
-                                <label>
-                                    <input [(ngModel)]="documentMode" type="radio" name="mode" value="Automatic">Automatic
-                                </label>
-                          </div>
-                       </div>
-                       <div class="form-row">
-                            <div *ngIf="documentMode == 'Manual'" class="form-group col-lg-12 col-md-12" id="manualDiv"
-                            >
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>                         
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Document number must be entered manually for each new Document.</small></div>
-                                </div>
-                           
-                          </div>
-                          <div *ngIf="documentMode == 'Automatic'" class="form-group col-lg-12 col-md-12" id="automaticDiv">
-                             <label
-                                class="control-label font-weight-semibold labelmt text-3 text-dark">Document Number</label>
-                                <div class="row">
-                                  <div class="col-lg-5"><input type="text" name="prefix" [(ngModel)]="documentPrefix" value="" class="form-control" placeholder="Prefix"></div>
-                                  <div class="col-lg-1">-</div>
-                                  <div class="col-lg-5"> <input type="text" name="sequence" [(ngModel)]="documentSequence" value="" class="form-control" placeholder="Sequence"></div>
-                                </div>
-                                <div class="row">
-                                  <div class="col-lg-12"><small>Prefix can be any combinatiion of alphanumeric characters.</small></div>
-                                  <div class="col-lg-12"><small>Sequence is numeric value and will be increased by 1 for each new "Document".</small></div>
-                                </div>
-                           
-                          </div>
-                       </div>
-                    </form>
-            </div>
-            <div class="modal-footer">
-                <button data-dismiss="modal" data-toggle="modal" data-target="#addDocumentModal" type="button" class="btn btn-success">Save</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-            
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}}</h5>
+                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
                 </button>
@@ -283,10 +195,12 @@
                         <div class="form-group col-lg-12">
                             <label for="">Document Type</label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
+
                                 <ng-option value="BOL">BOL</ng-option>
                                 <ng-option value="POD">POD</ng-option>
                                 <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
+
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
@@ -296,11 +210,15 @@
                         </div>
                         <div class="form-group col-lg-12 mb-3">
                             <label for="">Choose File</label>
-                            <input type="file" class="form-control border-0">
+                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
                                 tiff).
-                                The maximum file size can be 15MB or less.</span>
+                                The maximum file size can be 15MB.</span>
+                            <div *ngIf="newDoc" class="border my-2 p-2">
+                                <h4 class="mt-0">Uploaded Document</h4>
+                                <a href="{{newDoc}}" target="_blank">Document</a>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

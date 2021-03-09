@@ -6,31 +6,31 @@
         <div class="modal-header">
             <div class="d-flex justify-content-between flex-wrap w-100">
                 <div class="col-lg-6">
-                    <h5 class="modal-title">Address Book - Contacts</h5> 
+                    <h5 class="modal-title">Address Book - Contacts</h5>
                 </div>
                 <div class="col-lg-6 text-right">
                     <div class="btn-group flex-wrap pull-right mr-2">
                         <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">+ Add New
                             <span class="caret"></span>
                         </button>
-                        <div class="dropdown-menu" role="menu"> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="resetModal('driver')" href="javascript:;">Driver</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="resetModal('broker')" href="javascript:;">Broker</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="resetModal('carrier')" href="javascript:;">Carrier</a> 
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="resetModal('driver')" href="javascript:;">Driver</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="resetModal('broker')" href="javascript:;">Broker</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="resetModal('carrier')" href="javascript:;">Carrier</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addOwnerOperatorModal" (click)="resetModal('operator')" href="javascript:;">Owner Operator</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Shipper</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a> 
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a> 
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Shipper</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a>
                         </div>
                     </div>
                     <div class="btn-group flex-wrap pull-right mr-2">
                         <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown">Actions<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu"> 
-                            <a class="modal-with-form dropdown-item text-1" href="#importExcelForm">Import from Excel</a> 
-                            <a href="" class="dropdown-item text-1 pull-right" id="excelbtn">Export to Excel</a> 
+                        <div class="dropdown-menu" role="menu">
+                            <a class="modal-with-form dropdown-item text-1" href="#importExcelForm">Import from Excel</a>
+                            <a href="" class="dropdown-item text-1 pull-right" id="excelbtn">Export to Excel</a>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('customer')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('customer')" class="btn btn-sm btn-success">Reset</button>
@@ -94,13 +94,13 @@
                                         <td colspan="5">No records found</td>
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;">
-                                        <td (click)="6(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
+                                        <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td *ngIf="customer.address[0]">
-                                            <span *ngIf="customer.address[0].manual == true && customer.address[0].manual != undefined"> 
-                                                {{customer.address[0].address1}} {{customer.address[0].address2}}, 
-                                                {{customer.address[0].cityName}}, {{customer.address[0].stateName}}, 
+                                            <span *ngIf="customer.address[0].manual == true && customer.address[0].manual != undefined">
+                                                {{customer.address[0].address1}} {{customer.address[0].address2}},
+                                                {{customer.address[0].cityName}}, {{customer.address[0].stateName}},
                                                 {{customer.address[0].countryName}}, {{customer.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="customer.address[0].manual == false && customer.address[0].manual != undefined">
@@ -151,7 +151,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('driver')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('driver')" class="btn btn-sm btn-success">Reset</button>
@@ -219,7 +219,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('broker')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('broker')" class="btn btn-sm btn-success">Reset</button>
@@ -245,9 +245,9 @@
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
                                         <td *ngIf="broker.address[0] != undefined">
-                                            <span *ngIf="broker.address[0].manual == true"> 
-                                                {{broker.address[0].address1}} {{broker.address[0].address2}}, 
-                                                {{broker.address[0].cityName}}, {{broker.address[0].stateName}}, 
+                                            <span *ngIf="broker.address[0].manual == true">
+                                                {{broker.address[0].address1}} {{broker.address[0].address2}},
+                                                {{broker.address[0].cityName}}, {{broker.address[0].stateName}},
                                                 {{broker.address[0].countryName}}, {{broker.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="broker.address[0].manual == false">
@@ -298,7 +298,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('vendor')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('vendor')" class="btn btn-sm btn-success">Reset</button>
@@ -323,9 +323,9 @@
                                         <td>{{vendor.workEmail}}</td>
                                         <td>{{vendor.workPhone}}</td>
                                         <td *ngIf="vendor.address[0] != undefined">
-                                            <span *ngIf="vendor.address[0].manual == true"> 
-                                                {{vendor.address[0].address1}} {{vendor.address[0].address2}}, 
-                                                {{vendor.address[0].cityName}}, {{vendor.address[0].stateName}}, 
+                                            <span *ngIf="vendor.address[0].manual == true">
+                                                {{vendor.address[0].address1}} {{vendor.address[0].address2}},
+                                                {{vendor.address[0].cityName}}, {{vendor.address[0].stateName}},
                                                 {{vendor.address[0].countryName}}, {{vendor.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="vendor.address[0].manual == false">
@@ -376,7 +376,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('carrier')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('carrier')" class="btn btn-sm btn-success">Reset</button>
@@ -401,9 +401,9 @@
                                         <td>{{carrier.workEmail}}</td>
                                         <td>{{carrier.workPhone}}</td>
                                         <td *ngIf="carrier.address[0] != undefined">
-                                            <span *ngIf="carrier.address[0].manual == true"> 
-                                                {{carrier.address[0].address1}} {{carrier.address[0].address2}}, 
-                                                {{carrier.address[0].cityName}}, {{carrier.address[0].stateName}}, 
+                                            <span *ngIf="carrier.address[0].manual == true">
+                                                {{carrier.address[0].address1}} {{carrier.address[0].address2}},
+                                                {{carrier.address[0].cityName}}, {{carrier.address[0].stateName}},
                                                 {{carrier.address[0].countryName}}, {{carrier.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="carrier.address[0].manual == false">
@@ -454,7 +454,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('operator')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('operator')" class="btn btn-sm btn-success">Reset</button>
@@ -479,9 +479,9 @@
                                         <td>{{operator.workEmail}}</td>
                                         <td>{{operator.workPhone}}</td>
                                         <td *ngIf="operator.address[0] != undefined">
-                                            <span *ngIf="operator.address[0].manual == true"> 
-                                                {{operator.address[0].address1}} {{operator.address[0].address2}}, 
-                                                {{operator.address[0].cityName}}, {{operator.address[0].stateName}}, 
+                                            <span *ngIf="operator.address[0].manual == true">
+                                                {{operator.address[0].address1}} {{operator.address[0].address2}},
+                                                {{operator.address[0].cityName}}, {{operator.address[0].stateName}},
                                                 {{operator.address[0].countryName}}, {{operator.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="operator.address[0].manual == false">
@@ -532,7 +532,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('shipper')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('shipper')" class="btn btn-sm btn-success">Reset</button>
@@ -558,9 +558,9 @@
                                         <td>{{shipper.workEmail}}</td>
                                         <td>{{shipper.workPhone}}</td>
                                         <td *ngIf="shipper.address[0] != undefined">
-                                            <span *ngIf="shipper.address[0].manual == true"> 
-                                                {{shipper.address[0].address1}} {{shipper.address[0].address2}}, 
-                                                {{shipper.address[0].cityName}}, {{shipper.address[0].stateName}}, 
+                                            <span *ngIf="shipper.address[0].manual == true">
+                                                {{shipper.address[0].address1}} {{shipper.address[0].address2}},
+                                                {{shipper.address[0].cityName}}, {{shipper.address[0].stateName}},
                                                 {{shipper.address[0].countryName}}, {{shipper.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="shipper.address[0].manual == false">
@@ -611,7 +611,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('consignee')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('consignee')" class="btn btn-sm btn-success">Reset</button>
@@ -627,7 +627,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="receivers.length > 0">
+                                <tbody>
                                     <tr *ngIf="receivers.length == 0" class="text-center">
                                         <td colspan="5">No records found</td>
                                     </tr>
@@ -636,9 +636,9 @@
                                         <td>{{receiver.workEmail}}</td>
                                         <td>{{receiver.workPhone}}</td>
                                         <td *ngIf="receiver.address[0] != undefined">
-                                            <span *ngIf="receiver.address[0].manual == true"> 
-                                                {{receiver.address[0].address1}} {{receiver.address[0].address2}}, 
-                                                {{receiver.address[0].cityName}}, {{receiver.address[0].stateName}}, 
+                                            <span *ngIf="receiver.address[0].manual == true">
+                                                {{receiver.address[0].address1}} {{receiver.address[0].address2}},
+                                                {{receiver.address[0].cityName}}, {{receiver.address[0].stateName}},
                                                 {{receiver.address[0].countryName}}, {{receiver.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="receiver.address[0].manual == false">
@@ -690,7 +690,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('staff')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('staff')" class="btn btn-sm btn-success">Reset</button>
@@ -710,7 +710,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="staffs.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="7">No records found</td>
                                     </tr>
                                     <tr *ngFor="let staff of staffs;let i = index;">
                                         <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>
@@ -719,9 +719,9 @@
                                         <td>{{staff.workEmail}}</td>
                                         <td>{{staff.workPhone}}</td>
                                         <td *ngIf="staff.address[0] != undefined">
-                                            <span *ngIf="staff.address[0].manual == true"> 
-                                                {{staff.address[0].address1}} {{staff.address[0].address2}}, 
-                                                {{staff.address[0].cityName}}, {{staff.address[0].stateName}}, 
+                                            <span *ngIf="staff.address[0].manual == true">
+                                                {{staff.address[0].address1}} {{staff.address[0].address2}},
+                                                {{staff.address[0].cityName}}, {{staff.address[0].stateName}},
                                                 {{staff.address[0].countryName}}, {{staff.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="staff.address[0].manual == false">
@@ -773,7 +773,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            
+
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('company')" class="btn btn-sm btn-success mr-3">Search</button>
                                     <button type="button" (click)="resetFilter('company')" class="btn btn-sm btn-success">Reset</button>
@@ -800,9 +800,9 @@
                                         <td>{{company.workEmail}}</td>
                                         <td>{{company.workPhone}}</td>
                                         <td *ngIf="company.address[0] != undefined">
-                                            <span *ngIf="company.address[0].manual == true"> 
-                                                {{company.address[0].address1}} {{company.address[0].address2}}, 
-                                                {{company.address[0].cityName}}, {{company.address[0].stateName}}, 
+                                            <span *ngIf="company.address[0].manual == true">
+                                                {{company.address[0].address1}} {{company.address[0].address2}},
+                                                {{company.address[0].cityName}}, {{company.address[0].stateName}},
                                                 {{company.address[0].countryName}}, {{company.address[0].zipCode}}
                                             </span>
                                             <span *ngIf="company.address[0].manual == false">
@@ -924,7 +924,7 @@
                                                     <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -946,10 +946,10 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control" 
+                                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control"
                                         placeholder="Type Address" [disabled]="item.manual">
                                         <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
@@ -1007,12 +1007,12 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                         Code</label>
                                                     <input [(ngModel)]="item.zipCode"
-                                                    name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                    name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code">
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
-                                        
+
                                         <div class="col-lg-5 pt-4">
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -1020,15 +1020,15 @@
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         1</label>
                                                     <input [(ngModel)]="item.address1"
-                                                    name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
+                                                    name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1">
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Address
                                                         2</label>
                                                     <input [(ngModel)]="item.address2"
-                                                    name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2"> 
-                                                </div>  
+                                                    name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1098,7 +1098,7 @@
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.companyName"
-                                                        name="companyName" type="text" class="form-control" placeholder="Enter Company Name" > 
+                                                        name="companyName" type="text" class="form-control" placeholder="Enter Company Name" >
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1106,7 +1106,7 @@
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.dbaName"
-                                                        name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name"> 
+                                                        name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1114,7 +1114,7 @@
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.firstName"
-                                                        name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name"> 
+                                                        name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1122,14 +1122,17 @@
                                                             Last Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.lastName"
-                                                        name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name"> 
+                                                        name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                            class="control-label font-weight-bold text-lg-right pt-2">EIN&nbsp;<i
+                                                            class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.ein"
-                                                        name="ein" type="text" class="form-control" placeholder="Enter EIN"> 
+                                                        name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN number">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1137,7 +1140,7 @@
                                                             Number &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.accountNumber"
-                                                        name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number"> 
+                                                        name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1159,7 +1162,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <div class="row  mb-5">
-                                                    <div class="col-lg-7 offset-lg-4 text-center mb-4"> 
+                                                    <div class="col-lg-7 offset-lg-4 text-center mb-4">
                                                         <img
                                                         [src]="profilePath" height="150px" width="150px"><br>
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"> {{ imageText }}
@@ -1168,33 +1171,42 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right">MC &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                            class="control-label font-weight-bold text-lg-right">MC#&nbsp;<i
+                                                            class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                            in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.mc"
-                                                        name="mc" type="text" class="form-control" placeholder="Enter MC"> 
+                                                        name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right">DOT&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                            class="control-label font-weight-bold text-lg-right">DOT# &nbsp;<i
+                                                            class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.dot"
-                                                        name="dot" type="text" class="form-control" placeholder="Enter DOT"> 
+                                                        name="dot" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Fast&nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                            class="control-label font-weight-bold text-lg-right pt-2">FAST Card# &nbsp;<i
+                                                            class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                            data-placement="top" title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.fast"
-                                                        name="fast" type="text" class="form-control" placeholder="Enter Fast"> 
+                                                        name="fast" type="text" class="form-control" placeholder="Eg. 42701234567801">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                            class="control-label font-weight-bold text-lg-right pt-2">FAST Card
                                                             Expiry &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="customerData.fastExpiry" name="fastExpiry" 
-                                                            type="text" placeholder="Enter Fast Expiry" (click)="custexp.toggle()" 
-                                                            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off"> 
+                                                        <input [(ngModel)]="customerData.fastExpiry" name="fastExpiry"
+                                                            type="text" placeholder="Enter Fast Expiry" (click)="custexp.toggle()"
+                                                            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Trailer
@@ -1217,17 +1229,26 @@
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="customerData.csa"
                                                             name="csa" type="checkbox" >
-                                                            <label for="csa">CSA</label>
+                                                            <label for="csa">CSA&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"></i></label>
                                                         </div>
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="customerData.ctpat"
                                                             name="ctpat" type="checkbox" >
-                                                            <label for="ctpat">CTPAT</label>
+                                                            <label for="ctpat">CTPAT&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Customs Trade Partnership Against Terrorism (CTPAT) is but one layer in U.S. Customs and Border Protection’s (CBP) multi-layered cargo enforcement strategy.CBP works with the trade community to strengthen international supply chains and improve United States border security."></i></label>
                                                         </div>
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="customerData.pip"
                                                             name="pip" type="checkbox">
-                                                            <label for="pip">PIP</label>
+                                                            <label for="pip">PIP&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="PIP stands for Partners in Protection,it’s in partnership with the Canada Border Service Agency (CBSA).The goal of the PIP program is to strengthen security of both the Canadian-American border and the trade chain."></i></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1255,7 +1276,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
-                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" 
+                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                                                 class="form-control" placeholder="Type Address" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
@@ -1312,27 +1333,27 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
-                                                
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one"> 
+                                                            name="address1{{i}}" type="text" class="form-control address_one">
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control"> 
-                                                        </div>  
+                                                            name="address2{{i}}" type="text" class="form-control">
+                                                        </div>
                                                         <div class="col-lg-12 pt-3">
                                                             <div class="checkbox-custom">
                                                                 <input [(ngModel)]="item.saveAsLocation"
@@ -1342,12 +1363,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                
-                                                
+
+
+
                                             </div>
-                                            
-                                            
+
+
                                         </div>
                                     </div>
                                     <div class="tab-pane fade"  [ngClass]="{'active show': custCurrentTab == 3}" id="customerContact" role="tabpanel" aria-labelledby="customerContact-tab">
@@ -1359,20 +1380,20 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">First Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name"> 
+                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Last Name&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name"> 
+                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.phone"
-                                                        name="phone" type="text" class="form-control" placeholder="Enter Designation"> 
+                                                        name="phone" type="text" class="form-control" placeholder="Enter Designation">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1382,23 +1403,23 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.email"
-                                                        name="email" type="text" class="form-control" placeholder="Enter Phone"> 
+                                                        name="email" type="text" class="form-control" placeholder="Enter Phone">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control" placeholder="Enter Email"> 
+                                                        name="designation" type="text" class="form-control" placeholder="Enter Email">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Fax&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.fax"
-                                                        name="fax" type="text" class="form-control" placeholder="Enter Fax"> 
+                                                        name="fax" type="text" class="form-control" placeholder="Enter Fax">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <div class="form-group row">
                                             <div class="col-lg-12">
                                                 <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
@@ -1528,20 +1549,28 @@
                                                         <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Enter EIN">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
+                                                          class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN number">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">MC
-                                                            Number &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
+                                                          class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                          in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
-                                                            Number &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
+                                                          class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT number">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1592,7 +1621,7 @@
                                             <div class="col-lg-4 offset-lg-1">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" 
+                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                                                 class="form-control" placeholder="Type Address" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
@@ -1651,12 +1680,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                            name="zipCode{{i}}" type="text" class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
-                                                
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -1664,15 +1693,15 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
+                                                            name="address1{{i}}" type="text" class="form-control address_one" placeholder="Enter Address 1">
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2"> 
-                                                        </div>  
+                                                            name="address2{{i}}" type="text" class="form-control" placeholder="Enter Address 2">
+                                                        </div>
                                                         <!-- <div class="col-lg-12 pt-3">
                                                             <div class="checkbox-custom">
                                                                 <input [(ngModel)]="item.saveAsLocation"
@@ -1684,7 +1713,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}"  id="brokerContact" role="tabpanel" aria-labelledby="brokerContact-tab">
                                         <div class="row">
@@ -1745,13 +1774,13 @@
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 2" (click)="addBroker()">Submit</a>
                                             <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 2" (click)="updateBroker()">Update</a>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
-                        
+
                     </section>
                 </div>
             </div>
@@ -1833,15 +1862,24 @@
                                                     <div class="col-lg-12 d-flex justify-content-between mt-2">
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="carrierData.csa" name="csa" type="checkbox" name="csa">
-                                                            <label for="csa">CSA</label>
+                                                            <label for="csa">CSA&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"></i></label>
                                                         </div>
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="carrierData.ctpat" name="ctpat" type="checkbox" name="ctpat">
-                                                            <label for="ctpat">CTPAT</label>
+                                                            <label for="ctpat">CTPAT&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Customs Trade Partnership Against Terrorism (CTPAT) is but one layer in U.S. Customs and Border Protection’s (CBP) multi-layered cargo enforcement strategy.CBP works with the trade community to strengthen international supply chains and improve United States border security."></i></label>
                                                         </div>
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="carrierData.pip" name="pip" type="checkbox" name="pip">
-                                                            <label for="pip">PIP</label>
+                                                            <label for="pip">PIP&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="PIP stands for Partners in Protection,it’s in partnership with the Canada Border Service Agency (CBSA).The goal of the PIP program is to strengthen security of both the Canadian-American border and the trade chain."></i></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1875,25 +1913,35 @@
                                                 <div class="col-lg-10 offset-lg-1">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">MC &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                            <input [(ngModel)]="carrierData.paymentDetails.mc" name="mc" type="text" class="form-control" placeholder="Enter MC">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">MC# &nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                              in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                            <input [(ngModel)]="carrierData.paymentDetails.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">DOT &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                            <input [(ngModel)]="carrierData.paymentDetails.dot" name="dot" type="text" class="form-control" placeholder="Enter DOT">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                            <input [(ngModel)]="carrierData.paymentDetails.dot" maxlength="8" name="dot" type="text" class="form-control" placeholder="Enter 8 digit  DOT number">
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Fast &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card# &nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                             <input [(ngModel)]="carrierData.paymentDetails.fast" name="fast" type="text"
                                                                 class="form-control" placeholder="Enter Fast">
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">FAST
                                                                 Expiry &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                            <input [(ngModel)]="carrierData.paymentDetails.fastExpiry" name="fastExpiry" 
+                                                            <input [(ngModel)]="carrierData.paymentDetails.fastExpiry" name="fastExpiry"
                                                                 type="text" placeholder="Enter Fast Expiry"
                                                                 (click)="carrexp.toggle()" ngbDatepicker #carrexp="ngbDatepicker"
-                                                                class="form-control" autocomplete="off"> 
+                                                                class="form-control" autocomplete="off">
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">CCC &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -1905,11 +1953,14 @@
                                                                 class="form-control" placeholder="Enter SCAC">
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">CVOR &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">CVOR &nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="Commercial vehicle operator's registration ( CVOR ) mandatory for commercial vehicle operators in Ontario"></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                             <input [(ngModel)]="carrierData.paymentDetails.cvor" name="cvor" type="text"
                                                                 class="form-control" placeholder="Enter CVOR">
                                                         </div>
-                                                        
+
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Local
                                                                 Tax (in Percentage) &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -2003,7 +2054,7 @@
                                                                    <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                                       ></label>
                                                                    <ng-select class="mt-2" [(ngModel)]="carrierData.paymentDetails.deliveryRateCurrency" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
-                                                                      
+
                                                                          <ng-option value="CAD">CAD</ng-option>
                                                                          <ng-option value="USD">USD</ng-option>
                                                                    </ng-select>
@@ -2123,12 +2174,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
-                                                
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -2136,15 +2187,15 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
+                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="Enter Address 1">
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter Address 2"> 
-                                                        </div>  
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter Address 2">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2213,7 +2264,7 @@
                                 </div>
                             </form>
                         </div>
-                        
+
                     </section>
                 </div>
             </div>
@@ -2238,27 +2289,27 @@
                         <div class="card-body card-body-nopadding">
                             <div class="">
                                 <ul class="nav top-tabs nav-tabs">
-                                    <li class="nav-item active"> 
+                                    <li class="nav-item active">
                                         <a [ngClass]="{'active': custCurrentTab == 1}" (click)="tabChange(1)" href="javascript:;" data-toggle="tab" class="nav-link text-center active">
                                             Basic Details
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item active"> 
+                                    <li class="nav-item active">
                                         <a [ngClass]="{'active': custCurrentTab == 2}" (click)="tabChange(2)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
                                             Payment
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 3}" (click)="tabChange(3)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
                                             Address
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 4}" (click)="tabChange(4)" href="javascript:;" data-toggle="tab" class="nav-link text-center">
                                             Additional Contact
-                                        </a> 
+                                        </a>
                                     </li>
-                            
+
                                 </ul>
                             </div>
                             <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="operatorForm">
@@ -2296,7 +2347,10 @@
                                                     <div class="col-lg-12 d-flex justify-content-between mt-2">
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="ownerData.csa" name="csa" type="checkbox" name="csa">
-                                                            <label for="csa">CSA</label>
+                                                            <label for="csa">CSA&nbsp;<i
+                                                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                              data-placement="top"
+                                                              title="The Canadian Standards Association(CSA) is accredited by the SCC as a standards development organization"></i></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2318,22 +2372,25 @@
                                             <div class="col-lg-10 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fast &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#&nbsp;<i
+                                                          class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                          data-placement="top"
+                                                          title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="ownerData.paymentDetails.fast" name="fast" type="text" class="form-control"
                                                             placeholder="Enter Fast">
                                                     </div>
-                                    
+
                                                     <div class="col-lg-6">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Fast
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">FAST
                                                             Expiry &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input 
-                                                            [(ngModel)]="ownerData.paymentDetails.fastExpiry" name="fastExpiry" 
-                                                            type="text" 
+                                                        <input
+                                                            [(ngModel)]="ownerData.paymentDetails.fastExpiry" name="fastExpiry"
+                                                            type="text"
                                                             placeholder="Enter Fast Expiry"
                                                             (click)="fastexp.toggle()" ngbDatepicker #fastexp="ngbDatepicker"
-                                                            class="form-control" autocomplete="off"> 
+                                                            class="form-control" autocomplete="off">
                                                     </div>
-                                    
+
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             Payroll Type <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -2345,13 +2402,13 @@
                                                             <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                                                         </ng-select>
                                                     </div>
-                                    
+
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">SIN # &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="ownerData.paymentDetails.sin" name="sin" type="text" class="form-control"
                                                             placeholder="Enter SIN #">
                                                     </div>
-                                    
+
                                                     <div class="col-lg-6">
                                                         <div class="row" id="payPerHourForm" *ngIf="ownerData.paymentDetails.payrollType == 'Pay Per Hour'">
                                                             <div class="col-lg-5">
@@ -2423,7 +2480,7 @@
                                                                <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"
                                                                   ></label>
                                                                <ng-select class="mt-2" [(ngModel)]="ownerData.paymentDetails.deliveryRateCurrency" name="paymentDetails.deliveryRateCurrency" placeholder="Select Currency">
-                                                                  
+
                                                                      <ng-option value="CAD">CAD</ng-option>
                                                                      <ng-option value="USD">USD</ng-option>
                                                                </ng-select>
@@ -2454,7 +2511,7 @@
                                             <div class="col-lg-4 offset-lg-1">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}" 
+                                                <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}"
                                                 (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left" *ngIf="searchResults">
@@ -2512,12 +2569,12 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
                                                             <input [(ngModel)]="item.zipCode"
-                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code"> 
+                                                            [attr.name]="'address['+i+'].zipCode'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-                                                    
+
                                                 </div>
-                                                
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -2525,15 +2582,15 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 1</label>
                                                             <input [(ngModel)]="item.address1"
-                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="Enter Address 1"> 
+                                                            [attr.name]="'address['+i+'].address1'" [ngModelOptions]="{standalone: true}" type="text" class="form-control address_one" placeholder="Enter Address 1">
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Address
                                                                 2</label>
                                                             <input [(ngModel)]="item.address2"
-                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter Address 2"> 
-                                                        </div>  
+                                                            [attr.name]="'address['+i+'].address2'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" placeholder="Enter Address 2">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2547,13 +2604,13 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="ownerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name"> 
+                                                        name="firstName1" type="text" class="form-control" placeholder="Enter First Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="ownerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name"> 
+                                                        name="lastName1" type="text" class="form-control" placeholder="Enter Last Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -2602,7 +2659,7 @@
                                 </div>
                             </form>
                         </div>
-                        
+
                     </section>
                 </div>
             </div>
@@ -2668,20 +2725,25 @@
                                                     class="form-control" placeholder="Enter Contact Last Name">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC
-                                                    Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
+                                                  class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                  in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <input [(ngModel)]="shipperData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
-                                                    Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
+                                                    class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <input [(ngModel)]="shipperData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="row ">
-                                            <div class="col-lg-12 text-center"> 
+                                            <div class="col-lg-12 text-center">
                                                 <img height="150px" width="150px" [src]="profilePath" /></div>
                                             <div class="col-lg-12 text-center">
                                                 <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"> {{ imageText }}
@@ -2782,9 +2844,7 @@
                                                         class="form-control address_zip" placeholder="Enter Zip Code">
                                                 </div>
                                             </div>
-            
                                         </div>
-            
                                         <div class="col-lg-5 pt-4">
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -2930,14 +2990,19 @@
                                                     class="form-control" placeholder="Enter Contact Last Name">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC
-                                                    Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.mc" name="mc" type="text" class="form-control" placeholder="Enter MC Number">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
+                                                  class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
+                                                  in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <input [(ngModel)]="consigneeData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
                                             </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">US DOT
-                                                    Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT Number">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
+                                                  class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                  data-placement="top"
+                                                  title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <input [(ngModel)]="consigneeData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
                                             </div>
                                         </div>
                                     </div>
@@ -3044,9 +3109,9 @@
                                                         class="form-control address_zip" placeholder="Enter Zip Code">
                                                 </div>
                                             </div>
-    
+
                                         </div>
-            
+
                                         <div class="col-lg-5 pt-4">
                                             <div class="row">
                                                 <div class="col-lg-12">
@@ -3133,7 +3198,7 @@
                                     (click)="updateConsignee()">Update</a>
                             </div>
                         </div>
-            
+
                     </form>
                 </div>
             </div>
@@ -3221,7 +3286,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <div class="row  mar-top-37">
-                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> 
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center">
                                                         <img class="business_image_style" [src]="profilePath"/>
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"> {{ imageText }}
                                                             <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
@@ -3311,9 +3376,9 @@
                                                                 class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-            
+
                                                 </div>
-            
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -3379,16 +3444,16 @@
                                         <button type="button" *ngIf="custCurrentTab > 1" (click)="prevStep()"
                                             class="btn btn-default btnPrevious mr-2">Prev</button>
                                         <a href="javascript:;" (click)="nextStep()" *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
-                                
+
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addFCompany()">Submit</a>
                                         <a class="btn btn-success" href="javascript:;" *ngIf="updateButton && custCurrentTab > 2" (click)="updateFCompany()">Update</a>
-                                
+
                                     </div>
                                 </div>
                             </form>
                         </div>
-            
+
                     </section>
                 </div>
             </div>
@@ -3412,25 +3477,25 @@
                         <div class="card-body card-body-nopadding">
                             <div class="">
                                 <ul class="nav top-tabs nav-tabs">
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 1}" (click)="tabChange(1)" role="tab" class="nav-link text-center" aria-controls="staffBasic-tab" aria-selected="true">
                                             Basic Details
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 2}" (click)="tabChange(2)" role="tab" class="nav-link text-center" aria-controls="staffAddres-tab" id="staffAddres-tab" aria-selected="false">
                                             Address
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 3}" (click)="tabChange(3)" role="tab" class="nav-link text-center" aria-controls="staffAccount-tab" id="staffAccount-tab" aria-selected="false">
                                             User Account
-                                        </a> 
+                                        </a>
                                     </li>
-                                    <li class="nav-item"> 
+                                    <li class="nav-item">
                                         <a [ngClass]="{'active': custCurrentTab == 4}" (click)="tabChange(4)" role="tab" class="nav-link text-center" aria-controls="staffPayment-tab" id="staffPayment-tab" aria-selected="false">
                                             Payment Details
-                                        </a> 
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -3568,9 +3633,9 @@
                                                                 class="form-control address_zip" placeholder="Enter Zip Code">
                                                         </div>
                                                     </div>
-                            
+
                                                 </div>
-                            
+
                                                 <div class="col-lg-5 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-12">
@@ -3608,13 +3673,13 @@
                                                             placeholder="Enter Contract End Date" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
                                                             class="form-control" autocomplete="off">
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <div class="col-lg-10 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Department &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <ng-select [(ngModel)]="staffData.userAccount.department" 
+                                                        <ng-select [(ngModel)]="staffData.userAccount.department"
                                                             name="department" class="form-control" placeholder="Select Department">
                                                             <ng-option value="Fleet">Fleet</ng-option>
                                                             <ng-option value="Operations">Operations</ng-option>
@@ -3623,7 +3688,7 @@
                                                             <ng-option value="Dispatch">Dispatch</ng-option>
                                                             <ng-option value="Compliance">Compliance</ng-option>
                                                             <ng-option value="Road Assistance">Road Assistance</ng-option>
-                                                            <ng-option value="Accounts">Accounts</ng-option> 
+                                                            <ng-option value="Accounts">Accounts</ng-option>
                                                         </ng-select>
                                                     </div>
                                                     <div class="col-lg-6">
@@ -3661,7 +3726,7 @@
                                                             <ng-option value="Other">Other</ng-option>
                                                         </ng-select>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </div>
 
                                             <div class="col-lg-10 offset-lg-1" *ngIf="loginDiv">
@@ -3680,7 +3745,7 @@
                                                     </div>
 
                                                     <div *ngIf="errorClass" class="col-lg-10 text-danger">{{ errorClassMsg }}</div>
-                                                </div> 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -3772,7 +3837,7 @@
                                             class="btn btn-default btnPrevious mr-2">Prev</button>
                                         <a href="javascript:;" (click)="nextStep()" *ngIf="custCurrentTab < 4"
                                             class="btn btn-success btnNext">Next</a>
-                            
+
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                         <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 3"
                                             (click)="addStaff()">Submit</a>
@@ -3874,11 +3939,11 @@
                                         <td>{{userDetailData.ein}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.fast">
-                                        <th width="40%" class="back-color-gray">Fast:</th>
+                                        <th width="40%" class="back-color-gray">FAST Card#:</th>
                                         <td>{{userDetailData.fast}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.fastExpiry">
-                                        <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                        <th width="40%" class="back-color-gray">FAST Expiry:</th>
                                         <td>{{userDetailData.fastExpiry}}</td>
                                     </tr>
                                 </tbody>
@@ -4002,11 +4067,11 @@
                                 <td>{{userDetailData.paymentDetails.dot}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.fast">
-                                <th width="40%" class="back-color-gray">Fast:</th>
+                                <th width="40%" class="back-color-gray">FAST Card#:</th>
                                 <td>{{userDetailData.paymentDetails.fast}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.fastExpiry">
-                                <th width="40%" class="back-color-gray">Fast Expiry:</th>
+                                <th width="40%" class="back-color-gray">FAST Expiry:</th>
                                 <td>{{userDetailData.paymentDetails.fastExpiry}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.ccc">

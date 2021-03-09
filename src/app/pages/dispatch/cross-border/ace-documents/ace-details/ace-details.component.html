@@ -161,7 +161,6 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-
                                             <th>Shipment Number</th>
                                             <!-- <th>Entry Status</th> -->
                                             <th>Type</th>
@@ -552,6 +551,52 @@
                             </table>
                         </div>
                     </div>
+                    <!-- inbond details -->
+                    <div class="row">
+                      <div class="col-lg-12"><h4>Inbond Details</h4></div>
+                      <div class="col-lg-12">
+                        <div class="row">
+                          <div class="col-lg-6">
+                              <table class="table table-bordered m-0">
+                                  <tbody>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">Type:</th>
+                                          <td>{{shipmentData.inBondDetails.type}}</td>
+                                      </tr>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
+                                          <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
+                                      </tr>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">Onward Carrier SCAC:</th>
+                                          <td>{{shipmentData.inBondDetails.onwardCarrierScac}}</td>
+                                      </tr>
+
+
+                                  </tbody>
+                              </table>
+                          </div>
+                          <div class="col-lg-6">
+                              <table class="table table-bordered m-0">
+                                  <tbody>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">US Destination:</th>
+                                          <td>{{shipmentData.inBondDetails.usDestination}}</td>
+                                      </tr>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">IRS Number:</th>
+                                          <td>{{shipmentData.inBondDetails.irsNumber}}</td>
+                                      </tr>
+                                      <tr>
+                                          <th width="40%" class="back-color-gray">Estimated Departure Date:</th>
+                                          <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      </div>
+                    </div>
                     <!-- third parties -->
                     <div class="row mt-2" *ngIf="shipmentData.thirdParties?.length">
                         <div class="col-lg-12"><h4>Third Party Details</h4></div>
@@ -586,7 +631,7 @@
                                     <tr>
                                         <th> Commodity Description </th>
                                         <th> Loaded On</th>
-                                        <th>Hazmat Details</th>
+                                        <th >Hazmat Details</th>
                                         <th>Other Details</th>
                                     </tr>
                                 </thead>
@@ -610,7 +655,7 @@
                                                 class="font-weight-semibold">Number</span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span>{{commodity.hazmatDetails.unCode}}<br>
+                                                Code:</span><span> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
                                                 Name:</span>{{commodity.hazmatDetails.emergencyContactName}}
                                             <br><span class="font-weight-semibold">Contact

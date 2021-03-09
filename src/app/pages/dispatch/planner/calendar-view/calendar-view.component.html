@@ -47,6 +47,16 @@
                         <div class="col-3">
                            <div id="external-trips">
                               <div class="schedule-trips">
+                                <div class="notrip-dp align-items-center" *ngIf="tempTrips.length == 0">
+									<img src="assets/img/notrip.png">
+									<div class="d-flex align-items-center justify-content-center">
+										<p class="font-weight-bold text-center">There are no trips to assign.
+										<br>
+										<a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm mx-2 mt-2" style="color:white;"><i class="fas fa-plus"></i> Add Trip</a>
+										</p>
+									</div>
+                                </div>
+
                                  <ul class="m-0 p-0 mt-4">
                                     <li class=" mb-2 border" *ngFor="let trip of tempTrips">
                                        <div class="fc-event-main">
