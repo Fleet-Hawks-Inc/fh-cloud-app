@@ -63,11 +63,7 @@ export class HereMapService {
 
       }
     );
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
+  this.setStyle(this.map);
     const mapTileService = this.platform.getMapTileService({
       type: 'base'
     });
@@ -338,11 +334,11 @@ export class HereMapService {
     console.log('calculateroute', erro);
   }
   }
-//   setStyle(map){
-// //    var provider = map.getBaseLayer().getProvider();
-//     var style = new H.map.Style('https://js.api.here.com/v3/3.1/styles/omv/miami/normal.day.yaml',
-//     'https://js.api.here.com/v3/3.1/styles/omv/');
-//   // set the style on the existing layer
-//   provider.setStyle(style);
-//   }
+  setStyle(map){
+    let provider = this.map.getBaseLayer().getProvider();
+    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+    'https://js.api.here.com/v3/3.1/styles/omv/');
+  // set the style on the existing layer
+  provider.setStyle(style)
+  }
  }
