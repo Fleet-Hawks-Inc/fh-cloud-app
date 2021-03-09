@@ -240,7 +240,7 @@ export class AddOrdersComponent implements OnInit {
     accessFees: [
       {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
     ],
@@ -250,7 +250,7 @@ export class AddOrdersComponent implements OnInit {
     accessDeductions: [
       {
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       },
     ],
@@ -940,7 +940,6 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.orderData);
     this.isSubmit = true;
     if (!this.checkFormErrors()) return false;
 
@@ -1047,14 +1046,14 @@ export class AddOrdersComponent implements OnInit {
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
     let sum = 0;
 
-    this.accessFeesInfo.accessFees.forEach((item) => {
+    this.accessFeesInfo.accessFees.forEach((item: any) => {
       sum += parseFloat(item.amount) || 0;
     });
     this.orderData.charges.accessorialFeeInfo["total"] = sum;
     this.orderData.charges.accessorialFeeInfo.accessorialFee = this.accessFeesInfo.accessFees;
 
     let totalDeductions = 0;
-    this.accessorialDeductionInfo.accessDeductions.forEach((item) => {
+    this.accessorialDeductionInfo.accessDeductions.forEach((item: any) => {
       sum -= parseFloat(item.amount) || 0;
       totalDeductions += parseFloat(item.amount) || 0;
     });
@@ -1283,7 +1282,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.advance = result.advance;
         this.orderData.milesInfo["totalMiles"] = result.milesInfo.totalMiles;
         this.orderData.milesInfo["calculateBy"] = result.milesInfo.calculateBy;
-
+        this.orderData.stateTaxID = result.stateTaxID;
         this.orderData["tripType"] = result.tripType;
 
         this.orderData.additionalDetails["dropTrailer"] =
@@ -1480,19 +1479,20 @@ export class AddOrdersComponent implements OnInit {
 
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
+    this.finalShippersReceivers.splice(i, 1);
   }
 
   addAccessFee(value: string) {
     if (value === "accessFee") {
       this.accessFeesInfo.accessFees.push({
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       });
     } else {
       this.accessorialDeductionInfo.accessDeductions.push({
         type: "",
-        amount: "",
+        amount: 0,
         currency: "",
       });
     }
