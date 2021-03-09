@@ -94,7 +94,6 @@
                                             </div>
                                         </div>
 
-
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
@@ -103,7 +102,7 @@
                                                 </label>
                                                 <ng-select [(ngModel)]="tripData.routeID" name="routeID"
                                                     placeholder="Select Route">
-                                                    <ng-option *ngFor="let route of routes" value="{{ route.routeID }}">
+                                                    <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
                                               </div>
@@ -123,7 +122,6 @@
                                             <div class="col-lg-10 col-md-12">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
-                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
