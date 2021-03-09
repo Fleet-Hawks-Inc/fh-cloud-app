@@ -627,7 +627,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody *ngIf="receivers.length > 0">
+                                <tbody>
                                     <tr *ngIf="receivers.length == 0" class="text-center">
                                         <td colspan="5">No records found</td>
                                     </tr>
@@ -710,7 +710,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="staffs.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="7">No records found</td>
                                     </tr>
                                     <tr *ngFor="let staff of staffs;let i = index;">
                                         <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>

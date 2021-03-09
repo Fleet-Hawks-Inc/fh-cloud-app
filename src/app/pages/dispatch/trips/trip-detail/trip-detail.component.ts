@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-// import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { AwsUploadService } from '../../../../services';
-// import { v4 as uuidv4 } from 'uuid';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,7 +16,7 @@ declare var $: any;
 export class TripDetailComponent implements OnInit {
 
   constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
+   private spinner: NgxSpinnerService, private hereMap: HereMapService) {
       this.selectedFileNames = new Map<any, any>();
      }
 
