@@ -257,15 +257,15 @@ export class FuelEntryDetailsComponent implements OnInit {
       // });
     });
   }
-  showFn() {
-    $('#seeFull').show(400);
-    $('#showBtn').hide(200);
-    $('#hideBtn').show(200);
+  showFn(i: any) {
+    $('#readMoreTaxDiv' + i).show();
+    $('#showBtn' + i).hide();
+    $('#hideBtn' + i).show();
   }
-   hideFn() {
-    $('#seeFull').hide(400);
-     $('#showBtn').show(200);
-    $('#hideBtn').hide(200);
+   hideFn(i: any) {
+    $('#readMoreTaxDiv' + i).hide();
+    $('#showBtn' + i).show();
+    $('#hideBtn' + i).hide();
   }
   fetchFuelEntry() {
     this.apiService
