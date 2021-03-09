@@ -414,7 +414,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" >
+                            <div class="row mt-3 dtPaginate" *ngIf="startedTrips.length > 0">
                                 <div class="col-6">
                                     Showing {{ tripStartedStartPoint }} to {{ tripStartedEndPoint }} of {{ startedTripsCount }} enteries
                                 </div>
@@ -491,7 +491,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" >
+                            <div class="row mt-3 dtPaginate" *ngIf="enrouteTrips.length > 0">
                                 <div class="col-6">
                                     Showing {{ tripEnrouteStartPoint }} to {{ tripEnrouteEndPoint }} of {{ enrouteTripsCount }} enteries
                                 </div>
@@ -568,7 +568,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate">
+                            <div class="row mt-3 dtPaginate" *ngIf="cancelledTrips.length > 0">
                                 <div class="col-6">
                                     Showing {{ tripCancelStartPoint }} to {{ tripCancelEndPoint }} of {{ cancelledTripsCount }} enteries
                                 </div>
@@ -645,7 +645,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate">
+                            <div class="row mt-3 dtPaginate" *ngIf="deliveredTrips.length > 0">
                                 <div class="col-6">
                                     Showing {{ tripDeliverStartPoint }} to {{ tripDeliverEndPoint }} of {{ deliveredTripsCount }} enteries
                                 </div>
