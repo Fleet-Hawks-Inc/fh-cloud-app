@@ -72,7 +72,7 @@ export class AddOrdersComponent implements OnInit {
   orderData = {
     stateTaxID: "",
     customerID: "",
-    orderNumber: "",
+    orderNumber: Math.floor(Math.random() * 15) + 100,
     creationDate: moment().format('YYYY-MM-DD'),
     creationTime: moment().format('HH:mm'),
     customerPO: "",

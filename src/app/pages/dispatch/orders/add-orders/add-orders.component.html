@@ -252,9 +252,17 @@
                                  Number
                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               </label>
-                              <input [(ngModel)]="orderData.orderNumber" name="orderNumber" #orderNumber="ngModel" required orderNumber
-                              type="text"
+
+                              <div class="input-group">
+                                 <div class="input-group-prepend">
+                                    <span class="input-group-text text-uppercase"
+                                       style="padding:0.2rem 0.75rem">ORD</span>
+                                 </div>
+                                 <input [(ngModel)]="orderData.orderNumber" name="orderNumber" #orderNumber="ngModel" required orderNumber disabled
+                                    type="text"
                                  class="form-control">
+                              </div>
+                             
                               <span class="text-danger"
                                  *ngIf="isSubmit && !orderData.orderNumber">
                                  This Field is required
@@ -608,8 +616,8 @@
 
                                                                </div>
                                                                <div class="col-lg-2 text-right mt-1">
-                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i></a> 
-                                                                  <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a> 
+                                                                  <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="shippersReceivers[i].shippers.commodity.length != z+1" (click)="removeCommodity('shipper', i, z)"><i class="fas fa-minus"></i> </a>
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="shippersReceivers[i].shippers.commodity.length == z+1" (click)="addCommodity('shipper', i)"><i class="fas fa-plus"></i></a>  
                                                                </div>
                                                             </div>
 
@@ -952,8 +960,10 @@
 
                                                                </div>
                                                                <div class="col-lg-2 text-right mt-1">
-                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="z === 0" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i></a> 
-                                                                  <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="z !== 0" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a>
+                                                                  <a class="btn btn-danger btn-sm" href="javascript:;" *ngIf="shippersReceivers[i].receivers.commodity.length != z+1" (click)="removeCommodity('receiver', i, z)"><i class="fas fa-minus"></i> </a>
+                                                                  <a class="btn btn-success btn-sm" href="javascript:;" *ngIf="shippersReceivers[i].receivers.commodity.length == z+1" (click)="addCommodity('receiver', i)"><i class="fas fa-plus"></i></a> 
+
+                                                                  
                                                                </div>
                                                             </div>
 
@@ -1107,7 +1117,7 @@
                            </div>
                            <div class="d-flex justify-content-end mt-3">
                               <button *ngIf="shippersReceivers.length == i+1" (click)="addAccordian()" type="button" class="btn btn-success pull-right">Add More</button>
-                              <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-success ml-2">Remove</button>
+                              <button *ngIf="i != 0" (click)="removeAccordian(i)" type="button" class="btn btn-danger ml-2">Remove</button>
                            </div>
                         </div>
                         
