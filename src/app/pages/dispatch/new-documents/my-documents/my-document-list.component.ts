@@ -17,6 +17,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class MyDocumentListComponent implements OnInit {
 
+  Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;
   currentUser;
@@ -70,6 +71,9 @@ export class MyDocumentListComponent implements OnInit {
   docPrevEvauatedKeys = [''];
   docStartPoint = 1;
   docEndPoint = this.pageLength;
+  currentID: string;
+  newDoc: any;
+  uploadeddoc = [];
 
   constructor(
     private apiService: ApiService,
@@ -91,14 +95,14 @@ export class MyDocumentListComponent implements OnInit {
   }
 
   fetchDocuments = () => {
-    // this.spinner.show(); // loader init
-    // this.totalRecords = 0;
     this.apiService.getData('documents?userType=user').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log('result11', result);
-        this.totalRecords = result.Count;
+        let data = result.Items.filter(function(v){ 
+          if(v.categoryType == 'user'){return v;} 
+        })
+        this.totalRecords = data.length;
       }
     });
   };
@@ -128,7 +132,19 @@ export class MyDocumentListComponent implements OnInit {
 
   addDocument() {
     this.hideErrors();
-    this.apiService.postData('documents', this.documentData).
+    this.spinner.show();
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadeddoc.length; i++){
+      formData.append('uploadedDocs', this.uploadeddoc[i]);
+    }
+    //append other fields
+    formData.append('data', JSON.stringify(this.documentData));
+
+    this.apiService.postData('documents', formData, true).
+
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -148,20 +164,22 @@ export class MyDocumentListComponent implements OnInit {
           });
       },
         next: (res) => {
+          this.spinner.hide();
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
+          this.fetchDocuments();
           this.initDataTable();
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
           this.documentData.documentName = '';
           this.documentData.description = '';
-          this.documentData.uploadedDocs = '';
-          
         }
       });
   }
+
   throwErrors() {
+    this.spinner.hide();
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -182,21 +200,6 @@ export class MyDocumentListComponent implements OnInit {
     this.errors = {};
   }
 
-  /*
-   * Selecting files before uploading
-   */
-  // selectDocuments(event) {
-  //   this.selectedFiles = event.target.files;
-  //   for (let i = 0; i <= this.selectedFiles.item.length; i++) {
-  //     const randomFileGenerate = this.selectedFiles[i].name.split('.');
-  //     const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-  //     this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-  //     this.documentData.uploadedDocs.push(fileName);
-  //   }
-  // }
-  /*
-   * Uploading files which selected
-   */
   uploadFiles = async () => {
     this.carrierID = await this.apiService.getCarrierID();
     this.selectedFileNames.forEach((fileData: any, fileName: string) => {
@@ -208,26 +211,44 @@ export class MyDocumentListComponent implements OnInit {
     * Fetch Document details before updating
     */
   editDocument(id: any) {
+    this.spinner.show();
+    this.currentID = id;
+    console.log('currentID', this.currentID);
     this.ifEdit = true;
-    this.modalTitle = 'Edit Document';
-    $('#addDocumentModal').modal('show');
+    this.modalTitle = 'Edit';
+    this.newDoc = '';
     this.apiService
-        .getData('documents/' + id)
-        .subscribe((result: any) => {
-          result = result.Items[0];
-          console.log(result);
-          this.documentData['docID'] = result.docID;
-          this.documentData['documentNumber'] = result.documentNumber;
-          this.documentData['documentName'] = result.documentName;
-          this.documentData['docType'] = result.docType;
-          this.documentData['description'] = result.description;
-          this.documentData['uploadedDocs'] = result.uploadedDocs;
-          this.documentData['tripID'] = result.tripID;
-        });
+      .getData(`documents/${this.currentID}`)
+      .subscribe((result: any) => {
+        console.log(result);
+        result = result.Items[0];
+        this.spinner.hide();
+        this.documentData.tripID = result.tripID;
+        this.documentData.documentNumber = result.documentNumber;
+        this.documentData.documentName = result.documentName;
+        this.documentData.docType = result.docType;
+        this.documentData.description = result.description;
+        this.documentData['uploadedDocs'] = result.uploadedDocs;
+        this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
+      });
+    $('#addDocumentModal').modal('show');
   }
   
   updateDocument() {
-    this.apiService.putData('documents', this.documentData).
+
+    this.documentData['docID'] = this.currentID;
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for(let i = 0; i < this.uploadeddoc.length; i++){
+      formData.append('uploadedDocs', this.uploadeddoc[i]);
+    }
+    //append other fields
+    formData.append('data', JSON.stringify(this.documentData));
+
+    this.apiService.putData('documents', formData, true).
+
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -246,12 +267,18 @@ export class MyDocumentListComponent implements OnInit {
             next: () => { },
           });
       },
-      next: (res) => {
-        this.toastr.success('Document Updated successfully');
-        $('#addDocumentModal').modal('hide');
-       this.initDataTable();
-      }
-    });
+        next: (res) => {
+
+          this.toastr.success('Document Updated successfully');
+          $('#addDocumentModal').modal('hide');
+          this.documentData.documentNumber = '';
+          this.documentData.docType = '';
+          this.documentData.tripID = '';
+          this.documentData.documentName = '';
+          this.documentData.description = '';
+          this.initDataTable();
+        }
+      });
   }
 
   deactivateDoc(value, docID) {
@@ -259,87 +286,11 @@ export class MyDocumentListComponent implements OnInit {
       this.apiService
       .getData(`documents/isDeleted/${docID}/${value}`)
       .subscribe((result: any) => {
+        this.fetchDocuments();
         this.initDataTable();
       });
     }
   }
-
-  // initDataTable() {
-  //   let current = this;
-  //   this.dtOptions = { // All list options
-  //     pagingType: 'full_numbers',
-  //     pageLength: current.pageLength,
-  //     serverSide: true,
-  //     processing: true,
-  //     order: [],
-  //     buttons: [
-  //       {
-  //         extend: 'colvis',
-  //         columns: ':not(.noVis)'
-  //       }
-  //     ],
-  //     columnDefs: [
-  //       {
-  //         targets: 0,
-  //         className: 'noVis',
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 1,
-  //         className: 'noVis',
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 2,
-  //         className: 'noVis',
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 3,
-  //         className: 'noVis',
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 4,
-  //         className: 'noVis',
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 5,
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 6,
-  //         "orderable": false
-  //       },
-  //       {
-  //         targets: 7,
-  //         "orderable": false
-  //       },
-  //     ],
-  //     dom: 'Bfrtip',
-  //     ajax: (dataTablesParameters: any, callback) => {
-  //       current.apiService.getDatatablePostData('documents/fetch-records?categoryType=user&value1=' + current.lastEvaluatedKey +
-  //         '&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start + 
-  //         "&to=" + this.filterValues.end, dataTablesParameters).subscribe(resp => {
-  //           current.documents = resp['Items'];
-  //           console.log('documents', current.documents)
-  //           // console.log(resp)
-  //           if (resp['LastEvaluatedKey'] !== undefined) {
-  //             current.lastEvaluatedKey = resp['LastEvaluatedKey'].docID
-  //           } else {
-  //             current.lastEvaluatedKey = ''
-  //           }
-
-  //           callback({
-  //             recordsTotal: current.totalRecords,
-  //             recordsFiltered: current.totalRecords,
-  //             data: []
-  //           });
-  //         });
-  //     }
-  //   };
-  // }
 
   initDataTable() {
     this.spinner.show();
@@ -380,12 +331,12 @@ export class MyDocumentListComponent implements OnInit {
   searchFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
       if(this.filterValues.startDate !== '') {
-        let start = this.filterValues.startDate.split('-').reverse().join('-');
+        let start = this.filterValues.startDate;
         this.filterValues.start = moment(start+' 00:00:01').format("X");
         this.filterValues.start = this.filterValues.start*1000;
       }
       if(this.filterValues.endDate !== '') {
-        let end = this.filterValues.endDate.split('-').reverse().join('-');
+        let end = this.filterValues.endDate;
         this.filterValues.end = moment(end+' 23:59:59').format("X");
         this.filterValues.end = this.filterValues.end*1000;
       }
@@ -407,9 +358,9 @@ export class MyDocumentListComponent implements OnInit {
         start: <any> '',
         end: <any> ''
       };
-      this.pageLength = 10;
+      this.fetchDocuments();
       this.initDataTable();
-      // this.spinner.hide();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -418,7 +369,7 @@ export class MyDocumentListComponent implements OnInit {
   getSuggestions(searchvalue='') {
     this.suggestions = [];
     if(searchvalue !== '') {
-      this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
+      this.apiService.getData('documents/get/suggestions/'+searchvalue+'?categoryType=user').subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
@@ -467,5 +418,12 @@ export class MyDocumentListComponent implements OnInit {
     this.docStartPoint = 1;
     this.docEndPoint = this.pageLength;
     this.docDraw = 0;
+  }
+
+  selectDoc(event) {
+    console.log('edd', event);
+    let files = [...event.target.files];
+    this.uploadeddoc = [];
+    this.uploadeddoc.push(files[0])
   }
 }
