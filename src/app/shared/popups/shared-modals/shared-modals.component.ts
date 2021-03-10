@@ -415,6 +415,8 @@ activeTab = 1;
     this.fetchGroups();
     this.fetchCycles(); // fetch cycles
     this.fetchAssets();
+    this.fetchAllCountriesIDs();
+    this.fetchAllStatesIDs();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
@@ -1355,6 +1357,7 @@ fetchDrivers(){
           });
       },
       next: (res) => {
+        $('#addDriverModelVehicle').modal('hide');
         this.toastr.success('Driver added successfully');
         this.listService.fetchDrivers();
         this.isSubmitted = true;
@@ -1492,7 +1495,6 @@ fetchDrivers(){
       delete this.driverData.paymentDetails.waitingPayUnit;
       delete this.driverData.paymentDetails.waitingHourAfter;
     }
-
   }
 
   async getStates(id: any, oid = null) {
@@ -1558,5 +1560,19 @@ fetchDrivers(){
 
   issuesUnitType(value: string) {
     this.issuesData.unitType = value;
+  }
+
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
+
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
   }
 }
