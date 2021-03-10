@@ -1,0 +1,15 @@
+.notrip-dp {
+    height: 800px;
+    border: solid 4px #e5e5e5;
+    width: 100%;
+    display: block;
+    justify-content: center;
+}
+.notrip-dp img {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: auto;
+    margin-top: 300px;
+    opacity: 0.2;
+}
