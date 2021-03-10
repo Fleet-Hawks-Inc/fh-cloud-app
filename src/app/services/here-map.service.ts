@@ -240,8 +240,8 @@ export class HereMapService {
   }
 
   calculateRoute(coordinates) {
-
     try {
+      this.viaPoints = [];
       if (coordinates.length > 2) {
         coordinates.forEach(element => {
           this.viaPoints.push(element);

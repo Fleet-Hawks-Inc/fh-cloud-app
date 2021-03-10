@@ -9,19 +9,6 @@
                                 placeholder="Search user by name" />
                         </div>
                     </div>
-                    <div class="col-md-2 col-lg-2 pr-0 pl-2">                        
-                            <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName" placeholder="Search user by department">                                                       
-                                <ng-option value="Fleet">Fleet</ng-option>
-                                <ng-option value="Operations">Operations</ng-option>
-                                <ng-option value="Safety">Safety</ng-option>
-                                <ng-option value="Maintenance">Maintenance</ng-option>
-                                <ng-option value="Dispatch">Dispatch</ng-option>
-                                <ng-option value="Compliance">Compliance</ng-option>
-                                <ng-option value="Road Assistance">Road Assistance</ng-option>
-                                <ng-option value="Accounts">Accounts</ng-option>                                                
-                        </ng-select>
-                    </div>
-                   
                     <div class="col-md-2 col-lg-2 pl-2">
                         <ng-select placeholder="Search user by status" name="currentStatus" [(ngModel)]="currentStatus">                                               
                             <ng-option value="ACTIVE">Active</ng-option>
@@ -33,6 +20,21 @@
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
+                    <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <!-- <ng-select class="form-control populate" [(ngModel)]="departmentName" name="departmentName"
+                            placeholder="Search user by department">
+                            <ng-option value="Fleet">Fleet</ng-option>
+                            <ng-option value="Operations">Operations</ng-option>
+                            <ng-option value="Safety">Safety</ng-option>
+                            <ng-option value="Maintenance">Maintenance</ng-option>
+                            <ng-option value="Dispatch">Dispatch</ng-option>
+                            <ng-option value="Compliance">Compliance</ng-option>
+                            <ng-option value="Road Assistance">Road Assistance</ng-option>
+                            <ng-option value="Accounts">Accounts</ng-option>
+                        </ng-select> -->
+                    </div>
+                   
+                    
                   
                     <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
                         <div class="btn-group flex-wrap">
@@ -51,8 +53,8 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
-                        <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
-                            style="color: white"><i class="fas fa-plus"></i> Add User</a>
+                        <!-- <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
+                            style="color: white"><i class="fas fa-plus"></i> Add User</a> -->
                     </div>
                 </div>
             </header>
@@ -61,28 +63,30 @@
                     <section class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                                    class="row-border hover table table-bordered table-striped mb-0">
+                                <table class="row-border hover table table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
                                            <th>Employee ID</th>
                                            <th>First Name</th>
                                            <th>Last Name</th>
                                            <th >Username</th>
-                                           <th>Department</th>
+                                           <!-- <th>Department</th> -->
                                            <th>User Type</th>
                                            <th>Phone</th>
                                            <th>Status</th>
                                            <th>Actions</th>
                                         </tr>
                                      </thead>
-                                    <tbody *ngIf="users?.length > 0">
+                                    <tbody>
+                                        <tr *ngIf="users.length == 0" class="text-center">
+                                            <td colspan="8">No records found</td>
+                                        </tr>
                                         <tr *ngFor="let user of users">
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">123</td>
+                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.employeeID}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.firstName}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.lastName}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userName}} </td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.departmentName}}</td>
+                                            <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.departmentName}}</td> -->
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userType}}</td>
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.phone}}</td> 
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td>                                
@@ -95,12 +99,16 @@
                                                </div></td>
                                          </tr>
                                     </tbody>
-                                    <tbody *ngIf="users?.length == 0">
-                                        <tr>
-                                            <td colspan="8" class="no-data-available">No records found</td>
-                                        </tr>
-                                    </tbody>
                                 </table>
+                                <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
+                                    <div class="col-6">
+                                        Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
+                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </section>

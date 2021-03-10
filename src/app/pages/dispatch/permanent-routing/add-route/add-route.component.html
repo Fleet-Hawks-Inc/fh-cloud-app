@@ -25,7 +25,7 @@
                 <div class="col pr-0">
                     <section class="card">
                         <div class="card-body"> 
-                            <form class="form-horizontal form-bordered" method="get" id="form_">
+                            <form class="form-horizontal form-bordered" method="get" id="form_" autocomplete="off">
                                 <div class="row text-dark">
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
@@ -45,7 +45,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     Notes &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
-                                                <textarea class="form-control" rows="3" name="notes"
+                                                <textarea class="form-control h-auto" rows="3" name="notes"
                                                     [(ngModel)]="routeData.notes" placeholder="Enter notes"></textarea>
                                             </div>
                                         </div>
@@ -57,12 +57,12 @@
                                                     &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.VehicleID" name="VehicleID" placeholder="Select vehicle">
-                                                    <ng-option *ngFor = "let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+                                                    <ng-option *ngFor = "let vehicle of vehicles | async;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                                 </ng-select>
                                             </div>
                                             <div class="col-lg-2">
                                                 <a class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                data-toggle="modal" data-target="#addDriverVehicleModal" href="javascript:;"><i class="fas fa-plus"></i></a>
+                                                href="javascript:;" (click)="gotoVehiclePage();"><i class="fas fa-plus"></i></a>
                                             </div>
                                         </div>
                                         <div class="row mt-2">
@@ -84,11 +84,11 @@
                                                     &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.driverUserName" name="driverUserName" placeholder="Select driver" (change)="resetCodrivers($event)">
-                                                    <ng-option *ngFor = "let driver of drivers;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                                                    <ng-option *ngFor = "let driver of drivers | async;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
                                                 </ng-select>
                                             </div>
                                             <div class="col-lg-2"> 
-                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" href="javascript:;"><i class="fas fa-plus"></i></a> 
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" (click)="gotoDriverPage()" href="javascript:;"><i class="fas fa-plus"></i></a> 
                                             </div>
                                         </div>
                                         <div class="row mt-2">
@@ -97,12 +97,14 @@
                                                     &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.coDriverUserName" id="codrvr" name="coDriverUserName" placeholder="Select co-driver">
-                                                    <ng-option *ngFor = "let driver of coDrivers;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                                                    <ng-container *ngFor = "let driver of drivers | async;">
+                                                        <ng-option *ngIf="routeData.driverUserName != driver.userName"  value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                                                    </ng-container>
                                                 </ng-select>
                                             </div>
-                                            <div class="col-lg-2"> <a
-                                                    class="btn btn-success btn-sm modal-with-form mar-top-37"
-                                                    href="javascript:;"><i class="fas fa-plus"></i></a> </div>
+                                            <div class="col-lg-2"> 
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37"
+                                                (click)="gotoDriverPage()" href="javascript:;"><i class="fas fa-plus"></i></a> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +120,7 @@
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter source address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter source address">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -134,27 +136,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCountry"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCountry"
-                                                    class="form-control"  placeholder="Enter source country">
+                                                    class="form-control" autocomplete="nope"  placeholder="Enter source country">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
-                                                    class="form-control" placeholder="Enter source state">
+                                                    class="form-control" placeholder="Enter source state" autocomplete="nope">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCity"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCity"
-                                                    class="form-control" placeholder="Enter source city">
+                                                    class="form-control" placeholder="Enter source city" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="sourceInformation.sourceZipCode"
-                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="off" placeholder="Enter source zip code">
+                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="nope" placeholder="Enter source zip code">
                                             </div>
                                         </div>
                                     </div>
@@ -171,7 +173,7 @@
                                                     class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="Enter destination address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter destination address">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -187,27 +189,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCountry"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCountry"
-                                                    class="form-control" placeholder="Enter destination country">
+                                                    class="form-control" placeholder="Enter destination country" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
-                                                    class="form-control" placeholder="Enter destination state">
+                                                    class="form-control" placeholder="Enter destination state" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCity"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCity"
-                                                    class="form-control" placeholder="Enter destination city">
+                                                    class="form-control" placeholder="Enter destination city" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="destinationInformation.destinationZipCode"
-                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code">
+                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code" autocomplete="nope" >
                                             </div>
                                         </div>
                                     </div>
@@ -263,18 +265,18 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-10" id="recurringDate" style="display: none;">
-                                                <div class="row mt-2">
+                                            <div class="col-lg-10" id="recurringDate" style="display: none;" >
+                                                <div class="row mt-2" *ngIf='isDaily'>
                                                     <div class="col-lg-10">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Recurring Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
-                                                            placeholder="Enter recurring date" (click)="d.toggle()" ngbDatepicker
+                                                            placeholder="Enter start date" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control">
                                                     </div>
                                                 </div>
-                                                <div class="row mt-2">
+                                                <!-- <div class="row mt-2">
                                                     <div class="col-lg-3">
                                                         <div class="checkbox-custom checkbox-default mt-2">
                                                             <input type="checkbox" id="sunday" name="sunday"
@@ -347,7 +349,7 @@
                                                                 for="saturday">Saturday</label>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -417,12 +419,10 @@
                                                             <a class="" href="" data-toggle="tab"></a>
                                                         </li>
                                                         <li class="">
-                                                            <a class="" href="" data-toggle="tab">
-                                                                <!-- <span></span>Started<br> Not yet --></a>
+                                                            <a class="" href="" data-toggle="tab"></a>
                                                         </li>
                                                         <li class="">
-                                                            <a class="" href="" data-toggle="tab">
-                                                                <!-- <span></span>En-route<br> Not yet --></a>
+                                                            <a class="" href="" data-toggle="tab"></a>
                                                         </li>
                                                         <li class=""> <a class="" href=""
                                                                 data-toggle="tab"><span></span>Destination</a> </li>
@@ -456,8 +456,8 @@
                                                                             class="badge badge-dark mt-2">{{i + 1}}</span>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="row">
-                                                                            <div class="col-lg-10">
+                                                                        <div class="row mt-1">
+                                                                            <!-- <div class="col-lg-10"> -->
                                                                                 <input name="stopName_{{i}}"
                                                                                     [(ngModel)]="routeData.stops[i].stopName"
                                                                                     (keyup)="searchTerm.next($event);"
@@ -471,8 +471,8 @@
                                                                                             title="{{item.address.label}}">{{item.address.label}}</a>
                                                                                     </li>
                                                                                 </ul>
-                                                                            </div>
-                                                                        </div>
+                                                                            <!-- </div>-->
+                                                                        </div> 
                                                                     </td>
                                                                     <td>
                                                                         <input type="text" class="form-control"
