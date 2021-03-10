@@ -274,6 +274,7 @@ export class AddOrdersComponent implements OnInit {
   stateShipperIndex: any;
   stateReceiverIndex: number;
   uploadedDocs = [];
+  existingUploadedDocs = [];
   packagingUnitsList: any = [];
 
   isSubmit = false;
@@ -413,7 +414,6 @@ export class AddOrdersComponent implements OnInit {
       .subscribe((result) => {
         this.stateTaxes = result.Items;
         this.orderData.stateTaxID = this.stateTaxes[0].stateTaxID;
-        console.log('this.orderData.stateTaxID', this.orderData.stateTaxID);
         this.orderData.taxesInfo = [
           {
             name: 'GST',
@@ -551,6 +551,9 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.emptyShipper(i);
     this.shipperReceiverMerge();
+
+
+    this.toastr.success("Consignor Added.");
   }
 
   async saveReceiver(i) {
@@ -645,6 +648,8 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.shipperReceiverMerge();
     this.emptyReceiver(i);
+
+    this.toastr.success("Consignee Added.");
   }
 
   shipperReceiverMerge() {
@@ -807,7 +812,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag && (value == 'google' || value == 'pcmiles')) {
       this.toastr.error(
-        "Please add atleast one shipper and receiver in shipments."
+        "Please add atleast one Consignor and Consignee in shipments."
       );
 
       setTimeout(() => {
@@ -957,7 +962,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one shipper and receiver in shipments."
+        "Please add atleast one Consignor and Consignee in shipments."
       );
       return false;
     }
@@ -1203,6 +1208,8 @@ export class AddOrdersComponent implements OnInit {
       ].driverLoad = data.driverLoad;
       this.showShipperUpdate = false;
       this.emptyShipper(i);
+
+      this.toastr.success('Consignor Updated');
     } else {
       let data = this.shippersReceivers[i].receivers;
 
@@ -1250,6 +1257,8 @@ export class AddOrdersComponent implements OnInit {
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
       this.emptyReceiver(i);
+
+      this.toastr.success('Consignee Updated');
     }
 
     this.visibleIndex = -1;
@@ -1264,6 +1273,23 @@ export class AddOrdersComponent implements OnInit {
       .getData("orders/" + this.getOrderID)
       .subscribe((result: any) => {
         result = result.Items[0];
+
+        let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: state.GST,
+          },
+          {
+            name: 'HST',
+            amount: state.HST,
+          },
+          {
+            name: 'PST',
+            amount: state.PST,
+          },
+        ];
+
 
         this.orderData["customerID"] = result.customerID;
         this.orderData["additionalContact"] = result.additionalContact;
@@ -1363,36 +1389,76 @@ export class AddOrdersComponent implements OnInit {
         }
         this.accessFeesInfo.accessFees = newAccessFees;
 
-        this.orderData.discount.amount = result.discount.amount;
+        this.orderData.advance = result.amount;
         this.orderData.discount.unit = result.discount.unit;
         this.orderData["totalAmount"] = result.totalAmount;
+        this.orderData.advance = result.advance;
+        this.existingUploadedDocs = result.uploadedDocs;
         this.calculateAmount();
       });
   }
 
   updateOrder() {
-    this.orderData["orderID"] = this.getOrderID;
-    this.apiService.putData("orders", this.orderData).subscribe({
+    this.isSubmit = true;
+    if (!this.checkFormErrors()) return false;
+
+    this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
+    this.orderData['uploadedDocs'] = this.existingUploadedDocs;
+    this.orderData['orderID'] = this.getOrderID;
+
+    let flag = true;
+    // check if exiting accoridan has atleast one shipper and one receiver
+    for (let k = 0; k < this.finalShippersReceivers.length; k++) {
+      let shippers = this.finalShippersReceivers[k].shippers;
+      let receivers = this.finalShippersReceivers[k].receivers;
+
+      if (shippers.length == 0) flag = false;
+      if (receivers.length == 0) flag = false;
+    }
+
+    if (!flag) {
+      this.toastr.error(
+        "Please add atleast one Consignor and Consignee in shipments."
+      );
+      return false;
+    }
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.orderData));
+
+    this.apiService.putData("orders", formData, true).subscribe({
       complete: () => {},
-      error: (err: any) => {
+      error: (err) => {
         from(err.error)
           .pipe(
             map((val: any) => {
+              const path = val.path;
+              // We Can Use This Method
+              const key = val.message.match(/"([^']+)"/)[1];
               val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.label] = val.message;
+              this.errors[key] = val.message;
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.Success = "";
             },
             error: () => {},
             next: () => {},
           });
       },
       next: (res) => {
-        this.toastr.success("Order updated successfully");
-        this.router.navigateByUrl("/dispatch/orders");
+        this.toastr.success("Order added successfully");
+       // this.router.navigateByUrl("/dispatch/orders");
       },
     });
   }
@@ -1411,7 +1477,7 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag) {
       this.toastr.error(
-        "Please add atleast one shipper and receiver in existing shipment."
+        "Please add atleast one Consignor and Consignee in existing shipment."
       );
       return false;
     }
@@ -1547,5 +1613,27 @@ export class AddOrdersComponent implements OnInit {
         this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
         this.calculateAmount();
 
+  }
+
+  caretClickShipper(i){
+    if($('#shipperArea-' + i).children('i').hasClass('fa-caret-right')){
+      $('#shipperArea-' + i).children('i').removeClass('fa-caret-right')
+      $('#shipperArea-' + i).children('i').addClass('fa-caret-down');
+    }
+    else {  
+      $('#shipperArea-' + i).children('i').addClass('fa-caret-right')
+      $('#shipperArea-' + i).children('i').removeClass('fa-caret-down');
+    }
+  }
+
+  caretClickReceiver(i){
+    if($('#receiverArea-' + i).children('i').hasClass('fa-caret-right')){
+      $('#receiverArea-' + i).children('i').removeClass('fa-caret-right')
+      $('#receiverArea-' + i).children('i').addClass('fa-caret-down');
+    }
+    else {  
+      $('#receiverArea-' + i).children('i').addClass('fa-caret-right')
+      $('#receiverArea-' + i).children('i').removeClass('fa-caret-down');
+    }
   }
 }

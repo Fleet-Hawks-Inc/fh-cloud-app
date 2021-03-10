@@ -358,4 +358,26 @@ export class OrderDetailComponent implements OnInit {
   
 
   setSrcValue(){}
+
+  caretClickShipper(i, j){
+    if($('#shipperArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')){
+      $('#shipperArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
+      $('#shipperArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
+    }
+    else {  
+      $('#shipperArea-' + i + '-' + j).children('i').addClass('fa-caret-right')
+      $('#shipperArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
+    }
+  }
+
+  caretClickReceiver(i, j){
+    if($('#receiverArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')){
+      $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
+      $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
+    }
+    else {  
+      $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-right')
+      $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
+    }
+  }
 }
