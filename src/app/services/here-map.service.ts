@@ -29,7 +29,7 @@ export class HereMapService {
   private router: any;
 
   private map: any;
-  private ui: any;
+  public ui: any;
   private readonly apiKey = environment.mapConfig.apiKey;
 
   public searchResults: any;
@@ -48,10 +48,15 @@ export class HereMapService {
   /**
    * Initialize maps
    */
-  mapInit = () => {
-    this.platform = new H.service.Platform({
+
+  mapSetAPI=()=>{
+
+    return this.platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
+
+  }
+  mapInit = () => {
     const defaultLayers = this.platform.createDefaultLayers();
     this.map = new H.Map(
       document.getElementById('map'),
@@ -95,13 +100,17 @@ export class HereMapService {
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    let mapSettings = this.ui.getControl('mapsettings');
-    let zoom = this.ui.getControl('zoom');
-    let scalebar = this.ui.getControl('scalebar');
+    this.ui.getControl('mapsettings').setDisabled(true);
+    this.ui.getControl('mapsettings').setVisibility(false);
 
-    mapSettings.setAlignment('bottom-left');
-    zoom.setAlignment('bottom-left');
-    scalebar.setAlignment('bottom-left');
+
+    // let mapSettings = this.ui.getControl('mapsettings');
+    // let zoom = this.ui.getControl('zoom');
+    // let scalebar = this.ui.getControl('scalebar');
+
+    // mapSettings.setAlignment('bottom-left');
+    // zoom.setAlignment('bottom-left');
+    // scalebar.setAlignment('bottom-left');
  
      return this.map;
   }
