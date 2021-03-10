@@ -46,6 +46,7 @@
               "src/assets/vendor/jquery-placeholder/jquery.placeholder.js",
               "src/assets/js/theme.js",
               "node_modules/jstree/dist/jstree.min.js",
+              "src/assets/vendor/nanoscroller/nanoscroller.js",
               "src/assets/js/custom.js",
               "src/assets/js/theme.init.js",
               "src/assets/js/examples/examples.dashboard.js",
@@ -75,13 +76,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4mb",
-                  "maximumError": "4mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4mb",
-                  "maximumError": "4mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 }
               ]
             },
@@ -104,13 +105,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "9mb",
-                  "maximumError": "9mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 }
               ]
             },
@@ -133,13 +134,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "9mb",
-                  "maximumError": "9mb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "6mb",
+                  "maximumError": "6mb"
                 }
               ]
             }

@@ -17,55 +17,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import {
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
   DashboardDriverComponent,
-
-
-
-  AddInventoryComponent,
-  InventoryListComponent
 
 } from './index';
-import { InventoryDetailComponent } from './inventory/inventory-detail/inventory-detail.component';
-import { AbsoluteValuePipe } from './pipes/absolute-value.pipe';
-
 const COMPONENTS = [
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
   DashboardDriverComponent,
-  AddInventoryComponent,
-  InventoryListComponent
 ];
 
 
@@ -154,8 +110,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   exports: [...COMPONENTS],
   declarations: [
     ...COMPONENTS,
-    InventoryDetailComponent,
-    AbsoluteValuePipe,
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
