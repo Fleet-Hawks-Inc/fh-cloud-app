@@ -590,6 +590,7 @@ html.fixed .content-body {
 .order-accordian .card-header .btn {
     width: 100%;
     text-align: left;
+    text-decoration: none;
 }
 
 /* Order Page */
