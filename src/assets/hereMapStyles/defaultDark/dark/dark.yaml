@@ -57,7 +57,7 @@ global:
         font:
           transform: uppercase
           fill: [[3, 'rgba(39, 174, 96,1.0)'], [4, 'rgba(39, 174, 96,1.0)']]
-          size: [[3, 12px], [4, 14px], [5, 16px], [6, 35px], [7, 18px]]
+          size: [[3, 12px], [4, 14px], [5, 16px], [6, 18px], [7, 18px]]
           stroke:
             color: [[3, 'rgba(42,42,42,1.0)'], [5, 'rgba(42,42,42,1.0)']]
             width: 5px
