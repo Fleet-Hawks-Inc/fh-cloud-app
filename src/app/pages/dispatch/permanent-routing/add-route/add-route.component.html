@@ -83,7 +83,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select Driver
                                                     &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
-                                                <ng-select [(ngModel)]="routeData.driverUserName" name="driverUserName" placeholder="Select driver" (change)="resetCodrivers($event)">
+                                                <ng-select [(ngModel)]="routeData.driverUserName" name="driverUserName" placeholder="Select driver" (change)="resetCodrivers()">
                                                     <ng-option *ngFor = "let driver of drivers | async;" value="{{ driver.userName }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
                                                 </ng-select>
                                             </div>
