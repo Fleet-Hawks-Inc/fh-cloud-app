@@ -1,0 +1,793 @@
+import:
+  - ../omv/skeleton.yaml
+  - ../omv/road_shields.day.yaml
+  # - ../poi.day.yaml
+global:
+
+  ######################################################  SCENE  #######################################################
+  scene_background_color: rgb(51,51,51)
+  scene_sky_zenith_color: '#347BC0'
+  scene_sky_horizon_color: '#EDF2F9'
+  scene_sky_fog_color: '#FFFFFF'
+
+  ##################################################  TEXT / LABELS  ###################################################
+  text_font_family: FiraGO
+  text_fill: rgb(189, 195, 199)
+  text_outline: rgb(42,42,42)
+  text_fill_address: rgba(236, 240, 241,1.0)
+
+  ####################################################  VISIBILITY  ####################################################
+  text_visible_admin: true
+  icon_visible_populated_places: true
+  text_visible_populated_places: true
+  text_visible_neighbourhoods: true
+  text_visible_water_labels: true
+  text_visible_building: true
+  text_visible_address: true
+  text_visible_roads: true
+  text_visible_ferry: true
+  shields_visible: true
+
+  ###################################################  UX LANGUAGE  ####################################################
+  # Default language
+  ux_language: en
+  # Fallback language
+  # ux_language_fallback: en
+
+  ###################################################  POLITICAL VIEW  #################################################
+  # Possible values could be fetched from the "/pviews" endpoint
+  political_view: '' # default
+
+  ######################################################  ICONS  #######################################################
+  icon_size: [[11, '11px'], [20, '24px']]
+  icon:
+    text:
+      font:
+        weight: normal
+        size: [[13, 10px], [14, 11px], [17, 12px], [19, 12px], [20, 14px]]
+        stroke:
+          color: global.text_outline
+          width: [[12, 3px], [16, 4px]]
+
+
+  #####################################################  PLACES  #######################################################
+  places:
+    country:
+      label:
+        font:
+          transform: uppercase
+          fill: [[3, 'rgba(39, 174, 96,1.0)'], [4, 'rgba(39, 174, 96,1.0)']]
+          size: [[3, 12px], [4, 14px], [5, 16px], [6, 35px], [7, 18px]]
+          stroke:
+            color: [[3, 'rgba(42,42,42,1.0)'], [5, 'rgba(42,42,42,1.0)']]
+            width: 5px
+      large:
+        label:
+          font:
+            size: [[3, 12px], [5, 16px], [6, 20px], [7, 26px], [8, 28px]]
+    region:
+      label:
+        font:
+          transform: uppercase
+          size: [[3, 11px], [4, 11px], [5, 12px], [19, 12px]]
+          fill: [[3, 'rgba(189, 195, 199,1.0)'], [4, 'rgba(189, 195, 199,1.0)']]
+          stroke:
+            color: rgba(236, 240, 241,1.0)
+            width: 0px
+    populated:
+      default:
+        zoom: {min: 4}
+        icon:
+          size: [[9, 4px], [10, 0px]]
+        label:
+          font:
+            size: [[5, 9px], [8, 10px], [12, 11px]]
+      1m-up:
+        label:
+          font:
+            size: [[4, 15px], [7, 15px], [8, 17px], [9, 18px], [13, 26px], [14, 0]]
+            stroke:
+              width: [
+                [0, 2px], [6, 2px], [7, 3px], [8, 3px], [10, 3px], [11, 3px], [12, 5px], [13, 5px], [14, 5px]
+              ]
+        capital:
+          zoom: {max: 14}
+          icon:
+            size: [[5,0px],[9, 8px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[5,0px],[9, 8px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 8px], [10, 0px]]
+      250k-1m:
+        label:
+          font:
+            size: [
+              [0, 13px], [7, 13px], [8, 14px], [9, 15px], [10, 17px], [11, 19px], [12, 20px], [13, 22px], [14, 24px],
+              [15, 0]
+            ]
+            stroke:
+              width: [
+                [0, 1px], [6, 1px], [7, 1.25px], [8, 1.5px], [11, 1.5px], [12, 1.75px], [13, 1.75px], [14, 2px], [15, 0]
+              ]
+        capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 6px], [10, 0px]]
+      100k-250k:
+        label:
+          font:
+            size: [
+              [4, 0], [5, 11px], [6, 11px], [7, 12px], [8, 12px], [9, 13.5px], [10, 14.5px], [11, 15.5px],
+              [12, 17.5px], [13, 19px], [14, 22px], [15, 0]
+            ]
+            stroke:
+              width: [[0, 1px], [5, 2px], [9, 2.5px], [10, 2.5px], [11, 2.5px], [12, 2.75px], [13, 2px], [14, 2.25px]]
+        capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 5px], [10, 0px]]
+      30k-100k:
+        label:
+          font:
+            size: [
+              [4, 0], [5, 10px], [6, 10px], [7, 11px], [9, 11px], [10, 12px], [11, 13px], [12, 15px], [13, 17px],
+              [14, 18px], [15, 0]
+            ]
+            stroke:
+              width: 0px
+        capital:
+          zoom:  {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+      until-30k:
+        label:
+          font:
+            size: [
+              [4, 0], [5, 9px], [6, 9px], [7, 10px], [9, 10px], [10, 11px], [11, 11px], [12, 12px], [13, 14px],
+              [14, 15px], [15, 0]
+            ]
+            stroke:
+              width: 4px
+        capital:
+          zoom:  {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        region_capital:
+          zoom: {max: 13}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        county_capital:
+          zoom: {max: 14}
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        town:
+          icon:
+            size: [[9, 4px], [10, 0px]]
+        village:
+          label:
+            font:
+              stroke:
+                width: 2px
+      hamlet:
+        zoom: {max: 16}
+        label:
+          font:
+            transform: uppercase
+            size: [[13, 11px], [14, 12.5px], [15, 13px]]
+            stroke:
+              width: 1px
+    borough:
+      zoom: {max: 15}
+      label:
+        font:
+          fill: rgba(46, 204, 113,1.0)
+          size: [[11, 11px], [12, 12.5px], [13, 14.5px], [14, 15.5px]]
+          stroke:
+            color: [[13, 'rgb(42,42,42)'], [14, 'rgb(42,42,42)']]
+            width: 4px
+  #color for main City Like Calgary, Edminton
+  place_class1_color: [
+    [0, 'rgba(236, 240, 241,1.0)'], [6, 'rgba(236, 240, 241,1.0)'], [7, 'rgba(236, 240, 241,1.0)'], [9, 'rgba(236, 240, 241,1.0)'],
+    [10, 'rgba(236, 240, 241,1.0)'], [11, 'rgba(236, 240, 241,1.0)'], [12, 'rgba(236, 240, 241,1.0)'], [13, 'rgba(236, 240, 241,1.0)']
+  ]
+  place_class1_outline_color: [
+    [0, 'rgb(51,51,51)'], [4, 'rgb(51,51,51)'], [5, 'rgb(51,51,51)'],
+    [6, 'rgb(51,51,51)'], [7, 'rgb(51,51,51)'], [8, 'rgb(51,51,51)'], [12,'rgb(51,51,51)']
+  ]
+  #
+  place_class2_color: [
+    [0, 'rgba(46, 204, 113,1.0)'], [6, 'rgba(46, 204, 113,1.0)'], [7, 'rgba(46, 204, 113,1.0)'], [9, 'rgba(46, 204, 113,1.0)'],
+    [10, 'rgba(46, 204, 113,1.0)'], [11, 'rgba(46, 204, 113,1.0)'], [12, 'rgba(46, 204, 113,1.0)'],
+    [13, 'rgba(46, 204, 113,1.0)'], [14, 'rgba(46, 204, 113,1.0)']
+  ]
+  place_class2_outline_color: [
+    [0,  'rgb(42,42,42)'], [4,  'rgb(42,42,42)'], [5,  'rgb(42,42,42)'],
+    [6,  'rgb(42,42,42)'], [7,  'rgb(42,42,42)'], [8,  'rgb(42,42,42)'],
+    [11, 'rgb(42,42,42)'], [12, 'rgb(42,42,42)']
+  ]
+  place_class3_color: [
+    [0, 'rgba(46, 204, 113,1.0)'], [6, 'rgba(46, 204, 113,1.0)'], [7, 'rgba(46, 204, 113,1.0)'], [9, 'rgba(46, 204, 113,1.0)'],
+    [10, 'rgba(46, 204, 113,1.0)'], [11, 'rgba(46, 204, 113,1.0)'], [12, 'rgba(46, 204, 113,1.0)'],
+    [13, 'rgba(46, 204, 113,1.0)'], [14, 'rgba(46, 204, 113,1.0)']
+  ]
+  place_class3_outline_color: [
+    [0,  'rgb(42,42,42)'], [4,  'rgb(42,42,42)'], [5,  'rgb(42,42,42)'],
+    [6,  'rgb(42,42,42)'], [7,  'rgb(42,42,42)'], [8,  'rgb(42,42,42)'],
+    [11, 'rgb(42,42,42)'], [12, 'rgb(42,42,42)']
+  ]
+  place_class4_color: [
+    [0, 'rgba(46, 204, 113,1.0)'], [6, 'rgba(46, 204, 113,1.0)'], [7, 'rgba(46, 204, 113,1.0)'], [9, 'rgba(46, 204, 113,1.0)'],
+    [10, 'rgba(46, 204, 113,1.0)'], [11, 'rgba(46, 204, 113,1.0)'], [12, 'rgba(46, 204, 113,1.0)'],
+    [13, 'rgba(46, 204, 113,1.0)'], [14, 'rgba(46, 204, 113,1.0)']
+  ]
+  place_class4_outline_color: [
+    [0,  'rgb(42,42,42)'], [4,  'rgb(42,42,42)'], [5,  'rgb(42,42,42)'],
+    [6,  'rgb(42,42,42)'], [7,  'rgb(42,42,42)'], [8,  'rgb(42,42,42)'],
+    [13, 'rgb(42,42,42)'], [14, 'rgb(42,42,42)']
+  ]
+  place_class5_color: [
+    [0, 'rgba(46, 204, 113,1.0)'], [6, 'rgba(46, 204, 113,1.0)'], [7, 'rgba(46, 204, 113,1.0)'], [9, 'rgba(46, 204, 113,1.0)'],
+    [10, 'rgba(46, 204, 113,1.0)'], [11, 'rgba(46, 204, 113,1.0)'], [12, 'rgba(46, 204, 113,1.0)'], [13, 'rgba(46, 204, 113,1.0)'],
+    [14, 'rgba(46, 204, 113,1.0)']
+  ]
+  place_class5_outline_color: [
+    [0,  'rgb(42,42,42)'], [4,  'rgb(42,42,42)'], [5,  'rgb(42,42,42)'],
+    [6,  'rgb(42,42,42)'], [7,  'rgb(42,42,42)'], [8,  'rgb(42,42,42)'],
+    [13, 'rgb(42,42,42)'],[14, 'rgb(42,42,42)']
+  ]
+  place_capital_color: [
+    [0, 'rgba(46, 204, 113,1.0)'], [7, 'rgba(46, 204, 113,1.0)'], [10, 'rgba(46, 204, 113,1.0)'], [11, 'rgba(46, 204, 113,1.0)']
+  ]
+  place_capital_outline_color: [
+    [0, "rgb(42,42,42)"], [5, "rgb(42,42,42)"], [7, "rgb(42,42,42)"],
+    [8, "rgb(42,42,42)"]
+  ]
+  place_village_font_size: [
+    [6, 0], [7, 10px], [8, 10.5px], [9, 10.5px], [10, 11.5px], [11, 11.5px], [12, 12px], [13, 14px], [14, 15px], [15, 0]
+  ]
+
+  place_hamlet_color: rgba(46, 204, 113,1.0)
+  place_hamlet_outline_color: [
+    [0,  'rgb(42,42,42)'], [11, 'rgb(42,42,42)'], [12, 'rgb(42,42,42)'],
+    [13, 'rgb(42,42,42)'], [14, 'rgb(42,42,42)']
+  ]
+
+  ##################################################  LAND AND WATER  ##################################################
+  land_color: rgb (51,51,51)
+  beach_color: rgb (255, 248, 195)
+  glacier_color: rgb (232, 242, 255)
+  woodland_color: rgb (186, 247, 176)
+  forest_color: [
+    [0,  'rgb(51,51,51)'], [8,  'rgb(51, 51, 51)'], [9,  'rgb(51, 51, 51)'], [11, 'rgb(51, 51, 51)'],
+    [15, 'rgb(51, 51, 51)'], [16, 'rgb(51, 51, 51)']
+  ]
+  water_color: rgb (43, 43, 43)
+  water_river_line_width: [[10, 1px], [13, 2px], [14, 3px], [15, 4px], [16, 7px], [17, 15px], [18, 28px], [20, 46px]]
+  water:
+    default:
+      label:
+        font:
+          weight: normal
+          size: [[11, 10px], [12, 11px], [15, 11px], [16, 12px]]
+          style: italic
+    ocean:
+      label:
+        font:
+          size: [[0, 10px], [1, 11px], [2, 13px], [3, 14px], [4, 16px], [6, 16px], [7, 17px], [8, 20px]]
+          style: italic
+    bay:
+      label:
+        font:
+          size: [[11, 10px], [12, 11px], [15, 11px], [16, 12px]]
+          stroke:
+            width: 2px
+    lake:
+      label:
+        font:
+          style: normal
+          stroke:
+            width: 2px
+
+  water_deep_color: rgb(43, 43, 43)
+  water_label_sea_color: rgb(43,43,43)
+  water_label_lake_color: rgb(189, 195, 199)
+  water_label_lake_outline_color: rgb(43,43,43)
+  water_label_ocean_color: rgb(43, 43, 43)
+  water_label_bay_color: rgb(43, 43, 43)
+  water_label_bay_outline_color: rgba(43, 43, 43, .47)
+
+  ################################################  LAND-USE AND AREAS  ################################################
+  landuse_default_label_color: [[15, 'rgba(46, 204, 113,1.0)'], [16, 'rgba(46, 204, 113,1.0)']]
+  landuse_default_label_font_size: [[12, 10px], [13, 11px], [15, 14px], [16, 14px]]
+  landuse_default_label_font_stroke_color: rgba(42,42,42,1.0)
+  landuse_default_label_font_stroke_width: 4px
+
+  landuse_park_label_color: rgb(189, 195, 199)
+  landuse_park_label_outline_color: [[11, 'rgb(42,42,42)'], [12, 'rgb(42,42,42)']]
+  landuse_forest_label_color: rgba(46, 204, 113,1.0)
+  landuse_forest_label_outline_color: rgb(42,42,42)
+  # Used for industrial, railway, parking, commercial, zoo, aerodrome, etc.:
+  landuse_gray_label_color: rgba(46, 204, 113,1.0)
+  landuse_gray_label_outline_color: [[13, 'rgb(42,42,42)'], [14, 'rgb(42,42,42)']]
+  landuse_pedestrian_label_color: [[15, "rgba(46, 204, 113,1.0)"], [16, "rgba(46, 204, 113,1.0)"]]
+  landuse_pedestrian_label_outline_color: rgb(42,42,42)
+  landuse_hospital_label_color: [[15, 'rgba(46, 204, 113,1.0)'], [16, 'rgba(46, 204, 113,1.0)']]
+  landuse_industrial_label_color: rgba(46, 204, 113,1.0)
+  landuse_industrial_outline_color: rgb(42,42,42)
+  landuse_hospital_label_outline_color: rgb(42,42,42)
+  landuse_golf_course_label_color: rgba(46, 204, 113,1.0)
+  landuse_golf_course_label_outline_color: [[11, 'rgb(42,42,42)'], [12, 'rgb(42,42,42)']]
+  landuse_beach_label_color: rgba(46, 204, 113,1.0)
+  landuse_beach_label_outline_color: rgb(42,42,42)
+  landuse_university_label_color: [[15, 'rgba(46, 204, 113,1.0)'], [16, 'rgba(46, 204, 113,1.0)']]
+  landuse_university_label_outline_color: [[15, 'rgb(42,42,42)'], [16, 'rgb(42,42,42)']]
+  landuse_parking_label_color: rgba(46, 204, 113,1.0)
+  landuse_military_label_color: rgba(46, 204, 113,1.0)
+  landuse_military_label_outline_color: rgb(42,42,42)
+
+  builtup_area_color: [
+    [0,  'rgb(51,51,51)'], [10, 'rgb(51,51,51)'], [13, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)'],
+    [15, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  builtup_area_outline_color: rgba(237,237,237,.5)
+  builtup_area_outline_width: [[13, 0], [14, 2px]]
+  golf_course_color: [
+    [11, 'rgb(51,51,51)'], [12, 'rgb(51,51,51)'], [13, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)'],
+    [15, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  hospital_color: rgb (51,51,51)
+  # Applies to airport, harbor, industrial, rail yard, shopping complex:
+  industrial_color: [
+    [0,  'rgb(51,51,51)'], [11, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)'], [15, 'rgb(51,51,51)'],
+    [16, 'rgb(51,51,51)']
+  ]
+  national_park_color: [
+    [0 , 'rgb(51,51,51)'], [6 , 'rgb(51,51,51)'], [9 , 'rgb(51,51,51)'], [10, 'rgb(51,51,51)'],
+    [11, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  island:
+    zoom: {min: 0, max: 15}
+    label:
+      font:
+        weight: normal
+        size: [[0, 10px], [11, 10px], [12, 11px], [13, 11px], [14, 12px], [15, 12px], [16, 13px]]
+        stroke:
+          width: 1px
+  island_color: rgb(51,51,51)
+  island_outline_color: rgba(250,253,255, .39)
+  native_reservation_color: rgba (51,51,51)
+  military_color: rgb(51,51,51)
+  park_color: rgb (51,51,51)
+  # Applies to allotment, amusement, animal, cemetery, sports complex:
+  green_area_color: [
+    [13, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)'], [15, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  pedestrian_area_color: [
+    [9, 'rgb(51,51,51)'], [10, 'rgb(51,51,51)'], [12, 'rgb(51,51,51)'], [13, 'rgb(51,51,51)'],
+    [14, 'rgb(51,51,51)'], [15, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  aerodrome_color: [
+    [10, 'rgb(51,51,51)'], [11, 'rgb(51,51,51)'], [13, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)'],
+    [15, 'rgb(51,51,51)'], [16, 'rgb(51,51,51)']
+  ]
+  runway_color: [
+    [13, 'rgb(211,217,222)'], [14, 'rgb(205,213,214)'], [15, 'rgb(198,209,211)'], [16, 'rgb(192,203,208)']
+  ]
+  university_campus_color: rgb(51,51,51)
+
+  ####################################################  BOUNDARIES  ####################################################
+  boundary:
+    labels:
+      zoom:
+        min: 8
+      offset: [0px, 5px]
+      font:
+        size: 9px
+        transform: uppercase
+        stroke:
+          color: global.land_color
+          width: 3px
+      single_text:
+        offset: [0px, 0px]
+    country:
+      line:
+        width: 1px
+      outline:
+        width: [[3, '0px'], [4, '2px'], [7, '3px']]
+    other: # Used for other boundary kinds like "disputed" etc.:
+      line:
+        dash: [5, 4]
+        width: [[0, '0px'], [9, '2px']]
+      outline:
+        width: [[3, '0px'], [4, '1px'], [5, '2px'], [7, '3px']]
+    state:
+      line:
+        width: 1px
+      outline:
+        width: [[0, '0px'], [9, '1px']]
+  state_boundary_text_color: rgb(102,102,102)
+  country_boundary_color: [
+    [4, 'rgb(160, 160, 180)'], [5, 'rgb(120, 120, 140)'], [6, 'rgb(100, 100, 120)'], [7, 'rgb(100, 100, 120)'],
+    [8, 'rgb(80, 80, 100)'], [9, 'rgb(60, 60, 80)']
+  ]
+  country_boundary_outline_color: [
+    [3, 'rgba(190, 190, 190, 0.1)'], [4, 'rgba(180, 180, 180, 0.15)'], [5, 'rgba(150, 150, 150, 0.15)'],
+    [6, 'rgba(130, 130, 130, 0.15)'], [8, 'rgba(110, 110, 110, 0.15)']
+  ]
+  country_disputed_boundary_color: [
+      [4, 'rgb(160,160,180)'], [5, 'rgb(120,120,140)'], [6, 'rgb(100,100,120)'], [7, 'rgb(100,100,120)'],
+      [8, 'rgb(80,80,100)'], [9, 'rgb(60,60,80 )']
+  ]
+  country_disputed_boundary_background_color: [.50, .50, .50, .15]
+  region_boundary_color: [ # applies to states and regions
+    [3, 'rgb(225, 225, 225)'],  # 0 <= $zoom < 4
+    [4, 'rgb(195, 195, 215)'],  # 4 <= $zoom < 5
+    [5, 'rgb(210, 210, 210)'],  # 5 <= $zoom < 6
+    # 6 <= $zoom < 12 (duplicates avoid interpolation)
+    [6, 'rgb(180, 180, 180)'], [7, 'rgb(180, 180, 180)'], [8, 'rgb(180, 180, 180)'], [9, 'rgb(180, 180, 180)'],
+    [10, 'rgb(180, 180, 180)'], [11, 'rgb(180, 180, 180)'], [12, 'rgb(170, 170, 170)']  # 12 <= $zoom
+  ]
+  region_boundary_outline_color: [ # applies to states and regions
+    [4, 'rgba(220, 220, 220, 0.06)'], # 0 <= $zoom < 5
+    [5, 'rgba(215, 215, 215, 0.06)'], # 5 <= $zoom < 6
+    [6, 'rgba(200, 200, 200, 0.1)'],  # 6 <= $zoom < 7
+    # 7 <= $zoom < 12 (duplicates avoid interpolation)
+    [7, 'rgba(200, 200, 200, 0.16)'], [8, 'rgba(200, 200, 200, 0.16)'], [9, 'rgba(200, 200, 200, 0.16)'],
+    [10, 'rgba(200, 200, 200, 0.16)'], [11, 'rgba(200, 200, 200, 0.16)'], [12, 'rgba(200, 200, 200, 0.2)'] # 12 <= $zoom
+  ]
+
+  ####################################################  BUILDINGS  #####################################################
+  building:
+    outline:
+      width: 0px
+    extrusion:
+      zoom: {min: 16}
+      outline:
+        width: .5px
+    label:
+      zoom: {min: 17}
+      font:
+        size: [[15, 11px], [16, 12px]]
+        stroke:
+          width: 0px
+    address:
+      label:
+        zoom: {min: 18}
+        font:
+          size: [[18, 12px],[22, 16px]]
+  building_color: rgb(51,51,51)
+  building_outline_color: [[16, 'rgb(51,51,51)'], [17, 'rgb(51,51,51)'], [18, 'rgb(51,51,51)']]
+  building_extrude_color: rgb(42,42,42)
+  building_label_color: rgb(86,105,112)
+  building_label_outline_color: rgba(240,246,247,.4)
+
+  ######################################################################################################################
+  ######################################################  ROADS  #######################################################
+  ######################################################################################################################
+  road:
+    default:
+      line:
+        width: 1.5px
+      direction:
+        size: [[15, 15px], [18, 30px], [20, 52px]]
+        spacing: [[16, 150px], [18, 250px]]
+      label:
+        font:
+          stroke:
+            width: 3px
+    rail:
+      zoom: {min: 10}
+      line:
+        width: [[15, 1px], [16, 1.5px], [17, 1.5px], [18, 2px], [19, 2.5px]]
+        dash: [7, 7]
+      outline:
+        width: [[10, .1px], [13, .5px], [14, .8px]]
+    under_construction:
+      line:
+        dash: [2, 2]
+    highway:
+      label:
+        font:
+          size: [[10, 14px], [20, 22px]]
+      outline:
+        width: [[7, 0px], [8, 0.5px]]
+      centerline:
+        width: [[10, 0px], [11, 1px]]
+      trunk:
+        label:
+          font:
+            size: [[10, 14px], [20, 22px]]
+        outline:
+          width: [[9, 0px], [10, 0.5px]]
+      link:
+        label:
+          font:
+            size: [[10, 14px], [20, 22px]]
+    major:
+      label:
+        offset: [[16, [0px, -1px]], [18, [0px, -2px]]]
+        font:
+          stroke:
+            width: 3px
+          size: [[14, 13.5px], [15, 14.5px], [16, 17px], [17, 22px]]
+      outline:
+        width: [[9, 0px], [10, 0.5px]]
+      secondary:
+        outline:
+          width: [[10, 0px], [11, .5px]]
+        label:
+          offset: [[16, [0px, -1px]], [17, [0px, -3px]]]
+          font:
+            size: [[14, 12px], [15, 15px], [16, 17px], [17, 21px]]
+            stroke:
+              width: 3px
+      tertiary:
+        outline:
+          width: [[11, 0px], [12, .5px]]
+        label:
+          font:
+            stroke:
+              width: 3px
+            size: [[13, 10px], [16, 13.5px], [17, 18px], [18, 24px]]
+        link:
+          line:
+            # Street.Category3.RampWidth
+            width: [
+              [0, 3px],
+              [14, 3px],
+              [15, 4px],
+              [16, 5px],
+              [17, 6px],
+              [18, 12px],
+              [19, 20px],
+              [20, 32px]
+            ]
+    minor:
+      direction:
+        zoom: {max: 18}
+      label:
+        offset: [[16, [0px, -1px]], [18, [0px, -2px]]]
+        font:
+          fill: rgb(255,255,255)
+          stroke:
+            fill: rgb(255,255,255)
+            width: 0px
+          size: [[14, 7px], [16, 10px], [18, 19px], [20, 24px]]
+      residential:
+        outline:
+          width: [[13.5, 0px], [14, 1px]]
+      service:
+        outline:
+          width: [[13.5, 0px], [14, 1px]]
+        label:
+          font:
+            
+            stroke:
+              width: 0px
+            size: [[16, 10px], [20, 16px]]
+    path:
+      label:
+        offset: [0px, -2px]
+        font:
+          fill: rgb(53,54,73)
+          size: 12px
+          stroke:
+            color: rgb(41,41,41)
+            width: 2px
+      unpaved:
+        label:
+          font:
+            fill: rgb(124,114,108)
+            stroke:
+              color: rgb(41,41,41)
+      pedestrian:
+        line:
+          width: [[11, 1px], [15, 1px], [16, 4px]]
+          dash: [1, 1]
+      footway:
+        label:
+          zoom: {min: 14, max: 20}
+          offset: [0px, -5px]
+          font:
+            size: 12px
+        line:
+          width: [[14, 1px], [20, 1px]]
+        bridge:
+          line:
+            width: [[14, 1px], [20, 1px]]
+          outline:
+            width: [[15, 0px], [16, .5px]]
+    ferry:
+      label:
+        offset: [0px, -12px]
+        font:
+          size: [[14,11px], [16,12px], [17,13px]]
+          stroke:
+            width: [[14, 1.3px], [15, 1.5px], [16, 1.5px], [17, 1.62px]]
+      line:
+        width: 1px
+        dash: [5, 3]
+      tunnel:
+        label:
+          font:
+            stroke:
+              color: white
+        line:
+          color: rgb(153,153,153)
+          dash: [10, 10]
+    aerialway:
+      cable_car:
+        line:
+          color: rgb(170, 170, 170)
+          width: 0.5px
+  ###################################################  ROAD SHIELDS  ###################################################
+  shield:
+    size: [[6, 110%], [15, 120%]]
+    repeat_distance: [[10, 150px], [13, 200px], [20, 70px]]
+    text:
+      font:
+        fill: black
+        weight: 450
+        size: [[6, 8px], [15, 10px], [20, 13px]]
+  #####################################################  TUNNELS  ######################################################
+  tunnel_order: 305
+
+
+  #####################################################  BRIDGES  ######################################################
+  bridge_outline: rgb(160,160,160)
+
+
+  #####################################################  HIGHWAYS  #####################################################
+  highway_fill: [
+    [9, 'rgba(39, 174, 96,1.0)'], [10, 'rgba(39, 174, 96,1.0)'], [11, 'rgba(39, 174, 96,1.0)'], [12, 'rgba(39, 174, 96,1.0)'],
+    [13, 'rgba(39, 174, 96,1.0)']
+  ]
+  highway_tunnel_fill: rgba(39, 174, 96,1.0)
+  highway_tunnel_center_line: rgb(51,51,51)
+  highway_outline: rgba(39, 174, 96,1.0)
+  highway_centerline_fill: [
+    [11, 'rgb(51,51,51)'], [12, 'rgb(51,51,51)'], [13, 'rgb(51,51,51)'], [14, 'rgb(51,51,51)']
+  ]
+  highway_width: [
+    [6, 1px], [7, 2px], [8, 1px], [9, 1.5px], [11, 2px], [12, 3px], [13, 3.5px], [14, 3.5px], [15, 4px], [16, 4px],
+    [17, 18px], [18, 35px], [19, 45px], [20, 70px]
+  ]
+  highway_link_width: [
+    [5, 1px], [12, 1px], [13, 2px], [14, 3px], [15, 4px], [16, 5px], [17, 7px], [18, 18px], [19, 22px], [20, 35px]
+  ]
+  highway_trunk_width: [
+    [5, 1px], [8, 1px], [9, 2px], [10, 2px], [12, 2.5px], [13, 3px], [14, 5px], [15, 7px], [16, 12px], [17, 15px],
+    [18, 30px], [19, 37px], [20, 64px]
+  ]
+
+  ######################################################  ROADS  #######################################################
+  major_road_fill: [[11, 'rgba(39, 174, 96,1.0)'], [12, 'rgba(39, 174, 96,1.0)'], [13, 'rgb(236, 240, 241)']]
+  major_road_tunnel_fill: rgb(236, 240, 241)
+  major_road_link_width: [[13, 2px], [14, 3px], [15, 4px], [16, 5px], [17, 7px], [18, 18px], [19, 23px], [20, 35px]]
+  major_road_outline: [[10, 'rgb(204,105,96)'], [11, 'rgb(191,99,90)'], [12, 'rgb(191,99,116)']]
+  major_road_width: [
+    [8, 1px], [9, 2px], [10, 3px], [12, 3.5px], [13, 4px], [14, 6px], [15, 7px], [16, 11px], [17, 15px], [18, 34px],
+    [19, 38px], [20, 62px]
+  ]
+  major_road_secondary_fill: [[10, 'rgba(189, 195, 199,1.0)'], [12, 'rgba(189, 195, 199,1.0)'], [13, 'rgb(236, 240, 241)']]
+  major_road_secondary_tunnel_fill: rgb(236, 240, 241)
+  major_road_secondary_outline: rgb(191,157,134)
+  major_road_secondary_width: [
+    [10, 1px], [12, 2px], [13, 3.5px], [14, 5px], [15, 7px], [16, 11px], [17, 12px], [18, 30px], [19, 34px], [20, 54px]
+  ]
+  major_road_secondary_link_width: [[13, 1px], [16, 4px], [17, 5px], [18, 10px], [19, 20px], [20, 30px]]
+  major_road_tertiary_fill: [[11, 'rgba(189, 195, 199,1.0)'], [12, 'rgba(189, 195, 199,1.0)']]
+  major_road_tertiary_tunnel_fill: rgb(204,200,184)
+  major_road_tertiary_outline: rgb(165,164,131)
+  major_road_tertiary_width: [
+    [11, 1.5px], [12, 2px], [13, 2.5px], [14, 3.5px], [15, 5px], [16, 9px], [17, 9px], [18, 25px], [19, 29px],
+    [20, 46px]
+  ]
+  minor_road_residential_fill: [[13, 'rgb(42,42,42)'], [14, 'rgb(42,42,42)']]
+  minor_road_residential_tunnel_fill: rgb(42,42,42)
+  minor_road_residential_outline: rgb(42,42,42)
+  minor_road_width: [[14, 1px], [14, 2px], [15, 3px], [17, 6px], [18, 18px], [19, 24px], [20, 46px]]
+  minor_road_service_fill: [[13, 'rgb(204,205,205)'], [14, 'rgb(239,240,235)']]
+  minor_road_service_tunnel_fill: rgb(42,42,42)
+  minor_road_service_outline: rgb(42,42,42)
+  minor_road_unpaved_fill: rgb(42,42,42)
+
+  ######################################################  PATHS  #######################################################
+  path_pedestrian: rgb(42,42,42)
+  path_footway: rgb(42,42,42)
+  path_footway_tunnel_fill: rgb(42,42,42)
+  path_footway_cemetery: rgb(42,42,42)
+  path_footway_forest: rgb(42,42,42)
+  path_footway_park: rgb(42,42,42)
+
+
+  #####################################################  FERRIES  ######################################################
+  ferry_line_color: rgb(67,141,218)
+  ferry_label_color: rgb(48,124,207)
+  ferry_tunnel_color: rgb(30,48,65)
+  ferry_label_outline_color: rgb(24,24,24)
+
+
+  #####################################################  RAILWAYS  #####################################################
+  rail_dash_background_color: rgb(160, 160, 160)
+  rail_outline_color: rgb(160, 160, 160)
+  rail_dash_color: [[10, 'rgb(220, 220, 220)'], [13, 'rgb(255, 255, 255)'], [16, 'rgb(250, 250, 250)']]
+
+  ####################################################  CONTINENTS  ####################################################
+  continent:
+    
+    label:
+      display: none
+      font:
+        transform: uppercase
+        fill: rgb(38,0,41)
+        weight: normal
+        size: 0px
+        
+# That's a tempporary code which renders mountain peaks, it
+# should be removed after enabeling ../poi.day.yaml for this style:
+layers:
+  pois:
+    data: {source: omv, layer: pois}
+    filter: global.feature_min_zoom_filter
+    mountain:
+      filter:
+        kind: [peak, volcano]
+      draw:
+        icon_library:
+          size: 10px
+          text:
+            priority: global.label.priorities.mountain-peak-labels
+            text_source: |
+              function() {
+                return ((global.ux_language && feature['name:' + global.ux_language]) ||
+                  (global.ux_language_fallback && feature['name:' + global.ux_language_fallback]) ||
+                  feature['name']) + (feature.elevation && ' (' + feature.elevation + 'm)' || '');
+              }
+            text_wrap: 1
+            max_lines: 5
+            anchor: top
+            font:
+              fill: 'rgb(120,107,103)'
+              stroke:
+                width: 1px
+                color: 'rgba(250,254,255,.47)'
+              size: 10px
+      peak:
+        filter: {kind: peak}
+        draw:
+          icon_library:
+            sprite: mountain-peak--mountain
+      volcano:
+        filter: {kind: volcano}
+        draw:
+          icon_library:
+            sprite: mountain-peak--volcano
