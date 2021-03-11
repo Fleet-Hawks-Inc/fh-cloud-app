@@ -28,6 +28,7 @@ export class AddTripComponent implements OnInit {
     constructor(private apiService: ApiService, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
+    permanentRoutes = []
     errors = {};
     trips = [];
     vehicles = [];
@@ -175,22 +176,9 @@ export class AddTripComponent implements OnInit {
             this.fetchTripDetail();
         }
 
-        var current = this;
         $(document).ready(() => {
             this.form = $('#form_').validate();
         });
-
-        // $('#locationCountry').on('change', function () {
-        //     var curr = $(this);
-        //     var countryId = curr.val();
-        //     current.getStates(countryId);
-        // })
-
-        // $('#locationState').on('change', function () {
-        //     let curr = $(this);
-        //     let stateId = curr.val();
-        //     current.getCities(stateId);
-        // })
     }
 
     fetchCarriers() {
@@ -412,11 +400,8 @@ export class AddTripComponent implements OnInit {
             error: () => { },
             next: (result: any) => {
                 this.spinner.hide();
-                for (let i = 0; i < result.Items.length; i++) {
-                    if (result.Items[i].isDeleted == 0) {
-                        this.routes.push(result.Items[i])
-                    }
-                }
+                this.permanentRoutes = result['Items'];
+                console.log('this.routes', this.permanentRoutes)
             }
         })
     }
@@ -767,31 +752,6 @@ export class AddTripComponent implements OnInit {
         }
     }
 
-    // fetchCountries() {
-    //     this.apiService.getData('countries')
-    //         .subscribe((result: any) => {
-    //             this.countries = result.Items;
-    //         });
-    // }
-
-    // getStates(countryID) {
-    //     this.spinner.show();
-    //     this.apiService.getData('states/country/' + countryID)
-    //         .subscribe((result: any) => {
-    //             this.states = result.Items;
-    //             this.spinner.hide();
-    //         });
-    // }
-
-    // getCities(stateID) {
-    //     this.spinner.show();
-    //     this.apiService.getData('cities/state/' + stateID)
-    //         .subscribe((result: any) => {
-    //             this.cities = result.Items;
-    //             this.spinner.hide();
-    //         });
-    // }
-
     vehicleChange($event, type) {
         if ($event === undefined) {
             $(".vehicleClass").removeClass('td_border');
@@ -1012,12 +972,14 @@ export class AddTripComponent implements OnInit {
 
     throwErrors() {
         from(Object.keys(this.errors))
-            .subscribe((v) => {
-                $('[name="' + v + '"]')
-                    .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-                    .addClass('error')
-            });
-    }
+          .subscribe((v) => {
+              $('[name="' + v + '"]')
+              .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+              .addClass('error');
+          });
+    
+        this.spinner.hide();
+      }
 
     hideErrors() {
         from(Object.keys(this.errors))
@@ -1470,7 +1432,6 @@ export class AddTripComponent implements OnInit {
                     if (orderData.orderStatus == 'confirmed') {
                         this.apiService.getData('orders/update/orderStatus/'+orderID+'/dispatched')
                             .subscribe((result: any) => {
-                                console.log(result);
                             });
                     }
                 });

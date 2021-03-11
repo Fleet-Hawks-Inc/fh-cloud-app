@@ -95,15 +95,14 @@
                                          <td class="back-color-gray font-weight-bold">Miles</td>
                                          <td>{{miles}} <span class="font-size-12">since previous fuel entry</span></td>
                                       </tr> -->
-                                      <tr *ngIf ="MPG != 0">
+                                      <!-- <tr *ngIf ="MPG != 0">
                                          <td class="back-color-gray font-weight-bold">MPG (US)</td>
                                          <td>{{MPG}}</td>
                                       </tr>
                                       <tr *ngIf ="costPerMile != 0">
                                          <td class="back-color-gray font-weight-bold">Cost/Mile</td>
                                          <td> {{costPerMile}} {{fuelData.billingCurrency}}</td>
-                                      </tr>
-                                      
+                                      </tr> -->
                                    </tbody>
                                 </table>
                              </div>
@@ -163,14 +162,14 @@
                         <thead>
                          <tr>
                             <th width="5%">Sr</th>
-                            <th width="5%">Fuel </th>
+                            <th width="18%">Fuel </th>
                             <th width="10%">Quantity</th>
                             <th width="10%">Amount </th>
                             <th width="10%">Price Per Unit </th>
                             <th width="10%">Retail Amount </th>
                             <th width="10%">Retail Price Per Unit </th>
                             <th width="10%">Use Type</th>
-                            <th width="30%">Taxes</th>
+                            <th width="17%">Taxes</th>
                          </tr>
                         </thead>
                         <tbody>
@@ -178,14 +177,17 @@
                             <td>{{i+1}}</td>
                             <td>{{fuelTypeWEXCode[item.fuelType]}}</td>
                             <td>{{item.quantity}}</td>
-                            <td>{{item.amount}}</td>
-                            <td>{{item.pricePerUnit}}</td>
-                            <td>{{item.retailAmount}}</td>
-                            <td>{{item.retailPricePerUnit}}</td>
-                            <td>{{item.useType}}</td>
-                            <td><span *ngFor="let tax of item.tax">{{WEXTaxCodeList[tax.taxCode]}}({{tax.taxCode}}) - {{tax.amount}}<br></span>
-                            <!-- <button type="button" class="btn btn-success btn-sm" (click)="showFn()" id="showBtn">Read More..</button> -->
-                            <!-- <button type="button" class="btn btn-success btn-sm" (click)="hideFn()" id="hideBtn">Read Less...</button> -->
+                            <td>{{item.amount}}{{fuelData.billingCurrency}}</td>
+                            <td>{{item.pricePerUnit}}{{fuelData.billingCurrency}}</td>
+                            <td>{{item.retailAmount}}{{fuelData.billingCurrency}}</td>
+                            <td>{{item.retailPricePerUnit}}{{fuelData.billingCurrency}}</td>
+                            <td>{{WEXuseTypeCodeList[item.useType]}}</td>
+                            <td><span *ngFor="let tax of item.tax">{{tax.taxCode}},</span><br>
+                            <button type="button" class="btn btn-success btn-xs" (click)="showFn(i)" id="showBtn{{i}}">Read More..</button>
+                            <span id="readMoreTaxDiv{{i}}" style="display: none;">
+                              <span *ngFor="let tax of item.tax">{{WEXTaxCodeList[tax.taxCode]}}({{tax.taxCode}}) - {{tax.amount}}<br></span>
+                            </span>
+                            <button type="button" class="btn btn-success btn-xs" (click)="hideFn(i)" style="display: none;" id="hideBtn{{i}}">Read Less...</button>
                             </td>
                          </tr><tr>
                         </tr></tbody>

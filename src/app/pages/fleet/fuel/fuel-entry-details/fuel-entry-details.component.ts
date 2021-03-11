@@ -71,6 +71,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   WEXDiscountCodeList: any = {};
   fuelTypeWEXCode: any  = {};
   fuelTypeListCode: any  = {};
+  WEXuseTypeCodeList: any = {};
   public fuelEntryImages = [];
   existingPhotos = [];
   tripID = '';
@@ -108,7 +109,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];    
+    this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
@@ -116,6 +117,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchFuelTypeWEXCode();
     this.fetchTaxWEXCode();
     this.fetchWEXDiscountCode();
+    this.fetchWEXuseTypeCode();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
     this.map = this.HereMap.mapInit();
@@ -139,6 +141,11 @@ export class FuelEntryDetailsComponent implements OnInit {
   fetchWEXDiscountCode() {
     this.apiService.getData('fuelDiscounts/get/WEXCode').subscribe((result: any) => {
       this.WEXDiscountCodeList = result;
+    });
+  }
+  fetchWEXuseTypeCode() {
+    this.apiService.getData('WEXuseTypes/get/WEXCode').subscribe((result: any) => {
+        this.WEXuseTypeCodeList = result;
     });
   }
   fetchAssetList() {
@@ -169,7 +176,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.vehicleData = result.Items;
     });
     setTimeout(() => {
-      sortedArray = _.orderBy(this.vehicleData, ['additionalDetails.odometer'], ['desc']);
+      sortedArray = _.orderBy(this.vehicleData, ['odometer'], ['desc']);
 
       if (sortedArray.length < 2) {
         this.MPG = 0;
@@ -208,7 +215,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.ReeferData = result.Items;
     });
     setTimeout(() => {
-      sortedArray = _.orderBy(this.ReeferData, ['additionalDetails.odometer'], ['desc']);
+      sortedArray = _.orderBy(this.ReeferData, ['odometer'], ['desc']);
 
       if (sortedArray.length < 2) {
         this.MPG = 0;
@@ -251,26 +258,25 @@ export class FuelEntryDetailsComponent implements OnInit {
       // });
     });
   }
-  showFn() {    
-    $('#seeFull').show(400);
-    $('#showBtn').hide(200);
-    $('#hideBtn').show(200);
+  showFn(i: any) {
+    $('#readMoreTaxDiv' + i).show();
+    $('#showBtn' + i).hide();
+    $('#hideBtn' + i).show();
   }
-   hideFn() {    
-    $('#seeFull').hide(400);
-     $('#showBtn').show(200);
-    $('#hideBtn').hide(200);
+   hideFn(i: any) {
+    $('#readMoreTaxDiv' + i).hide();
+    $('#showBtn' + i).show();
+    $('#hideBtn' + i).hide();
   }
   fetchFuelEntry() {
     this.apiService
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result',result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
         this.fuelData.billingCurrency = result.billingCurrency,
-          this.fuelData.unitType = result.unitType;
+        this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -64,10 +64,11 @@ export class AddRouteComponent implements OnInit {
   form;
   newCoords = [];
 
-  vehicles = [];
+  // vehicles = [];
+  vehicles: any;
   assets = [];
-  drivers = [];
-  coDrivers = [];
+  drivers: any;
+  coDrivers: any;
   // locations = [];
   countries = [];
   sourceStates = [];
@@ -89,11 +90,12 @@ export class AddRouteComponent implements OnInit {
   dailyClass = '';
   weekClass = '';
   biClass = '';
+  isDaily = false;
 
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
   }
 
   get today() {
@@ -101,6 +103,8 @@ export class AddRouteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listService.fetchVehicles();
+    this.listService.fetchDrivers();
     this.routeID    = this.route.snapshot.params['routeID'];
     if(this.routeID != undefined) {
       this.pageTitle = 'Edit Route';
@@ -108,11 +112,14 @@ export class AddRouteComponent implements OnInit {
       this.pageTitle = 'Add Route';
     } 
     
-    this.fetchVehicles();
+    // this.fetchVehicles();
     this.fetchAssets();
-    this.fetchDrivers();
+    // this.fetchDrivers();
     this.searchLocation();
 
+    this.vehicles = this.listService.vehicleList;
+    this.drivers = this.listService.driversList;
+    this.coDrivers = this.listService.driversList;
     if(this.routeID != undefined) {
       this.fetchRouteByID();
     }
@@ -181,12 +188,12 @@ export class AddRouteComponent implements OnInit {
     this.newCoords = [];
   }
 
-  fetchVehicles() {
-    this.apiService.getData('vehicles')
-      .subscribe((result: any) => {
-        this.vehicles = result.Items;
-      })
-  }
+  // fetchVehicles() {
+  //   this.apiService.getData('vehicles')
+  //     .subscribe((result: any) => {
+  //       this.vehicles = result.Items;
+  //     })
+  // }
 
   fetchAssets() {
     this.apiService.getData('assets')
@@ -195,23 +202,22 @@ export class AddRouteComponent implements OnInit {
       })
   }
 
-  fetchDrivers() {
-    this.apiService.getData('drivers')
-      .subscribe((result: any) => {
-        this.drivers = result.Items;
-        this.coDrivers = result.Items;
-        //for edit
-        if(this.routeID !== undefined) {
-          if(this.routeData['driverUserName'] !== '' && this.routeData['driverUserName'] !== undefined) {
-            this.coDrivers = this.drivers.filter((item) => item.userName !== this.routeData['driverUserName']);
-          }
-        }
-      })
-  }
+  // fetchDrivers() {
+  //   this.apiService.getData('drivers')
+  //     .subscribe((result: any) => {
+  //       this.drivers = result.Items;
+  //       this.coDrivers = result.Items;
+  //       //for edit
+  //       if(this.routeID !== undefined) {
+  //         if(this.routeData['driverUserName'] !== '' && this.routeData['driverUserName'] !== undefined) {
+  //           this.coDrivers = this.drivers.filter((item) => item.userName !== this.routeData['driverUserName']);
+  //         }
+  //       }
+  //     })
+  // }
 
-  resetCodrivers(event) {
+  resetCodrivers() {
     this.routeData.coDriverUserName = '';
-    this.coDrivers = this.drivers.filter((item) => item.userName !== event);
   }
 
   mapShow() {
@@ -223,29 +229,29 @@ export class AddRouteComponent implements OnInit {
 
   addRoute() {
     
-    if (this.routeData.recurring.recurringRoute === true) {
-      if(this.routeData.recurring.recurringType == '') {
-        this.toastr.error('Please select recurring type');
-        return false;
-      }
+    // if (this.routeData.recurring.recurringRoute === true) {
+    //   if(this.routeData.recurring.recurringType == '') {
+    //     this.toastr.error('Please select recurring type');
+    //     return false;
+    //   }
 
-      if ($('input.daysChecked:checked').length == 0) { 
-        this.toastr.error('Please select day and date of recurring');
-        return false;
-      }
+    //   if ($('input.daysChecked:checked').length == 0) { 
+    //     this.toastr.error('Please select day and date of recurring');
+    //     return false;
+    //   }
 
-      if (this.routeData.recurring.recurringType === 'weekly') {
-        if ($('input.daysChecked:checked').length > 1) {
-          this.toastr.error('Please select a single day for weekly recurring route');
-          return false;
-        }
-      } else if (this.routeData.recurring.recurringType === 'biweekly') {
-        if ($('input.daysChecked:checked').length > 2) {
-          this.toastr.error('Please select only two days for biweekly recurring route');
-          return false;
-        }
-      }
-    }
+    //   if (this.routeData.recurring.recurringType === 'weekly') {
+    //     if ($('input.daysChecked:checked').length > 1) {
+    //       this.toastr.error('Please select a single day for weekly recurring route');
+    //       return false;
+    //     }
+    //   } else if (this.routeData.recurring.recurringType === 'biweekly') {
+    //     if ($('input.daysChecked:checked').length > 2) {
+    //       this.toastr.error('Please select only two days for biweekly recurring route');
+    //       return false;
+    //     }
+    //   }
+    // }
     
     this.spinner.show();
     this.hasError = false;
@@ -303,11 +309,9 @@ export class AddRouteComponent implements OnInit {
   }
 
   async assignLocation(elem, label, index='') {
-    console.log(elem)
-    console.log(label)
-    console.log(index)
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
+    console.log('labelResult', labelResult);
     const item = {
       stopName: label,
       stopNotes: ''
@@ -320,13 +324,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.sourceInformation['sourceZipCode'] = '';
 
       this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}` ;
-      if(labelResult.address.houseNumber !== undefined) {
-        this.routeData.sourceInformation['sourceAddress'] += `${labelResult.address.houseNumber}`;
-      }
-
-      if(labelResult.address.street !== undefined) {
-        this.routeData.sourceInformation['sourceAddress'] += `${labelResult.address.street}`;
-      }
       
       if(labelResult.address.countryName !== undefined) {
         this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
@@ -353,14 +350,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.destinationInformation['destinationZipCode'] = '';
 
       this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
-
-      if(labelResult.address.houseNumber !== undefined) {
-        this.routeData.destinationInformation['destinationAddress'] += `${labelResult.address.houseNumber}`;
-      }
-
-      if(labelResult.address.street !== undefined) {
-        this.routeData.destinationInformation['destinationAddress'] += `${labelResult.address.street}`;
-      }
       
       if(labelResult.address.countryName !== undefined) {
         this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
@@ -413,7 +402,12 @@ export class AddRouteComponent implements OnInit {
   }
 
   removeStops(i) {
+    
     this.routeData.stops.splice(i, 1);
+    setTimeout(() => {
+      this.reinitMap();
+    }, 1000);
+    
   }
 
   fetchRouteByID(){
@@ -492,29 +486,29 @@ export class AddRouteComponent implements OnInit {
   updateRoute() {
     this.hasError = false;
     this.hasSuccess = false;
-    if (this.routeData.recurring.recurringRoute === true) {
-      if(this.routeData.recurring.recurringType == '') {
-        this.toastr.error('Please select recurring type.');
-        return false;
-      }
+    // if (this.routeData.recurring.recurringRoute === true) {
+    //   if(this.routeData.recurring.recurringType == '') {
+    //     this.toastr.error('Please select recurring type.');
+    //     return false;
+    //   }
 
-      if ($('input.daysChecked:checked').length == 0) { 
-        this.toastr.error('Please select day and date of recurring.');
-        return false;
-      }
+    //   if ($('input.daysChecked:checked').length == 0) { 
+    //     this.toastr.error('Please select day and date of recurring.');
+    //     return false;
+    //   }
 
-      if (this.routeData.recurring.recurringType === 'weekly') {
-        if ($('input.daysChecked:checked').length > 1) {
-          this.toastr.error('Please select a single day for weekly recurring route.');
-          return false;
-        }
-      } else if (this.routeData.recurring.recurringType === 'biweekly') {
-        if ($('input.daysChecked:checked').length > 2) {
-          this.toastr.error('Please select only two days for biweekly recurring route.');
-          return false;
-        }
-      }
-    }
+    //   if (this.routeData.recurring.recurringType === 'weekly') {
+    //     if ($('input.daysChecked:checked').length > 1) {
+    //       this.toastr.error('Please select a single day for weekly recurring route.');
+    //       return false;
+    //     }
+    //   } else if (this.routeData.recurring.recurringType === 'biweekly') {
+    //     if ($('input.daysChecked:checked').length > 2) {
+    //       this.toastr.error('Please select only two days for biweekly recurring route.');
+    //       return false;
+    //     }
+    //   }
+    // }
 
     this.spinner.show();
 
@@ -553,15 +547,28 @@ export class AddRouteComponent implements OnInit {
   }
 
   selectRecurring(event) {
+    console.log('event.target.id', event.target.id);
     $('.reccRoute').removeClass('selRecc');
     $('#'+event.target.id).closest('label').addClass('selRecc');
+    if(event.target.id != 'dailyRecurringRadioBtn') {
+      this.isDaily = true;
+    } else {
+      this.isDaily = false;
+    }
   }
 
   reinitMap() {
     if (this.routeData.stops.length > 1) {
       this.getCoords(this.routeData.stops);
     }
-    
+  }
+
+  gotoVehiclePage() {
+    $('#addVehicleModelDriver').modal('show');
+  }
+
+  gotoDriverPage() {    
+    $('#addDriverModelVehicle').modal('show');
   }
 }
 
