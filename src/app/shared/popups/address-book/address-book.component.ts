@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
-  @ViewChild("content", {static: false}) modalContent: TemplateRef<any>;
+
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   drivers = [];
@@ -752,7 +752,7 @@ export class AddressBookComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    this.spinner.show();
+    
 
     for (let i = 0; i < this.customerData.address.length; i++) {
       const element = this.customerData.address[i];
@@ -1919,7 +1919,7 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
 
     this.hideErrors();
-    this.spinner.show();
+    
     for (let i = 0; i < this.staffData.address.length; i++) {
       const element = this.staffData.address[i];
       if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
@@ -3011,7 +3011,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   initDataTable() {
-    this.spinner.show();
+    
     this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID+'&lastKey='+this.lastEvaluatedKeyCustomer)
       .subscribe((result: any) => {
         this.customers = result['Items'];
@@ -3050,7 +3050,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableBroker() {
 
-    this.spinner.show();
+    
     this.apiService.getData('brokers/fetch/records?brokerID='+this.filterVal.brokerID+'&lastKey='+this.lastEvaluatedKeyBroker)
       .subscribe((result: any) => {
         this.brokers = result['Items'];
@@ -3088,7 +3088,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableVendor() {
 
-    this.spinner.show();
+    
     this.apiService.getData('vendors/fetch/records?vendorID='+this.filterVal.vendorID+'&lastKey='+this.lastEvaluatedKeyVendor)
       .subscribe((result: any) => {
         this.vendors = result['Items'];
@@ -3126,7 +3126,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCarrier() {
 
-    this.spinner.show();
+    
     this.apiService.getData('externalCarriers/fetch/records?infoID='+this.filterVal.carrierID+'&lastKey='+this.lastEvaluatedKeyCarrier)
       .subscribe((result: any) => {
         this.carriers = result['Items'];
@@ -3164,7 +3164,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableOperator() {
 
-    this.spinner.show();
+    
     this.apiService.getData('ownerOperators/fetch/records?operatorID='+this.filterVal.operatorID+'&lastKey='+this.lastEvaluatedKeyOperator)
       .subscribe((result: any) => {
         this.ownerOperatorss = result['Items'];
@@ -3202,7 +3202,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableShipper() {
 
-    this.spinner.show();
+    
     this.apiService.getData('shippers/fetch/records?shipperID='+this.filterVal.shipperID+'&lastKey='+this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
         this.shippers = result['Items'];
@@ -3240,7 +3240,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableConsignee() {
 
-    this.spinner.show();
+    
     this.apiService.getData('receivers/fetch/records?consigneeID='+this.filterVal.consigneeID+'&lastKey='+this.lastEvaluatedKeyConsignee)
       .subscribe((result: any) => {
         this.receivers = result['Items'];
@@ -3278,7 +3278,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableStaff() {
 
-    this.spinner.show();
+    
     this.apiService.getData('staffs/fetch/records?staffID='+this.filterVal.staffID+'&lastKey='+this.lastEvaluatedKeyStaff)
       .subscribe((result: any) => {
         this.staffs = result['Items'];
@@ -3316,7 +3316,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCompany() {
 
-    this.spinner.show();
+    
     this.apiService.getData('factoringCompanies/fetch/records?companyID='+this.filterVal.companyID+'&lastKey='+this.lastEvaluatedKeyCompany)
       .subscribe((result: any) => {
         this.fcCompanies = result['Items'];
@@ -3354,7 +3354,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableDriver() {
 
-    this.spinner.show();
+    
     this.apiService.getData('drivers/fetch/records?driverID='+this.filterVal.driverID+'&dutyStatus=&lastKey='+this.lastEvaluatedKeyDriver)
       .subscribe((result: any) => {
         this.drivers = result['Items'];
@@ -3397,10 +3397,15 @@ export class AddressBookComponent implements OnInit {
         .getData(`customers/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestedCustomers = result.Items;
-          this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
-            v.name = v.firstName + ' ' + v.lastName;
-            return v;
-          })
+          if (this.suggestedCustomers.length == 0) {
+            this.filterVal.customerID = '';
+            this.filterVal.customerName = '';
+          } else {
+            this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+          }
         });
 
     } else if (type == 'broker') {
@@ -3408,10 +3413,15 @@ export class AddressBookComponent implements OnInit {
         .getData(`brokers/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestedBrokers = result.Items;
-          this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
-            v.name = v.firstName + ' ' + v.lastName;
-            return v;
-          })
+          if (this.suggestedBrokers.length == 0) {
+            this.filterVal.staffID = '';
+            this.filterVal.brokerName = '';
+          } else {
+            this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
+              v.name = v.firstName + ' ' + v.lastName;
+              return v;
+            })
+          }
         });
 
     } else if (type == 'vendor') {
@@ -4194,6 +4204,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   manAddress(event, i, type) {
+    console.log('type', type);
     if(type == 'customer') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');

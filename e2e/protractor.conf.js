@@ -11,15 +11,16 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     "./src/**/*.ts",
-    //'./src/app/entry/onboard/login/*.ts'
+    //'./src/app/entry/add-driver/*.ts'
   ],
   capabilities: {
     browserName: "chrome",
-    'chromeOptions' : {
+    'chromeOptions': {
       args: ['--lang=en',
-             '--window-size=1024,720']
-     }
-   
+        '--window-size=1024,720'],
+      excludeSwitches: ['enable-logging']
+    }
+
   },
   directConnect: true,
   baseUrl: "http://localhost:4200/",
@@ -37,4 +38,4 @@ exports.config = {
       .getEnv()
       .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   },
-}; 
+};
