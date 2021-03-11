@@ -32,7 +32,6 @@
                                 <input [(ngModel)]="filterValues.endDate" name="toDate" type="text"
                                     placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
                                     class="form-control" autocomplete="off">
-                                <!-- <input data-plugin-datepicker="" type="text" class="form-control" name="end"> -->
                             </div>
                         </div>
 
@@ -43,13 +42,6 @@
                         </div>
 
                         <div class="col-lg-5 text-right">
-                           
-                            <a data-toggle="modal" data-target="#addSequenceModal" href="javascript:;" class="modal-with-form btn btn-success btn-sm pull-right"><i
-                                    class="fas fa-plus"></i> Add Document</a>
-                            <button type="button" class="mr-2 btn btn-success pull-right btn-sm"><i
-                                    class="fas fa-download"></i> Download</button>
-                            <!-- <a href="#emailForm" class="modal-with-form mb-1 btn-sm mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a> -->
-
                             <div class="btn-group flex-wrap pull-right">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
                                     data-toggle="dropdown" aria-expanded="false">Actions<span
@@ -61,28 +53,18 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
-
-
                             <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
-
-                                class="modal-with-form mb-1 mt-1 mr-1 btn btn-success btn-sm pull-right"><i
+                                class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
-                      
-                            <!-- <button type="button" class="mb-1 mt-1 mr-1 btn btn-success pull-right btn-sm"><i
-                                    class="fas fa-download"></i> Download</button> -->
-                            <!-- <a href="#emailForm" class="modal-with-form mb-1 btn-sm mt-1 mr-1 btn btn-success pull-right"><i class="fas fa-envelope"></i> Email</a> -->
-
                         </div>
                     </div>
                 </form>
-
             </header>
             <div class="row text-dark">
                 <div class="col">
                     <section class="card">
                         <div class="card-body">
-                            <table
-                                class="row-border hover table table-bordered table-striped mb-0">
+                            <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
                                         <th width="10%">Document#</th>
@@ -96,6 +78,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <tr *ngIf="documents.length == 0" class="text-center">
+                                        <td colspan="8">No records found</td>
+                                    </tr>
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{tripsObjects[document.tripID]}}</td>
@@ -124,13 +109,17 @@
                                             </div>
                                         </td>
                                     </tr>
-
-                                    
                                 </tbody>
-                                <!-- <tr *ngIf="documents.length === 0">
-                                        <td colspan="9" class="no-data-available">No records found</td>
-                                      </tr> -->
                             </table>
+                            <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
+                                <div class="col-6">
+                                    Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="docPrev">Prev</button>
+                                    <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="docNext">Next</button>
+                                </div>
+                            </div>
 
                             <!-- email modal Form -->
                             <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
@@ -179,11 +168,7 @@
             </div>
         </section>
     </div>
-
-
-
 </section>
-
 
 <div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
     aria-hidden="true">
@@ -231,7 +216,7 @@
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
                                 tiff).
-                                The maximum file size can be 15MB or less.</span>
+                                The maximum file size can be 15MB.</span>
                             <div *ngIf="newDoc" class="border my-2 p-2">
                                 <h4 class="mt-0">Uploaded Document</h4>
                                 <a href="{{newDoc}}" target="_blank">Document</a>

@@ -1,38 +1,6 @@
-<style>
-    .rowStatus {
-        display: none;
-    }
-
-    #map_view {
-        display: inline-block;
-        height: 300px;
-        width: 100%;
-    }
-
-    #assetModal .modal-dialog {
-        max-width: 1200px;
-    }
-
-    canvas {
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
-
-    .td_border {
-        border: 2px solid black !important;
-    }
-
-    #locationTable {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-</style>
-
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pt-0 pr-0">
+       <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header pr-5">
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4">
@@ -63,7 +31,6 @@
                                         </div>
 
                                         <div class="row mb-2">
-
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Trip# 
@@ -86,7 +53,6 @@
                                             </div>
                                         </div>
 
-
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
                                                 <label
@@ -95,27 +61,22 @@
                                                 </label>
                                                 <ng-select [(ngModel)]="tripData.routeID" name="routeID"
                                                     placeholder="Select Route">
-                                                    <ng-option *ngFor="let route of routes" value="{{ route.routeID }}">
+                                                    <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
                                               </div>
                                             </div>
                                     </div>
-                                  
-
-                                   
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <p class="font-weight-semibold text-5 mb-3 pt-1">&nbsp;</p>
                                             </div>
                                         </div>
-
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
-                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
@@ -159,9 +120,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                                 <div class="row my-2">
                                     <div class="col-lg-12">
                                         <h4 class="mt-0 text-dark font-weight-bold text-4">Plan Trip</h4>
@@ -634,6 +592,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody class="ui-sortable">
+                                                            <tr *ngIf="ftlOrders.length == 0" class="text-center">
+                                                                <td colspan="7">No records found</td>
+                                                            </tr>
                                                             <tr class="ui-sortable-handle odd" role="row"
                                                                 *ngFor="let order of ftlOrders">
                                                                 <td class="sorting_1">
@@ -664,7 +625,6 @@
                                         </div>
                                         <div class="tab-pane fade" id="loadLTL" role="tabpanel"
                                             aria-labelledby="loadLTL-tab">
-                                            <!-- <table class="table table-bordered table-striped mb-0" id="datatable-default"> -->
                                             <table class="table table-bordered table-striped mb-0 dataTable no-footer">
                                                 <thead>
                                                     <tr class="">
@@ -679,6 +639,9 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="ui-sortable">
+                                                    <tr *ngIf="ltlOrders.length == 0" class="text-center">
+                                                        <td colspan="7">No records found</td>
+                                                    </tr>
                                                     <tr class="ui-sortable-handle" *ngFor="let order of ltlOrders">
                                                         <td>
                                                             <!-- <input type="checkbox"> -->

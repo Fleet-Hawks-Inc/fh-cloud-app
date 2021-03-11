@@ -10,6 +10,13 @@ declare var $: any;
 })
 export class OrdersListComponent implements OnInit {
   orders = [];
+  confirmOrders = [];
+  dispatchOrders = [];
+  deliveredOrders = [];
+  cancelledOrders = [];
+  invoicedOrders = [];
+  partiallyOrders = [];
+
   lastEvaluatedKey = '';
   orderFiltr = {
     searchValue: '',
@@ -47,6 +54,7 @@ export class OrdersListComponent implements OnInit {
   confirmOrdersPrevEvauatedKeys = [''];
   confirmOrdersStartPoint = 1;
   confirmOrdersEndPoint = this.pageLength;
+  confirmLastEvaluatedKey = '';
 
   dispatchOrdersNext = false;
   dispatchOrdersPrev = true;
@@ -54,6 +62,7 @@ export class OrdersListComponent implements OnInit {
   dispatchOrdersPrevEvauatedKeys = [''];
   dispatchOrdersStartPoint = 1;
   dispatchOrdersEndPoint = this.pageLength;
+  dispatchLastEvaluatedKey = '';
 
   deliverOrdersNext = false;
   deliverOrdersPrev = true;
@@ -61,6 +70,7 @@ export class OrdersListComponent implements OnInit {
   deliverOrdersPrevEvauatedKeys = [''];
   deliverOrdersStartPoint = 1;
   deliverOrdersEndPoint = this.pageLength;
+  deliverLastEvaluatedKey = '';
 
   cancelOrdersNext = false;
   cancelOrdersPrev = true;
@@ -68,6 +78,7 @@ export class OrdersListComponent implements OnInit {
   cancelOrdersPrevEvauatedKeys = [''];
   cancelOrdersStartPoint = 1;
   cancelOrdersEndPoint = this.pageLength;
+  cancelLastEvaluatedKey = '';
 
   invoiceOrdersNext = false;
   invoiceOrdersPrev = true;
@@ -75,6 +86,7 @@ export class OrdersListComponent implements OnInit {
   invoiceOrdersPrevEvauatedKeys = [''];
   invoiceOrdersStartPoint = 1;
   invoiceOrdersEndPoint = this.pageLength;
+  invoiceLastEvaluatedKey = '';
 
   partialPaidOrdersNext = false;
   partialPaidOrdersPrev = true;
@@ -82,6 +94,7 @@ export class OrdersListComponent implements OnInit {
   partialPaidOrdersPrevEvauatedKeys = [''];
   partialPaidOrdersStartPoint = 1;
   partialPaidOrdersEndPoint = this.pageLength;
+  partialPaidLastEvaluatedKey = '';
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -89,8 +102,11 @@ export class OrdersListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchOrders();
-    this.initDataTable('all');
+    this.initDataTable();
     this.fetchCustomersByIDs();
+    this.initDataTableConfirmed();
+    this.initDataTableDispatched();
+    this.initDataTableDelivered();
   }
 
   fetchOrders = () => {
@@ -98,29 +114,26 @@ export class OrdersListComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
-        console.log('result', result);
         this.totalRecords = result.Count; 
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          //if(element.isDeleted === 0) {
-            this.allordersCount = this.allordersCount+1;
-            this.totalRecords = this.allordersCount; 
-            if(element.orderStatus == 'confirmed') {
-              this.confirmedOrdersCount = this.confirmedOrdersCount+1;
-            } else if(element.orderStatus == 'dispatched') {
-              this.dispatchedOrdersCount = this.dispatchedOrdersCount+1;
-            } else if(element.orderStatus == 'delivered') {
-              this.deliveredOrdersCount = this.deliveredOrdersCount+1;
-            } else if(element.orderStatus == 'cancelled') {
-              this.cancelledOrdersCount = this.cancelledOrdersCount+1;
-            } else if(element.orderStatus == 'quoted') {
-              this.quotedOrdersCount = this.quotedOrdersCount+1;
-            } else if(element.orderStatus == 'invoiced') {
-              this.invoicedOrdersCount = this.invoicedOrdersCount+1;
-            } else if(element.orderStatus == 'partiallyPaid') {
-              this.partiallyPaidOrdersCount = this.partiallyPaidOrdersCount+1;
-            }
-          // }
+          this.allordersCount = this.allordersCount + 1;
+          this.totalRecords = this.allordersCount;
+          if (element.orderStatus == 'confirmed') {
+            this.confirmedOrdersCount = this.confirmedOrdersCount + 1;
+          } else if (element.orderStatus == 'dispatched') {
+            this.dispatchedOrdersCount = this.dispatchedOrdersCount + 1;
+          } else if (element.orderStatus == 'delivered') {
+            this.deliveredOrdersCount = this.deliveredOrdersCount + 1;
+          } else if (element.orderStatus == 'cancelled') {
+            this.cancelledOrdersCount = this.cancelledOrdersCount + 1;
+          } else if (element.orderStatus == 'quoted') {
+            this.quotedOrdersCount = this.quotedOrdersCount + 1;
+          } else if (element.orderStatus == 'invoiced') {
+            this.invoicedOrdersCount = this.invoicedOrdersCount + 1;
+          } else if (element.orderStatus == 'partiallyPaid') {
+            this.partiallyPaidOrdersCount = this.partiallyPaidOrdersCount + 1;
+          }
         }
       }
     });
@@ -136,53 +149,13 @@ export class OrdersListComponent implements OnInit {
   }
 
   fetchTabData(tabType) {
-    let current = this;
-    console.log('tabType')
-    console.log(tabType)
-    $(".navtabs").removeClass('active');
-
-    if (tabType === 'all') {
-      $("#allOrders-tab").addClass('active');
-      this.totalRecords = this.allordersCount;
-
-    } else if (tabType === 'confirmed') {
-      $("#confirmed-tab").addClass('active');
-      this.totalRecords = this.confirmedOrdersCount;
-
-    } else if (tabType === 'dispatched') {
-      $("#dispatched-tab").addClass('active');
-      this.totalRecords = this.dispatchedOrdersCount;
-
-    } else if (tabType === 'delivered') {
-      $("#delivered-tab").addClass('active');
-      this.totalRecords = this.deliveredOrdersCount;
-
-    } else if (tabType === 'cancelled') {
-      $("#cancelledDispatch-tab").addClass('active');
-      this.totalRecords = this.cancelledOrdersCount;
-
-    } else if (tabType === 'quoted') {
-      $("#quoted-tab").addClass('active');
-      this.totalRecords = this.quotedOrdersCount;
-
-    } else if (tabType === 'invoiced') {
-      $("#invoiced-tab").addClass('active');
-      this.totalRecords = this.invoicedOrdersCount;
-
-    } else if (tabType === 'partiallyPaid') {
-      $("#partiallyPaid-tab").addClass('active');
-      this.totalRecords = this.partiallyPaidOrdersCount;
-
-    }
-
-    current.lastEvaluatedKey = '';
-    current.initDataTable(tabType, 'reload');
+    this.activeTab = tabType;
   }
 
-  initDataTable(tabType, ddd=null) {
+  initDataTable() {
     this.spinner.show();
     this.orders = [];
-    this.apiService.getData('orders/fetch/records/' + tabType + '?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('orders/fetch/records/all?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         this.orders = result['Items'];
         if (this.orderFiltr.searchValue !== '' || this.orderFiltr.start !== '' ) {
@@ -215,8 +188,199 @@ export class OrdersListComponent implements OnInit {
       });
   }
 
+  initDataTableConfirmed() {
+    this.spinner.show();
+    this.confirmOrders = [];
+    this.apiService.getData('orders/fetch/records/confirmed?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.confirmLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.confirmOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.confirmOrdersNext = false;
+          // for prev button
+          if (!this.confirmOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.confirmOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.confirmLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.confirmOrdersNext = true;
+          this.confirmLastEvaluatedKey = '';
+          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.confirmOrdersDraw > 0) {
+          this.confirmOrdersPrev = false;
+        } else {
+          this.confirmOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  initDataTableDispatched() {
+    this.spinner.show();
+    this.dispatchOrders = [];
+    this.apiService.getData('orders/fetch/records/dispatched?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.dispatchLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.dispatchOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.dispatchOrdersNext = false;
+          // for prev button
+          if (!this.dispatchOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.dispatchOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.dispatchLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.dispatchOrdersNext = true;
+          this.dispatchLastEvaluatedKey = '';
+          this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.dispatchOrdersDraw > 0) {
+          this.dispatchOrdersPrev = false;
+        } else {
+          this.dispatchOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  initDataTableDelivered() {
+    this.spinner.show();
+    this.deliveredOrders = [];
+    this.apiService.getData('orders/fetch/records/delivered?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.deliverLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.deliveredOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.deliverOrdersNext = false;
+          // for prev button
+          if (!this.deliverOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.deliverOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.deliverLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.deliverOrdersNext = true;
+          this.deliverLastEvaluatedKey = '';
+          this.deliverOrdersEndPoint = this.deliveredOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.deliverOrdersDraw > 0) {
+          this.deliverOrdersPrev = false;
+        } else {
+          this.deliverOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  initDataTableCancelled() {
+    this.spinner.show();
+    this.cancelledOrders = [];
+    this.apiService.getData('orders/fetch/records/cancelled?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.cancelLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.cancelledOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.cancelOrdersNext = false;
+          // for prev button
+          if (!this.cancelOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.cancelOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.cancelLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.cancelOrdersNext = true;
+          this.cancelLastEvaluatedKey = '';
+          this.cancelOrdersEndPoint = this.cancelledOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.cancelOrdersDraw > 0) {
+          this.cancelOrdersPrev = false;
+        } else {
+          this.cancelOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  initDataTableInvoiced() {
+    this.spinner.show();
+    this.invoicedOrders = [];
+    this.apiService.getData('orders/fetch/records/invoiced?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.invoiceLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.invoicedOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.invoiceOrdersNext = false;
+          // for prev button
+          if (!this.invoiceOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.invoiceOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.invoiceLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.invoiceOrdersNext = true;
+          this.invoiceLastEvaluatedKey = '';
+          this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.invoiceOrdersDraw > 0) {
+          this.invoiceOrdersPrev = false;
+        } else {
+          this.invoiceOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  initDataTablePartlyPaid() {
+    this.spinner.show();
+    this.partiallyOrders = [];
+    this.apiService.getData('orders/fetch/records/partiallyPaid?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.partialPaidLastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.partiallyOrders = result['Items'];
+       
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.partialPaidOrdersNext = false;
+          // for prev button
+          if (!this.partialPaidOrdersPrevEvauatedKeys.includes(result['LastEvaluatedKey'].orderID)) {
+            this.partialPaidOrdersPrevEvauatedKeys.push(result['LastEvaluatedKey'].orderID);
+          }
+          this.partialPaidLastEvaluatedKey = result['LastEvaluatedKey'].orderID;
+        } else {
+          this.partialPaidOrdersNext = true;
+          this.partialPaidLastEvaluatedKey = '';
+          this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
+        }
+
+        // disable prev btn
+        if (this.partialPaidOrdersDraw > 0) {
+          this.partialPaidOrdersPrev = false;
+        } else {
+          this.partialPaidOrdersPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
   selectCategory(type) {
-    let typeText = '';
     this.orderFiltr.category = type;
     $("#categorySelect").text(type);
   }
@@ -244,7 +408,8 @@ export class OrdersListComponent implements OnInit {
       this.totalRecords = this.allordersCount;
       this.orderFiltr.category = 'orderNumber';
 
-      this.initDataTable('all', 'reload');
+      this.activeTab = 'all';
+      this.initDataTable();
     }
   }
 
@@ -261,20 +426,19 @@ export class OrdersListComponent implements OnInit {
       };
       $("#categorySelect").text('Search by category');
       this.pageLength = 10;
-      this.initDataTable('all', 'reload');
+      this.initDataTable();
       this.spinner.hide();
     } else {
       return false;
     }
   }
-  
 
   deactivateOrder(status: number, orderID: string) {
-
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
         .getData(`orders/isDeleted/${orderID}/${status}`)
         .subscribe((result: any) => {
+          this.initDataTable();
           this.toastr.success('Order deleted successfully!');
           
         });
@@ -286,6 +450,30 @@ export class OrdersListComponent implements OnInit {
       this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
       this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
 
+    } else if(type == 'confirmed') {
+      this.confirmOrdersStartPoint = this.confirmOrdersDraw * this.pageLength + 1;
+      this.confirmOrdersEndPoint = this.confirmOrdersStartPoint + this.pageLength - 1;
+
+    } else if(type == 'dispatched') {
+      this.dispatchOrdersStartPoint = this.dispatchOrdersDraw * this.pageLength + 1;
+      this.dispatchOrdersEndPoint = this.dispatchOrdersStartPoint + this.pageLength - 1;
+
+    } else if(type == 'delivered') {
+      this.deliverOrdersStartPoint = this.deliverOrdersDraw * this.pageLength + 1;
+      this.deliverOrdersEndPoint = this.deliverOrdersStartPoint + this.pageLength - 1;
+
+    } else if(type == 'cancelled') {
+      this.cancelOrdersStartPoint = this.cancelOrdersDraw * this.pageLength + 1;
+      this.cancelOrdersEndPoint = this.cancelOrdersStartPoint + this.pageLength - 1;
+
+    } else if(type == 'invoiced') {
+      this.invoiceOrdersStartPoint = this.invoiceOrdersDraw * this.pageLength + 1;
+      this.invoiceOrdersEndPoint = this.invoiceOrdersStartPoint + this.pageLength - 1;
+
+    } else if(type == 'partiallyPaid') {
+      this.partialPaidOrdersStartPoint = this.partialPaidOrdersDraw * this.pageLength + 1;
+      this.partialPaidOrdersEndPoint = this.partialPaidOrdersStartPoint + this.pageLength - 1;
+
     } 
   }
 
@@ -293,7 +481,37 @@ export class OrdersListComponent implements OnInit {
   nextResults(type) {
     if(type == 'all') {
       this.ordersDraw += 1;
-      this.initDataTable('all');
+      this.initDataTable();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'confirmed') {
+      this.confirmOrdersDraw += 1;
+      this.initDataTableConfirmed();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'dispatched') {
+      this.dispatchOrdersDraw += 1;
+      this.initDataTableDispatched();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'delivered') {
+      this.deliverOrdersDraw += 1;
+      this.initDataTableDelivered();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'cancelled') {
+      this.cancelOrdersDraw += 1;
+      this.initDataTableCancelled();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'invoiced') {
+      this.invoiceOrdersDraw += 1;
+      this.initDataTableInvoiced();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'partiallyPaid') {
+      this.partialPaidOrdersDraw += 1;
+      this.initDataTablePartlyPaid();
       this.getStartandEndVal(type);
 
     }
@@ -304,7 +522,43 @@ export class OrdersListComponent implements OnInit {
     if(type == 'all') {
       this.ordersDraw -= 1;
       this.lastEvaluatedKey = this.ordersPrevEvauatedKeys[this.ordersDraw];
-      this.initDataTable('all');
+      this.initDataTable();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'confirmed') {
+      this.confirmOrdersDraw -= 1;
+      this.confirmLastEvaluatedKey = this.confirmOrdersPrevEvauatedKeys[this.confirmOrdersDraw];
+      this.initDataTableConfirmed();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'dispatched') {
+      this.dispatchOrdersDraw -= 1;
+      this.dispatchLastEvaluatedKey = this.dispatchOrdersPrevEvauatedKeys[this.dispatchOrdersDraw];
+      this.initDataTableDispatched();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'delivered') {
+      this.deliverOrdersDraw -= 1;
+      this.deliverLastEvaluatedKey = this.deliverOrdersPrevEvauatedKeys[this.deliverOrdersDraw];
+      this.initDataTableDispatched();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'cancelled') {
+      this.cancelOrdersDraw -= 1;
+      this.cancelLastEvaluatedKey = this.cancelOrdersPrevEvauatedKeys[this.cancelOrdersDraw];
+      this.initDataTableCancelled();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'invoiced') {
+      this.invoiceOrdersDraw -= 1;
+      this.invoiceLastEvaluatedKey = this.invoiceOrdersPrevEvauatedKeys[this.invoiceOrdersDraw];
+      this.initDataTableInvoiced();
+      this.getStartandEndVal(type);
+
+    } else if(type == 'partiallyPaid') {
+      this.partialPaidOrdersDraw -= 1;
+      this.partialPaidLastEvaluatedKey = this.partialPaidOrdersPrevEvauatedKeys[this.partialPaidOrdersDraw];
+      this.initDataTablePartlyPaid();
       this.getStartandEndVal(type);
 
     }
