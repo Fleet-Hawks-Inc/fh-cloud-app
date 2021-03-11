@@ -1,12 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CompanyDocumentsComponent } from './new-documents/company-documents/company-documents.component';
-import { NewDocumentsComponent } from './new-documents/new-documents.component';
-import { MyDocumentListComponent } from './new-documents/my-documents/my-document-list.component';
-import { QuotesListComponent } from './quotes/quotes-list/quotes-list.component';
-import { AddQuotesComponent } from './quotes/add-quotes/add-quotes.component';
-import { QuoteDetailComponent } from './quotes/quote-detail/quote-detail.component';
-
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 

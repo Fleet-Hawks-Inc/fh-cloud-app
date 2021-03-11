@@ -21,7 +21,6 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { LeftBarComponent } from './entry/left-bar/left-bar.component';
 
-import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 import { NavOpenedDirective } from './directives/nav-opened.directive';
 import { SharedModule } from './shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
@@ -66,7 +65,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MapDashboardComponent,
     NavOpenedDirective,
     SharedModalComponent,
-    PdfAutomationComponent,
     DynamicModalDirective,
     ConfirmEqualValidatorDirective,
     ErrorComponent,
