@@ -3669,6 +3669,7 @@ export class AddressBookComponent implements OnInit {
     if(type == 'customer') {
       if(this.filterVal.customerID != '' || this.filterVal.customerName != '') {
         this.customers = [];
+        this.lastEvaluatedKeyCustomer = '';
         this.activeDiv = 'customerTable';
         this.filterVal.customerID = '';
         this.filterVal.customerName = '';
@@ -3684,6 +3685,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'broker') {
       if(this.filterVal.brokerID != '' || this.filterVal.brokerName != '') {
         this.brokers = [];
+        this.lastEvaluatedKeyBroker = '';
         this.activeDiv = 'brokerTable';
         this.filterVal.brokerID = '';
         this.filterVal.brokerName = '';
@@ -3699,6 +3701,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'vendor') {
       if(this.filterVal.vendorID != '' || this.filterVal.vendorName != '') {
         this.vendors = [];
+        this.lastEvaluatedKeyVendor = '';
         this.activeDiv = 'vendorTable';
         this.filterVal.vendorID = '';
         this.filterVal.vendorName = '';
@@ -3714,6 +3717,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'carrier') {
       if(this.filterVal.carrierID != '' || this.filterVal.carrierName != '') {
         this.carriers = [];
+        this.lastEvaluatedKeyCarrier = '';
         this.activeDiv = 'carrierTable';
         this.filterVal.carrierID = '';
         this.filterVal.carrierName = '';
@@ -3729,6 +3733,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'operator') {
       if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '') {
         this.ownerOperatorss = [];
+        this.lastEvaluatedKeyOperator = '';
         this.activeDiv = 'operatorTable';
         this.filterVal.operatorID = '';
         this.filterVal.operatorName = '';
@@ -3744,6 +3749,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'shipper') {
       if(this.filterVal.shipperID != '' || this.filterVal.shipperName != '') {
         this.shippers = [];
+        this.lastEvaluatedKeyShipper = '';
         this.activeDiv = 'shipperTable';
         this.filterVal.shipperID = '';
         this.filterVal.shipperName = '';
@@ -3759,6 +3765,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'consignee') {
       if(this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '') {
         this.receivers = [];
+        this.lastEvaluatedKeyConsignee = '';
         this.activeDiv = 'consigneeTable';
         this.filterVal.consigneeID = '';
         this.filterVal.consigneeName = '';
@@ -3774,6 +3781,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'staff') {
       if(this.filterVal.staffID != '' || this.filterVal.staffName != '') {
         this.receivers = [];
+        this.lastEvaluatedKeyStaff = '';
         this.activeDiv = 'staffTable';
         this.filterVal.staffID = '';
         this.filterVal.staffName = '';
@@ -3789,6 +3797,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'company') {
       if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '') {
         this.fcCompanies = [];
+        this.lastEvaluatedKeyCompany = '';
         this.activeDiv = 'companyTable';
         this.filterVal.companyID = '';
         this.filterVal.fcompanyName = '';
@@ -3804,6 +3813,7 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'driver') {
       if(this.filterVal.driverID != '' || this.filterVal.driverName != '') {
         this.drivers = [];
+        this.lastEvaluatedKeyDriver = '';
         this.activeDiv = 'driverTable';
         this.filterVal.driverID = '';
         this.filterVal.driverName = '';

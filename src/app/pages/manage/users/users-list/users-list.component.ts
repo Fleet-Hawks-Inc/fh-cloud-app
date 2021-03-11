@@ -1,144 +1,142 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services';
-import { AfterViewInit, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
-export class UsersListComponent implements AfterViewInit, OnDestroy, OnInit  {
+export class UsersListComponent implements OnInit {
 
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
   users: any = [];
-  dtTrigger: Subject<any> = new Subject();
-  dtOptions: any = {};
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
   userName = '';
   currentStatus = '';
-  departmentName = ''
-  constructor(private apiService: ApiService,private toastr: ToastrService) { }
+  departmentName = '';
+
+  userNext = false;
+  userPrev = true;
+  userDraw = 0;
+  userPrevEvauatedKeys = [''];
+  userStartPoint = 1;
+  userEndPoint = this.pageLength;
+
+  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this. fetchUsers();
+    this.fetchUsers();
     this.initDataTable();
   }
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-  fetchUsers()
-{
-  this.apiService.getData('users')
-  .subscribe({
-    complete: () => {
-      this.initDataTable();
-    },
-    error: () => { },
-    next: (result: any) => {
-
-      this.totalRecords = result.Count;
-    },
-  });
-}
-initDataTable() {
-  let current = this;
-  this.dtOptions = { // All list options
-    pagingType: 'full_numbers',
-    pageLength: this.pageLength,
-    serverSide: true,
-    processing: true,
-    order: [],
-    columnDefs: [ //sortable false
-      { "targets": [0, 1, 2, 3, 4, 5, 6, 7], "orderable": false },
-    ],
-    dom: 'lrtip',
-    language: {
-      "emptyTable": "No records found"
-    },
-    ajax: (dataTablesParameters: any, callback) => {
-      current.apiService.getDatatablePostData('users/fetchRecords?userName='+this.userName+ '&currentStatus='+ this.currentStatus+'&departmentName='+this.departmentName+ '&lastKey=' + this.lastEvaluatedKey, dataTablesParameters).subscribe(resp => {
-        current.users = resp['Items'];
-        // let fetchedusers = resp['Items'].map(function(v){ return v.driverID; });
-        for (let i = 0; i < current.users.length; i++) {
-          const element = current.users[i];
-          // element.address = {};
-          // this.apiService.getData(`addresses/driver/${element.driverID}`).subscribe((result: any) => {
-          //   element.address = result['Items'][0];
-          // });
-        }
-        
-        if (resp['LastEvaluatedKey'] !== undefined) {
-          this.lastEvaluatedKey = resp['LastEvaluatedKey'].userName;
-        } else {
-          this.lastEvaluatedKey = '';
-        }
-        
-        callback({
-          recordsTotal: current.totalRecords,
-          recordsFiltered: current.totalRecords,
-          data: []
-        });
+  
+  fetchUsers() {
+    this.apiService.getData('users/get/count?userName=' + this.userName + '&currentStatus=' + this.currentStatus + '&departmentName=' + this.departmentName)
+      .subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.totalRecords = result.Count;
+        },
       });
-    }
-
-  };
-}
-searchFilter() {
-  if(this.userName!== '' || this.currentStatus !== '' || this.departmentName !== '' ) {
-    this.users= [];
-    this.fetchUsers();
-    this.rerender('reset');
-  } else {
-    return false;
   }
-}
 
-resetFilter() {
-  if(this.userName!== '' || this.currentStatus !== '' || this.departmentName !== '') {
-    this.userName = '';
-    this.currentStatus = '';
-    this.departmentName = '';
-    this.users= [];
-    this.fetchUsers();
-    this.rerender();
-  } else {
-    return false;
+  initDataTable() {
+    this.spinner.show();
+    this.apiService.getData('users/fetch/paginate/records?userName=' + this.userName + '&currentStatus=' + this.currentStatus + '&departmentName=' + this.departmentName + '&lastKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        this.users = result['Items'];
+        if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
+          this.userStartPoint = 1;
+          this.userEndPoint = this.totalRecords;
+        }
+
+        if (result['LastEvaluatedKey'] !== undefined) {
+          this.userNext = false;
+          // for prev button
+          if (!this.userPrevEvauatedKeys.includes(result['LastEvaluatedKey'].userName)) {
+            this.userPrevEvauatedKeys.push(result['LastEvaluatedKey'].userName);
+          }
+          this.lastEvaluatedKey = result['LastEvaluatedKey'].userName;
+
+        } else {
+          this.userNext = true;
+          this.lastEvaluatedKey = '';
+          this.userEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.userDraw > 0) {
+          this.userPrev = false;
+        } else {
+          this.userPrev = true;
+        }
+        this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
   }
-}
 
-deleteUser(userName) {
-  if (confirm('Are you sure you want to delete?') === true) {
-    this.apiService
-    .getData(`users/isDeleted/${userName}/`+1)
-    .subscribe((result: any) => {
-      this.fetchUsers();
+  searchFilter() {
+    if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
       this.users = [];
-      this.rerender();
-      this.toastr.success('User Deleted Successfully!');
-    });
+      this.fetchUsers();
+      this.initDataTable();
+    } else {
+      return false;
+    }
   }
-}
+
+  resetFilter() {
+    if (this.userName !== '' || this.currentStatus !== '' || this.departmentName !== '') {
+      this.userName = '';
+      this.currentStatus = '';
+      this.departmentName = '';
+      this.users = [];
+      this.fetchUsers();
+      this.initDataTable();
+    } else {
+      return false;
+    }
+  }
+
+  deleteUser(userName) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService
+        .getData(`users/isDeleted/${userName}/` + 1)
+        .subscribe((result: any) => {
+          this.fetchUsers();
+          this.users = [];
+          this.initDataTable();
+          this.toastr.success('User Deleted Successfully!');
+        });
+    }
+  }
+
+  getStartandEndVal() {
+    this.userStartPoint = this.userDraw * this.pageLength + 1;
+    this.userEndPoint = this.userStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.userDraw += 1;
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.userDraw -= 1;
+    this.lastEvaluatedKey = this.userPrevEvauatedKeys[this.userDraw];
+    this.initDataTable();
+    this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.userStartPoint = 1;
+    this.userEndPoint = this.pageLength;
+    this.userDraw = 0;
+  }
 }
