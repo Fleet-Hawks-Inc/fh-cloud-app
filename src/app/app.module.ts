@@ -75,7 +75,11 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AmplifyAngularModule,
     CommonModule,
     BrowserModule,
-    RouterModule,
+    RouterModule.forRoot([
+      {
+        path: '', component: LoginComponent
+      }
+    ]),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
