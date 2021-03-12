@@ -30,7 +30,7 @@
                           <td class="">{{item.carrierEmail}}</td>
                           <td class="">{{item.timeCreated | date: 'MM-dd-yyyy'}}</td>
                        </tr>
-                       <tr *ngIf="carriersList?.length > 0">
+                       <tr *ngIf="carriersList?.length == 0">
                             <td colspan="6">
                                 No Data Found
                             </td>

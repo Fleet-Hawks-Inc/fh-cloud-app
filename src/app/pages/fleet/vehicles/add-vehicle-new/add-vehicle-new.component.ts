@@ -43,7 +43,6 @@ groupData = {
 };
 vehicles= [];
 
-  vehicleSession = JSON.parse(localStorage.getItem('vehicle'));
   /**
    * Vehicle Prop
    */
@@ -283,159 +282,6 @@ vehicles= [];
       this.title = 'Edit Vehicle';
       this.fetchVehicleByID();
     } else {
-      this.vehicleIdentification = this.vehicleSession.vehicleIdentification;
-      this.vehicleType = this.vehicleSession.vehicleType;
-      this.VIN = this.vehicleSession.VIN;
-      this.DOT = this.vehicleSession.DOT;
-      this.year = this.vehicleSession.year;
-      this.manufacturerID = this.vehicleSession.manufacturerID;
-      this.modelID = this.vehicleSession.modelID;
-      this.plateNumber = this.vehicleSession.plateNumber;
-      this.countryID = this.vehicleSession.countryID;
-      this.stateID = this.vehicleSession.stateID;
-      this.driverID = this.vehicleSession.driverID;
-      this.teamDriverID = this.vehicleSession.teamDriverID;
-      this.serviceProgramID = this.vehicleSession.serviceProgramID;
-      this.repeatByTime = this.vehicleSession.repeatByTime;
-      this.repeatByTimeUnit = this.vehicleSession.repeatByTimeUnit;
-      this.reapeatbyOdometerMiles = this.vehicleSession.reapeatbyOdometerMiles;
-      this.annualSafetyDate = this.vehicleSession.annualSafetyDate;
-      this.annualSafetyReminder = this.vehicleSession.annualSafetyReminder;
-      this.currentStatus = this.vehicleSession.currentStatus;
-      this.ownership = this.vehicleSession.ownership;
-      this.ownerOperatorID = this.vehicleSession.ownerOperatorID;
-      this.groupID = this.vehicleSession.groupID;
-      this.aceID = this.vehicleSession.aceID;
-      this.aciID = this.vehicleSession.aciID;
-      this.iftaReporting = this.vehicleSession.iftaReporting;
-      this.vehicleColor = this.vehicleSession.vehicleColor;
-      this.bodyType = this.vehicleSession.bodyType;
-      this.bodySubType = this.vehicleSession.bodySubType;
-      this.msrp = this.vehicleSession.msrp;
-      this.inspectionFormID = this.vehicleSession.inspectionFormID;
-      this.lifeCycle = {
-        inServiceDate: this.vehicleSession.lifeCycle.inServiceDate,
-        startDate: this.vehicleSession.lifeCycle.startDate,
-        inServiceOdometer: this.vehicleSession.lifeCycle.inServiceOdometer,
-        estimatedServiceYears: this.vehicleSession.lifeCycle.estimatedServiceYears,
-        estimatedServiceMonths: this.vehicleSession.lifeCycle.estimatedServiceMonths,
-        estimatedServiceMiles: this.vehicleSession.lifeCycle.estimatedServiceMiles,
-        estimatedResaleValue: this.vehicleSession.lifeCycle.estimatedResaleValue,
-        outOfServiceDate: this.vehicleSession.lifeCycle.outOfServiceDate,
-        outOfServiceOdometer: this.vehicleSession.lifeCycle.outOfServiceOdometer
-      };
-      this.specifications = {
-        height: this.vehicleSession.specifications.height,
-        heightUnit: this.vehicleSession.specifications.heightUnit,
-        length: this.vehicleSession.specifications.length,
-        lengthUnit: this.vehicleSession.specifications.lengthUnit,
-        width: this.vehicleSession.specifications.width,
-        widthUnit: this.vehicleSession.specifications.widthUnit,
-        interiorVolume: this.vehicleSession.specifications.interiorVolume,
-        passangerVolume: this.vehicleSession.specifications.passangerVolume,
-        groundClearnce: this.vehicleSession.specifications.groundClearnce,
-        groundClearnceUnit: this.vehicleSession.specifications.groundClearnceUnit,
-        bedLength: this.vehicleSession.specifications.bedLength,
-        bedLengthUnit: this.vehicleSession.specifications.bedLengthUnit,
-        cargoVolume: this.vehicleSession.specifications.cargoVolume,
-        tareWeight: this.vehicleSession.specifications.tareWeight,
-        grossVehicleWeightRating: this.vehicleSession.specifications.grossVehicleWeightRating,
-        towingCapacity: this.vehicleSession.specifications.towingCapacity,
-        maxPayload: this.vehicleSession.specifications.maxPayload,
-        EPACity: this.vehicleSession.specifications.EPACity,
-        EPACombined: this.vehicleSession.specifications.EPACombined,
-        EPAHighway: this.vehicleSession.specifications.EPAHighway,
-      };
-      this.insurance = {
-        dateOfIssue: this.vehicleSession.insurance.dateOfIssue,
-        premiumAmount: this.vehicleSession.insurance.premiumAmount,
-        premiumCurrency: this.vehicleSession.insurance.premiumCurrency,
-        vendorID: this.vehicleSession.insurance.vendorID,
-        dateOfExpiry: this.vehicleSession.insurance.dateOfExpiry,
-        reminder: this.vehicleSession.insurance.reminder,
-        remiderEvery: this.vehicleSession.insurance.remiderEvery,
-        policyNumber: this.vehicleSession.insurance.policyNumber,
-        amount: this.vehicleSession.insurance.amount,
-        amountCurrency: this.vehicleSession.insurance.amountCurrency
-      };
-      this.fluid = {
-        fuelType: this.vehicleSession.fluid.fuelType,
-        fuelTankOneCapacity: this.vehicleSession.fluid.fuelTankOneCapacity,
-        fuelTankOneType: this.vehicleSession.fluid.fuelTankOneType,
-        fuelQuality: this.vehicleSession.fluid.fuelQuality,
-        fuelTankTwoCapacity: this.vehicleSession.fluid.fuelTankTwoCapacity,
-        fuelTankTwoType: this.vehicleSession.fluid.fuelTankTwoType,
-        oilCapacity: this.vehicleSession.fluid.oilCapacity,
-        oilCapacityType: this.vehicleSession.fluid.oilCapacityType,
-        def: this.vehicleSession.fluid.def,
-        defType: this.vehicleSession.fluid.defType
-      };
-      this.wheelsAndTyres = {
-        numberOfTyres: this.vehicleSession.wheelsAndTyres.numberOfTyres,
-        driveType: this.vehicleSession.wheelsAndTyres.driveType,
-        brakeSystem: this.vehicleSession.wheelsAndTyres.brakeSystem,
-        wheelbase: this.vehicleSession.wheelsAndTyres.wheelbase,
-        rearAxle: this.vehicleSession.wheelsAndTyres.rearAxle,
-        frontTyreType: this.vehicleSession.wheelsAndTyres.frontTyreType,
-        rearTyreType: this.vehicleSession.wheelsAndTyres.rearTyreType,
-        frontTrackWidth: this.vehicleSession.wheelsAndTyres.frontTrackWidth,
-        rearTrackWidth: this.vehicleSession.wheelsAndTyres.rearTrackWidth,
-        frontWheelDiameter: this.vehicleSession.wheelsAndTyres.frontWheelDiameter,
-        rearWheelDiameter: this.vehicleSession.wheelsAndTyres.rearWheelDiameter,
-        frontTyrePSI: this.vehicleSession.wheelsAndTyres.frontTyrePSI,
-        rearTyrePSI: this.vehicleSession.wheelsAndTyres.rearTyrePSI,
-      };
-      this.engine = {
-        engineSummary: this.vehicleSession.engine.engineSummary,
-        engineBrand: this.vehicleSession.engine.engineBrand,
-        aspiration: this.vehicleSession.engine.aspiration,
-        blockType: this.vehicleSession.engine.blockType,
-        bore: this.vehicleSession.engine.bore,
-        camType: this.vehicleSession.engine.camType,
-        stroke: this.vehicleSession.engine.stroke,
-        valves: this.vehicleSession.engine.valves,
-        compression: this.vehicleSession.engine.compression,
-        cylinders: this.vehicleSession.engine.cylinders,
-        displacement: this.vehicleSession.engine.displacement,
-        fuelIndication: this.vehicleSession.engine.fuelIndication,
-        fuelQuality: this.vehicleSession.engine.fuelQuality,
-        maxHP: this.vehicleSession.engine.maxHP,
-        maxTorque: this.vehicleSession.engine.maxTorque,
-        readlineRPM: this.vehicleSession.engine.readlineRPM,
-        transmissionSummary: this.vehicleSession.engine.transmissionSummary,
-        transmissionType: this.vehicleSession.engine.transmissionType,
-        transmissonBrand: this.vehicleSession.engine.transmissonBrand,
-        transmissionGears: this.vehicleSession.engine.transmissionGears
-      };
-      this.purchase = {
-        purchaseVendorID: this.vehicleSession.purchase.purchaseVendorID,
-        warrantyExpirationDate: this.vehicleSession.purchase.warrantyExpirationDate,
-        warrantyExpirationDateReminder: this.vehicleSession.purchase.warrantyExpirationDateReminder,
-        purchasePrice: this.vehicleSession.purchase.purchasePrice,
-        purchasePriceCurrency: this.vehicleSession.purchase.purchasePriceCurrency,
-        warrantyExpirationMeter: this.vehicleSession.purchase.warrantyExpirationMeter,
-        purchaseDate: this.vehicleSession.purchase.purchaseDate,
-        purchaseComments: this.vehicleSession.purchase.purchaseComments,
-        purchaseOdometer: this.vehicleSession.purchase.purchaseOdometer,
-      };
-      this.loan = {
-        loanVendorID: this.vehicleSession.loan.loanVendorID,
-        amountOfLoan: this.vehicleSession.loan.amountOfLoan,
-        amountOfLoanCurrency: this.vehicleSession.loan.amountOfLoanCurrency,
-        aspiration: this.vehicleSession.loan.aspiration,
-        annualPercentageRate: this.vehicleSession.loan.annualPercentageRate,
-        downPayment: this.vehicleSession.loan.downPayment,
-        downPaymentCurrency: this.vehicleSession.loan.downPaymentCurrency,
-        dateOfLoan: this.vehicleSession.loan.dateOfLoan,
-        monthlyPayment: this.vehicleSession.loan.monthlyPayment,
-        monthlyPaymentCurrency: this.vehicleSession.loan.monthlyPaymentCurrency,
-        firstPaymentDate: this.vehicleSession.loan.firstPaymentDate,
-        numberOfPayments: this.vehicleSession.loan.numberOfPayments,
-        loadEndDate: this.vehicleSession.loan.loadEndDate,
-        accountNumber: this.vehicleSession.loan.accountNumber,
-        generateExpenses: this.vehicleSession.loan.generateExpenses,
-        notes: this.vehicleSession.loan.notes
-      };
       this.title = 'Add Vehicle';
     }
 
@@ -883,7 +729,7 @@ vehicles= [];
               measurmentUnit: 'imperial',
             },
           }
-          localStorage.setItem('vehicle', JSON.stringify(vehicle));
+          // localStorage.setItem('vehicle', JSON.stringify(vehicle));
           this.toastr.success('Vehicle Added Successfully');
           // this.router.navigateByUrl('/fleet/vehicles/list');
           this.location.back();

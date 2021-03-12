@@ -25,6 +25,8 @@ export class AllCarriersComponent implements OnInit {
     this.apiService.getData('carriers').subscribe((result: any) => {
       this.carriersList = result.Items;
       this.spinner.hide();
+    }, err => {
+      this.spinner.hide();
     });
   }
 
