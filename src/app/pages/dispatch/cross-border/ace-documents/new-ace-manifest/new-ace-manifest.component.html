@@ -30,9 +30,14 @@
                       <div class="col-lg-3">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
+                        <!-- <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
                           <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
                             {{carrier.SCAC}}</ng-option>
+                        </ng-select> -->
+                          <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
+                          <ng-option value="DOTL">DOTL</ng-option>
+                          <ng-option value="FVFA">FVFA</ng-option>
+                          <ng-option value="GHGP">GHGP</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-7 pl-0">
@@ -196,7 +201,7 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Birth<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input class="form-control" type="text" placeholder="mm-dd-yyyy" ngbDatepicker #d7="ngbDatepicker" [maxDate]="getcurrentDate" (click)="d7.toggle()"
+                              <input class="form-control" type="text" placeholder="mm-dd-yyyy" ngbDatepicker [minDate]="birthDateMinLimit" #d7="ngbDatepicker" [maxDate]="getcurrentDate" (click)="d7.toggle()"
                               [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].dateOfBirth'"
                               [(ngModel)]="passenger.dateOfBirth" />
                           </div>
@@ -259,7 +264,7 @@
                               [(ngModel)]="document.stateProvince">
                               <ng-container *ngFor="let state of passengerDocStates| async">
                                 <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
-                                  [value]="state.stateID"> {{state.stateName}}</ng-option>
+                                  [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
                               </ng-container>
                             </ng-select>
                           </div>
@@ -305,7 +310,7 @@
                           (change)="getAddressCities()" [class.error]="errorClassState">
 
                           <ng-option class="text-capitalize" *ngFor="let state of addressStates"
-                            value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                            value="{{state.stateID}}">{{state.stateCode}} - {{state.stateName}}</ng-option>
 
                         </ng-select>
                         <div class="text-danger" *ngIf="errorClassState">This field is required.</div>
@@ -367,11 +372,18 @@
                               Control Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="row">
                               <div class="col-lg-4">
-                                <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
+                                <!-- <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
                                   [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC"
                                   [ngModelOptions]="{standalone: true}">
                                   <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
                                     {{carrier.SCAC}}</ng-option>
+                                </ng-select> -->
+                                <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
+                                  [attr.name]="'shipments['+s+'].SCAC'" [(ngModel)]="shipment.SCAC"
+                                  [ngModelOptions]="{standalone: true}">
+                                  <ng-option value="DOTL">DOTL</ng-option>
+                                  <ng-option value="FVFA">FVFA</ng-option>
+                                  <ng-option value="GHGP">GHGP</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-8">
@@ -388,8 +400,7 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].provinceOfLoading'" [ngModelOptions]="{standalone: true}"
                               [(ngModel)]="shipment.provinceOfLoading">
-                              <ng-option *ngFor="let state of states" [value]="state.stateID">
-                                {{state.stateName}}</ng-option>
+                              <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
@@ -483,7 +494,7 @@
                         <div class="row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Assign
-                              Shipper<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              Consignor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].shipperID'"
                               [(ngModel)]="shipment.shipperID">
                               <ng-option *ngFor="let shipper of shippers | async" value="{{shipper.shipperID}}">
@@ -606,7 +617,7 @@
                               [(ngModel)]="thirdParty.address.stateProvince">
                               <ng-container *ngFor="let state of thirdPartyStates| async">
                                 <ng-option *ngIf="state.countryID == shipments[s].thirdParties[p].address.country"
-                                  [value]="state.stateID"> {{state.stateName}}</ng-option>
+                                  [value]="state.stateID"> {{state.stateCode}} - {{state.stateName}}</ng-option>
                               </ng-container>
                             </ng-select>
                           </div>
@@ -970,149 +981,4 @@
     </section>
   </div>
 </section>
-<!-- PASSENGER MODAL -->
-<div class="modal fade" id="passengerModal" tabindex="-1" role="dialog" aria-labelledby="passengerModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="passengerModalLabel">Passenger Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <form>
-          <div *ngFor="let passenger of passengers;let i=index ">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-12 text-right">
-                  <button type="button" (click)="deletePassenger(i)" class="btn btn-sm btn-danger"> Delete
-                    Passenger</button>
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">First Name</label>
-                  <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].firstName'" placeholder="Enter passenger first name"
-                    [(ngModel)]="passenger.firstName">
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Last Name</label>
-                  <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].lastName'" placeholder="Enter passenger last name"
-                    [(ngModel)]="passenger.lastName">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Gender</label>
-                  <ng-select data-plugin-selectTwo class="form-control populate" [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].gender'" aria-placeholder="Select pasenger gender"
-                    [(ngModel)]="passenger.gender">
-                    <optgroup label="">
-                      <ng-option value="M">Male</ng-option>
-                      <ng-option value="F">Female</ng-option>
-                    </optgroup>
-                  </ng-select>
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Date of Birth</label>
-                  <input class="form-control" type="date" placeholder="mm-dd-yyyy" [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].dateOfBirth'" [(ngModel)]="passenger.dateOfBirth" />
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Country of
-                    Citizenship</label>
-                  <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].citizenshipCountry'"
-                    placeholder="Select citizenship country " [(ngModel)]="passenger.citizenshipCountry">
-                    <ng-option *ngFor="let country of countriesList" [value]="country.code">
-                      {{country.name}}</ng-option>
-                  </ng-select>
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Fast Card#</label>
-                  <input type="text" class="form-control" name="'passengers['+i+'].fastCardNumber'"
-                    placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02"
-                    [(ngModel)]="passenger.fastCardNumber">
-                </div>
-              </div>
-            </div>
-            <div class="form-group" *ngFor="let document of passenger.travelDocuments;let j = index">
-              <div class="row">
-                <div class="col-lg-12 text-right">
-                  <button type="button" *ngIf="j != 0;" (click)="deleteDocument(j,i)" class="btn btn-sm btn-danger">
-                    Delete Document</button>
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document#</label>
-                  <input type="text" class="form-control" placeholder="Enter travel document number"
-                    [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'" [(ngModel)]="document.number">
-                </div>
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Document Type</label>
-                  <ng-select [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].travelDocuments['+j+'].type'" [(ngModel)]="document.type">
-                    <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
-                      {{document.description}}</ng-option>
-                  </ng-select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6"> <label class="col-form-label font-weight-bold">Issuing Country</label>
-                  <ng-select [ngModelOptions]="{standalone: true}"
-                    [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
-                    (change)="resetpassengerDocState(i,j)" [(ngModel)]="document.country">
-                    <ng-option *ngFor="let country of countries" [value]="country.countryID">
-                      {{country.countryName}}</ng-option>
-                  </ng-select>
-                </div>
-                <div class="col-lg-6">
-                  <div class="row">
-                    <div class="col-lg-10">
-                      <label class="col-form-label font-weight-bold">Issuing State</label>
-                      <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
-                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
-                        [(ngModel)]="document.stateProvince">
-                        <ng-container *ngFor="let state of passengerDocStates| async">
-                          <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
-                            [value]="state.stateID"> {{state.stateName}}</ng-option>
-                        </ng-container>
-                      </ng-select>
 
-                    </div>
-                    <div class="col-lg-2 mar-top-37">
-                      <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                        class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-            <div class="form-group">
-              <div class="row">
-                <div class="col-lg-12 text-right">
-                  <button type="button" (click)="addDocument(i)" class="btn btn-success btn-sm mb-2">Add
-                    Document</button>
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <div class="form-group">
-            <div class="row">
-              <div class="col-lg-12">
-                <button type="button" (click)="addMorePassenger()" class="btn btn-success btn-sm mr-1">Add
-                  Passenger</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" data-dismiss="modal" class="btn btn-success" (click)="savePassengers()">Save</button>
-      </div>
-    </div>
-  </div>
-</div>

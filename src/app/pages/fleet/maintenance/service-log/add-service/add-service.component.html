@@ -1,7 +1,7 @@
 <section class="body">
-   
+
    <div class="inner-wrapper">
-      
+
 
        <section role="main" class="content-body pt-0 pl-0">
            <header class="page-header">
@@ -42,7 +42,7 @@
                                  </div>
                               </div>
                            </div>
-                            
+
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -105,18 +105,18 @@
                                           </li>
                                        </ul>
                                     </div>
-                                 
+
                               </div>
                            </div>
                              <div class="row">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
 												class="text-1 optional-label-color">(optional)</span></label>
-                                   <textarea 
-                                       [(ngModel)]="serviceData.description" 
-                                       name="description" 
-                                       class="form-control" 
-                                       rows="3" 
+                                   <textarea
+                                       [(ngModel)]="serviceData.description"
+                                       name="description"
+                                       class="form-control"
+                                       rows="3"
                                        style="height: auto !important;"
                                        placeholder="Enter description about the service"></textarea>
                                 </div>
@@ -165,7 +165,7 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Task</label>
                                     <ng-select [items]="tasks | async" bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks" placeholder="Select service task"
                                          (add)="addTasks()" [multiple]=true style="width: 100%;" (clear)="clearTaks('tasks')" (remove)="removeTasks($event)"
-                                    >                                    
+                                    >
                                  </ng-select>
                                  <!-- <ng-container *ngFor="let task of tasks | async;">
                                        <ng-option *ngIf="task.taskType == 'service'" value="{{task.taskID}}">
@@ -178,7 +178,7 @@
                                  </div>
                              </div>
                           </div>
-                          <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'"> 
+                          <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'">
                              <div class="row pt-2">
                                 <div class="col-lg-10 text-right">
                                    <a href="javascript:;" (click)="openReminders()"><label class="btn btn-dark text-3 pt-2">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
@@ -195,7 +195,7 @@
                                          <th id="" width="10%">Action</th>
                                       </tr>
                                    </thead>
-                                   <tbody> 
+                                   <tbody>
                                       <tr *ngFor="let item of serviceData.allServiceTasks.serviceTaskList; let i = index;">
                                          <td>{{item.taskName}}</td>
                                          <td><input type="text" value="0.00" name="laborCost{{i}}}" [(ngModel)]="item.laborCost" (blur)="calculateTasks()" class="form-control"></td>
@@ -224,7 +224,7 @@
                                           </td>
                                          <td id="" width="15%" colspan="2">
                                             <div class="d-flex justify-content-end align-items-center">
-                                                <ng-select [(ngModel)]="serviceData.allServiceTasks.currency" 
+                                                <ng-select [(ngModel)]="serviceData.allServiceTasks.currency"
                                                    [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)"
                                                 >
                                                    <ng-option value="CAD">CAD</ng-option>
@@ -238,7 +238,7 @@
                              </div>
                              <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedTasks.length == 0" (blur)="calculateTasks()" [(ngModel)]="serviceData.allServiceTasks.discountPercent" name="discountPercent" type="text" class="form-control" >
@@ -246,7 +246,7 @@
                              </div>
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedTasks.length == 0" (blur)="calculateTasks()" [(ngModel)]="serviceData.allServiceTasks.taxPercent" name="taxPercent" type="text" class="form-control">
@@ -254,7 +254,7 @@
                              </div> -->
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total($)</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total($)</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input readonly [(ngModel)]="serviceData.allServiceTasks.total" name="total" type="text" class="form-control" >
@@ -272,7 +272,7 @@
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Parts</label>
                                    <ng-select [items]="inventory" bindLabel="itemName" [(ngModel)]="selectedParts" name="selectedParts" placeholder="Select service part"
                                    (add)="addParts()" [multiple]=true (clear)="clearTaks('parts')" (remove)="removeParts($event)" style="width: 100%;"></ng-select>
-                                   
+
                                 </div>
                              </div>
                           </div>
@@ -341,7 +341,7 @@
                              </div>
                              <!-- <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Discount(%)</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.discountPercent" name="parts-discountPercent" type="text" value="0.00" (blur)="calculateParts()" class="form-control" >
@@ -349,7 +349,7 @@
                              </div>
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Tax(%)</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input [disabled]="selectedParts.length == 0" [(ngModel)]="serviceData.allServiceParts.taxPercent" name="parts-taxPercent" type="text" (blur)="calculateParts()" value="0.00" class="form-control" >
@@ -357,7 +357,7 @@
                              </div> -->
                              <div class="row">
                                 <div class="col-lg-1 offset-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>                                           
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Total</label>
                                 </div>
                                 <div class="col-lg-1">
                                    <input readonly [(ngModel)]="serviceData.allServiceParts.total" name="parts-total" type="text" class="form-control" >
@@ -386,7 +386,7 @@
                              </div>
                           </div>
                        </div>
-                       
+
                        <div class="form-group row">
                           <div class="col-lg-11 text-right">
                              <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2" id="">Cancel</a>
@@ -411,7 +411,7 @@
            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i></button>
         </div>
         <div class="modal-body">
-           
+
             <table class="table">
                <tbody>
                   <tr *ngFor="let reminder of reminders;let i = index;">
@@ -429,7 +429,7 @@
                   </tr>
                </tbody>
             </table>
-                 
+
         </div>
         <div class="modal-footer">
            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

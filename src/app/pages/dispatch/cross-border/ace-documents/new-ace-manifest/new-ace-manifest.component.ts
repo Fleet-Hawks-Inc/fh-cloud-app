@@ -38,6 +38,7 @@ export class NewAceManifestComponent implements OnInit {
   thirdPartyStates: any = [];
   thirdPartyCities: any = [];
   carriers: any = [];
+  birthDateMinLimit: any;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   currentUser: any = '';
@@ -179,11 +180,14 @@ export class NewAceManifestComponent implements OnInit {
     config.seconds = true;
     config.spinners = true;
     const date = new Date();
+    this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
     this.getcurrentDate = {
       year: date.getFullYear(),
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
+
+
   }
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];

@@ -56,7 +56,6 @@ export class FuelEntryDetailsComponent implements OnInit {
     }],
     reimburseToDriver: false,
     deductFromPay: false,
-      avgGVW: '',
       odometer: 0,
       description: '',
       uploadedPhotos: []
@@ -301,7 +300,6 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.stateID = result.stateID;
         this.fuelData.cityID = result.cityID;
         this.fuelData.tripID = result.tripID;
-        this.fuelData.avgGVW = result.avgGVW;
         this.fuelData.odometer = result.odometer;
         this.fuelData.description = result.description;
         this.fuelData.uploadedPhotos = result.uploadedPhotos;
