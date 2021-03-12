@@ -32,7 +32,7 @@
     "@fullcalendar/list": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.2",
     "@geoman-io/leaflet-geoman-free": "^2.8.0",
-    "@ng-bootstrap/ng-bootstrap": "4.2.2",
+    "@ng-bootstrap/ng-bootstrap": "9.0.2",
     "@ng-select/ng-select": "^3.7.3",
     "@turf/turf": "5.1.6",
     "@types/jquery.validation": "1.16.6",
