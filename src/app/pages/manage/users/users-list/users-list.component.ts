@@ -106,8 +106,8 @@ export class UsersListComponent implements OnInit {
       this.apiService
         .getData(`users/isDeleted/${userName}/` + 1)
         .subscribe((result: any) => {
-          this.fetchUsers();
           this.users = [];
+          this.fetchUsers();
           this.initDataTable();
           this.toastr.success('User Deleted Successfully!');
         });

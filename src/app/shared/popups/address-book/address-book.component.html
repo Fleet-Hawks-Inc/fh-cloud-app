@@ -14,16 +14,15 @@
                             <span class="caret"></span>
                         </button>
                         <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addDriverModal" (click)="resetModal('driver')" href="javascript:;">Driver</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addBrokerModal" (click)="resetModal('broker')" href="javascript:;">Broker</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCarrierModal" (click)="resetModal('carrier')" href="javascript:;">Carrier</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addOwnerOperatorModal" (click)="resetModal('operator')" href="javascript:;">Owner Operator</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Shipper</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Consignor</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addOwnerOperatorModal" (click)="resetModal('operator')" href="javascript:;">Owner Operator</a>
+                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a>
                         </div>
                     </div>
                     <div class="btn-group flex-wrap pull-right mr-2">
@@ -41,27 +40,40 @@
                 <form class="form-horizontal form-bordered" method="get">
                     <div class="mb-3">
                         <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                            <!-- <li class="nav-item"> <a class="nav-link active" id="allAddress-tab" data-toggle="tab" href="#allAddress" role="tab" aria-controls="allAddress" aria-selected="true">All</a> </li> -->
-                            <li class="nav-item"> <a class="nav-link active" id="customer-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="customer" aria-selected="false" (click)="setActiveDiv('customer')">Customer</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="driver-tab" data-toggle="tab" href="#driver" role="tab" aria-controls="driver" aria-selected="false" (click)="setActiveDiv('driver')">Driver</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="broker-tab" data-toggle="tab" href="#broker" role="tab" aria-controls="broker" aria-selected="false" (click)="setActiveDiv('broker')">Broker</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')">Vendor</a> </li>
+                            <li class="nav-item"> <a class="nav-link active" id="broker-tab" data-toggle="tab" href="#broker" role="tab" aria-controls="broker" aria-selected="false" (click)="setActiveDiv('broker')">Broker</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="carrier-tab" data-toggle="tab" href="#carrier" role="tab" aria-controls="carrier" aria-selected="false" (click)="setActiveDiv('carrier')">Carrier</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator" role="tab" aria-controls="ownerOperator" aria-selected="false" (click)="setActiveDiv('operator')">Owner Operator</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Shipper</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false" (click)="setActiveDiv('consignee')">Consignee</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Consignor</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="customer-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="customer" aria-selected="false" (click)="setActiveDiv('customer')">Customer</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('company')">Employee</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('staff')">Factoring Company</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator" role="tab" aria-controls="ownerOperator" aria-selected="false" (click)="setActiveDiv('operator')">Owner Operator</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')">Vendor</a> </li>
                         </ul>
                     </div>
                     <div class="tab-content p-0" id="myTabContent">
-                        <div class="tab-pane fade active show" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+                        <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="customerCompanyName"
+                                            [(ngModel)]="filterVal.customerCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'customer','company')">
+                                    </div>
+                                    <div *ngIf="suggestedCustomerCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedCustomerCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'customerCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Customer Name" name="customerName"
                                             [(ngModel)]="filterVal.customerName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'customer')">
+                                            (input)="getSuggestions($event.target.value, 'customer','name')">
                                     </div>
                                     <div *ngIf="suggestedCustomers?.length > 0" class="result-suggestions">
                                         <ul>
@@ -82,6 +94,7 @@
                             <table id="customerTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Customer Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -91,9 +104,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="customers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;">
+                                        <td (click)="openDetail(content, customer)">{{customer.companyName}}</td>
                                         <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
@@ -134,81 +148,28 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="driver" role="tabpanel" aria-labelledby="driver-tab">
+                        <div class="tab-pane fade active show" id="broker" role="tabpanel" aria-labelledby="broker-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
-                                        <input type="text" autocomplete="off" placeholder="Search By Driver Name" name="driverName"
-                                            [(ngModel)]="filterVal.driverName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'driver')">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="brokerCompanyName"
+                                            [(ngModel)]="filterVal.brokerCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'broker','company')">
                                     </div>
-                                    <div *ngIf="suggestedDriver?.length > 0" class="result-suggestions">
+                                    <div *ngIf="suggestedBrokerCompanies?.length > 0" class="result-suggestions">
                                         <ul>
-                                            <li *ngFor="let suggestedUser of suggestedDriver" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.driverID, suggestedUser.name, 'driver')"> {{
-                                                suggestedUser.name }}
+                                            <li *ngFor="let suggestedUser of suggestedBrokerCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'brokerCompany')"> {{
+                                                suggestedUser }}
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-
                                 <div class="col-md-3 col-lg-3">
-                                    <button type="submit" (click)="searchFilter('driver')" class="btn btn-sm btn-success mr-3">Search</button>
-                                    <button type="button" (click)="resetFilter('driver')" class="btn btn-sm btn-success">Reset</button>
-                                </div>
-                            </div>
-                            <table id="driverTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
-                                <thead>
-                                    <tr>
-                                        <th width="15%">Driver Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
-                                        <th width="45%">Address</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="drivers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
-                                    </tr>
-                                    <tr *ngFor="let driver of drivers;let i = index;">
-                                        <td>{{driver.firstName}} {{driver.lastName}}</td>
-                                        <td>{{driver.workEmail}}</td>
-                                        <td>{{driver.workPhone}}</td>
-                                        <td>100 street, King town,34E4R5,Canada</td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                   data-toggle="dropdown" aria-haspopup="true"
-                                                   aria-expanded="false">
-                                                   <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(driver.entityType, driver)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateDriver(driver, driver.driverID)">Delete</a>
-                                                </div>
-                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
-                                <div class="col-6">
-                                    Showing {{ driverStartPoint }} to {{ driverEndPoint }} of {{ totalRecordsDriver }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('driver')" [disabled]="driverPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('driver')" [disabled]="driverNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="broker" role="tabpanel" aria-labelledby="broker-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Broker Name" name="brokerName"
                                             [(ngModel)]="filterVal.brokerName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'broker')">
+                                            (input)="getSuggestions($event.target.value, 'broker','name')">
                                     </div>
                                     <div *ngIf="suggestedBrokers?.length > 0" class="result-suggestions">
                                         <ul>
@@ -229,6 +190,7 @@
                             <table id="brokerTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Broker Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -238,9 +200,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="brokers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let broker of brokers;let i = index;">
+                                        <td (click)="openDetail(content, broker)">{{broker.companyName}}</td>
                                         <td (click)="openDetail(content, broker)">{{broker.firstName}} {{broker.lastName}}</td>
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
@@ -283,11 +246,26 @@
                         </div>
                         <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="vendorCompanyName"
+                                            [(ngModel)]="filterVal.vendorCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'vendor','company')">
+                                    </div>
+                                    <div *ngIf="suggestedVendorCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedVendorCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'vendorCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Vendor Name" name="vendorName"
                                             [(ngModel)]="filterVal.vendorName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'vendor')">
+                                            (input)="getSuggestions($event.target.value, 'vendor','name')">
                                     </div>
                                     <div *ngIf="suggestedVendors?.length > 0" class="result-suggestions">
                                         <ul>
@@ -307,6 +285,7 @@
                             <table id="vendorTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Vendor Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -316,9 +295,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="vendors.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let vendor of vendors;let i = index;">
+                                        <td (click)="openDetail(content, vendor)">{{vendor.companyName}}</td>
                                         <td (click)="openDetail(content, vendor)">{{vendor.firstName}} {{vendor.lastName}}</td>
                                         <td>{{vendor.workEmail}}</td>
                                         <td>{{vendor.workPhone}}</td>
@@ -361,11 +341,26 @@
                         </div>
                         <div class="tab-pane fade" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="carrierCompanyName"
+                                            [(ngModel)]="filterVal.carrierCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'carrier','company')">
+                                    </div>
+                                    <div *ngIf="suggestedCarrierCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedCarrierCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'carrierCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Carrier Name" name="carrierName"
                                             [(ngModel)]="filterVal.carrierName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'carrier')">
+                                            (input)="getSuggestions($event.target.value, 'carrier','name')">
                                     </div>
                                     <div *ngIf="suggestedCarriers?.length > 0" class="result-suggestions">
                                         <ul>
@@ -385,6 +380,7 @@
                             <table id="carrierTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Carrier Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -394,9 +390,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="carriers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let carrier of carriers;let i = index;">
+                                        <td (click)="openDetail(content, carrier)">{{carrier.companyName}}</td>
                                         <td (click)="openDetail(content, carrier)">{{carrier.firstName}} {{carrier.lastName}}</td>
                                         <td>{{carrier.workEmail}}</td>
                                         <td>{{carrier.workPhone}}</td>
@@ -439,11 +436,26 @@
                         </div>
                         <div class="tab-pane fade" id="ownerOperator" role="tabpanel" aria-labelledby="owner-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="operatorCompanyName"
+                                            [(ngModel)]="filterVal.operatorCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'operator','company')">
+                                    </div>
+                                    <div *ngIf="suggestedOperatorCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedOperatorCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'operatorCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Owner Operator Name" name="operatorName"
                                             [(ngModel)]="filterVal.operatorName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'operator')">
+                                            (input)="getSuggestions($event.target.value, 'operator','name')">
                                     </div>
                                     <div *ngIf="suggestedOperators?.length > 0" class="result-suggestions">
                                         <ul>
@@ -463,6 +475,7 @@
                             <table id="operatorTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Owner Operator Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -472,9 +485,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="ownerOperatorss.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let operator of ownerOperatorss;let i = index;">
+                                        <td (click)="openDetail(content, operator)">{{operator.companyName}}</td>
                                         <td (click)="openDetail(content, operator)">{{operator.firstName}} {{operator.lastName}}</td>
                                         <td>{{operator.workEmail}}</td>
                                         <td>{{operator.workPhone}}</td>
@@ -517,11 +531,26 @@
                         </div>
                         <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
-                                        <input type="text" autocomplete="off" placeholder="Search By Shipper Name" name="shipperName"
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="shipperCompanyName"
+                                            [(ngModel)]="filterVal.shipperCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'shipper','company')">
+                                    </div>
+                                    <div *ngIf="suggestedShipperCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedShipperCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'shipperCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Consignor Name" name="shipperName"
                                             [(ngModel)]="filterVal.shipperName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'shipper')">
+                                            (input)="getSuggestions($event.target.value, 'shipper','name')">
                                     </div>
                                     <div *ngIf="suggestedShipper?.length > 0" class="result-suggestions">
                                         <ul>
@@ -542,7 +571,8 @@
                             <table id="shipperTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
-                                        <th width="15%">Shipper Name</th>
+                                        <th width="15%">Company Name</th>
+                                        <th width="15%">Consignor Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
                                         <th width="45%">Address</th>
@@ -551,9 +581,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="shippers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let shipper of shippers;let i = index;">
+                                        <td (click)="openDetail(content, shipper)">{{shipper.companyName}}</td>
                                         <td (click)="openDetail(content, shipper)">{{shipper.firstName}} {{shipper.lastName}}</td>
                                         <td>{{shipper.workEmail}}</td>
                                         <td>{{shipper.workPhone}}</td>
@@ -596,11 +627,26 @@
                         </div>
                         <div class="tab-pane fade" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="receiverCompanyName"
+                                            [(ngModel)]="filterVal.receiverCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'consignee','company')">
+                                    </div>
+                                    <div *ngIf="suggestedConsigneeCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedConsigneeCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'consigneeCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Consignee Name" name="consigneeName"
                                             [(ngModel)]="filterVal.consigneeName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'consignee')">
+                                            (input)="getSuggestions($event.target.value, 'consignee','name')">
                                     </div>
                                     <div *ngIf="suggestedConsignees?.length > 0" class="result-suggestions">
                                         <ul>
@@ -620,6 +666,7 @@
                             <table id="consigneeTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Consignee Name</th>
                                         <th width="20%">Email Address</th>
                                         <th width="15%">Phone Number</th>
@@ -629,9 +676,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="receivers.length == 0" class="text-center">
-                                        <td colspan="5">No records found</td>
+                                        <td colspan="6">No records found</td>
                                     </tr>
                                     <tr *ngFor="let receiver of receivers;let i = index;">
+                                        <td (click)="openDetail(content, receiver)">{{receiver.companyName}}</td>
                                         <td (click)="openDetail(content, receiver)">{{receiver.firstName}} {{receiver.lastName}}</td>
                                         <td>{{receiver.workEmail}}</td>
                                         <td>{{receiver.workPhone}}</td>
@@ -675,11 +723,26 @@
                         </div>
                         <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="staffCompanyName"
+                                            [(ngModel)]="filterVal.staffCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'staff','company')">
+                                    </div>
+                                    <div *ngIf="suggestedStaffCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedStaffCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'staffCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Employee Name" name="staffName"
                                             [(ngModel)]="filterVal.staffName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'staff')">
+                                            (input)="getSuggestions($event.target.value, 'staff','name')">
                                     </div>
                                     <div *ngIf="suggestedStaffs?.length > 0" class="result-suggestions">
                                         <ul>
@@ -699,6 +762,7 @@
                             <table id="staffTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
+                                        <th width="15%">Company Name</th>
                                         <th width="15%">Employee Name</th>
                                         <th width="10%">Department</th>
                                         <th width="10%">Designation</th>
@@ -710,9 +774,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="staffs.length == 0" class="text-center">
-                                        <td colspan="7">No records found</td>
+                                        <td colspan="8">No records found</td>
                                     </tr>
                                     <tr *ngFor="let staff of staffs;let i = index;">
+                                        <td (click)="openDetail(content, staff)">{{staff.companyName}}</td>
                                         <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>
                                         <td>{{staff.userAccount.department}}</td>
                                         <td>{{staff.userAccount.designation}}</td>
@@ -758,17 +823,32 @@
                         <!-- factoring Company Table -->
                         <div class="tab-pane fade" id="fc" role="tabpanel" aria-labelledby="fc-tab">
                             <div class="row pr-1 mr-1" style="padding-top:10px;">
-                                <div class="col-md-5 col-lg-5">
+                                <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
-                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="fcompanyName"
+                                        <input type="text" autocomplete="off" placeholder="Search By Company Name" name="factoringCompanyName"
+                                            [(ngModel)]="filterVal.factoringCompanyName" class="form-control"
+                                            (input)="getSuggestions($event.target.value, 'company','company')">
+                                    </div>
+                                    <div *ngIf="suggestedFactoringCompanies?.length > 0" class="result-suggestions">
+                                        <ul>
+                                            <li *ngFor="let suggestedUser of suggestedFactoringCompanies" style="cursor: pointer;"
+                                                (click)="setSearchValues('', suggestedUser, 'factoringCompany')"> {{
+                                                suggestedUser }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-lg-3">
+                                    <div class="input-group input-group-md mb-3">
+                                        <input type="text" autocomplete="off" placeholder="Search By Contact Name" name="fcompanyName"
                                             [(ngModel)]="filterVal.fcompanyName" class="form-control"
-                                            (input)="getSuggestions($event.target.value, 'company')">
+                                            (input)="getSuggestions($event.target.value, 'company','name')">
                                     </div>
                                     <div *ngIf="suggestedCompany?.length > 0" class="result-suggestions">
                                         <ul>
-                                            <li *ngFor="let suggestedUser of suggestedCompany" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.factoringCompanyID, suggestedUser.name, 'company')"> {{
-                                                suggestedUser.companyName }}
+                                            <li *ngFor="let suggestedUserq of suggestedCompany" style="cursor: pointer;"
+                                                (click)="setSearchValues(suggestedUserq.factoringCompanyID, suggestedUserq.name, 'company')"> {{
+                                                suggestedUserq.name }}
                                             </li>
                                         </ul>
                                     </div>
@@ -1448,24 +1528,6 @@
     </div>
 </div>
 
-<!-- Add Driver MODAL -->
-<div class="modal fade" id="addDriverModal" tabindex="-1" role="dialog" aria-labelledby="addDriverModal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 98%;" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">{{ modalTitle }} Driver</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-                </button>
-            </div>
-            <div class="modal-body text-dark address-book__driver">
-                <app-add-driver *ngIf="showDriverModal"></app-add-driver>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Add Broker MODAL -->
 <div class="modal fade" id="addBrokerModal" tabindex="-1" role="dialog" aria-labelledby="addBrokerModal"
     aria-hidden="true">
@@ -1835,10 +1897,10 @@
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row text-dark">
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Carrier
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="carrierData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Carrier Name">
+                                                        <input [(ngModel)]="carrierData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -2318,8 +2380,8 @@
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row text-dark">
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator Company Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input [(ngModel)]="ownerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Owner Operator Company Name">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Company Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input [(ngModel)]="ownerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -2672,7 +2734,7 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">{{ modalTitle }} Shipper</h5>
+                <h5 class="modal-title">{{ modalTitle }} Consignor </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
@@ -2706,10 +2768,10 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Shipper
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                     Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="shipperData.companyName" name="companyName" type="text"
-                                                    class="form-control" placeholder="Enter Shipper Name">
+                                                    class="form-control" placeholder="Enter Company Name">
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -2971,10 +3033,10 @@
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Consignee
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                     Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="consigneeData.companyName" name="companyName" type="text"
-                                                    class="form-control" placeholder="Enter Consignee Name">
+                                                    class="form-control" placeholder="Enter Company Name">
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
@@ -3505,6 +3567,12 @@
                                             <div class="col-lg-5 offset-lg-1">
                                                 <div class="row">
                                                     <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Company
+                                                            Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input [(ngModel)]="staffData.companyName" name="companyName"
+                                                            type="text" class="form-control" placeholder="Enter Company Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="staffData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter First Name">
@@ -3853,8 +3921,6 @@
         </div>
     </div>
 </div>
-
-
 
 <ng-template #content let-modal>
     <div class="modal-header">
