@@ -21,6 +21,7 @@ import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.compo
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AllCarriersComponent } from './shared/all-carriers/all-carriers.component';
 import { CheckUserService } from './services/check-user.service';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -90,18 +91,13 @@ const routes: Routes = [
     {
       preloadingStrategy: PreLoadStrategy
     }
-  )],
+  ), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
   entryComponents: [
     UnsavedChangesComponent,
   ]
 })
-@NgModule({
-  declarations: [],
-  imports: [CommonModule,
-    ChartsModule],
 
-})
 export class AppRoutingModule { }
 
