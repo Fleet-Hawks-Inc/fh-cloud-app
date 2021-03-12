@@ -62,7 +62,6 @@ fetchCarrier(){
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
     localStorage.removeItem('carrierID')
-    localStorage.removeItem('active-header');
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
      
