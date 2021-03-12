@@ -13,13 +13,7 @@ import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.compo
 
 import { ChartsModule } from 'ng2-charts';
 import { PreLoadStrategy } from './preload/PreLoadStrategy';
-import { PdfAutomationComponent } from './pages/automation/pdf-automation/pdf-automation.component';
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
-
-import { AddAlertComponent } from './pages/alerts/add-alert/add-alert.component';
-import { AlertDetailComponent } from './pages/alerts/alert-detail/alert-detail.component';
-import { AlertListComponent } from './pages/alerts/alert-list/alert-list.component';
-import { AlertTypeDetailComponent } from './pages/alerts/alert-type-detail/alert-type-detail.component';
 
 import { ErrorComponent } from './error/error.component';
 import { unsavedChangesGuard } from './guards/unsaved-changes.guard';
@@ -37,19 +31,9 @@ const routes: Routes = [
     component: DashboardComponent,
     canActivate: [AuthService],
   },
-  { path: 'add-alert', component: AddAlertComponent },
-  { path: 'edit-alert/:alertID', component: AddAlertComponent },
-  { path: 'alert-detail/:alertID', component: AlertDetailComponent },
-  { path: 'alert-list', component: AlertListComponent },
-  { path: 'alert-type-detail', component: AlertTypeDetailComponent },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
-    canActivate: [AuthService],
-  },
-  {
-    path: 'pdf-automation',
-    component: PdfAutomationComponent,
     canActivate: [AuthService],
   },
   { path: 'healthcheck', component: HealthcheckComponent },

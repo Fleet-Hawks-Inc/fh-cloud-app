@@ -21,7 +21,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   tasks: any;
   programID = '';
   serviceData = {
-    programID: '',
+    // programID: '',
     programName: '',
     description: '',
     vehicles: [],
@@ -168,7 +168,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       .subscribe((result: any) => {
         result = result.Items[0];
         
-        this.serviceData.programID= this.programID;
+        this.serviceData['programID']= this.programID;
         this.serviceData.programName = result.programName;
         this.serviceData.description = result.description;
         this.serviceData.vehicles = result.vehicles;

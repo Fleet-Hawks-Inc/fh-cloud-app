@@ -9,15 +9,13 @@ import {HeaderComponent} from './header/header.component';
 import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
 import {AddressBookComponent} from './popups/address-book/address-book.component';
 import { SharedModalsComponent} from './popups/shared-modals/shared-modals.component';
-// DataTable
-import { DataTablesModule } from 'angular-datatables';
 import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.component'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
@@ -95,7 +93,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    DataTablesModule,
     NgSelectModule,
     NgbModule,
     SlickCarouselModule
@@ -110,7 +107,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddServiceProgramComponent,
     AddVehicleNewComponent,
     SharedModalsComponent,
-    AddServiceProgramComponent,
     AllCarriersComponent,
   ],
   exports: [

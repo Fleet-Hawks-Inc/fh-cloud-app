@@ -11,75 +11,17 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 
-// DataTable
-import { DataTablesModule } from 'angular-datatables';
-
-
-
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { NgSelect2Module } from 'ng-select2';
 
 import {
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
-
-
-
-  AddInventoryComponent,
-  InventoryListComponent
 
 } from './index';
-import { InventoryDetailComponent } from './inventory/inventory-detail/inventory-detail.component';
-import { AbsoluteValuePipe } from './pipes/absolute-value.pipe';
-
 const COMPONENTS = [
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
-  AddInventoryComponent,
-  InventoryListComponent
 ];
 
 
@@ -161,17 +103,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ChartsModule,
     SlickCarouselModule,
     NgSelectModule,
-    DataTablesModule,
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module,
   ],
   exports: [...COMPONENTS],
   declarations: [
     ...COMPONENTS,
-    InventoryDetailComponent,
-    AbsoluteValuePipe,
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

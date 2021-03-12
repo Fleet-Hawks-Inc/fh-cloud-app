@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from 'moment';
 
@@ -17,7 +13,7 @@ import * as moment from 'moment';
 })
 export class EventDetailComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
+  constructor(private apiService: ApiService,private toastr: ToastrService,
     private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute, private hereMap: HereMapService) {
   }
 

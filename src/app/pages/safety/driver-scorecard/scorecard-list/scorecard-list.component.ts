@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router} from '@angular/router';
 import * as moment from "moment";
 
 @Component({
@@ -24,8 +23,8 @@ export class ScorecardListComponent implements OnInit {
   }
   suggestions = [];
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private router: Router) { }
+  constructor(private apiService: ApiService, private toastr: ToastrService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.fetchDrivers();

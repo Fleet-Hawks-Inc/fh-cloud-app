@@ -2,16 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router, ActivatedRoute } from '@angular/router';
-import { v4 as uuidv4 } from 'uuid';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-
+import { DomSanitizer} from '@angular/platform-browser';
+declare var $: any;
 @Component({
   selector: 'app-edit-event',
   templateUrl: './edit-event.component.html',
@@ -108,7 +106,7 @@ export class EditEventComponent implements OnInit {
   private readonly search: any;
   public searchTerm = new Subject<string>();
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
+  constructor(private apiService: ApiService, private toastr: ToastrService,
     private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute, private hereMap: HereMapService, private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
   }
