@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 
 import { LoginComponent } from './entry/login/login.component';
 import { LogoutComponent } from './entry/logout/logout.component';
@@ -72,7 +71,6 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AddAccountComponent
   ],
   imports: [
-    RouterModule.forRoot([]),
     AmplifyAngularModule,
     CommonModule,
     BrowserModule,
