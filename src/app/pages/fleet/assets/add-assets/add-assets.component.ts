@@ -178,6 +178,7 @@ export class AddAssetsComponent implements OnInit {
    */
   addAsset() {
     this.hideErrors();
+    console.log('data', this.assetsData)
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
@@ -222,7 +223,7 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-
+    
     // create form data instance
     const formData = new FormData();
 
@@ -379,6 +380,7 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        ownerOperator: this.assetsData.assetDetails.ownerOperator,
         currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,

@@ -12,7 +12,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 
 import { LoginComponent } from './entry/login/login.component';
 import { LogoutComponent } from './entry/logout/logout.component';
@@ -38,16 +37,16 @@ import { environment } from '../environments/environment';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import {PreLoadStrategy} from './preload/PreLoadStrategy';
+import { PreLoadStrategy } from './preload/PreLoadStrategy';
 import { SharedModalComponent } from './shared/shared-modal/shared-modal.component';
-import {DynamicModalDirective} from './directives/dynamic-modal.directive';
+import { DynamicModalDirective } from './directives/dynamic-modal.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
-import { AddAccountComponent  } from './entry/onboard/add-account/add-account.component';
+import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -68,14 +67,13 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     DynamicModalDirective,
     ConfirmEqualValidatorDirective,
     ErrorComponent,
-    UnsavedChangesComponent,  
-    AddAccountComponent 
+    UnsavedChangesComponent,
+    AddAccountComponent
   ],
   imports: [
     AmplifyAngularModule,
     CommonModule,
     BrowserModule,
-    RouterModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -86,7 +84,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ChartsModule,
     SharedModule,
     TooltipModule.forRoot(),
-    ToastrModule.forRoot({preventDuplicates: true}), // ToastrModule added
+    ToastrModule.forRoot({ preventDuplicates: true }), // ToastrModule added
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgMultiSelectDropDownModule.forRoot(),
     SlickCarouselModule,
@@ -96,4 +94,4 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

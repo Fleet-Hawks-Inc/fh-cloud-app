@@ -189,11 +189,13 @@ export class AddGeofenceComponent implements OnInit {
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
+              this.spinner.hide()
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.spinner.hide();
             },
             error: () => { },
             next: () => { },
