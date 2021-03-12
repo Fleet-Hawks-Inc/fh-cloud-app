@@ -184,7 +184,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   public searchTerm = new Subject<string>();
   public searchResults: any;
 
-
+  currentUserCarrier: string;
   newDocuments = [];
   newAddress = [];
   /**
@@ -357,11 +357,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.fetchDocuments();
     await this.getCurrentuser();
 
-    if(this.currentUser.userType !== 'Cloud Admin') {
-      this.getCarrierDetails(this.currentUser.carrierID);
-    } else {
-      this.prefixOutput = 'PB-'
-    }
+    // if(this.currentUser.userType !== 'Cloud Admin') {
+      await this.getCarrierDetails(this.currentUserCarrier);
+    // } else {
+    //   this.prefixOutput = 'PB-'
+    // }
 
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -1285,9 +1285,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
    getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    let currentUserCarrier = this.currentUser.carrierID;
+    this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
-    this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
+    if(this.currentUser.userType == 'Cloud Admin') {
+      let isCarrierID = localStorage.getItem('carrierID');
+      if(isCarrierID != undefined) {
+        this.currentUserCarrier = isCarrierID;
+      }
+    }
+    
+    this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType == 'yard') {
           this.carrierYards.push(e);
