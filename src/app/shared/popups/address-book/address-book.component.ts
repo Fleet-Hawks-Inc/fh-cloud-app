@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
-  @ViewChild("content", {static: false}) modalContent: TemplateRef<any>;
+  @ViewChild("content") modalContent: TemplateRef<any>;
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   drivers = [];

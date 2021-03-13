@@ -54,8 +54,8 @@ export class DetailedComponent implements OnInit {
     //endTimes : BehaviorSubject <any[]> = new BehaviorSubject<any[]>([]);
     startTimes  = [];
     endTimes  = [];
-    @ViewChild('fromtime_', {static: false}) fromTime_ : ElementRef;
-    @ViewChild('toTime_', {static: false}) toTime_ : ElementRef;
+    @ViewChild('fromtime_') fromTime_ : ElementRef;
+    @ViewChild('toTime_') toTime_ : ElementRef;
     fromTimeStamp;
     toTimeStamp;
 
