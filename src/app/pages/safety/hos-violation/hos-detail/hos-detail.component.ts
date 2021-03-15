@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';
+import {ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-hos-detail',
@@ -12,8 +10,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HosDetailComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute) {
+  constructor(private apiService: ApiService,
+    private spinner: NgxSpinnerService, private route: ActivatedRoute) {
   }
 
   event = {

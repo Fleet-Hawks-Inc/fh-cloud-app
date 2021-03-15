@@ -6,7 +6,7 @@ import { ComplianceRoutingModule } from './compliance-routing.module';
 import { LogsComponent } from './hos/logs/logs.component';
 import { EditComponent } from './hos/edit/edit.component';
 import { DetailedComponent } from './hos/detailed/detailed.component';
-import {NgbDateAdapter, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { SummaryComponent } from './hos/summary/summary.component';
 import { DriverHosComponent } from './hos/driver-hos/driver-hos.component';
 import { MileageComponent } from './ifta/mileage/mileage.component';
@@ -16,7 +16,6 @@ import { InspectionSummaryComponent } from './dvir/inspection-summary/inspection
 import {InspectionDetailComponent} from './dvir/inspection-detail/inspection-detail.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { NgSelect2Module } from 'ng-select2';
 import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-report/generate-quarterly-report.component';
 import { IftaReportHistoryComponent } from './ifta/ifta-report-history/ifta-report-history.component';
 import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-return-details.component';
@@ -28,7 +27,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     SharedModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module,
     MatExpansionModule,
     NgbModule],
   declarations: [

@@ -3,7 +3,6 @@ import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../services';
@@ -94,7 +93,7 @@ export class AddRouteComponent implements OnInit {
   isDaily = false;
 
   constructor(private apiService: ApiService,
-    private awsUS: AwsUploadService, private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
   }

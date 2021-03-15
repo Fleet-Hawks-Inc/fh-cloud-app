@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
-import {AwsUploadService} from '../../../../services/aws-upload.service';
 import { SafeResourceUrl} from '@angular/platform-browser';
 import { Auth } from 'aws-amplify';
 declare var $: any;
@@ -77,7 +76,6 @@ export class MyDocumentListComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private awsUS: AwsUploadService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
   ) {
@@ -198,13 +196,6 @@ export class MyDocumentListComponent implements OnInit {
           .remove('label')
       });
     this.errors = {};
-  }
-
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
   }
 
   /*

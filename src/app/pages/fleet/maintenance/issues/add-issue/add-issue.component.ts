@@ -1,7 +1,6 @@
 import {  Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import {AwsUploadService} from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
@@ -62,7 +61,7 @@ export class AddIssueComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
+              private toaster: ToastrService,
               private spinner: NgxSpinnerService,
               private location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
@@ -210,15 +209,7 @@ hideErrors() {
       }
     }
   }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
+
 
     /*
    * Fetch Issue details before updating
