@@ -63,6 +63,7 @@ export class NewAciManifestComponent implements OnInit {
   countriesList: any = [];
   currentStatus: string;
   getcurrentDate: any;
+  birthDateMinLimit: any;
   CCC: string;
   addTrailerBtn = true;
   data: string;
@@ -181,6 +182,8 @@ export class NewAciManifestComponent implements OnInit {
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
+    this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+
   }
 
   ngOnInit() {
