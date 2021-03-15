@@ -3,13 +3,14 @@ import { ApiService } from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { from, Subject, throwError } from 'rxjs';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Auth } from 'aws-amplify';
 import { ListService } from '../../../../../services';
+import { HereMapService } from '../../../../../services';
 declare var $: any;
 
 @Component({
@@ -118,7 +119,37 @@ export class NewAceManifestComponent implements OnInit {
         filerCode: '',
         portLocation: '',
       },
-      thirdParties: [],
+      thirdParties: [
+        {
+          type: '',
+          name: '',
+          // address: {
+          //   addressLine: '',
+          //   city: '',
+          //   stateProvince: '',
+          //   country: '',
+          //   postalCode: '',
+          // },
+          address: {
+            countryID: '',
+            countryName: '',
+            countryCode: '',
+            stateID: '',
+            stateName: '',
+            stateCode: '',
+            cityID: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: ''
+          }
+        }
+      ],
       commodities: [
         {
           loadedOn: {
@@ -150,6 +181,8 @@ export class NewAceManifestComponent implements OnInit {
       ]
     }
   ];
+  public searchTerm = new Subject<string>();
+  public searchResults: any;
   usAddress = {
     addressLine: '',
     city: '',
@@ -173,6 +206,7 @@ export class NewAceManifestComponent implements OnInit {
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
     private location: Location,
+    private HereMap: HereMapService,
     private listService: ListService,
     config: NgbTimepickerConfig,
     private dateAdapter: NgbDateAdapter<string>
@@ -217,6 +251,7 @@ export class NewAceManifestComponent implements OnInit {
     this.getUSStates();
     this.fetchCarrier();
     this.getCurrentuser();
+    this.searchLocation();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.thirdPartyStates = this.listService.stateList;
@@ -303,11 +338,11 @@ export class NewAceManifestComponent implements OnInit {
       .remove('label');
   }
   resetThirdPartyState(s, p) {
-    this.shipments[s].thirdParties[p].address.stateProvince = '';
+    this.shipments[s].thirdParties[p].address.stateID = '';
     $('#thirdPartyStateSelect').val('');
   }
   resetThirdPartyCity(s, p) {
-    this.shipments[s].thirdParties[p].address.city = '';
+    this.shipments[s].thirdParties[p].address.cityID = '';
     $('#thirdPartyCitySelect').val('');
   }
   getAddressCities() {
@@ -325,22 +360,22 @@ export class NewAceManifestComponent implements OnInit {
       this.thirdPartyCities = result.Items;
     });
   }
-  getThirdPartyStates(s, p) {
-    const countryID = this.shipments[s].thirdParties[p].address.country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.thirdPartyStates = result.Items;
-      });
-  }
-  getThirdPartyCities(s, p) {
-    const stateID = this.shipments[s].thirdParties[p].address.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.thirdPartyCities = result.Items;
-      });
-  }
+  // getThirdPartyStates(s, p) {
+  //   const countryID = this.shipments[s].thirdParties[p].address.country;
+  //   this.apiService
+  //     .getData('states/country/' + countryID)
+  //     .subscribe((result: any) => {
+  //       this.thirdPartyStates = result.Items;
+  //     });
+  // }
+  // getThirdPartyCities(s, p) {
+  //   const stateID = this.shipments[s].thirdParties[p].address.stateProvince;
+  //   this.apiService
+  //     .getData('cities/state/' + stateID)
+  //     .subscribe((result: any) => {
+  //       this.thirdPartyCities = result.Items;
+  //     });
+  // }
   resetpassengerDocState(i, j) {
     this.passengers[i].travelDocuments[j].stateProvince = '';
     $('#passengerDocStateSelect').val('');
@@ -488,15 +523,23 @@ export class NewAceManifestComponent implements OnInit {
     this.passengers.splice(i, 1);
   }
   addDocument(i) {
-    this.passengers[i].travelDocuments.push({
-      type: '',
-      number: '',
-      country: '',
-      stateProvince: '',
-    });
+    if (this.passengers[i].travelDocuments.length < 3) {
+      this.passengers[i].travelDocuments.push({
+        type: '',
+        number: '',
+        country: '',
+        stateProvince: '',
+      });
+      if(this.passengers[i].travelDocuments.length >= 3) {
+        $('#addDocBtn').hide();
+      }
+    }
   }
   deleteDocument(i: number, p: number) {
     this.passengers[p].travelDocuments.splice(i, 1);
+    if(this.passengers[p].travelDocuments.length < 3) {
+      $('#addDocBtn').show();
+    }
   }
 
   addCommodity(i) {
@@ -536,15 +579,131 @@ export class NewAceManifestComponent implements OnInit {
       this.shipments[p].thirdParties.push({
         type: '',
         name: '',
+        // address: {
+        //   addressLine: '',
+        //   city: '',
+        //   stateProvince: '',
+        //   country: '',
+        //   postalCode: '',
+        // },
         address: {
-          addressLine: '',
-          city: '',
-          stateProvince: '',
-          country: '',
+          countryID: '',
+          countryName: '',
+          countryCode: '',
+          stateID: '',
+          stateName: '',
+          stateCode: '',
+          cityID: '',
+          cityName: '',
           postalCode: '',
-        },
+          addressLine: '',
+          geoCords: {
+            lat: '',
+            lng: ''
+          },
+          manual: false,
+          userLocation: ''
+        }
       });
     }
+  }
+  // third party address
+  clearUserLocation(s,p) {
+    this.shipments[s].thirdParties[p].address[`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+  }
+  public searchLocation() {
+    this.searchTerm.pipe(
+      map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.HereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
+  }
+  manAddress(event, s, p) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+      this.shipments[s].thirdParties[p].address[`userLocation`] = '';
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+      this.shipments[s].thirdParties[p].address.countryID = '';
+      this.shipments[s].thirdParties[p].address.countryName = '';
+      this.shipments[s].thirdParties[p].address.stateID = '';
+      this.shipments[s].thirdParties[p].address.stateName = '';
+      this.shipments[s].thirdParties[p].address.cityID = '';
+      this.shipments[s].thirdParties[p].address.cityName = '';
+      this.shipments[s].thirdParties[p].address.postalCode = '';
+      this.shipments[s].thirdParties[p].address.addressLine = '';
+      this.shipments[s].thirdParties[p].address.geoCords.lat = '';
+      this.shipments[s].thirdParties[p].address.geoCords.lng = '';
+    }
+  }
+  // getCityName(i, id: any) {
+  //   let result = this.citiesObject[id];
+  //   this.shipments[s].thirdParties[p].address.cityName = result;
+  // }
+  async userAddress(s, p, item) {
+    console.log('item', item);
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    console.log('result', result);
+    this.shipments[s].thirdParties[p].address.userLocation = result.address.label;
+    this.shipments[s].thirdParties[p].address.geoCords.lat = result.position.lat;
+    this.shipments[s].thirdParties[p].address.geoCords.lng = result.position.lng;
+    this.shipments[s].thirdParties[p].address.countryName = result.address.countryName;
+    this.shipments[s].thirdParties[p].address.countryCode = result.address.countryCode;
+    this.shipments[s].thirdParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+    $('div').removeClass('show-search__result');
+    this.shipments[s].thirdParties[p].address.stateName = result.address.state;
+    this.shipments[s].thirdParties[p].address.stateCode = result.address.stateCode;
+    this.shipments[s].thirdParties[p].address.cityName = result.address.city;
+    this.shipments[s].thirdParties[p].address.postalCode = result.address.postalCode;
+    if (result.address.houseNumber === undefined) {
+        result.address.houseNumber = '';
+    }
+    if (result.address.street === undefined) {
+        result.address.street = '';
+    }
+  }
+
+  // async fetchCountriesByName(name: string, i) {
+  //   const result = await this.apiService.getData(`countries/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     this.getStates(result.Items[0].countryID, i);
+  //     return result.Items[0].countryID;
+  //   }
+  //   return '';
+  // }
+
+  // async fetchStatesByName(name: string, i) {
+  // const result = await this.apiService.getData(`states/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     this.getCities(result.Items[0].stateID, i);
+  //     return result.Items[0].stateID;
+  //   }
+  //   return '';
+  // }
+
+  async fetchCitiesByName(name: string) {
+    const result = await this.apiService.getData(`cities/get/${name}`)
+      .toPromise();
+    if (result.Items.length > 0) {
+      return result.Items[0].cityID;
+    }
+    return '';
   }
   deleteThirdParty(i: number, s: number) {
     this.shipments[s].thirdParties.splice(i, 1);
@@ -603,6 +762,7 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
+       console.log('shipments', data.shipments);
       this.apiService.postData('ACEeManifest', data).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -735,6 +895,7 @@ export class NewAceManifestComponent implements OnInit {
         usAddress: this.usAddress,
         modifiedBy: this.currentUser,
       };
+      console.log('shipments', data.shipments);
       this.apiService
         .putData(`ACEeManifest/${this.amendManifest}`, data)
         .subscribe({
