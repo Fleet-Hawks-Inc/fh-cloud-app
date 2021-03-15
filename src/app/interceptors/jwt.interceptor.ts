@@ -32,10 +32,12 @@ export class JwtInterceptor implements HttpInterceptor {
                 switchMap((auth: any) => { // switchMap() is used instead of map().
 
                     const jwt = auth.accessToken.jwtToken;
+                    let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
                     const withAuthRequest = request.clone({
                         setHeaders: {
                             //'Content-Type': 'application/json',  //API Service decides the type
-                            Authorization: (this.googleMap.pcMiles.value) ? '73DBE97231D737488E722DDFB8D1D0BB' : `Bearer ${jwt}`
+                            Authorization: (this.googleMap.pcMiles.value) ? '73DBE97231D737488E722DDFB8D1D0BB' : `Bearer ${jwt}`,
+                            'fh-carrier-id': isCarrier
                         }
                     });
                     this.googleMap.pcMiles.next(false);

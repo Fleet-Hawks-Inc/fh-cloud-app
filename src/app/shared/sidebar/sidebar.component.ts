@@ -14,6 +14,10 @@ export class SidebarComponent implements OnInit {
   constructor(private router: Router,
               private sharedService: SharedServiceService) {
     this.sharedService.activeParentNav.subscribe((val) => {
+      let activeTab = localStorage.getItem('active-header');
+      if(activeTab != undefined && activeTab != ''){
+        val = activeTab;
+      }
       this.active_nav = val;
     });
   }

@@ -22,6 +22,10 @@ export class HeaderComponent implements OnInit {
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
               public router: Router) {
     this.sharedService.activeParentNav.subscribe((val) => {
+      let activeTab = localStorage.getItem('active-header');
+      if(activeTab != undefined && activeTab != ''){
+        val = activeTab;
+      }
       this.navSelected = val;
     });
   }
@@ -32,7 +36,8 @@ export class HeaderComponent implements OnInit {
     this.getLoggedUserForCloud();
   }
 
-  onNavSelected(nav: string) { 
+  onNavSelected(nav: string) {
+    localStorage.setItem('active-header', nav); 
     this.navClicked.emit(nav);
     this.sharedService.activeParentNav.next(nav);
   }

@@ -10,9 +10,6 @@ import {VehicleListComponent} from './vehicle-list/vehicle-list.component';
 import {SlickCarouselModule} from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
-// DataTable
-import { DataTablesModule } from 'angular-datatables';
-
 import { NgSelectModule } from '@ng-select/ng-select';
 const routes: Routes = [
   { path: 'add', component: AddVehicleNewComponent },
@@ -38,7 +35,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     SlickCarouselModule,
     NgSelectModule,
-    DataTablesModule,
   ],
    exports: [],
 

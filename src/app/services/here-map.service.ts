@@ -29,7 +29,7 @@ export class HereMapService {
   private router: any;
 
   private map: any;
-  private ui: any;
+  public ui: any;
   private readonly apiKey = environment.mapConfig.apiKey;
 
   public searchResults: any;
@@ -48,24 +48,31 @@ export class HereMapService {
   /**
    * Initialize maps
    */
-  mapInit = () => {
-    this.platform = new H.service.Platform({
+
+  mapSetAPI=()=>{
+
+    return this.platform = new H.service.Platform({
       'apikey': this.apiKey,
     });
+
+  }
+  mapInit = () => {
     const defaultLayers = this.platform.createDefaultLayers();
     this.map = new H.Map(
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
-        zoom: 5,
+        zoom: 4.5,
         center: {lat: 45.8598584, lng: -94.526364},
         pixelRatio: window.devicePixelRatio || 1
 
       }
     );
+  this.setStyle(this.map);
     const mapTileService = this.platform.getMapTileService({
       type: 'base'
     });
+    
     const parameters = {
       congestion: true,
       ppi: 320
@@ -83,23 +90,28 @@ export class HereMapService {
 
     // This display the current traffic detail -> Green Means Free, Yellow means Moderate Congestion
     // Red means High Congestion
-    this.map.addLayer(defaultLayers.vector.normal.traffic);
-    this.map.addLayer(tileLayer);
+    // this.map.addLayer(defaultLayers.vector.normal.traffic);
+    // this.map.addLayer(tileLayer);
 
-    // This display the traffic incidents - by default its updated in every 3 mins
-    this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
-    this.map.setBaseLayer(tileLayer);
+    // // This display the traffic incidents - by default its updated in every 3 mins
+    // this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
+    // this.map.setBaseLayer(tileLayer);
 
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    let mapSettings = this.ui.getControl('mapsettings');
-    let zoom = this.ui.getControl('zoom');
-    let scalebar = this.ui.getControl('scalebar');
+    this.ui.getControl('mapsettings').setDisabled(true);
+    this.ui.getControl('mapsettings').setVisibility(false);
 
-    mapSettings.setAlignment('bottom-left');
-    zoom.setAlignment('bottom-left');
-    scalebar.setAlignment('bottom-left');
+
+    // let mapSettings = this.ui.getControl('mapsettings');
+    // let zoom = this.ui.getControl('zoom');
+    // let scalebar = this.ui.getControl('scalebar');
+
+    // mapSettings.setAlignment('bottom-left');
+    // zoom.setAlignment('bottom-left');
+    // scalebar.setAlignment('bottom-left');
+ 
      return this.map;
   }
 
@@ -331,4 +343,11 @@ export class HereMapService {
     console.log('calculateroute', erro);
   }
   }
-}
+  setStyle(map){
+    let provider = this.map.getBaseLayer().getProvider();
+    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+    'https://js.api.here.com/v3/3.1/styles/omv/');
+  // set the style on the existing layer
+  provider.setStyle(style)
+  }
+ }

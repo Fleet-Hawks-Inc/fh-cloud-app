@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
-import { NgSelect2Module } from 'ng-select2';
 import {SlickCarouselModule} from 'ngx-slick-carousel';
 import {
   AddServiceProgramComponent,
@@ -32,7 +31,6 @@ const COMPONENTS = [
 
 import {SharedModule} from '../../../shared/shared.module';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {DataTablesModule} from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {NgxSpinnerModule} from 'ngx-spinner';
@@ -94,11 +92,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    DataTablesModule,
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    NgSelect2Module,
     SlickCarouselModule
   ],
   exports: [...COMPONENTS]

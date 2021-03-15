@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { DataTablesModule } from 'angular-datatables';
 import { SharedModule } from '../../shared/shared.module';
 import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct,NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -80,7 +79,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     FormsModule,
     ManageRoutingModule,
     NgSelectModule,
-    DataTablesModule,
     SharedModule,
     NgbModule
   ],exports: [...COMPONENTS],
