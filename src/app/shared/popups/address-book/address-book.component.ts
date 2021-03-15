@@ -388,6 +388,7 @@ export class AddressBookComponent implements OnInit {
 
    // Staff Object
    staffData = {
+    companyName: '',
     firstName: '',
     lastName: '',
     employeeID: '',
@@ -2915,6 +2916,7 @@ export class AddressBookComponent implements OnInit {
 
     // Staff Object
     this.staffData = {
+      companyName: '',
       firstName: '',
       lastName: '',
       employeeID: '',
