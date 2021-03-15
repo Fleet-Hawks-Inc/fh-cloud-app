@@ -1,0 +1,177 @@
+<section class="body">
+  <!-- end: header -->
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <!-- CSS -->
+
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top: 10px">
+          <div class="col-md-3 col-lg-3">
+            <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">
+              Add Order Automatically
+            </h4>
+          </div>
+
+          <div class="col-md-2 col-lg-2">
+            <div class="input-group input-group-md mb-3">
+              <select data-plugin-selectTwo class="form-control">
+                <optgroup label="">
+                  <option value="1">Customer PDF</option>
+                  <option value="2">LightSpeed</option>
+                  <option value="2">GHD</option>
+                  <option value="2">Local Logistic Ltd</option>
+                  <option value="2">SLH Truck Inc</option>
+                  <option value="2">A To Z Transport</option>
+                  <option value="2">Western Canada Express</option>
+                  <option value="2">ABS Freight</option>
+                  <option value="2">XYZ Logistic Canada</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-2 col-lg-2">
+            <input
+              type="text"
+              placeholder="customer name"
+              class="form-control"
+            />
+          </div>
+
+          <div class="col-md-2 col-lg-2">
+            <input type="file" id="myFile" size="50" (click)="selectfile($event)"/>
+
+            <input type="file" id="uploadedfile"/>
+
+          </div>
+          <div class="col-md-1 col-lg-1">
+            <a href="#" class="btn btn-success btn-sm mx-1">Upload</a>
+            
+          </div>
+
+          <div class="col-md-2 col-lg-2 text-right pr-1">
+            <a href="all-orders.php" class="btn btn-default"
+              ><i class="fas fa-list"></i> All Orders</a
+            >
+          </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <section class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <section class="card">
+                    <header class="card-header">
+                      <h2 class="card-title">PDF</h2>
+                    </header>
+                    <div class="card-body">
+                      <div
+                        class="scrollable visible-slider has-scrollbar"
+                        data-plugin-scrollable=""
+                        style="height: 520px"
+                      >
+                        <div class="scrollable-content" tabindex="0">
+                            <div class="cursor">
+                                <div class="vt"></div>
+                                <div class="hl"></div>
+                            </div>
+                            <canvas id="src" width="500"  height="500"  class="d-flex " style="cursor:crosshair" #pdfcanvas (mouseout)="mymouseout($event)" (mousedown)="mymousedown($event)" (mouseup)="mymouseup($event)" (mousemove)="mymousemove($event)" ></canvas>
+
+                            <div class="card" style="width: 18rem;" id="myDIV" contentEditable="true"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                <div class="col-lg-6">
+                  <section class="card">
+                    <header class="card-header">
+                      <h2 class="card-title">
+                        Code
+                        <span class="text-1"
+                          >(Auto generated please do not edit)</span
+                        >
+                      </h2>
+                    </header>
+                    <div class="card-body">
+                      <form class="form-horizontal" action="#">
+                        <div class="form-group row">
+                          <div class="col-md-12">
+                            <textarea
+                              class="form-control"
+                              rows="20"
+                              id="codemirror_js_code"
+                              name="code_js"
+                              data-plugin-codemirror
+                              data-plugin-options='{ "mode": "text/javascript" }'
+                            >
+													function findSequence(goal) {
+														function find(start, history) {
+															if (start === goal) {
+																return history;
+															} else if (start > goal) {
+																return null;
+															} else {
+																return find(start + 5, "(" + history + " + 5)") || find(start * 3, "(" + history + " * 3)");
+															}
+													
+															return find(1, "1");
+														}
+													}
+												</textarea
+                            >
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </section>
+                </div>
+
+                <div class="col-lg-12">
+                  <div class="form-group row">
+                    <div class="col-lg-12 text-right">
+                      <a href="#" class="mb-1 mt-1 mr-2 btn btn-default"
+                        >Cancel</a
+                      >
+                      <button class="btn btn-dark mt-1 modal-confirm">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <select name="industry" class="form-control" id="select" [(ngModel)]="selectOpt" *ngFor="let mapping of pdfMapping" (change)="pdfSelectChange()">
+          <option value="{{mapping.value}}">{{mapping.fieldName}}</option>
+         
+
+        </select>
+
+      </div>
+      <input class="modal-body" id="input" [(ngModel)]="modalBody"/>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="fire" (click)="mybutton()" >Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

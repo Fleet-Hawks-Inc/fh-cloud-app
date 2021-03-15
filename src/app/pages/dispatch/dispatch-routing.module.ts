@@ -30,7 +30,7 @@ import { MapViewComponent } from './planner/map-view/map-view.component';
 
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 import { PdfAutomationComponent } from './pdf-automation/pdf-automation.component';
-
+import { OrderPdfAnnotationComponent } from './orders/order-pdf-annotation/order-pdf-annotation.component';
 
 // NOTE: // EDIT ADDRESS COMPONENT IN ADDRESS FOLDER IS USED FOR EDITING ADDRESS OF Shipper,Receiver,FactoringCompany AND Customer
 
@@ -72,7 +72,8 @@ const routes: Routes = [
       { path: 'edit/:orderID', component: AddOrdersComponent},
       { path: 'add', component: AddOrdersComponent},
       { path: 'detail/:orderID', component: OrderDetailComponent },
-      { path: 'pdfautomation', component:PdfAutomationComponent }
+      { path: 'pdfautomation', component:PdfAutomationComponent },
+      { path: 'pdf-annotation', component:OrderPdfAnnotationComponent }
     ]
   },
   {

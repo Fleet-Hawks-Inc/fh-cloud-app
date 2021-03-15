@@ -50,7 +50,8 @@ import { MapViewComponent } from './planner/map-view/map-view.component';
 import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-overview.component';
 
 
-import {PdfAutomationComponent} from './pdf-automation/pdf-automation.component'
+import {PdfAutomationComponent} from './pdf-automation/pdf-automation.component';
+import { OrderPdfAnnotationComponent } from './orders/order-pdf-annotation/order-pdf-annotation.component'
 
 
 /**
@@ -167,7 +168,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     CalendarViewComponent,
     MapViewComponent,
     DispatchOverviewComponent,
-    PdfAutomationComponent
+    PdfAutomationComponent,
+    OrderPdfAnnotationComponent
 
   ],
 

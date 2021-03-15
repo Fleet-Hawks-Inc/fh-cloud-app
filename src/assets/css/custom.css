@@ -2005,3 +2005,5 @@ table.dataTable thead th, table.dataTable thead td {
   border-color: rgb(34, 34, 34) !important;
 }
  
+/* load type in new order page */
+.wltype{width:135px;}
