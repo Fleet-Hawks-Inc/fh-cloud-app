@@ -9,6 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
+import { GoogleMapsService } from 'src/app/services/google-maps.service';
+
 declare var $: any;
 
 @Component({
@@ -21,13 +23,15 @@ export class AddTripComponent implements OnInit {
     newCoords = [];
     public searchResults: any;
     public searchResults1: any;
+    
+    public saveCords:any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
     carriers = [];
     routes = [];
     constructor(private apiService: ApiService, private route: ActivatedRoute,
-        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
-
+        private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService, private pcMiles: GoogleMapsService) { }
+        orderMiles={}
     permanentRoutes = []
     errors = {};
     trips = [];
@@ -407,6 +411,7 @@ export class AddTripComponent implements OnInit {
     }
 
     mapShow() {
+        this.hereMap.mapSetAPI();
         this.hereMap.mapInit();
     }
 
@@ -502,6 +507,7 @@ export class AddTripComponent implements OnInit {
         let current = this;
         for (let i = 0; i < this.OrderIDs.length; i++) {
             const element = this.OrderIDs[i];
+            
 
             if(this.tripID) {
                 this.trips = this.trips.filter(function (obj) {
@@ -519,23 +525,37 @@ export class AddTripComponent implements OnInit {
             let locations = [];
             this.allFetchedOrders.map(function (v) {
                 if (element == v.orderID) {
+                   
+                    current.orderMiles=
+                    {
+                        "calculateBy":v.milesInfo.calculateBy,
+                        "totalMiles":v.milesInfo.totalMiles
+                    }
+                    
+                    let startingPoint=1;
                     if (v.shippersReceiversInfo) {
                         v.shippersReceiversInfo.map((m) => {
                             let PDate = '';
                             let PTime = '';
+                            
                             m.shippers.map((n) => {
                                 if (n.dateAndTime != undefined && n.dateAndTime != '') {
                                     let dmy = n.dateAndTime.split(' ');
                                     PDate = dmy[0].split('-').reverse().join('-');
                                     PTime = dmy[1];
                                 }
-
+                                
+                                if(m.shippers.indexOf(n)==0){
+                                    startingPoint=0
+                                }
+                                let endingPoint=n.position.lng+","+n.position.lat;
+                                
                                 let obj = {
                                     type: 'Pickup',
                                     // date: PDate,
                                     name: current.shippersObjects[n.shipperID],
-                                    mileType: '',
-                                    miles: '',
+                                    mileType: current.orderMiles["calculateBy"],
+                                    miles: current.getMiles(startingPoint,endingPoint),
                                     carrierID: '',
                                     carrierName: '',
                                     // time: PTime,
@@ -548,7 +568,9 @@ export class AddTripComponent implements OnInit {
                                     trailerName: '',
                                     driverName: '',
                                     coDriverName: '',
-                                    fromOrder: 'yes'
+                                    fromOrder: 'yes',
+                                    lat:n.position.lat,
+                                    lng:n.position.lng
                                 }
                                 if(n.pickupLocation != '' && n.pickupLocation != undefined){
                                     locations.push(n.pickupLocation)
@@ -567,13 +589,15 @@ export class AddTripComponent implements OnInit {
                                     DrDate = dmy[0].split('-').reverse().join('-');
                                     DrTime = dmy[1];
                                 }
+                                
+                                let endingPoint=k.position.lng+","+k.position.lat;
 
                                 let obj = {
                                     type: 'Delivery',
                                     // date: DrDate,
                                     name: current.receiversObjects[k.receiverID],
-                                    mileType: '',
-                                    miles: '',
+                                    mileType:  current.orderMiles["calculateBy"],
+                                    miles: current.getMiles(startingPoint=1,endingPoint),
                                     carrierID: '',
                                     carrierName: '',
                                     // time: DrTime,
@@ -586,12 +610,16 @@ export class AddTripComponent implements OnInit {
                                     trailerName: '',
                                     driverName: '',
                                     coDriverName: '',
-                                    fromOrder: 'yes'
+                                    fromOrder: 'yes',
+                                    lat:k.position.lat,
+                                    lng:k.position.lng
                                 }
                                 if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
                                     locations.push(k.dropOffLocation)
                                 }
+                                
                                 current.trips.push(obj);
+                                
                             })
                         })
                     }
@@ -605,6 +633,27 @@ export class AddTripComponent implements OnInit {
         }
     }
 
+    getMiles(startingPoint,endingPoint){
+        console.log("saveCords",this.saveCords);
+        
+        if(startingPoint==0){
+            this.saveCords=endingPoint;
+        return 0;
+        }
+        else{
+            
+            
+             this.pcMiles.pcMilesDistance(this.saveCords+";"+endingPoint).subscribe(
+                 (res)=>{console.log(res)}
+             )
+             this.saveCords=endingPoint;
+             return 1;
+
+        }
+
+        
+
+    }
     checkUncheckAll(type) {
         this.temporaryOrderIDs = [];
         let current = this;
@@ -1011,6 +1060,7 @@ export class AddTripComponent implements OnInit {
                 //for P\L and D\L in modal
                 data = result.Items.map((i) => {
                     const element = i;
+                    
 
                     if (element.orderStatus == 'confirmed') {
                         i.pickupLocations = '';
