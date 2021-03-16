@@ -38,6 +38,8 @@ export class NewAceManifestComponent implements OnInit {
   thirdPartiesList: any = [];
   thirdPartyStates: any = [];
   thirdPartyCities: any = [];
+  modalStates: any = [];
+  modalCities: any = [];
   carriers: any = [];
   birthDateMinLimit: any;
   usPortOfArrival: string;
@@ -183,11 +185,29 @@ export class NewAceManifestComponent implements OnInit {
   ];
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  usAddress = {
-    addressLine: '',
-    city: '',
-    state: '',
-    zipCode: '',
+  USAddress = {
+    // addressLine: '',
+    // city: '',
+    // state: '',
+    // zipCode: '',
+    address: {
+      countryID: '',
+      countryName: '',
+      countryCode: '',
+      stateID: '',
+      stateName: '',
+      stateCode: '',
+      cityID: '',
+      cityName: '',
+      postalCode: '',
+      addressLine: '',
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      manual: false,
+      userLocation: ''
+    }
   };
   borderAssetTypes = [];
   /**
@@ -257,6 +277,8 @@ export class NewAceManifestComponent implements OnInit {
     this.thirdPartyStates = this.listService.stateList;
     this.thirdPartyCities = this.listService.cityList;
     this.passengerDocStates = this.listService.stateList;
+    this.modalStates = this.listService.stateList;
+    this.modalCities = this.listService.cityList;
     this.httpClient.get('assets/USports.json').subscribe((data) => {
       this.USports = data;
     });
@@ -331,6 +353,14 @@ export class NewAceManifestComponent implements OnInit {
       this.addressStates = result.Items;
     });
   }
+  resetUSAddressState(s, p) {
+    this.USAddress.address.stateID = '';
+    $('#USAddressStateSelect').val('');
+  }
+  resetUSAddressCity(s, p) {
+    this.USAddress.address.cityID = '';
+    $('#USAddressCitySelect').val('');
+  }
   onChangeHideErrors(fieldname = '') {
     $(`[name='' + fieldname + '']`)
       .removeClass('error')
@@ -345,13 +375,13 @@ export class NewAceManifestComponent implements OnInit {
     this.shipments[s].thirdParties[p].address.cityID = '';
     $('#thirdPartyCitySelect').val('');
   }
-  getAddressCities() {
-    this.apiService
-      .getData('cities/state/' + this.usAddress.state)
-      .subscribe((result: any) => {
-        this.addressCities = result.Items;
-      });
-  }
+  // getAddressCities() {
+  //   this.apiService
+  //     .getData('cities/state/' + this.USAddress.state)
+  //     .subscribe((result: any) => {
+  //       this.addressCities = result.Items;
+  //     });
+  // }
   getThirdPartyStatesCities() {
     this.apiService.getData('states').subscribe((result: any) => {
       this.thirdPartyStates = result.Items;
@@ -579,13 +609,6 @@ export class NewAceManifestComponent implements OnInit {
       this.shipments[p].thirdParties.push({
         type: '',
         name: '',
-        // address: {
-        //   addressLine: '',
-        //   city: '',
-        //   stateProvince: '',
-        //   country: '',
-        //   postalCode: '',
-        // },
         address: {
           countryID: '',
           countryName: '',
@@ -717,34 +740,34 @@ export class NewAceManifestComponent implements OnInit {
     this.hideErrors();
     if (this.shipments.length == 0) {
       // to show error on empty US address
-      if (this.usAddress.state == '') {
-        this.errorClassState = true;
-      } else {
-        this.errorClassState = false;
-      }
-      if (this.usAddress.city == '') {
-        this.errorClassCity = true;
-      } else {
-        this.errorClassCity = false;
-      }
-      if (this.usAddress.addressLine === '') {
-        this.errorClassAddress = true;
-      } else {
-        this.errorClassAddress = false;
-      }
-      if (this.usAddress.zipCode === '') {
-        this.errorClassZip = true;
-      } else {
-        this.errorClassZip = false;
-      }
-      if (
-        this.usAddress.state !== '' &&
-        this.usAddress.city !== '' &&
-        this.usAddress.addressLine !== '' &&
-        this.usAddress.zipCode !== ''
-      ) {
-        this.address = true;
-      }
+      // if (this.USAddress.state == '') {
+      //   this.errorClassState = true;
+      // } else {
+      //   this.errorClassState = false;
+      // }
+      // if (this.USAddress.city == '') {
+      //   this.errorClassCity = true;
+      // } else {
+      //   this.errorClassCity = false;
+      // }
+      // if (this.USAddress.addressLine === '') {
+      //   this.errorClassAddress = true;
+      // } else {
+      //   this.errorClassAddress = false;
+      // }
+      // if (this.USAddress.zipCode === '') {
+      //   this.errorClassZip = true;
+      // } else {
+      //   this.errorClassZip = false;
+      // }
+      // if (
+      //   this.USAddress.state !== '' &&
+      //   this.USAddress.city !== '' &&
+      //   this.USAddress.addressLine !== '' &&
+      //   this.USAddress.zipCode !== ''
+      // ) {
+      //   this.address = true;
+      // }
     }
     if (this.shipments.length > 0 || this.address) {
       this.coDrivers.unshift(this.mainDriver);
@@ -757,7 +780,7 @@ export class NewAceManifestComponent implements OnInit {
         truck: this.truck,
         trailers: this.trailers,
         drivers: this.coDrivers,
-        usAddress: this.usAddress,
+        USAddress: this.USAddress,
         passengers: this.passengers,
         shipments: this.shipments,
         currentStatus: 'Draft',
@@ -832,13 +855,13 @@ export class NewAceManifestComponent implements OnInit {
         this.passengers = result.passengers;
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
-        this.usAddress.addressLine = result.usAddress.addressLine;
-        this.usAddress.state = result.usAddress.state;
-        this.usAddress.city = result.usAddress.city;
-        this.usAddress.zipCode = result.usAddress.zipCode;
+        // this.USAddress.address.addressLine = result.USAddress.addressLine;
+        // this.USAddress.state = result.USAddress.state;
+        // this.USAddress.city = result.USAddress.city;
+        // this.USAddress.zipCode = result.USAddress.zipCode;
         setTimeout(() => {
             this.getStates();
-            this.getAddressCities();
+            // this.getAddressCities();
           }, 2000);
       });
   }
@@ -846,34 +869,34 @@ export class NewAceManifestComponent implements OnInit {
     this.hideErrors();
     if (this.shipments.length == 0) {
       // to show error on empty US address
-      if (this.usAddress.state == '') {
-        this.errorClassState = true;
-      } else {
-        this.errorClassState = false;
-      }
-      if (this.usAddress.city == '') {
-        this.errorClassCity = true;
-      } else {
-        this.errorClassCity = false;
-      }
-      if (this.usAddress.addressLine == '') {
-        this.errorClassAddress = true;
-      } else {
-        this.errorClassAddress = false;
-      }
-      if (this.usAddress.zipCode == '') {
-        this.errorClassZip = true;
-      } else {
-        this.errorClassZip = false;
-      }
-      if (
-        this.usAddress.state !== '' &&
-        this.usAddress.city !== '' &&
-        this.usAddress.addressLine !== '' &&
-        this.usAddress.zipCode !== ''
-      ) {
-        this.address = true;
-      }
+      // if (this.USAddress.state == '') {
+      //   this.errorClassState = true;
+      // } else {
+      //   this.errorClassState = false;
+      // }
+      // if (this.USAddress.city == '') {
+      //   this.errorClassCity = true;
+      // } else {
+      //   this.errorClassCity = false;
+      // }
+      // if (this.USAddress.addressLine == '') {
+      //   this.errorClassAddress = true;
+      // } else {
+      //   this.errorClassAddress = false;
+      // }
+      // if (this.USAddress.zipCode == '') {
+      //   this.errorClassZip = true;
+      // } else {
+      //   this.errorClassZip = false;
+      // }
+      // if (
+      //   this.USAddress.state !== '' &&
+      //   this.USAddress.city !== '' &&
+      //   this.USAddress.addressLine !== '' &&
+      //   this.USAddress.zipCode !== ''
+      // ) {
+      //   this.address = true;
+      // }
     }
     if (this.shipments.length > 0 || this.address) {
       this.coDrivers.unshift(this.mainDriver);
@@ -892,7 +915,7 @@ export class NewAceManifestComponent implements OnInit {
         passengers: this.passengers,
         shipments: this.shipments,
         currentStatus: this.currentStatus,
-        usAddress: this.usAddress,
+        USAddress: this.USAddress,
         modifiedBy: this.currentUser,
       };
       console.log('shipments', data.shipments);

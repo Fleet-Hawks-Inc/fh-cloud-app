@@ -71,8 +71,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input class="form-control" type="text" placeholder="Enter date" name="estimatedArrivalDate"
-                           [(ngModel)]="estimatedArrivalDate" ngbDatepicker
-                          #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle()" />
+                          [(ngModel)]="estimatedArrivalDate" ngbDatepicker #d6="ngbDatepicker"
+                          [minDate]="getcurrentDate" (click)="d6.toggle()" />
                       </div>
                     </div>
                     <div class="row">
@@ -202,14 +202,14 @@
                         <div class="form-group row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">First Name<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].firstName'" placeholder="Enter passenger first name"
                               [(ngModel)]="passenger.firstName">
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Gender<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select data-plugin-selectTwo class="form-control populate"
                               [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].gender'"
                               aria-placeholder="Select pasenger gender" [(ngModel)]="passenger.gender">
@@ -221,13 +221,12 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Country of
-                              Citizenship<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              Citizenship<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].citizenshipCountry'"
                               placeholder="Select citizenship country " [(ngModel)]="passenger.citizenshipCountry">
-                              <ng-option *ngFor="let country of countriesList" [value]="country.code">
-                                {{country.name}}</ng-option>
+                              <ng-option *ngFor="let country of countries" [value]="country.countryCode">
+                                {{country.countryName}}</ng-option>
                             </ng-select>
                           </div>
                         </div>
@@ -236,16 +235,17 @@
                         <div class="form-group row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Last Name<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].lastName'" placeholder="Enter passenger last name"
                               [(ngModel)]="passenger.lastName"> </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Date of Birth<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input class="form-control" type="text" placeholder="mm-dd-yyyy" ngbDatepicker [minDate]="birthDateMinLimit" #d7="ngbDatepicker" [maxDate]="getcurrentDate" (click)="d7.toggle()"
-                              [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].dateOfBirth'"
-                              [(ngModel)]="passenger.dateOfBirth" />
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <input class="form-control" type="text" placeholder="mm-dd-yyyy" ngbDatepicker
+                              [minDate]="birthDateMinLimit" #d7="ngbDatepicker" [maxDate]="getcurrentDate"
+                              (click)="d7.toggle()" [ngModelOptions]="{standalone: true}"
+                              [attr.name]="'passengers['+i+'].dateOfBirth'" [(ngModel)]="passenger.dateOfBirth" />
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Fast Card#</label>
@@ -267,7 +267,7 @@
                         <div class="form-group row">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Document#<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <input type="text" class="form-control" placeholder="Enter travel document number"
                               [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].number'"
@@ -275,12 +275,13 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select (change)="resetpassengerDocState(i,j)" [ngModelOptions]="{standalone: true}"
-                            [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'" [(ngModel)]="document.country">
-                            <ng-option *ngFor="let country of countries" [value]="country.countryID">
-                              {{country.countryName}}</ng-option>
-                          </ng-select>
+                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].country'"
+                              [(ngModel)]="document.country">
+                              <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                {{country.countryName}}</ng-option>
+                            </ng-select>
 
                           </div>
                         </div>
@@ -290,7 +291,7 @@
 
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Document Type<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].type'" [(ngModel)]="document.type">
                               <ng-option *ngFor="let document of documentTypeList" [value]="document.code">
@@ -301,15 +302,15 @@
 
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
-                        [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
-                        [(ngModel)]="document.stateProvince">
-                        <ng-container *ngFor="let state of passengerDocStates| async">
-                          <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
-                            [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
-                        </ng-container>
-                      </ng-select>
+                              [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
+                              [(ngModel)]="document.stateProvince">
+                              <ng-container *ngFor="let state of modalStates| async">
+                                <ng-option *ngIf="state.countryID == passengers[i].travelDocuments[j].country"
+                                  [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                              </ng-container>
+                            </ng-select>
                           </div>
                           <div class="col-lg-2 mar-top-37">
                             <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
@@ -318,9 +319,10 @@
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-10 text-right">
-                        <button type="button" (click)="addDocument(i)" class="btn btn-success btn-sm mb-2"><i class="fas fa-plus"></i>Add Another
+                    <div class="row mt-3">
+                      <div class="col-lg-10 text-right pr-0">
+                        <button type="button" (click)="addDocument(i)" class="btn btn-success btn-sm mb-2"><i
+                            class="fas fa-plus"></i>Add Another
                           Document</button>
                       </div>
                     </div>
@@ -343,7 +345,8 @@
                       Details <span class="text-1 optional-label-color">(optional)</span></label>
                   </div>
                   <div class="col-lg-6 text-right">
-                    <button type="button" (click)="addContainer()" *ngIf="containers.length ==0 " class="btn btn-success btn-sm mr-1">Add
+                    <button type="button" (click)="addContainer()" *ngIf="containers.length ==0 "
+                      class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                       Container</button>
                   </div>
                 </div>
@@ -357,14 +360,14 @@
                     <div class="form-group row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Container#<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                           [attr.name]="'containers['+i+'].number'" placeholder="Enter container number"
                           [(ngModel)]="container.number" maxlength="14">
                       </div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Loaded On<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'containers['+i+'].loadedOn.type'"
                           [(ngModel)]="container.loadedOn.type">
                           <ng-option value="TRUCK">TRUCK</ng-option>
@@ -387,9 +390,6 @@
                             {{asset.assetIdentification}}</ng-option>
                         </ng-select>
                       </div>
-
-
-
                     </div>
                   </div>
                   <div class="col-lg-5">
@@ -402,27 +402,24 @@
                             {{exemption.name}}</ng-option>
                         </ng-select>
                       </div>
-
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Seal Numbers</label>
-                            <div class="row">
-                              <div class="col-lg-3" *ngFor="let seal of container.sealNumbers; let s=index;">
-                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'sealNumers['+s+'].seal'" [(ngModel)]='seal.sealNumber'>
-                              </div>
-                            </div>
+                        <div class="row">
+                          <div class="col-lg-3" *ngFor="let seal of container.sealNumbers; let s=index;">
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                              [attr.name]="'sealNumers['+s+'].seal'" [(ngModel)]='seal.sealNumber'>
+                          </div>
+                        </div>
                       </div>
                       <div class="col-lg-2 mar-top-37"><button type="button" class="btn btn-success btn-sm"
-                        (click)="addContainerSeal(i)"><i class="fas fa-plus"></i>Seal</button></div>
-
-
-
+                          (click)="addContainerSeal(i)"><i class="fas fa-plus"></i>Seal</button></div>
                     </div>
                   </div>
                 </div>
                 <div class="row text-right">
                   <div class="col-lg-12">
-                    <button type="button" (click)="addContainer()" *ngIf="containers.length !=0 " class="btn btn-success btn-sm mr-1">Add
+                    <button type="button" (click)="addContainer()" *ngIf="containers.length !=0 "
+                      class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                       Container</button>
                   </div>
                 </div>
@@ -442,7 +439,7 @@
                           <mat-panel-title>
                             <span class="line-height-lg">Shipment {{s+1}}</span>
                             <button type="button" (click)="deleteShipment(s)"
-                              class="btn btn-sm btn-danger pull-right mt-1-c1"><i class="fas fa-times"></i></button>
+                              class="btn btn-sm btn-danger pull-right mt-1-c1">Delete Shipment</button>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="form-group row">
@@ -504,8 +501,8 @@
                                       </ng-option>
                                     </ng-select> -->
                                     <ng-select [ngModelOptions]="{standalone: true}"
-                                    [attr.name]="'shipments['+s+'].CCC'" [(ngModel)]="shipment.CCC"
-                                    placeholder="Select CCC">
+                                      [attr.name]="'shipments['+s+'].CCC'" [(ngModel)]="shipment.CCC"
+                                      placeholder="Select CCC">
                                       <ng-option value="184S">184S</ng-option>
                                       <ng-option value="745B">745B</ng-option>
                                       <ng-option value="759H">759H</ng-option>
@@ -578,7 +575,7 @@
                                   Arrival Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].estimatedArrivalDate'"
-                                  [(ngModel)]="shipment.estimatedArrivalDate" [minDate]="getcurrentDate"  ngbDatepicker
+                                  [(ngModel)]="shipment.estimatedArrivalDate" [minDate]="getcurrentDate" ngbDatepicker
                                   #d8="ngbDatepicker" [minDate]="getcurrentDate" (click)="d8.toggle()">
                               </div>
                               <div class="col-lg-5">
@@ -639,7 +636,8 @@
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.stateProvince'"
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince" (change)="getLoadingCities(s)">
-                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} -
+                                    {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -662,7 +660,8 @@
                                   [attr.name]="'shipments['+s+'].cityOfAcceptance.stateProvince'"
                                   (change)="getAcceptanceCities(s)"
                                   [(ngModel)]="shipment.cityOfAcceptance.stateProvince">
-                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} -
+                                    {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -701,81 +700,147 @@
                           *ngFor="let deliveryDestination of shipment.deliveryDestinations;let p = index">
                           <div class="col-lg-12 text-right">
                             <button type="button" (click)="deleteDeliveryDestination(p,s)"
-                              class="btn btn-sm btn-danger"> <i class="fas fa-times"></i></button>
+                              class="btn btn-sm btn-danger">Delete Delivery Destination</button>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
                                 <input type="text" class="form-control" maxlength="60"
-                                  [ngModelOptions]="{standalone: true}" [attr.name]="'deliveryDestinations['+p+'].name'"
+                                  [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].name'"
                                   placeholder="Enter name of the delivery destination"
                                   [(ngModel)]="deliveryDestination.name">
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
-                                  Number</label>
-                                <input type="text" class="form-control" maxlength="60"
-                                  [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].contactNumber'"
-                                  placeholder="Enter contact number of the delivery destination"
-                                  [(ngModel)]="deliveryDestination.contactNumber">
                               </div>
                             </div>
                           </div>
                           <div class="col-lg-5">
                             <div class="row">
                               <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
-                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].address.addressLine'"
-                                  [(ngModel)]="deliveryDestination.address.addressLine">
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].address.country'"
-                                  (change)="getDeliveryDestinationStates(s,p)"
-                                  [(ngModel)]="deliveryDestination.address.country">
-                                  <ng-option *ngFor="let country of countries" [value]="country.countryID">
-                                    {{country.countryName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].address.stateProvince'"
-                                  [(ngModel)]="deliveryDestination.address.stateProvince"
-                                  (change)="getDeliveryDestinationCities(s,p)">
-                                  <ng-option *ngFor="let state of deliveryDestinationStates" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].address.city'"
-                                  [(ngModel)]="deliveryDestination.address.city">
-                                  <ng-option *ngFor="let city of deliveryDestinationCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                  Code/Postal Code</label>
-                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'deliveryDestinations['+p+'].address.postalCode'"
-                                  [(ngModel)]="deliveryDestination.address.postalCode">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                  Number</label>
+                                <input type="text" class="form-control" maxlength="60"
+                                  [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].contactNumber'"
+                                  placeholder="Enter contact number of the delivery destination"
+                                  [(ngModel)]="deliveryDestination.contactNumber">
                               </div>
                             </div>
                           </div>
+                          <!-- NEW ADDRESS DIV -->
+                          <div class="col-10 offset-lg-1">
+                            <div class="address-item">
+                              <div class="form-group row border-bottom-0">
+                                <div class="col-lg-5">
+                                  <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
+                                    location&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                  <input [(ngModel)]="deliveryDestination.address.userLocation"
+                                    name="deliveryDestination.address.userLocation{{p}}"
+                                    (keyup)="searchTerm.next($event);" type="text" class="form-control"
+                                    placeholder="Type Address" [disabled]="deliveryDestination.address.manual">
+                                  <div class="checkbox-custom pt-2">
+                                    <input [(ngModel)]="deliveryDestination.address.manual"
+                                      name="deliveryDestination.address.manual"
+                                      (change)="manAddress($event,s,p,'delivery')" type="checkbox">
+                                    <label for="man_address">Type Manually</label>
+                                  </div>
+                                  <div class="map-search__results bg-white">
+                                    <ul class="p-0 m-0 text-left">
+                                      <li *ngFor="let item of searchResults;">
+                                        <a href="javascript:;"
+                                          (click)="userAddress(s, p, item,'delivery')">{{item.address.label}}</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-2 mar-top-37">
+                                  <a class="btn btn-dark mr-2" href="javascript:;"
+                                    (click)="clearUserLocation(s,p,'delivery');">Clear</a>
+                                </div>
+                              </div>
+                              <div class="address-inner" *ngIf="deliveryDestination.address.manual">
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.addressLine'"
+                                          [(ngModel)]="deliveryDestination.address.addressLine">
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.countryID'"
+                                          (change)="resetDeliveryDestinationState(s,p)"
+                                          [(ngModel)]="deliveryDestination.address.countryID">
+                                          <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                            {{country.countryName}}</ng-option>
+                                        </ng-select>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.stateID'"
+                                          [(ngModel)]="deliveryDestination.address.stateID"
+                                          (change)="resetDeliveryDestinationCity(s,p)">
+                                          <ng-container *ngFor="let state of modalStates| async">
+                                            <ng-option *ngIf="state.countryID == shipments[s].deliveryDestinations[p].address.countryID" [value]="state.stateID">
+                                              {{state.stateCode}} - {{state.stateName}}</ng-option>
+                                          </ng-container>
+                                        </ng-select>
 
+                                      </div>
+                                      <div class="col-lg-2 mar-top-37">
+                                        <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.cityID'"
+                                          [(ngModel)]="deliveryDestination.address.cityID">
+                                            <ng-container *ngFor="let city of modalCities| async">
+                                              <ng-option *ngIf="city.stateID == shipments[s].deliveryDestinations[p].address.stateID"
+                                                [value]="city.cityID"> {{city.cityName}}</ng-option>
+                                            </ng-container>
+                                        </ng-select>
+
+                                      </div>
+                                      <div class="col-lg-2 mar-top-37">
+                                        <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Postal
+                                          Code</label>
+                                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].deliveryDestinations['+p+'].address.postalCode'"
+                                          [(ngModel)]="deliveryDestination.address.postalCode">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- new address div ends -->
                         </div>
                         <div class="form-group row">
                           <div class="col-lg-12 text-right">
                             <button type="button" (click)="addDeliveryDestination(s)"
-                              class="btn btn-sm btn-success mr-1">Add Delivery Destination</button>
+                              class="btn btn-sm btn-success mr-1"><i class="fas fa-plus"></i> Add Delivery
+                              Destination</button>
                           </div>
                         </div>
                         <!-- notify parties -->
@@ -789,79 +854,145 @@
                         </div>
                         <div class="form-group row" *ngFor="let notifyParty of shipment.notifyParties;let p = index">
                           <div class="col-lg-12 text-right">
-                            <button type="button" (click)="deleteNotifyParty(p,s)" class="btn btn-sm btn-danger"> <i
-                                class="fas fa-times"></i></button>
+                            <button type="button" (click)="deleteNotifyParty(p,s)" class="btn btn-sm btn-danger">Delete
+                              Notify Party</button>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Name</label>
                                 <input type="text" class="form-control" maxlength="60"
-                                  [ngModelOptions]="{standalone: true}" [attr.name]="'notifyParties['+p+'].name'"
+                                  [ngModelOptions]="{standalone: true}" [attr.name]="'shipments['+s+'].notifyParties['+p+'].name'"
                                   placeholder="Enter name of the notify party" [(ngModel)]="notifyParty.name">
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
-                                  Number</label>
-                                <input type="text" class="form-control" maxlength="60"
-                                  [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].contactNumber'"
-                                  placeholder="Enter contact number of the notify party"
-                                  [(ngModel)]="notifyParty.contactNumber">
                               </div>
                             </div>
                           </div>
                           <div class="col-lg-5">
                             <div class="row">
                               <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
-                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].address.addressLine'"
-                                  [(ngModel)]="notifyParty.address.addressLine">
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].address.country'"
-                                  (change)="getNotifyPartyStates(s,p)" [(ngModel)]="notifyParty.address.country">
-                                  <ng-option *ngFor="let country of countries" [value]="country.countryID">
-                                    {{country.countryName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].address.stateProvince'"
-                                  [(ngModel)]="notifyParty.address.stateProvince" (change)="getNotifyPartyCities(s,p)">
-                                  <ng-option *ngFor="let state of notifyPartyStates" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
-                                <ng-select [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].address.city'"
-                                  [(ngModel)]="notifyParty.address.city">
-                                  <ng-option *ngFor="let city of notifyPartyCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option>
-                                </ng-select>
-                              </div>
-                              <div class="col-lg-5">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Zip
-                                  Code/Postal Code</label>
-                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'notifyParties['+p+'].address.postalCode'"
-                                  [(ngModel)]="notifyParty.address.postalCode">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Contact
+                                  Number</label>
+                                <input type="text" class="form-control" maxlength="60"
+                                  [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'shipments['+s+'].notifyParties['+p+'].contactNumber'"
+                                  placeholder="Enter contact number of the notify party"
+                                  [(ngModel)]="notifyParty.contactNumber">
                               </div>
                             </div>
                           </div>
+                          <!-- NEW ADDRESS DIV -->
+                          <div class="col-10 offset-lg-1">
+                            <div class="address-item">
+                              <div class="form-group row border-bottom-0">
+                                <div class="col-lg-5">
+                                  <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
+                                    location&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                  <input [(ngModel)]="notifyParty.address.userLocation"
+                                    name="notifyParty{{p}}.address.userLocation" (keyup)="searchTerm.next($event);"
+                                    type="text" class="form-control" placeholder="Type Address"
+                                    [disabled]="notifyParty.address.manual">
+                                  <div class="checkbox-custom pt-2">
+                                    <input [(ngModel)]="notifyParty.address.manual"
+                                      name="notifyParty{{p}}.address.manual" (change)="manAddress($event,s,p,'notify')"
+                                      type="checkbox">
+                                    <label for="man_address">Type Manually</label>
+                                  </div>
+                                  <div class="map-search__results bg-white">
+                                    <ul class="p-0 m-0 text-left">
+                                      <li *ngFor="let item of searchResults;">
+                                        <a href="javascript:;"
+                                          (click)="userAddress(s, p, item,'notify')">{{item.address.label}}</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="col-lg-2 mar-top-37">
+                                  <a class="btn btn-dark mr-2" href="javascript:;"
+                                    (click)="clearUserLocation(s,p,'notify');">Clear</a>
+                                </div>
+                              </div>
+                              <div class="address-inner" *ngIf="notifyParty.address.manual">
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.addressLine'"
+                                          [(ngModel)]="notifyParty.address.addressLine">
+                                      </div>
 
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.countryID'"
+                                          (change)="resetNotifyPartyState(s,p)"
+                                          [(ngModel)]="notifyParty.address.countryID">
+                                          <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                            {{country.countryName}}</ng-option>
+                                        </ng-select>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.stateID'" id="notifyPartyStateSelect"
+                                          [(ngModel)]="notifyParty.address.stateID"
+                                          (change)="resetNotifyPartyCity(s,p)">
+                                          <ng-container *ngFor="let state of modalStates| async">
+                                          <ng-option *ngIf="state.countryID == shipments[s].notifyParties[p].address.countryID" [value]="state.stateID">
+                                            {{state.stateCode}} - {{state.stateName}}</ng-option>
+                                      </ng-container>
+                                    </ng-select>
+                                      </div>
+                                      <div class="col-lg-2 mar-top-37">
+                                        <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
+                                        <ng-select [ngModelOptions]="{standalone: true}" id="notifyPartyCitySelect"
+                                        [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.cityID'"
+                                        [(ngModel)]="notifyParty.address.cityID">
+                                        <ng-container *ngFor="let city of modalCities| async">
+                                          <ng-option *ngIf="city.stateID == shipments[s].notifyParties[p].address.stateID"
+                                            [value]="city.cityID"> {{city.cityName}}</ng-option>
+                                        </ng-container>
+                                      </ng-select>
+                                      </div>
+                                      <div class="col-lg-2 mar-top-37">
+                                        <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                      </div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Postal
+                                          Code</label>
+                                        <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                          [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.postalCode'"
+                                          [(ngModel)]="notifyParty.address.postalCode">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- new address div ends -->
                         </div>
                         <div class="form-group row">
                           <div class="col-lg-12 text-right">
-                            <button type="button" (click)="addNotifyParty(s)" class="btn btn-sm btn-success mr-1">Add
-                              Notify Party</button>
+                            <button type="button" (click)="addNotifyParty(s)" class="btn btn-sm btn-success mr-1"><i
+                                class="fas fa-plus"></i> Add Notify Party</button>
                           </div>
                         </div>
                         <!-- commodity div -->
@@ -982,7 +1113,8 @@
                           </div>
 
                           <div class="col-lg-12 text-right">
-                            <button type="button" (click)="addCommodity(s)" class="btn btn-sm btn-success mr-1">Add More
+                            <button type="button" (click)="addCommodity(s)" class="btn btn-sm btn-success mr-1"><i
+                                class="fas fa-plus"></i> Add More
                               Commodity</button>
                             <button type="button" *ngIf="i != 0;" (click)="deleteCommodity(i,s)"
                               class="btn btn-sm btn-success"> Delete Commodity</button>
@@ -1027,8 +1159,8 @@
                           <td>
                             <div class="row">
                               <div class="col-lg-12">
-                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}" (change)="getBorderAssetTypes($event)"
-                                  [attr.name]="'trailers['+t+'].assetID'">
+                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}"
+                                  (change)="getBorderAssetTypes($event)" [attr.name]="'trailers['+t+'].assetID'">
                                   <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
                                     {{asset.assetIdentification}}</ng-option>
                                 </ng-select>
@@ -1040,9 +1172,10 @@
                               <div class="col-lg-12">
                                 <ng-select [(ngModel)]="trailer.assetTypeCode" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'trailers['+t+'].assetTypeCode'">
-                                    <ng-option *ngFor="let assetType of borderAssetTypes" [value]="assetType.borderAssetTypeCode" >
-                                      {{assetType.borderAssetTypeName}}</ng-option>
-                                      <ng-option  value="OE">Other</ng-option>
+                                  <ng-option *ngFor="let assetType of borderAssetTypes"
+                                    [value]="assetType.borderAssetTypeCode">
+                                    {{assetType.borderAssetTypeName}}</ng-option>
+                                  <ng-option value="OE">Other</ng-option>
 
                                 </ng-select>
                               </div>
@@ -1075,7 +1208,7 @@
                           </td>
                           <td>
                             <button type="button" (click)="deleteTrailer(t)" class="btn btn-sm btn-danger"> <i
-                                class="fas fa-times"></i></button>
+                                class="fas fa-minus"></i></button>
                           </td>
                         </tr>
                       </tbody>
@@ -1122,8 +1255,3 @@
     </section>
   </div>
 </section>
-
-
-
-
-

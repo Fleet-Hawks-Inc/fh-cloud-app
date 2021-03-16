@@ -3,15 +3,14 @@ import { ApiService } from '../../../../../services';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { from } from 'rxjs';
-import {
-  map,
-} from 'rxjs/operators';
+import { from, Subject, throwError } from 'rxjs';
+import {map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ListService } from '../../../../../services';
+import { HereMapService } from '../../../../../services';
 
 declare var $: any;
 @Component({
@@ -24,6 +23,8 @@ export class NewAciManifestComponent implements OnInit {
   public entryID;
   title = 'Add ACI e-Manifest';
   modalTitle = 'Add';
+  public searchTerm = new Subject<string>();
+  public searchResults: any;
   errors = {};
   form;
   response: any = '';
@@ -51,10 +52,8 @@ export class NewAciManifestComponent implements OnInit {
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
   cityList: any = [];
-  notifyPartyCities: any = [];
-  notifyPartyStates: any = [];
-  deliveryDestinationCities: any = [];
-  deliveryDestinationStates: any = [];
+  modalStates: any  = [];
+  modalCities: any = [];
   subLocationsList: any = [];
   cargoExemptionsList: any = [];
   documentTypeList: any = [];
@@ -135,8 +134,52 @@ export class NewAciManifestComponent implements OnInit {
       specialInstructions: '',
       shipperID: '',
       consigneeID: '',
-      deliveryDestinations: [],
-      notifyParties: [],
+      deliveryDestinations: [{
+        name: '',
+        contactNumber: '',
+        address: {
+          countryID: '',
+          countryName: '',
+          countryCode: '',
+          stateID: '',
+          stateName: '',
+          stateCode: '',
+          cityID: '',
+          cityName: '',
+          postalCode: '',
+          addressLine: '',
+          geoCords: {
+            lat: '',
+            lng: ''
+          },
+          manual: false,
+          userLocation: ''
+        }
+      }],
+      notifyParties: [
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryID: '',
+            countryName: '',
+            countryCode: '',
+            stateID: '',
+            stateName: '',
+            stateCode: '',
+            cityID: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: ''
+          }
+        }
+      ],
       commodities: [
         {
           description: '',
@@ -165,7 +208,7 @@ export class NewAciManifestComponent implements OnInit {
   amendManifest = false;
   constructor(
     private httpClient: HttpClient,
-
+    private HereMap: HereMapService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private listService: ListService,
@@ -192,8 +235,6 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Edit ACI e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACIEntry();
-      this.getNotifyPartyStatesCities();
-      this.getDeliveryDestinationStatesCities();
       this.route.queryParams.subscribe((params) => {
         if (params.amendManifest !== undefined) {
           this.amendManifest = params.amendManifest; // to get query parameter amend
@@ -203,13 +244,15 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Add ACI e-Manifest';
       this.modalTitle = 'Add';
     }
+    this.searchLocation();
     this.listService.fetchStates();
     this.listService.fetchCities();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
-    this.passengerDocStates = this.listService.stateList;
+    this.modalStates = this.listService.stateList;
+    this.modalCities = this.listService.cityList;
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -300,16 +343,6 @@ export class NewAciManifestComponent implements OnInit {
     this.apiService.getData('cities').subscribe((result: any) => {
       this.acceptanceCities = result.Items;
       this.loadingCities = result.Items;
-    });
-  }
-  fetchShippers() {
-    this.apiService.getData('shippers').subscribe((result: any) => {
-      this.shippers = result.Items;
-    });
-  }
-  fetchConsignees() {
-    this.apiService.getData('receivers').subscribe((result: any) => {
-      this.consignees = result.Items;
     });
   }
   fetchVehicles() {
@@ -441,104 +474,198 @@ export class NewAciManifestComponent implements OnInit {
   deleteDocument(i: number, p: number) {
     this.passengers[p].travelDocuments.splice(i, 1);
   }
-
-  getStatesDoc(i, j) {
-    const countryID = this.passengers[i].travelDocuments[j].country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.passengerDocStates = result.Items;
-      });
-  }
   // delivery destinations
-  getDeliveryDestinationStatesCities() {
-    this.apiService.getData('states').subscribe((result: any) => {
-      this.deliveryDestinationStates = result.Items;
-    });
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.deliveryDestinationCities = result.Items;
-    });
+  resetDeliveryDestinationState(s, p) {
+    this.shipments[s].notifyParties[p].address.stateID = '';
+    $('#deliveryDestinationStateSelect').val('');
   }
-  getDeliveryDestinationStates(s, p) {
-    const countryID = this.shipments[s].deliveryDestinations[p].address.country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.deliveryDestinationStates = result.Items;
-      });
-  }
-  getDeliveryDestinationCities(s, p) {
-    const stateID = this.shipments[s].deliveryDestinations[p].address
-      .stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.deliveryDestinationCities = result.Items;
-      });
+  resetDeliveryDestinationCity(s, p) {
+    this.shipments[s].notifyParties[p].address.cityID = '';
+    $('#deliveryDestinationCitySelect').val('');
   }
   addDeliveryDestination(p) {
     if (this.shipments[p].deliveryDestinations.length <= 96) {
-      this.shipments[p].deliveryDestinations.push({
-        name: '',
-        contactNumber: '',
-        address: {
-          addressLine: '',
-          city: '',
-          stateProvince: '',
-          country: '',
-          postalCode: '',
-        },
-      });
+      this.shipments[p].deliveryDestinations.push(
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryID: '',
+            countryName: '',
+            countryCode: '',
+            stateID: '',
+            stateName: '',
+            stateCode: '',
+            cityID: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: ''
+          }
+        }
+      );
     }
   }
   deleteDeliveryDestination(i: number, s: number) {
     this.shipments[s].deliveryDestinations.splice(i, 1);
   }
+  // address section
+  clearUserLocation(s,p,callType) {
+    if (callType == 'delivery') {
+    this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+    }
+  else {
+    this.shipments[s].notifyParties[p].address[`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+   }
+  }
+  public searchLocation() {
+    this.searchTerm.pipe(
+      map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.HereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
+  }
+  manAddress(event, s, p, callType) {
+    if (event.target.checked) {
+      if (callType === 'notify') {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipments[s].notifyParties[p].address[`userLocation`] = '';
+      } else {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
+      }
+    } else {
+      if (callType === 'notify') {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipments[s].notifyParties[p].address.countryID = '';
+        this.shipments[s].notifyParties[p].address.countryName = '';
+        this.shipments[s].notifyParties[p].address.stateID = '';
+        this.shipments[s].notifyParties[p].address.stateName = '';
+        this.shipments[s].notifyParties[p].address.cityID = '';
+        this.shipments[s].notifyParties[p].address.cityName = '';
+        this.shipments[s].notifyParties[p].address.postalCode = '';
+        this.shipments[s].notifyParties[p].address.addressLine = '';
+        this.shipments[s].notifyParties[p].address.geoCords.lat = '';
+        this.shipments[s].notifyParties[p].address.geoCords.lng = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipments[s].deliveryDestinations[p].address.countryID = '';
+        this.shipments[s].deliveryDestinations[p].address.countryName = '';
+        this.shipments[s].deliveryDestinations[p].address.stateID = '';
+        this.shipments[s].deliveryDestinations[p].address.stateName = '';
+        this.shipments[s].deliveryDestinations[p].address.cityID = '';
+        this.shipments[s].deliveryDestinations[p].address.cityName = '';
+        this.shipments[s].deliveryDestinations[p].address.postalCode = '';
+        this.shipments[s].deliveryDestinations[p].address.addressLine = '';
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lat = '';
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lng = '';
+      }
+    }
+  }
+  async userAddress(s, p, item, callType) {
+    console.log('item', item);
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    console.log('result', result);
+    if(callType === 'delivery') {
+      this.shipments[s].deliveryDestinations[p].address.userLocation = result.address.label;
+      this.shipments[s].deliveryDestinations[p].address.geoCords.lat = result.position.lat;
+      this.shipments[s].deliveryDestinations[p].address.geoCords.lng = result.position.lng;
+      this.shipments[s].deliveryDestinations[p].address.countryName = result.address.countryName;
+      this.shipments[s].deliveryDestinations[p].address.countryCode = result.address.countryCode;
+      this.shipments[s].deliveryDestinations[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+      $('div').removeClass('show-search__result');
+      this.shipments[s].deliveryDestinations[p].address.stateName = result.address.state;
+      this.shipments[s].deliveryDestinations[p].address.stateCode = result.address.stateCode;
+      this.shipments[s].deliveryDestinations[p].address.cityName = result.address.city;
+      this.shipments[s].deliveryDestinations[p].address.postalCode = result.address.postalCode;
+      if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+      }
+      if (result.address.street === undefined) {
+          result.address.street = '';
+      }
+    } else {
+      this.shipments[s].notifyParties[p].address.userLocation = result.address.label;
+      this.shipments[s].notifyParties[p].address.geoCords.lat = result.position.lat;
+      this.shipments[s].notifyParties[p].address.geoCords.lng = result.position.lng;
+      this.shipments[s].notifyParties[p].address.countryName = result.address.countryName;
+      this.shipments[s].notifyParties[p].address.countryCode = result.address.countryCode;
+      this.shipments[s].notifyParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+      $('div').removeClass('show-search__result');
+      this.shipments[s].notifyParties[p].address.stateName = result.address.state;
+      this.shipments[s].notifyParties[p].address.stateCode = result.address.stateCode;
+      this.shipments[s].notifyParties[p].address.cityName = result.address.city;
+      this.shipments[s].notifyParties[p].address.postalCode = result.address.postalCode;
+      if (result.address.houseNumber === undefined) {
+          result.address.houseNumber = '';
+      }
+      if (result.address.street === undefined) {
+          result.address.street = '';
+      }
+    }
+  }
   // notify parties
-  getNotifyPartyStatesCities() {
-    this.apiService.getData('states').subscribe((result: any) => {
-      this.notifyPartyStates = result.Items;
-    });
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.notifyPartyCities = result.Items;
-    });
+  resetNotifyPartyState(s, p) {
+    this.shipments[s].notifyParties[p].address.stateID = '';
+    $('#notifyPartyStateSelect').val('');
   }
-  getNotifyPartyStates(s, p) {
-    const countryID = this.shipments[s].notifyParties[p].address.country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.notifyPartyStates = result.Items;
-      });
-  }
-  getNotifyPartyCities(s, p) {
-    const stateID = this.shipments[s].notifyParties[p].address.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.notifyPartyCities = result.Items;
-      });
+  resetNotifyPartyCity(s, p) {
+    this.shipments[s].notifyParties[p].address.cityID = '';
+    $('#notifyPartyCitySelect').val('');
   }
   addNotifyParty(p) {
     if (this.shipments[p].notifyParties.length <= 97) {
-      this.shipments[p].notifyParties.push({
-        name: '',
-        contactNumber: '',
-        address: {
-          addressLine: '',
-          city: '',
-          stateProvince: '',
-          country: '',
-          postalCode: '',
-        },
-      });
+      this.shipments[p].notifyParties.push(
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryID: '',
+            countryName: '',
+            countryCode: '',
+            stateID: '',
+            stateName: '',
+            stateCode: '',
+            cityID: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: ''
+          }
+        }
+      );
     }
   }
-  deleteNotifyParty(i: number, s: number) {
-    this.shipments[s].notifyParties.splice(i, 1);
+  deleteNotifyParty(p: number, s: number) {
+    this.shipments[s].notifyParties.splice(p, 1);
   }
-  addCommodity(i) {
-    this.shipments[i].commodities.push({
+  addCommodity(s) {
+    this.shipments[s].commodities.push({
       description: '',
       quantity: '',
       packagingUnit: '',
@@ -628,6 +755,7 @@ export class NewAciManifestComponent implements OnInit {
       shipments: this.shipments,
       currentStatus: 'Draft',
     };
+    console.log('data', data.shipments);
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => {},
       error: (err: any) => {

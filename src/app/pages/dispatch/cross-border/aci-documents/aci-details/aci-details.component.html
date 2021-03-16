@@ -1,7 +1,7 @@
 <section class="body">
 
     <div class="inner-wrapper">
-        
+
         <section role="main" class="content-body">
             <header class="page-header pr-5">
                 <h2>{{title}}</h2>
@@ -767,12 +767,14 @@
                                 <thead>
                                     <tr>
                                         <th> Name </th>
+                                        <th>Contact Number</th>
                                         <th>Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let deliveryDestination of shipmentData.deliveryDestinations">
                                         <td>{{deliveryDestination.name}}</td>
+                                        <td>{{deliveryDestination.contactNumber}}</td>
                                         <td>{{deliveryDestination.address.addressLine}},
                                             {{deliveryDestination.address.city}},{{deliveryDestination.address.stateProvince}},{{deliveryDestination.address.postalCode}}
                                         </td>
