@@ -10,6 +10,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
 import { GoogleMapsService } from 'src/app/services/google-maps.service';
+import { setMaxListeners } from 'process';
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class AddTripComponent implements OnInit {
     newCoords = [];
     public searchResults: any;
     public searchResults1: any;
+    public miles:any;
     
     public saveCords:any;
     private readonly search: any;
@@ -548,6 +550,9 @@ export class AddTripComponent implements OnInit {
                                 if(m.shippers.indexOf(n)==0){
                                     startingPoint=0
                                 }
+                                else{
+                                    startingPoint=1
+                                }
                                 let endingPoint=n.position.lng+","+n.position.lat;
                                 
                                 let obj = {
@@ -634,26 +639,24 @@ export class AddTripComponent implements OnInit {
     }
 
     getMiles(startingPoint,endingPoint){
-        console.log("saveCords",this.saveCords);
+        let savedCord=this.saveCords;
+        this.saveCords=endingPoint
         
         if(startingPoint==0){
-            this.saveCords=endingPoint;
         return 0;
         }
         else{
-            
-            
-             this.pcMiles.pcMilesDistance(this.saveCords+";"+endingPoint).subscribe(
-                 (res)=>{console.log(res)}
-             )
-             this.saveCords=endingPoint;
-             return 1;
-
+            this.pcMiles.pcMiles.next(true);
+            this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).subscribe(
+                (res)=>{this.miles=res})  
+                
+                return this.miles
+                
         }
-
         
 
     }
+   
     checkUncheckAll(type) {
         this.temporaryOrderIDs = [];
         let current = this;

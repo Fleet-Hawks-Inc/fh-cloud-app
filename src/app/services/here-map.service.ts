@@ -278,15 +278,15 @@ export class HereMapService {
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 
-      const routeColors = ['#bbbdbf', '#03dac6', '#cf6679', '#000080', '#f5d200', '#13a2c2'];
+      const routeColors = ['#2980b9','#2980b9','#2980b9','#2980b9','#2980b9'];
 
       this.router.calculateRoute(params, route => {
         // console.log("route", route);
         if (route.routes) {
-          route.routes.forEach((section, i) => {
-            // console.log("section", section);
-            // decode LineString from the flexible polyline
-            section.sections.forEach(item => {
+          // route.routes.forEach((section, i) => {
+          //   // console.log("section", section);
+          //   // decode LineString from the flexible polyline
+            route.routes[0].sections.forEach(item => {
               // console.log("item", item);
 
               const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
@@ -294,7 +294,8 @@ export class HereMapService {
               const polyline = new H.map.Polyline(linestring, {
                 style: {
                   lineWidth: 5,
-                  strokeColor: routeColors[i]
+                  strokeColor: "#2980b9",
+                  
                 }
               });
 
@@ -323,20 +324,22 @@ export class HereMapService {
               // let poly = H.geo.LineString.fromFlexiblePolyline(item.polyline).getLatLngAltArray();
 
               // Create a marker for the start point:
-              const startMarker = new H.map.Marker(item.departure.place.location);
+              const startIcon=new H.map.Icon("/assets/img/mapIcon/start.png",{ size: { w: 16, h: 16 } })
+              const startMarker = new H.map.Marker(item.departure.place.location,{ icon: startIcon });
 
               // Create a marker for the end point:
-              const endMarker = new H.map.Marker(item.arrival.place.location);
+              const destIcon=new H.map.Icon("/assets/img/mapIcon/dest.png",{ size: { w: 36, h: 36 } })
+              const endMarker = new H.map.Marker(item.arrival.place.location,{ icon: destIcon });
 
               // Add the route polyline and the two markers to the map:
               this.map.addObjects([polyline, startMarker, endMarker]);
-
+              this.map.setZoom(10);
               // And zoom to its bounding rectangle
               this.map.getViewModel().setLookAtData({
                 bounds: polyline.getBoundingBox()
               });
             });
-          });
+          
         }
       })
   } catch (erro) {
