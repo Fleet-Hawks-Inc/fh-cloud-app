@@ -82,3 +82,19 @@ Make sure you install Debugger for Chrome extension via VS code extensions menu.
 Go to Debug menu and click play button  or press F5
 
 
+### Heap Memory issue while `ng build`
+
+If you encounter heap memory issue whilg ng build please set following environment variables before executing `ng build`
+
+Eg: Windows
+
+```
+command-prompt>set NODE_OPTIONS="--max-old-space-size=8192"
+command-pompt>ng build
+```
+
+Eg: Linux/MAc
+```
+terminal> export NODE_OPTIONS="--max-old-space-size=8192"
+terminal> ng build
+```

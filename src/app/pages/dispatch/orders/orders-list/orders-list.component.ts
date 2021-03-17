@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',

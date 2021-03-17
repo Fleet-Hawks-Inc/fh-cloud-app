@@ -1,7 +1,18 @@
-<mat-progress-bar mode="indeterminate" *ngIf="loading">
-</mat-progress-bar>
-<app-header *ngIf="token && currentURL != '/Login' && currentURL !='/carriers'"></app-header>
-<app-sidebar *ngIf="token && currentURL != '/Login' && currentURL !='/carriers'"></app-sidebar>
+<mat-progress-bar mode="indeterminate" *ngIf="loading"> </mat-progress-bar>
+<app-header
+  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+></app-header>
+<app-sidebar
+  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+></app-sidebar>
 <router-outlet></router-outlet>
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
-<app-fixed-right-sidebar *ngIf="token && currentURL != '/Login' && currentURL !='/carriers'"></app-fixed-right-sidebar>
+<!-- <ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="default"
+  color="#fff"
+  type="ball-clip-rotate"
+  ><p style="color: white">Loading...</p></ngx-spinner
+> -->
+<app-fixed-right-sidebar
+  *ngIf="token && currentURL != '/Login' && currentURL != '/carriers'"
+></app-fixed-right-sidebar>

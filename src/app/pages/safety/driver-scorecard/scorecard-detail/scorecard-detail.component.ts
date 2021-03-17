@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Router, ActivatedRoute } from '@angular/router';;
+import { ActivatedRoute } from '@angular/router';;
 import * as moment from 'moment';
 declare var $: any;
 
@@ -64,8 +62,8 @@ export class ScorecardDetailComponent implements OnInit {
   speedingChartLegend;
   speedingChartData = [];
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService,
+    private spinner: NgxSpinnerService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.initHarshEventRateGraph();

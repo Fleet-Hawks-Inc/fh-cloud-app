@@ -2,64 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ChartsModule} from 'ng2-charts';
 import {
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
-
-  AddInventoryComponent,
-  InventoryListComponent,
-  InventoryDetailComponent
-
 } from './index';
 
 
 const COMPONENTS = [
-  AddUserComponent,
-  EditUserComponent,
-  UserListComponent,
-  AddAssetsComponent,
-  AssetListComponent,
-  AssetDetailComponent,
-  AddFuelEntryComponent,
-  FuelEntryListComponent,
-  FuelEntryDetailsComponent,
-  ListingComponent,
-  AddReminderComponent,
-  ServiceRemindDetailComponent,
-  VehicleRenewListComponent,
-  VehicleRenewAddComponent,
-  VehicleRenewDetailComponent,
-  ListContactRenewComponent,
-  AddContactRenewComponent,
-  ContactRenewDetailComponent,
-  AddGeofenceComponent,
-  GeofenceListComponent,
-  GraphComponent,
   DashboardDriverComponent,
-
-
-  AddInventoryComponent,
-  InventoryListComponent,
-  InventoryDetailComponent
 ];
 
 const routes: Routes = [
@@ -72,81 +20,16 @@ const routes: Routes = [
     loadChildren: () => import('./vehicles/vehicles.module').then((m) => m.VehiclesModule) ,
   },
   {
-    path: 'fleet-manager',
-    children: [
-      { path: 'Add-User', component: AddUserComponent },
-      { path: 'Edit-User/:userName', component: EditUserComponent },
-      { path: 'User-List', component: UserListComponent },
-    ],
-  },
-  {
     path: 'assets',
-    children: [
-      { path: 'add', component: AddAssetsComponent },
-      { path: 'list', component: AssetListComponent },
-      { path: 'detail/:assetID', component: AssetDetailComponent },
-      { path: 'edit/:assetID', component: AddAssetsComponent },
-    ],
+    loadChildren: () => import('./assets/assets.module').then((m) => m.AssetsModule) ,
   },
   {
-    path: 'expenses',
-    children: [
-      {
-        path: 'fuel',
-        children: [
-          {
-
-            path: 'add',
-            component: AddFuelEntryComponent,
-          },
-          {
-            path: 'list',
-            component: FuelEntryListComponent,
-          },
-          {
-            path: 'edit/:entryID',
-            component: AddFuelEntryComponent,
-          },
-          {
-            path: 'detail/:entryID',
-            component: FuelEntryDetailsComponent,
-          },
-
-        ],
-      },
-    ],
+    path: 'fuel',
+    loadChildren: () => import('./fuel/fuel.module').then((m) => m.FuelModule) ,
   },
   {
     path: 'reminders',
-    children: [
-      {
-        path: 'service-reminder',
-        children: [
-          { path: 'list', component: ListingComponent },
-          { path: 'add', component: AddReminderComponent },
-          { path: 'edit/:reminderID', component: AddReminderComponent },
-          { path: 'detail/:reminderID', component: ServiceRemindDetailComponent },
-        ],
-      },
-      {
-        path: 'vehicle-renewals',
-        children: [
-          { path: 'list', component: VehicleRenewListComponent },
-          { path: 'add', component: VehicleRenewAddComponent },
-          { path: 'detail', component: VehicleRenewDetailComponent },
-          { path: 'edit/:reminderID', component: VehicleRenewAddComponent},
-        ],
-      },
-      {
-        path: 'contact-renewals',
-        children: [
-          { path: 'list', component: ListContactRenewComponent },
-          { path: 'add', component: AddContactRenewComponent },
-          { path: 'detail', component: ContactRenewDetailComponent },
-          { path: 'edit/:reminderID', component: AddContactRenewComponent },
-        ],
-      },
-    ],
+    loadChildren: () => import('./reminders/reminders.module').then((m) => m.RemindersModule) ,
   },
   {
     path: 'maintenance',
@@ -154,15 +37,7 @@ const routes: Routes = [
   },
   {
     path: 'geofence',
-    children: [
-      { path: 'add', component: AddGeofenceComponent },
-      { path: 'edit/:fenceID', component: AddGeofenceComponent },
-      { path: 'list', component: GeofenceListComponent },
-    ],
-  },
-  {
-    path: 'graphs',
-    children: [{ path: 'view-graph', component: GraphComponent }],
+    loadChildren: () => import('./geofence/geofence.module').then((m) => m.GeofenceModule) ,
   },
   {
     path: 'live-driver',
@@ -170,12 +45,7 @@ const routes: Routes = [
   },
   {
     path: 'inventory',
-    children: [
-      { path: 'add', component: AddInventoryComponent },
-      { path: 'edit/:itemID', component: AddInventoryComponent },
-      { path: 'list', component: InventoryListComponent },
-      { path: 'detail/:itemID', component: InventoryDetailComponent },
-    ],
+    loadChildren: () => import('./inventory/inventory.module').then((m) => m.InventroysModule) ,
   },
 ];
 

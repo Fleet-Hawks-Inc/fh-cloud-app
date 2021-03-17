@@ -3,9 +3,7 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+declare var $: any;
 import * as moment from "moment";
 
 @Component({
@@ -13,13 +11,7 @@ import * as moment from "moment";
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
 })
-export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
-  
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class EventListComponent implements OnInit {
 
   events = [];
   lastEvaluatedKey = '';
@@ -72,29 +64,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
     this.initDataTable();
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
   getEventDetail(arrValues) {
     this.events = [];
     for (let i = 0; i < arrValues.length; i++) {
@@ -118,36 +87,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   initDataTable() {
-
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength ,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6],"orderable": false},
-      ],
-      dom: 'lrtip',
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch-records?lastEvaluatedValue1='+this.lastEvaluatedKey
-        +'&vehicle='+this.filterValue.vehicleID+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd+"&event=critical", dataTablesParameters).subscribe(resp => {
-          
-          current.getEventDetail(resp['Items']);
-          if(resp['LastEvaluatedKey'] !== undefined){
-            current.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID;
-          } else {
-            current.lastEvaluatedKey = '';
-          }
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      },
-    };
   }
 
   deleteEvent(eventID) {
@@ -157,7 +96,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        current.rerender();
         // current.initDataTable();
         current.spinner.hide();
         current.toastr.success('Event deleted successfully');
@@ -210,7 +148,7 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   searchEvents() {
     if(this.filterValue.date !== '' || this.filterValue.driverName !== '' || this.filterValue.vehicleID !== '') {
-      this.rerender('reset');
+      
     }
   }
 
@@ -262,7 +200,6 @@ export class EventListComponent implements AfterViewInit, OnDestroy, OnInit {
       };
       this.suggestions = [];
       $("#searchVehicle").text('Search by vehicle');
-      this.rerender();
       this.spinner.hide();
     } else {
       return false;

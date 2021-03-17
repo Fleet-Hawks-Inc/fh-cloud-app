@@ -1,23 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quotes-list',
   templateUrl: './quotes-list.component.html',
   styleUrls: ['./quotes-list.component.css']
 })
-export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class QuotesListComponent implements OnInit {
 
   quotes = [];
   lastEvaluatedKey = '';
@@ -39,7 +30,6 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit() {
     this.fetchQuotes();
-    this.initDataTable()
   }
 
   fetchQuotes = () => {
@@ -60,67 +50,10 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       .deleteData('quotes/' + quoteID)
       .subscribe((result: any) => {
         this.toastr.success('Quote Deleted Successfully!');
-        this.rerender();
         this.fetchQuotes();
       });
   }
 
-  initDataTable() {
-    let current = this;
-    this.serviceUrl = 'quotes/fetch-records'+ "?value1=";
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: current.pageLength,
-      serverSide: true,
-      processing: true,
-      dom: 'lrtip',
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7,8,9,10,11],"orderable": false},
-      ],
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData(this.serviceUrl +current.lastEvaluatedKey +'&searchValue='+this.quoteSearch.searchValue+
-        "&startDate="+this.quoteSearch.start+"&endDate="+this.quoteSearch.end , dataTablesParameters).subscribe(resp => {
-          this.quotes = resp['Items'];
-          // console.log('resp')
-          // console.log(resp)
-          if (resp['LastEvaluatedKey'] !== undefined) {
-            current.lastEvaluatedKey = resp['LastEvaluatedKey'].quoteID
-          } else {
-            current.lastEvaluatedKey = ''
-          }
-
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      }
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
 
   filterSearch() {
     if(this.quoteSearch.startDate !== '' || this.quoteSearch.endDate !== '' || this.quoteSearch.searchValue !== '' ) {
@@ -147,8 +80,6 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
         }
         this.quoteSearch.end = endDate[2]+'-'+endDate[1]+'-'+endDate[1];
       }
-      
-      this.rerender('reset');
     } else {
       return false;
     }
@@ -159,7 +90,6 @@ export class QuotesListComponent implements AfterViewInit, OnDestroy, OnInit {
       this.quoteSearch.startDate = '';
       this.quoteSearch.endDate = '';
       this.quoteSearch.searchValue = '';
-      this.rerender();
     }
     return false;
   }
