@@ -65,8 +65,7 @@ export class HereMapService {
       {
         zoom: 4.5,
         center: {lat: 45.8598584, lng: -94.526364},
-        pixelRatio: window.devicePixelRatio || 1,
-        layers: [defaultLayers.vector.normal.truck]
+        pixelRatio: window.devicePixelRatio || 1
       }
     );
 
