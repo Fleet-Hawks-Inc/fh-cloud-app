@@ -25,7 +25,7 @@ export class OrdersListComponent implements OnInit {
     start: '',
     end: ''
   };
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   serviceUrl = '';
   activeTab = 'all';
@@ -181,7 +181,7 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.ordersPrev = true;
         }
-        this.spinner.hide();
+        this.spinner.hide(); 
       }, err => {
         this.spinner.hide();
       });

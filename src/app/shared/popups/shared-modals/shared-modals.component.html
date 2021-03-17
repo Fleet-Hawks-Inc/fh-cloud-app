@@ -489,6 +489,7 @@
       </div>
    </div>
 </div>
+
 <div class="modal fade" id="addVehicleModelDriver" tabindex="-1" role="dialog" aria-labelledby="addVehickeModelDriver"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
@@ -1941,3 +1942,175 @@
    </div>
 </div>
 
+<!-- add asset modal -->
+<div class="modal fade" id="addAsset" tabindex="-1" role="dialog" aria-labelledby="addAsset" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Add Asset</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="row text-dark">
+               <div class="col">
+                  <form id="assetForm" class="form-horizontal form-bordered bg-white" method="post">
+                     <div class="card-body pt-0">
+                        <div class="">
+                           <div class="row">
+                              <div class="col-lg-10">
+                                 <label
+                                    class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Basic
+                                    Details
+                                 </label>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-12">
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
+                                          Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <input type="text" [(ngModel)]="assetsData.assetIdentification"
+                                          name="assetIdentification" class="form-control"
+                                          placeholder="eg. XYZ,123 etc.">
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start
+                                          Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
+                                          [(ngModel)]="assetsData.startDate" name="startDate"
+                                          placeholder="Enter Start Date of the asset" class="form-control">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-12">
+                                       <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span
+                                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
+                                          placeholder="Enter VIN number of the asset" class="form-control">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row pt-3">
+                              <div class="col-lg-12">
+                                 <label
+                                    class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Asset
+                                    Details
+                                 </label>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-12">
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
+                                          Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.assetDetails.assetType"
+                                          name="assetDetails.assetType" class="form-control populate" id="assetType"
+                                          placeholder="Select asset type">
+                                          <ng-option *ngFor="let type of allAssetTypes;" value="{{type.assetTypeID}}">
+                                             {{type.assetTypeName}}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span
+                                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.assetDetails.year" name="assetDetails.year"
+                                          class="form-control populate" placeholder="Select year">
+                                          <ng-option *ngFor="let year of years;" value="{{year}}">{{year}}</ng-option>
+                                       </ng-select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Asset
+                                          Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
+                                          name="assetDetails.currentStatus" placeholder="Select asset status">
+                                          <ng-option value="Active">Active</ng-option>
+                                          <ng-option value="Inactive">InActive</ng-option>
+                                       </ng-select>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set
+                                         Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
+                                       <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
+                                         name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
+                                         class="form-control">
+                                     </div>
+                                     <div class="col-lg-12">
+                                       <div class="checkbox mt-1">
+                                         <label>
+                                           <input type="checkbox" name="annualSafetyReminder"
+                                             [(ngModel)]="assetsData.assetDetails.annualSafetyReminder" value="true">
+                                           Set Reminder
+                                         </label>
+                                       </div>
+                                     </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                    <div class="col-lg-6">
+                                       <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
+                                          Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.assetDetails.licenceCountryID"
+                                          name="assetDetails.licenceCountryID" (change)="getStates($event)"
+                                          placeholder="Select country" class="form-control populate">
+                                          <ng-option *ngFor="let country of countries" value="{{country.countryID}}">
+                                             {{country.countryName}}
+                                          </ng-option>
+                                       </ng-select>
+                                    </div>
+                                    <div class="col-lg-6">
+                                       <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
+                                          Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
+                                          name="assetDetails.licenceStateID" class="form-control populate"
+                                          placeholder="Select state">
+                                          <ng-option *ngFor="let state of states" value="{{state.stateID}}">
+                                             {{state.stateName}}
+                                          </ng-option>
+                                       </ng-select>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                       <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
+                                          Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
+                                          placeholder="Enter licence plate number of asset"
+                                          name="assetDetails.licencePlateNumber" class="form-control" type="text">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row mt-3">
+                              <div class="col-lg-12 text-right">
+                                 <button type="button" class="btn btn-default mr-2 mt-4"
+                                    data-dismiss="modal">Cancel</button>
+                                 <a href="javascript:;" (click)="addAsset()" class="btn btn-success mt-4">Save</a>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
+                              <p class="text text-success" *ngIf="hasSuccess">
+                                 {{ Success }}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
