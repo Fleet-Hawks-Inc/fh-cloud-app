@@ -24,7 +24,7 @@ export class AddTripComponent implements OnInit {
     newCoords = [];
     public searchResults: any;
     public searchResults1: any;
-    public miles;
+    public actualMiles=0;
     
     public saveCords:any;
     private readonly search: any;
@@ -33,7 +33,10 @@ export class AddTripComponent implements OnInit {
     routes = [];
     constructor(private apiService: ApiService, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService, private pcMiles: GoogleMapsService) { }
-        orderMiles={}
+       public orderMiles={
+            calculateBy:'',
+            totalMiles:''
+        }
     permanentRoutes = []
     errors = {};
     trips = [];
@@ -531,8 +534,8 @@ export class AddTripComponent implements OnInit {
                    
                     current.orderMiles=
                     {
-                        "calculateBy":v.milesInfo.calculateBy,
-                        "totalMiles":v.milesInfo.totalMiles
+                        calculateBy:v.milesInfo.calculateBy,
+                        totalMiles:v.milesInfo.totalMiles
                     }
                     
                     let startingPoint=1;
@@ -556,13 +559,13 @@ export class AddTripComponent implements OnInit {
                                 }
                                 let endingPoint=n.position.lng+","+n.position.lat;
                                 
-                                
+                                let pickupMiles=await current.getMiles(startingPoint,endingPoint)
                                 let obj = {
                                     type: 'Pickup',
                                     // date: PDate,
                                     name: current.shippersObjects[n.shipperID],
                                     
-                                    miles: await current.getMiles(startingPoint,endingPoint),
+                                    miles: pickupMiles,
                                     carrierID: '',
                                     carrierName: '',
                                     // time: PTime,
@@ -579,10 +582,10 @@ export class AddTripComponent implements OnInit {
                                     lat:n.position.lat,
                                     lng:n.position.lng
                                 }
+                                current.calculateActualMiles(pickupMiles)
                                 if(n.pickupLocation != '' && n.pickupLocation != undefined){
                                     locations.push(n.pickupLocation)
                                 }
-                                console.log('obj', obj);
                                 current.trips.push(obj);
                             })
                         })
@@ -598,14 +601,12 @@ export class AddTripComponent implements OnInit {
                                 }
                                 
                                 let endingPoint=k.position.lng+","+k.position.lat;
-                                
-                                // let milesMiles= 
-                                // console.log("dujey miles",milesMiles)
+                                let deliveryMiles=await current.getMiles(1,endingPoint)
                                 let obj = {
                                     type: 'Delivery',
                                     // date: DrDate,
                                     name: current.receiversObjects[k.receiverID],
-                                    miles: await current.getMiles(1,endingPoint),
+                                    miles: deliveryMiles,
                                     carrierID: '',
                                     carrierName: '',
                                     // time: DrTime,
@@ -622,6 +623,7 @@ export class AddTripComponent implements OnInit {
                                     lat:k.position.lat,
                                     lng:k.position.lng
                                 }
+                                current.calculateActualMiles(deliveryMiles)
                                 if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
                                     locations.push(k.dropOffLocation)
                                 }
@@ -664,6 +666,9 @@ export class AddTripComponent implements OnInit {
         }
     }
    
+    calculateActualMiles(miles){
+        this.actualMiles+=miles;
+    }
     checkUncheckAll(type) {
         this.temporaryOrderIDs = [];
         let current = this;

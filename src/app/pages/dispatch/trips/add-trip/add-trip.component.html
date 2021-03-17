@@ -428,6 +428,11 @@
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}:{{orderMiles.totalMiles}}
                                                     </p>
+                                                    <ng-template [ngIf]="actualMiles">
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
+                                                    <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles}}
+                                                    </span></p>
+                                                </ng-template>
                                                 </div>
                                                 <div class="col-lg-4 text-center">
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
