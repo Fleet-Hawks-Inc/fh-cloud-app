@@ -327,17 +327,25 @@
                                             <strong>Phone:</strong> 
                                             {{shipperReceiversInfo.shippers[j].phone}}
                                           </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Commodity:</strong> Cakes
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Quantity:</strong> 
-                                            {{shipperReceiversInfo.shippers[j].notes}}
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Weight:</strong> 125
-                                            Kilograms
-                                          </p>
+                                          <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
+                                            <thead>
+                                             <tr>
+                                              
+                                              <th>Sr. No.</th>
+                                              <th>Commodity</th>
+                                              <th>Quantity</th>
+                                              <th>Weight</th>
+                                             </tr>
+                                            </thead>
+                                            <tbody>
+                                             <tr *ngFor="let commodity of shipperReceiversInfo.shippers[j].commodity;let l = index">
+                                              <td>{{l+1}}</td>
+                                              <td>{{commodity.name}}</td>
+                                              <td>{{commodity.quantity}}</td>
+                                              <td>{{commodity.weight}}</td>
+                                             </tr>
+                                             
+                                         </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
                                            {{shipperReceiversInfo.shippers[j].driverLoad}}
@@ -394,16 +402,25 @@
                                             <strong>Phone:</strong> 
                                             {{shipperReceiversInfo.receivers[k].phone}}
                                           </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Commodity:</strong> Cakes
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Quantity:</strong> 125 Box
-                                          </p>
-                                          <p class="mb-0 text-dark">
-                                            <strong>Weight:</strong> 125
-                                            Kilograms
-                                          </p>
+                                          <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
+                                            <thead>
+                                             <tr>
+                                              
+                                              <th>Sr. No.</th>
+                                              <th>Commodity</th>
+                                              <th>Quantity</th>
+                                              <th>Weight</th>
+                                             </tr>
+                                            </thead>
+                                            <tbody>
+                                             <tr *ngFor="let commodity of shipperReceiversInfo.receivers[k].commodity;let m = index">
+                                              <td>{{m+1}}</td>
+                                              <td>{{commodity.name}}</td>
+                                              <td>{{commodity.quantity}}</td>
+                                              <td>{{commodity.weight}}</td>
+                                             </tr>
+                                             
+                                         </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
                                             {{shipperReceiversInfo.receivers[k].driverUnload}}
