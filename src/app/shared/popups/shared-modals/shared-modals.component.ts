@@ -442,11 +442,11 @@ activeTab = 1;
     this.drivers = this.listService.driversList;
 
     await this.getCurrentuser();
-      if(this.currentUser.userType != 'Cloud Admin') {
-      this.getCarrierDetails(this.currentUser.carrierID);
-    } else {
-      this.prefixOutput = 'PB-'
-    }
+    //   if(this.currentUser.userType != 'Cloud Admin') {
+    //   this.getCarrierDetails(this.currentUser.carrierID);
+    // } else {
+    //   this.prefixOutput = 'PB-'
+    // }
     // this.countries = this.listService.countryList;
     // this.states = this.listService.stateList;
     this.listService.ownerOperatorList;

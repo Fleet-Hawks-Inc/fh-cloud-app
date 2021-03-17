@@ -70,12 +70,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     address: [],
   };
   driverData = {
-    empPrefix: '',
     employeeId: '',
     driverType: 'employee',
     entityType: Constants.DRIVER,
     gender: 'M',
     DOB: '',
+    contractorId: '',
     ownerOperator: '',
     driverStatus: '',
     userName: '',
@@ -356,12 +356,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.fetchDocuments();
     await this.getCurrentuser();
-
-    // if(this.currentUser.userType !== 'Cloud Admin') {
-      await this.getCarrierDetails(this.currentUserCarrier);
-    // } else {
-    //   this.prefixOutput = 'PB-'
-    // }
 
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
@@ -713,7 +707,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     // this.spinner.show();
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
+    // this.driverData.empPrefix = this.prefixOutput;
     
     this.driverData.currentTab = this.currentTab;
 
@@ -731,6 +725,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
+    console.log("front", this.driverData)
     // create form data instance
     const formData = new FormData();
 
@@ -917,8 +912,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
         
         this.driverData.driverType = result.driverType;
-        let newEmpPrefix = result.employeeId.split('-');
-        this.driverData.employeeId = newEmpPrefix[1];
+        this.driverData.employeeId = result.employeeId;
+        this.driverData.contractorId = result.contractorId;
+        
         this.driverData.ownerOperator = result.ownerOperator;
         
         this.driverData.driverStatus = result.driverStatus;
@@ -1088,7 +1084,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];

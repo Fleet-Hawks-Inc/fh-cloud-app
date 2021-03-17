@@ -35,6 +35,8 @@ export class ServiceListComponent implements OnInit {
   serviceLogPrevEvauatedKeys = [''];
   serviceLogStartPoint = 1;
   serviceLogEndPoint = this.pageLength;
+  
+  vendorsData: any;
 
   constructor(
       private apiService: ApiService,
@@ -124,6 +126,9 @@ export class ServiceListComponent implements OnInit {
   openComponent(vendorID) {
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
+    this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
+      this.vendorsData =  res.Items;
+    })
   }
   initDataTable() {
     this.spinner.show();
