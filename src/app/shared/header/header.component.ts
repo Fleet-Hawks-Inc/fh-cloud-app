@@ -65,6 +65,8 @@ fetchCarrier(){
     localStorage.removeItem('carrierID');
     localStorage.removeItem('loggin-carrier');
     localStorage.removeItem('issueVehicleID');
+    localStorage.removeItem('carrierID')
+    localStorage.removeItem('active-header');
     
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);

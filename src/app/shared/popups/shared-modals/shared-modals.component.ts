@@ -33,6 +33,7 @@ export class SharedModalsComponent implements OnInit {
   private destroy$ = new Subject();
   errors = {};
   deletedAddress = [];
+  allAssetTypes: any;
 
   constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
     ) {
@@ -402,6 +403,51 @@ groupData = {
 localPhotos = [];
 activeTab = 1;
 
+assetsData = {
+  assetIdentification: '',
+  groupID: '',
+  VIN: '',
+  startDate: '',
+  assetDetails: {
+    assetType: '',
+    currentStatus: '',
+    year: '',
+    manufacturer: '',
+    model: '',
+    length: '',
+    lengthUnit: '',
+    axle: '',
+    GVWR: '',
+    GVWR_Unit: '',
+    GAWR: '',
+    GAWR_Unit: '',
+    ownerShip: '',
+    ownerOperator: '',
+    licenceCountryID: '',
+    licenceStateID: '',
+    licencePlateNumber: '',
+    annualSafetyDate: '',
+    annualSafetyReminder: true,
+    remarks: '',
+  },
+  insuranceDetails: {
+    dateOfIssue: '',
+    premiumAmount: '',
+    premiumCurrency: '',
+    dateOfExpiry: '',
+    reminderBefore: '',
+    reminderBeforeUnit: '',
+    vendor: ''
+  },
+  crossBorderDetails: {
+    ACI_ID: '',
+    ACE_ID: ''
+  },
+  uploadedPhotos: [],
+  uploadedDocs: []
+};
+years = [];
+
   async ngOnInit() {
     this.fetchCountries();
     this.fetchAssetManufacturers();
@@ -409,6 +455,8 @@ activeTab = 1;
     this.newManufacturers();
     this.fetchVehicles();
     this.fetchTasks();
+    this.fetchAssetTypes();
+    this.getYears();
 
     this.fetchInspectionForms();
     this.fetchDocuments();
@@ -442,13 +490,6 @@ activeTab = 1;
     this.drivers = this.listService.driversList;
 
     await this.getCurrentuser();
-    //   if(this.currentUser.userType != 'Cloud Admin') {
-    //   this.getCarrierDetails(this.currentUser.carrierID);
-    // } else {
-    //   this.prefixOutput = 'PB-'
-    // }
-    // this.countries = this.listService.countryList;
-    // this.states = this.listService.stateList;
     this.listService.ownerOperatorList;
   }
   /**
@@ -1253,20 +1294,6 @@ fetchDrivers(){
     this.stateID = '';
     $('#stateSelect').val('');
   }
-
-
-  async getCarrierDetails(id: string) {
-    this.spinner.show();
-    this.apiService.getData('carriers/'+ id).subscribe(res => {
-      if(res.Items.length > 0){
-        let carrierPrefix = res.Items[0].businessName;
-        let toArray = carrierPrefix.match(/\b(\w)/g); // ['J','S','O','N']
-        this.prefixOutput = toArray.join('') + '-'; // JSON
-      }
-      this.spinner.hide();
-    })
-  }
-
   
   async nextStep() {
     await this.onSubmit();
@@ -1574,5 +1601,75 @@ fetchDrivers(){
       .subscribe((result: any) => {
         this.countriesObject = result;
       });
+  }
+
+  /**
+   * fetch asset types from database
+   */
+  fetchAssetTypes() {
+    this.apiService.getData('assetTypes').subscribe((result: any) => {
+      this.allAssetTypes = result.Items;
+    });
+
+  }
+
+  getYears() {
+    var max = new Date().getFullYear(),
+    min = max - 30,
+    max = max;
+
+    for(var i=max; i>=min; i--){
+      this.years.push(i);
+    }
+  }
+  
+  /*
+   * Add new asset
+   */
+  addAsset() {
+    this.uploadedPhotos = [];
+    this.uploadedDocs = [];
+    this.hideErrors();
+    // create form data instance
+    const formData = new FormData();
+
+    // append photos if any
+    for(let i = 0; i < this.uploadedPhotos.length; i++){
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    // append docs if any
+    for(let j = 0; j < this.uploadedDocs.length; j++){
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    // append other fields
+    formData.append('data', JSON.stringify(this.assetsData));
+
+    this.apiService.postData('assets', formData, true).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.listService.fetchAssets();
+        $('#addAsset').modal('hide');
+        this.toastr.success('Asset added successfully.');
+      },
+    });
   }
 }
