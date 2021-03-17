@@ -170,6 +170,8 @@ export class TripListComponent implements OnInit {
     this.initDispatchedDataTable();
     this.initStartedDataTable();
     this.initEnrouteDataTable();
+    this.initCancelDataTable();
+    this.initDeliveredDataTable();
   }
 
   async fetchTrips(result, type=null) {
