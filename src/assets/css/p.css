@@ -5,7 +5,8 @@
   background-color: #fff;
   border-left: solid 1px #d7d7d7;
   position: fixed;
-  z-index: 1110;
+  /* z-index: 1110; */
+  z-index: 1097;
   right: 0;
   top: 100px; bottom: 0;
   text-align: center;
