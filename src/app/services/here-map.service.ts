@@ -58,45 +58,51 @@ export class HereMapService {
   }
   mapInit = () => {
     const defaultLayers = this.platform.createDefaultLayers();
+    
     this.map = new H.Map(
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
         zoom: 4.5,
         center: {lat: 45.8598584, lng: -94.526364},
-        pixelRatio: window.devicePixelRatio || 1
-
+        pixelRatio: window.devicePixelRatio || 1,
+        layers: [defaultLayers.vector.normal.truck]
       }
     );
-  this.setStyle(this.map);
-    const mapTileService = this.platform.getMapTileService({
-      type: 'base'
-    });
+
+    let provider = this.map.getBaseLayer().getProvider();
+    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+    'https://js.api.here.com/v3/3.1/styles/omv/');
+  // set the style on the existing layer
+  provider.setStyle(style)
+    // const mapTileService = this.platform.getMapTileService({
+    //   type: 'base'
+    // });
     
-    const parameters = {
-      congestion: true,
-      ppi: 320
+    // const parameters = {
+    //   congestion: true,
+    //   ppi: 320
 
-    };
-    // possible value  'normal.day', and 'normal.night'
-    const tileLayer = mapTileService.createTileLayer(
-      'trucktile',
-      'normal.night',
-      256,
-      'png',
+    // };
+    // // possible value  'normal.day', and 'normal.night'
+    // const tileLayer = mapTileService.createTileLayer(
+    //   'trucktile',
+    //   'normal.night',
+    //   256,
+    //   'png',
 
-      parameters
-    );
+    //   parameters
+    // );
 
     // This display the current traffic detail -> Green Means Free, Yellow means Moderate Congestion
     // Red means High Congestion
-    // this.map.addLayer(defaultLayers.vector.normal.traffic);
+     //this.map.addLayer(defaultLayers.vector.normal.traffic);
     // this.map.addLayer(tileLayer);
 
     // // This display the traffic incidents - by default its updated in every 3 mins
-    // this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
+    //this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
     // this.map.setBaseLayer(tileLayer);
-
+    
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
@@ -111,8 +117,11 @@ export class HereMapService {
     // mapSettings.setAlignment('bottom-left');
     // zoom.setAlignment('bottom-left');
     // scalebar.setAlignment('bottom-left');
- 
+    
      return this.map;
+  }
+  setStyle(map){
+
   }
 
   /**
@@ -346,11 +355,5 @@ export class HereMapService {
     console.log('calculateroute', erro);
   }
   }
-  setStyle(map){
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
-  }
+
  }
