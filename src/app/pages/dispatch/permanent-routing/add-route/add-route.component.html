@@ -63,11 +63,11 @@
                                                     &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                 </label>
                                                 <ng-select [(ngModel)]="routeData.AssetID" name="AssetID" placeholder="Select asset">
-                                                    <ng-option *ngFor = "let asset of assets;" value="{{ asset.assetID }}">{{ asset.assetIdentification }}</ng-option>
+                                                    <ng-option *ngFor = "let asset of assets | async;" value="{{ asset.assetID }}">{{ asset.assetIdentification }}</ng-option>
                                                 </ng-select>
                                             </div>
                                             <div class="col-lg-2"> 
-                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" href="javascript:;"><i class="fas fa-plus"></i></a> 
+                                                <a class="btn btn-success btn-sm modal-with-form mar-top-37" (click)="gotoAssetPage()" href="javascript:;"><i class="fas fa-plus"></i></a> 
                                             </div>
                                         </div>
                                         <div class="row mt-2">
@@ -268,80 +268,6 @@
                                                             #d="ngbDatepicker" class="form-control">
                                                     </div>
                                                 </div>
-                                                <!-- <div class="row mt-2">
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="sunday" name="sunday"
-                                                                [(ngModel)]="routeData.recurring.sunday"
-                                                                class="daysChecked">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="sunday">Sunday</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="monday" name="monday"
-                                                                [(ngModel)]="routeData.recurring.monday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="monday">Monday</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="tuesday" name="tuesday"
-                                                                [(ngModel)]="routeData.recurring.tuesday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="tuesday">Tuesday</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="wednesday" name="wednesday"
-                                                                [(ngModel)]="routeData.recurring.wednesday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="wednesday">Wednesday</label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="thursday" name="thursday"
-                                                                [(ngModel)]="routeData.recurring.thursday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="thursday">Thursday</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="friday" name="friday"
-                                                                [(ngModel)]="routeData.recurring.friday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="friday">Friday</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <div class="checkbox-custom checkbox-default mt-2">
-                                                            <input type="checkbox" id="saturday" name="saturday"
-                                                                [(ngModel)]="routeData.recurring.saturday"
-                                                                class="daysChecked" ng-true-value="yes"
-                                                                ng-false-value="no">
-                                                            <label class="control-label font-weight-bold"
-                                                                for="saturday">Saturday</label>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -449,21 +375,19 @@
                                                                     </td>
                                                                     <td>
                                                                         <div class="row mt-1">
-                                                                            <!-- <div class="col-lg-10"> -->
-                                                                                <input name="stopName_{{i}}"
-                                                                                    [(ngModel)]="routeData.stops[i].stopName"
-                                                                                    (keyup)="searchTerm.next($event);"
-                                                                                    class="form-control">
+                                                                            <input name="stopName_{{i}}"
+                                                                                [(ngModel)]="routeData.stops[i].stopName"
+                                                                                (keyup)="searchTerm.next($event);"
+                                                                                class="form-control">
 
-                                                                                    <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                                                    *ngIf="searchResults">
-                                                                                    <li *ngFor="let item of searchResults;">
-                                                                                        <a href="javascript:;"
-                                                                                            (click)="assignLocation('stops', item.address.label, i)"
-                                                                                            title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            <!-- </div>-->
+                                                                            <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                                                *ngIf="searchResults">
+                                                                                <li *ngFor="let item of searchResults;">
+                                                                                    <a href="javascript:;"
+                                                                                        (click)="assignLocation('stops', item.address.label, i)"
+                                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                </li>
+                                                                            </ul>
                                                                         </div> 
                                                                     </td>
                                                                     <td>
@@ -505,20 +429,3 @@
         </section>
     </div>
 </section>
-
-<!-- add vehicle modal -->
-<div class="modal fade" id="addDriverVehicleModal" tabindex="-1" role="dialog" aria-labelledby="addDriverVehicleModal" aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 98%;" role="document">
-         <div class="modal-content">
-         <div class="modal-header">
-               <h5 class="modal-title">Add Vehicle</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-               </button>
-         </div>
-         <!-- <div class="modal-body text-dark">
-            <app-add-vehicle-new></app-add-vehicle-new>
-         </div> -->
-      </div>
-   </div>
-</div>
