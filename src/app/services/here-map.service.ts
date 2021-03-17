@@ -58,45 +58,51 @@ export class HereMapService {
   }
   mapInit = () => {
     const defaultLayers = this.platform.createDefaultLayers();
+    
     this.map = new H.Map(
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
         zoom: 4.5,
         center: {lat: 45.8598584, lng: -94.526364},
-        pixelRatio: window.devicePixelRatio || 1
-
+        pixelRatio: window.devicePixelRatio || 1,
+        layers: [defaultLayers.vector.normal.truck]
       }
     );
-  this.setStyle(this.map);
-    const mapTileService = this.platform.getMapTileService({
-      type: 'base'
-    });
+
+    let provider = this.map.getBaseLayer().getProvider();
+    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+    'https://js.api.here.com/v3/3.1/styles/omv/');
+  // set the style on the existing layer
+  provider.setStyle(style)
+    // const mapTileService = this.platform.getMapTileService({
+    //   type: 'base'
+    // });
     
-    const parameters = {
-      congestion: true,
-      ppi: 320
+    // const parameters = {
+    //   congestion: true,
+    //   ppi: 320
 
-    };
-    // possible value  'normal.day', and 'normal.night'
-    const tileLayer = mapTileService.createTileLayer(
-      'trucktile',
-      'normal.night',
-      256,
-      'png',
+    // };
+    // // possible value  'normal.day', and 'normal.night'
+    // const tileLayer = mapTileService.createTileLayer(
+    //   'trucktile',
+    //   'normal.night',
+    //   256,
+    //   'png',
 
-      parameters
-    );
+    //   parameters
+    // );
 
     // This display the current traffic detail -> Green Means Free, Yellow means Moderate Congestion
     // Red means High Congestion
-    // this.map.addLayer(defaultLayers.vector.normal.traffic);
+     //this.map.addLayer(defaultLayers.vector.normal.traffic);
     // this.map.addLayer(tileLayer);
 
     // // This display the traffic incidents - by default its updated in every 3 mins
-    // this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
+    //this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
     // this.map.setBaseLayer(tileLayer);
-
+    
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
@@ -111,8 +117,11 @@ export class HereMapService {
     // mapSettings.setAlignment('bottom-left');
     // zoom.setAlignment('bottom-left');
     // scalebar.setAlignment('bottom-left');
- 
+    
      return this.map;
+  }
+  setStyle(map){
+
   }
 
   /**
@@ -278,15 +287,15 @@ export class HereMapService {
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 
-      const routeColors = ['#bbbdbf', '#03dac6', '#cf6679', '#000080', '#f5d200', '#13a2c2'];
+      const routeColors = ['#2980b9','#2980b9','#2980b9','#2980b9','#2980b9'];
 
       this.router.calculateRoute(params, route => {
         // console.log("route", route);
         if (route.routes) {
-          route.routes.forEach((section, i) => {
-            // console.log("section", section);
-            // decode LineString from the flexible polyline
-            section.sections.forEach(item => {
+          // route.routes.forEach((section, i) => {
+          //   // console.log("section", section);
+          //   // decode LineString from the flexible polyline
+            route.routes[0].sections.forEach(item => {
               // console.log("item", item);
 
               const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
@@ -294,7 +303,8 @@ export class HereMapService {
               const polyline = new H.map.Polyline(linestring, {
                 style: {
                   lineWidth: 5,
-                  strokeColor: routeColors[i]
+                  strokeColor: "#2980b9",
+                  
                 }
               });
 
@@ -323,31 +333,27 @@ export class HereMapService {
               // let poly = H.geo.LineString.fromFlexiblePolyline(item.polyline).getLatLngAltArray();
 
               // Create a marker for the start point:
-              const startMarker = new H.map.Marker(item.departure.place.location);
+              const startIcon=new H.map.Icon("/assets/img/mapIcon/start.png",{ size: { w: 16, h: 16 } })
+              const startMarker = new H.map.Marker(item.departure.place.location,{ icon: startIcon });
 
               // Create a marker for the end point:
-              const endMarker = new H.map.Marker(item.arrival.place.location);
+              const destIcon=new H.map.Icon("/assets/img/mapIcon/dest.png",{ size: { w: 36, h: 36 } })
+              const endMarker = new H.map.Marker(item.arrival.place.location,{ icon: destIcon });
 
               // Add the route polyline and the two markers to the map:
               this.map.addObjects([polyline, startMarker, endMarker]);
-
+              this.map.setZoom(10);
               // And zoom to its bounding rectangle
               this.map.getViewModel().setLookAtData({
                 bounds: polyline.getBoundingBox()
               });
             });
-          });
+          
         }
       })
   } catch (erro) {
     console.log('calculateroute', erro);
   }
   }
-  setStyle(map){
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
-  }
+
  }

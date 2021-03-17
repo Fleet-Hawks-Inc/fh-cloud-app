@@ -10,6 +10,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
 import { GoogleMapsService } from 'src/app/services/google-maps.service';
+import { setMaxListeners } from 'process';
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class AddTripComponent implements OnInit {
     newCoords = [];
     public searchResults: any;
     public searchResults1: any;
+    public miles;
     
     public saveCords:any;
     private readonly search: any;
@@ -524,6 +526,7 @@ export class AddTripComponent implements OnInit {
 
             let locations = [];
             this.allFetchedOrders.map(function (v) {
+               
                 if (element == v.orderID) {
                    
                     current.orderMiles=
@@ -538,7 +541,7 @@ export class AddTripComponent implements OnInit {
                             let PDate = '';
                             let PTime = '';
                             
-                            m.shippers.map((n) => {
+                            m.shippers.map(async (n) => {
                                 if (n.dateAndTime != undefined && n.dateAndTime != '') {
                                     let dmy = n.dateAndTime.split(' ');
                                     PDate = dmy[0].split('-').reverse().join('-');
@@ -548,14 +551,18 @@ export class AddTripComponent implements OnInit {
                                 if(m.shippers.indexOf(n)==0){
                                     startingPoint=0
                                 }
+                                else{
+                                    startingPoint=1
+                                }
                                 let endingPoint=n.position.lng+","+n.position.lat;
+                                
                                 
                                 let obj = {
                                     type: 'Pickup',
                                     // date: PDate,
                                     name: current.shippersObjects[n.shipperID],
-                                    mileType: current.orderMiles["calculateBy"],
-                                    miles: current.getMiles(startingPoint,endingPoint),
+                                    
+                                    miles: await current.getMiles(startingPoint,endingPoint),
                                     carrierID: '',
                                     carrierName: '',
                                     // time: PTime,
@@ -575,13 +582,13 @@ export class AddTripComponent implements OnInit {
                                 if(n.pickupLocation != '' && n.pickupLocation != undefined){
                                     locations.push(n.pickupLocation)
                                 }
-                                
+                                console.log('obj', obj);
                                 current.trips.push(obj);
                             })
                         })
 
-                        v.shippersReceiversInfo.map((j) => {
-                            j.receivers.map((k) => {
+                        v.shippersReceiversInfo.map( (j) => {
+                             j.receivers.map(async (k) => {
                                 let DrDate = '';
                                 let DrTime = '';
                                 if (k.dateAndTime != undefined && k.dateAndTime != '') {
@@ -591,13 +598,14 @@ export class AddTripComponent implements OnInit {
                                 }
                                 
                                 let endingPoint=k.position.lng+","+k.position.lat;
-
+                                
+                                // let milesMiles= 
+                                // console.log("dujey miles",milesMiles)
                                 let obj = {
                                     type: 'Delivery',
                                     // date: DrDate,
                                     name: current.receiversObjects[k.receiverID],
-                                    mileType:  current.orderMiles["calculateBy"],
-                                    miles: current.getMiles(startingPoint=1,endingPoint),
+                                    miles: await current.getMiles(1,endingPoint),
                                     carrierID: '',
                                     carrierName: '',
                                     // time: DrTime,
@@ -633,27 +641,29 @@ export class AddTripComponent implements OnInit {
         }
     }
 
-    getMiles(startingPoint,endingPoint){
-        console.log("saveCords",this.saveCords);
+    async getMiles(startingPoint,endingPoint){
+        console.log(startingPoint)
+        let savedCord=this.saveCords;
+        this.saveCords=endingPoint
+        console.log("savedCord",savedCord)
+        console.log('endingPoint',endingPoint)
         
         if(startingPoint==0){
-            this.saveCords=endingPoint;
         return 0;
         }
         else{
-            
-            
-             this.pcMiles.pcMilesDistance(this.saveCords+";"+endingPoint).subscribe(
-                 (res)=>{console.log(res)}
-             )
-             this.saveCords=endingPoint;
-             return 1;
-
+            try{
+                this.pcMiles.pcMiles.next(true);
+           let miles=await this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).toPromise()
+           console.log("miles",miles)
+           return miles
+            }
+            catch(error){
+                console.error(error)
+            }
         }
-
-        
-
     }
+   
     checkUncheckAll(type) {
         this.temporaryOrderIDs = [];
         let current = this;
@@ -1200,6 +1210,7 @@ export class AddTripComponent implements OnInit {
             let result = await this.hereMap.geoCode(item);
             this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
         }));
+        console.log(this.newCoords);
         this.hereMap.calculateRoute(this.newCoords);
         this.spinner.hide();
         this.newCoords = [];
