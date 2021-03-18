@@ -305,6 +305,7 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.issues = result.Items;
+        console.log('this.issues', this.issues);
       });
   }
 
