@@ -239,6 +239,12 @@ vehicleID: string;
 };
 // Vehicles variables end
 // driver variables start
+hasBasic: boolean = false;
+hasDocs: boolean = false;
+hasLic: boolean = false;
+hasPay: boolean = false;
+hasHos: boolean = false;
+
 driverData = {
   userName: '',
   middleName: '',
@@ -257,7 +263,6 @@ driverData = {
   contractEnd: '',
   employeeId: '',
   driverType: 'employee',
-  empPrefix: '',
   entityType: 'driver',
   gender: 'M',
   DOB: '',
@@ -314,15 +319,15 @@ driverData = {
   licenceDetails: {
     CDL_Number: '',
     licenceExpiry: '',
-    licenceNotification: '',
+    licenceNotification: true,
     issuedCountry: '',
     issuedState: '',
     vehicleType: '',
 
   },
   hosDetails: {
-    pcAllowed: '',
-    ymAllowed: '',
+    pcAllowed: false,
+    ymAllowed: false,
     hosCycle: '',
     hosStatus: '',
     hosRemarks: '',
@@ -608,6 +613,7 @@ fetchDrivers(){
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
+      this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);
   }
 
@@ -1305,6 +1311,7 @@ fetchDrivers(){
       this.abstractValid = true; 
       return;
     }
+    this.validateTabErrors();
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
@@ -1325,6 +1332,34 @@ fetchDrivers(){
     this.currentTab = value;
   }
 
+  validateTabErrors(){
+    if($('#addDriverBasic .error').length > 0 && this.currentTab >= 1) {
+      this.hasBasic = true;
+    } else {
+      this.hasBasic = false;
+    }
+    if($('#documents .error').length > 0 && this.currentTab >= 2) {
+      this.hasDocs = true;
+    } else {
+      this.hasDocs = false;
+    }
+    if($('#licence .error').length > 0 && this.currentTab >= 3) {
+      this.hasLic = true;
+    } else {
+      this.hasLic = false;
+    }
+    if($('#payment .error').length > 0 && this.currentTab >= 4) {
+      this.hasPay = true;
+    } else {
+      this.hasPay = false;
+    }
+    if($('#Driverhos .error').length > 0 && this.currentTab >= 5) {
+      this.hasHos = true;
+    } else {
+      this.hasHos = false;
+    }
+  }
+
   // for driver submittion
   async onSubmit() {
     this.hasError = false;
@@ -1332,8 +1367,6 @@ fetchDrivers(){
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
-    
     // create form data instance
     const formData = new FormData();
 
@@ -1433,6 +1466,7 @@ fetchDrivers(){
       delete this.driverData['ownerOperator'];
       delete this.driverData['contractStart'];
       delete this.driverData['contractEnd'];
+      delete this.driverData['contractorId'];
     } else {
       delete this.driverData['employeeId'];
       delete this.driverData['startDate'];
