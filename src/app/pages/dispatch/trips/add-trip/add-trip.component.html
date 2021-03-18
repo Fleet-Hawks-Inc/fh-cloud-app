@@ -227,19 +227,14 @@
 
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="text" class="form-control" id="editCell3{{i}}"
-                                                            value="{{ trip.name }}" *ngIf="trip.fromOrder != 'yes'">
-
-                                                        <span *ngIf="trip.fromOrder == 'yes'">
-                                                            {{ trip.name }}
-                                                        </span>
+                                                            value="{{ trip.name }}">
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
                                                             [(ngModel)]="trip.locationName" class="form-control newRow"
                                                             autocomplete="off" (keyup)="searchTerm.next($event);"
-                                                            placeholder="Start typing to get location suggestions"
-                                                            *ngIf="trip.fromOrder != 'yes'">
+                                                            placeholder="Start typing to get location suggestions">
 
                                                         <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                             *ngIf="searchResults">
@@ -249,10 +244,6 @@
                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
                                                             </li>
                                                         </ul>
-
-                                                        <span *ngIf="trip.fromOrder == 'yes'">
-                                                            {{ trip.locationName }}
-                                                        </span>
                                                     </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
@@ -428,11 +419,10 @@
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}:{{orderMiles.totalMiles}}
                                                     </p>
-                                                    <ng-template [ngIf]="actualMiles">
+                                                    
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
                                                     <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles}}
                                                     </span></p>
-                                                </ng-template>
                                                 </div>
                                                 <div class="col-lg-4 text-center">
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
