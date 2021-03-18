@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   isCarrierID: any;
   userRole:any = '';
   carriers: any = [];
+  carrierBusiness;
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
               public router: Router) {
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
     this.getCurrentuser();
     this.fetchCarrier();
     this.getLoggedUserForCloud();
+    
   }
 
   onNavSelected(nav: string) {
@@ -57,12 +59,15 @@ fetchCarrier(){
   Logout() {
     console.log('logout');
     Auth.signOut();
-    localStorage.removeItem('vehicle');
-    localStorage.removeItem('driver');
     localStorage.removeItem('LoggedIn');
     localStorage.removeItem('user');
+    localStorage.removeItem('active-header');
+    localStorage.removeItem('carrierID');
+    localStorage.removeItem('loggin-carrier');
+    localStorage.removeItem('issueVehicleID');
     localStorage.removeItem('carrierID')
     localStorage.removeItem('active-header');
+    
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
      
@@ -79,21 +84,15 @@ fetchCarrier(){
   async getLoggedUserForCloud() {
     this.isCarrierID = localStorage.getItem('carrierID');
     if(this.isCarrierID != undefined && this.isCarrierID != null) {
-      await this.getSpecificCarrier(this.isCarrierID);
+      this.carrierBusiness = localStorage.getItem('carrierBusiness');
     }
     
-  }
-
-  async getSpecificCarrier(id){
-    this.apiService.getData(`carriers/${id}`)
-      .subscribe((result: any) => {
-        this.carrierName = result.Items[0].businessName
-      });
   }
 
   switchCarrier(){
     localStorage.removeItem('carrierID');
     this.router.navigateByUrl('/carriers');
+    localStorage.removeItem('loggin-carrier');
   }
 
 }
