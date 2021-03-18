@@ -38,7 +38,7 @@
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
                                     name="reminderIdentification" placeholder="Select contact">
 
-                                    <ng-option *ngFor="let user of users" value="{{user.userName}">
+                                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
                                        {{user.firstName}} {{user.lastName}}</ng-option>
 
                                  </ng-select>
