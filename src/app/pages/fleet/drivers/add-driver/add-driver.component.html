@@ -97,12 +97,21 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <div class="input-group-prepend">
+                                             <!-- <div class="input-group-prepend">
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
-                                             </div>
+                                             </div> -->
                                              <input id="txtEmpId" [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
-                                                class="form-control" placeholder="Enter employeeID of driver">
+                                                class="form-control" placeholder="Enter employee ID of driver">
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-10" id=""
+                                          *ngIf="driverData.driverType == 'contractor'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
+                                             ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                          <div class="input-group">
+                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
+                                                class="form-control" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
                                        <div class="col-lg-10" id="companyDiv"
@@ -1247,7 +1256,7 @@
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Address&nbsp;
                                                 <span class="text-1 optional-label-color">(optional)</span></label>
                                              <textarea [(ngModel)]="driverData.emergencyDetails.emergencyAddress"
-                                                name="emergencyDetails.emergencyAddress" class="form-control" rows="3"
+                                                name="emergencyDetails.emergencyAddress" class="form-control h-auto" rows="3"
                                                 placeholder="Enter emegency contact person's address"></textarea>
                                           </div>
                                        </div>

@@ -3,7 +3,6 @@ import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
-import { AwsUploadService } from '../../../services';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 declare var $: any;
@@ -129,7 +128,7 @@ export class AddAccountComponent implements OnInit {
   errorClass = false; // to show error when password and confirm password don't match
   Error = '';
   Success = '';
-  constructor(private apiService: ApiService, private toaster: ToastrService, private awsUS: AwsUploadService, private HereMap: HereMapService,) {
+  constructor(private apiService: ApiService, private toaster: ToastrService, private HereMap: HereMapService,) {
     this.selectedFileNames = new Map<any, any>();
   }
 

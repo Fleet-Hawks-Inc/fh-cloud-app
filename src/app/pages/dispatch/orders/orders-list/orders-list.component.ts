@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+declare var $: any;
 @Component({
   selector: 'app-orders-list',
   templateUrl: './orders-list.component.html',
@@ -25,7 +26,7 @@ export class OrdersListComponent implements OnInit {
     start: '',
     end: ''
   };
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   serviceUrl = '';
   activeTab = 'all';
@@ -181,7 +182,7 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.ordersPrev = true;
         }
-        this.spinner.hide();
+        this.spinner.hide(); 
       }, err => {
         this.spinner.hide();
       });

@@ -178,18 +178,18 @@
                                     <table class="row-border hover table table-bordered table-striped mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="col1">VIN</th>
-                                                <th class="col2">Vehicle Name</th>
-                                                <th class="col3">Vehicle Type</th>
-                                                <th class="col4">Make</th>
-                                                <th class="col5">Modal</th>
-                                                <th class="col6">Last Location</th>
-                                                <th class="col7">Trip</th>
-                                                <th class="col8">Plate Number</th>
-                                                <th class="col9">Fuel Type</th>
-                                                <th class="col10">Current Status</th>
-                                                <th class="col11">Group</th>
-                                                <th class="col12">Ownership</th>
+                                                <th class="col1 minWidth200">VIN</th>
+                                                <th class="col2 minWidth200">Vehicle Name</th>
+                                                <th class="col3 minWidth200">Vehicle Type</th>
+                                                <th class="col4 minWidth200">Make</th>
+                                                <th class="col5 minWidth200">Model</th>
+                                                <th class="col6 minWidth200">Last Location</th>
+                                                <th class="col7 minWidth200">Trip</th>
+                                                <th class="col8 minWidth200">Plate Number</th>
+                                                <th class="col9 minWidth200">Fuel Type</th>
+                                                <th class="col10 minWidth200">Current Status</th>
+                                                <th class="col11 minWidth200">Group</th>
+                                                <th class="col12 minWidth200">Ownership</th>
                                                 <th class="col13 extra">Assigned Driver</th>
                                                 <th class="col14 extra">Service Program</th>
                                                 <th class="col15 extra">In Service Date</th>
@@ -287,14 +287,14 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="row mt-3 dtPaginate" *ngIf="vehicles.length > 0">
-                                        <div class="col-6">
-                                            Showing {{ vehicleStartPoint }} to {{ vehicleEndPoint }} of {{ totalRecords }} enteries
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="vehiclePrev">Prev</button>
-                                            <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="vehicleNext">Next</button>
-                                        </div>
+                                </div>
+                                <div class="row mt-3 dtPaginate" *ngIf="vehicles.length > 0">
+                                    <div class="col-6">
+                                        Showing {{ vehicleStartPoint }} to {{ vehicleEndPoint }} of {{ totalRecords }} enteries
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="vehiclePrev">Prev</button>
+                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="vehicleNext">Next</button>
                                     </div>
                                 </div>
                             </div>

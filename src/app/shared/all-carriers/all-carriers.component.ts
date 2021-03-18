@@ -11,6 +11,7 @@ import {Router} from '@angular/router';
 })
 export class AllCarriersComponent implements OnInit {
   carriersList = [];
+  dataMessage: string = 'Fetching Data.....'
   constructor(
       private apiService: ApiService, 
       private spinner: NgxSpinnerService,
@@ -23,7 +24,12 @@ export class AllCarriersComponent implements OnInit {
   fetchCarriers(){
     this.spinner.show();
     this.apiService.getData('carriers').subscribe((result: any) => {
+      if(result.Items.length == 0) {
+        this.dataMessage = 'No Data Found';
+      }
       this.carriersList = result.Items;
+      this.spinner.hide();
+    }, err => {
       this.spinner.hide();
     });
   }
@@ -40,8 +46,9 @@ export class AllCarriersComponent implements OnInit {
      
   }
 
-  selectCarrier(carrierID){
+  selectCarrier(carrierID, carrierBusiness){
     localStorage.setItem('carrierID', carrierID);
+    localStorage.setItem('carrierBusiness', carrierBusiness);
     this.router.navigate(['/Map-Dashboard']);
   }
 

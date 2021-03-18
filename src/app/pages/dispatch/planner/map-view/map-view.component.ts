@@ -4,7 +4,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from, forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from "moment";
@@ -17,8 +16,8 @@ declare var $: any;
 })
 export class MapViewComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private route: ActivatedRoute,
-    private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
+  constructor(private apiService: ApiService,
+    private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) { }
 
     vehicles = [];
     assets = [];

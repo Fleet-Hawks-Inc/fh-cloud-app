@@ -8,7 +8,6 @@ import {AddDriverComponent} from './add-driver/add-driver.component';
 import {DriverListComponent} from './driver-list/driver-list.component';
 import {DriverDetailComponent} from './driver-detail/driver-detail.component';
 import {SharedModule} from '../../../shared/shared.module';
-import { DataTablesModule } from 'angular-datatables';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -33,7 +32,6 @@ const routes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    DataTablesModule,
     NgbModule,
     NgSelectModule,
   ],

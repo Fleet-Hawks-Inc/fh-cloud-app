@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import * as moment from "moment";
-
+declare var $: any;
 
 @Component({
   selector: 'app-incident-list',
@@ -15,12 +14,6 @@ import * as moment from "moment";
   styleUrls: ['./incident-list.component.css']
 })
 export class IncidentListComponent implements OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
 
   events = [];
   lastEvaluatedKey = '';
@@ -77,28 +70,28 @@ export class IncidentListComponent implements OnInit {
     this.fetchAllUsersIDs();
   }
 
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
+  // ngAfterViewInit(): void {
+  //   this.dtTrigger.next();
+  // }
 
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
+  // ngOnDestroy(): void {
+  //   // Do not forget to unsubscribe the event
+  //   this.dtTrigger.unsubscribe();
+  // }
 
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
+  // rerender(status=''): void {
+  //   this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+  //     // Destroy the table first
+  //     dtInstance.destroy();
+  //     if(status === 'reset') {
+  //       this.dtOptions.pageLength = this.totalRecords;
+  //     } else {
+  //       this.dtOptions.pageLength = 10;
+  //     }
+  //     // Call the dtTrigger to rerender again
+  //     this.dtTrigger.next();
+  //   });
+  // }
 
   getEventDetail(arrValues) {
     this.events = [];
@@ -130,36 +123,36 @@ export class IncidentListComponent implements OnInit {
     }
 
     if (check !== '') {
-      current.rerender();
+      // current.rerender();
     }
 
     // let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
-      ],
-      dom: 'lrtip',
-      ajax: (dataTablesParameters: any, callback) => {
-          current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluatedKey+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd , dataTablesParameters).subscribe(resp => {
-          current.getEventDetail(resp['Items']);
-          if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID
-          } else {
-            this.lastEvaluatedKey = ''
-          }
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      },
-    };
+    // this.dtOptions = { // All list options
+    //   pagingType: 'full_numbers',
+    //   pageLength: this.pageLength,
+    //   serverSide: true,
+    //   processing: true,
+    //   order: [],
+    //   columnDefs: [ //sortable false
+    //     {"targets": [0,1,2,3,4,5,6,7],"orderable": false},
+    //   ],
+    //   dom: 'lrtip',
+    //   ajax: (dataTablesParameters: any, callback) => {
+    //       current.apiService.getDatatablePostData(this.serviceUrl+this.lastEvaluatedKey+"&driver="+this.filterValue.driverID+"&from="+this.filterValue.filterDateStart+"&to="+this.filterValue.filterDateEnd , dataTablesParameters).subscribe(resp => {
+    //       current.getEventDetail(resp['Items']);
+    //       if(resp['LastEvaluatedKey'] !== undefined){
+    //         this.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID
+    //       } else {
+    //         this.lastEvaluatedKey = ''
+    //       }
+    //       callback({
+    //         recordsTotal: current.totalRecords,
+    //         recordsFiltered: current.totalRecords,
+    //         data: []
+    //       });
+    //     });
+    //   },
+    // };
   }
 
   deleteEvent(eventID) {
@@ -169,7 +162,7 @@ export class IncidentListComponent implements OnInit {
       complete: () => {},
       error: () => { },
       next: (result: any) => {
-        current.rerender();
+        // current.rerender();
         current.initDataTable('all');
         current.spinner.hide();
         current.toastr.success('Event deleted successfully');
@@ -218,7 +211,7 @@ export class IncidentListComponent implements OnInit {
 
   searchEvent() {
     if(this.filterValue.date !== '' || this.filterValue.driverName !== '') {
-      this.rerender('reset');
+      // this.rerender('reset');
     }
   }
 
@@ -295,7 +288,7 @@ export class IncidentListComponent implements OnInit {
         driverName: ''
       };
       this.suggestions = [];
-      this.rerender();
+      // this.rerender();
       this.spinner.hide();
     } else {
       return false;

@@ -1,0 +1,151 @@
+<section class="body">
+	<!-- start: header -->
+	<app-header></app-header>
+	<!-- end: header -->
+
+	<div class="inner-wrapper">
+		<section role="main" class="content-body pl-0">
+			<header class="page-header">
+				<form class="form-horizontal" method="get" name="form" id="form_">
+					<div class="row pr-4 pl-4" style="padding-top:9px;">
+						<div class="col-md-2 col-lg-2 pr-0 pl-0">
+							<div class="input-group input-group-sm mb-3">
+								<input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName" class="form-control"
+									(input)="getSuggestions($event.target.value)" placeholder="Search Fuel Entry by Unit" />
+							</div>
+							<div *ngIf="suggestedUnits?.length > 0" class="result-suggestions">
+								<ul>
+									<li *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer;"
+										(click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"> {{ suggestedUnit.unitName }}</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3">
+							<div class="input-daterange input-group">
+								<span class="input-group-prepend">
+									<span class="input-group-text">
+										<i class="fas fa-calendar-alt"></i>
+									</span>
+								</span>
+								<input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="DD-MM-YYYY" (click)="from.toggle()"
+									ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off">
+								<span class="input-group-text border-left-0 border-right-0 rounded-0">
+									to
+								</span>
+								<input [(ngModel)]="toDate" name="toDate" type="text" placeholder="DD-MM-YYYY" (click)="to.toggle()"
+									ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off">
+							</div>
+						</div>
+						<div class="col-md-2 col-lg- pl-2">
+							<button type="submit" (click)="searchFilter()"
+								class="btn btn-sm btn-success mr-2">Search</button>
+							<button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+						</div>
+						<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
+							<div class="btn-group flex-wrap">
+								<button type="button" class="btn btn-success btn-sm dropdown-toggle"
+									data-toggle="dropdown" aria-expanded="false">Actions<span
+										class="caret"></span></button>
+								<div class="dropdown-menu" role="menu" x-placement="bottom-start"
+									style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+
+									<a class="dropdown-item text-1" href="">Import</a>
+									<a class="dropdown-item text-1" href="">Export</a>
+								</div>
+							</div>
+							<a routerLink="/fleet/fuel/add" class="btn btn-success btn-sm ml-2"
+								style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a>
+						</div>
+					</div>
+				</form>
+			</header>
+			<div class="row">
+				<div class="col pr-0">
+					<section class="card">
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="row-border hover table table-bordered table-striped mb-0">
+									<thead>
+										<tr>
+											<th style="min-width: 5% !important;">Date/Time</th>
+											<th>Card Number</th>
+											<th>Unit#</th>
+											<th>Unit Type</th>
+											<th>Driver Name</th>
+											<th>Vendor</th>
+											<th>Odometer</th>
+											<th>Fuel Amount</th>
+											<th>Fuel Units</th>
+											<th>Fuel Type</th>
+											<th>Fuel Cost</th>
+											<th>Invoice Total</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngIf="fuelList.length == 0" class="text-center">
+											<td colspan="13">No records found</td>
+										</tr>
+										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{
+												fuelEntry.fuelDate | date:'yyyy/MM/dd' }}, {{fuelEntry.fuelTime}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelCardNumber}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">
+												<span
+													*ngIf="fuelEntry.unitType === 'vehicle'">{{vehicleList[fuelEntry.unitID]}}</span>
+												<span
+													*ngIf="fuelEntry.unitType === 'reefer'">{{assetList[fuelEntry.unitID]}}</span>
+											</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.unitType}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{driverList[fuelEntry.paidBy]}}</td>
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{vendorList[fuelEntry.vendorID]}}</td>
+
+											<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.odometer}}</td>
+
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}"> 
+												  <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.amount}}&nbsp;{{fuelEntry.billingCurrency}}<br></span></span></td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">
+												 <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.quantity}} &nbsp;litre(s)<br></span></span> </td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">
+                          <span *ngIf="!fuelEntry.lineItems">{{fuelCodeList[fuelEntry.fuelType]}}</span>
+                           <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{WEXCodeList[lItems.fuelType]}}<br></span></span>
+                        </td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">
+                          <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.costPerLitre}}</span>
+                          <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.pricePerUnit}}<br></span></span>
+                        </td>
+												<td routerLink="/fleet/expenses/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.totalAmount}}{{fuelEntry.billingCurrency}}</td>
+											<td>
+												<div class="btn-group flex-wrap">
+													<button type="button" class="mb-1 mt-1 mr-1 btn"
+														data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+													<div class="dropdown-menu" role="menu">
+														<a routerLink="/fleet/expenses/fuel/edit/{{fuelEntry.entryID }}"
+															class="dropdown-item text-1">Edit</a>
+														<button type="button" class="dropdown-item text-1"
+															(click)="deleteFuelEntry(fuelEntry.entryID)">Delete</button>
+													</div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="row mt-3 dtPaginate" *ngIf="fuelList.length > 0">
+								<div class="col-6">
+									Showing {{ fuelStartPoint }} to {{ fuelEndPoint }} of {{ totalRecords }} enteries
+								</div>
+								<div class="col-6 text-right">
+									<button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="fuelPrev">Prev</button>
+									<button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="fuelNext">Next</button>
+								</div>
+							</div>
+						</div>
+					</section>
+
+				</div>
+			</div>
+
+		</section>
+	</div>
+</section>
