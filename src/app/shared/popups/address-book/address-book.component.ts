@@ -1559,7 +1559,7 @@ export class AddressBookComponent implements OnInit {
           this.shippers = [];
           this.initDataTableShipper();
           this.activeDiv = 'shipperTable';
-          this.toastr.success('Shipper Added Successfully');
+          this.toastr.success('Consignor Added Successfully');
 
         }
       });
@@ -1640,7 +1640,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchShippersCount();
         this.initDataTableShipper();
         this.activeDiv = 'shipperTable';
-        this.toastr.success('Shipper updated successfully');
+        this.toastr.success('Consignor updated successfully');
       },
     });
   }
@@ -1993,7 +1993,7 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.initDataTableStaff();
           this.activeDiv = 'staffTable';
-          this.toastr.success('Staff Added Successfully');
+          this.toastr.success('Employee Added Successfully');
         }
       });
   }
@@ -2065,7 +2065,7 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.initDataTableStaff();
         this.activeDiv = 'staffTable';
-        this.toastr.success('Staff updated successfully');
+        this.toastr.success('Employee updated successfully');
       },
     });
   }
