@@ -198,6 +198,7 @@ export class AddTripComponent implements OnInit {
     }
 
     drop(event: CdkDragDrop<string[]>) {
+        console.log('in droppppp');
         this.ArrayShuffle(this.trips, event.previousIndex, event.currentIndex);
         moveItemInArray(this.trips, event.previousIndex, event.currentIndex);
     }
@@ -221,6 +222,7 @@ export class AddTripComponent implements OnInit {
         this.trips = newArr;
         for(const tripp of newArr) {
             if(tripp.locationName != undefined && tripp.locationName != '') {
+                tripp.miles = 0;
                 locations.push(tripp.locationName)
             }
         }
@@ -228,6 +230,9 @@ export class AddTripComponent implements OnInit {
         if(locations.length > 0) {
             this.getCoords(locations);
         }
+
+        this.actualMiles = 0;
+        this.getMiles();
     }
 
     addRow() {
@@ -508,29 +513,31 @@ export class AddTripComponent implements OnInit {
         this.OrderIDs = this.temporaryOrderIDs;
         $("#orderModal").modal('hide');
         this.orderNo = this.temporaryOrderNumber.toString();
+
+        if(this.tripID) {
+            this.trips = this.trips.filter(function (obj) {
+                if(obj.type !== 'Pickup' && obj.type !== 'Delivery'){
+                    return obj;
+                }
+            });
+        } else {
+            //remove fromOrder=yes from trips in order to add new selected orders plan
+            this.trips = this.trips.filter(function (obj) {
+                return obj.fromOrder !== 'yes';
+            });
+        }
+
         // this.typeOptions = this.temporaryOrderNumber.concat(this.typeOptions);
         let current = this;
+        
         for (let i = 0; i < this.OrderIDs.length; i++) {
             const element = this.OrderIDs[i];
-            
-
-            if(this.tripID) {
-                this.trips = this.trips.filter(function (obj) {
-                    if(obj.type !== 'Pickup' && obj.type !== 'Delivery'){
-                        return obj;
-                    }
-                });
-            } else {
-                //remove fromOrder=yes from trips in order to add new selected orders plan
-                this.trips = this.trips.filter(function (obj) {
-                    return obj.fromOrder !== 'yes';
-                });
-            }
 
             let locations = [];
             this.allFetchedOrders.map(function (v) {
                
                 if (element == v.orderID) {
+                    console.log('sel order', v)
                    
                     current.orderMiles=
                     {
@@ -538,7 +545,6 @@ export class AddTripComponent implements OnInit {
                         totalMiles:v.milesInfo.totalMiles
                     }
                     
-                    let startingPoint=1;
                     if (v.shippersReceiversInfo) {
                         v.shippersReceiversInfo.map((m) => {
                             let PDate = '';
@@ -551,15 +557,15 @@ export class AddTripComponent implements OnInit {
                                     PTime = dmy[1];
                                 }
                                 
-                                if(m.shippers.indexOf(n)==0){
-                                    startingPoint=0
-                                }
-                                else{
-                                    startingPoint=1
-                                }
-                                let endingPoint=n.position.lng+","+n.position.lat;
-                                
-                                let pickupMiles=await current.getMiles(startingPoint,endingPoint)
+                                // if(m.shippers.indexOf(n)==0){
+                                //     startingPoint=0
+                                // }
+                                // else{
+                                //     startingPoint=1
+                                // }
+                                // let endingPoint=n.position.lng+","+n.position.lat;
+                                let pickupMiles = 0;
+                                // let pickupMiles=await current.getMiles(startingPoint,endingPoint)
                                 let obj = {
                                     type: 'Pickup',
                                     // date: PDate,
@@ -582,11 +588,13 @@ export class AddTripComponent implements OnInit {
                                     lat:n.position.lat,
                                     lng:n.position.lng
                                 }
-                                current.calculateActualMiles(pickupMiles)
+                                // current.calculateActualMiles(pickupMiles)
                                 if(n.pickupLocation != '' && n.pickupLocation != undefined){
                                     locations.push(n.pickupLocation)
                                 }
                                 current.trips.push(obj);
+                                current.trips.sort((a, b) => b.type.localeCompare(a.type));
+                                console.log('current.trips pickup', current.trips)
                             })
                         })
 
@@ -600,8 +608,9 @@ export class AddTripComponent implements OnInit {
                                     DrTime = dmy[1];
                                 }
                                 
-                                let endingPoint=k.position.lng+","+k.position.lat;
-                                let deliveryMiles=await current.getMiles(1,endingPoint)
+                                // let endingPoint=k.position.lng+","+k.position.lat;
+                                // let deliveryMiles=await current.getMiles(1,endingPoint)
+                                let deliveryMiles = 0;
                                 let obj = {
                                     type: 'Delivery',
                                     // date: DrDate,
@@ -623,15 +632,19 @@ export class AddTripComponent implements OnInit {
                                     lat:k.position.lat,
                                     lng:k.position.lng
                                 }
-                                current.calculateActualMiles(deliveryMiles)
+                                // current.calculateActualMiles(deliveryMiles)
                                 if(k.dropOffLocation != '' && k.dropOffLocation != undefined){
                                     locations.push(k.dropOffLocation)
                                 }
                                 
                                 current.trips.push(obj);
-                                
+                                current.trips.sort((a, b) => b.type.localeCompare(a.type));
+                                console.log('current.trips drop', current.trips)
                             })
                         })
+
+                        // current.trips.sort((a,b) => (a.type > b.type) ? 1 : ((b.type > a.type) ? -1 : 0))
+                        
                     }
                     return i;
                 }
@@ -641,29 +654,87 @@ export class AddTripComponent implements OnInit {
                 this.getCoords(locations);
             }
         }
+        // let abcc = [];
+        // console.log('pickupPoints',pickupPoints);
+        // console.log('dropPoints',dropPoints);
+        // dropPoints = pickupPoints.concat(dropPoints);
+        // console.log('for trips', this.trips)
+        this.getMiles();
     }
 
-    async getMiles(startingPoint,endingPoint){
-        console.log(startingPoint)
-        let savedCord=this.saveCords;
-        this.saveCords=endingPoint
-        console.log("savedCord",savedCord)
-        console.log('endingPoint',endingPoint)
+    // async getMiles(startingPoint,endingPoint){
+    //     console.log(startingPoint)
+    //     let savedCord=this.saveCords;
+    //     this.saveCords=endingPoint
+    //     console.log("savedCord",savedCord)
+    //     console.log('endingPoint',endingPoint)
         
-        if(startingPoint==0){
-        return 0;
-        }
-        else{
-            try{
-                this.pcMiles.pcMiles.next(true);
-           let miles=await this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).toPromise()
-           console.log("miles",miles)
-           return miles
+    //     if(startingPoint==0){
+    //     return 0;
+    //     }
+    //     else{
+    //         try{
+    //             this.pcMiles.pcMiles.next(true);
+    //        let miles=await this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).toPromise()
+    //        console.log("miles",miles)
+    //        return miles
+    //         }
+    //         catch(error){
+    //             console.error(error)
+    //         }
+    //     }
+    // }
+
+    async getMiles(){
+        // console.log(startingPoint)
+        let savedCord='';
+        // this.saveCords=endingPoint
+        // console.log("savedCord",savedCord)
+        // console.log('endingPoint',endingPoint)
+
+        for (let i = 0; i < this.trips.length; i++) {
+            const element = this.trips[i];
+            console.log(element);
+            console.log('savedCord', savedCord)
+            
+            if(i > 0) {
+                if (element.lng != undefined && element.lat != undefined) {
+                    let endingPoint = element.lng + "," + element.lat;
+                    console.log('endingPoint', endingPoint)
+                    try {
+                        this.pcMiles.pcMiles.next(true);
+                        let miles = await this.pcMiles.pcMilesDistance(savedCord + ";" + endingPoint).toPromise()
+                        console.log("miles", miles)
+                        element.miles = miles;
+                        // return miles
+
+                        this.calculateActualMiles(miles)
+                    }
+                    catch (error) {
+                        console.error(error)
+                    }
+                    savedCord=endingPoint;
+                }
+            } else {
+                element.miles = 0;
+                savedCord=element.lng + "," + element.lat;
             }
-            catch(error){
-                console.error(error)
-            }
         }
+        
+        // if(startingPoint==0){
+        // return 0;
+        // }
+        // else{
+        //     try{
+        //         this.pcMiles.pcMiles.next(true);
+        //    let miles=await this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).toPromise()
+        //    console.log("miles",miles)
+        //    return miles
+        //     }
+        //     catch(error){
+        //         console.error(error)
+        //     }
+        // }
     }
    
     calculateActualMiles(miles){
