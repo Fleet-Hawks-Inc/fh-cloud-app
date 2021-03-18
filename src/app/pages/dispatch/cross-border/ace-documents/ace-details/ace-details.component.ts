@@ -81,7 +81,7 @@ export class AceDetailsComponent implements OnInit {
     ],
     thirdParties: [],
     inBondDetails: {
-      
+
         type: '',
         paperInBondNumber: '',
         usDestination: '',
@@ -90,7 +90,7 @@ export class AceDetailsComponent implements OnInit {
         irsNumber: '',
         estimatedDepartureDate: '',
         fda: '',
-      
+
     }
   };
   driverData = {
@@ -103,6 +103,12 @@ export class AceDetailsComponent implements OnInit {
     citizenshipCountry: '',
     fastCardNumber: '',
     travelDocuments: [],
+    usAddress: {
+      addressLine: '',
+      state: '',
+      city: '',
+      zipCode: ''
+    }
   };
   passengerData = {
     passengerID: '',
@@ -208,8 +214,9 @@ export class AceDetailsComponent implements OnInit {
       dateOfBirth: driverDataFetched[0].dateOfBirth,
       citizenshipCountry: driverDataFetched[0].citizenshipCountry,
       fastCardNumber: driverDataFetched[0].fastCardNumber,
-      travelDocuments: driverDataFetched[0].travelDocuments
-    }
+      travelDocuments: driverDataFetched[0].travelDocuments,
+      usAddress: driverDataFetched[0].usAddress
+    };
   }
   showPassengerDetails(passengerID) {
     const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);

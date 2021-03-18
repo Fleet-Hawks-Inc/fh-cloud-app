@@ -4,7 +4,7 @@ import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 import { from, Subject, throwError } from 'rxjs';
-import {map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil} from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
@@ -52,7 +52,7 @@ export class NewAciManifestComponent implements OnInit {
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
   cityList: any = [];
-  modalStates: any  = [];
+  modalStates: any = [];
   modalCities: any = [];
   subLocationsList: any = [];
   cargoExemptionsList: any = [];
@@ -206,6 +206,7 @@ export class NewAciManifestComponent implements OnInit {
   CCCShipment: string;
   cargoControlNumberInput: string;
   amendManifest = false;
+  errorFastCard = false;
   constructor(
     private httpClient: HttpClient,
     private HereMap: HereMapService,
@@ -225,7 +226,7 @@ export class NewAciManifestComponent implements OnInit {
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
-    this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate() };
 
   }
 
@@ -364,13 +365,13 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
- /***
-   * fetch asset types from mapped table
-   */
+  /***
+    * fetch asset types from mapped table
+    */
   async getBorderAssetTypes(e) {
     const assetID = e;
     let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
+    let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
     if (resultData.Items.length > 0) {// if parent asset type exists
       this.borderAssetTypes = resultData.Items;
     } else {
@@ -384,7 +385,7 @@ export class NewAciManifestComponent implements OnInit {
     });
   }
   // container data
-    addContainer() {
+  addContainer() {
     if (this.containers.length <= 4) {
       this.containers.push({
         loadedOn: {
@@ -515,15 +516,15 @@ export class NewAciManifestComponent implements OnInit {
     this.shipments[s].deliveryDestinations.splice(i, 1);
   }
   // address section
-  clearUserLocation(s,p,callType) {
+  clearUserLocation(s, p, callType) {
     if (callType == 'delivery') {
-    this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
-    $('div').removeClass('show-search__result');
+      this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
+      $('div').removeClass('show-search__result');
     }
-  else {
-    this.shipments[s].notifyParties[p].address[`userLocation`] = '';
-    $('div').removeClass('show-search__result');
-   }
+    else {
+      this.shipments[s].notifyParties[p].address[`userLocation`] = '';
+      $('div').removeClass('show-search__result');
+    }
   }
   public searchLocation() {
     this.searchTerm.pipe(
@@ -582,11 +583,9 @@ export class NewAciManifestComponent implements OnInit {
     }
   }
   async userAddress(s, p, item, callType) {
-    console.log('item', item);
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    console.log('result', result);
-    if(callType === 'delivery') {
+    if (callType === 'delivery') {
       this.shipments[s].deliveryDestinations[p].address.userLocation = result.address.label;
       this.shipments[s].deliveryDestinations[p].address.geoCords.lat = result.position.lat;
       this.shipments[s].deliveryDestinations[p].address.geoCords.lng = result.position.lng;
@@ -599,10 +598,10 @@ export class NewAciManifestComponent implements OnInit {
       this.shipments[s].deliveryDestinations[p].address.cityName = result.address.city;
       this.shipments[s].deliveryDestinations[p].address.postalCode = result.address.postalCode;
       if (result.address.houseNumber === undefined) {
-          result.address.houseNumber = '';
+        result.address.houseNumber = '';
       }
       if (result.address.street === undefined) {
-          result.address.street = '';
+        result.address.street = '';
       }
     } else {
       this.shipments[s].notifyParties[p].address.userLocation = result.address.label;
@@ -617,10 +616,10 @@ export class NewAciManifestComponent implements OnInit {
       this.shipments[s].notifyParties[p].address.cityName = result.address.city;
       this.shipments[s].notifyParties[p].address.postalCode = result.address.postalCode;
       if (result.address.houseNumber === undefined) {
-          result.address.houseNumber = '';
+        result.address.houseNumber = '';
       }
       if (result.address.street === undefined) {
-          result.address.street = '';
+        result.address.street = '';
       }
     }
   }
@@ -741,7 +740,7 @@ export class NewAciManifestComponent implements OnInit {
     this.coDrivers.unshift(this.mainDriver);
     const data = {
       CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      tripNumber: this.CCC + this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -755,9 +754,9 @@ export class NewAciManifestComponent implements OnInit {
       shipments: this.shipments,
       currentStatus: 'Draft',
     };
-    console.log('data', data.shipments);
+    console.log('data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -770,8 +769,8 @@ export class NewAciManifestComponent implements OnInit {
             complete: () => {
               this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -787,12 +786,12 @@ export class NewAciManifestComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            '</label>'
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          '</label>'
         )
         .addClass('error');
     });
@@ -817,28 +816,25 @@ export class NewAciManifestComponent implements OnInit {
         this.timeCreated = result.timeCreated;
         this.entryID = this.entryID;
         this.sendId = result.sendId;
-        this.CCC = result.CCC,
-          this.tripNumber = result.tripNumber.substring(
-            4,
-            result.tripNumber.length
-          );
-          // this.tripNumber = result.tripNumber,
-          this.portOfEntry = result.portOfEntry;
-          this.subLocation = result.subLocation;
-          this.estimatedArrivalDate = result.estimatedArrivalDate;
-          this.estimatedArrivalTime = result.estimatedArrivalTime;
-          this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
-          this.truck = result.truck;
-          this.mainDriver = result.drivers[0];
-          this.coDrivers = result.drivers.slice(1);
-          this.trailers = result.trailers;
-          this.containers = result.containers;
-          this.passengers = result.passengers;
-          this.shipments = result.shipments;
-          this.currentStatus = result.currentStatus;
-          setTimeout(() => {
-            this.fetchUSStates();
-          }, 2000);
+        this.CCC = result.CCC;
+        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
+        this.portOfEntry = result.portOfEntry;
+        this.subLocation = result.subLocation;
+        this.estimatedArrivalDate = result.estimatedArrivalDate;
+        this.estimatedArrivalTime = result.estimatedArrivalTime;
+        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
+        this.truck = result.truck;
+        this.mainDriver = result.drivers[0];
+        this.coDrivers = result.drivers.slice(1);
+        this.trailers = result.trailers;
+        this.containers = result.containers;
+        this.passengers = result.passengers;
+        this.shipments = result.shipments;
+        this.currentStatus = result.currentStatus;
+        console.log('fetched result', result);
+        setTimeout(() => {
+          this.fetchUSStates();
+        }, 2000);
       });
   }
   updateACIManifest() {
@@ -847,7 +843,7 @@ export class NewAciManifestComponent implements OnInit {
       entryID: this.entryID,
       sendId: this.sendId,
       CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      tripNumber: this.CCC + this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -868,7 +864,7 @@ export class NewAciManifestComponent implements OnInit {
         data
       )
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -881,8 +877,8 @@ export class NewAciManifestComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -892,5 +888,24 @@ export class NewAciManifestComponent implements OnInit {
           this.location.back(); // <-- go back to previous location
         },
       });
+  }
+
+  fastValidation(e) {
+    const fastCard = e.target.value;
+    const newString = fastCard.split('');
+    if (newString.length != 14) {
+      this.errorFastCard = true;
+    } else {
+      const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
+      const fastEnd = newString[12].concat(newString[13]);
+      if (fastStart != '4270') {
+        this.errorFastCard = true;
+      }
+      else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
+        this.errorFastCard = true;
+      } else {
+        this.errorFastCard = false;
+      }
+    }
   }
 }
