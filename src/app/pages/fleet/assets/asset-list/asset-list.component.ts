@@ -323,7 +323,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
-      $('.col10').css('width','200px');
+      $('.col10').css('min-width','200px');
     }
 
     if(this.hideShow.aceID == false) {
@@ -331,7 +331,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col11').removeClass('extra');
       $('.col11').css('display','');
-      $('.col11').css('width','200px');
+      $('.col11').css('min-width','200px');
     }
 
     if(this.hideShow.aciID == false) {
@@ -339,7 +339,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
-      $('.col12').css('width','200px');
+      $('.col12').css('min-width','200px');
     }
 
     if(this.hideShow.gvwr == false) {
@@ -347,7 +347,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
-      $('.col13').css('width','200px');
+      $('.col13').css('min-width','200px');
     }
 
     if(this.hideShow.gawr == false) {
@@ -355,7 +355,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
-      $('.col14').css('width','200px');
+      $('.col14').css('min-width','200px');
     }
   }
 

@@ -13,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DriverDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
-  
+  platform: any;
   profile: string;
   driverName: string;
   CDL: string;
@@ -28,6 +28,7 @@ export class DriverDetailComponent implements OnInit {
   
   driverType: any;
   employeeId: any;
+  contractorId: any;
   companyId: any;
   ownerOperator: string;
   companyName: string;
@@ -125,7 +126,7 @@ export class DriverDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-   
+    this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
     this.fetchDriver();
@@ -177,6 +178,7 @@ export class DriverDetailComponent implements OnInit {
           
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeId;
+          this.contractorId = this.driverData.contractorId;
           this.ownerOperator = this.driverData.ownerOperator;
           
           this.companyId = this.driverData.companyId;
