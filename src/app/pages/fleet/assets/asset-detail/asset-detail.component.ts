@@ -16,6 +16,7 @@ declare var $: any;
 })
 export class AssetDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  platform: any;
   image;
   docs: SafeResourceUrl;
   public assetsImages = [];
@@ -120,6 +121,7 @@ export class AssetDetailComponent implements OnInit {
               private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.hereMap.mapSetAPI();
     this.hereMap.mapInit(); // Initialize map
     this.assetID = this.route.snapshot.params['assetID']; // get asset Id from URL
     this.fetchAsset();
@@ -335,7 +337,7 @@ export class AssetDetailComponent implements OnInit {
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length-1];
-    this.pdfSrc = '';
+    this.pdfSrc = this.domSanitizer.bypassSecurityTrustUrl('');
     if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
     } else {

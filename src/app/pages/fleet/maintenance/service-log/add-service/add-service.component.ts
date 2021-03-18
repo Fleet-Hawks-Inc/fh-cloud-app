@@ -134,7 +134,7 @@ export class AddServiceComponent implements OnInit {
     private listService: ListService
   ) {
     this.selectedFileNames = new Map<any, any>();
-    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
+    // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
    }
 
    
