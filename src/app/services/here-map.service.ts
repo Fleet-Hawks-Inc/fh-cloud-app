@@ -69,11 +69,11 @@ export class HereMapService {
       }
     );
 
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
+  //   let provider = this.map.getBaseLayer().getProvider();
+  //   var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+  //   'https://js.api.here.com/v3/3.1/styles/omv/');
+  // // set the style on the existing layer
+  // provider.setStyle(style)
     // const mapTileService = this.platform.getMapTileService({
     //   type: 'base'
     // });
@@ -119,9 +119,7 @@ export class HereMapService {
     
      return this.map;
   }
-  setStyle(map){
 
-  }
 
   /**
    * This method get current location of user. Currently it is using browsser navigater to get location
