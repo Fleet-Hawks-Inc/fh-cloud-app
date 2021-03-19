@@ -423,22 +423,34 @@
                                                 </div>
                                             </ng-template>
 
-                                            <div class="col-lg-4 text-center pt-3">
-                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                <p class="mb-0 text-4 font-weight-semibold text-dark">1060.00 Miles
-                                                </p>
-                                            </div>
-                                            <div class="col-lg-4 text-center"
-                                                *ngIf="trips.length > 1; else destinationElseBlock">
+                                            <ng-template [ngIf]="trips.length > 1" [ngIfElse]="destinationElseBlock">
+                                                <div class="col-lg-4 text-center">
+                                                    <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}:{{orderMiles.totalMiles}}
+                                                    </p>
+                                                    <ng-template [ngIf]="actualMiles">
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
+                                                    <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles}}
+                                                    </span></p>
+                                                </ng-template>
+                                                </div>
+                                                <div class="col-lg-4 text-center">
                                                 <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
                                                 </p>
                                                 <p class="mb-0 text-4 font-weight-semibold text-dark">{{
                                                     trips[trips.length-1].locationName }}</p>
                                                 <p class="mb-0 text-4 font-weight-normal text-dark">{{
                                                     trips[trips.length-1].date }} {{ trips[trips.length-1].time }}</p>
-                                            </div>
+                                                </div>
+                                            </ng-template>
 
                                             <ng-template #destinationElseBlock>
+                                                
+                                            <div class="col-lg-4 text-center pt-3">
+                                                <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
+                                                <p class="mb-0 text-4 font-weight-semibold text-dark">-
+                                                </p>
+                                            </div>
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Destination
                                                     </p>
