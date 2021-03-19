@@ -29,9 +29,8 @@ export class PdfAutomationComponent implements OnInit {
   $val: any = [];
   $head: any = [];
   $annotateinfo: any = {};
-
-  $rectn: any = [];
-  $res: any = [];
+  $imageObj: any = {};
+  $offset: any ={};
   $pdfjson: any = {};
   $xmin;
   $xmax;
@@ -39,6 +38,7 @@ export class PdfAutomationComponent implements OnInit {
   $ymax;
   $data: any = {};
   $mainDiv
+  
   i = 0;
   $rct: any = [];
   postData = {
@@ -93,6 +93,8 @@ export class PdfAutomationComponent implements OnInit {
 
     $(() => {
       // const canvas = document.getElementById('src');
+      
+      
      
 
       const canvas = this.pdfcanvas.nativeElement;
@@ -123,6 +125,23 @@ export class PdfAutomationComponent implements OnInit {
       }
 
 
+      var ignoreScrollEvents = false
+      function syncScroll(element1, element2) {
+        element1.scroll(function (e) {
+          var ignore = ignoreScrollEvents
+          ignoreScrollEvents = false
+          if (ignore) return
+    
+          ignoreScrollEvents = true
+          element2.scrollTop(element1.scrollTop())
+        })
+      }
+      syncScroll($("#div1"), $("#myModal"))
+      syncScroll($("#myModal"), $("#div1"));
+
+
+      
+
 
       el.onchange = (e?: HTMLInputEvent) => {
         const canvas = this.pdfcanvas.nativeElement;
@@ -130,7 +149,14 @@ export class PdfAutomationComponent implements OnInit {
         const savebtn = document.getElementById('fire');
         const pdffile = document.getElementById('pdffile');
         const el = document.getElementById('myFile');
-        const uf = document.getElementById('uploadedfile');
+        const uf = document.getElementById('uploadedfile')
+
+        var src = document.getElementById('src');
+      var offset = $(canvas).offset();
+      console.log(offset.left + '-------------->>>>>offset')
+
+      
+      this.$offset = offset;
 
 
         let text;
@@ -226,6 +252,7 @@ export class PdfAutomationComponent implements OnInit {
           console.log("hello!");
           console.log(files.webkitRelativePath)
           const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
+          this.$imageObj = url;
 
 
           // Loaded via <script> tag, create shortcut to access PDF.js exports.
@@ -573,10 +600,10 @@ export class PdfAutomationComponent implements OnInit {
   mymousedown(e) {
 
 
-
+   console.log(this.$offset.top + 'this.$offset.top');
     console.log("mousedownworks" + this.$canvas.offsetLeft);
-    this.$rect.startX = e.pageX - this.$canvas.offsetLeft  - 280;
-    this.$rect.startY = e.pageY - this.$canvas.offsetTop - 195;
+    this.$rect.startX = e.pageX  -  this.$offset.left//280;
+    this.$rect.startY = e.pageY  -  this.$offset.top//195;
 
 
     this.drag = true;
@@ -590,7 +617,7 @@ export class PdfAutomationComponent implements OnInit {
     this.drag = false;
 
 
-    this.$ctx.strokeRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
+    //this.$ctx.strokeRect(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h);
 
 
     console.log(this.$rect.startX, this.$rect.startY, this.$rect.w, this.$rect.h)
@@ -623,7 +650,7 @@ export class PdfAutomationComponent implements OnInit {
     // just renderint to visualize - no need for actual crop
 
     this.$srcContext.rect(rct.left, rct.top, rct.width, rct.height);
-    this.$srcContext.strokeStyle = '#FF0000';
+    this.$srcContext.strokeStyle = "blue";
     this.$srcContext.stroke();
 
     // todo: pass the rect info and promise them all?
@@ -769,6 +796,9 @@ export class PdfAutomationComponent implements OnInit {
     this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     document.getElementById('myDIV').appendChild(h);
     document.getElementById('myDIV').appendChild(para);
+    $('#exampleModal').modal('hide')
+
+    
   }
 
   myclick(e) {
@@ -784,8 +814,16 @@ export class PdfAutomationComponent implements OnInit {
 
     console.log('valsend=====>' + JSON.stringify(this.$pdfjson));
     this.service.missionAnnouncedSource.next(this.$pdfjson);
+    $('#myModal').modal('hide')
 
 
+  }
+  myclosebutton(e){
+   
+    
+  
+    $('#exampleModal').modal('hide')
+    
   }
 
   mymouseout(e) {
@@ -795,13 +833,14 @@ export class PdfAutomationComponent implements OnInit {
 
   mymousemove(e) {
    
-    this.$cursorVT.setAttribute('style', `left: ${e.clientX}px;`);
-    this.$cursorHL.setAttribute('style', `top: ${e.clientY}px;`);
+    this.$cursorVT.setAttribute('style', `left: ${e.pageX}px;`);
+    this.$cursorHL.setAttribute('style', `top: ${e.pageY}px;`);
     if (this.drag) {
+     
 
 
-      this.$rect.w = (e.pageX - this.$canvas.offsetLeft) - this.$rect.startX - 280;
-      this.$rect.h = (e.pageY - this.$canvas.offsetTop) - this.$rect.startY - 195;
+      this.$rect.w = (e.pageX - this.$offset.left) - this.$rect.startX //- 280;
+      this.$rect.h = (e.pageY - this.$offset.top) - this.$rect.startY// - 195;
       this.$ctx.strokeStyle = 'red';
 
       //  this.$ctx.strokeRect( this.$rect.startX,  this.$rect.startY,  this.$rect.w,  this.$rect.h);

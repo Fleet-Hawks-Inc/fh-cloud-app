@@ -329,6 +329,10 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   ngOnInit() {
+
+
+
+    
     this.fetchCustomers();
     this.fetchShippers();
     this.fetchReceivers();
