@@ -116,7 +116,7 @@ export class AciDetailsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params['entryID'];
+    this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchACIEntry();
   }
   fetchACIEntry() {

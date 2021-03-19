@@ -189,7 +189,7 @@ export class VehicleDetailComponent implements OnInit {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 5000,
   };
 
   constructor(
@@ -305,6 +305,7 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.issues = result.Items;
+        console.log('this.issues', this.issues);
       });
   }
 

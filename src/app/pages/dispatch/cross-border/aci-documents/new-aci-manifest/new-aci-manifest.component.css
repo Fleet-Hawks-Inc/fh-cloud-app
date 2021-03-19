@@ -2,3 +2,10 @@
 {
     display: block !important;
 }
+.map-search__results {
+  display: none;
+  width: 500px;
+}
+.show-search__result .map-search__results {
+  display: block !important;
+}
