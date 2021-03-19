@@ -189,7 +189,7 @@ export class VehicleDetailComponent implements OnInit {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 5000,
   };
 
   constructor(
