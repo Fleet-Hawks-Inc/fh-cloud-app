@@ -648,13 +648,13 @@
                                                 class="font-weight-semibold">Number</span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span><span> {{commodity.hazmatDetails.unCode}}<br></span>
+                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span>{{commodity.hazmatDetails.emergencyContactName}}
+                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span>{{commodity.hazmatDetails.contactPhone}}<br>
+                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Contact
-                                                Email:</span>{{commodity.hazmatDetails.contactEmail}}
+                                                Email:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
                                         </td>
                                         <td><span
                                                 class="font-weight-semibold">C4LineReleaseNumber:</span>{{commodity.c4LineReleaseNumber}}<br>

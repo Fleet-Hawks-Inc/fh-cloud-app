@@ -28,7 +28,7 @@
                           <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
                             {{carrier.SCAC}}</ng-option>
                         </ng-select> -->
-                          <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
+                          <ng-select name="SCAC" [(ngModel)]="SCAC" (change)="onChangeHideErrors('SCAC')" placeholder="Select SCAC">
                           <ng-option value="DOTL">DOTL</ng-option>
                           <ng-option value="FVFA">FVFA</ng-option>
                           <ng-option value="GHGP">GHGP</ng-option>
@@ -43,7 +43,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">US Port of
                           Arrival<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="usPortOfArrival" [(ngModel)]="usPortOfArrival"
+                        <ng-select name="usPortOfArrival" [(ngModel)]="usPortOfArrival" (change)="onChangeHideErrors('usPortOfArrival')"
                           placeholder="Select US port of arrival">
                           <ng-option *ngFor="let port of USports" [value]="port.code">Code: {{port.code}},
                             Location: {{port.portOfEntry}}</ng-option>
@@ -53,14 +53,14 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" name="estimatedArrivalDate" placeholder="Enter date"
-                          ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle()"
+                          ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle();onChangeHideErrors('estimatedArrivalDate')"
                           [(ngModel)]="estimatedArrivalDate" />
 
                       </div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime"
+                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime" (change)="onChangeHideErrors('estimatedArrivalTime')"
                           placeholder="Select time">
                           <ng-option *ngFor="let time of timeList" [value]="time.value">
                             {{time.description}}</ng-option>
@@ -74,7 +74,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="truck.truckID" [(ngModel)]="truck.truckID">
+                        <ng-select name="truck.truckID" [(ngModel)]="truck.truckID"  (change)="onChangeHideErrors('truck.truckID')">
                           <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
                             {{vehicle.vehicleIdentification}}</ng-option>
                         </ng-select>
@@ -109,8 +109,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
-                        <ng-select [(ngModel)]="mainDriver" name="drivers" placeholder="Select driver">
+                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of fetchedDrivers" [value]="driver.driverID">
                             {{driver.firstName}}</ng-option>
                         </ng-select>
@@ -252,8 +251,6 @@
                                 {{document.description}}</ng-option>
                             </ng-select>
                           </div>
-
-
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -312,21 +309,21 @@
 
                             <div class="checkbox-custom pt-2">
                                <input [(ngModel)]="usAddress.address.manual" name="manual"
-                                  (change)="manAddress($event,s,p,'usAddress')" type="checkbox">
+                                  (change)="manAddress($event,null,null,'usAddress')" type="checkbox">
                                <label for="man_address">Type Manually</label>
                             </div>
                             <div class="map-search__results bg-white">
                                <ul class="p-0 m-0 text-left">
                                   <li *ngFor="let item of searchResults;">
                                      <a href="javascript:;"
-                                        (click)="userAddress(s, p, item,'usAddress')">{{item.address.label}}</a>
+                                        (click)="userAddress(null,null,item,'usAddress')">{{item.address.label}}</a>
                                   </li>
                                </ul>
                             </div>
                          </div>
                          <div class="col-lg-2 mar-top-37">
                             <a class="btn btn-dark mr-2" href="javascript:;"
-                               (click)="clearUserLocation(s,p,'usAddress');">Clear</a>
+                               (click)="clearUserLocation(null,null,'usAddress');">Clear</a>
                          </div>
                       </div>
                       <div class="address-inner" *ngIf="usAddress.address.manual">
@@ -456,7 +453,7 @@
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].shipmentControlNumber'"
                                   placeholder="Enter unique number, min 4 characters, max 12 characters"
-                                  [(ngModel)]="shipment.shipmentControlNumber">
+                                  [(ngModel)]="shipment.shipmentControlNumber" (change)="onChangeHideErrors('shipments['+s+'].shipmentControlNumber')">
                               </div>
                             </div>
                           </div>

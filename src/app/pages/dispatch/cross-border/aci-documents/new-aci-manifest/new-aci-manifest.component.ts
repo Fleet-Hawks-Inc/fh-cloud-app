@@ -737,7 +737,6 @@ export class NewAciManifestComponent implements OnInit {
   }
 
   addACIManifest() {
-    this.coDrivers.unshift(this.mainDriver);
     const data = {
       CCC: this.CCC,
       tripNumber: this.CCC + this.tripNumber,
@@ -748,13 +747,13 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.coDrivers,
+      mainDriver: this.mainDriver,
+      coDrivers: this.coDrivers,
       passengers: this.passengers,
       containers: this.containers,
       shipments: this.shipments,
       currentStatus: 'Draft',
     };
-    console.log('data', data);
     this.apiService.postData('ACIeManifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -824,21 +823,19 @@ export class NewAciManifestComponent implements OnInit {
         this.estimatedArrivalTime = result.estimatedArrivalTime;
         this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
         this.truck = result.truck;
-        this.mainDriver = result.drivers[0];
-        this.coDrivers = result.drivers.slice(1);
+        this.mainDriver = result.mainDriver;
+        this.coDrivers = result.coDrivers;
         this.trailers = result.trailers;
         this.containers = result.containers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
-        console.log('fetched result', result);
         setTimeout(() => {
           this.fetchUSStates();
         }, 2000);
       });
   }
   updateACIManifest() {
-    this.coDrivers.unshift(this.mainDriver);
     const data = {
       entryID: this.entryID,
       sendId: this.sendId,
@@ -851,7 +848,8 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.coDrivers,
+      mainDriver: this.mainDriver,
+      coDrivers: this.coDrivers,
       passengers: this.passengers,
       containers: this.containers,
       shipments: this.shipments,
@@ -907,5 +905,11 @@ export class NewAciManifestComponent implements OnInit {
         this.errorFastCard = false;
       }
     }
+  }
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
   }
 }

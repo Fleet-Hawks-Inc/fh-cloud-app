@@ -47,7 +47,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Canadian Port of
                           Entry<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="portOfEntry" [(ngModel)]="portOfEntry"
+                        <ng-select name="portOfEntry" [(ngModel)]="portOfEntry" (change)="onChangeHideErrors('portOfEntry')"
                           placeholder="Select canadian port of entry">
                           <ng-option *ngFor="let port of CANPorts" [value]="port.number">Code:
                             {{port.number}}, Name: {{port.name}}</ng-option>
@@ -71,7 +71,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input class="form-control" type="text" placeholder="Enter date" name="estimatedArrivalDate"
-                          [(ngModel)]="estimatedArrivalDate" ngbDatepicker #d6="ngbDatepicker"
+                          [(ngModel)]="estimatedArrivalDate" ngbDatepicker #d6="ngbDatepicker" (change)="onChangeHideErrors('estimatedArrivalDate')"
                           [minDate]="getcurrentDate" (click)="d6.toggle()" />
                       </div>
                     </div>
@@ -79,8 +79,8 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime"
-                          placeholder="Select estimated time">
+                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime" (change)="onChangeHideErrors('estimatedArrivalTime')"
+                          placeholder="Select estimated time">'
                           <ng-option *ngFor="let time of timeList" [value]="time.value">
                             {{time.description}}</ng-option>
                         </ng-select>
@@ -89,7 +89,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2"> ETA Time Zone<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="estimatedArrivalTimeZone" [(ngModel)]="estimatedArrivalTimeZone"
+                        <ng-select name="estimatedArrivalTimeZone" [(ngModel)]="estimatedArrivalTimeZone" (change)="onChangeHideErrors('estimatedArrivalTimeZone')"
                           placeholder="Select time zone">
                           <ng-option value="PST">Pacific Standard Time</ng-option>
                           <ng-option value="AST">Atlantic Standard Time</ng-option>
@@ -107,7 +107,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Truck<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select name="truck.truckID" [(ngModel)]="truck.truckID"
-                          placeholder="Select Vehcile for manifest">
+                          placeholder="Select Vehcile for manifest" (change)="onChangeHideErrors('truck.truckID')">
                           <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
                             {{vehicle.vehicleIdentification}}</ng-option>
                         </ng-select>
@@ -156,7 +156,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
-                        <ng-select [(ngModel)]="mainDriver" name="drivers" placeholder="Select driver">
+                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
                             {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>

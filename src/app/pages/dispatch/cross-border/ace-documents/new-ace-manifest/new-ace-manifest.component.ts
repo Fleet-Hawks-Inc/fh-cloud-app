@@ -345,7 +345,7 @@ export class NewAceManifestComponent implements OnInit {
     $('#usAddressCitySelect').val('');
   }
   onChangeHideErrors(fieldname = '') {
-    $(`[name='' + fieldname + '']`)
+    $('[name="' + fieldname + '"]')
       .removeClass('error')
       .next()
       .remove('label');
@@ -649,6 +649,7 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
   async userAddress(s, p, item, callType) {
+    console.log('s and p', s, p);
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
     if (callType === 'thirdParty') {
@@ -756,7 +757,6 @@ export class NewAceManifestComponent implements OnInit {
         }
       }
       if (this.address === true) {
-        this.coDrivers.unshift(this.mainDriver);
         const data = {
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
@@ -765,7 +765,8 @@ export class NewAceManifestComponent implements OnInit {
           estimatedArrivalTime: this.estimatedArrivalTime,
           truck: this.truck,
           trailers: this.trailers,
-          drivers: this.coDrivers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
           usAddress: this.usAddress,
           passengers: this.passengers,
           shipments: this.shipments,
@@ -794,7 +795,6 @@ export class NewAceManifestComponent implements OnInit {
           userLocation: ''
         }
       };
-      this.coDrivers.unshift(this.mainDriver);
       const data = {
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
@@ -803,7 +803,8 @@ export class NewAceManifestComponent implements OnInit {
         estimatedArrivalTime: this.estimatedArrivalTime,
         truck: this.truck,
         trailers: this.trailers,
-        drivers: this.coDrivers,
+        mainDriver: this.mainDriver,
+        coDrivers: this.coDrivers,
         usAddress: this.usAddress,
         passengers: this.passengers,
         shipments: this.shipments,
@@ -839,7 +840,6 @@ export class NewAceManifestComponent implements OnInit {
     this.apiService
       .getData('ACEeManifest/' + this.entryID).subscribe((result: any) => {
         result = result.Items[0];
-        console.log('fetched result', result);
         this.entryID = this.entryID;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
@@ -849,8 +849,8 @@ export class NewAceManifestComponent implements OnInit {
         this.estimatedArrivalDate = result.estimatedArrivalDate;
         this.estimatedArrivalTime = result.estimatedArrivalTime;
         this.truck = result.truck;
-        this.mainDriver = result.drivers[0];
-        this.coDrivers = result.drivers.slice(1);
+        this.mainDriver = result.mainDriver;
+        this.coDrivers = result.coDrivers;
         this.trailers = result.trailers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
@@ -923,7 +923,8 @@ export class NewAceManifestComponent implements OnInit {
           estimatedArrivalTime: this.estimatedArrivalTime,
           truck: this.truck,
           trailers: this.trailers,
-          drivers: this.coDrivers,
+          mainDriver: this.mainDriver,
+          coDrivers: this.coDrivers,
           usAddress: this.usAddress,
           passengers: this.passengers,
           shipments: this.shipments,
@@ -978,7 +979,7 @@ export class NewAceManifestComponent implements OnInit {
           userLocation: ''
         }
       };
-      this.coDrivers.unshift(this.mainDriver);
+     // this.coDrivers.unshift(this.mainDriver);
       const data = {
         entryID: this.entryID,
         SCAC: this.SCAC,
@@ -988,7 +989,8 @@ export class NewAceManifestComponent implements OnInit {
         estimatedArrivalTime: this.estimatedArrivalTime,
         truck: this.truck,
         trailers: this.trailers,
-        drivers: this.coDrivers,
+        mainDriver: this.mainDriver,
+        coDrivers: this.coDrivers,
         usAddress: this.usAddress,
         passengers: this.passengers,
         shipments: this.shipments,
@@ -1069,4 +1071,5 @@ export class NewAceManifestComponent implements OnInit {
       }
     }
   }
+
 }
