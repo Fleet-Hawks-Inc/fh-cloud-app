@@ -49,7 +49,7 @@
                                                     Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
-                                                    [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number">
+                                                    [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number" autocomplete="off">
                                             </div>
                                         </div>
 
@@ -417,7 +417,7 @@
                                             <ng-template [ngIf]="trips.length > 1" [ngIfElse]="destinationElseBlock">
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}:{{orderMiles.totalMiles}}
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}: {{orderMiles.totalMiles}}
                                                     </p>
                                                     
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
