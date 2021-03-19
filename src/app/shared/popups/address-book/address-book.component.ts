@@ -6,6 +6,7 @@ import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
+import {Auth} from 'aws-amplify';
 declare var $: any;
 @Component({
   selector: 'app-address-book',
@@ -604,6 +605,8 @@ export class AddressBookComponent implements OnInit {
   suggestedFactoringCompanies = [];
   suggestedOperatorCompanies = [];
   suggestedVendorCompanies = [];
+  currentUser:any = '';
+  isCarrierID:any = '';
 
   constructor(
             private apiService: ApiService,
@@ -616,6 +619,7 @@ export class AddressBookComponent implements OnInit {
   { }
 
   ngOnInit() {
+    this.getCurrentuser();
     this.fetchCountries();
     this.fetchCustomersCount();
     this.fetchBrokersCount();
@@ -658,6 +662,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, data) {
+    this.userDetailData = {};
     if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
       this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;
     } else {
@@ -667,6 +672,7 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     this.modalService.open(targetModal);
     this.userDetailData = data;
+    console.log('userDetailData', this.userDetailData)
   }
 
   async userAddress(data: any, i: number, item: any) {
@@ -1553,7 +1559,7 @@ export class AddressBookComponent implements OnInit {
           this.shippers = [];
           this.initDataTableShipper();
           this.activeDiv = 'shipperTable';
-          this.toastr.success('Shipper Added Successfully');
+          this.toastr.success('Consignor Added Successfully');
 
         }
       });
@@ -1634,7 +1640,7 @@ export class AddressBookComponent implements OnInit {
         this.fetchShippersCount();
         this.initDataTableShipper();
         this.activeDiv = 'shipperTable';
-        this.toastr.success('Shipper updated successfully');
+        this.toastr.success('Consignor updated successfully');
       },
     });
   }
@@ -1987,7 +1993,7 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.initDataTableStaff();
           this.activeDiv = 'staffTable';
-          this.toastr.success('Staff Added Successfully');
+          this.toastr.success('Employee Added Successfully');
         }
       });
   }
@@ -2059,7 +2065,7 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.initDataTableStaff();
         this.activeDiv = 'staffTable';
-        this.toastr.success('Staff updated successfully');
+        this.toastr.success('Employee updated successfully');
       },
     });
   }
@@ -2370,7 +2376,7 @@ export class AddressBookComponent implements OnInit {
         this.shippers = [];
         this.fetchShippersCount();
         this.initDataTableShipper();
-        this.toastr.success('Shipper deleted successfully');
+        this.toastr.success('Consignor deleted successfully');
       });
     }
   }
@@ -2568,7 +2574,7 @@ export class AddressBookComponent implements OnInit {
 
     // Customer Object
     this.customerData = {
-      companyName: '',
+      companyName: this.currentUser,
       dbaName: '',
       firstName: '',
       lastName: '',
@@ -2615,7 +2621,7 @@ export class AddressBookComponent implements OnInit {
 
     // Broker Object
     this.brokerData = {
-      companyName: '',
+      companyName: this.currentUser,
       dbaName: '',
       firstName: '',
       lastName: '',
@@ -2657,7 +2663,7 @@ export class AddressBookComponent implements OnInit {
 
     // ownerOperator Object
     this.ownerData = {
-      companyName: '',
+      companyName: this.currentUser,
       firstName: '',
       lastName: '',
       workPhone: '',
@@ -2710,7 +2716,7 @@ export class AddressBookComponent implements OnInit {
 
     // Vendor Object
     this.vendorData = {
-      companyName: '',
+      companyName: this.currentUser,
       accountNumber: '',
       firstName: '',
       lastName: '',
@@ -2740,7 +2746,7 @@ export class AddressBookComponent implements OnInit {
 
     // Carrier Object
     this.carrierData = {
-      companyName: '',
+      companyName: this.currentUser,
       firstName: '',
       lastName: '',
       workPhone: '',
@@ -2806,7 +2812,7 @@ export class AddressBookComponent implements OnInit {
 
     // Shipper Object
     this.shipperData = {
-      companyName: '',
+      companyName: this.currentUser,
       firstName: '',
       lastName: '',
       mc: '',
@@ -2844,7 +2850,7 @@ export class AddressBookComponent implements OnInit {
 
     // Consignee Object
     this.consigneeData = {
-      companyName: '',
+      companyName: this.currentUser,
       firstName: '',
       lastName: '',
       mc: '',
@@ -2882,7 +2888,7 @@ export class AddressBookComponent implements OnInit {
 
     // fcCompany Object
     this.fcCompanyData = {
-      companyName: '',
+      companyName: this.currentUser,
       isDefault: false,
       firstName: '',
       lastName: '',
@@ -2916,7 +2922,7 @@ export class AddressBookComponent implements OnInit {
 
     // Staff Object
     this.staffData = {
-      companyName: '',
+      companyName: this.currentUser,
       firstName: '',
       lastName: '',
       employeeID: '',
@@ -4430,5 +4436,23 @@ export class AddressBookComponent implements OnInit {
       this.companyEndPoint = this.pageLength;
       this.companyDraw = 0;
     }
+  }
+
+  getCurrentuser = async () => {
+    this.isCarrierID = localStorage.getItem('carrierID');
+    if(this.isCarrierID == undefined || this.isCarrierID == null) {
+      let usr = (await Auth.currentSession()).getIdToken().payload;
+      this.isCarrierID = usr.carrierID;
+    } 
+     
+
+    await this.getSpecificCarrier(this.isCarrierID);
+  }
+
+  async getSpecificCarrier(id){
+    this.apiService.getData(`carriers/${id}`)
+      .subscribe((result: any) => {
+        this.currentUser = result.Items[0].businessName
+      });
   }
 }

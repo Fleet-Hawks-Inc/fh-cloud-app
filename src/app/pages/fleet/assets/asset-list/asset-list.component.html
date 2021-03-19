@@ -215,21 +215,21 @@
                <table class="row-border hover table table-bordered table-striped mb-0">
                   <thead>
                      <tr>
-                        <th class="col1">Asset Name/Number</th>
-                        <th class="col2">Type</th>
-                        <th class="col3">Plate Number</th>
-                        <th class="col4">Last Known Location</th>
-                        <th class="col5">Year</th>
-                        <th class="col6">Make</th>
-                        <th class="col7">Model</th>
-                        <th class="col8">Ownership</th>
+                        <th class="col1 minWidth200">Asset Name/Number</th>
+                        <th class="col2 minWidth200">Type</th>
+                        <th class="col3 minWidth200">Plate Number</th>
+                        <th class="col4 minWidth200">Last Known Location</th>
+                        <th class="col5 minWidth200">Year</th>
+                        <th class="col6 minWidth200">Make</th>
+                        <th class="col7 minWidth200">Model</th>
+                        <th class="col8 minWidth200">Ownership</th>
                         <th class="col10 extra">Group</th>
                         <th class="col11 extra">ACE ID</th>
                         <th class="col12 extra">ACI ID</th>
                         <th class="col13 extra">GVWR</th>
                         <th class="col14 extra">GAWR</th>
-                        <th class="col9">Status</th>
-                        <th>Actions</th>
+                        <th class="col9 minWidth120">Status</th>
+                        <th class="minWidth50">Actions</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -266,16 +266,17 @@
                      </tr>
                   </tbody>
                </table>
-               <div class="row mt-3 dtPaginate" *ngIf="allData.length > 0">
-                  <div class="col-6">
-                      Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
-                  </div>
-                  <div class="col-6 text-right">
-                      <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="assetPrev">Prev</button>
-                      <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="assetNext">Next</button>
-                  </div>
-              </div>
+               
             </div>
+            <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
+               <div class="col-6">
+                   Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
+               </div>
+               <div class="col-6 text-right">
+                   <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="assetPrev">Prev</button>
+                   <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="assetNext">Next</button>
+               </div>
+           </div>
          </div>
       </div>
    </section>
