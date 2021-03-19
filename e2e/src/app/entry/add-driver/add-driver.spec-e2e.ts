@@ -30,6 +30,7 @@ describe('add driver Tests', () => {
         addDriverPage.payMentForm();
         addDriverPage.hosCompliance();
         addDriverPage.emergencyForm();
-
     });
+   
+
 });

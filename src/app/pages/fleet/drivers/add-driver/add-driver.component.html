@@ -576,7 +576,7 @@
                                                 <label
                                                    class="control-label font-weight-bold text-lg-right pt-2">Document#<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="document.document"
+                                                <input id="txtDocumentNumber" [(ngModel)]="document.document"
                                                    [attr.name]="'documentDetails['+i+'].document'"
                                                    [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                                                    placeholder="Enter the document number"
@@ -605,6 +605,7 @@
                                                 Issuing Country<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <ng-select
+                                                id="sltIssuingCountry"
                                                 (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getStates($event)"
                                                 [(ngModel)]="document.issuingCountry"
                                                 [attr.name]="'documentDetails['+i+'].issuingCountry'"
@@ -621,6 +622,7 @@
                                                 Issuing State<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                              </label>
                                              <ng-select
+                                                id="sltIssueState"
                                                 (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
                                                 [(ngModel)]="document.issuingState"
                                                 [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -637,7 +639,7 @@
                                           <div class="col-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">
                                                 Issue Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input [(ngModel)]="document.issueDate"
+                                             <input id="sltIssueDate" [(ngModel)]="document.issueDate"
                                                 (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()"
                                                 ngbDatepicker #d="ngbDatepicker" type="text" class="form-control"
                                                 [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit"
@@ -648,7 +650,7 @@
                                           <div class="col-5" *ngIf="document.documentType != 'BCN'">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Expiry
                                                 Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input [(ngModel)]="document.expiryDate"
+                                             <input id="sltdateExpiry" [(ngModel)]="document.expiryDate"
                                                 [attr.name]="'documentDetails['+i+'].expiryDate'"
                                                 [ngModelOptions]="{standalone: true}"
                                                 (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()"
@@ -665,7 +667,7 @@
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
                                                 Document</label>
-                                             <input class="form-control p-0" name="document.uploadedDocs{{i}}"
+                                             <input id="" class="form-control p-0" name="document.uploadedDocs{{i}}"
                                                 (change)="selectDocuments($event, i)" type="file" multiple>
                                           </div>
                                           <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
@@ -791,7 +793,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">CDL Number<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
+                                          <input id="txtCdl" [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                              name="licenceDetails.CDL_Number" type="text" class="form-control"
                                              placeholder="Enter CDL(Commercial Driving Licence) number"
                                              (change)="onChangeHideErrors('CDL_Number')">
@@ -799,7 +801,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Licence
                                              Expiration<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()"
+                                          <input id="sltlicenseExpiry" (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()"
                                              ngbDatepicker #d3="ngbDatepicker"
                                              [(ngModel)]="driverData.licenceDetails.licenceExpiry"
                                              name="licenceDetails.licenceExpiry" [maxDate]="futureDatesLimit"
@@ -916,7 +918,7 @@
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">SIN
                                                 Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <input (change)="onChangeHideErrors('paymentDetails.SIN_Number')"
+                                             <input id="txtSinNumber" (change)="onChangeHideErrors('paymentDetails.SIN_Number')"
                                                 [(ngModel)]="driverData.paymentDetails.SIN_Number"
                                                 name="paymentDetails.SIN_Number" type="text" class="form-control"
                                                 placeholder="Enter the SIN (Social Insurance Number)">
@@ -993,7 +995,7 @@
                                                 Percent<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <div class="row">
                                                 <div class="col-lg-3">
-                                                   <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
+                                                   <input id="inputTxtPercentage" [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                                                       name="paymentDetails.loadPayPercentage" type="text"
                                                       class="form-control" placeholder="eg. 5,6 etc."
                                                       (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
