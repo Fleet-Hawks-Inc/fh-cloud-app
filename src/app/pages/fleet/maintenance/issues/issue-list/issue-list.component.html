@@ -1,7 +1,7 @@
 <section class="body">
-    
+
     <div class="inner-wrapper">
-        
+
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header">
                 <div class="row px-4" style="padding-top: 10px">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-2">
-                        <ng-select placeholder="Search issue by status" name="issueStatus" [(ngModel)]="issueStatus">                                               
+                        <ng-select placeholder="Search issue by status" name="issueStatus" [(ngModel)]="issueStatus">
                             <ng-option value="OPEN">OPEN</ng-option>
                             <ng-option value="RESOLVED">RESOLVED</ng-option>
                             <ng-option value="CLOSED">CLOSED</ng-option>
@@ -34,7 +34,7 @@
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                  
+
                     <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
                         <div class="btn-group flex-wrap">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -95,7 +95,7 @@
                                                 {{issue.reportedDate}}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{driverList[issue.reportedBy]}}
+                                                {{ issue.reportedBy }}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ issue.assignedTo }}

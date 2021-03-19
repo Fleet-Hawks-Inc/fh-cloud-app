@@ -10,7 +10,7 @@ declare var $: any;
   styleUrls: ['./e-manifests.component.css'],
 })
 export class EManifestsComponent implements OnInit {
-  
+
   activeDiv = 'ace';
   countries = [];
   ACEList = [];
@@ -160,20 +160,20 @@ export class EManifestsComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACEeManifest/fetch/records?vehicleID=' + this.vehicleID + '&aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.ACEList = result['Items'];
+        this.ACEList = result[`Items`];
         if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
           this.aceStartPoint = 1;
           this.aceEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
           this.aceNext = false;
           // for prev button
-          if (!this.acePrevEvauatedKeys.includes(result['LastEvaluatedKey'].entryID)) {
-            this.acePrevEvauatedKeys.push(result['LastEvaluatedKey'].entryID);
+          if (!this.acePrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
+            this.acePrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].entryID;
-          
+          this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
+
         } else {
           this.aceNext = true;
           this.lastEvaluatedKey = '';
@@ -257,20 +257,19 @@ export class EManifestsComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('ACIeManifest/fetch/records?vehicleID=' + this.vehicleID + '&aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate + '&lastKey=' + this.lastEvaluatedKeyACI)
       .subscribe((result: any) => {
-        this.ACIList = result['Items'];
+        this.ACIList = result[`Items`];
         if (this.vehicleID !== '' || this.aciSearch !== '' || this.aciFromDate != '' || this.aciToDate != '') {
           this.aciStartPoint = 1;
           this.aciEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
           this.aciNext = false;
           // for prev button
-          if (!this.aciPrevEvauatedKeys.includes(result['LastEvaluatedKey'].entryID)) {
-            this.aciPrevEvauatedKeys.push(result['LastEvaluatedKey'].entryID);
+          if (!this.aciPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
+            this.aciPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
           }
-          this.lastEvaluatedKeyACI = result['LastEvaluatedKey'].entryID;
-          
+          this.lastEvaluatedKeyACI = result[`LastEvaluatedKey`].entryID;
         } else {
           this.aciNext = true;
           this.lastEvaluatedKeyACI = '';
