@@ -140,7 +140,7 @@
                             role="tab"
                             aria-controls="vehicle-loans"
                             aria-selected="true"
-                            >Loan/Lease</a
+                            >Loan</a
                           >
                         </li>
                         <!-- <li class="nav-item">
@@ -397,7 +397,7 @@
                                 [config]="slideConfig"
                                 >
                                   <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                                    <img src="{{slide}}" alt="">
+                                    <img src="{{slide}}" alt="" style="margin: auto;">
                                   </div>
                               </ngx-slick-carousel>
                             </div>
@@ -405,9 +405,8 @@
                         </div>
                       </div>
                       <div class="col-lg-8">
-                        <div class="row">
+                        <!-- <div class="row">
                           <div class="col-lg-6">
-                            <!-- OPEN ISSUES DIV -->
                             <div
                               class="vehicle-common-box"
                               id="vehicle-open-issues"
@@ -467,7 +466,7 @@
                             </div>
                           </div>
                           <div class="col-lg-6">
-                            <!-- SERVICE REMINDERS DIV -->
+                           
                             <div
                               class="vehicle-common-box"
                               id="vehicle-service-reminders"
@@ -530,7 +529,102 @@
                               
                             </div>
                           </div>
+                        </div> -->
+
+                          <!--Open Issues-->
+                          <div
+                          class="vehicle-common-box"
+                          id="vehicle-service-reminders"
+                        >
+                          <div class="row m-0 back-color-gray">
+                            <div
+                              class="col-lg-12 p-2 font-weight-bold text-4"
+                            >
+                              Open Issues
+                              <a
+                                routerLink="/fleet/maintenance/issues/list"
+                                class="btn btn-xs btn-dark pull-right ml-3"
+                                >View All</a
+                              >
+                              <a routerLink="/fleet/maintenance/issues/add"
+                                class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Issue</a
+                              >
+                            </div>
+                          </div>
+                          <div class="row text-center m-0">
+                            <table class="table table-responsive-lg mt-3 mb-0">
+                              <thead>
+                                <tr>
+                                  <th width="25%">Issue Name</th>
+                                  <th width="20%">Description</th>
+                                  <th width="55%">Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <ng-container *ngFor="let issue of issues">
+                                  <tr *ngIf="issue.currentStatus == 'OPEN'">
+                                    <td>{{issue.issueName}}</td>
+                                    <td>{{issue.description}}</td>
+                                    <td>
+                                      {{issue.currentStatus}}
+                                    </td>
+                                  </tr>
+                                </ng-container>
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
+
+                        <!--Service Reminders-->
+                        <div
+                        class="vehicle-common-box mt-4"
+                        id="vehicle-service-reminders"
+                      >
+                      <div class="row m-0 back-color-gray">
+                        <div
+                          class="col-lg-12 p-2 font-weight-bold text-4"
+                        >
+                          Service Reminders
+                          <a
+                            routerLink="/fleet/reminders/service-reminder/list"
+                            class="btn btn-xs btn-dark pull-right ml-3"
+                            >View All</a
+                          >
+                          <a
+                            routerLink="/fleet/reminders/service-reminder/add"
+                            class="btn btn-xs btn-default pull-right"
+                            ><i class="fas fa-plus"></i> Add Service Reminders</a
+                          >
+                        </div>
+                      </div>
+                        <div class="row text-center m-0">
+                          <table class="table table-responsive-lg mt-3 mb-0">
+                            <thead>
+                              <tr>
+                                <th width="25%">Due Date</th>
+                                <th width="25%">Remind Days</th>
+                                <th width="20%">Task Name</th>
+                                <th width="55%">Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                             
+                                <ng-container *ngFor = "let reminder of reminders">
+                                  <tr *ngIf="reminder.reminderType == 'service'">
+                                
+                                    <td>{{reminder.reminderTasks.dueDate}}</td>
+                                    <td>{{reminder.reminderTasks.remindByDays}}</td>
+                                    <td>{{reminder.reminderTasks.taskDetail != undefined ? reminder.reminderTasks.taskDetail.taskName : '' }}</td>
+                                    <td>
+                                      {{reminder.reminderTasks.taskDetail != undefined ? reminder.reminderTasks.taskDetail.description : ''}}
+                                    </td>
+                                  </tr>
+                            </ng-container>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
                         <!-- RENEWAL REMINDERS DIV -->
                         <div
                           class="vehicle-common-box mt-4"
@@ -551,53 +645,33 @@
                             </div>
                           </div>
                           <div class="row text-center m-0">
-                            <div class="col-lg-6 p-3 font-weight-bold text-4">
-                              <a [routerLink]=""
-                                ><span class="text-6 text-default">0</span
-                                ><br />Overdue</a
-                              >
-                            </div>
-                            <div class="col-lg-6 p-3 font-weight-bold text-4">
-                              <a [routerLink]=""
-                                ><span class="text-6 text-warning">1</span
-                                ><br />Due Soon</a
-                              >
-                            </div>
-                          </div>
-                          <ng-container *ngFor = "let reminder of reminders">
-                            <hr *ngIf = "reminder.type == 'vehicle'" class="solid m-0 p-0" />
-                            <div *ngIf = "reminder.type == 'vehicle'" class="row m-0">
-                              <div
-                                class="col-lg-6 p-2 text-gray"
-                                style="font-size: 11px"
-                              >
-                                <a href="#"
-                                  ><span class="text-5 font-weight-bold text-dark"
-                                    >{{reminder.reminderTasks.task}}</span
-                                  ></a
-                                ><br />Due:{{reminder.reminderTasks.dueDate}}
-                              </div>
-                            </div>
-                          </ng-container>
-                        </div>
-                        <!-- Critical Faults DIV -->
-                        <div
-                          class="vehicle-common-box mt-4"
-                          id="vehicle-service-reminders"
-                        >
-                          <div class="row m-0">
-                            <div
-                              class="col-lg-12 p-2 back-color-gray font-weight-bold text-4 border-box"
-                            >
-                              Critical Faults
-                            </div>
-                          </div>
-                          <div class="row text-center m-0">
-                            <div class="col-lg-12 p-3 text-4">
-                              <a [routerLink]="">No Critical Faults</a>
-                            </div>
+                            <table class="table table-responsive-lg mt-3 mb-0">
+                              <thead>
+                                <tr>
+                                  <th width="25%">Due Date</th>
+                                  <th width="25%">Remind Days</th>
+                                  <th width="20%">Task Name</th>
+                                  <th width="55%">Description</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                               
+                                  <ng-container *ngFor = "let reminder of reminders">
+                                    <tr *ngIf="reminder.reminderType == 'vehicle'">
+                                  
+                                      <td>{{reminder.reminderTasks.dueDate}}</td>
+                                      <td>{{reminder.reminderTasks.remindByDays}}</td>
+                                      <td>{{reminder.reminderTasks.taskDetail != undefined ? reminder.reminderTasks.taskDetail.taskName : '' }}</td>
+                                      <td>
+                                        {{reminder.reminderTasks.taskDetail != undefined ? reminder.reminderTasks.taskDetail.description : ''}}
+                                      </td>
+                                    </tr>
+                              </ng-container>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
+              
                         <!-- Document Section -->
                         <div class="vehicle-common-box mt-4">
                           <div class="row m-0">
@@ -766,23 +840,21 @@
                               <tr>
                                 <th width="25%" class="">Comp. Date</th>
                                 <th width="50%">Details</th>
-                                <th width="15%">Total</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr *ngFor="let history of serviceHistory">
-                                <td>Mar 15, 2020</td>
+                                <td>{{history.completionDate}}</td>
                                 <td>
-                                  Oil Change - Brakes Replace - Tires Replace
+                                  <ng-container *ngFor="let taskDetail of history.taskDetail.Items; let i = index">
+                                    <span *ngIf="i == 0">
+                                      {{taskDetail.issueName}}
+                                    </span>
+                                    <span *ngIf="i != 0">
+                                      , {{taskDetail.issueName}}
+                                    </span>
+                                   </ng-container>
                                 </td>
-                                <td>$67.78</td>
-                              </tr>
-                              <tr>
-                                <td>Mar 15, 2020</td>
-                                <td>
-                                  Oil Change - Brakes Replace - Tires Replace
-                                </td>
-                                <td>$67.78</td>
                               </tr>
                             </tbody>
                           </table>
@@ -820,7 +892,7 @@
                             <tbody>
                               <tr *ngFor="let fuel of fuelEntries">
                                 <td>{{fuel.fuelDate}}</td>
-                                <td>{{fuel.additionalDetails.odometer}}</td>
+                                <td>{{fuel.additionalDetails != undefined ? fuel.additionalDetails.odometer: ''}}</td>
                                 <td>{{fuel.totalGallons}}</td>
                                 <td>{{fuel.totalLiters}}</td>
                                 <td>
@@ -1143,7 +1215,7 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            StartDate Date:
+                            Start Date:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ lifeCycle.startDate }}
@@ -2147,7 +2219,7 @@
                             {{ loan.loadEndDate }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -2156,7 +2228,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ loan.accountNumber }}
                           </div>
-                        </div>
+                        </div> -->
                         <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -2167,7 +2239,7 @@
                             {{ loan.notes }}
                           </div>
                         </div>
-                        <div class="row m-0">
+                        <!-- <div class="row m-0">
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
@@ -2176,7 +2248,7 @@
                           <div class="col-lg-8 p-2 border-box">
                             {{ loan.generateExpenses }}
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
