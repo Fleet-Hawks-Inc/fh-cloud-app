@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
-
+  dataMessage = 'Fetching Data....'
   allAssetTypes: any;
   assetTypesObjects: any = {};
   title = 'Assets List';
@@ -59,7 +59,7 @@ export class AssetListComponent implements OnInit {
     year: true,
     make: true,
     model: true,
-    ownership: true,
+    ownership: false,
     status: true,
     group: false,
     aceID: false,
@@ -142,7 +142,7 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchModalsByIDs() {
-    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
     });
   }
@@ -203,6 +203,9 @@ export class AssetListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('assets/fetch/records?assetID='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result['Items'].length == 0) {
+          this.dataMessage = 'No Data Found'
+        }
         this.allData = result['Items'];
 
         if(this.assetID != '') {
@@ -306,8 +309,10 @@ export class AssetListComponent implements OnInit {
     }
 
     if(this.hideShow.ownership == false) {
+      console.log('ownership', this.hideShow.ownership)
       $('.col8').css('display','none');
     } else {
+      $('.col8').removeClass('extra');
       $('.col8').css('display','');
     }
 

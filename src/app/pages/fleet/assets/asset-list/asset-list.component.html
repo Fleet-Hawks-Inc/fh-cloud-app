@@ -216,13 +216,13 @@
                   <thead>
                      <tr>
                         <th class="col1 minWidth200">Asset Name/Number</th>
-                        <th class="col2 minWidth200">Type</th>
+                        <th class="col2 minWidth120">Type</th>
                         <th class="col3 minWidth200">Plate Number</th>
                         <th class="col4 minWidth200">Last Known Location</th>
-                        <th class="col5 minWidth200">Year</th>
+                        <th class="col5 minWidth120">Year</th>
                         <th class="col6 minWidth200">Make</th>
                         <th class="col7 minWidth200">Model</th>
-                        <th class="col8 minWidth200">Ownership</th>
+                        <th class="col8 extra">Ownership</th>
                         <th class="col10 extra">Group</th>
                         <th class="col11 extra">ACE ID</th>
                         <th class="col12 extra">ACI ID</th>
@@ -234,7 +234,7 @@
                   </thead>
                   <tbody>
                      <tr *ngIf="allData.length == 0" class="text-center">
-                        <td colspan="15">No records found</td>
+                        <td colspan="15">{{dataMessage}}</td>
                     </tr>
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>

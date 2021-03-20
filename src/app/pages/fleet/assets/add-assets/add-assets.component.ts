@@ -149,17 +149,6 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
-
-  // fetchAllAssetTypes() {
-  //   this.httpClient.get('assets/trailers.json').subscribe(data =>{
-  //     this.allAssetTypes = data;
-  //   });
-  // }
-
-
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
@@ -178,7 +167,6 @@ export class AddAssetsComponent implements OnInit {
    */
   addAsset() {
     this.hideErrors();
-    console.log('data', this.assetsData)
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
@@ -338,7 +326,9 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
-
+        console.log('result', result)
+        this.assetsData['timeCreated'] = result.timeCreated;
+        console.log('assetsData', this.assetsData)
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.assetsImages = result.uploadedPhotos.map(x => ({
             path: `${this.Asseturl}/${result.carrierID}/${x}`,
@@ -403,7 +393,8 @@ export class AddAssetsComponent implements OnInit {
         ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
       },
       uploadedPhotos: this.existingPhotos,
-      uploadedDocs: this.existingDocs
+      uploadedDocs: this.existingDocs,
+      timeCreated: this.assetsData['timeCreated']
     };
 
 

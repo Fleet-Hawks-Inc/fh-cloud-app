@@ -1,4 +1,4 @@
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner>
+
 <section class="body">
 
     <div class="inner-wrapper">
@@ -41,7 +41,7 @@
                                           </tr> -->
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Type</td>
-                                             <td class="text-capitalize">{{assetType}}</td>
+                                             <td class="text-capitalize">{{assetObjects[assetType]}}</td>
                                           </tr>
                                           <tr>
                                              <td class="back-color-gray font-weight-bold">Licence Plate Number</td>
@@ -83,60 +83,7 @@
                                           </tr>
                                        </tbody>
                                     </table>
-
-                              <!-- <table class="table table-bordered table-responsive-lg" *ngFor="let item of assetData">
-                                 <tbody>
-                                    <tr>
-                                       <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
-                                       <td  width="60%">{{item.assetIdentification}} </td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">VIN</td>
-                                       <td>{{item.VIN}}</td>
-                                    </tr>
-
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Type</td>
-                                       <td>{{item.assetDetails.assetType}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Licence Plate Number &  Licence State</td>
-                                       <td>{{item.assetDetails.licencePlateNumber}} & {{item.assetDetails.licenceStateID}}</td>
-                                    </tr>
-
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Year, Make & Model</td>
-                                       <td>{{item.assetDetails.year}}, {{item.assetDetails.manufacturer}} & {{item.assetDetails.model}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Length</td>
-                                       <td>{{item.assetDetails.length}} {{item.assetDetails.lengthUnit}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Axles</td>
-                                       <td>{{item.assetDetails.axle}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">GVWR</td>
-                                       <td>{{item.assetDetails.GVWR}} {{item.assetDetails.GVWR_Unit}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">GAWR</td>
-                                       <td>{{item.assetDetails.GAWR}} {{item.assetDetails.GAWR_Unit}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Ownership</td>
-                                       <td>{{item.assetDetails.ownerShip}}</td>
-                                    </tr>
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">
-                                          Notes
-                                       </td>
-                                       <td>{{item.assetDetails.remarks}}</td>
-                                    </tr>
-                                 </tbody>
-                              </table> -->
-                             </div>
+                              </div>
                           </div>
                           <div class="row mt-3">
                            <div class="col-lg-12">
@@ -147,11 +94,11 @@
                                <tbody>
                                   <tr>
                                      <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
-                                     <td  width="60%">{{dateOfIssue ? dateOfIssue : '-'}} </td>
+                                     <td  width="60%">{{dateOfIssue ? (dateOfIssue | date : 'yyyy/MM/dd') : '-'}} </td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Date of Expiry</td>
-                                     <td>{{dateOfExpiry ? dateOfExpiry : '-'}}</td>
+                                     <td>{{dateOfExpiry ? (dateOfExpiry | date : 'yyyy/MM/dd') : '-'}}</td>
                                   </tr>
 
                                   <tr>
@@ -165,7 +112,7 @@
 
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Vendor</td>
-                                     <td class="text-capitalize">{{vendor ? vendor : '-'}}</td>
+                                     <td class="text-capitalize">{{vendor}}</td>
                                   </tr>
                                </tbody>
                             </table>

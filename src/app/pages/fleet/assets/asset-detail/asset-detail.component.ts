@@ -58,6 +58,8 @@ export class AssetDetailComponent implements OnInit {
   errors = {};
 
   statesObject: any = {};
+  assetObjects: any = {};
+  vendorObjects: any = {};
   uploadedDocs = [];
   uploadedPhotos = [];
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustUrl('');
@@ -129,6 +131,8 @@ export class AssetDetailComponent implements OnInit {
     this.fetchAllStatesIDs();
     this.fetchManufacturesByIDs();
     this.fetchModalsByIDs();
+    this.fetchAssetsTypes();
+    this.fetchVendorsByIDs();
   }
 
   fetchManufacturesByIDs() {
@@ -140,6 +144,13 @@ export class AssetDetailComponent implements OnInit {
   fetchModalsByIDs() {
     this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
+    });
+  }
+
+  fetchVendorsByIDs() {
+    this.apiService.getData('vendors/get/list').subscribe((result: any) => {
+      this.vendorObjects = result;
+      console.log('vendorObjects', this.vendorObjects)
     });
   }
 
@@ -166,12 +177,12 @@ export class AssetDetailComponent implements OnInit {
           this.year =  this.assetData.assetDetails.year;
           this.manufacturer =  this.assetData.assetDetails.manufacturer;
           this.model =  this.assetData.assetDetails.model;
-          if (this.assetData.assetDetails.length != undefined || this.assetData.assetDetails.length != null) {
+          if (this.assetData.assetDetails.length != undefined) {
             this.length =  this.assetData.assetDetails.length + ' ' + this.assetData.assetDetails.lengthUnit;
           }
-          if (this.assetData.assetDetails.lengthUnit != undefined || this.assetData.assetDetails.lengthUnit != null) {
-            this.lengthUnit =   this.assetData.assetDetails.lengthUnit;
-          }
+          // if (this.assetData.assetDetails.lengthUnit != undefined || this.assetData.assetDetails.lengthUnit != null) {
+          //   this.lengthUnit =   this.assetData.assetDetails.lengthUnit;
+          // }
           if (this.assetData.assetDetails.axle != undefined || this.assetData.assetDetails.axle != null) {
             this.axle =  this.assetData.assetDetails.axle;
           }
@@ -208,7 +219,7 @@ export class AssetDetailComponent implements OnInit {
           if (this.assetData.insuranceDetails.reminderBeforeUnit != undefined || this.assetData.insuranceDetails.reminderBeforeUnit != null) {
             this.reminderBeforeUnit =  this.assetData.insuranceDetails.reminderBeforeUnit;
           }
-          if (this.assetData.insuranceDetails.vendor != undefined || this.assetData.insuranceDetails.vendor != null) {
+          if (this.assetData.insuranceDetails.vendor != undefined) {
             this.vendor = this.assetData.insuranceDetails.vendor;
           }                           
           
@@ -243,6 +254,14 @@ export class AssetDetailComponent implements OnInit {
         this.statesObject = result;
       });
   }
+
+  fetchAssetsTypes() {
+    this.apiService.getData('assetTypes/get/list')
+      .subscribe((result: any) => {
+        this.assetObjects = result;
+      });
+  }
+
 
   fetchDevicesByID() {
     this.allDevices = [];
