@@ -261,7 +261,7 @@ driverData = {
   terminationDate: '',
   contractStart: '',
   contractEnd: '',
-  employeeId: '',
+  employeeContractorId: '',
   driverType: 'employee',
   entityType: 'driver',
   gender: 'M',
@@ -493,6 +493,7 @@ years = [];
     this.manufacturers = this.listService.manufacturerList;
     this.models = this.listService.modelList;
     this.drivers = this.listService.driversList;
+    this.ownerOperators = this.listService.ownerOperatorList;
 
     await this.getCurrentuser();
     this.listService.ownerOperatorList;
@@ -1303,10 +1304,7 @@ fetchDrivers(){
   
   async nextStep() {
     await this.onSubmit();
-    if(this.absDocs.length == 0) {
-      this.abstractValid = true; 
-    }
-   
+    
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
       this.abstractValid = true; 
       return;
@@ -1468,7 +1466,6 @@ fetchDrivers(){
       delete this.driverData['contractEnd'];
       delete this.driverData['contractorId'];
     } else {
-      delete this.driverData['employeeId'];
       delete this.driverData['startDate'];
       delete this.driverData['terminationDate'];
     }

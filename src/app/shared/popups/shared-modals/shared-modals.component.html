@@ -1015,8 +1015,8 @@
                                            <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                               ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <div class="input-group">
-                                              <input [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
-                                                 class="form-control" (change)="onChangeHideErrors('employeeId')" placeholder="Enter employeeID of driver">
+                                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                                 class="form-control" (change)="onChangeHideErrors('employeeContractorId')" placeholder="Enter employeeID of driver">
                                            </div>
                                         </div>
                                         <div class="col-lg-12" id=""
@@ -1024,8 +1024,8 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
-                                                class="form-control" placeholder="Enter contractor ID of driver">
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                                class="form-control" (change)="onChangeHideErrors('employeeContractorId')" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
                                         <div class="col-lg-12" id="companyDiv"
@@ -1133,7 +1133,7 @@
                                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input class="form-control p-0" [ngClass]="abstractValid ? 'error' : 'err' "
                                               name="abstractDocs"
-                                              (change)="selectDocuments($event, null);onChangeHideErrors('abstractDocs')"
+                                              (change)="onChangeHideErrors('abstractDocs'); selectDocuments($event, null)"
                                               type="file" multiple>
                                            <label class="error" *ngIf="abstractValid">
                                               This Field is required
@@ -1392,7 +1392,7 @@
                                         <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                            name="licenceDetails.CDL_Number" type="text" class="form-control"
                                            placeholder="Enter CDL(Commercial Driving Licence) number"
-                                           (change)="onChangeHideErrors('CDL_Number')">
+                                           (change)="onChangeHideErrors('licenceDetails.CDL_Number')">
                                      </div>
                                      <div class="col-lg-12">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Licence
