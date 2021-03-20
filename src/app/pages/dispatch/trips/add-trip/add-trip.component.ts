@@ -25,7 +25,10 @@ export class AddTripComponent implements OnInit {
     public searchResults: any;
     public searchResults1: any;
     actualMiles=0;
-    
+    public selectedVehicleSpecs= []
+    public optionalSpec={
+        height:4
+    };
     public saveCords:any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
@@ -190,6 +193,7 @@ export class AddTripComponent implements OnInit {
         });
     }
 
+    
     fetchCarriers() {
         this.apiService.getData('carriers')
             .subscribe((result: any) => {
@@ -411,6 +415,7 @@ export class AddTripComponent implements OnInit {
         $(".labelRow" + index).css('display', '');
         // $(".editRow"+index).css('display','none');
         $('.editRow' + index).addClass('rowStatus');
+        this.getVehicles();
     }
 
     closeEditRow(index) {
@@ -797,7 +802,9 @@ export class AddTripComponent implements OnInit {
         }
     }
 
+
     fetchVehicles() {
+
         this.apiService.getData('vehicles')
             .subscribe((result: any) => {
                 this.vehicles = result.Items;
@@ -1623,6 +1630,7 @@ export class AddTripComponent implements OnInit {
 
     resetMap() {
         this.newCoords = [];
+      
         // this.spinner.show();
         // await Promise.all(data.map(async item => {
         //     let result = await this.hereMap.geoCode(item);
@@ -1636,8 +1644,31 @@ export class AddTripComponent implements OnInit {
             }
         })
         console.log('this.newCoords reset', this.newCoords)
-        this.hereMap.calculateRoute(this.newCoords);
+
+            this.hereMap.calculateRoute(this.newCoords,this.optionalSpec)
+        
         // this.spinner.hide();
         // this.newCoords = [];
+    }
+    getVehicles(){
+        this.trips.forEach(trip=>{
+            if(trip.vehicleID){
+            this.selectedVehicleSpecs.push(this.vehicles.find(({vehicleID})=>vehicleID==trip.vehicleID).specifications)
+            }
+        })
+        if(this.selectedVehicleSpecs.length>0){
+            console.log("vechilce's Specifications",this.selectedVehicleSpecs);
+            this.optionalSpec={
+                "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height; }))
+            }
+            console.log(this.optionalSpec)
+            this.resetMap();
+        }
+        else{
+            console.log("No vehicle is specified");
+        }
+        
+        console.log("this.trips",this.trips);
+
     }
 }
