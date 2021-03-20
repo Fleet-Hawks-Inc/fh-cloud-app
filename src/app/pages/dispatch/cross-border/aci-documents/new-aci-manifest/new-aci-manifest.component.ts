@@ -1,4 +1,5 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
@@ -891,18 +892,22 @@ export class NewAciManifestComponent implements OnInit {
   fastValidation(e) {
     const fastCard = e.target.value;
     const newString = fastCard.split('');
-    if (newString.length != 14) {
-      this.errorFastCard = true;
+    if (newString.length == 0) {
+      this.errorFastCard = false;
     } else {
-      const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
-      const fastEnd = newString[12].concat(newString[13]);
-      if (fastStart != '4270') {
-        this.errorFastCard = true;
-      }
-      else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
+      if (newString.length != 14) {
         this.errorFastCard = true;
       } else {
-        this.errorFastCard = false;
+        const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
+        const fastEnd = newString[12].concat(newString[13]);
+        if (fastStart != '4270') {
+          this.errorFastCard = true;
+        }
+        else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
+          this.errorFastCard = true;
+        } else {
+          this.errorFastCard = false;
+        }
       }
     }
   }
