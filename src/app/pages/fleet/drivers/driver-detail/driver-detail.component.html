@@ -761,9 +761,13 @@
                                         <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
                                     </div>
                                     <div class="row m-0" *ngIf="driverType != 'employee'">
-                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{ownerOperatorsObjects[ownerOperator]}}</div>
+                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contractor ID:</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{contractorId}}</div>
                                     </div>
+                                    <div class="row m-0" *ngIf="driverType != 'employee'">
+                                       <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
+                                       <div class="col-lg-6 p-2 bor_half">{{ownerOperatorsObjects[ownerOperator]}}</div>
+                                   </div>
                                     <!-- <div class="row m-0" *ngIf="driverType != 'employee'">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company Name:</div>
                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{companyName}}</div>
