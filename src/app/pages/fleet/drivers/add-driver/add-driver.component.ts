@@ -1295,4 +1295,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       })
     });
   }
+
+  closeGroupModal (){
+    this.groupData = {
+      groupType : 'drivers', 
+      groupName: '',
+      groupMembers: '',
+      description: '',
+    };
+   
+    $("#addDriverGroupModal").modal("hide");
+  }
+
 }

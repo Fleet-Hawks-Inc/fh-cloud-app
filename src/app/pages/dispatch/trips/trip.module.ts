@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import {SharedModule} from '../../../shared/shared.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -35,7 +36,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    DragDropModule
   ],
   providers: [unsavedChangesGuard]
 })
