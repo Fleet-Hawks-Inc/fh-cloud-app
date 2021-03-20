@@ -70,12 +70,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     address: [],
   };
   driverData = {
-    employeeId: '',
+    employeeContractorId: '',
     driverType: 'employee',
     entityType: Constants.DRIVER,
     gender: 'M',
     DOB: '',
-    contractorId: '',
     ownerOperator: '',
     driverStatus: '',
     userName: '',
@@ -485,7 +484,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.contractStart;
       delete this.driverData.contractEnd;
     } else {
-      delete this.driverData.employeeId;
+      // delete this.driverData.employeeId;
       delete this.driverData.startDate;
       delete this.driverData.terminationDate;
     }
@@ -724,7 +723,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-    console.log("front", this.driverData)
+    console.log('driver', this.driverData)
     // create form data instance
     const formData = new FormData();
 
@@ -911,8 +910,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
         this.driverData.driverType = result.driverType;
-        this.driverData.employeeId = result.employeeId;
-        this.driverData.contractorId = result.contractorId;
+        this.driverData.employeeContractorId = result.employeeContractorId;
+        // this.driverData.contractorId = result.contractorId;
         
         this.driverData.ownerOperator = result.ownerOperator;
 
@@ -1075,7 +1074,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
         this.driverData.emergencyDetails.email = result.emergencyDetails.email;
         this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
-
+        this.driverData['timeCreated'] = result.timeCreated;
       });
   }
 

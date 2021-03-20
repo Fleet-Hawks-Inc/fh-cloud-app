@@ -168,7 +168,7 @@ export class GeofenceListComponent implements OnInit {
       .getData(`geofences/isDeleted/${geofenceID}/${value}`)
       .subscribe((result: any) => {
         this.geofences = [];
-        this.toastr.success('Geofecne deleted successfully!');
+        this.toastr.success('Geofence deleted successfully!');
         this.fetchLogsCount();
         this.initDataTable();
       });
