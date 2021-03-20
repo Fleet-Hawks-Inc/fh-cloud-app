@@ -1056,20 +1056,24 @@ export class NewAceManifestComponent implements OnInit {
   fastValidation(e) {
     const fastCard = e.target.value;
     const newString = fastCard.split('');
-    if (newString.length != 14) {
-      this.errorFastCard = true;
+    if (newString.length == 0) {
+      this.errorFastCard = false;
     } else {
-      const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
-      const fastEnd = newString[12].concat(newString[13]);
-      if (fastStart != '4270' && fastStart != '4110') {
+      if (newString.length != 14) {
         this.errorFastCard = true;
       }
-      else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
-        this.errorFastCard = true;
-      } else {
-        this.errorFastCard = false;
+       else {
+        const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
+        const fastEnd = newString[12].concat(newString[13]);
+        if (fastStart != '4270' && fastStart != '4110') {
+          this.errorFastCard = true;
+        }
+        else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
+          this.errorFastCard = true;
+        } else {
+          this.errorFastCard = false;
+        }
       }
     }
-  }
-
+   }
 }
