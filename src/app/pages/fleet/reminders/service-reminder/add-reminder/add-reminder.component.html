@@ -66,10 +66,10 @@
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
                                  </div>
                               </div>
-                              <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
+                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
                                  <button type="button" data-toggle="modal" data-target="#addGroupModal"
                                     class="modal-with-form btn btn-sm btn-success text-light"><i
-                                       class="fas fa-plus"></i> Add Group</button>
+                                       class="fas fa-plus"></i> Group</button>
                               </div>
 
                            </div>
@@ -104,12 +104,10 @@
                                           </div>
                                           <div class="col-lg-6 pl-0">
                                              <ng-select [(ngModel)]="timeType" name="timeType">
-
                                                    <ng-option value="Day(s)">Day(s)</ng-option>
                                                    <ng-option value="Week(s)">Week(s)</ng-option>
                                                    <ng-option value="Month(s)">Month(s)</ng-option>
                                                    <ng-option value="Year(s)">Year(s)</ng-option>
-
                                              </ng-select>
                                           </div>
                                        </div>
@@ -118,7 +116,7 @@
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer" placeholder="Miles to repeat service task"
-                                          name="odometer" type="number" class="form-control">
+                                          name="odometer" type="number" class="form-control" min='1'>
                                     </div>
                                  </div>
                               </div>

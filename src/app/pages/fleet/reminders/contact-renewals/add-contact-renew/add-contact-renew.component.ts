@@ -44,7 +44,7 @@ export class AddContactRenewComponent implements OnInit {
   groups = [];
   groupData = {
     groupName: '',
-    groupType : constants.GROUP_USERS,
+    groupType: constants.GROUP_USERS,
     description: '',
     groupMembers: []
   };
@@ -58,8 +58,8 @@ export class AddContactRenewComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   constructor(private apiService: ApiService,
-              private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-              private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
+    private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
+    private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -70,7 +70,7 @@ export class AddContactRenewComponent implements OnInit {
     this.fetchGroups();
     this.fetchContacts();
     this.fetchDrivers();
-    this. fetchServiceTaks();
+    this.fetchServiceTaks();
     $(document).ready(() => {
       this.contactRenewalForm = $('#contactRenewalForm').validate();
     });
@@ -133,68 +133,63 @@ export class AddContactRenewComponent implements OnInit {
   }
   addRenewal() {
     this.hideErrors();
-    if (this.time > 0) {
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
-        default:
-          {
-            this.numberOfDays = this.time * 0;
-            break;
-          }
+    switch (this.timeType) {
+      case 'Day(s)': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-console.log('data',this.reminderData);
-      this.apiService.postData('reminders', this.reminderData).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Contact Renewal Added Successfully');
-          this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
-          this.reminderData = {
-            reminderIdentification: '',
-            reminderType: constants.REMINDER_CONTACT,
-            reminderTasks: {
-              task: '',
-              remindByDays: 0,
-              dueDate: ''
+      case 'Month(s)': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'Week(s)': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+      default:
+        {
+          this.numberOfDays = this.time * 0;
+          break;
+        }
+    }
+    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.apiService.postData('reminders', this.reminderData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
             },
-            subscribers: [],
-            sendEmail: false
-          };
-        },
-      });
-    }
-    else {
-      this.toastr.warning('Time Must Be Positive Value');
-    }
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Contact Renewal Reminder Added Successfully!');
+        this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
+        this.reminderData = {
+          reminderIdentification: '',
+          reminderType: constants.REMINDER_CONTACT,
+          reminderTasks: {
+            task: '',
+            remindByDays: 0,
+            dueDate: ''
+          },
+          subscribers: [],
+          sendEmail: false
+        };
+      },
+    });
+
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -242,69 +237,66 @@ console.log('data',this.reminderData);
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    if (this.time > 0) {
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
-        default:
-          {
-            this.numberOfDays = this.time * 0;
-            break;
-          }
+    switch (this.timeType) {
+      case 'Day(s)': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-
-      this.apiService.putData('reminders', this.reminderData).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              }),
-            )
-            .subscribe((val) => {
-              this.throwErrors();
-            });
-
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Contact Renewal Reminder Updated Successfully');
-          this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
-          this.Success = '';
-          this.reminderData = {
-            reminderIdentification: '',
-            reminderType: constants.REMINDER_CONTACT,
-            reminderTasks: {
-              task: '',
-              remindByDays: 0,
-              dueDate: ''
-            },
-            subscribers: [],
-            sendEmail: false
-          };
-        },
-      });
-    } else {
-      this.toastr.warning('Time Must Be Positive Value');
+      case 'Month(s)': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'Week(s)': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+      default:
+        {
+          this.numberOfDays = this.time * 0;
+          break;
+        }
     }
+    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+
+    this.apiService.putData('reminders', this.reminderData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            }),
+          )
+          .subscribe((val) => {
+            this.throwErrors();
+          });
+
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Contact Renewal Reminder Updated Successfully');
+        this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
+        this.Success = '';
+        this.reminderData = {
+          reminderIdentification: '',
+          reminderType: constants.REMINDER_CONTACT,
+          reminderTasks: {
+            task: '',
+            remindByDays: 0,
+            dueDate: ''
+          },
+          subscribers: [],
+          sendEmail: false
+        };
+      },
+    });
+
   }
 
-   // SERVICE TASK
-   addServiceTask(){
+  // SERVICE TASK
+  addServiceTask() {
     this.apiService.postData('tasks', this.serviceTask).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -326,7 +318,7 @@ console.log('data',this.reminderData);
       next: (res) => {
         this.response = res;
         $('#addServiceTasks').modal('toggle');
-        this.toastr.success('Renewal Type Added Successfully');
+        this.toastr.success('Contact Renewal Added Successfully!');
         this.fetchServiceTaks();
         this.router.navigateByUrl('/fleet/reminders/contact-renewals/add');
       },
@@ -356,8 +348,14 @@ console.log('data',this.reminderData);
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
-        this.toastr.success('Group added successfully');
+        this.toastr.success('Group Added Successfully');
         $('#addGroupModal').modal('hide');
+        this.groupData = {
+          groupName: '',
+          groupType: constants.GROUP_USERS,
+          description: '',
+          groupMembers: []
+        };
         this.fetchGroups();
       },
     });
