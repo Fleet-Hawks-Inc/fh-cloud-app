@@ -308,7 +308,7 @@ export class AddTripComponent implements OnInit {
             }
 
             
-            console.log('this.trips', this.trips)
+            
         } else {
             this.toastr.error('Please fill type and location to add trip plan.');
             return false;
@@ -373,7 +373,7 @@ export class AddTripComponent implements OnInit {
         $("#editCell4" + index).val(editRowValues.locationName);
         $(".labelRow" + index).css('display', 'none'); 0
         $('.editRow' + index).removeClass('rowStatus');
-        console.log('this.trips[index]', this.trips[index])
+        
         this.spinner.hide();
     }
 
@@ -1321,7 +1321,7 @@ export class AddTripComponent implements OnInit {
         const result = await this.hereMap.geoCode(label);
         // await this.resetMap();
         if (elem == 'editLoc') {
-            console.log('result', result);
+            
             
             this.trips[index].locationName = label;
             this.trips[index]['lat'] = result.items[0].position.lat;
@@ -1643,7 +1643,6 @@ export class AddTripComponent implements OnInit {
                 this.newCoords.push(`${v.lat},${v.lng}`)
             }
         })
-        console.log('this.newCoords reset', this.newCoords)
 
             this.hereMap.calculateRoute(this.newCoords,this.optionalSpec)
         
@@ -1657,18 +1656,18 @@ export class AddTripComponent implements OnInit {
             }
         })
         if(this.selectedVehicleSpecs.length>0){
-            console.log("vechilce's Specifications",this.selectedVehicleSpecs);
+
             this.optionalSpec={
                 "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height; }))
             }
-            console.log(this.optionalSpec)
+
             this.resetMap();
         }
         else{
             console.log("No vehicle is specified");
         }
         
-        console.log("this.trips",this.trips);
+        
 
     }
 }
