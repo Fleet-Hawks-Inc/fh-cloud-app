@@ -48,9 +48,9 @@
 
                <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post">
 
-                  <div class="card-body pt-2">
+                  <div class="card-body shadow-none border-0 pt-2">
 
-                     <div class="tab-content" id="myTabContent">
+                     <div class="tab-content shadow-none border-0 p-0" id="myTabContent">
                         <div class="tab-pane" [ngClass]="{'show active': activeTab == 1}" id="details" role="tabpanel"
                            aria-labelledby="details-tab">
                            <div class="">
@@ -1248,6 +1248,7 @@
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control"
                                                    name="fluid.fuelTankOneCapacity"
+                                                   min="1"
                                                    [(ngModel)]="fluid.fuelTankOneCapacity"
                                                    placeholder="eg. 100,200 etc.">
                                              </div>

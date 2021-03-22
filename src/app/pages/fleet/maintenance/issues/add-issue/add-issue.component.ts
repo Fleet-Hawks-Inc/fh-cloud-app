@@ -1,7 +1,6 @@
 import {  Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import {AwsUploadService} from '../../../../../services';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
@@ -38,6 +37,7 @@ export class AddIssueComponent implements OnInit {
   assets = [];
   contacts = [];
   drivers = [];
+  users = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -62,7 +62,7 @@ export class AddIssueComponent implements OnInit {
   constructor(private apiService: ApiService,
               private router: Router,
               private route: ActivatedRoute,
-              private awsUS: AwsUploadService, private toaster: ToastrService,
+              private toaster: ToastrService,
               private spinner: NgxSpinnerService,
               private location: Location, private domSanitizer: DomSanitizer,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>) {
@@ -77,6 +77,7 @@ export class AddIssueComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
+    this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
     if (this.issueID) {
       this.title = 'Edit Issue';
@@ -89,7 +90,6 @@ export class AddIssueComponent implements OnInit {
     });
   }
   cancel() {
-    console.log('back', window.history)
     this.location.back(); // <-- go back to previous location on cancel
   }
 
@@ -102,6 +102,11 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
+    fetchUsers(){
+      this.apiService.getData('users').subscribe((result: any) => {
+        this.users = result.Items;
+      });
+    }
     fetchDrivers() {
       this.apiService.getData('drivers').subscribe((result: any) => {
         this.drivers = result.Items;
@@ -112,6 +117,10 @@ export class AddIssueComponent implements OnInit {
     }
     onChangeUnitType(value: any) {
       this.unitType = value;
+      if(this.issueID){
+        this.unitID = '';
+      }
+
     }
   addIssue() {
     this.hideErrors();
@@ -201,24 +210,16 @@ hideErrors() {
     if (obj === 'uploadedDocs') {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i])
+        this.uploadedDocs.push(files[i]);
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-          this.uploadedPhotos.push(files[i])
+          this.uploadedPhotos.push(files[i]);
       }
     }
   }
-  /*
-   * Uploading files which selected
-   */
-  uploadFiles = async () => {
-    this.carrierID = await this.apiService.getCarrierID();
-    this.selectedFileNames.forEach((fileData: any, fileName: string) => {
-      this.awsUS.uploadFile(this.carrierID, fileName, fileData);
-    });
-  }
+
 
     /*
    * Fetch Issue details before updating

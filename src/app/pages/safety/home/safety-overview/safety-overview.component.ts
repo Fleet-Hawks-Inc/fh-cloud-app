@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
-import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 @Component({
@@ -92,8 +87,8 @@ export class SafetyOverviewComponent implements OnInit {
 
   graphXaxis = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-  constructor(private apiService: ApiService, private awsUS: AwsUploadService, private toastr: ToastrService,
-    private spinner: NgxSpinnerService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.fetchevents();

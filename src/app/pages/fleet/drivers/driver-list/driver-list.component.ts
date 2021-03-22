@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import  Constants  from '../../constants';
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class DriverListComponent implements OnInit {
   mapView = false;
   listView = true;
   visible = true;
+  dataMessage: string = Constants.FETCHING_DATA;
 
   driverCheckCount;
   selectedDriverID;
@@ -41,7 +43,7 @@ export class DriverListComponent implements OnInit {
   suggestedDrivers = [];
   homeworld: Observable<{}>;
 
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
   currentStatus: any;
@@ -135,29 +137,44 @@ export class DriverListComponent implements OnInit {
   }
 
   getSuggestions(value) {
-    this.apiService
+    this.driverID = '';
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
+        result.Items.map((v)=>{
+          if(v.lastName == undefined) {
+            v.lastName = '';
+          }
+          return v;
+        })
         this.suggestedDrivers = result.Items;
-        if (this.suggestedDrivers.length === 0) {
-          this.driverID = '';
-        }
       });
+    } else {
+      this.suggestedDrivers = [];
+    }
+    
   }
 
   setDriver(driverID, firstName, lastName) {
     this.driverName = firstName+' '+lastName;
-    this.driverID = driverID;
+    // this.driverID = driverID;
+    this.driverID = firstName+'-'+lastName;
 
     this.suggestedDrivers = [];
   }
 
   fetchDriversCount() {
-    this.apiService.getData('drivers/get/count?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
+    this.apiService.getData('drivers/get/count?driver='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.driverID != '') {
+          this.driverEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -250,7 +267,7 @@ export class DriverListComponent implements OnInit {
           this.drivers = [];
           this.fetchDriversCount();
           this.initDataTable();
-          this.toastr.success('Driver deleted successfully!');
+          this.toastr.success('Driver is deactivated!');
         }, err => {
          
         });
@@ -259,8 +276,13 @@ export class DriverListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('drivers/fetch/records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('drivers/fetch/records?driver='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedDrivers = [];
+        this.getStartandEndVal();
         this.drivers = result['Items'];
 
         if(this.driverID != '') {
@@ -295,7 +317,11 @@ export class DriverListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.driverID !== '' || this.dutyStatus !== '') {
+    if(this.driverName !== '' || this.dutyStatus !== '') {
+      if(this.driverID == '') {
+        this.driverID = this.driverName;
+      }
+      this.suggestedDrivers = [];
       this.fetchDriversCount();
       this.initDataTable();
     } else {
@@ -304,7 +330,8 @@ export class DriverListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.driverID !== '' || this.dutyStatus !== '') {
+    if(this.driverName !== '' || this.dutyStatus !== '') {
+      this.drivers = [];
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
@@ -465,17 +492,19 @@ export class DriverListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.driverNext = true;
+    this.driverPrev = true;
     this.driverDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.driverNext = true;
+    this.driverPrev = true;
     this.driverDraw -= 1;
     this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

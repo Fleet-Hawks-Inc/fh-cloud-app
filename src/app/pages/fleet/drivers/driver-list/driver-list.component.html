@@ -14,7 +14,7 @@
                   <div class="col-md-2 col-lg-3">
                      <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
-                          placeholder="Search Driver" class="form-control" (input)="getSuggestions($event.target.value)">
+                          placeholder="Search driver by name" class="form-control" (input)="getSuggestions($event.target.value)">
                      </div>
                      <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                         <ul>
@@ -469,7 +469,7 @@
                               </thead>
                               <tbody>
                                  <tr *ngIf="drivers.length == 0" class="text-center">
-                                    <td colspan="6">No records found</td>
+                                    <td colspan="6">{{dataMessage}}</td>
                                 </tr>
                                  <tr *ngFor="let driver of drivers;let i = index;">
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
@@ -503,7 +503,9 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.sin">{{driver.paymentDetails.SIN_Number}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
 
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.status">{{driver.driverStatus}}</td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.status">
+                                       <span class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
+                                    </td>
                                     <td class="border-0">
                                        <div class="dropdown dropright">
                                           <button class="bg-transparent border-0" type="button"
@@ -522,16 +524,16 @@
                                  </tr>
                               </tbody>
                            </table>
-                           <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
-                              <div class="col-6">
-                                  Showing {{ driverStartPoint }} to {{ driverEndPoint }} of {{ totalRecords }} enteries
-                              </div>
-                              <div class="col-6 text-right">
-                                  <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="driverPrev">Prev</button>
-                                  <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="driverNext">Next</button>
-                              </div>
-                          </div>
                         </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
+                           <div class="col-6">
+                               Showing {{ driverStartPoint }} to {{ driverEndPoint }} of {{ totalRecords }} enteries
+                           </div>
+                           <div class="col-6 text-right">
+                               <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="driverPrev">Prev</button>
+                               <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="driverNext">Next</button>
+                           </div>
+                       </div>
                      </div>
                   </section>
                </div>

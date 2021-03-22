@@ -63,7 +63,6 @@ export class IssueListComponent implements OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-
         this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
@@ -146,7 +145,7 @@ export class IssueListComponent implements OnInit {
             this.issuesPrevEvauatedKeys.push(result['LastEvaluatedKey'].issueID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].issueID;
-          
+
         } else {
           this.issuesNext = true;
           this.lastEvaluatedKey = '';

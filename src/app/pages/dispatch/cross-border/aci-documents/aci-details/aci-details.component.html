@@ -1,12 +1,7 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
 
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
+
         <section role="main" class="content-body">
             <header class="page-header pr-5">
                 <h2>{{title}}</h2>
@@ -772,12 +767,14 @@
                                 <thead>
                                     <tr>
                                         <th> Name </th>
+                                        <th>Contact Number</th>
                                         <th>Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let deliveryDestination of shipmentData.deliveryDestinations">
                                         <td>{{deliveryDestination.name}}</td>
+                                        <td>{{deliveryDestination.contactNumber}}</td>
                                         <td>{{deliveryDestination.address.addressLine}},
                                             {{deliveryDestination.address.city}},{{deliveryDestination.address.stateProvince}},{{deliveryDestination.address.postalCode}}
                                         </td>
@@ -814,13 +811,13 @@
                                             {{commodity.weightUnit}}
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span>{{commodity.hazmatDetails.unCode}}<br>
+                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.unCode}}</span><br>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span>{{commodity.hazmatDetails.emergencyContactName}}
+                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span>{{commodity.hazmatDetails.contactPhone}}<br>
+                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Handling
-                                                Instructions:</span>{{commodity.hazmatDetails.handlingInstructions}}
+                                                Instructions:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.handlingInstructions}}</span>
                                         </td>
                                         <td>
                                             <span class="font-weight-semibold">Marks and Numbers:</span>{{commodity.marksAndNumbers}}

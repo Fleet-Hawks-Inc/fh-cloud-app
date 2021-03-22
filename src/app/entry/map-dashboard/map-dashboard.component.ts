@@ -48,11 +48,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   constructor(private HereMap: HereMapService) { }
 
   ngOnInit() {
-
-    this.platform = new H.service.Platform({
-      apikey: this.apiKey,
-    });
-    
+    this.platform=this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
     this.searchLocation();
     this.showDriverData();
@@ -142,8 +138,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
       }
       );
       this.map.addObject(markers);
-      const defaultLayers = this.platform.createDefaultLayers();
-      const ui = H.ui.UI.createDefault(this.map, defaultLayers);
+      // const defaultLayers = this.platform.createDefaultLayers();
+      // const ui = H.ui.UI.createDefault(this.map, defaultLayers);
       markers.setData(`<h5>${driver.driverName}</h5>
       Load: ${driver.loadCapacity}</br>
       Speed: ${driver.speed}<br>
@@ -156,7 +152,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
         });
 
         // show info bubble
-        ui.addBubble(bubble);
+       this.HereMap.ui.addBubble(bubble);
       }, false);
 
 

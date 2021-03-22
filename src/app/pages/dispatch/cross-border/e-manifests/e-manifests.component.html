@@ -1,7 +1,7 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body p-0">
-            <header class="page-header pr-5" *ngIf="activeDiv === 'ace'"> 
+            <header class="page-header pr-5" *ngIf="activeDiv === 'ace'">
                <form class="form-horizontal" method="get">
                   <div class="row px-2" style="padding-top:10px;">
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
@@ -164,7 +164,7 @@
                                        <th>Driver</th>
                                        <th>Vehicle</th>
                                        <th>Trailer</th>
-                                       <th>Shipper</th>
+                                       <th>Consignor</th>
                                        <th>Consignee</th>
                                        <th width="15%">Status</th>
                                        <th width="5%">Action</th>
@@ -181,10 +181,8 @@
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
-                                       <td routerLink="/dispatch/cross-b order/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let driver of aceManifest.drivers;">{{driversList[driver]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">
-                                          {{vehiclesList[aceManifest.truck.truckID]}}
-                                       </td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.entryID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shippersList[shipment.shipperID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{consigneesList[shipment.consigneeID]}},</span></td>
@@ -228,7 +226,7 @@
                                        <th>Driver</th>
                                        <th>Vehicle</th>
                                        <th>Trailer</th>
-                                       <th>Shipper</th>
+                                       <th>Consignor</th>
                                        <th>Consignee</th>
                                        <th width="15%">Status</th>
                                        <th width="5%">Action</th>
@@ -239,11 +237,11 @@
                                        <td colspan="11">No records found</td>
                                     </tr>
                                     <tr *ngFor = "let aciManifest of ACIList;">
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
-                                       <td  routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let driver of aciManifest.drivers">{{driversList[driver]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span>{{driversList[aciManifest.mainDriver]}}</span><span *ngIf="aciManifest.coDrivers.length>0"><span *ngFor = "let driver of aciManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shippersList[shipment.shipperID]}}</span></td>

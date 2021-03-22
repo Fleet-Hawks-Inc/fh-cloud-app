@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { AwsUploadService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../services';
@@ -45,13 +44,6 @@ export class AddRouteComponent implements OnInit {
       recurringRoute: false,
       recurringType: '',
       recurringDate: '',
-      sunday: false,
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
-      saturday: false
     },
     destinationInformation: {
       destinationAddress: '',
@@ -65,10 +57,10 @@ export class AddRouteComponent implements OnInit {
   form;
   newCoords = [];
 
-  vehicles = [];
-  assets = [];
-  drivers = [];
-  coDrivers = [];
+  vehicles: any;
+  assets:any;
+  drivers: any;
+  coDrivers: any;
   // locations = [];
   countries = [];
   sourceStates = [];
@@ -90,11 +82,12 @@ export class AddRouteComponent implements OnInit {
   dailyClass = '';
   weekClass = '';
   biClass = '';
+  isDaily = false;
 
   constructor(private apiService: ApiService,
-    private awsUS: AwsUploadService, private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService) {
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
   }
 
   get today() {
@@ -102,6 +95,9 @@ export class AddRouteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listService.fetchVehicles();
+    this.listService.fetchDrivers();
+    this.listService.fetchAssets();
     this.routeID    = this.route.snapshot.params['routeID'];
     if(this.routeID != undefined) {
       this.pageTitle = 'Edit Route';
@@ -109,11 +105,12 @@ export class AddRouteComponent implements OnInit {
       this.pageTitle = 'Add Route';
     } 
     
-    this.fetchVehicles();
-    this.fetchAssets();
-    this.fetchDrivers();
     this.searchLocation();
 
+    this.vehicles = this.listService.vehicleList;
+    this.drivers = this.listService.driversList;
+    this.coDrivers = this.listService.driversList;
+    this.assets = this.listService.assetsList;
     if(this.routeID != undefined) {
       this.fetchRouteByID();
     }
@@ -172,47 +169,16 @@ export class AddRouteComponent implements OnInit {
    * @param data
    */
   async getCoords(data) { 
-    this.spinner.show();
     await Promise.all(data.map(async item => {
       let result = await this.hereMap.geoCode(item.stopName);
       this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
     }));
     this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
     this.newCoords = [];
   }
 
-  fetchVehicles() {
-    this.apiService.getData('vehicles')
-      .subscribe((result: any) => {
-        this.vehicles = result.Items;
-      })
-  }
-
-  fetchAssets() {
-    this.apiService.getData('assets')
-      .subscribe((result: any) => {
-        this.assets = result.Items;
-      })
-  }
-
-  fetchDrivers() {
-    this.apiService.getData('drivers')
-      .subscribe((result: any) => {
-        this.drivers = result.Items;
-        this.coDrivers = result.Items;
-        //for edit
-        if(this.routeID !== undefined) {
-          if(this.routeData['driverUserName'] !== '' && this.routeData['driverUserName'] !== undefined) {
-            this.coDrivers = this.drivers.filter((item) => item.userName !== this.routeData['driverUserName']);
-          }
-        }
-      })
-  }
-
-  resetCodrivers(event) {
+  resetCodrivers() {
     this.routeData.coDriverUserName = '';
-    this.coDrivers = this.drivers.filter((item) => item.userName !== event);
   }
 
   mapShow() {
@@ -229,26 +195,9 @@ export class AddRouteComponent implements OnInit {
         this.toastr.error('Please select recurring type');
         return false;
       }
-
-      if ($('input.daysChecked:checked').length == 0) { 
-        this.toastr.error('Please select day and date of recurring');
-        return false;
-      }
-
-      if (this.routeData.recurring.recurringType === 'weekly') {
-        if ($('input.daysChecked:checked').length > 1) {
-          this.toastr.error('Please select a single day for weekly recurring route');
-          return false;
-        }
-      } else if (this.routeData.recurring.recurringType === 'biweekly') {
-        if ($('input.daysChecked:checked').length > 2) {
-          this.toastr.error('Please select only two days for biweekly recurring route');
-          return false;
-        }
-      }
     }
     
-    this.spinner.show();
+    // this.spinner.show();
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -265,7 +214,6 @@ export class AddRouteComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.spinner.hide();
               this.throwErrors();
             },
             error: () => {
@@ -275,7 +223,6 @@ export class AddRouteComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.spinner.hide();
         this.response = res;
         this.toastr.success('Route added successfully.');
         this.router.navigateByUrl('/dispatch/routes/list');
@@ -304,9 +251,6 @@ export class AddRouteComponent implements OnInit {
   }
 
   async assignLocation(elem, label, index='') {
-    console.log(elem)
-    console.log(label)
-    console.log(index)
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
     const item = {
@@ -321,13 +265,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.sourceInformation['sourceZipCode'] = '';
 
       this.routeData.sourceInformation['sourceAddress'] = `${labelResult.title}` ;
-      if(labelResult.address.houseNumber !== undefined) {
-        this.routeData.sourceInformation['sourceAddress'] += `${labelResult.address.houseNumber}`;
-      }
-
-      if(labelResult.address.street !== undefined) {
-        this.routeData.sourceInformation['sourceAddress'] += `${labelResult.address.street}`;
-      }
       
       if(labelResult.address.countryName !== undefined) {
         this.routeData.sourceInformation['sourceCountry'] = `${labelResult.address.countryName}`;
@@ -354,14 +291,6 @@ export class AddRouteComponent implements OnInit {
       this.routeData.destinationInformation['destinationZipCode'] = '';
 
       this.routeData.destinationInformation['destinationAddress'] = `${labelResult.title}`;
-
-      if(labelResult.address.houseNumber !== undefined) {
-        this.routeData.destinationInformation['destinationAddress'] += `${labelResult.address.houseNumber}`;
-      }
-
-      if(labelResult.address.street !== undefined) {
-        this.routeData.destinationInformation['destinationAddress'] += `${labelResult.address.street}`;
-      }
       
       if(labelResult.address.countryName !== undefined) {
         this.routeData.destinationInformation['destinationCountry'] = `${labelResult.address.countryName}`;
@@ -392,7 +321,6 @@ export class AddRouteComponent implements OnInit {
   }
 
   addStops() {
-    this.spinner.show();
     const item = {
       stopName: '',
       stopNotes: ''
@@ -410,15 +338,18 @@ export class AddRouteComponent implements OnInit {
     setTimeout(function(){
       thiss.routeData.stops = allStops;
     },0.5)
-    this.spinner.hide();
   }
 
   removeStops(i) {
+    
     this.routeData.stops.splice(i, 1);
+    setTimeout(() => {
+      this.reinitMap();
+    }, 1000);
+    
   }
 
   fetchRouteByID(){
-    this.spinner.show();
     this.apiService.getData('routes/'+this.routeID).
       subscribe((result: any) => {
         result = result.Items[0];
@@ -443,13 +374,6 @@ export class AddRouteComponent implements OnInit {
           recurringRoute: result.recurring.recurringRoute,
           recurringType: result.recurring.recurringType,
           recurringDate: result.recurring.recurringDate,
-          sunday: result.recurring.sunday,
-          monday: result.recurring.monday,
-          tuesday: result.recurring.tuesday,
-          wednesday: result.recurring.wednesday,
-          thursday: result.recurring.thursday,
-          friday: result.recurring.friday,
-          saturday: result.recurring.saturday
         }
         this.routeData.destinationInformation = {
           destinationAddress: result.destinationInformation.destinationAddress,
@@ -468,10 +392,12 @@ export class AddRouteComponent implements OnInit {
           this.weekClass = '';
           this.biClass = '';
         } else if(result.recurring.recurringType == 'weekly'){
+          this.isDaily = true;
           this.dailyClass = '';
           this.weekClass = 'selRecc';
           this.biClass = '';
         } else if(result.recurring.recurringType == 'biweekly'){
+          this.isDaily = true;
           this.dailyClass = '';
           this.weekClass = '';
           this.biClass = 'selRecc';
@@ -486,7 +412,6 @@ export class AddRouteComponent implements OnInit {
         }
         this.mapShow()
 
-        this.spinner.hide();
       })
   }
 
@@ -498,26 +423,7 @@ export class AddRouteComponent implements OnInit {
         this.toastr.error('Please select recurring type.');
         return false;
       }
-
-      if ($('input.daysChecked:checked').length == 0) { 
-        this.toastr.error('Please select day and date of recurring.');
-        return false;
-      }
-
-      if (this.routeData.recurring.recurringType === 'weekly') {
-        if ($('input.daysChecked:checked').length > 1) {
-          this.toastr.error('Please select a single day for weekly recurring route.');
-          return false;
-        }
-      } else if (this.routeData.recurring.recurringType === 'biweekly') {
-        if ($('input.daysChecked:checked').length > 2) {
-          this.toastr.error('Please select only two days for biweekly recurring route.');
-          return false;
-        }
-      }
     }
-
-    this.spinner.show();
 
     this.routeData['routeID'] = this.route.snapshot.params['routeID'];
     this.apiService.putData('routes', this.routeData).subscribe({
@@ -528,16 +434,14 @@ export class AddRouteComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              const key = val.message.match(/'([^']+)'/)[1];
-              val.message = val.message.replace(/'.*'/, 'This Field');
-              this.errors[key] = val.message;
-              this.spinner.hide();
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+              
             })
           )
           .subscribe({
             complete: () => {
               this.throwErrors();
-              this.spinner.hide();
             },
             error: () => {},
             next: () => {},
@@ -546,7 +450,6 @@ export class AddRouteComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.spinner.hide();
         this.router.navigateByUrl('/dispatch/routes/list');
         this.toastr.success('Route updated successfully.');
       },
@@ -556,13 +459,29 @@ export class AddRouteComponent implements OnInit {
   selectRecurring(event) {
     $('.reccRoute').removeClass('selRecc');
     $('#'+event.target.id).closest('label').addClass('selRecc');
+    if(event.target.id != 'dailyRecurringRadioBtn') {
+      this.isDaily = true;
+    } else {
+      this.isDaily = false;
+    }
   }
 
   reinitMap() {
     if (this.routeData.stops.length > 1) {
       this.getCoords(this.routeData.stops);
     }
-    
+  }
+
+  gotoVehiclePage() {
+    $('#addVehicleModelDriver').modal('show');
+  }
+
+  gotoDriverPage() {    
+    $('#addDriverModelVehicle').modal('show');
+  }
+
+  gotoAssetPage() {    
+    $('#addAsset').modal('show');
   }
 }
 

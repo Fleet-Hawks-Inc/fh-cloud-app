@@ -1,12 +1,5 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
         <section role="main" class="content-body">
             <header class="page-header pr-5">
                 <h2>ACE Details</h2>
@@ -144,7 +137,7 @@
 
                 </div>
                 <!-- SHIPMENT DIV -->
-                <div class="row mt-3">
+                <div class="row mt-3" *ngIf="shipments?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -655,13 +648,13 @@
                                                 class="font-weight-semibold">Number</span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span><span> {{commodity.hazmatDetails.unCode}}<br></span>
+                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span>{{commodity.hazmatDetails.emergencyContactName}}
+                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span>{{commodity.hazmatDetails.contactPhone}}<br>
+                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Contact
-                                                Email:</span>{{commodity.hazmatDetails.contactEmail}}
+                                                Email:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
                                         </td>
                                         <td><span
                                                 class="font-weight-semibold">C4LineReleaseNumber:</span>{{commodity.c4LineReleaseNumber}}<br>
@@ -738,9 +731,43 @@
                             </table>
                         </div>
                     </div>
+                    <!-- US Address -->
+                    <div class="row">
+                      <div class="col-lg-12"><h4>US Address Details</h4></div>
+                      <div class="col-lg-6">
+                          <table class="table table-bordered m-0">
+                              <tbody>
+                                <tr>
+                                  <th width="40%" class="back-color-gray">Address:</th>
+                                  <td>{{driverData.usAddress.addressLine}}</td>
+                              </tr>
+                                  <tr>
+                                      <th width="40%" class="back-color-gray">
+                                          State:</th>
+                                      <td>{{driverData.usAddress.state}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <div class="col-lg-6">
+                          <table class="table table-bordered m-0">
+                              <tbody>
+
+                                  <tr>
+                                    <th width="40%" class="back-color-gray">City:</th>
+                                    <td>{{driverData.usAddress.city}}</td>
+                                </tr>
+                                  <tr>
+                                      <th width="40%" class="back-color-gray">ZipCode:</th>
+                                      <td>{{driverData.usAddress.zipCode}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
                     <!-- travel documents -->
                     <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Travel Documents Details</h4></div>
+                      <div class="col-lg-12"><h4>Driver Document(s) Details</h4></div>
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
@@ -756,7 +783,6 @@
                                         <td>{{travelDocument.stateProvince}}</td>
                                         <td>{{travelDocument.type}}</td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>

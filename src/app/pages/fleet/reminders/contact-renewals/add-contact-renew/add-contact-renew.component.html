@@ -38,7 +38,7 @@
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
                                     name="reminderIdentification" placeholder="Select contact">
 
-                                    <ng-option *ngFor="let user of users" value="{{user.userName}">
+                                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
                                        {{user.firstName}} {{user.lastName}}</ng-option>
 
                                  </ng-select>
@@ -64,10 +64,10 @@
                                  </div>
 
                               </div>
-                             <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
+                             <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
                               <button type="button" data-toggle="modal" data-target="#addGroupModal"
                               class="modal-with-form btn btn-sm btn-success text-light"><i
-                                 class="fas fa-plus"></i> Add Group</button>
+                                 class="fas fa-plus"></i> Group</button>
                               </div>
 
                            </div>
@@ -100,7 +100,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
                                     <div class="col-lg-4">
-                                       <input type="number" class="form-control" [(ngModel)]="time" name="time" placeholder="eg. 2,3,4..">
+                                       <input type="number" min='1' class="form-control" [(ngModel)]="time" name="time" placeholder="eg. 2,3,4..">
                                     </div>
                                     <div class="col-lg-8 pl-0">
                                        <ng-select [(ngModel)]="timeType" name="timeType">

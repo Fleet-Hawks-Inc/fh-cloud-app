@@ -70,8 +70,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     address: [],
   };
   driverData = {
-    empPrefix: '',
-    employeeId: '',
+    employeeContractorId: '',
     driverType: 'employee',
     entityType: Constants.DRIVER,
     gender: 'M',
@@ -170,7 +169,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       hosRemarks: '',
       hosCycle: '',
       homeTerminal: '',
-      pcAllowed: false, 
+      pcAllowed: false,
       ymAllowed: false,
     },
     emergencyDetails: {
@@ -184,7 +183,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   public searchTerm = new Subject<string>();
   public searchResults: any;
 
-
+  currentUserCarrier: string;
   newDocuments = [];
   newAddress = [];
   /**
@@ -357,12 +356,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.fetchDocuments();
     await this.getCurrentuser();
 
-    if(this.currentUser.userType !== 'Cloud Admin') {
-      this.getCarrierDetails(this.currentUser.carrierID);
-    } else {
-      this.prefixOutput = 'PB-'
-    }
-
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
     });
@@ -432,7 +425,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
 
     this.validateTabErrors();
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;    
+    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
 
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
@@ -491,7 +484,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.contractStart;
       delete this.driverData.contractEnd;
     } else {
-      delete this.driverData.employeeId;
+      // delete this.driverData.employeeId;
       delete this.driverData.startDate;
       delete this.driverData.terminationDate;
     }
@@ -713,8 +706,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     // this.spinner.show();
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
-    
+    // this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
 
     for (let i = 0; i < this.driverData.address.length; i++) {
@@ -731,6 +723,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
+    console.log('driver', this.driverData)
     // create form data instance
     const formData = new FormData();
 
@@ -772,10 +765,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             complete: () => {
               this.throwErrors();
               this.hasError = true;
-              
+
               if(err) return reject(err);
               this.spinner.hide();
-              
+
               //this.toastr.error('Please see the errors');
             },
             error: () => { },
@@ -868,7 +861,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   throwErrors() {
-    
+
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -915,12 +908,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .subscribe(async (result: any) => {
         result = result.Items[0];
 
-        
+
         this.driverData.driverType = result.driverType;
-        let newEmpPrefix = result.employeeId.split('-');
-        this.driverData.employeeId = newEmpPrefix[1];
-        this.driverData.ownerOperator = result.ownerOperator;
+        this.driverData.employeeContractorId = result.employeeContractorId;
+        // this.driverData.contractorId = result.contractorId;
         
+        this.driverData.ownerOperator = result.ownerOperator;
+
         this.driverData.driverStatus = result.driverStatus;
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
@@ -932,7 +926,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.terminationDate = result.terminationDate;
         this.driverData.contractStart = result.contractStart;
         this.driverData.contractEnd = result.contractEnd;
-        
+
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
@@ -949,14 +943,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           this.driverData['abstractDocs'] = result.abstractDocs;
           this.absDocs = result.abstractDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
 
-         
-        }        
-        
+
+        }
+
         this.driverData.gender = result.gender;
         this.driverData.DOB = result.DOB;
         this.driverData.workEmail = result.workEmail;
         this.driverData.workPhone = result.workPhone;
-        
+
 
         for (let i = 0; i < result.address.length; i++) {
           await this.getStates(result.address[i].countryID);
@@ -1039,7 +1033,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.paymentDetails.loadedMilesUnit = result.paymentDetails.loadedMilesUnit;
         this.driverData.paymentDetails.loadedMilesTeam = result.paymentDetails.loadedMilesTeam;
         this.driverData.paymentDetails.loadedMilesTeamUnit = result.paymentDetails.loadedMilesTeamUnit;
-        
+
         this.driverData.paymentDetails.emptyMiles = result.paymentDetails.emptyMiles;
         this.driverData.paymentDetails.emptyMilesUnit = result.paymentDetails.emptyMilesUnit;
         this.driverData.paymentDetails.emptyMilesTeam = result.paymentDetails.emptyMilesTeam;
@@ -1051,10 +1045,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.paymentDetails.waitingPay = result.paymentDetails.waitingPay;
         this.driverData.paymentDetails.waitingPayUnit = result.paymentDetails.waitingPayUnit;
         this.driverData.paymentDetails.waitingHourAfter = result.paymentDetails.waitingHourAfter;
-        
+
         this.driverData.paymentDetails.deliveryRate = result.paymentDetails.deliveryRate;
         this.driverData.paymentDetails.deliveryRateUnit = result.paymentDetails.deliveryRateUnit;
-        
+
         this.driverData.paymentDetails.SIN_Number = result.paymentDetails.SIN_Number;
         this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
         this.driverData.licenceDetails.CDL_Number = result.licenceDetails.CDL_Number;
@@ -1065,9 +1059,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.licenceDetails.WCB = result.licenceDetails.WCB;
         this.driverData.licenceDetails.medicalCardRenewal = result.licenceDetails.medicalCardRenewal;
         this.driverData.licenceDetails.healthCare = result.licenceDetails.healthCare;
-        
+
         this.driverData.licenceDetails.vehicleType = result.licenceDetails.vehicleType;
-       
+
         this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
         this.driverData.hosDetails.type = result.hosDetails.type;
         this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
@@ -1080,7 +1074,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
         this.driverData.emergencyDetails.email = result.emergencyDetails.email;
         this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
-
+        this.driverData['timeCreated'] = result.timeCreated;
       });
   }
 
@@ -1088,7 +1082,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
@@ -1208,7 +1201,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       delete this.driverData.paymentDetails.rateUnit;
       delete this.driverData.paymentDetails.waitingPay;
       delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;      
+      delete this.driverData.paymentDetails.waitingHourAfter;
 
     } else if (value === 'Pay Per Hour') {
       delete this.driverData.paymentDetails.deliveryRate;
@@ -1285,14 +1278,33 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
    getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
-    let currentUserCarrier = this.currentUser.carrierID;
+    this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
-    this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
+    if(this.currentUser.userType == 'Cloud Admin') {
+      let isCarrierID = localStorage.getItem('carrierID');
+      if(isCarrierID != undefined) {
+        this.currentUserCarrier = isCarrierID;
+      }
+    }
+    
+    this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType == 'yard') {
+        if(e.addressType === 'yard') {
           this.carrierYards.push(e);
         }
       })
     });
   }
+
+  closeGroupModal (){
+    this.groupData = {
+      groupType : 'drivers', 
+      groupName: '',
+      groupMembers: '',
+      description: '',
+    };
+   
+    $("#addDriverGroupModal").modal("hide");
+  }
+
 }

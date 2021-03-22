@@ -3,9 +3,6 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
 import * as moment from "moment";
 
 @Component({
@@ -13,13 +10,7 @@ import * as moment from "moment";
   templateUrl: './hos-list.component.html',
   styleUrls: ['./hos-list.component.css']
 })
-export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
-
-  @ViewChild(DataTableDirective, { static: false })
-  dtElement: DataTableDirective;
-
-  dtOptions: DataTables.Settings = {};
-  dtTrigger: Subject<any> = new Subject();
+export class HosListComponent implements OnInit {
 
   events = [];
   lastEvaluatedKey = '';
@@ -68,65 +59,8 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.fetchevents();
-    this.initDataTable();
     this.fetchAllDriverIDs();
     this.fetchDriverIDs();
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
-    this.dtTrigger.unsubscribe();
-  }
-
-  rerender(status=''): void {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      // Destroy the table first
-      dtInstance.destroy();
-      if(status === 'reset') {
-        this.dtOptions.pageLength = this.totalRecords;
-      } else {
-        this.dtOptions.pageLength = 10;
-      }
-      // Call the dtTrigger to rerender again
-      this.dtTrigger.next();
-    });
-  }
-
-  initDataTable() {
-    let current = this;
-    this.dtOptions = { // All list options
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-      serverSide: true,
-      processing: true,
-      order: [],
-      columnDefs: [ //sortable false
-        {"targets": [0,1,2,3,4,5,6],"orderable": false},
-      ],
-      dom: 'lrtip',
-      ajax: (dataTablesParameters: any, callback) => {
-        current.apiService.getDatatablePostData('safety/eventLogs/fetch/hosViolation-records?lastEvaluatedValue1='+this.lastEvaluatedKey
-        +"&driver="+this.filterData.driverID+'&severity='+current.filterData.severity+'&startDate='+current.filterData.start+'&endDate='+current.filterData.end, dataTablesParameters).subscribe(resp => {
-          // console.log('------------');
-          // console.log(resp)
-          current.getEventDetail(resp['Items']);
-          if(resp['LastEvaluatedKey'] !== undefined){
-            this.lastEvaluatedKey = resp['LastEvaluatedKey'].eventID;
-          } else {
-            this.lastEvaluatedKey = '';
-          }
-          callback({
-            recordsTotal: current.totalRecords,
-            recordsFiltered: current.totalRecords,
-            data: []
-          });
-        });
-      },
-    };
   }
 
   getEventDetail(arrValues) {
@@ -187,8 +121,6 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
 
     this.filterData.start = start;
     this.filterData.end = end;
-
-    this.rerender('reset');
   }
 
   getSuggestions(searchvalue='') {
@@ -237,7 +169,6 @@ export class HosListComponent implements AfterViewInit, OnDestroy, OnInit {
         driverName: ''
       }
       this.suggestions = [];
-      this.rerender();
       this.spinner.hide();
     } else {
       return false;
