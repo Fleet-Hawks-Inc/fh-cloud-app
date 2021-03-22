@@ -98,7 +98,7 @@
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
                                              </div> -->
-                                             <input [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter employee ID of driver">
                                           </div>
                                        </div>
@@ -107,7 +107,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
@@ -175,7 +175,7 @@
                                                 <input (click)="onChangeHideErrors('startDate');d11.toggle()"
                                                    ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="driverData.startDate"
                                                    name="startDate" type="text" class="form-control"
-                                                   placeholder="Select start sate">
+                                                   placeholder="Select start date">
                                              </div>
                                              <div class="col-lg-6">
                                                 <label

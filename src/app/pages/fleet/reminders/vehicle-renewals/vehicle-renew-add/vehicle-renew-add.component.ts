@@ -39,7 +39,7 @@ export class VehicleRenewAddComponent implements OnInit {
   numberOfDays: number;
   groupData = {
     groupName: '',
-    groupType : constants.GROUP_USERS,
+    groupType: constants.GROUP_USERS,
     description: '',
     groupMembers: []
   };
@@ -59,7 +59,7 @@ export class VehicleRenewAddComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) { }
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private location: Location) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -83,10 +83,10 @@ export class VehicleRenewAddComponent implements OnInit {
   }
   fetchServiceTasks() {
     let test = [];
-        this.apiService.getData('tasks').subscribe((result: any) => {
-    // this.apiService.getData(`tasks?taskType=${constants.TASK_VEHICLE}`).subscribe((result: any) => {
-     test = result.Items;
-     this.serviceTasks = test.filter((s: any) => s.taskType === constants.TASK_VEHICLE);
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      // this.apiService.getData(`tasks?taskType=${constants.TASK_VEHICLE}`).subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === constants.TASK_VEHICLE);
     });
   }
   fetchVehicles() {
@@ -126,64 +126,60 @@ export class VehicleRenewAddComponent implements OnInit {
   }
   addRenewal() {
     this.hideErrors();
-    if (this.time > 0) {
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
+    switch (this.timeType) {
+      case 'Day(s)': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
-      this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+      case 'Month(s)': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'Week(s)': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+    }
+    this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
+    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
 
-      this.apiService.postData('reminders', this.reminderData).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Vehicle Renewal Added Successfully');
-          this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
-          this.reminderData = {
-            reminderIdentification: '',
-            reminderType: constants.REMINDER_VEHICLE,
-            reminderTasks: {
-              task: '',
-              remindByDays: 0,
-              odometer: 0,
-              dueDate: ''
+    this.apiService.postData('reminders', this.reminderData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
             },
-            subscribers: [],
-            sendEmail: false
-          };
-        },
-      });
-    }
-    else {
-      this.toastr.warning('Time Must Be Positive Value');
-    }
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Vehicle Renewal Reminder Added Successfully');
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
+        this.reminderData = {
+          reminderIdentification: '',
+          reminderType: constants.REMINDER_VEHICLE,
+          reminderTasks: {
+            task: '',
+            remindByDays: 0,
+            odometer: 0,
+            dueDate: ''
+          },
+          subscribers: [],
+          sendEmail: false
+        };
+      },
+    });
+
   }
   /*
   * Fetch Reminder details before updating
@@ -211,7 +207,7 @@ export class VehicleRenewAddComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   throwErrors() {
-   // console.log(this.errors);
+    // console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
@@ -237,7 +233,6 @@ export class VehicleRenewAddComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
           this.numberOfDays = this.time * 1;
@@ -274,47 +269,44 @@ export class VehicleRenewAddComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          this.toastr.success('Reminder Updated Successfully');
+          this.toastr.success('Vehicle Renewal Reminder Updated Successfully.');
           this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/list');
           this.Success = '';
         },
       });
-    }
-    else {
-      this.toastr.warning('Time Must Be Positive Value');
-    }
+
   }
 
-    // SERVICE TASK
-    addServiceTask(){
-      this.apiService.postData('tasks', this.serviceTask).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Renewal Type Added Successfully');
-          this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/add');
-          $('#addServiceTasks').modal('toggle');
-          this.fetchServiceTasks();
-        },
-      });
-    }
-     // GROUP MODAL
+  // SERVICE TASK
+  addServiceTask() {
+    this.apiService.postData('tasks', this.serviceTask).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Renewal Type Added Successfully.');
+        this.router.navigateByUrl('/fleet/reminders/vehicle-renewals/add');
+        $('#addServiceTasks').modal('toggle');
+        this.fetchServiceTasks();
+      },
+    });
+  }
+  // GROUP MODAL
   addGroup() {
     this.apiService.postData('groups', this.groupData).subscribe({
       complete: () => { },
@@ -338,10 +330,15 @@ export class VehicleRenewAddComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
-        this.toastr.success('Group added successfully');
+        this.toastr.success('Group Added Successfully');
         $('#addGroupModal').modal('hide');
         this.fetchGroups();
-
+        this.groupData = {
+          groupName: '',
+          groupType: constants.GROUP_USERS,
+          description: '',
+          groupMembers: []
+        };
       },
     });
   }
