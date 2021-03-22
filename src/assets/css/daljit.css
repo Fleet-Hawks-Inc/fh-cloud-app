@@ -539,6 +539,7 @@ html.fixed .content-body {
     align-items: center;
     justify-content: center;
 }
+
 .map-search__results {
     position: absolute;
     list-style: none;
