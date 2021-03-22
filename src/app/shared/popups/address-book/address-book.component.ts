@@ -53,7 +53,7 @@ export class AddressBookComponent implements OnInit {
     dot: '',
     fast: '',
     fastExpiry: '',
-    trailerPreference: '',
+    // trailerPreference: '',
     csa: false,
     ctpat: false,
     pip: false,
@@ -74,7 +74,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -116,7 +120,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -169,7 +177,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -207,7 +219,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
   };
 
@@ -265,7 +281,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -303,7 +323,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -341,7 +365,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     additionalContact: {
       firstName: '',
@@ -378,7 +406,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     fcDetails: {
       accountNumber: '',
@@ -423,7 +455,11 @@ export class AddressBookComponent implements OnInit {
         lng: ''
       },
       userLocation: '',
-      manual: false
+      manual: false,
+      countryCode: '',
+      stateCode: '',
+      houseNumber: '',
+      street: ''
     }],
     userAccount: {
       contractStartDate: '',
@@ -678,6 +714,7 @@ export class AddressBookComponent implements OnInit {
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
+    console.log('address result', result);
     $('div').removeClass('show-search__result');
 
     data.address[i].userLocation = result.address.label;
@@ -686,11 +723,15 @@ export class AddressBookComponent implements OnInit {
     data.address[i].countryName = result.address.countryName;
     data.address[i].stateName = result.address.state;
     data.address[i].cityName = result.address.city;
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
+
+    data.address[i].countryCode = result.address.countryCode;
+    data.address[i].stateCode = result.address.stateCode;
+    data.address[i].zipCode = result.address.postalCode;
+    if (result.address.houseNumber != undefined) {
+      data.address[i].houseNumber = result.address.houseNumber;
+    } else {}
+    if (result.address.street != undefined) {
+      data.address[i].street = result.address.street;
     }
   }
 
@@ -2305,6 +2346,7 @@ export class AddressBookComponent implements OnInit {
   assignAddressToUpdate(entityAddresses: any) {
     this.newAddress = [];
     for (let i = 0; i < entityAddresses.length; i++) {
+      console.log('entityAddresses', entityAddresses)
       this.newAddress.push({
         addressID: entityAddresses[i].addressID,
         addressType: entityAddresses[i].addressType,
@@ -2318,12 +2360,20 @@ export class AddressBookComponent implements OnInit {
         address1: entityAddresses[i].address1,
         address2: entityAddresses[i].address2,
         userLocation: entityAddresses[i].userLocation,
-        manual: entityAddresses[i].manual
+        manual: (entityAddresses[i].manual == undefined) ? false : entityAddresses[i].manual,
+        geoCords:{
+          lat: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lat : '',
+          lng: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lng : ''
+        },
+        houseNumber: entityAddresses[i].houseNumber,
+        street: entityAddresses[i].street
       })
 
       this.getEditStates(entityAddresses[i].countryID);
       this.getEditCities(entityAddresses[i].stateID);
     }
+
+    console.log('entityAddresses', this.newAddress)
     return this.newAddress;
   }
 
@@ -2586,7 +2636,7 @@ export class AddressBookComponent implements OnInit {
       dot: '',
       fast: '',
       fastExpiry: '',
-      trailerPreference: '',
+      // trailerPreference: '',
       csa: false,
       ctpat: false,
       pip: false,
@@ -2607,7 +2657,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2649,7 +2703,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2702,7 +2760,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2740,7 +2802,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
     };
 
@@ -2798,7 +2864,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2836,7 +2906,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2874,7 +2948,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       additionalContact: {
         firstName: '',
@@ -2911,7 +2989,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       fcDetails: {
         accountNumber: '',
@@ -2956,7 +3038,11 @@ export class AddressBookComponent implements OnInit {
           lng: ''
         },
         userLocation: '',
-        manual: false
+        manual: false,
+        countryCode: '',
+        stateCode: '',
+        houseNumber: '',
+        street: ''
       }],
       userAccount: {
         contractStartDate: '',
@@ -3195,6 +3281,7 @@ export class AddressBookComponent implements OnInit {
     this.apiService.getData('shippers/fetch/records?shipperID='+this.filterVal.shipperID+'&companyName='+this.filterVal.shipperCompanyName+'&lastKey='+this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
         this.shippers = result['Items'];
+        console.log('this.shippers', this.shippers);
 
         if(this.filterVal.shipperID != '') {
           this.shipperStartPoint = 1;
