@@ -39,9 +39,9 @@ describe('CloudApp: Driver list', function () {
 
    driverListPage.searchReset();
     browser.sleep(4000);
-  //   driverListPage.mapView();
-  //   driverListPage.listView();
-  //   driverListPage.actionPage();
+    driverListPage.mapView();
+    driverListPage.listView();
+    driverListPage.actionPage();
   //   //driverListPage.getLables();
 
    });

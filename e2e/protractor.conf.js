@@ -10,8 +10,8 @@ const { SpecReporter } = require("jasmine-spec-reporter");
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    "./src/**/*.ts",
-    //'./src/app/entry/onboard/login/*.ts'
+   //"./src/**/*.ts",
+   './src/app/entry/driver-list/*.ts'
   ],
   capabilities: {
     browserName: "chrome",
@@ -19,7 +19,7 @@ exports.config = {
       args: ['--lang=en',
              '--window-size=1024,720']
      }
-   
+
   },
   directConnect: true,
   baseUrl: "http://localhost:4200/",
@@ -37,4 +37,4 @@ exports.config = {
       .getEnv()
       .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
   },
-}; 
+};
