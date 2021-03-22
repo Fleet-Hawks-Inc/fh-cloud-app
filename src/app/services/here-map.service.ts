@@ -286,7 +286,6 @@ export class HereMapService {
         return: 'polyline,actions,instructions,summary,travelSummary,turnByTurnActions,elevation,routeHandle,passthrough,incidents',
         spans: 'truckAttributes,duration,speedLimit',
       };
-      console.log(params)
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 
