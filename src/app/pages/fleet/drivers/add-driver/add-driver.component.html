@@ -98,7 +98,7 @@
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
                                              </div> -->
-                                             <input [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter employee ID of driver">
                                           </div>
                                        </div>
@@ -107,7 +107,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
@@ -175,7 +175,7 @@
                                                 <input (click)="onChangeHideErrors('startDate');d11.toggle()"
                                                    ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="driverData.startDate"
                                                    name="startDate" type="text" class="form-control"
-                                                   placeholder="Select start sate">
+                                                   placeholder="Select start date">
                                              </div>
                                              <div class="col-lg-6">
                                                 <label
@@ -1290,12 +1290,12 @@
       </section>
 
       <div class="modal fade" id="addDriverGroupModal" tabindex="-1" role="dialog" aria-labelledby="addDriverGroupModal"
-         aria-hidden="true">
+         aria-hidden="true" data-keyboard="false" data-backdrop="static">
          <div class="modal-dialog" style="max-width: 600px;" role="document">
             <div class="modal-content">
                <div class="modal-header">
                   <h5 class="modal-title">Add Group</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
                      <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                   </button>
                </div>
@@ -1335,7 +1335,7 @@
                   </div>
                </div>
                <div class="modal-footer text-right">
-                  <a class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</a>
+                  <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
                   <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
                </div>
             </div>

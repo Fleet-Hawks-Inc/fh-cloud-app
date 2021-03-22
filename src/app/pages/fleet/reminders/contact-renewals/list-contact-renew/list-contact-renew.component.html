@@ -29,7 +29,7 @@
 
                     <div class="col-lg-2 col-md-2">
                         <ng-select placeholder="Search By Renewal Type" [(ngModel)]="searchServiceTask"
-                            name="searchServiceTask" style="width: 100%;">                      
+                            name="searchServiceTask" style="width: 100%;">
                             <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                             </ng-option>
                         </ng-select>
@@ -101,7 +101,7 @@
 											<td colspan="6">No records found</td>
 										</tr>
                                         <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                            <td>{{driverList[item.reminderIdentification]}}</td>
+                                            <td>{{item.reminderIdentification}}</td>
                                             <td> <span class="text-warning font-weight-bold font-size-12"
                                                     *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
                                                 <span class="text-danger font-weight-bold font-size-12"
@@ -109,7 +109,7 @@
                                                 <span class="font-weight-bold"
                                                     title="Task">{{tasksList[item.reminderTasks.task]}}</span>
                                             </td>
-                                            <td><span class="font-size-12">{{item.reminderTasks.remindByDays}} Days
+                                            <td><span class="font-size-12">{{item.reminderTasks.remindByDays}} Day(s)
                                                     Before</span></td>
                                             <td><span class="font-size-12">{{item.reminderTasks.dueDate}}</span></td>
                                             <td><span *ngFor="let s of item.subscribers">

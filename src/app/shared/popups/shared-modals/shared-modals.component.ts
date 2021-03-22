@@ -239,6 +239,12 @@ vehicleID: string;
 };
 // Vehicles variables end
 // driver variables start
+hasBasic: boolean = false;
+hasDocs: boolean = false;
+hasLic: boolean = false;
+hasPay: boolean = false;
+hasHos: boolean = false;
+
 driverData = {
   userName: '',
   middleName: '',
@@ -255,9 +261,8 @@ driverData = {
   terminationDate: '',
   contractStart: '',
   contractEnd: '',
-  employeeId: '',
+  employeeContractorId: '',
   driverType: 'employee',
-  empPrefix: '',
   entityType: 'driver',
   gender: 'M',
   DOB: '',
@@ -314,15 +319,15 @@ driverData = {
   licenceDetails: {
     CDL_Number: '',
     licenceExpiry: '',
-    licenceNotification: '',
+    licenceNotification: true,
     issuedCountry: '',
     issuedState: '',
     vehicleType: '',
 
   },
   hosDetails: {
-    pcAllowed: '',
-    ymAllowed: '',
+    pcAllowed: false,
+    ymAllowed: false,
     hosCycle: '',
     hosStatus: '',
     hosRemarks: '',
@@ -488,6 +493,7 @@ years = [];
     this.manufacturers = this.listService.manufacturerList;
     this.models = this.listService.modelList;
     this.drivers = this.listService.driversList;
+    this.ownerOperators = this.listService.ownerOperatorList;
 
     await this.getCurrentuser();
     this.listService.ownerOperatorList;
@@ -608,6 +614,7 @@ fetchDrivers(){
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
+      this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);
   }
 
@@ -1297,14 +1304,12 @@ fetchDrivers(){
   
   async nextStep() {
     await this.onSubmit();
-    if(this.absDocs.length == 0) {
-      this.abstractValid = true; 
-    }
-   
+    
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
       this.abstractValid = true; 
       return;
     }
+    this.validateTabErrors();
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
@@ -1325,6 +1330,34 @@ fetchDrivers(){
     this.currentTab = value;
   }
 
+  validateTabErrors(){
+    if($('#addDriverBasic .error').length > 0 && this.currentTab >= 1) {
+      this.hasBasic = true;
+    } else {
+      this.hasBasic = false;
+    }
+    if($('#documents .error').length > 0 && this.currentTab >= 2) {
+      this.hasDocs = true;
+    } else {
+      this.hasDocs = false;
+    }
+    if($('#licence .error').length > 0 && this.currentTab >= 3) {
+      this.hasLic = true;
+    } else {
+      this.hasLic = false;
+    }
+    if($('#payment .error').length > 0 && this.currentTab >= 4) {
+      this.hasPay = true;
+    } else {
+      this.hasPay = false;
+    }
+    if($('#Driverhos .error').length > 0 && this.currentTab >= 5) {
+      this.hasHos = true;
+    } else {
+      this.hasHos = false;
+    }
+  }
+
   // for driver submittion
   async onSubmit() {
     this.hasError = false;
@@ -1332,8 +1365,6 @@ fetchDrivers(){
     // this.register();
     this.spinner.show();
     this.hideErrors();
-    this.driverData.empPrefix = this.prefixOutput;
-    
     // create form data instance
     const formData = new FormData();
 
@@ -1433,8 +1464,8 @@ fetchDrivers(){
       delete this.driverData['ownerOperator'];
       delete this.driverData['contractStart'];
       delete this.driverData['contractEnd'];
+      delete this.driverData['contractorId'];
     } else {
-      delete this.driverData['employeeId'];
       delete this.driverData['startDate'];
       delete this.driverData['terminationDate'];
     }

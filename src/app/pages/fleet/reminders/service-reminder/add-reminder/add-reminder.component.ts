@@ -148,7 +148,6 @@ export class AddReminderComponent implements OnInit {
   }
   addReminder() {
     this.hideErrors();
-    if (this.time > 0) {
       switch (this.timeType) {
         case 'Day(s)': {
           this.numberOfDays = this.time * 1;
@@ -195,7 +194,7 @@ export class AddReminderComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          this.toastr.success('Reminder added successfully');
+          this.toastr.success('Service Reminder Added Successfully!');
           this.cancel();
           this.reminderData = {
             reminderIdentification: '',
@@ -210,9 +209,7 @@ export class AddReminderComponent implements OnInit {
           };
         },
       });
-    } else {
-      this.toastr.warning('Time Must Be Positive Value');
-    }
+
   }
 
   throwErrors() {
@@ -286,7 +283,7 @@ export class AddReminderComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          this.toastr.success('Reminder Updated Successfully');
+          this.toastr.success('Service Reminder Updated Successfully!');
           this.Success = '';
           this.cancel();
           this.reminderData = {
@@ -364,6 +361,12 @@ export class AddReminderComponent implements OnInit {
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
         this.fetchGroups();
+        this.groupData = {
+          groupName: '',
+          groupType : constants.GROUP_USERS,
+          description: '',
+          groupMembers: []
+        };
       },
     });
   }
