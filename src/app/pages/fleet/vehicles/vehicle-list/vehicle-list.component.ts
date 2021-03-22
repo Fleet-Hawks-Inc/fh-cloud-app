@@ -4,6 +4,7 @@ declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import { HereMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../constants';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -12,6 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class VehicleListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Vehicle List';
   vehicles = [];
   suggestedVehicles = [];
@@ -80,14 +82,17 @@ export class VehicleListComponent implements OnInit {
   }
 
   getSuggestions(value) {
-    this.apiService
+
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVehicles = result.Items;
-        if(this.suggestedVehicles.length == 0){
-          this.vehicleID = '';
-        }
       });
+    } else {
+      this.suggestedVehicles = []
+    }
   }
 
   fetchGroups() {
@@ -127,7 +132,7 @@ export class VehicleListComponent implements OnInit {
   }
   
   fetchVehiclesCount() {
-    this.apiService.getData('vehicles/get/count?vehicleID='+this.vehicleID+'&status='+this.currentStatus).subscribe({
+    this.apiService.getData('vehicles/get/count?vehicle='+this.vehicleID+'&status='+this.currentStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -138,7 +143,7 @@ export class VehicleListComponent implements OnInit {
 
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
-    this.vehicleID = vehicleID;
+    this.vehicleID = vehicleIdentification;
     this.suggestedVehicles = [];
   }
 
@@ -165,8 +170,13 @@ export class VehicleListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('vehicles/fetch/records?vehicleID='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('vehicles/fetch/records?vehicle='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedVehicles = [];
+        this.getStartandEndVal();
         this.vehicles = result['Items'];
 
         if(this.vehicleID != '') {
@@ -199,8 +209,12 @@ export class VehicleListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+      if(this.vehicleID == '') {
+        this.vehicleID = this.vehicleIdentification;
+      }
       this.vehicles = [];
+      this.suggestedVehicles = [];
       this.fetchVehiclesCount();
       this.initDataTable();
     } else {
@@ -209,8 +223,9 @@ export class VehicleListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.vehicleID !== '' || this.currentStatus !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
       this.vehicleID = '';
+      this.suggestedVehicles = [];
       this.vehicleIdentification = '';
       this.currentStatus = '';
       this.vehicles = [];
@@ -375,17 +390,21 @@ export class VehicleListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.vehicleNext = true;
+    this.vehiclePrev = true;
     this.vehicleDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
+    // this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.vehicleNext = true;
+    this.vehiclePrev = true;
     this.vehicleDraw -= 1;
     this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
     this.initDataTable();
-    this.getStartandEndVal();
+    // this.getStartandEndVal();
   }
 
   resetCountResult() {

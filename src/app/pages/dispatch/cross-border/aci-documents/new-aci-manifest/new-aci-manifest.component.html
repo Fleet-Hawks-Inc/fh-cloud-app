@@ -252,7 +252,7 @@
                               class="fas fa-exclamation-circle" data-toggle="tooltip"
                               data-placement="top"
                               title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                            <input type="text" maxlength="14" (change)="fastValidation($event)" [class.error]="errorFastCard"
+                            <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
                               placeholder="14 digits,beginning with 4270 and ending with 00 or 01 or 02 (42700012345601)"
                               class="form-control">
                               <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
