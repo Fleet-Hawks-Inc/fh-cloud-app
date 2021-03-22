@@ -56,7 +56,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchTasksList();
     this.initDataTable();
-    
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -68,7 +68,7 @@ export class VehicleRenewListComponent implements OnInit {
       this.groups = result;
     });
   }
-  
+
   fetchServiceTaks() {
     let test = [];
     let taskType = 'vehicle';
@@ -76,7 +76,7 @@ export class VehicleRenewListComponent implements OnInit {
       // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
-    });    
+    });
   }
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => {
@@ -92,12 +92,12 @@ export class VehicleRenewListComponent implements OnInit {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
-  } 
+  }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  
-  fetchRenewals = async () => {    
+
+  fetchRenewals = async () => {
     this.remindersData = [];
     for(let j=0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
@@ -121,7 +121,7 @@ export class VehicleRenewListComponent implements OnInit {
           },
           subscribers : this.allRemindersData[j].subscribers,
           };
-        this.remindersData.push(data); 
+        this.remindersData.push(data);
     }
     if (this.filterStatus === Constants.OVERDUE) {
       this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
@@ -137,10 +137,10 @@ export class VehicleRenewListComponent implements OnInit {
   deleteRenewal(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`reminders/isDeleted/${entryID}/`+1)
+      .getData(`reminders/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
         this.remindersData = [];
-        this.getRemindersCount()
+        this.getRemindersCount();
         this.initDataTable();
         this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
       });
@@ -192,7 +192,7 @@ export class VehicleRenewListComponent implements OnInit {
             this.vehicleRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
-          
+
         } else {
           this.vehicleRenewNext = true;
           this.lastEvaluatedKey = '';
