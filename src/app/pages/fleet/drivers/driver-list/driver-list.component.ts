@@ -23,6 +23,7 @@ export class DriverListComponent implements OnInit {
   mapView = false;
   listView = true;
   visible = true;
+  dataMessage: string = 'Fetching Data.....';
 
   driverCheckCount;
   selectedDriverID;
@@ -250,7 +251,7 @@ export class DriverListComponent implements OnInit {
           this.drivers = [];
           this.fetchDriversCount();
           this.initDataTable();
-          this.toastr.success('Driver deleted successfully!');
+          this.toastr.success('Driver is deactivated!');
         }, err => {
          
         });
@@ -261,6 +262,9 @@ export class DriverListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('drivers/fetch/records?driverID='+this.driverID+'&dutyStatus='+this.dutyStatus+ '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = 'No Data Found';
+        }
         this.drivers = result['Items'];
 
         if(this.driverID != '') {

@@ -53,12 +53,10 @@
                         </li>
                      </ul>
                   </div>
-
                   <div class="card-body pt-0">
                         <div class="tab-content pt-2" id="myTabContent" style="box-shadow:none;border:none;">
                            <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic"
                            role="tabpanel" aria-labelledby="addDriverBasic-tab">
-
                            <div>
                               <div class="form-group row">
                                  <div class="col-lg-10">
@@ -91,18 +89,26 @@
                                              </div>
                                           </div>
                                        </div>
-
                                        <div class="col-lg-10" id="employeeIDDiv"
                                           *ngIf="driverData.driverType == 'employee'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <div class="input-group-prepend">
+                                             <!-- <div class="input-group-prepend">
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
-                                             </div>
+                                             </div> -->
                                              <input [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
-                                                class="form-control" placeholder="Enter employeeID of driver">
+                                                class="form-control" placeholder="Enter employee ID of driver">
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-10" id=""
+                                          *ngIf="driverData.driverType == 'contractor'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
+                                             ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                          <div class="input-group">
+                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
+                                                class="form-control" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
                                        <div class="col-lg-10" id="companyDiv"
@@ -160,7 +166,6 @@
                                                    class="form-control" placeholder="Enter last name">
                                              </div>
                                           </div>
-
                                        </div>
                                        <div class="col-lg-10" *ngIf="driverData.driverType != 'contractor'">
                                           <div class="row">
@@ -225,9 +230,7 @@
                                                    placeholder="Enter confirm password">
                                              </div>
                                           </div>
-
                                        </div>
-
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Citizenship<span
@@ -258,19 +261,12 @@
                                           <label
                                              class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group&nbsp;
                                              <span class="text-1 optional-label-color">(optional)</span></label>
-
-
                                           <ng-select class="form-control form-control-sm"
                                              [(ngModel)]="driverData.groupID" name="groupID"
                                              placeholder="Select group of which driver will be part of">
-
                                              <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                                                 {{group.groupName}}</ng-option>
-
                                           </ng-select>
-
-
-
                                        </div>
                                        <div class="col-lg-1 mar-top-37  pl-0">
                                           <a data-toggle="modal" data-target="#addDriverGroupModal" href="javascript:;"
@@ -323,8 +319,8 @@
                                        <div class="col-lg-10  text-center">
                                           <div id="male_photo" class="business_image_style position-relative mx-auto"
                                              style="display: block;">
-                                             <img [src]="driverProfileSrc" id="male_photo" 
-                                                  alt="driver image" 
+                                             <img [src]="driverProfileSrc" id="male_photo"
+                                                  alt="driver image"
                                                   class="w-100 h-100"
                                                   style="object-fit: cover;">
                                              <span class="text-danger profile-cross" (click)="removeProfile()"
@@ -392,10 +388,10 @@
                                              class="form-control"
                                              placeholder="Enter the official email address of the driver">
                                        </div>
-                                         
+
                                       </div>
 
-                                       
+
                                     </div>
                                  </div>
                               </div>
@@ -1165,7 +1161,7 @@
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Type<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <ng-select 
+                                             <ng-select
                                                 [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                                                 (change)="onChangeHideErrors('hosDetails.type')"
                                                 placeholder="Select the record keeping type">
@@ -1181,7 +1177,7 @@
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Cycle<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <ng-select [(ngModel)]="driverData.hosDetails.hosCycle"
-                                                name="hosDetails.hosCycle" 
+                                                name="hosDetails.hosCycle"
                                                 (change)="onChangeHideErrors('hosDetails.hosCycle')"
                                                 class="form-control populate"
                                                 placeholder="Select the cycle for the driver">
@@ -1273,7 +1269,7 @@
                            </div>
                         </div>
                      </div>
-                  
+
 
                      <div class="form-group row mt-3">
                         <div class="col-lg-12 text-right pb-4 pr-5">
