@@ -7,7 +7,7 @@
             Order Detail
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a href="all-orders.php" class="btn btn-default btn-sm"
+            <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> All Orders</a
             >
             <div class="btn-group flex-wrap">
@@ -50,7 +50,7 @@
               class="bg-white p-3 d-flex justify-content-between align-items-center text-dark"
             >
               <div>
-                <h4 class="m-0 font-weight-bold">James - LTL - 24556FH5</h4>
+                <h4 class="m-0 font-weight-bold">{{orderMode}} - ORD{{orderNumber}}</h4>
               </div>
               <div class="pull-right">
                 <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"
@@ -348,7 +348,7 @@
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
-                                           {{shipperReceiversInfo.shippers[j].driverLoad}}
+                                           {{shipperReceiversInfo.shippers[j].driverLoad ? 'Yes' : 'No'}}
                                           </p>
                                         </div>
                                       </div>
@@ -423,7 +423,7 @@
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
-                                            {{shipperReceiversInfo.receivers[k].driverUnload}}
+                                            {{shipperReceiversInfo.receivers[k].driverUnload ? 'Yes': 'No'}}
                                           </p>
                                         </div>
                                       </div>
@@ -464,7 +464,7 @@
                       >
                         Drop Trailer:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes' : 'No'}}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -472,7 +472,7 @@
                       >
                         Trailer Type:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{additionalDetails.trailerType}}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType != undefined ? assetTypes[additionalDetails.trailerType] : ''}}</div>
                     </div>
                     <div class="row m-0">
                       <div
