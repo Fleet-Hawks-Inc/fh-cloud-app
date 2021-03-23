@@ -1328,7 +1328,7 @@
                        <div class="row mt-1">
                               <div class="col-lg-8 offset-lg-2 mt-3">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                    for="inputDefault">Total Miles</label>
+                                    for="inputDefault">Total Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input type="text" [disabled]="orderData.milesInfo.calculateBy == 'google' || orderData.milesInfo.calculateBy == 'pcmiles'" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
                                  #totalMiles="ngModel" required totalMiles class="form-control">
                                  <span class="text-danger"
@@ -1701,7 +1701,7 @@
                         <a href="javascript:;" routerLink="dispatch/orders"
                            class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
                         <button *ngIf="!getOrderID" type="submit" class="btn btn-success">Save</button>
-                        <a *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success">Update</a>
+                        <a *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success text-white">Update</a>
                      </div>
                   </div>
                </form>

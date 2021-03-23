@@ -52,8 +52,8 @@
                         </ul>
                     </div>
                     <div class="tab-content p-0" id="myTabContent">
-                        <div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+                        <div class="tab-pane fade p-3" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="customerCompanyName"
@@ -106,7 +106,7 @@
                                     <tr *ngIf="customers.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let customer of customers;let i = index;">
+                                    <tr *ngFor="let customer of customers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, customer)">{{customer.companyName}}</td>
                                         <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
@@ -148,8 +148,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade active show" id="broker" role="tabpanel" aria-labelledby="broker-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade active show p-3" id="broker" role="tabpanel" aria-labelledby="broker-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="brokerCompanyName"
@@ -202,7 +203,7 @@
                                     <tr *ngIf="brokers.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let broker of brokers;let i = index;">
+                                    <tr *ngFor="let broker of brokers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, broker)">{{broker.companyName}}</td>
                                         <td (click)="openDetail(content, broker)">{{broker.firstName}} {{broker.lastName}}</td>
                                         <td>{{broker.workEmail}}</td>
@@ -244,8 +245,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade p-3" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="vendorCompanyName"
@@ -297,7 +299,7 @@
                                     <tr *ngIf="vendors.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let vendor of vendors;let i = index;">
+                                    <tr *ngFor="let vendor of vendors;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, vendor)">{{vendor.companyName}}</td>
                                         <td (click)="openDetail(content, vendor)">{{vendor.firstName}} {{vendor.lastName}}</td>
                                         <td>{{vendor.workEmail}}</td>
@@ -339,8 +341,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade p-3" id="carrier" role="tabpanel" aria-labelledby="carrier-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="carrierCompanyName"
@@ -392,7 +395,7 @@
                                     <tr *ngIf="carriers.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let carrier of carriers;let i = index;">
+                                    <tr *ngFor="let carrier of carriers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, carrier)">{{carrier.companyName}}</td>
                                         <td (click)="openDetail(content, carrier)">{{carrier.firstName}} {{carrier.lastName}}</td>
                                         <td>{{carrier.workEmail}}</td>
@@ -434,8 +437,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="ownerOperator" role="tabpanel" aria-labelledby="owner-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade p-3" id="ownerOperator" role="tabpanel" aria-labelledby="owner-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="operatorCompanyName"
@@ -487,7 +491,7 @@
                                     <tr *ngIf="ownerOperatorss.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let operator of ownerOperatorss;let i = index;">
+                                    <tr *ngFor="let operator of ownerOperatorss;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, operator)">{{operator.companyName}}</td>
                                         <td (click)="openDetail(content, operator)">{{operator.firstName}} {{operator.lastName}}</td>
                                         <td>{{operator.workEmail}}</td>
@@ -529,8 +533,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade p-3" id="shipper" role="tabpanel" aria-labelledby="shipper-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="shipperCompanyName"
@@ -583,7 +588,7 @@
                                     <tr *ngIf="shippers.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let shipper of shippers;let i = index;">
+                                    <tr *ngFor="let shipper of shippers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, shipper)">{{shipper.companyName}}</td>
                                         <td (click)="openDetail(content, shipper)">{{shipper.firstName}} {{shipper.lastName}}</td>
                                         <td>{{shipper.workEmail}}</td>
@@ -625,8 +630,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+                        <div class="tab-pane fade p-3" id="consignee" role="tabpanel" aria-labelledby="consignee-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="receiverCompanyName"
@@ -678,7 +684,7 @@
                                     <tr *ngIf="receivers.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let receiver of receivers;let i = index;">
+                                    <tr *ngFor="let receiver of receivers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, receiver)">{{receiver.companyName}}</td>
                                         <td (click)="openDetail(content, receiver)">{{receiver.firstName}} {{receiver.lastName}}</td>
                                         <td>{{receiver.workEmail}}</td>
@@ -721,8 +727,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="staff" role="tabpanel" aria-labelledby="staff-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+
+                        <div class="tab-pane fade p-3" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="staffCompanyName"
@@ -776,7 +784,7 @@
                                     <tr *ngIf="staffs.length == 0" class="text-center">
                                         <td colspan="8">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let staff of staffs;let i = index;">
+                                    <tr *ngFor="let staff of staffs;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, staff)">{{staff.companyName}}</td>
                                         <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>
                                         <td>{{staff.userAccount.department}}</td>
@@ -820,9 +828,10 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- factoring Company Table -->
-                        <div class="tab-pane fade" id="fc" role="tabpanel" aria-labelledby="fc-tab">
-                            <div class="row pr-1 mr-1" style="padding-top:10px;">
+                        <div class="tab-pane fade p-3" id="fc" role="tabpanel" aria-labelledby="fc-tab">
+                            <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Company Name" name="factoringCompanyName"
@@ -874,7 +883,7 @@
                                     <tr *ngIf="fcCompanies.length == 0" class="text-center">
                                         <td colspan="6">No records found</td>
                                     </tr>
-                                    <tr *ngFor="let company of fcCompanies;let i = index;">
+                                    <tr *ngFor="let company of fcCompanies;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, company)">{{company.companyName}}</td>
                                         <td>{{company.firstName}} {{company.lastName}}</td>
                                         <td>{{company.workEmail}}</td>
