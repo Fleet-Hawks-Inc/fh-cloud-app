@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../services';
+import {GoogleMapsService} from '../../../../services/google-maps.service'
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 declare var $: any;
@@ -17,12 +18,14 @@ declare var $: any;
 })
 export class AddRouteComponent implements OnInit {
 
+  public trips;
+  public actualMiles;
   pageTitle: string;
   public searchResults: any;
   public searchResults1: any;
   public searchTerm = new Subject<string>();
   public searchTerm1 = new Subject<string>();
-  mapVisible = false;
+  mapVisible = true;
   errors = {};
   routeData = {
     routeNo: '',
@@ -78,7 +81,7 @@ export class AddRouteComponent implements OnInit {
 
   new_length = 0;
   routeID = '';
-  destinationStop = false;
+  destinationStop = true;
   dailyClass = '';
   weekClass = '';
   biClass = '';
@@ -87,7 +90,7 @@ export class AddRouteComponent implements OnInit {
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private ngbCalendar: NgbCalendar,
-    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService) {
+    private dateAdapter: NgbDateAdapter<string>, private hereMap: HereMapService, private listService: ListService, private pcMiler: GoogleMapsService) {
   }
 
   get today() {
@@ -95,6 +98,7 @@ export class AddRouteComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mapShow();
     this.listService.fetchVehicles();
     this.listService.fetchDrivers();
     this.listService.fetchAssets();
@@ -177,6 +181,16 @@ export class AddRouteComponent implements OnInit {
     this.newCoords = [];
   }
 
+  async getMiles(){
+    console.log("Route Data=",this.routeData)
+    let savedCord='';
+    let stops=savedCord+";";
+                    this.pcMiler.pcMiles.next(true);
+                    let miles = await this.pcMiler.pcMilesDistance(stops).toPromise()
+}
+calculateActualMiles(miles){
+  this.actualMiles+=miles;
+}
   resetCodrivers() {
     this.routeData.coDriverUserName = '';
   }
@@ -184,6 +198,7 @@ export class AddRouteComponent implements OnInit {
   mapShow() {
     this.mapView = true;
     setTimeout(() => {
+      this.hereMap.mapSetAPI();
       this.hereMap.mapInit();
     }, 100);
   }
@@ -338,6 +353,8 @@ export class AddRouteComponent implements OnInit {
     setTimeout(function(){
       thiss.routeData.stops = allStops;
     },0.5)
+
+   
   }
 
   removeStops(i) {

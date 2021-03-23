@@ -25,9 +25,9 @@ export class AddTripComponent implements OnInit {
     public searchResults: any;
     public searchResults1: any;
     actualMiles=0;
-    public selectedVehicleSpecs= []
+    public selectedVehicleSpecs=[];
     public optionalSpec={
-        height:4
+        height:400
     };
     public saveCords:any;
     private readonly search: any;
@@ -1644,22 +1644,26 @@ export class AddTripComponent implements OnInit {
             }
         })
 
+        console.log("optionalSpec:",this.optionalSpec)
             this.hereMap.calculateRoute(this.newCoords,this.optionalSpec)
         
         // this.spinner.hide();
         // this.newCoords = [];
     }
     getVehicles(){
+        this.selectedVehicleSpecs=[]
         this.trips.forEach(trip=>{
             if(trip.vehicleID){
             this.selectedVehicleSpecs.push(this.vehicles.find(({vehicleID})=>vehicleID==trip.vehicleID).specifications)
             }
         })
+        console.log("selectedVehicles",this.selectedVehicleSpecs)
         if(this.selectedVehicleSpecs.length>0){
 
             this.optionalSpec={
-                "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height; }))
+                "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height*100; }))
             }
+            console.log("optionalSpec inGetVehicles:",this.optionalSpec)
 
             this.resetMap();
         }
