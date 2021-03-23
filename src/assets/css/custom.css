@@ -1599,7 +1599,8 @@ text-decoration: underline;
   /* cursor */
   .cursorpoint{cursor: pointer;}
 
-
+/* cursor */
+.text-white{color: #fff;}
   .divcenter{display: flex; justify-content: center;}
 
 .profile-heading
