@@ -63,6 +63,8 @@ export class OrderDetailComponent implements OnInit {
    * Form props
    */
   customerID = '';
+  orderNumber = '';
+  orderMode = '';
   customerName = '';
   customerAddress = '';
   customerCityName = '';
@@ -129,6 +131,8 @@ export class OrderDetailComponent implements OnInit {
   totalCharges: any = 0;
   advances = 0;
   balance = 0;
+
+  assetTypes = {};
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -136,7 +140,17 @@ export class OrderDetailComponent implements OnInit {
     this.fetchOrder();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
+    this.fetchAssetTypes();
   }
+
+  fetchAssetTypes(){
+    this.apiService.getData('assetTypes/get/list').subscribe((result) => {
+      this.assetTypes = result;
+      console.log(this.assetTypes);
+
+    });
+  }
+  
 
   /**
    * fetch Asset data
@@ -163,6 +177,8 @@ export class OrderDetailComponent implements OnInit {
           this.discount = result.discount;
           this.milesInfo = result.milesInfo;
           this.taxesInfo = result.taxesInfo;
+          this.orderNumber = result.orderNumber;
+          this.orderMode = result.orderMode;
 
           for(let i = 0; i < this.taxesInfo.length; i++){
             if(this.taxesInfo[i].amount){

@@ -718,14 +718,14 @@
 
                                                             <div class="col-lg-5 mb-3 pl-0 pr-0">
                                                                <div class="btn-group-toggle" data-toggle="buttons">
-                                                                     <label class="btn btn-outline btn-yesno mr-2 mb-2">
+                                                                     <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': item.shippers.driverLoad}" (click)="driverLoadChange(i, true)">
                                                                      <input [(ngModel)]="item.shippers.driverLoad"
-                                                                        name="driverLoad" type="radio" value="yes"
+                                                                        name="driverLoad" type="radio"
                                                                         id="loadyes" checked="">Yes</label>
 
-                                                                     <label class="btn btn-outline btn-yesno mr-2 mb-2 active">
+                                                                     <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': !item.shippers.driverLoad}" (click)="driverLoadChange(i, false)">
                                                                      <input [(ngModel)]="item.shippers.driverLoad"
-                                                                        name="driverLoad" type="radio" value="yes"
+                                                                        name="driverLoad" type="radio"
                                                                         id="loadyes" checked="">No</label>
                                                                </div>
                                                             </div>
@@ -1058,13 +1058,13 @@
 
                                                             <div class="col-lg-5 mb-3 pl-0 pr-0">
                                                                <div class="btn-group-toggle" data-toggle="buttons">
-                                                                  <label class="btn btn-outline btn-yesno mr-2 mb-2">
+                                                                  <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': item.receivers.driverUnload}" (click)="driverUnLoadChange(i, true)">
                                                                      <input [(ngModel)]="item.receivers.driverUnload"
-                                                                     name="driverUnload" type="radio" value="yes"
+                                                                     name="driverUnload" type="radio"
                                                                      id="unloadyes" checked=""> Yes</label>
-                                                                  <label class="btn btn-outline btn-yesno mr-2 mb-2 active">
+                                                                  <label class="btn btn-outline btn-yesno mr-2 mb-2" [ngClass]="{'active': !item.receivers.driverUnload}" (click)="driverUnLoadChange(i, false)">
                                                                      <input [(ngModel)]="item.receivers.driverUnload"
-                                                                     name="driverUnload" type="radio" value="no"
+                                                                     name="driverUnload" type="radio"
                                                                      id="unloadno"> No</label>
                                                                </div>
                                                             </div>
@@ -1178,7 +1178,7 @@
 
                            <div class="wltype pl-3 offset-lg-2">
                               <div class="checkbox-custom checkbox-default">
-                                 <input name="orderData.additionalDetails.loadType.hazMat" [(ngModel)]="orderData.additionalDetails.loadType.hazMat"
+                                 <input name="orderData.additionalDetails.loadType.hazMat" [(ngModel)]="orderData.additionalDetails.loadType.hazMat" [checked]="orderData.additionalDetails.loadType.hazMat"
                                      type="checkbox" id="HazMat">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                     for="HazMat">HazMat</label>
@@ -1188,7 +1188,7 @@
 
                            <div class="wltype pl-3">
                               <div class="checkbox-custom checkbox-default">
-                                 <input name="orderData.additionalDetails.loadType.oversize" [(ngModel)]="orderData.additionalDetails.loadType.oversize"
+                                 <input name="orderData.additionalDetails.loadType.oversize" [(ngModel)]="orderData.additionalDetails.loadType.oversize" [checked]="orderData.additionalDetails.loadType.oversize"
                                     type="checkbox" id="Load">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                     for="Load">Oversize Load</label>
@@ -1198,7 +1198,7 @@
                            <div class="wltype pl-3">
                               <div class="checkbox-custom checkbox-default">
 
-                                 <input name="orderData.additionalDetails.loadType.reefer" [(ngModel)]="orderData.additionalDetails.loadType.reefer"
+                                 <input name="orderData.additionalDetails.loadType.reefer" [(ngModel)]="orderData.additionalDetails.loadType.reefer" [checked]="orderData.additionalDetails.loadType.reefer"
 
                                    type="checkbox" id="Reefer">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
@@ -1208,7 +1208,7 @@
 
                            <div class="wltype pl-3">
                               <div class="checkbox-custom checkbox-default">
-                                 <input name="orderData.additionalDetails.loadType.tanker" [(ngModel)]="orderData.additionalDetails.loadType.tanker"
+                                 <input name="orderData.additionalDetails.loadType.tanker" [(ngModel)]="orderData.additionalDetails.loadType.tanker" [checked]="orderData.additionalDetails.loadType.tanker"
                                      type="checkbox" id="Tanker">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                     for="Tanker">Tanker</label>
