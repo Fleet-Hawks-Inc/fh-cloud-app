@@ -21,7 +21,7 @@ export class AddReminderComponent implements OnInit {
     reminderType: constants.REMINDER_SERVICE,
     reminderTasks: {
       task: '',
-      remindByDays: 0,
+      remindByDays: 1,
       odometer: 0,
     },
     subscribers: [],
@@ -116,7 +116,7 @@ export class AddReminderComponent implements OnInit {
         this.reminderData.reminderIdentification = result.reminderIdentification;
         this.reminderData.reminderTasks.task = result.reminderTasks.task;
         this.reminderData.reminderTasks.odometer = result.reminderTasks.odometer;
-        this.time = result.reminderTasks.remindByDays;
+        this.reminderData.reminderTasks.remindByDays = result.reminderTasks.remindByDays;
         this.timeType = 'Day(s)';
         this.reminderData.sendEmail = result.sendEmail;
         this.reminderData.subscribers = this.test;
@@ -172,7 +172,7 @@ export class AddReminderComponent implements OnInit {
           }
       }
 
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+      // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       this.apiService.postData('reminders', this.reminderData).subscribe({
         complete: () => { },
@@ -181,7 +181,7 @@ export class AddReminderComponent implements OnInit {
             .pipe(
               map((val: any) => {
                 val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
+                this.errors[val.context.label] = val.message;
               })
             )
             .subscribe({
@@ -261,7 +261,7 @@ export class AddReminderComponent implements OnInit {
           }
       }
 
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+      // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
