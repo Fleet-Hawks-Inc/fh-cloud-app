@@ -513,12 +513,13 @@
                  </div>
                 </div>
               </div>
-              <div class="form-group row">
+
+              <div class="form-group row mt-4">
                 <div class="col-lg-11 text-right">
                   <button type="button" class="btn btn-default mr-2" routerLink="/fleet/inventory/list" >
                     Cancel
                   </button>
-                  <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Submit</a>
+                  <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Save</a>
                   <a href="javascript:;" *ngIf="itemID" (click)="updateInventory()" class="btn btn-success">Update</a>
                 </div>
               </div>
