@@ -1644,7 +1644,7 @@ export class AddTripComponent implements OnInit {
             }
         })
 
-        console.log("optionalSpec:",this.optionalSpec)
+        //console.log("optionalSpec:",this.optionalSpec)
             this.hereMap.calculateRoute(this.newCoords,this.optionalSpec)
         
         // this.spinner.hide();
@@ -1657,18 +1657,18 @@ export class AddTripComponent implements OnInit {
             this.selectedVehicleSpecs.push(this.vehicles.find(({vehicleID})=>vehicleID==trip.vehicleID).specifications)
             }
         })
-        console.log("selectedVehicles",this.selectedVehicleSpecs)
+        //console.log("selectedVehicles",this.selectedVehicleSpecs)
         if(this.selectedVehicleSpecs.length>0){
 
             this.optionalSpec={
                 "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height*100; }))
             }
-            console.log("optionalSpec inGetVehicles:",this.optionalSpec)
+           // console.log("optionalSpec inGetVehicles:",this.optionalSpec)
 
             this.resetMap();
         }
         else{
-            console.log("No vehicle is specified");
+       //     console.log("No vehicle is specified");
         }
         
         

@@ -177,16 +177,24 @@ export class AddRouteComponent implements OnInit {
       let result = await this.hereMap.geoCode(item.stopName);
       this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
     }));
+    
+    this.getMiles();
     this.hereMap.calculateRoute(this.newCoords);
     this.newCoords = [];
   }
 
   async getMiles(){
-    console.log("Route Data=",this.routeData)
-    let savedCord='';
-    let stops=savedCord+";";
-                    this.pcMiler.pcMiles.next(true);
-                    let miles = await this.pcMiler.pcMilesDistance(stops).toPromise()
+    let switchCoordinates=[];
+    this.newCoords.forEach(coordinates=>{
+      let latLong=coordinates.split(',')
+      let temp=latLong[0];
+      latLong[0]=latLong[1];
+      latLong[1]=temp;
+      switchCoordinates.push(latLong.join(','))
+    })
+    let stops=switchCoordinates.join(";");
+this.pcMiler.pcMiles.next(true);
+this.routeData.miles = await this.pcMiler.pcMilesDistance(stops).toPromise()
 }
 calculateActualMiles(miles){
   this.actualMiles+=miles;
