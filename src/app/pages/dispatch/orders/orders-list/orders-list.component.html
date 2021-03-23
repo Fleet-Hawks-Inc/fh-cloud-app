@@ -137,7 +137,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="orders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -210,7 +210,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="confirmOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of confirmOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -283,7 +283,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="dispatchOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of dispatchOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -356,7 +356,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="deliveredOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of deliveredOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -429,7 +429,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="cancelledOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of cancelledOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -502,7 +502,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="invoicedOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of invoicedOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
@@ -575,7 +575,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="partiallyOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
+                                        <td colspan="9">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of partiallyOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">

@@ -11,10 +11,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
-  styleUrls: ['./listing.component.css']
+  styleUrls: ['./listing.component.css'] 
 })
 export class ListingComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
   vehicles = [];
@@ -248,6 +249,12 @@ export class ListingComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedVehicles = [];
+        this.getStartandEndVal();
+        console.log('reminder result', result);
         this.allRemindersData = result[`Items`];
         this.fetchReminders();
         if (this.vehicleID !== '' || this.searchServiceTask !== '') {
@@ -326,17 +333,19 @@ export class ListingComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.serviceNext = true;
+    this.servicePrev = true;
     this.serviceDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.serviceNext = true;
+    this.servicePrev = true;
     this.serviceDraw -= 1;
     this.lastEvaluatedKey = this.servicePrevEvauatedKeys[this.serviceDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
