@@ -257,8 +257,8 @@ export class AddOrdersComponent implements OnInit {
   };
 
   customers: any = [];
-  shippers = [];
-  receivers = [];
+  shippers: any = [];
+  receivers: any = [];
   finalShippersReceivers = [
     {
       shippers: [],
@@ -370,8 +370,8 @@ export class AddOrdersComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchStateTaxes();
-    this.fetchShippers();
-    this.fetchReceivers();
+    this.listService.fetchShippers();
+    this.listService.fetchReceivers();
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
@@ -398,6 +398,8 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.customers = this.listService.customersList;
+    this.shippers = this.listService.shipperList;
+    this.receivers = this.listService.receiverList;
   }
 
   fetchAssetTypes(){
