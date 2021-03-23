@@ -87,7 +87,7 @@
                                         
                                                             <tbody>
                                                                 <tr *ngIf="logs.length == 0" class="text-center">
-                                                                    <td colspan="5">No records found</td>
+                                                                    <td colspan="5">{{dataMessage}}</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
                                         
@@ -107,16 +107,24 @@
                                                                                 *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last"
                                                                                 >{{task.taskName ? task.taskName : '-'}}<span *ngIf="!$last" class="list-format">, </span>
                                                                             </span>
+                                                                            <span 
+                                                                                *ngIf="item.allServiceTasks.serviceTaskList == 0;"
+                                                                                >-
+                                                                            </span>
                                                                         </div>
-                                                                        <div *ngIf="item?.selectedIssues.length > 0">
+                                                                        <div>
                                                                             <span class="font-weight-bold">Issue(s): </span>
                                                                                 <a  title="Issue"
                                                                                     class="text-info font-size-12"
                                                                                     *ngFor="let issue of item.selectedIssues;let $last = last"
                                                                                 >
-                                                                                <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
-                                                                                <span *ngIf="!$last" class="list-format">, </span>
-                                                                            </a>
+                                                                                    <span (click)="gotoIssue(issue)">{{issuesObject[issue]}}</span>
+                                                                                    <span *ngIf="!$last" class="list-format">, </span>
+                                                                                </a>
+                                                                                <span 
+                                                                                    *ngIf="item.selectedIssues.length == 0;"
+                                                                                    >-
+                                                                                </span>
                                                                         </div>
                                                                        <div>
                                                                             <span class="font-weight-bold">Vendor: </span> 
@@ -125,8 +133,8 @@
                                                                             </a>
                                                                        </div>
                                                                     </td>
-                                                                    <td>{{item.allServiceParts.currency}} {{ (item.allServiceParts.total ? item.allServiceParts.total : 0 +
-                                                                        item.allServiceTasks.total ? item.allServiceTasks.total : 0).toFixed(2) }} </td>
+                                                                    <td>{{item.allServiceParts.currency}} 
+                                                                        {{ (item.allServiceParts.total + item.allServiceTasks.total).toFixed(2) }} </td>
                                                                     <td>
                                         
                                                                         <div class="dropdown dropright">
@@ -210,7 +218,7 @@
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Account Number:</th>
-                                                <td>{{item.accountNumber}}</td>
+                                                <td>{{item.accountNumber ? item.accountNumber : '-'}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Vendor Name:</th>
@@ -235,30 +243,34 @@
                         </div>
                         <div id="vndrAddressDetails" class="tab-pane ">
                             <table style="float: left;" class="table table-bordered mb-2">
-                                <tbody>
-                                    <tr>
+                                <tbody *ngFor="let item of vendorAddress;">
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">Address Type:</th>
-                                        <td>{{vendorsData[0].address}}</td>
+                                        <td>{{item.addressType}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray"> Country:</th>
-                                        <td></td>
+                                        <td>{{item.country}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">State:</th>
-                                        <td></td>
+                                        <td>{{item.state}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray"> City:</th>
-                                        <td></td>
+                                        <td>{{item.city}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">Zip Code:</th>
-                                        <td></td>
+                                        <td>{{item.zipCode}}</td>
                                     </tr>
-                                    <tr>
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">Address:</th>
-                                        <td> </td>
+                                        <td>{{item.address1}} {{item.address2}}</td>
+                                    </tr>
+                                    <tr *ngIf="item.manual">
+                                        <th width="40%" class="back-color-gray">Address:</th>
+                                        <td>{{item.userLocation}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -270,7 +282,7 @@
                         </div>
                     </div>
                     <div *ngIf="!vendorsData">
-                        No Data Found
+                        Fetching Data....
                     </div>
                 </div>
             </div>

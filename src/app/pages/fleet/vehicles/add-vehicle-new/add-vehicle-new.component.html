@@ -323,10 +323,10 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Service
                                              Program&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <ng-select class="form-control populate" name="serviceProgramID"
-                                             [(ngModel)]="serviceProgramID"
+                                          <ng-select class="form-control populate" [multiple]="true" name="servicePrograms"
+                                             [(ngModel)]="servicePrograms"
                                              placeholder="Select service program for vehicle">
-                                             <ng-option *ngFor="let serviceProgram of servicePrograms | async"
+                                             <ng-option *ngFor="let serviceProgram of serviceProgramss | async"
                                                 value="{{serviceProgram.programID}}">{{serviceProgram.programName}}
                                              </ng-option>
 

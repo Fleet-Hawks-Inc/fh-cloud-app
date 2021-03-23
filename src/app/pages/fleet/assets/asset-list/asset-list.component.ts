@@ -182,7 +182,7 @@ export class AssetListComponent implements OnInit {
       .subscribe((result: any) => {
         this.allData = [];
         this.fetchAssetsCount();
-        // this.rerender();
+        this.initDataTable();
         this.toastr.success('Asset deleted successfully');
       });
     }

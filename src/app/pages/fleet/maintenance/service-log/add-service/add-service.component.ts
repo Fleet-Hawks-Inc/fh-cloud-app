@@ -161,7 +161,7 @@ export class AddServiceComponent implements OnInit {
     // this.fetchTasks();
     this.listService.fetchTasks();
     this.fetchAllTasksIDs();    
-    this.searchLocation();
+    // this.searchLocation();
     this.fetchInventoryItems();
     this.fetchItemGroups();
     this.fetchInventoryQuanitity();
@@ -702,7 +702,7 @@ export class AddServiceComponent implements OnInit {
         this.serviceData.completionDate = result.completionDate;
         this.serviceData.vendorID = result.vendorID;
         this.serviceData.reference = result.reference;
-        this.serviceData.location = result.location;
+        // this.serviceData.location = result.location;
         this.serviceData.geoCords.lat = result.geoCords.lat;
         this.serviceData.geoCords.lng = result.geoCords.lng;
         this.serviceData.odometer = result.odometer;
