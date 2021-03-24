@@ -1476,6 +1476,12 @@ fetchDrivers(){
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     let currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
+    if(this.currentUser.userType == 'Cloud Admin') {
+      let isCarrierID = localStorage.getItem('carrierID');
+      if(isCarrierID != undefined) { 
+        currentUserCarrier = isCarrierID;
+      }
+    }
     this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType == 'yard') {

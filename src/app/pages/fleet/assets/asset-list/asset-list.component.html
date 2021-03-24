@@ -26,14 +26,9 @@
                </div>
 
                <div class="col-md-2 col-lg-2">
-                  <ng-select
-                     [(ngModel)]="currentStatus"
-                     name="currentStatus"
-                     placeholder="Select Type"
-                     class="form-control populate">
-                     <ng-option *ngFor="let item of allAssetTypes;" value="{{item.code}}">
-                        <div title="{{item.description}}"> {{item.description}}</div>
-                    </ng-option>
+                  <ng-select class="form-control" name="currentStatus" [(ngModel)]="currentStatus" placeholder="Select Type">
+                     <ng-option *ngFor="let item of allAssetTypes" [value]="item.assetTypeID">
+                        {{item.assetTypeName}}</ng-option>
                   </ng-select>
                </div>
 
@@ -234,7 +229,7 @@
                   </thead>
                   <tbody>
                      <tr *ngIf="allData.length == 0" class="text-center">
-                        <td colspan="15">No records found</td>
+                        <td colspan="15">{{ dataMessage }}</td>
                     </tr>
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
