@@ -37,7 +37,8 @@ export class ServiceListComponent implements OnInit {
   serviceLogPrevEvauatedKeys = [''];
   serviceLogStartPoint = 1;
   serviceLogEndPoint = this.pageLength;
-  
+
+  vendorAddress: any;
   vendorsData: any;
 
   constructor(
@@ -130,6 +131,7 @@ export class ServiceListComponent implements OnInit {
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
       this.vendorsData =  res.Items;
+      this.vendorAddress = res.Items[0].address;
     })
   }
   initDataTable() {
