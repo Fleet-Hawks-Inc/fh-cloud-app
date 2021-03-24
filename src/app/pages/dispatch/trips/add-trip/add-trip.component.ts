@@ -25,7 +25,10 @@ export class AddTripComponent implements OnInit {
     public searchResults: any;
     public searchResults1: any;
     actualMiles=0;
-    
+    public selectedVehicleSpecs=[];
+    public optionalSpec={
+        height:400
+    };
     public saveCords:any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
@@ -190,6 +193,7 @@ export class AddTripComponent implements OnInit {
         });
     }
 
+    
     fetchCarriers() {
         this.apiService.getData('carriers')
             .subscribe((result: any) => {
@@ -304,7 +308,7 @@ export class AddTripComponent implements OnInit {
             }
 
             
-            console.log('this.trips', this.trips)
+            
         } else {
             this.toastr.error('Please fill type and location to add trip plan.');
             return false;
@@ -369,7 +373,7 @@ export class AddTripComponent implements OnInit {
         $("#editCell4" + index).val(editRowValues.locationName);
         $(".labelRow" + index).css('display', 'none'); 0
         $('.editRow' + index).removeClass('rowStatus');
-        console.log('this.trips[index]', this.trips[index])
+        
         this.spinner.hide();
     }
 
@@ -411,6 +415,7 @@ export class AddTripComponent implements OnInit {
         $(".labelRow" + index).css('display', '');
         // $(".editRow"+index).css('display','none');
         $('.editRow' + index).addClass('rowStatus');
+        this.getVehicles();
     }
 
     closeEditRow(index) {
@@ -797,7 +802,9 @@ export class AddTripComponent implements OnInit {
         }
     }
 
+
     fetchVehicles() {
+
         this.apiService.getData('vehicles')
             .subscribe((result: any) => {
                 this.vehicles = result.Items;
@@ -1314,7 +1321,7 @@ export class AddTripComponent implements OnInit {
         const result = await this.hereMap.geoCode(label);
         // await this.resetMap();
         if (elem == 'editLoc') {
-            console.log('result', result);
+            
             
             this.trips[index].locationName = label;
             this.trips[index]['lat'] = result.items[0].position.lat;
@@ -1623,6 +1630,7 @@ export class AddTripComponent implements OnInit {
 
     resetMap() {
         this.newCoords = [];
+      
         // this.spinner.show();
         // await Promise.all(data.map(async item => {
         //     let result = await this.hereMap.geoCode(item);
@@ -1635,9 +1643,35 @@ export class AddTripComponent implements OnInit {
                 this.newCoords.push(`${v.lat},${v.lng}`)
             }
         })
-        console.log('this.newCoords reset', this.newCoords)
-        this.hereMap.calculateRoute(this.newCoords);
+
+        //console.log("optionalSpec:",this.optionalSpec)
+            this.hereMap.calculateRoute(this.newCoords,this.optionalSpec)
+        
         // this.spinner.hide();
         // this.newCoords = [];
+    }
+    getVehicles(){
+        this.selectedVehicleSpecs=[]
+        this.trips.forEach(trip=>{
+            if(trip.vehicleID){
+            this.selectedVehicleSpecs.push(this.vehicles.find(({vehicleID})=>vehicleID==trip.vehicleID).specifications)
+            }
+        })
+        //console.log("selectedVehicles",this.selectedVehicleSpecs)
+        if(this.selectedVehicleSpecs.length>0){
+
+            this.optionalSpec={
+                "height":Math.max.apply(Math, this.selectedVehicleSpecs.map(function(spec) { return spec.height*100; }))
+            }
+           // console.log("optionalSpec inGetVehicles:",this.optionalSpec)
+
+            this.resetMap();
+        }
+        else{
+       //     console.log("No vehicle is specified");
+        }
+        
+        
+
     }
 }
