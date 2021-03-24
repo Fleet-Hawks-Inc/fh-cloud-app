@@ -14,6 +14,7 @@ declare var $: any;
 })
 export class VehicleRenewListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
   vehicles = [];
@@ -158,9 +159,6 @@ export class VehicleRenewListComponent implements OnInit {
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedVehicles = result.Items;
-        if (this.suggestedVehicles.length === 0) {
-          this.vehicleID = '';
-        }
       });
   }
 
@@ -170,6 +168,10 @@ export class VehicleRenewListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.vehicleID != '' || this.searchServiceTask != '') {
+          this.vehicleRenewEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -178,6 +180,11 @@ export class VehicleRenewListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedVehicles = [];
+        this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
         if (this.vehicleID !== '' || this.searchServiceTask !== '' ) {
@@ -257,20 +264,24 @@ export class VehicleRenewListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.vehicleRenewNext = true;
+    this.vehicleRenewPrev = true;
     this.vehicleRenewDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.vehicleRenewNext = true;
+    this.vehicleRenewPrev = true;
     this.vehicleRenewDraw -= 1;
     this.lastEvaluatedKey = this.vehicleRenewPrevEvauatedKeys[this.vehicleRenewDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
+    this.vehicleRenewNext = true;
+    this.vehicleRenewPrev = true;
     this.vehicleRenewStartPoint = 1;
     this.vehicleRenewEndPoint = this.pageLength;
     this.vehicleRenewDraw = 0;

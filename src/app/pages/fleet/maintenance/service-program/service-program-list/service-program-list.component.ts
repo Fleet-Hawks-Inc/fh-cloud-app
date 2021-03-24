@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Constants from '../../../constants';
 declare var $: any;
 
 @Component({
@@ -11,6 +12,7 @@ declare var $: any;
 })
 export class ServiceProgramListComponent implements  OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Program List';
   // dtOptions: any = {};
   programs = [];
@@ -51,6 +53,10 @@ export class ServiceProgramListComponent implements  OnInit {
     this.spinner.show();
     this.apiService.getData('servicePrograms/fetch/records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal();
         this.programs = result['Items'];
         if (this.programeName != '') {
           this.serviceProgramStartPoint = 1;
@@ -125,17 +131,19 @@ export class ServiceProgramListComponent implements  OnInit {
 
   // next button func
   nextResults() {
+    this.serviceProgramNext = true;
+    this.serviceProgramPrev = true;
     this.serviceProgramDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.serviceProgramNext = true;
+    this.serviceProgramPrev = true;
     this.serviceProgramDraw -= 1;
     this.lastEvaluatedKey = this.serviceProgramPrevEvauatedKeys[this.serviceProgramDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

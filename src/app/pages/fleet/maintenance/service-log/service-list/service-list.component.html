@@ -87,7 +87,7 @@
                                         
                                                             <tbody>
                                                                 <tr *ngIf="logs.length == 0" class="text-center">
-                                                                    <td colspan="5">No records found</td>
+                                                                    <td colspan="5">{{dataMessage}}</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
                                         
