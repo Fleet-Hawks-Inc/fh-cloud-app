@@ -14,6 +14,7 @@ export class ServiceProgramListComponent implements  OnInit {
   title = 'Service Program List';
   // dtOptions: any = {};
   programs = [];
+  dataMessage: string = 'Fetching Data....';
   programeName = '';
   totalRecords = 20;
   pageLength = 10;
@@ -51,7 +52,10 @@ export class ServiceProgramListComponent implements  OnInit {
     this.spinner.show();
     this.apiService.getData('servicePrograms/fetch/records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.programs = result['Items'];
+        if(result.Items.length == 0){
+          this.dataMessage = 'No Data Found';
+        }
+        this.programs = result.Items;
         if (this.programeName != '') {
           this.serviceProgramStartPoint = 1;
           this.serviceProgramEndPoint = this.totalRecords;
