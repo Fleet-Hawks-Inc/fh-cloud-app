@@ -165,7 +165,7 @@ html.fixed .content-body {
     position: relative;
 }
 #allContactsModal .modal-dialog{
-    max-width: 1150px;
+    max-width: 1250px;
 }
 #canvas1,
 #canvas2,
@@ -539,6 +539,7 @@ html.fixed .content-body {
     align-items: center;
     justify-content: center;
 }
+
 .map-search__results {
     position: absolute;
     list-style: none;

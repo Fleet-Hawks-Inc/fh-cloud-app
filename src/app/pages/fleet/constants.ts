@@ -17,6 +17,12 @@ module Constants {
     export const REMINDER_VEHICLE = 'vehicle';
     export const REMINDER_CONTACT = 'contact';
     export const REMINDER_SERVICE = 'service';
+
+    /*   
+    * Constants used in listing page
+    */
+    export const FETCHING_DATA = 'Fetching Data.....';
+    export const NO_RECORDS_FOUND = 'No Data Found';
   }
 
   export default Constants;
