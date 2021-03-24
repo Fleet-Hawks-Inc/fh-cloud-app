@@ -937,7 +937,7 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
 
                                           <div class="input-group">
-                                             <input type="text" class="form-control" name="specifications.tareWeight"
+                                             <input type="number" class="form-control" name="specifications.tareWeight"
                                                 [(ngModel)]="specifications.tareWeight" min="1"
                                                 placeholder="Enter curb weight">
                                              <span class="input-group-append">
@@ -960,7 +960,7 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
 
                                           <div class="input-group">
-                                             <input type="text" class="form-control" min="1"
+                                             <input type="number" class="form-control" min="1"
                                                 name="specifications.grossVehicleWeightRating"
                                                 [(ngModel)]="specifications.grossVehicleWeightRating"
                                                 placeholder="Enter gross vehicle weight rating">
@@ -1149,7 +1149,7 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" name="insurance.reminder"
+                                                <input type="number" class="form-control" name="insurance.reminder" min="1"
                                                    [(ngModel)]="insurance.reminder">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -1182,7 +1182,7 @@
                                           <div class="row">
                                              <div class="col-lg-6">
 
-                                                <input type="number" class="form-control" name="insurance.amount"
+                                                <input type="number" class="form-control" name="insurance.amount" min="1"
                                                    [(ngModel)]="insurance.amount" placeholder="eg. 45000.50000 etc.">
                                              </div>
                                              <div class="col-lg-6">
@@ -1302,7 +1302,7 @@
                                              Capacity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" name="fluid.oilCapacity"
+                                                <input type="number" class="form-control" name="fluid.oilCapacity" min="1"
                                                    [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200 etc.">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -1880,7 +1880,7 @@
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
                                           Expiration Meter&nbsp; <span
                                              class="text-1 optional-label-color">(optional)</span></label>
-                                       <input type="text" class="form-control" name="purchase.warrantyExpirationMeter"
+                                       <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="1"
                                           [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="Expiration Meter">
                                     </div>
                                     <div class="col-lg-10">

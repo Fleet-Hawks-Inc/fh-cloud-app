@@ -205,7 +205,7 @@ export class AddOrdersComponent implements OnInit {
         minTempratureUnit: "",
         maxTemprature: "",
         maxTempratureUnit: "",
-        driverLoad: "",
+        driverLoad: false,
       },
       receivers: {
         receiverID: "",
@@ -231,7 +231,7 @@ export class AddOrdersComponent implements OnInit {
         minTempratureUnit: "",
         maxTemprature: "",
         maxTempratureUnit: "",
-        driverUnload: "",
+        driverUnload: false,
       },
     },
   ];
@@ -257,8 +257,8 @@ export class AddOrdersComponent implements OnInit {
   };
 
   customers: any = [];
-  shippers = [];
-  receivers = [];
+  shippers: any = [];
+  receivers: any = [];
   finalShippersReceivers = [
     {
       shippers: [],
@@ -370,8 +370,8 @@ export class AddOrdersComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchStateTaxes();
-    this.fetchShippers();
-    this.fetchReceivers();
+    this.listService.fetchShippers();
+    this.listService.fetchReceivers();
     this.searchLocation();
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
@@ -398,6 +398,8 @@ export class AddOrdersComponent implements OnInit {
     });
 
     this.customers = this.listService.customersList;
+    this.shippers = this.listService.shipperList;
+    this.receivers = this.listService.receiverList;
   }
 
   fetchAssetTypes(){
@@ -456,10 +458,17 @@ export class AddOrdersComponent implements OnInit {
       });
   }
 
+  driverLoadChange(i, value){
+    this.shippersReceivers[i].shippers.driverLoad = value;
+  }
+
+  driverUnLoadChange(i, value){
+    this.shippersReceivers[i].receivers.driverUnload = value;
+  }
+
   async saveShipper(i) {
     this.isShipperSubmit = true; 
     let location = this.shippersReceivers[i].shippers.pickupLocation;
-
     let geoCodeResponse;
     let platform = new H.service.Platform({
       apikey: this.apiKey,
@@ -695,7 +704,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].shippers["minTempratureUnit"] = "";
     this.shippersReceivers[i].shippers["maxTemprature"] = "";
     this.shippersReceivers[i].shippers["maxTempratureUnit"] = "";
-    this.shippersReceivers[i].shippers["driverLoad"] = "";
+    this.shippersReceivers[i].shippers["driverLoad"] = false;
   }
 
   emptyReceiver(i) {
@@ -723,7 +732,7 @@ export class AddOrdersComponent implements OnInit {
     this.shippersReceivers[i].receivers["minTempratureUnit"] = "";
     this.shippersReceivers[i].receivers["maxTemprature"] = "";
     this.shippersReceivers[i].receivers["maxTempratureUnit"] = "";
-    this.shippersReceivers[i].receivers["driverUnload"] = "";
+    this.shippersReceivers[i].receivers["driverUnload"] = false;
   }
 
   /*
@@ -1316,6 +1325,12 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.additionalDetails["trailerType"] =
           result.additionalDetails.trailerType;
 
+        this.orderData.additionalDetails["loadType"] =
+          result.additionalDetails.loadType;
+
+        this.orderData.additionalDetails["refeerTemp"] =
+          result.additionalDetails.refeerTemp;
+
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
 
         let length = result.shippersReceiversInfo.length;
@@ -1507,7 +1522,7 @@ export class AddOrdersComponent implements OnInit {
         minTempratureUnit: "",
         maxTemprature: "",
         maxTempratureUnit: "",
-        driverLoad: "",
+        driverLoad: false,
       },
       receivers: {
         receiverID: "",
@@ -1533,7 +1548,7 @@ export class AddOrdersComponent implements OnInit {
         minTempratureUnit: "",
         maxTemprature: "",
         maxTempratureUnit: "",
-        driverUnload: "",
+        driverUnload: false,
       },
     };
     this.shippersReceivers.push(allFields);
