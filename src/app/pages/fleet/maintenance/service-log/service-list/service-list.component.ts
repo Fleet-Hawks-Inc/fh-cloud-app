@@ -126,6 +126,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   openComponent(vendorID) {
+    this.vendorsData = [];
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
