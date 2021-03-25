@@ -3,7 +3,7 @@ import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import  Constants  from '../../constants';
 declare var $: any;
 
 @Component({
@@ -14,6 +14,7 @@ declare var $: any;
 })
 export class FuelEntryListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Fuel Entries List';
   fromDate: any = '';
   toDate: any = '';
@@ -82,8 +83,11 @@ export class FuelEntryListComponent implements OnInit {
     this.unitID = unitID;
     this.suggestedUnits = [];
   }
+
   getSuggestions(value) {
-    this.apiService
+    value = value.toLowerCase();
+    if(value != '') { 
+      this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
@@ -96,10 +100,15 @@ export class FuelEntryListComponent implements OnInit {
         }
         this.getAssetsSugg(value);
       });
+    } else {
+      this.suggestedUnits = [];
+    }
   }
 
   getAssetsSugg(value) {
-    this.apiService
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
@@ -110,10 +119,11 @@ export class FuelEntryListComponent implements OnInit {
           });
         }
       });
-      if(this.suggestedUnits.length == 0){
-        this.unitID = '';
-      }
+    } else {
+      this.suggestedUnits = [];
+    }
   }
+
   fetchVendorList() {
     this.apiService.getData('vendors/get/list').subscribe((result: any) => {
       this.vendorList = result;
@@ -188,37 +198,43 @@ export class FuelEntryListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID='+this.unitID+'&from='+this.start+'&to='+this.end+ '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
-        this.fuelList = result[`Items`];
-        if (this.unitID !== '') {
-          this.fuelStartPoint = 1;
-          this.fuelEndPoint = this.totalRecords;
-        }
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
+      if (result.Items.length == 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      this.suggestedUnits = [];
+      this.getStartandEndVal();
 
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          this.fuelNext = false;
-          // for prev button
-          if (!this.fuelPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
-            this.fuelPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
-          }
-          this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
+      this.fuelList = result[`Items`];
+      if (this.unitID !== '') {
+        this.fuelStartPoint = 1;
+        this.fuelEndPoint = this.totalRecords;
+      }
 
-        } else {
-          this.fuelNext = true;
-          this.lastEvaluatedKey = '';
-          this.fuelEndPoint = this.totalRecords;
+      if (result[`LastEvaluatedKey`] !== undefined) {
+        this.fuelNext = false;
+        // for prev button
+        if (!this.fuelPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
+          this.fuelPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
         }
+        this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
 
-        // disable prev btn
-        if (this.fuelDraw > 0) {
-          this.fuelPrev = false;
-        } else {
-          this.fuelPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+      } else {
+        this.fuelNext = true;
+        this.lastEvaluatedKey = '';
+        this.fuelEndPoint = this.totalRecords;
+      }
+
+      // disable prev btn
+      if (this.fuelDraw > 0) {
+        this.fuelPrev = false;
+      } else {
+        this.fuelPrev = true;
+      }
+      this.spinner.hide();
+    }, err => {
+      this.spinner.hide();
+    });
   }
 
   searchFilter() {
@@ -263,17 +279,21 @@ export class FuelEntryListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.fuelNext = true;
+    this.fuelPrev = true;
     this.fuelDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
+    // this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.fuelNext = true;
+    this.fuelPrev = true;
     this.fuelDraw -= 1;
     this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
     this.initDataTable();
-    this.getStartandEndVal();
+    // this.getStartandEndVal();
   }
 
   resetCountResult() {

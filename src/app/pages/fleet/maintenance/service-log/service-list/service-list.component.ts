@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
+import Constants from '../../../constants';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -11,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ServiceListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Logs';
   // dtOptions: any = {};
   logs = [];
@@ -38,7 +40,6 @@ export class ServiceListComponent implements OnInit {
 
   vendorAddress: any;
   vendorsData: any;
-  dataMessage: string = 'Fetching Data....';
 
   constructor(
       private apiService: ApiService,
@@ -138,10 +139,13 @@ export class ServiceListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0){
-          this.dataMessage = 'No Data Found';
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.logs = result.Items;
+        this.suggestedVehicles = [];
+        this.getStartandEndVal();
+
+        this.logs = result['Items'];
         if (this.vehicleID != '') {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;
@@ -216,17 +220,19 @@ export class ServiceListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.serviceLogNext = true;
+    this.serviceLogPrev = true;
     this.serviceLogDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.serviceLogNext = true;
+    this.serviceLogPrev = true;
     this.serviceLogDraw -= 1;
     this.lastEvaluatedKey = this.serviceLogPrevEvauatedKeys[this.serviceLogDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

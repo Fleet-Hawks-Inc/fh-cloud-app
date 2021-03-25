@@ -1486,8 +1486,8 @@
                               </ng-select>
                            </div>
                            <div class="col-lg-1">
-                              <a *ngIf="accessFeesInfo.accessFees.length != i+1" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessFee', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
-                              <a *ngIf="accessFeesInfo.accessFees.length == i+1" class="btn btn-success btn-sm" (click)="addAccessFee('accessFee')" href="javascript:;"><i class="fas fa-plus"></i></a>
+                              <a *ngIf="i != 0" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessFee', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
+                              <a *ngIf="i == 0" class="btn btn-success btn-sm" (click)="addAccessFee('accessFee')" href="javascript:;"><i class="fas fa-plus"></i></a>
                            </div>
                            <div class="col-lg-2">
                               <p class="text-right"> <span>{{item.amount}} </span></p>
@@ -1530,8 +1530,8 @@
                               </ng-select>
                            </div>
                            <div class="col-lg-1">
-                              <a *ngIf="accessorialDeductionInfo.accessDeductions.length != i+1" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessDeduct', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
-                              <a *ngIf="accessorialDeductionInfo.accessDeductions.length == i+1" class="btn btn-success btn-sm" href="javascript:;" (click)="addAccessFee('accessDeduct')"><i class="fas fa-plus"></i></a>
+                              <a *ngIf="i != 0" class="btn btn-danger btn-sm" (click)="deleteAccessFee('accessDeduct', i)" href="javascript:;"><i class="fas fa-minus"></i></a>
+                              <a *ngIf="i == 0" class="btn btn-success btn-sm" href="javascript:;" (click)="addAccessFee('accessDeduct')"><i class="fas fa-plus"></i></a>
                            </div>
 
 

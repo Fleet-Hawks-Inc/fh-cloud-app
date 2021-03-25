@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../constants';
 
 @Component({
   selector: 'app-inventory-list',
@@ -12,6 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class InventoryListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   items = [];
   itemGroups = {};
   vendors = {};
@@ -280,6 +282,14 @@ export class InventoryListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('items/fetch/records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedItems = [];
+        this.suggestedVendors = [];
+        this.suggestedItemGroups = [];
+        this.getStartandEndVal('inv');
+        
         this.items = result['Items'];
         if (this.vendorID != '') {
           this.inventoryStartPoint = 1;
@@ -514,28 +524,32 @@ export class InventoryListComponent implements OnInit {
   // next button func
   nextResults(type) {
     if(type == 'inv') {
+      this.inventoryNext = true;
+      this.inventoryPrev = true;
       this.inventoryDraw += 1;
       this.initDataTable();
-      this.getStartandEndVal(type);
     } else {
+      this.requiredInventoryNext = true;
+      this.requiredInventoryPrev = true; 
       this.requiredInventoryDraw += 1;
       this.initDataTableRequired();
-      this.getStartandEndVal(type);
     }
   }
 
   // prev button func
   prevResults(type) {
     if(type == 'inv') {
+      this.inventoryNext = true;
+      this.inventoryPrev = true;
       this.inventoryDraw -= 1;
       this.lastEvaluatedKey = this.inventoryPrevEvauatedKeys[this.inventoryDraw];
       this.initDataTable();
-      this.getStartandEndVal(type);
     } else {
+      this.requiredInventoryNext = true;
+      this.requiredInventoryPrev = true; 
       this.requiredInventoryDraw -= 1;
       this.requiredLastEvaluatedKey = this.requiredInventoryPrevEvauatedKeys[this.requiredInventoryDraw];
       this.initDataTableRequired();
-      this.getStartandEndVal(type);
     }
   }
 

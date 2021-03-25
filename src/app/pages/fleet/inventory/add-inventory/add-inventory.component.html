@@ -265,7 +265,7 @@
                       >
                         <optgroup label="Select Vendor">
                           <ng-option
-                            *ngFor="let vendor of vendors"
+                            *ngFor="let vendor of vendors | async"
                             value="{{ vendor.vendorID }}"
                           >
                             {{ vendor.companyName }}
@@ -361,7 +361,7 @@
                         >
                           <optgroup label="Select">
                             <ng-option
-                              *ngFor="let vendor of vendors"
+                              *ngFor="let vendor of vendors | async"
                               value="{{ vendor.vendorID }}"
                             >
                               {{ vendor.companyName }}
