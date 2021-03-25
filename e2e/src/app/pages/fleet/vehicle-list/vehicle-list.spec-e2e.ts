@@ -1,9 +1,9 @@
 // import { browser, logging } from 'protractor';
 
 
-// import { LoginPage } from '../login/login.po';
-// import { MapDashBoardPage } from '../map-dashboard/map-dashboard.po';
-// import { DeleteDriverList } from './driver-list.po';
+// import { LoginPage } from '../../../entry/login/login.po';
+// import { MapDashBoardPage } from '../../../entry/map-dashboard/map-dashboard.po';
+// import { DeleteDriverList } from './vehicle-list.po';
 // ~
 
 // describe('delete driver Tests', () => {
@@ -11,7 +11,7 @@
 //     let dashBoardPage: MapDashBoardPage;
 //     let driverDeletePage: DeleteDriverList;
 //     beforeEach(() => {
-//         browser.waitForAngularEnabled(true);
+//         browser.waitForAngularEnabled(false);
 //         loginPage = new LoginPage();
 //         dashBoardPage = new MapDashBoardPage();
 //         driverDeletePage = new DeleteDriverList();

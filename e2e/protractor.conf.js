@@ -10,8 +10,16 @@ const { SpecReporter } = require("jasmine-spec-reporter");
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
+   
     //"./src/**/*.ts",
-    './src/app/entry/driver-list/*.ts'
+    //'./src/app/entry/add-driver/*.ts',
+    //'./src/app/entry/driver-list/*.ts',
+    //'./src/app/pages/fleet/assets/add-assets/*.ts',
+    //'./src/app/pages/fleet/asset-list/*.ts',
+    //'./src/app/pages/fleet/vehicles/*.ts',
+    //'./src/app/pages/fleet/vehicle-list/*.ts',
+    
+
   ],
   capabilities: {
     browserName: "chrome",

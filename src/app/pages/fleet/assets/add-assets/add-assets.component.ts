@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
+//import { NgxSpinnerService } from 'ngx-';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { DomSanitizer} from '@angular/platform-browser';
@@ -106,7 +106,7 @@ export class AddAssetsComponent implements OnInit {
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
-              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
+              private toastr: ToastrService, private listService: ListService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -291,7 +291,7 @@ export class AddAssetsComponent implements OnInit {
    * Fetch Asset details before updating
   */
   fetchAssetByID() {
-    this.spinner.show(); // loader init
+    //this..show(); // loader init
     this.apiService
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
@@ -350,7 +350,7 @@ export class AddAssetsComponent implements OnInit {
           this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
-        this.spinner.hide(); // loader hide
+        //this..hide(); // loader hide
       });
 
   }
@@ -537,12 +537,12 @@ export class AddAssetsComponent implements OnInit {
   }
 
   getStates(id) {
-    this.spinner.show(); // loader init
+//this..show(); // loader init
     // const countryID = this.assetsData.assetDetails['licenceCountryID'];
     this.apiService.getData('states/country/' + id)
       .subscribe((result: any) => {
         this.states = result.Items;
-        this.spinner.hide(); // loader init
+       // this..hide(); // loader init
       });
   }
 
