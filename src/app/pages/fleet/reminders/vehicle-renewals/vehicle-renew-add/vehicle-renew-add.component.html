@@ -62,7 +62,7 @@
                                  <div class="col-lg-1 pl-0" style="margin-top: 39px !important">
                                     <button type="button" data-toggle="modal" data-target="#addGroupModal"
                                     class="modal-with-form btn btn-sm btn-success text-light"><i
-                                       class="fas fa-plus"></i> Add Group</button>
+                                       class="fas fa-plus"></i></button>
                                     </div>
                                
                               </div>
@@ -183,9 +183,10 @@
                    <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Add group name"> 
                  </div>
                </div>
+
                <div class="form-row">
                   <div class="form-group col-lg-12">
-                    <label class="control-label font-weight-bold">Group Members&nbsp;<span
+                    <label class="control-label font-weight-bold pt-2">Group Members&nbsp;<span
                      class="text-1 optional-label-color">(optional)</span></label>
                     <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Add users in the group"
                     style="width: 100%;">

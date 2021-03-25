@@ -2376,7 +2376,7 @@ export class AddressBookComponent implements OnInit {
         this.shippers = [];
         this.fetchShippersCount();
         this.initDataTableShipper();
-        this.toastr.success('Shipper deleted successfully');
+        this.toastr.success('Consignor deleted successfully');
       });
     }
   }
