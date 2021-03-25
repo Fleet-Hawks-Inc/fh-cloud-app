@@ -47,7 +47,7 @@ export class GeofenceListComponent implements OnInit {
   geoPrevEvauatedKeys = [''];
   geoStartPoint = 1;
   geoEndPoint = this.pageLength;
-  dataMessage: string = 'Fetching Data....';
+
   constructor(
     private apiService: ApiService,
     private LeafletMap: LeafletMapService,
@@ -207,10 +207,7 @@ export class GeofenceListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
       .subscribe((result: any) => {
-        if(result.Items.length == 0){
-          this.dataMessage = 'No Data Found';
-        }
-        this.geofences = result.Items;
+        this.geofences = result['Items'];
         if (this.geofenceID != '' || this.type != '') {
           this.geoStartPoint = 1;
           this.geoEndPoint = this.totalRecords;
