@@ -64,7 +64,7 @@ vehicles= [];
   stateID = '';
   driverID = '';
   teamDriverID = '';
-  servicePrograms = [];
+  serviceProgramID = '';
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
@@ -215,7 +215,7 @@ vehicles= [];
   };
 
   ownerOperators: any = []
-  serviceProgramss: any = [];
+  servicePrograms: any = [];
   inspectionForms = [];
   manufacturers: any = [];
   models: any = [];
@@ -306,7 +306,7 @@ vehicles= [];
    this.countries = this.listService.countryList;
    this.states = this.listService.stateList;
    this.ownerOperators = this.listService.ownerOperatorList;
-   this.serviceProgramss = this.listService.serviceProgramList;
+   this.servicePrograms = this.listService.serviceProgramList;
    this.drivers = this.listService.driversList;
   }
 
@@ -330,7 +330,7 @@ vehicles= [];
 
   fetchServicePrograms() {
     this.apiService.getData('servicePrograms').subscribe((result: any) => {
-      this.serviceProgramss = result.Items;
+      this.servicePrograms = result.Items;
     });
   }
 
@@ -378,7 +378,7 @@ vehicles= [];
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      servicePrograms: this.servicePrograms,
+      serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
@@ -579,7 +579,7 @@ vehicles= [];
             stateID: '',
             driverID: '',
             teamDriverID: '',
-            servicePrograms: '',
+            serviceProgramID: '',
             repeatByTime: '',
             repeatByTimeUnit: '',
             reapeatbyOdometerMiles: '',
@@ -807,7 +807,7 @@ vehicles= [];
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
-        this.servicePrograms = result.servicePrograms;
+        this.serviceProgramID = result.serviceProgramID;
         this.annualSafetyDate = result.annualSafetyDate,
         this.annualSafetyReminder = result.annualSafetyReminder,
         this.currentStatus = result.currentStatus;
@@ -993,7 +993,7 @@ vehicles= [];
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      servicePrograms: this.servicePrograms,
+      serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
@@ -1246,7 +1246,7 @@ vehicles= [];
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      servicePrograms: this.servicePrograms,
+      serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
@@ -1434,7 +1434,7 @@ vehicles= [];
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      servicePrograms: this.servicePrograms,
+      serviceProgramID: this.serviceProgramID,
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,

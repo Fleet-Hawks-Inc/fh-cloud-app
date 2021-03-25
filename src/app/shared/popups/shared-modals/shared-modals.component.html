@@ -1863,6 +1863,7 @@
                                     <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                  </ng-select>
                            </div>
+                           {{issuesData.unitType}}
                            <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
                                  <label
                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>

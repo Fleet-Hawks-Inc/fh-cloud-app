@@ -86,7 +86,7 @@ export class FuelEntryListComponent implements OnInit {
 
   getSuggestions(value) {
     value = value.toLowerCase();
-    if(value != '') {
+    if(value != '') { 
       this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
