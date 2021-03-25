@@ -241,6 +241,10 @@ export class ListingComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.vehicleID != '' || this.searchServiceTask != '') {
+          this.serviceEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -254,7 +258,6 @@ export class ListingComponent implements OnInit {
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
-        console.log('reminder result', result);
         this.allRemindersData = result[`Items`];
         this.fetchReminders();
         if (this.vehicleID !== '' || this.searchServiceTask !== '') {
