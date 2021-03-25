@@ -35,8 +35,10 @@ export class ServiceListComponent implements OnInit {
   serviceLogPrevEvauatedKeys = [''];
   serviceLogStartPoint = 1;
   serviceLogEndPoint = this.pageLength;
-  
+
+  vendorAddress: any;
   vendorsData: any;
+  dataMessage: string = 'Fetching Data....';
 
   constructor(
       private apiService: ApiService,
@@ -128,13 +130,17 @@ export class ServiceListComponent implements OnInit {
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
       this.vendorsData =  res.Items;
+      this.vendorAddress = res.Items[0].address;
     })
   }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.logs = result['Items'];
+        if(result.Items.length == 0){
+          this.dataMessage = 'No Data Found';
+        }
+        this.logs = result.Items;
         if (this.vehicleID != '') {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;

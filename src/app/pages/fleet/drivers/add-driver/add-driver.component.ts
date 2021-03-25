@@ -723,7 +723,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-    console.log('driver', this.driverData)
     // create form data instance
     const formData = new FormData();
 

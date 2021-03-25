@@ -70,7 +70,7 @@
                                         
                                                             <tbody>
                                                                 <tr *ngIf="programs.length == 0" class="text-center">
-                                                                    <td colspan="3">No records found</td>
+                                                                    <td colspan="3">{{dataMessage}}</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let program of programs; let i = index;">
                                         
