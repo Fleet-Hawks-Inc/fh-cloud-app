@@ -3,6 +3,7 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: "app-vehicle-detail",
@@ -13,7 +14,7 @@ export class VehicleDetailComponent implements OnInit {
   slides = [];
   docs = [];
   Asseturl = this.apiService.AssetUrl;
-
+  public environment = environment;
   /**
    * Vehicle Prop
    */
@@ -205,10 +206,10 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchInspectionForms();
-    this.fetchFuel();
-    this.fetchServiceProgams();
-    this.fetchServiceHistory();
+    // this.fetchInspectionForms();
+    // this.fetchFuel();
+    // this.fetchServiceProgams();
+    // this.fetchServiceHistory();
     this.fetchDriversList();
     this.fetchStatesList();
     this.fetchVehicleModelList();
@@ -348,7 +349,7 @@ export class VehicleDetailComponent implements OnInit {
           outOfServiceDate: result.lifeCycle.outOfServiceDate,
           outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
           startDate: result.lifeCycle.startDate,
-          estimatedServiceYear: result.lifeCycle.estimatedServiceYear,
+          estimatedServiceYear: result.lifeCycle.estimatedServiceYears,
         };
         this.specifications = {
           height: result.specifications.height,
