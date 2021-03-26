@@ -124,79 +124,79 @@
          </div>
          <div class="vehicleminilist" *ngIf="visible" style="overflow-y: scroll; overflow-x: hidden; height: 100%;" id="vehicleMiniList">
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Tracker</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark"> Asset Gateway</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Tracker</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 1</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 2</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 3</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 4</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 2542 Cleary Crt Mississauga ON L5K 1Y3</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 5</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Kingston, Toronto, ON K7L 5K4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 6</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crescent Road Vancouver, BC V6T 1Z2</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 7</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Crt Brampton ON L6Z 3G4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 8</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> McCallum Ave Regina SK S4S 0S4</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 9</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> Bourkevale Dr Winnipeg MB R3J 1P3</span>
                </a>
             </div>
             <div class="vehicleDetailMap">
-               <a href="asset1_details.php">
+               <a href="javascript:;">
                   <p class="mb-1 text-4 font-weight-semibold text-dark">Asset Name 10</p>
                   <span class="driverstatus"><i class="fas fa-map-marker-alt"></i> 122 St Surrey BC V3V 4L4</span>
                </a>
@@ -210,14 +210,16 @@
                <table class="row-border hover table table-bordered table-striped mb-0">
                   <thead>
                      <tr>
+                        <th class="col0 minWidth200">VIN</th>
                         <th class="col1 minWidth200">Asset Name/Number</th>
-                        <th class="col2 minWidth200">Type</th>
-                        <th class="col3 minWidth200">Plate Number</th>
-                        <th class="col4 minWidth200">Last Known Location</th>
-                        <th class="col5 minWidth200">Year</th>
+                        <th class="col2 minWidth200">Asset Type</th>
                         <th class="col6 minWidth200">Make</th>
+                        <th class="col3 extra">Plate Number</th>
+                        <th class="col4 minWidth200">Last Location</th>
+                        <th class="col5 extra">Year</th>
+                        
                         <th class="col7 minWidth200">Model</th>
-                        <th class="col8 minWidth200">Ownership</th>
+                        <th class="col8 extra">Ownership</th>
                         <th class="col10 extra">Group</th>
                         <th class="col11 extra">ACE ID</th>
                         <th class="col12 extra">ACI ID</th>
@@ -232,6 +234,7 @@
                         <td colspan="15">{{ dataMessage }}</td>
                     </tr>
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
+                        <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                         <td *ngIf="hideShow.type">{{assetTypeList[item.assetDetails.assetType]}}</td>
                         <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>

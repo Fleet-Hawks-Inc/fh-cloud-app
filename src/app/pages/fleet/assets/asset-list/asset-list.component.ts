@@ -54,14 +54,15 @@ export class AssetListComponent implements OnInit {
   Success: string = '';
 
   hideShow = {
+    vin: true,
     assetName: true,
     type: true,
     plateNo: true,
     lastLocation: true,
-    year: true,
+    year: false,
     make: true,
-    model: true,
-    ownership: true,
+    model: false,
+    ownership: false,
     status: true,
     group: false,
     aceID: false,

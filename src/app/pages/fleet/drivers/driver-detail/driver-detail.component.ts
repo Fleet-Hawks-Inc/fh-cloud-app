@@ -138,7 +138,6 @@ export class DriverDetailComponent implements OnInit {
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
-    console.log('environment', environment.production);
   }
 
    /**

@@ -511,6 +511,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       manual: false,
       userLocation: ''
     });
+    console.log('driverData.address', this.driverData.address);
   }
 
   fetchCycles() {
