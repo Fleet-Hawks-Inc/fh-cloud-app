@@ -321,6 +321,7 @@ export class DriverListComponent implements OnInit {
       if(this.driverID == '') {
         this.driverID = this.driverName;
       }
+      this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedDrivers = [];
       this.fetchDriversCount();
       this.initDataTable();
@@ -335,7 +336,7 @@ export class DriverListComponent implements OnInit {
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDriversCount();
       this.initDataTable();
       this.driverDraw = 0;

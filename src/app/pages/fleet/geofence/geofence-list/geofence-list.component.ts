@@ -5,6 +5,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../constants';
 declare var $: any;
 declare var L: any;
 
@@ -14,7 +15,8 @@ declare var L: any;
   styleUrls: ['./geofence-list.component.css']
 })
 export class GeofenceListComponent implements OnInit {
- 
+  
+  dataMessage: string = Constants.FETCHING_DATA;
   private map: any;
   selectID;
   private geofenceSelectCount;
@@ -111,8 +113,12 @@ export class GeofenceListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.geofenceID !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== '') {
+      if(this.geofenceID == '') {
+        this.geofenceID = this.geofenceName;
+      }
       this.geofences = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchLogsCount();
       this.initDataTable();
     } else {
@@ -121,11 +127,11 @@ export class GeofenceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.geofenceID !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== '') {
       this.geofenceID = '';
       this.geofenceName = '';
       this.type = '';
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.geofences = [];
       this.fetchLogsCount();
       this.initDataTable();
@@ -156,8 +162,8 @@ export class GeofenceListComponent implements OnInit {
 
   setGeofence(geofenceID, geofenceName) {
     this.geofenceName = geofenceName;
-    this.geofenceID = geofenceID;
-
+    // this.geofenceID = geofenceID;
+    this.geofenceID = geofenceName;
     this.suggestedGeofences = [];
   }
 
@@ -204,9 +210,14 @@ export class GeofenceListComponent implements OnInit {
   }
 
   initDataTable() {
-   
-    this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
-      .subscribe((result: any) => {
+    this.apiService.getData(`geofences/fetch/records?geofence=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
+     .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedGeofences = [];
+        this.getStartandEndVal();
+
         this.geofences = result['Items'];
         if (this.geofenceID != '' || this.type != '') {
           this.geoStartPoint = 1;
@@ -240,11 +251,15 @@ export class GeofenceListComponent implements OnInit {
   }
 
   fetchLogsCount() {
-    this.apiService.getData(`geofences/get/count?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
+    this.apiService.getData(`geofences/get/count?geofence=${this.geofenceID}&type=${this.type}`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.geofenceID != '' || this.type != '') {
+          this.geoEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -256,17 +271,19 @@ export class GeofenceListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.geoNext = true;
+    this.geoPrev = true;
     this.geoDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.geoNext = true;
+    this.geoPrev = true;
     this.geoDraw -= 1;
     this.lastEvaluatedKey = this.geoPrevEvauatedKeys[this.geoDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

@@ -797,7 +797,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{ driver.userName }}"
+                                                <td class="driverClass" id="drivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
                                                         <p class="mb-1 text-4 font-weight-semibold text-dark"><span
@@ -825,7 +825,7 @@
                                     <table>
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{ driver.userName }}"
+                                                <td class="codriverClass" id="codrivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'codriver','click')">
                                                     {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span

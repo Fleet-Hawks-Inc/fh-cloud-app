@@ -295,8 +295,9 @@ export class ListingComponent implements OnInit {
     if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
-      this.getRemindersCount()
-      this.initDataTable()
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -310,7 +311,8 @@ export class ListingComponent implements OnInit {
       this.searchServiceTask = '';
       this.filterStatus = '';
       this.remindersData = [];
-      this.getRemindersCount()
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.getRemindersCount();
       this.initDataTable();
       this.resetCountResult();
     } else {
