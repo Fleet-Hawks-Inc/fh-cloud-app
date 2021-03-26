@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import  Constants  from '../../../fleet/constants';
 declare var $: any;
 
 @Component({
@@ -14,6 +15,7 @@ declare var $: any;
 })
 export class TripListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   form;
   title = "Trips";
   tripID = '';
@@ -409,10 +411,15 @@ export class TripListComponent implements OnInit {
 
   initDataTable(tabType) {
     this.spinner.show();
-    this.trips = [];
+    // this.trips = [];
     this.apiService.getData('trips/fetch/records/' + tabType + '?searchValue=' + this.tripsFiltr.searchValue + '&startDate=' + this.tripsFiltr.start +
       '&endDate=' + this.tripsFiltr.end + '&category=' + this.tripsFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('all');
+
         this.fetchTrips(result, 'all')
         if (this.tripsFiltr.searchValue !== '' || this.tripsFiltr.start !== '' ) {
           this.tripStartPoint = 1;
@@ -807,9 +814,10 @@ export class TripListComponent implements OnInit {
   // next button func
   nextResults(type) {
     if(type == 'all') {
+      this.tripNext = true;
+      this.tripPrev = true;
       this.tripDraw += 1;
       this.initDataTable('all');
-      this.getStartandEndVal(type);
 
     } else if(type == 'confirmed') {
       this.tripConfirmedDraw += 1;
@@ -846,10 +854,11 @@ export class TripListComponent implements OnInit {
   // prev button func
   prevResults(type) {
     if(type == 'all') {
+      this.tripNext = true;
+      this.tripPrev = true;
       this.tripDraw -= 1;
       this.lastEvaluatedKey = this.tripPrevEvauatedKeys[this.tripDraw];
       this.initDataTable('all');
-      this.getStartandEndVal(type);
 
     } else if(type == 'confirmed') {
       this.tripConfirmedDraw -= 1;

@@ -19,6 +19,7 @@ export class ServiceListComponent implements OnInit {
 
   suggestedVehicles = [];
   vehicleID = '';
+  taskID = '';
   currentStatus = '';
   vehicleIdentification = '';
   vehiclesObject: any = {};
@@ -117,6 +118,10 @@ export class ServiceListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.vehicleID != '') {
+          this.serviceLogEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -127,6 +132,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   openComponent(vendorID) {
+    this.vendorsData = [];
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
@@ -135,8 +141,8 @@ export class ServiceListComponent implements OnInit {
     })
   }
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
+
+    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -172,12 +178,13 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+        
       });
   }
 
   searchFilter() {
-    if (this.vehicleID !== '') {
+    if (this.vehicleID !== '' || this.taskID !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.fetchLogsCount();
       this.initDataTable();
@@ -187,8 +194,9 @@ export class ServiceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.vehicleID !== '') {
+    if (this.vehicleID !== '' || this.taskID !== '') {
       this.vehicleID = '';
+      this.dataMessage = Constants.FETCHING_DATA;
       this.vehicleIdentification = '';
       this.logs = [];
       this.fetchLogsCount();

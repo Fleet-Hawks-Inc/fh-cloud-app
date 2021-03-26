@@ -145,6 +145,10 @@ export class ListContactRenewComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.contactID != '' || this.searchServiceTask != '') {
+          this.contactRenewEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -195,6 +199,7 @@ export class ListContactRenewComponent implements OnInit {
     if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount()
       this.initDataTable();
     } else {
@@ -209,7 +214,7 @@ export class ListContactRenewComponent implements OnInit {
       this.firstName = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
       this.getRemindersCount()
       this.initDataTable();

@@ -253,6 +253,7 @@ export class AssetListComponent implements OnInit {
       if(this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
+      this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
       this.suggestedAssets = [];
       this.fetchAssetsCount();
@@ -269,6 +270,7 @@ export class AssetListComponent implements OnInit {
       this.currentStatus = '';
       this.suggestedAssets = [];
       this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsCount();
       this.initDataTable();
       this.resetCountResult();
