@@ -204,7 +204,7 @@ export class GeofenceListComponent implements OnInit {
   }
 
   initDataTable() {
-    this.spinner.show();
+   
     this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
       .subscribe((result: any) => {
         this.geofences = result['Items'];
@@ -235,7 +235,7 @@ export class GeofenceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+        
       });
   }
 
