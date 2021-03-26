@@ -206,6 +206,7 @@ export class IssueListComponent implements OnInit {
   searchFilter() {
     if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '' || this.assetUnitID !== '') {
       this.fetchIssuesCount();
+      this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
       this.initDataTable();
       this.suggestedUnits = [];
@@ -226,6 +227,7 @@ export class IssueListComponent implements OnInit {
       this.suggestedUnitsAssets = []
       this.suggestedUnits = [];
       this.fetchIssuesCount();
+      this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
       this.initDataTable();
       this.resetCountResult();

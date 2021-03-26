@@ -20,11 +20,10 @@
                                    > {{ suggestedUnit.vehicleIdentification }}</li>
                                 </ul>
                              </div>
-                            
                         </div>
 
                         <div class="col-md-2  col-lg-2">
-                            <ng-select placeholder="Select Task" class="form-control populate">
+                            <ng-select placeholder="Select Task" class="form-control populate" name="taskID" [(ngModel)]="taskID">
                                 <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
                                     <div title="{{item.taskName}}">{{item.taskName}}</div>
                                 </ng-option>

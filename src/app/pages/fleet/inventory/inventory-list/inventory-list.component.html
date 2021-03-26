@@ -133,10 +133,13 @@
                                 class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
                                 placeholder="Search items by name" />
                         </div>
-                        <div *ngFor="let data of requiredSuggestedItems" class="suggestionClass"
-                            (click)="setItem(data.itemID, data.partNumber,'req')">
-                            {{ data.partNumber }}
-                        </div>
+                        <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let data of requiredSuggestedItems" style="cursor: pointer;"
+                               (click)="setItem(data.partNumber, data.itemName,'req')">
+                               {{ data.itemName }}</li>
+                            </ul>
+                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
@@ -144,10 +147,13 @@
                                 class="form-control" (input)="getVendorSuggestions($event.target.value,'req')"
                                 placeholder="Search items by vendor" />
                         </div>
-                        <div *ngFor="let suggestedVendor of requiredSuggestedVendors" class="suggestionClass"
-                            (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'req')">
-                            {{ suggestedVendor.companyName }}
-                        </div>
+                        <div *ngIf="requiredSuggestedVendors?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let data of requiredSuggestedVendors" style="cursor: pointer;"
+                               (click)="setVendor(data.vendorID, data.companyName,'req')">
+                               {{ data.companyName }}</li>
+                            </ul>
+                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
@@ -364,7 +370,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr *ngIf="requiredItems.length == 0" class="text-center">
-                                                    <td colspan="5">No records found</td>
+                                                    <td colspan="5">{{dataMessageReq}}</td>
                                                 </tr>
                                                 <tr *ngFor="let item of requiredItems; let i = index">
                                                     <td>{{ item.partNumber }}</td>
@@ -391,7 +397,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="row mt-3 dtPaginate" *ngIf="requiredItems.length > 0">
+                                    <div class="row mt-3 dtPaginate" *ngIf="requiredItems.length > 0 && currentTab == 'rinv'">
                                         <div class="col-6">
                                             Showing {{ requiredInventoryStartPoint }} to {{ requiredInventoryEndPoint }} of {{ totalRecordsRequired }} entries
                                         </div>
