@@ -99,7 +99,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input [(ngModel)]="time" name="time" type="number" min='1'
+                                             <input id="txtTimeId"  [(ngModel)]="time" name="time" type="number" min='1'
                                                 class="form-control">
                                           </div>
                                           <div class="col-lg-6 pl-0">
@@ -117,7 +117,7 @@
                                     <div class="col-lg-6">
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                       <input [(ngModel)]="reminderData.reminderTasks.odometer" placeholder="Miles to repeat service task"
+                                       <input id="txtOdoMeter" [(ngModel)]="reminderData.reminderTasks.odometer" placeholder="Miles to repeat service task"
                                           name="odometer" type="number" class="form-control">
                                     </div>
                                  </div>
