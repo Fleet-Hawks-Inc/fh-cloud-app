@@ -132,6 +132,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   openComponent(vendorID) {
+    this.vendorsData = [];
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
@@ -140,7 +141,7 @@ export class ServiceListComponent implements OnInit {
     })
   }
   initDataTable() {
-    this.spinner.show();
+
     this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
@@ -177,7 +178,7 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+        
       });
   }
 

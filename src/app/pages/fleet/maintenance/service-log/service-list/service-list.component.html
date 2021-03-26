@@ -76,7 +76,7 @@
                                                         <table class="row-border hover table table-bordered table-striped mb-0">
                                                             <thead>
                                                                 <tr>
-                                                                    <th width="20%">Vehicle</th>
+                                                                    <th width="20%">Vehicle/Asset</th>
                                                                     <th width="15%">Completion Date/Meter</th>
                                                                     <th width="50%">Details</th>
                                                                     <th width="15%">Total</th>
@@ -200,7 +200,11 @@
                             </a>
                         </li>
                     </ul>
+                    
                     <div class="tab-content" *ngIf="vendorsData">
+                        <div *ngIf="vendorsData?.length == 0">
+                            Fetching Data....
+                        </div>
                         <div id="vndrBasicDetails" class="tab-pane active">
                             <div class="row">
                                 <div class="col-lg-12">
@@ -243,31 +247,31 @@
                         <div id="vndrAddressDetails" class="tab-pane ">
                             <table style="float: left;" class="table table-bordered mb-2">
                                 <tbody *ngFor="let item of vendorAddress;">
-                                    <tr *ngIf="item.manual == false">
+                                    <tr>
                                         <th width="40%" class="back-color-gray">Address Type:</th>
                                         <td>{{item.addressType}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual == false">
+                                    <tr>
                                         <th width="40%" class="back-color-gray"> Country:</th>
-                                        <td>{{item.country}}</td>
+                                        <td>{{item.countryName}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual == false">
+                                    <tr>
                                         <th width="40%" class="back-color-gray">State:</th>
-                                        <td>{{item.state}}</td>
+                                        <td>{{item.stateName}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual == false">
+                                    <tr>
                                         <th width="40%" class="back-color-gray"> City:</th>
-                                        <td>{{item.city}}</td>
+                                        <td>{{item.cityName}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual == false">
+                                    <tr>
                                         <th width="40%" class="back-color-gray">Zip Code:</th>
                                         <td>{{item.zipCode}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual == false">
+                                    <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Address:</th>
                                         <td>{{item.address1}} {{item.address2}}</td>
                                     </tr>
-                                    <tr *ngIf="item.manual">
+                                    <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">Address:</th>
                                         <td>{{item.userLocation}}</td>
                                     </tr>
@@ -276,13 +280,11 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-lg-12 text-right">
-                                <button type="button" class="btn btn-default">Close</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="!vendorsData">
-                        Fetching Data....
-                    </div>
+                    
                 </div>
             </div>
         </div>
