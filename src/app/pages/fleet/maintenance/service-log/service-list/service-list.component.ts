@@ -136,7 +136,7 @@ export class ServiceListComponent implements OnInit {
     })
   }
   initDataTable() {
-    this.spinner.show();
+    
     this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
@@ -173,7 +173,7 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+        t
       });
   }
 
