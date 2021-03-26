@@ -173,7 +173,7 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        t
+        
       });
   }
 
