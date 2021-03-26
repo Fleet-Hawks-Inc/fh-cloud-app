@@ -217,6 +217,7 @@ export class VehicleListComponent implements OnInit {
       if(this.vehicleID == '') {
         this.vehicleID = this.vehicleIdentification;
       }
+      this.dataMessage = Constants.FETCHING_DATA;
       this.vehicles = [];
       this.suggestedVehicles = [];
       this.fetchVehiclesCount();
@@ -233,6 +234,7 @@ export class VehicleListComponent implements OnInit {
       this.vehicleIdentification = '';
       this.currentStatus = '';
       this.vehicles = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchVehiclesCount();
       this.initDataTable();
       this.resetCountResult();

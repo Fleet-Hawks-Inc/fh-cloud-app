@@ -45,6 +45,10 @@ export class ServiceProgramListComponent implements  OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.programeName != '') {
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -91,6 +95,7 @@ export class ServiceProgramListComponent implements  OnInit {
 
   searchFilter() {
     if (this.programeName !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
       this.fetchProgramsCount();
       this.initDataTable();
@@ -101,6 +106,7 @@ export class ServiceProgramListComponent implements  OnInit {
 
   resetFilter() {
     if (this.programeName !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
       this.programeName = '';
       this.programs = [];
       this.fetchProgramsCount();

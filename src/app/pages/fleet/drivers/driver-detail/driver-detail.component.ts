@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer} from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-
+import {environment} from '../../../../../environments/environment';
 @Component({
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DriverDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  environment = environment.isFeatureEnabled;
   platform: any;
   profile: string;
   driverName: string;
@@ -137,6 +138,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
+    console.log('environment', environment.production);
   }
 
    /**
@@ -177,8 +179,7 @@ export class DriverDetailComponent implements OnInit {
           }
           
           this.driverType = this.driverData.driverType;
-          this.employeeId = this.driverData.employeeId;
-          this.contractorId = this.driverData.contractorId;
+          this.employeeId = this.driverData.employeeContractorId;
           this.ownerOperator = this.driverData.ownerOperator;
           
           this.companyId = this.driverData.companyId;

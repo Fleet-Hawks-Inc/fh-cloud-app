@@ -170,6 +170,10 @@ export class FuelEntryListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.unitID != '' || this.start != '' || this.end != '') {
+          this.fuelEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -245,7 +249,7 @@ export class FuelEntryListComponent implements OnInit {
       if(this.toDate !== '') {
         this.end = this.toDate;
       }
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.fuelEntriesCount();
       this.initDataTable();
@@ -262,7 +266,7 @@ export class FuelEntryListComponent implements OnInit {
       this.unitName = '';
       this.start = '';
       this.end = '';
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.fuelEntriesCount();
       this.initDataTable();

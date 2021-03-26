@@ -500,13 +500,12 @@ export class AddServiceComponent implements OnInit {
     let newSchedule;
     
     for (let remind of this.reminders) {
-      
       if (remind.reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1].taskID) {
         remindID = remind.reminderID;
         newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
-        remindID = ' ';
-        newSchedule = ' ';
+        remindID = '';
+        newSchedule = '';
       }
     }
     this.serviceData.allServiceTasks.serviceTaskList.push({
