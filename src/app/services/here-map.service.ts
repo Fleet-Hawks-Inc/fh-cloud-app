@@ -69,11 +69,11 @@ export class HereMapService {
       }
     );
 
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
+  //   let provider = this.map.getBaseLayer().getProvider();
+  //   var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+  //   'https://js.api.here.com/v3/3.1/styles/omv/');
+  // // set the style on the existing layer
+  // provider.setStyle(style)
     // const mapTileService = this.platform.getMapTileService({
     //   type: 'base'
     // });
@@ -119,9 +119,7 @@ export class HereMapService {
     
      return this.map;
   }
-  setStyle(map){
 
-  }
 
   /**
    * This method get current location of user. Currently it is using browsser navigater to get location
@@ -259,7 +257,7 @@ export class HereMapService {
     });
   }
 
-  calculateRoute(coordinates) {
+  calculateRoute(coordinates,additionalSpec?) {
     try {
       this.viaPoints = [];
       if (coordinates.length > 2) {
@@ -271,18 +269,27 @@ export class HereMapService {
       }
       // ['51.044978,-114.063311', '51.081848,-113.925807', '51.205534,-114.001558', '51.127017,-114.008666']
       const alternatives = 3;
-      const params = {
+      let params = {
         transportMode: `truck`,
         routingMode: 'fast',
         origin: coordinates[0],
         via: new H.service.Url.MultiValueQueryParameter(this.viaPoints),
         destination: coordinates[coordinates.length - 1],
+        truckRestrictionPenalty: 'soft', // if truck restriction is soft route and maneuvera attribute should be notes
+        grossWeight:"",
+        weightPerAxle:"",
+        width:"", // Should be in centimeter
+        length:"",//should be in centimeter
+        height: (additionalSpec!=undefined)? additionalSpec["height"] : 400, // Should be in Centimeter
+        "avoid[features]":"tollRoad",
+        traffic: 'disabled',
         representation: 'display',
         units: 'imperial',
         alternatives,
         return: 'polyline,actions,instructions,summary,travelSummary,turnByTurnActions,elevation,routeHandle,passthrough,incidents',
         spans: 'truckAttributes,duration,speedLimit',
       };
+      
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 

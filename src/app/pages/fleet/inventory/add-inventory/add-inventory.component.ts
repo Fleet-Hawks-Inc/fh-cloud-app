@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
+import { ApiService, ListService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -41,7 +41,7 @@ export class AddInventoryComponent implements OnInit {
   notes = '';
   photos = [];
   documents = [];
-  vendors = [];
+  vendors: any = [];
   itemGroups = [];
   warehouses = [];
   existingPhotos = [];
@@ -90,6 +90,7 @@ export class AddInventoryComponent implements OnInit {
     private router: Router,
     private domSanitizer: DomSanitizer,
     private toastr: ToastrService,
+    private listService: ListService
   ) {
     this.itemID = this.route.snapshot.params[`itemID`];
     console.log(this.itemID);
@@ -168,10 +169,12 @@ export class AddInventoryComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.fetchVendors();
+    this.listService.fetchVendors();
     this.fetchItemGroups();
     this.fetchCountries();
     this.fetchWarehouses();
+
+    this.vendors = this.listService.vendorList;
   }
 
   fetchWarehouses() {

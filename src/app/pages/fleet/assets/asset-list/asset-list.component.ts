@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
+import  Constants  from '../../constants';
 declare var $: any;
 
 @Component({
@@ -13,6 +14,7 @@ declare var $: any;
 })
 export class AssetListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
   assetTypesObjects: any = {};
   title = 'Assets List';
@@ -76,7 +78,7 @@ export class AssetListComponent implements OnInit {
   currentStatus = '';
   assetIdentification = '';
   assetTypeList: any  = {};
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
   manufacturersObjects: any = {};
@@ -107,19 +109,22 @@ export class AssetListComponent implements OnInit {
   }
 
   getSuggestions(value) {
-    this.apiService
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
         this.suggestedAssets = result.Items;
-        if (this.suggestedAssets.length === 0){
-          this.assetID = '';
-        }
       });
+    } else {
+      this.suggestedAssets = [];
+    }
+    
   }
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
-    this.assetID = assetID;
+    this.assetID = assetIdentification;
 
     this.suggestedAssets = [];
   }
@@ -151,13 +156,16 @@ export class AssetListComponent implements OnInit {
     this.message = info.id + ' - ' + info.firstName;
   }
 
-
   fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?assetID=' + this.assetID + '&status=' + this.currentStatus).subscribe({
+    this.apiService.getData('assets/get/count?asset=' + this.assetID + '&status=' + this.currentStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.assetID != '' || this.currentStatus != '') {
+          this.assetEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -167,12 +175,10 @@ export class AssetListComponent implements OnInit {
    */
 
   fetchAllAssetTypes() {
-    this.httpClient.get('assets/trailers.json').subscribe((data: any) =>{
-      this.allAssetTypes = data;
-      this.assetTypesObjects =  data.reduce( (a: any, b: any) => {
-        return a[b[`code`]] = b[`description`], a;
-    }, {});
-    })
+    this.apiService.getData('assetTypes')
+    .subscribe((result: any) => {
+      this.allAssetTypes = result.Items;
+    });
   }
 
   deactivateAsset(value, assetID) {
@@ -182,7 +188,7 @@ export class AssetListComponent implements OnInit {
       .subscribe((result: any) => {
         this.allData = [];
         this.fetchAssetsCount();
-        this.initDataTable();
+        // this.rerender();
         this.toastr.success('Asset deleted successfully');
       });
     }
@@ -201,8 +207,14 @@ export class AssetListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('assets/fetch/records?assetID='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey)
+    this.apiService.getData('assets/fetch/records?asset='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedAssets = [];
+        this.getStartandEndVal();
+
         this.allData = result['Items'];
 
         if(this.assetID != '') {
@@ -237,8 +249,12 @@ export class AssetListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.assetID !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.currentStatus !== '') {
+      if(this.assetID == '') {
+        this.assetID = this.assetIdentification;
+      }
       this.allData = [];
+      this.suggestedAssets = [];
       this.fetchAssetsCount();
       this.initDataTable();
     } else {
@@ -247,11 +263,11 @@ export class AssetListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.assetID !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.currentStatus !== '') {
       this.assetID = '';
       this.assetIdentification = '';
       this.currentStatus = '';
-
+      this.suggestedAssets = [];
       this.allData = [];
       this.fetchAssetsCount();
       this.initDataTable();
@@ -366,17 +382,19 @@ export class AssetListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.assetNext = true;
+    this.assetPrev = true;
     this.assetDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.assetNext = true;
+    this.assetPrev = true;
     this.assetDraw -= 1;
     this.lastEvaluatedKey = this.assetPrevEvauatedKeys[this.assetDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

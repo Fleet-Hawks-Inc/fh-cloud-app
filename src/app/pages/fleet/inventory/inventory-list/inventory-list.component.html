@@ -23,9 +23,11 @@
                                 class="form-control" (input)="getItemSuggestions($event.target.value,'inv')"
                                 placeholder="Search items by name" />
                         </div>
-                        <div *ngFor="let suggestedItem of suggestedItems" class="suggestionClass"
-                            (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')">
-                            {{ suggestedItem.itemName }}
+                        <div *ngIf="suggestedItems?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedItem of suggestedItems" style="cursor: pointer;"
+                                    (click)="setItem(suggestedItem.itemID, suggestedItem.itemName,'inv')"> {{ suggestedItem.itemName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -34,9 +36,11 @@
                                 class="form-control" (input)="getVendorSuggestions($event.target.value,'inv')"
                                 placeholder="Search items by vendor" />
                         </div>
-                        <div *ngFor="let suggestedVendor of suggestedVendors" class="suggestionClass"
-                            (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'inv')">
-                            {{ suggestedVendor.companyName }}
+                        <div *ngIf="suggestedVendors?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedVendor of suggestedVendors" style="cursor: pointer;"
+                                    (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'inv')"> {{ suggestedVendor.companyName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -45,9 +49,11 @@
                                 class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
                                 placeholder="Search items by category" />
                         </div>
-                        <div *ngFor="let suggestedItemGroup of suggestedItemGroups" class="suggestionClass"
-                            (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)">
-                            {{ suggestedItemGroup.groupName }}
+                        <div *ngIf="suggestedItemGroups?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let suggestedItemGroup of suggestedItemGroups" style="cursor: pointer;"
+                                    (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)"> {{ suggestedItemGroup.groupName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -57,7 +63,6 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-
                         <div class="btn-group flex-wrap" style="min-width:190px;">
                             <button type="button"
                                 class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
@@ -156,7 +161,6 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-3 page-buttons">
-
                         <div class="btn-group flex-wrap" style="min-width:190px;">
                             <button type="button"
                                 class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
@@ -262,7 +266,7 @@
 
                                                 <tbody>
                                                     <tr *ngIf="items.length == 0" class="text-center">
-                                                        <td colspan="12">No records found</td>
+                                                        <td colspan="12">{{dataMessage}}</td>
                                                     </tr>
                                                     <tr class="cursorpoint" *ngFor="let item of items; let i = index">
                                                         <td *ngIf="hideShow.part"

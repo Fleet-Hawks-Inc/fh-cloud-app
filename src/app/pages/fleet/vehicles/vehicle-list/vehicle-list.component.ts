@@ -137,6 +137,10 @@ export class VehicleListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.vehicleID != '' || this.currentStatus != '') {
+          this.vehicleEndPoint = this.totalRecords;
+        }
       },
     });
   }

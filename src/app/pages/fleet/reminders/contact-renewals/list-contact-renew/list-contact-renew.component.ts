@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListContactRenewComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   public remindersData: any = [];
   contacts: [];
   driverList: any = {};
@@ -40,6 +41,7 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewPrevEvauatedKeys = [''];
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
+  loading = false;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -93,9 +95,6 @@ export class ListContactRenewComponent implements OnInit {
       .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedContacts = result.Items;
-        if (this.suggestedContacts.length === 0) {
-          this.contactID = '';
-        }
       });
 
   }
@@ -154,6 +153,11 @@ export class ListContactRenewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedContacts = [];
+        this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
         if (this.contactID !== '' || this.searchServiceTask !== '' ) {
@@ -247,17 +251,19 @@ export class ListContactRenewComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.contactRenewNext = true;
+    this.contactRenewPrev = true;
     this.contactRenewDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.contactRenewNext = true;
+    this.contactRenewPrev = true;
     this.contactRenewDraw -= 1;
     this.lastEvaluatedKey = this.contactRenewPrevEvauatedKeys[this.contactRenewDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
