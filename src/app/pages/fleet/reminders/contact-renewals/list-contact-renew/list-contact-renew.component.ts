@@ -25,6 +25,7 @@ export class ListContactRenewComponent implements OnInit {
   currentDate = moment();
   newData = [];
   filterStatus: string;
+  usersList:any = {};
   contactID = '';
   firstName = '';
   serviceTasks = [];
@@ -50,7 +51,7 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
-    this.fetchContactList();
+    this.fetchUsersList();
     this.fetchTasksList();
     this.initDataTable()
     $(document).ready(() => {
@@ -77,22 +78,22 @@ export class ListContactRenewComponent implements OnInit {
       this.groups = result;
     });
   }
-  fetchContactList() {
-    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
-      this.driverList = result;
+  fetchUsersList() {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.usersList = result;
     });
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  setContact(contactID, firstName) {
-    this.firstName = firstName;
-    this.contactID = contactID;
+  setContact(userName, firstName, lastName) {
+    this.firstName = firstName +' '+ lastName;
+    this.contactID = userName;
     this.suggestedContacts = [];
   }
   getSuggestions(value) {
     this.apiService
-      .getData(`drivers/get/suggestions/${value}`)
+      .getData(`users/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedContacts = result.Items;
       });
