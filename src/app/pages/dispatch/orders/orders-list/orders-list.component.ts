@@ -110,9 +110,21 @@ export class OrdersListComponent implements OnInit {
     this.initDataTableConfirmed();
     this.initDataTableDispatched();
     this.initDataTableDelivered();
+    this.initDataTableCancelled();
+    this.initDataTableInvoiced();
+    this.initDataTablePartlyPaid();
   }
 
   fetchOrders = () => {
+    this.allordersCount = 0;
+    this.confirmedOrdersCount = 0;
+    this.dispatchedOrdersCount = 0;
+    this.deliveredOrdersCount = 0;
+    this.cancelledOrdersCount = 0;
+    this.quotedOrdersCount = 0;
+    this.invoicedOrdersCount = 0;
+    this.partiallyPaidOrdersCount = 0;
+    
     this.apiService.getData('orders').subscribe({
       complete: () => {},
       error: () => {},
@@ -472,9 +484,44 @@ export class OrdersListComponent implements OnInit {
       this.apiService
         .getData(`orders/isDeleted/${orderID}/${status}`)
         .subscribe((result: any) => {
+          this.ordersDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.fetchOrders();
           this.initDataTable();
+
+          if(this.activeTab == 'confirmed') {
+            this.confirmOrdersDraw = 0;
+            this.confirmLastEvaluatedKey = '';
+            this.initDataTableConfirmed();
+
+          } else if(this.activeTab == 'dispatched') {
+            this.dispatchOrdersDraw = 0;
+            this.dispatchLastEvaluatedKey = '';
+            this.initDataTableDispatched();
+
+          } else if(this.activeTab == 'delivered') {
+            this.deliverOrdersDraw = 0;
+            this.deliverLastEvaluatedKey = '';
+            this.initDataTableDelivered();
+
+          } else if(this.activeTab == 'cancelled') {
+            this.cancelOrdersDraw = 0;
+            this.cancelLastEvaluatedKey = '';
+            this.initDataTableCancelled();
+
+          } else if(this.activeTab == 'invoiced') {
+            this.invoiceOrdersDraw = 0;
+            this.invoiceLastEvaluatedKey = '';
+            this.initDataTableInvoiced();
+            
+          } else if(this.activeTab == 'partiallyPaid') {
+            this.partialPaidOrdersDraw = 0;
+            this.partialPaidLastEvaluatedKey = '';
+            this.initDataTablePartlyPaid();
+            
+          }
+
           this.toastr.success('Order deleted successfully!');
-          
         });
     }
   }

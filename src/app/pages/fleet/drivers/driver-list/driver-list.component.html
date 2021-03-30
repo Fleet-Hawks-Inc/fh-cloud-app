@@ -20,7 +20,7 @@
                         <ul>
                            <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
                            (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
-                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}</li>
+                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.middleName}} {{ suggestedDriver.lastName }}</li>
                         </ul>
                      </div>
                   </div>
