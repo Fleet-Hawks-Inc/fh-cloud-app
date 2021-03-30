@@ -42,19 +42,23 @@
                      <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                      <div class="dropdown-menu dutystatwd" role="menu">
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.assetName"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin"
+                           name="vin" (change)="hideShowColumn()"> VIN </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.assetName"
                            name="assetName" (change)="hideShowColumn()"> Asset Name/Number </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.type"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.type"
                            name="type" (change)="hideShowColumn()"> Type </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.plateNo"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.plateNo"
                            name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.lastLocation"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.lastLocation"
                            name="lastLocation" (change)="hideShowColumn()"> last Known Location </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
@@ -62,7 +66,7 @@
                            name="year" (change)="hideShowColumn()"> Year </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.make"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.make"
                            name="make" (change)="hideShowColumn()"> Make </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
@@ -74,7 +78,7 @@
                            name="ownership" (change)="hideShowColumn()"> Ownership </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
                            name="status" (change)="hideShowColumn()"> Status </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
@@ -99,10 +103,10 @@
                         </a>
                      </div>
                   </div>
-                  <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
-                  <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
+                  <button type="button" disabled (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
+                  <button type="button" disabled ="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
                   <div class="btn-group flex-wrap mr-2">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                     <button type="button" disabled class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <a class="dropdown-item text-1" href="javascript:;">Import</a>
                         <a class="dropdown-item text-1" href="javascript:;">Export</a>
@@ -214,11 +218,11 @@
                         <th class="col1 minWidth200">Asset Name/Number</th>
                         <th class="col2 minWidth200">Asset Type</th>
                         <th class="col6 minWidth200">Make</th>
-                        <th class="col3 extra">Plate Number</th>
                         <th class="col4 minWidth200">Last Location</th>
+                        <th class="col3 minWidth200">Plate Number</th>
                         <th class="col5 extra">Year</th>
                         
-                        <th class="col7 minWidth200">Model</th>
+                        <th class="col7 extra">Model</th>
                         <th class="col8 extra">Ownership</th>
                         <th class="col10 extra">Group</th>
                         <th class="col11 extra">ACE ID</th>
@@ -237,10 +241,11 @@
                         <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
                         <td *ngIf="hideShow.type">{{assetTypeList[item.assetDetails.assetType]}}</td>
-                        <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
-                        <td *ngIf="hideShow.lastLocation" >Live Location</td>
-                        <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
                         <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
+                        <td *ngIf="hideShow.lastLocation" >Live Location</td>
+                        <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
+                        <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
+                       
                         <td *ngIf="hideShow.model" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
                         <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
                         <!-- extra columns -->

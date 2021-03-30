@@ -250,7 +250,7 @@ driverData = {
   middleName: '',
   lastName: '',
   workPhone: '',
-  workEmail: '',
+  email: '',
   firstName: '',
   password: '',
   confirmPassword: '',
