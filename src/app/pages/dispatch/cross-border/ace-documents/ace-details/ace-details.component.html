@@ -180,7 +180,7 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}}
                                                 {{shipment.shipper.address.city}}
-                                                {{shipment.shipper.address.stateProvince}}
+                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}}
                                                 {{shipment.shipper.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
@@ -188,7 +188,7 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}}
                                                 {{shipment.consignee.address.city}}
-                                                {{shipment.consignee.address.stateProvince}}
+                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}}
                                                 {{shipment.consignee.address.postalCode}}
 
                                             </td>
@@ -379,10 +379,11 @@
                                     <tbody>
                                         <tr *ngFor="let trailer of trailers">
                                             <td>{{trailer.number}}</td>
-                                            <td>{{trailer.type}}</td>
+                                            <td><span *ngIf="trailer.type === 'OE'">Others</span>
+                                              <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.aceId}}</td>
                                             <td><span
-                                                    *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
+                                                    *ngFor="let license of trailer.licensePlates;">{{stateCodeToName[license.stateProvince]}}</span>
                                             </td>
                                             <td><span
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
@@ -518,7 +519,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{shipmentData.provinceOfLoading}}</td>
+                                        <td>{{stateCodeToName[shipmentData.provinceOfLoading]}}</td>
                                     </tr>
 
 
@@ -607,7 +608,7 @@
                                         <td>{{thirdParty.name}}</td>
                                         <td>{{thirdParty.type}}</td>
                                         <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
+                                            {{thirdParty.address.city}},{{stateCodeToName[thirdParty.address.stateProvince]}},{{thirdParty.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -721,7 +722,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
-                                        <td>{{driverData.citizenshipCountry}}</td>
+                                        <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>
@@ -780,7 +781,7 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
+                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
                                         <td>{{travelDocument.type}}</td>
                                     </tr>
                                 </tbody>
@@ -837,7 +838,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
-                                        <td>{{passengerData.citizenshipCountry}}</td>
+                                        <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
                                     </tr>
 
                                 </tbody>
@@ -859,7 +860,7 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
+                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
                                         <td>{{travelDocument.type}}</td>
                                     </tr>
 

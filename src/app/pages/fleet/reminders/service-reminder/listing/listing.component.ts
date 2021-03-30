@@ -11,7 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
-  styleUrls: ['./listing.component.css'] 
+  styleUrls: ['./listing.component.css']
 })
 export class ListingComponent implements OnInit {
 
@@ -108,8 +108,7 @@ export class ListingComponent implements OnInit {
     const unit = {
       unitID: unitID,
       unitType: unitType,
-    }
-
+    };
     window.localStorage.setItem('reminderUnitID', JSON.stringify(unit));
     this.router.navigateByUrl('/fleet/maintenance/service-log/add-service');
   }
@@ -121,87 +120,44 @@ export class ListingComponent implements OnInit {
     let remainingMiles = 0;
     for (let j = 0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
-      this.apiService.getData('serviceLogs/reminder/' + this.allRemindersData[j].reminderID).subscribe((result: any) => { // to fetch the last completion date and odometer of particular reminder
-        if (result == null || Object.keys(result).length === 0) {
-          lastCompleted = moment().format('DD/MM/YYYY');
-          serviceOdometer = this.allRemindersData[j].reminderTasks.odometer;
-          this.currentOdometer = +serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
-          const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
-          remainingDays = convertedDate.diff(this.currentDate, 'days');
-          remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
-          if (remainingDays < 0) {
-            reminderStatus = 'OVERDUE';
-          }
-          else if (remainingDays <= 7 && remainingDays >= 0) {
-            reminderStatus = 'DUE SOON';
-          }
-          const data = {
-            reminderID: this.allRemindersData[j].reminderID,
-            reminderIdentification: this.allRemindersData[j].reminderIdentification,
-            reminderTasks: {
-              task: this.allRemindersData[j].reminderTasks.task,
-              remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-              remainingDays: remainingDays,
-              odometer: this.allRemindersData[j].reminderTasks.odometer,
-              remainingMiles: remainingMiles,
-              reminderStatus: reminderStatus,
-            },
-            subscribers: this.allRemindersData[j].subscribers,
-            lastCompleted: lastCompleted,
-          };
-          this.remindersData.push(data);
-          if (this.filterStatus === Constants.OVERDUE) {
-            this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-          }
-          else if (this.filterStatus === Constants.DUE_SOON) {
-            this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-          }
-          else if (this.filterStatus === Constants.ALL) {
-            this.remindersData = this.remindersData;
-          }
-        }
-        else {
-          lastCompleted = result.completionDate;
-          serviceOdometer = +result.odometer;
-          this.currentOdometer = +result.odometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
-
-          const convertedDate = moment(lastCompleted, 'DD/MM/YYYY').add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
-          remainingDays = convertedDate.diff(this.currentDate, 'days');
-          remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
-          if (remainingDays < 0) {
-            reminderStatus = 'OVERDUE';
-          }
-          else if (remainingDays <= 7 && remainingDays >= 0) {
-            reminderStatus = 'DUE SOON';
-          }
-          const data = {
-            reminderID: this.allRemindersData[j].reminderID,
-            reminderIdentification: this.allRemindersData[j].reminderIdentification,
-            reminderTasks: {
-              task: this.allRemindersData[j].reminderTasks.task,
-              remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-              remainingDays: remainingDays,
-              odometer: this.allRemindersData[j].reminderTasks.odometer,
-              remainingMiles: remainingMiles,
-              reminderStatus: reminderStatus,
-            },
-            subscribers: this.allRemindersData[j].subscribers,
-            lastCompleted: lastCompleted,
-          };
-          this.remindersData.push(data);
-          if (this.filterStatus === Constants.OVERDUE) {
-            this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-          }
-          else if (this.filterStatus === Constants.DUE_SOON) {
-            this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-          }
-          else if (this.filterStatus === Constants.ALL) {
-            this.remindersData = this.remindersData;
-          }
-        }
-      });
-
-
+      const testDate = this.allRemindersData[j].lastCompletionDate.sort().reverse();
+      const testOdometer = this.allRemindersData[j].lastCompletedOdometer.sort().reverse();
+      lastCompleted =  moment(testDate[0]).format(`YYYY/MM/DD`);
+      serviceOdometer = +testOdometer[0];
+      this.currentOdometer = +testOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
+      const convertedDate = moment(lastCompleted, `DD-MM-YYYY`).add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
+      remainingDays = convertedDate.diff(this.currentDate, 'days');
+      remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
+      if (remainingDays < 0) {
+        reminderStatus = 'OVERDUE';
+      }
+      else if (remainingDays <= 7 && remainingDays >= 0) {
+        reminderStatus = 'DUE SOON';
+      }
+      const data = {
+        reminderID: this.allRemindersData[j].reminderID,
+        reminderIdentification: this.allRemindersData[j].reminderIdentification,
+        reminderTasks: {
+          task: this.allRemindersData[j].reminderTasks.task,
+          remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+          remainingDays: remainingDays,
+          odometer: this.allRemindersData[j].reminderTasks.odometer,
+          remainingMiles: remainingMiles,
+          reminderStatus: reminderStatus,
+        },
+        subscribers: this.allRemindersData[j].subscribers,
+        lastCompleted: lastCompleted,
+      };
+      this.remindersData.push(data);
+      if (this.filterStatus === Constants.OVERDUE) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      }
+      else if (this.filterStatus === Constants.DUE_SOON) {
+        this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+      }
+      else if (this.filterStatus === Constants.ALL) {
+        this.remindersData = this.remindersData;
+      }
     }
 
   }
@@ -242,7 +198,7 @@ export class ListingComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != '' || this.searchServiceTask != '') {
+        if (this.vehicleID != '' || this.searchServiceTask != '') {
           this.serviceEndPoint = this.totalRecords;
         }
       },
@@ -253,7 +209,7 @@ export class ListingComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedVehicles = [];
