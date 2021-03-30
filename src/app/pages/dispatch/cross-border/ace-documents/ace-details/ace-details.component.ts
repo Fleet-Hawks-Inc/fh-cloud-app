@@ -16,6 +16,9 @@ export class AceDetailsComponent implements OnInit {
   estimatedArrivalDateTime: string;
   tripNumber: string;
   currentStatus: string;
+  countryCodeName: any = {};
+  assetTypeCode: any = {};
+  stateCodeToName: any = {};
   truck: any = {
     number: '',
     type: '',
@@ -126,6 +129,24 @@ export class AceDetailsComponent implements OnInit {
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchACEEntry();
+    this.fetchCountriesCodeName();
+    this.fetchAssetsCodeName();
+    this.fetchStatesCodeName();
+  }
+  fetchCountriesCodeName() {
+    this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
+    this.countryCodeName = result;
+    });
+  }
+  fetchAssetsCodeName() {
+    this.apiService.getData('borderAssetTypes/get/list').subscribe((result: any) => {
+    this.assetTypeCode = result;
+    });
+  }
+  fetchStatesCodeName() {
+    this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
+    this.stateCodeToName = result;
+    });
   }
   fetchACEEntry() {
     this.spinner.show(); // loader init
