@@ -384,7 +384,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [(ngModel)]="driverData.workEmail" name="workEmail" type="text"
+                                          <input [(ngModel)]="driverData.email" name="email" type="text"
                                              class="form-control"
                                              placeholder="Enter the official email address of the driver">
                                        </div>
@@ -446,9 +446,9 @@
                                     <div class="col-lg-3 mar-top-37">
                                        <a class="btn btn-dark mr-2" href="javascript:;"
                                           (click)="clearUserLocation(i);">Clear</a>
-                                       <a *ngIf="driverData.address.length == 1" (click)="addAddress();"
-                                          class="btn btn-success" href="javascript:;"><i class="fa fa-plus"></i> Add
-                                          Another Address</a>
+                                       <button type="button" [disabled]="driverData.address.length == 2" *ngIf="i === 0;" (click)="addAddress();"
+                                          class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                          Another Address</button>
                                        <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
                                           class="btn btn-success" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
@@ -682,9 +682,9 @@
                                        <div class="row">
                                           <div class="col-5"></div>
                                           <div class="col-5 text-right">
-                                             <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()"
+                                             <button type="button" [disabled]="driverData.documentDetails.length == 3" *ngIf="i === 0;" (click)="addDocument()"
                                                 id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add
-                                                Another Document</a>
+                                                Another Document</button>
                                           </div>
                                        </div>
 

@@ -71,7 +71,7 @@ test: any = [];
 statesObject: any;
 assets: any = [];
 
-
+fuelTypes = [];
 // Vehicles variables start
 vehicleID: string;
   vehicleTypeList: any = [];
@@ -87,7 +87,7 @@ vehicleID: string;
   stateID = '';
   driverID = '';
   teamDriverID = '';
-  serviceProgramID = '';
+  servicePrograms = [];
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
@@ -250,7 +250,7 @@ driverData = {
   middleName: '',
   lastName: '',
   workPhone: '',
-  workEmail: '',
+  email: '',
   firstName: '',
   password: '',
   confirmPassword: '',
@@ -470,6 +470,7 @@ years = [];
     this.fetchAssets();
     this.fetchAllCountriesIDs();
     this.fetchAllStatesIDs();
+    this.fetchFuelTypes();
     this.listService.fetchVendors();
     this.listService.fetchManufacturers()
     this.listService.fetchModels();
@@ -919,7 +920,7 @@ fetchDrivers(){
       stateID: this.stateID,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      serviceProgramID: this.serviceProgramID,
+      servicePrograms: this.servicePrograms,
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
@@ -1116,7 +1117,7 @@ fetchDrivers(){
             stateID: '',
             driverID: '',
             teamDriverID: '',
-            serviceProgramID: '',
+            servicePrograms: [],
             repeatByTime: '',
             repeatByTimeUnit: '',
             reapeatbyOdometerMiles: '',
@@ -1276,6 +1277,12 @@ fetchDrivers(){
       return 'error found';
     }
     
+  }
+
+  fetchFuelTypes(){
+    this.apiService.getData('fuelTypes').subscribe((result: any) => {
+      this.fuelTypes = result.Items;
+    });
   }
 
    /*
@@ -1476,6 +1483,12 @@ fetchDrivers(){
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     let currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
+    if(this.currentUser.userType == 'Cloud Admin') {
+      let isCarrierID = localStorage.getItem('carrierID');
+      if(isCarrierID != undefined) {
+        currentUserCarrier = isCarrierID;
+      }
+    }
     this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType == 'yard') {

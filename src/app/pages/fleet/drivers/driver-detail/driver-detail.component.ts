@@ -19,7 +19,7 @@ export class DriverDetailComponent implements OnInit {
   driverName: string;
   CDL: string;
   workPhone: string;
-  workEmail: string;
+  email: string;
   homeTerminal: string;
   cycle: string;
   private driverID: string;
@@ -138,7 +138,6 @@ export class DriverDetailComponent implements OnInit {
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
-    console.log('environment', environment.production);
   }
 
    /**
@@ -153,7 +152,7 @@ export class DriverDetailComponent implements OnInit {
           this.driverData = await result['Items'][0];
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
-          this.workEmail = this.driverData.workEmail;
+          this.email = this.driverData.email;
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
