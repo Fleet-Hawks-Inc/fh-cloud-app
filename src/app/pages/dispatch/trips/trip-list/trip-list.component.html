@@ -136,7 +136,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="trips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of trips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -144,8 +144,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -156,8 +156,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -183,16 +183,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="trips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="tripPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="tripNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="trips.length > 0 && activeTab == 'all'">
+                            <div class="col-6">
+                                Showing {{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="tripPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="tripNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'confirmed'}" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab" *ngIf="activeTab == 'confirmed'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="confirmedTripsDT">
                                 <thead>
@@ -213,7 +214,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="confirmedTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageConfirm}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of confirmedTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -221,8 +222,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -233,8 +234,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -260,16 +261,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="confirmedTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripConfirmedStartPoint }} to {{ tripConfirmedEndPoint }} of {{ confirmedTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('confirmed')" [disabled]="tripConfirmedPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('confirmed')" [disabled]="tripConfirmedNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="confirmedTrips.length > 0 && activeTab == 'confirmed'">
+                            <div class="col-6">
+                                Showing {{ tripConfirmedStartPoint }} to {{ tripConfirmedEndPoint }} of {{ confirmedTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('confirmed')" [disabled]="tripConfirmedPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('confirmed')" [disabled]="tripConfirmedNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'dispatched'}" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="dispatchedTripsDT">
                                 <thead>
@@ -290,7 +292,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="dispatchedTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageDispatch}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of dispatchedTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -298,8 +300,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -310,8 +312,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -337,16 +339,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="dispatchedTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripDispatchedStartPoint }} to {{ tripDispatchedEndPoint }} of {{ dispatchedTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('dispatched')" [disabled]="tripDispatchedPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('dispatched')" [disabled]="tripDispatchedNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="dispatchedTrips.length > 0 && activeTab == 'dispatched'">
+                            <div class="col-6">
+                                Showing {{ tripDispatchedStartPoint }} to {{ tripDispatchedEndPoint }} of {{ dispatchedTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('dispatched')" [disabled]="tripDispatchedPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('dispatched')" [disabled]="tripDispatchedNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'started'}" id="started" role="tabpanel" aria-labelledby="started-tab" *ngIf="activeTab == 'started'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="startedTripsDT">
                                 <thead>
@@ -367,7 +370,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="startedTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageStart}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of startedTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -375,8 +378,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -387,8 +390,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -414,16 +417,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="startedTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripStartedStartPoint }} to {{ tripStartedEndPoint }} of {{ startedTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('started')" [disabled]="tripStartedPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('started')" [disabled]="tripStartedNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="startedTrips.length > 0 && activeTab == 'started'">
+                            <div class="col-6">
+                                Showing {{ tripStartedStartPoint }} to {{ tripStartedEndPoint }} of {{ startedTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('started')" [disabled]="tripStartedPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('started')" [disabled]="tripStartedNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'enroute'}" id="enroute" role="tabpanel" aria-labelledby="enroute-tab" *ngIf="activeTab == 'enroute'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="enrouteTripsDT">
                                 <thead>
@@ -444,7 +448,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="enrouteTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageEnroute}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of enrouteTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -452,8 +456,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -464,8 +468,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -491,16 +495,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="enrouteTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripEnrouteStartPoint }} to {{ tripEnrouteEndPoint }} of {{ enrouteTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('enroute')" [disabled]="tripEnroutePrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('enroute')" [disabled]="tripEnrouteNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="enrouteTrips.length > 0 && activeTab == 'enroute'">
+                            <div class="col-6">
+                                Showing {{ tripEnrouteStartPoint }} to {{ tripEnrouteEndPoint }} of {{ enrouteTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('enroute')" [disabled]="tripEnroutePrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('enroute')" [disabled]="tripEnrouteNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'cancelled'}" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab" *ngIf="activeTab == 'cancelled'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="cancelledTripsDT">
                                 <thead>
@@ -521,7 +526,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="cancelledTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageCancel}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of cancelledTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -529,8 +534,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -541,8 +546,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -568,16 +573,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="cancelledTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripCancelStartPoint }} to {{ tripCancelEndPoint }} of {{ cancelledTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('cancelled')" [disabled]="tripCancelPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('cancelled')" [disabled]="tripCancelNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="cancelledTrips.length > 0 && activeTab == 'cancelled'">
+                            <div class="col-6">
+                                Showing {{ tripCancelStartPoint }} to {{ tripCancelEndPoint }} of {{ cancelledTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('cancelled')" [disabled]="tripCancelPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('cancelled')" [disabled]="tripCancelNext">Next</button>
                             </div>
                         </div>
+
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'delivered'}" id="delivered" role="tabpanel" aria-labelledby="delivered-tab" *ngIf="activeTab == 'delivered'">
                             <table class="row-border hover table table-bordered table-striped mb-0" id="deliveredTripsDT">
                                 <thead>
@@ -598,7 +604,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="deliveredTrips.length == 0" class="text-center">
-                                        <td colspan="12">No records found</td>
+                                        <td colspan="12">{{dataMessageDeliver}}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let trip of deliveredTrips; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
@@ -606,8 +612,8 @@
                                         </td>
                                         <td>{{ trip.orderType }}</td>
                                         <td>
-                                            <span *ngFor="let ordr of trip.orderId">
-                                                {{ ordersObject[ordr] }},
+                                            <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
+                                                <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
@@ -618,8 +624,8 @@
                                         <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId">
-                                                {{ assetsObject[asst] }},
+                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
+                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
@@ -645,14 +651,14 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="deliveredTrips.length > 0">
-                                <div class="col-6">
-                                    Showing {{ tripDeliverStartPoint }} to {{ tripDeliverEndPoint }} of {{ deliveredTripsCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('delivered')" [disabled]="tripDeliverPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('delivered')" [disabled]="tripDeliverNext">Next</button>
-                                </div>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="deliveredTrips.length > 0 && activeTab == 'delivered'">
+                            <div class="col-6">
+                                Showing {{ tripDeliverStartPoint }} to {{ tripDeliverEndPoint }} of {{ deliveredTripsCount }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('delivered')" [disabled]="tripDeliverPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('delivered')" [disabled]="tripDeliverNext">Next</button>
                             </div>
                         </div>
                     </div>

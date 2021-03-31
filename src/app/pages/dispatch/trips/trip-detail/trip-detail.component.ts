@@ -46,14 +46,15 @@ export class TripDetailComponent implements OnInit {
   carrierID = '';
   selectedFileNames: Map<any, any>;
   documentID = [];
+  allFetchedOrders = [];
 
   ngOnInit() {
     this.tripID = this.route.snapshot.params['tripID'];
     this.fetchTripDetail();
     this.mapShow();
 
-    this.initSpeedChart();
-    this.initTemperatureChart();
+    // this.initSpeedChart();
+    // this.initTemperatureChart();
   }
 
   mapShow() {
@@ -69,6 +70,9 @@ export class TripDetailComponent implements OnInit {
         result = result.Items[0];
         this.tripData = result;
         let tripPlanning = result.tripPlanning;
+        if(result.orderId.length > 0){
+          this.fetchOrderDetails(result.orderId);
+        }
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
           let obj = {
@@ -95,9 +99,10 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime
           };
 
-          if(element.location != undefined && element.location != '') {
-            locations.push(element.location)
-          }
+          // if(element.location != undefined && element.location != '') {
+          //   locations.push(element.location)
+          // }
+          this.newCoords.push(`${element.lat},${element.lng}`);
 
           this.trips.push(obj);
           let assetName = '';
@@ -141,8 +146,8 @@ export class TripDetailComponent implements OnInit {
           }          
         }
 
-        if(locations.length > 0) {
-          this.getCoords(locations);
+        if(this.newCoords.length > 0) {
+          this.getCoords(this.newCoords);
         }
         this.spinner.hide();
       })
@@ -153,13 +158,14 @@ export class TripDetailComponent implements OnInit {
    * @param data
    */
   async getCoords(data) {
-    this.spinner.show();
-    await Promise.all(data.map(async item => {
-      let result = await this.hereMap.geoCode(item);
-      this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    }));
+    // this.spinner.show();
+    // await Promise.all(data.map(async item => {
+    //   let result = await this.hereMap.geoCode(item);
+    //   this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
+    // }));
+    // console.log('this.newCoords', this.newCoords);
     this.hereMap.calculateRoute(this.newCoords);
-    this.spinner.hide();
+    // this.spinner.hide();
   }
 
   fetchAssetDetail(assetID, index) {
@@ -193,14 +199,14 @@ export class TripDetailComponent implements OnInit {
       })
   }
 
-  fetchCountryName(countryID, index) {
-    this.apiService.getData('countries/' + countryID)
-      .subscribe((result: any) => {
-        if (result.Items[0].countryName != undefined) {
-          this.trips[index].location.countryName = result.Items[0].countryName;
-        }
-      })
-  }
+  // fetchCountryName(countryID, index) {
+  //   this.apiService.getData('countries/' + countryID)
+  //     .subscribe((result: any) => {
+  //       if (result.Items[0].countryName != undefined) {
+  //         this.trips[index].location.countryName = result.Items[0].countryName;
+  //       }
+  //     })
+  // }
 
   fetchCarrierName(carrierID, index) {
     this.apiService.getData('carriers/' + carrierID)
@@ -211,14 +217,14 @@ export class TripDetailComponent implements OnInit {
       })
   }
 
-  fetchStateDetail(stateID, index) {
-    this.apiService.getData('states/' + stateID)
-      .subscribe((result: any) => {
-        if (result.Items[0].stateName != undefined) {
-          this.trips[index].location.stateName = result.Items[0].stateName;
-        }
-      })
-  }
+  // fetchStateDetail(stateID, index) {
+  //   this.apiService.getData('states/' + stateID)
+  //     .subscribe((result: any) => {
+  //       if (result.Items[0].stateName != undefined) {
+  //         this.trips[index].location.stateName = result.Items[0].stateName;
+  //       }
+  //     })
+  // }
 
   fetchCityDetail(cityID, index) {
     this.apiService.getData('cities/' + cityID)
@@ -366,5 +372,58 @@ export class TripDetailComponent implements OnInit {
       this.selectedFileNames.set(fileName, this.selectedFiles[i]);
       this.documentID.push(fileName);
     }
+  }
+
+  fetchOrderDetails(orderIds) {
+    orderIds = JSON.stringify(orderIds);
+    this.apiService.getData('orders/fetch/selectedOrders?orderIds='+orderIds).subscribe((result: any) => {
+        
+        let calcultedBy = '';
+        let totalMilesOrder = 0;
+        for (let i = 0; i < result.length; i++) {
+            const element = result[i];
+            calcultedBy = element.milesInfo.calculateBy;
+            totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
+        }
+        this.setOrdersDataFormat(result);
+    })
+  }
+
+  setOrdersDataFormat(orders) {
+    orders.map((i) => {
+      i.pickupLocations = '';
+      i.deliveryLocations = '';
+      if (i.shippersReceiversInfo) {
+          let ind = 1;
+          let ind2 = 1;
+          i.shippersReceiversInfo.map((j) => {
+              j.receivers.map((k) => {
+                  let dateTime = '';
+                  if (k.dateAndTime != undefined && k.dateAndTime != '') {
+                      let dmy = k.dateAndTime.split(' ');
+                      dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
+                  }
+                  i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
+                  ind++;
+              })
+          })
+
+          i.shippersReceiversInfo.map((m) => {
+              let dateTime = '';
+              m.shippers.map((n) => {
+                  if (n.dateAndTime != undefined && n.dateAndTime != '') {
+                      let dmy = n.dateAndTime.split(' ');
+                      dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
+                  }
+                  i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
+                  ind2++;
+              })
+          })
+      }
+      this.allFetchedOrders.push(i);
+      return i;
+    });
+
+    console.log('this.allFetchedOrders', this.allFetchedOrders);
   }
 }
