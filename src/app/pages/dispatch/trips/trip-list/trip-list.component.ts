@@ -16,6 +16,12 @@ declare var $: any;
 export class TripListComponent implements OnInit {
 
   dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageConfirm: string = Constants.FETCHING_DATA;
+  dataMessageDispatch: string = Constants.FETCHING_DATA;
+  dataMessageStart: string = Constants.FETCHING_DATA;
+  dataMessageEnroute: string = Constants.FETCHING_DATA;
+  dataMessageCancel: string = Constants.FETCHING_DATA;
+  dataMessageDeliver: string = Constants.FETCHING_DATA;
   form;
   title = "Trips";
   tripID = '';
@@ -177,7 +183,7 @@ export class TripListComponent implements OnInit {
   }
 
   async fetchTrips(result, type=null) {
-
+    // this.trips = [];
     for (let i = 0; i < result.Items.length; i++) {
         result.Items[i].pickupLocation = '';
         result.Items[i].pickupTime = '';
@@ -411,10 +417,10 @@ export class TripListComponent implements OnInit {
 
   initDataTable(tabType) {
     this.spinner.show();
-    // this.trips = [];
     this.apiService.getData('trips/fetch/records/' + tabType + '?searchValue=' + this.tripsFiltr.searchValue + '&startDate=' + this.tripsFiltr.start +
       '&endDate=' + this.tripsFiltr.end + '&category=' + this.tripsFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        this.trips = [];
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -454,9 +460,14 @@ export class TripListComponent implements OnInit {
 
   initConfirmedDataTable() {
     this.spinner.show();
-    this.confirmedTrips = [];
     this.apiService.getData('trips/fetch/records/confirmed?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripConfirmedlastEvaluatedKey)
       .subscribe((result: any) => {
+        this.confirmedTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageConfirm = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('confirmed');
+
         this.fetchTrips(result,'confirmed');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -487,9 +498,14 @@ export class TripListComponent implements OnInit {
 
   initDispatchedDataTable() {
     this.spinner.show();
-    this.dispatchedTrips = [];
     this.apiService.getData('trips/fetch/records/dispatched?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripDispatchedlastEvaluatedKey)
       .subscribe((result: any) => {
+        this.dispatchedTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageDispatch = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('dispatched');
+
         this.fetchTrips(result,'dispatched');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -520,9 +536,14 @@ export class TripListComponent implements OnInit {
 
   initStartedDataTable() {
     this.spinner.show();
-    this.startedTrips = [];
     this.apiService.getData('trips/fetch/records/started?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripStartedlastEvaluatedKey)
       .subscribe((result: any) => {
+        this.startedTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageStart = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('started');
+
         this.fetchTrips(result,'started');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -553,9 +574,14 @@ export class TripListComponent implements OnInit {
 
   initEnrouteDataTable() {
     this.spinner.show();
-    this.enrouteTrips = [];
     this.apiService.getData('trips/fetch/records/enroute?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripEnroutelastEvaluatedKey)
       .subscribe((result: any) => {
+        this.enrouteTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageEnroute = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('enroute');
+
         this.fetchTrips(result,'enroute');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -586,9 +612,14 @@ export class TripListComponent implements OnInit {
 
   initCancelDataTable() {
     this.spinner.show();
-    this.cancelledTrips = [];
     this.apiService.getData('trips/fetch/records/cancelled?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripCancellastEvaluatedKey)
       .subscribe((result: any) => {
+        this.cancelledTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageCancel = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('cancelled');
+
         this.fetchTrips(result,'cancelled');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -619,9 +650,14 @@ export class TripListComponent implements OnInit {
 
   initDeliveredDataTable() {
     this.spinner.show();
-    this.deliveredTrips = [];
     this.apiService.getData('trips/fetch/records/delivered?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripDeliverlastEvaluatedKey)
       .subscribe((result: any) => {
+        this.deliveredTrips = [];
+        if(result.Items.length == 0) {
+          this.dataMessageDeliver = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('delivered');
+
         this.fetchTrips(result,'delivered');
         
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -672,6 +708,7 @@ export class TripListComponent implements OnInit {
         this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
       }
       this.totalRecords = this.allTripsCount;
+      this.dataMessage = Constants.FETCHING_DATA;
       this.activeTab = 'all';
       this.fetchTripsCount();
       this.initDataTable('all');
@@ -691,6 +728,7 @@ export class TripListComponent implements OnInit {
         start: '',
         end: ''
       };
+      this.dataMessage = Constants.FETCHING_DATA;
       $("#categorySelect").text('Search by category');
       this.tripDraw = 0;
       this.activeTab = 'all';
@@ -820,34 +858,40 @@ export class TripListComponent implements OnInit {
       this.initDataTable('all');
 
     } else if(type == 'confirmed') {
+      this.tripConfirmedNext = true;
+      this.tripConfirmedPrev = true;
       this.tripConfirmedDraw += 1;
       this.initConfirmedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'dispatched') {
+      this.tripDispatchedNext = true;
+      this.tripDispatchedPrev = true;
       this.tripDispatchedDraw += 1;
       this.initDispatchedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'started') {
+      this.tripStartedNext = true;
+      this.tripStartedPrev = true;
       this.tripStartedDraw += 1;
       this.initStartedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'enrouted') {
+      this.tripEnrouteNext = true;
+      this.tripEnroutePrev = true;
       this.tripEnrouteDraw += 1;
       this.initEnrouteDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'cancelled') {
+      this.tripCancelNext = true;
+      this.tripCancelPrev = true;
       this.tripCancelDraw += 1;
       this.initCancelDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'delivered') {
+      this.tripDeliverNext = true;
+      this.tripDeliverPrev = true;
       this.tripDeliverDraw += 1;
       this.initDeliveredDataTable();
-      this.getStartandEndVal(type);
     }
   }
 
@@ -861,40 +905,46 @@ export class TripListComponent implements OnInit {
       this.initDataTable('all');
 
     } else if(type == 'confirmed') {
+      this.tripConfirmedNext = true;
+      this.tripConfirmedPrev = true;
       this.tripConfirmedDraw -= 1;
       this.tripConfirmedlastEvaluatedKey = this.tripConfirmedPrevEvauatedKeys[this.tripConfirmedDraw];
       this.initConfirmedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'dispatched') {
+      this.tripDispatchedNext = true;
+      this.tripDispatchedPrev = true;
       this.tripDispatchedDraw -= 1;
       this.tripDispatchedlastEvaluatedKey = this.tripDispatchedPrevEvauatedKeys[this.tripDispatchedDraw];
       this.initDispatchedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'started') {
+      this.tripStartedNext = true;
+      this.tripStartedPrev = true;
       this.tripStartedDraw -= 1;
       this.tripStartedlastEvaluatedKey = this.tripStartedPrevEvauatedKeys[this.tripStartedDraw];
       this.initStartedDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'enrouted') {
+      this.tripEnrouteNext = true;
+      this.tripEnroutePrev = true;
       this.tripEnrouteDraw -= 1;
       this.tripEnroutelastEvaluatedKey = this.tripEnroutePrevEvauatedKeys[this.tripEnrouteDraw];
       this.initEnrouteDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'cancelled') {
+      this.tripCancelNext = true;
+      this.tripCancelPrev = true;
       this.tripCancelDraw -= 1;
       this.tripCancellastEvaluatedKey = this.tripCancelPrevEvauatedKeys[this.tripCancelDraw];
       this.initCancelDataTable();
-      this.getStartandEndVal(type);
 
     } else if(type == 'delivered') {
+      this.tripDeliverNext = true;
+      this.tripDeliverPrev = true;
       this.tripDeliverDraw -= 1;
       this.tripDeliverlastEvaluatedKey = this.tripDeliverPrevEvauatedKeys[this.tripDeliverDraw];
       this.initDeliveredDataTable();
-      this.getStartandEndVal(type);
     }
   }
 

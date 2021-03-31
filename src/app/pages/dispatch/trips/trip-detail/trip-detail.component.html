@@ -61,18 +61,21 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td rowspan="2">OR-3455</td>
-                                                        <td rowspan="2">ABC Inc</td>
-                                                        <td rowspan="2">INV-67785<br>Amount: CAD 5768</td>
+                                                    <tr *ngFor="let data of allFetchedOrders">
+                                                        <td>{{ data.orderNumber }}</td>
+                                                        <td>Customer</td>
+                                                        <td>INV-67785<br>Amount: {{ data.charges.freightFee.currency }} {{ data.totalAmount }}</td>
+                                                        <td>
+                                                            <div [innerHTML]="data.pickupLocations"></div>
+                                                        </td>
+                                                        <td>
+                                                            <div [innerHTML]="data.deliveryLocations"></div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- <tr>
                                                         <td>100 street, King Town, Canada</td>
                                                         <td>1 Main street, King Town, Canada</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>100 street, King Town, Canada</td>
-                                                        <td>1 Main street, King Town, Canada</td>
-                                                    </tr>
+                                                    </tr> -->
                                                 </tbody>
                                             </table>
                                         </div>

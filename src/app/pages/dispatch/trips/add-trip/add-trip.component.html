@@ -139,7 +139,7 @@
                                                     <th>Loaded/ Empty</th>
                                                     <th>Miles</th>
                                                     <th>Vehicle</th>
-                                                    <th>Trailer</th>
+                                                    <th>Assets</th>
                                                     <th>Driver</th>
                                                     <th>Co- Driver</th>
                                                     <th>Carrier</th>
@@ -420,11 +420,11 @@
                                             <ng-template [ngIf]="trips.length > 1" [ngIfElse]="destinationElseBlock">
                                                 <div class="col-lg-4 text-center">
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
-                                                    <p class="mb-0 text-4 font-weight-semibold text-dark">{{orderMiles.calculateBy}}: {{orderMiles.totalMiles}}
+                                                    <p class="mb-0 text-4 font-weight-semibold text-dark" *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined">{{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number: '1.0-3'}}
                                                     </p>
                                                     
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">Actual Miles(Pc Miler):
-                                                    <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles}}
+                                                    <span class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles | number: '1.0-3' }}
                                                     </span></p>
                                                 </div>
                                                 <div class="col-lg-4 text-center">
@@ -597,7 +597,6 @@
                                                                 <th class="text-2">P/L</th>
                                                                 <th class="text-2">D/L</th>
                                                                 <th class="text-2">Total Amount</th>
-                                                                <th class="text-2">Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="ui-sortable">
@@ -625,7 +624,6 @@
                                                                     <div [innerHTML]="order.deliveryLocations"></div>
                                                                 </td>
                                                                 <td>CAD {{ order.totalAmount }}</td>
-                                                                <td>{{ order.orderStatus }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -644,7 +642,6 @@
                                                         <th class="text-2">P/L</th>
                                                         <th class="text-2">D/L</th>
                                                         <th class="text-2">Total Amount</th>
-                                                        <th class="text-2">Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="ui-sortable">
@@ -671,7 +668,6 @@
                                                             <div [innerHTML]="order.deliveryLocations"></div>
                                                         </td>
                                                         <td>CAD {{ order.totalAmount }}</td>
-                                                        <td>{{ order.orderStatus }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -711,7 +707,7 @@
                         <thead>
                             <tr>
                                 <th width="25%">Vehicle</th>
-                                <th width="25%">Trailer</th>
+                                <th width="25%">Assets</th>
                                 <th width="25%">Driver</th>
                                 <th>Co-Driver</th>
                             </tr>
