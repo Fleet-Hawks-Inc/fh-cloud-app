@@ -137,7 +137,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-
     // create form data instance
     const formData = new FormData();
 
