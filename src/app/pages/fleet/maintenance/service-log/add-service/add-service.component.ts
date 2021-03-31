@@ -210,7 +210,7 @@ export class AddServiceComponent implements OnInit {
     this.spinner.show();
     this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
       delete elem.existQuantity;
-    })
+    });
     // create form data instance
     const formData = new FormData();
 
@@ -500,13 +500,12 @@ export class AddServiceComponent implements OnInit {
     let newSchedule;
     
     for (let remind of this.reminders) {
-      
       if (remind.reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1].taskID) {
         remindID = remind.reminderID;
         newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
-        remindID = ' ';
-        newSchedule = ' ';
+        remindID = '';
+        newSchedule = '';
       }
     }
     this.serviceData.allServiceTasks.serviceTaskList.push({
@@ -515,23 +514,26 @@ export class AddServiceComponent implements OnInit {
       reminderID: remindID,
       schedule: newSchedule,
     });
-    
+    console.log('addTasks', this.selectedTasks);
   }
 
-  async addListedTasks(data) {
+  async addListedTasks(data: any) {
     
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    
+    // console.log('result****', result)
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
-    this.selectedTasks.push(task);
+    this.selectedTasks.push(result.Items[0]);
     this.serviceData.allServiceTasks.serviceTaskList.push({
       taskName: task,
       taskID: ID,
       reminderID: data.reminderID,
       schedule: `Every ${data.reminderTasks.odometer} Miles`,
     });
+    // console.log('serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
+    console.log('selectedTasks', this.selectedTasks);
+    // console.log('task****', data)
   }
 
   removeListedTasks(data) {

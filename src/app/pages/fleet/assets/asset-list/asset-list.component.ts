@@ -54,14 +54,15 @@ export class AssetListComponent implements OnInit {
   Success: string = '';
 
   hideShow = {
+    vin: true,
     assetName: true,
     type: true,
     plateNo: true,
     lastLocation: true,
-    year: true,
+    year: false,
     make: true,
-    model: true,
-    ownership: true,
+    model: false,
+    ownership: false,
     status: true,
     group: false,
     aceID: false,
@@ -147,7 +148,7 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchModalsByIDs() {
-    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
     });
   }
@@ -281,6 +282,11 @@ export class AssetListComponent implements OnInit {
 
   hideShowColumn() {
     // for headers
+    if(this.hideShow.vin == false) {
+      $('.col0').css('display','none');
+    } else {
+      $('.col0').css('display','');
+    }
     if(this.hideShow.assetName == false) {
       $('.col1').css('display','none');
     } else {
@@ -308,7 +314,9 @@ export class AssetListComponent implements OnInit {
     if(this.hideShow.year == false) {
       $('.col5').css('display','none');
     } else {
+      $('.col5').removeClass('extra');
       $('.col5').css('display','');
+      $('.col5').css('min-width','200px');
     }
 
     if(this.hideShow.make == false) {
@@ -320,13 +328,17 @@ export class AssetListComponent implements OnInit {
     if(this.hideShow.model == false) {
       $('.col7').css('display','none');
     } else {
+      $('.col7').removeClass('extra');
       $('.col7').css('display','');
+      $('.col7').css('min-width','200px');
     }
 
     if(this.hideShow.ownership == false) {
       $('.col8').css('display','none');
     } else {
+      $('.col8').removeClass('extra');
       $('.col8').css('display','');
+      $('.col8').css('min-width','200px');
     }
 
     if(this.hideShow.status == false) {

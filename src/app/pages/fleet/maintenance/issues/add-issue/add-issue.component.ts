@@ -125,7 +125,7 @@ export class AddIssueComponent implements OnInit {
   addIssue() {
     this.hideErrors();
     const data = {
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitType: this.unitType,
       unitID: this.unitID,
       currentStatus: this.currentStatus,

@@ -1280,7 +1280,7 @@
                           >
                             Out-of-Service Date:
                           </div>
-                          <div class="col-lg-8 p-2 border-box">
+                          <div class="col-lg-8 p-2 border-box"> 
                             {{ lifeCycle.outOfServiceDate }}
                           </div>
                         </div>
@@ -1560,7 +1560,7 @@
                             Premium Amount:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ insurance.premiumAmount }}
+                            {{ insurance.premiumAmount }} {{ insurance.premiumCurrency }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -1979,7 +1979,7 @@
                             Fuel Type:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ fluid.fuelType }}
+                            {{ fuelTypes[fluid.fuelType] }}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -1989,7 +1989,7 @@
                             Fuel Tank 1 Capacity:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ fluid.fuelTankOneCapacity }}
+                            {{ fluid.fuelTankOneCapacity }} {{fluid.fuelTankOneType}}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -1999,7 +1999,7 @@
                             Fuel Tank 2 Capacity:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ fluid.fuelTankTwoCapacity }}
+                            {{ fluid.fuelTankTwoCapacity }} {{fluid.fuelTankTwoType}}
                           </div>
                         </div>
                       </div>
@@ -2018,7 +2018,17 @@
                             Oil Capacity:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ fluid.oilCapacity }}
+                            {{ fluid.oilCapacity }} {{fluid.oilCapacityType}}
+                          </div>
+                        </div>
+                        <div class="row m-0">
+                          <div
+                            class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                          >
+                            DEF(Diesel Exhaust Fluid) Capacity:
+                          </div>
+                          <div class="col-lg-8 p-2 border-box">
+                            {{ fluid.def }} {{fluid.defType}}
                           </div>
                         </div>
                       </div>
@@ -2149,7 +2159,7 @@
                             Amount of Loan:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ loan.amountOfLoan }}
+                            {{ loan.amountOfLoan }} {{loan.amountOfLoanCurrency}}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2169,7 +2179,7 @@
                             Down Payment:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ loan.downPayment }}
+                            {{ loan.downPayment }} {{loan.downPaymentCurrency}}
                           </div>
                         </div>
                         <div class="row m-0">
@@ -2189,7 +2199,7 @@
                             Monthly Payment:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ loan.monthlyPayment }}
+                            {{ loan.monthlyPayment }} {{loan.monthlyPaymentCurrency}}
                           </div>
                         </div>
                         <div class="row m-0">

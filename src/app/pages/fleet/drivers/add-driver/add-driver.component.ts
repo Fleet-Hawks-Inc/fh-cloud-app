@@ -92,7 +92,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     groupID: '',
     driverImage: '',
     workPhone: '',
-    workEmail: '',
+    email: '',
     currentTab: null, // for send data on last tab
     address: [{
       addressID: '',
@@ -511,6 +511,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       manual: false,
       userLocation: ''
     });
+    console.log('driverData.address', this.driverData.address);
   }
 
   fetchCycles() {
@@ -947,7 +948,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
         this.driverData.gender = result.gender;
         this.driverData.DOB = result.DOB;
-        this.driverData.workEmail = result.workEmail;
+        this.driverData.email = result.email;
         this.driverData.workPhone = result.workPhone;
 
 
@@ -1164,14 +1165,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 }}
 
-
-
-
-  // fetchAddress() {
-  //   this.apiService.getData('addresses')
-  //     .subscribe((result: any) => {
-  //   });
-  // }
 
   changePaymentModeForm(value) {
     if (value === 'Pay Per Mile') {
