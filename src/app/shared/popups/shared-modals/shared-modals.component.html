@@ -506,7 +506,7 @@
             <form id="vehicleForm" class="form-horizontal form-bordered bg-white" method="post">
 
               <div class="card-body pt-0">
-
+               <p class="m-0"><strong>Note:</strong> If you want to add vehicle with more detail then <strong><a routerLink="/fleet/vehicles/add" data-dismiss="modal">click here</a></strong></p>
                 <div class="">
                   <div class="row">
                     <div class="col-lg-10">
@@ -942,29 +942,30 @@
                 </button>
             </div>
             <div class="modal-body">
+               <p class="m-0 px-3"><strong>Note:</strong> If you want to add driver with more detail then <strong><a routerLink="/fleet/drivers/add" data-dismiss="modal">click here</a></strong></p>
                 <form id="driverForm" class="form-horizontal form-bordered bg-white" #driverForm="ngForm"
                    (ngSubmit)="onSubmit()" novalidate>
                    <div class="p-2 pt-4">
                       <ul class="nav nav-tabs top-tabs" id="driver-tabs" role="tablist">
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)"
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 1, 'tab-error': hasBasic}" (click)="tabChange(1)"
                                [routerLink]="">Basic Details</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)"
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 2, 'tab-error': hasDocs}" (click)="tabChange(2)"
                                [routerLink]="">Documents Details</a>
                          </li>
                          
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)"
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 3, 'tab-error': hasLic}" (click)="tabChange(3)"
                                [routerLink]="">Licence Details</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)"
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 4, 'tab-error': hasPay}" (click)="tabChange(4)"
                                [routerLink]="">Payments</a>
                          </li>
                          <li class="nav-item">
-                            <a class="nav-link" [ngClass]="{'active': currentTab == 5}" (click)="tabChange(5)"
+                            <a class="nav-link" [ngClass]="{'active': currentTab == 5, 'tab-error': hasHos}" (click)="tabChange(5)"
                                [routerLink]="">HOS Compliance</a>
                          </li>
                       </ul>
@@ -975,7 +976,7 @@
                          <!-- basic -->
                          <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic"
                             role="tabpanel" aria-labelledby="addDriverBasic-tab">
- 
+                        
                             <div>
                                <div class="form-group row">
                                   <div class="col-lg-10">
@@ -1014,15 +1015,20 @@
                                            <label class="control-label font-weight-bold text-lg-right pt-3">Employee
                                               ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <div class="input-group">
-                                              <div class="input-group-prepend">
-                                                 <span class="input-group-text text-uppercase"
-                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
-                                              </div>
-                                              <input [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
-                                                 class="form-control" (change)="onChangeHideErrors('employeeId')" placeholder="Enter employeeID of driver">
+                                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                                 class="form-control" (change)="onChangeHideErrors('employeeContractorId')" placeholder="Enter employeeID of driver">
                                            </div>
                                         </div>
-                                        <div class="col-lg-11" id="companyDiv"
+                                        <div class="col-lg-12" id=""
+                                          *ngIf="driverData.driverType == 'contractor'">
+                                          <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
+                                             ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                          <div class="input-group">
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                                class="form-control" (change)="onChangeHideErrors('employeeContractorId')" placeholder="Enter contractor ID of driver">
+                                          </div>
+                                       </div>
+                                        <div class="col-lg-12" id="companyDiv"
                                            *ngIf="driverData.driverType == 'contractor'">
                                            <label class="control-label font-weight-bold text-lg-right pt-3">Owner
                                               Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1032,13 +1038,6 @@
                                               <ng-option *ngFor="let item of ownerOperators | async"
                                                  value="{{item.operatorID}}">{{item.companyName}}</ng-option>
                                            </ng-select>
-                                        </div>
-                                        <div class="col-lg-1 mt-5  pl-0"
-                                           *ngIf="driverData.driverType == 'contractor'">
-                                            <a data-toggle="modal" data-target="#addOwnerOperatorModal"
-                                              href="javascript:;" class="modal-with-form btn btn-sm btn-success">
-                                              <em class="fas fa-plus"></em>
-                                             </a>
                                         </div>
                                         
                                         <div class="col-lg-12">
@@ -1134,7 +1133,7 @@
                                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input class="form-control p-0" [ngClass]="abstractValid ? 'error' : 'err' "
                                               name="abstractDocs"
-                                              (change)="selectDocuments($event, null);onChangeHideErrors('abstractDocs')"
+                                              (change)="onChangeHideErrors('abstractDocs'); selectDocuments($event, null)"
                                               type="file" multiple>
                                            <label class="error" *ngIf="abstractValid">
                                               This Field is required
@@ -1190,7 +1189,7 @@
                                         <div class="col-lg-12">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                               Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                           <input [(ngModel)]="driverData.workEmail" name="workEmail" type="text"
+                                           <input [(ngModel)]="driverData.email" name="email" type="text"
                                               class="form-control"
                                               placeholder="Enter the official email address of the driver">
                                         </div>
@@ -1393,7 +1392,7 @@
                                         <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                            name="licenceDetails.CDL_Number" type="text" class="form-control"
                                            placeholder="Enter CDL(Commercial Driving Licence) number"
-                                           (change)="onChangeHideErrors('CDL_Number')">
+                                           (change)="onChangeHideErrors('licenceDetails.CDL_Number')">
                                      </div>
                                      <div class="col-lg-12">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Licence
@@ -1493,7 +1492,7 @@
                                               name="paymentDetails.SIN_Number" type="text" class="form-control"
                                               placeholder="Enter the SIN (Social Insurance Number)">
                                         </div>
-                                        <div class="col-lg-10">
+                                        <div class="col-lg-12">
                                             <label class="control-label font-weight-bold text-lg-right pt-2">Pay
                                                 Period<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod"

@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListContactRenewComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   public remindersData: any = [];
   contacts: [];
   driverList: any = {};
@@ -24,6 +25,7 @@ export class ListContactRenewComponent implements OnInit {
   currentDate = moment();
   newData = [];
   filterStatus: string;
+  usersList:any = {};
   contactID = '';
   firstName = '';
   serviceTasks = [];
@@ -40,6 +42,7 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewPrevEvauatedKeys = [''];
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
+  loading = false;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -48,7 +51,7 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
-    this.fetchContactList();
+    this.fetchUsersList();
     this.fetchTasksList();
     this.initDataTable()
     $(document).ready(() => {
@@ -75,27 +78,24 @@ export class ListContactRenewComponent implements OnInit {
       this.groups = result;
     });
   }
-  fetchContactList() {
-    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
-      this.driverList = result;
+  fetchUsersList() {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.usersList = result;
     });
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  setContact(contactID, firstName) {
-    this.firstName = firstName;
-    this.contactID = contactID;
+  setContact(userName, firstName, lastName) {
+    this.firstName = firstName +' '+ lastName;
+    this.contactID = userName;
     this.suggestedContacts = [];
   }
   getSuggestions(value) {
     this.apiService
-      .getData(`drivers/get/suggestions/${value}`)
+      .getData(`users/get/suggestions/${value}`)
       .subscribe((result) => {
         this.suggestedContacts = result.Items;
-        if (this.suggestedContacts.length === 0) {
-          this.contactID = '';
-        }
       });
 
   }
@@ -146,6 +146,10 @@ export class ListContactRenewComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.contactID != '' || this.searchServiceTask != '') {
+          this.contactRenewEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -154,6 +158,11 @@ export class ListContactRenewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedContacts = [];
+        this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
         if (this.contactID !== '' || this.searchServiceTask !== '' ) {
@@ -191,6 +200,7 @@ export class ListContactRenewComponent implements OnInit {
     if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
       || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
       this.remindersData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount()
       this.initDataTable();
     } else {
@@ -205,7 +215,7 @@ export class ListContactRenewComponent implements OnInit {
       this.firstName = '';
       this.searchServiceTask = '';
       this.filterStatus = '';
-
+      this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
       this.getRemindersCount()
       this.initDataTable();
@@ -247,17 +257,19 @@ export class ListContactRenewComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.contactRenewNext = true;
+    this.contactRenewPrev = true;
     this.contactRenewDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.contactRenewNext = true;
+    this.contactRenewPrev = true;
     this.contactRenewDraw -= 1;
     this.lastEvaluatedKey = this.contactRenewPrevEvauatedKeys[this.contactRenewDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

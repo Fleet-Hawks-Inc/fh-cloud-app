@@ -28,7 +28,7 @@
                           <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
                             {{carrier.SCAC}}</ng-option>
                         </ng-select> -->
-                          <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
+                          <ng-select name="SCAC" [(ngModel)]="SCAC" (change)="onChangeHideErrors('SCAC')" placeholder="Select SCAC">
                           <ng-option value="DOTL">DOTL</ng-option>
                           <ng-option value="FVFA">FVFA</ng-option>
                           <ng-option value="GHGP">GHGP</ng-option>
@@ -43,7 +43,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">US Port of
                           Arrival<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="usPortOfArrival" [(ngModel)]="usPortOfArrival"
+                        <ng-select name="usPortOfArrival" [(ngModel)]="usPortOfArrival" (change)="onChangeHideErrors('usPortOfArrival')"
                           placeholder="Select US port of arrival">
                           <ng-option *ngFor="let port of USports" [value]="port.code">Code: {{port.code}},
                             Location: {{port.portOfEntry}}</ng-option>
@@ -53,14 +53,14 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" name="estimatedArrivalDate" placeholder="Enter date"
-                          ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle()"
+                          ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle();onChangeHideErrors('estimatedArrivalDate')"
                           [(ngModel)]="estimatedArrivalDate" />
 
                       </div>
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime"
+                        <ng-select name="estimatedArrivalTime" [(ngModel)]="estimatedArrivalTime" (change)="onChangeHideErrors('estimatedArrivalTime')"
                           placeholder="Select time">
                           <ng-option *ngFor="let time of timeList" [value]="time.value">
                             {{time.description}}</ng-option>
@@ -74,7 +74,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Vehicle<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select name="truck.truckID" [(ngModel)]="truck.truckID">
+                        <ng-select name="truck.truckID" [(ngModel)]="truck.truckID"  (change)="onChangeHideErrors('truck.truckID')">
                           <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
                             {{vehicle.vehicleIdentification}}</ng-option>
                         </ng-select>
@@ -109,8 +109,7 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
-                        <ng-select [(ngModel)]="mainDriver" name="drivers" placeholder="Select driver">
+                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of fetchedDrivers" [value]="driver.driverID">
                             {{driver.firstName}}</ng-option>
                         </ng-select>
@@ -200,10 +199,14 @@
                               [(ngModel)]="passenger.dateOfBirth" />
                           </div>
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Fast Card#</label>
-                            <input type="text" maxlength="14"
-                              placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02"
+                            <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#&nbsp;<i
+                              class="fas fa-exclamation-circle" data-toggle="tooltip"
+                              data-placement="top"
+                              title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                            <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
+                              placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
                               class="form-control">
+                              <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
                           </div>
                         </div>
                       </div>
@@ -211,7 +214,7 @@
                     <!-- document div start -->
                     <div class="row pb-4" *ngFor="let document of passenger.travelDocuments;let j = index">
                       <div class="col-lg-12 text-right">
-                        <button type="button" *ngIf="j != 0;" (click)="deleteDocument(j,i)" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i>
+                        <button type="button" *ngIf="j != 0;" (click)="deleteDocument(j,i)" class="btn btn-sm btn-danger">
                           Delete Document</button>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
@@ -248,8 +251,6 @@
                                 {{document.description}}</ng-option>
                             </ng-select>
                           </div>
-
-
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -294,50 +295,119 @@
                   </div>
                 </div>
                 <div class="row" *ngIf="shipments.length === 0">
-                  <div class="col-lg-5 offset-lg-1">
-                    <div class="row">
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                          State</label>
-                        <ng-select [(ngModel)]="usAddress.state" name="usAddress.state" placeholder="Select state"
-                          (change)="getAddressCities()" [class.error]="errorClassState">
+                  <!-- NEW ADDRESS DIV -->
+                  <div class="col-10 offset-lg-1">
+                    <div  class="address-item">
+                      <div class="form-group row border-bottom-0">
+                         <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your location&nbsp; <span
+                                  class="text-1 optional-label-color">(optional)</span></label>
+                            <input [(ngModel)]="usAddress.address.userLocation" name="address.userLocation"
+                               (keyup)="searchTerm.next($event);" type="text" class="form-control"
+                               placeholder="Type Address" [disabled]="usAddress.address.manual"  [class.error]="errorClassUserLocation">
+                               <div class="text-danger" *ngIf="errorClassUserLocation">This field is required.</div>
 
-                          <ng-option class="text-capitalize" *ngFor="let state of addressStates"
-                            value="{{state.stateID}}">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                            <div class="checkbox-custom pt-2">
+                               <input [(ngModel)]="usAddress.address.manual" name="manual"
+                                  (change)="manAddress($event,null,null,'usAddress')" type="checkbox">
+                               <label for="man_address">Type Manually</label>
+                            </div>
+                            <div class="map-search__results bg-white">
+                               <ul class="p-0 m-0 text-left">
+                                  <li *ngFor="let item of searchResults;">
+                                     <a href="javascript:;"
+                                        (click)="userAddress(null,null,item,'usAddress')">{{item.address.label}}</a>
+                                  </li>
+                               </ul>
+                            </div>
+                         </div>
+                         <div class="col-lg-2 mar-top-37">
+                            <a class="btn btn-dark mr-2" href="javascript:;"
+                               (click)="clearUserLocation(null,null,'usAddress');">Clear</a>
+                         </div>
+                      </div>
+                      <div class="address-inner" *ngIf="usAddress.address.manual">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Address</label>
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'usAddress.address.addressLine'" [class.error]="errorClassAddress"
+                                  [(ngModel)]="usAddress.address.addressLine"
+                                  placeholder="Enter street level address">
+                                  <div class="text-danger" *ngIf="errorClassAddress">This field is required.</div>
+                              </div>
 
-                        </ng-select>
-                        <div class="text-danger" *ngIf="errorClassState">This field is required.</div>
-                      </div>
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
-                        <ng-select [(ngModel)]="usAddress.city" name="usAddress.city" [class.error]="errorClassCity"
-                          placeholder="Select city">
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Country</label>
+                                <ng-select [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'usAddress.address.countryID'" [class.error]="errorClassCountry"
+                                  [(ngModel)]="usAddress.address.countryID" (change)="resetusAddressState()">
+                                  <ng-option *ngFor="let country of countries" [value]="country.countryID">
+                                    {{country.countryName}}</ng-option>
+                                </ng-select>
+                                <div class="text-danger" *ngIf="errorClassCountry">This field is required.</div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                                <ng-select [ngModelOptions]="{standalone: true}" id="usAddressStateSelect"
+                                  (change)="resetusAddressCity()"
+                                  [attr.name]="'usAddress.address.stateID'" [class.error]="errorClassState"
+                                  [(ngModel)]="usAddress.address.stateID">
+                                  <ng-container *ngFor="let state of modalStates| async">
+                                    <ng-option *ngIf="state.countryID == usAddress.address.countryID"
+                                      [value]="state.stateID"> {{state.stateCode}} - {{state.stateName}}</ng-option>
+                                  </ng-container>
+                                </ng-select>
+                                <div class="text-danger" *ngIf="errorClassState">This field is required.</div>
 
-                          <ng-option class="text-capitalize" *ngFor="let city of addressCities" value="{{city.cityID}}">
-                            {{city.cityName}}</ng-option>
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">City</label>
+                                <ng-select [ngModelOptions]="{standalone: true}" id="usAddressCitySelect"
+                                  [attr.name]="'usAddress.address.cityID'" [class.error]="errorClassCity"
+                                  [(ngModel)]="usAddress.address.cityID">
+                                  <ng-container *ngFor="let city of modalCities| async">
+                                    <ng-option *ngIf="city.stateID == usAddress.address.stateID"
+                                      [value]="city.cityID"> {{city.cityName}}</ng-option>
+                                  </ng-container>
+                                </ng-select>
+                                <div class="text-danger" *ngIf="errorClassCity">This field is required.</div>
 
-                        </ng-select>
-                        <div class="text-danger" *ngIf="errorClassCity">This field is required.</div>
+                              </div>
+                              <div class="col-lg-2 mar-top-37">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Postal Code</label>
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}" [class.error]="errorClassPostal"
+                                  [attr.name]="'usAddress.address.postalCode'"
+                                  [(ngModel)]="usAddress.address.postalCode">
+                                  <div class="text-danger" *ngIf="errorClassPostal">This field is required.</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-5">
-                    <div class="row">
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right">Address 1</label>
-                        <input [(ngModel)]="usAddress.addressLine" name="usAddress.addressLine" type="text"
-                          [class.error]="errorClassAddress" class="form-control"
-                          placeholder="Enter street level address">
-                        <div class="text-danger" *ngIf="errorClassAddress">This field is required.</div>
-                      </div>
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Zip Code</label>
-                        <input [(ngModel)]="usAddress.zipCode" name="usAddress.zipCode" type="text"
-                          [class.error]="errorClassZip" class="form-control" placeholder="Enter zipode eg. 7V2 3R4">
-                        <div class="text-danger" *ngIf="errorClassZip">This field is required.</div>
-                      </div>
-                    </div>
-                  </div>
+
+                   </div>
+                 </div>
                 </div>
                 <mat-accordion>
                   <mat-expansion-panel hideToggle *ngFor="let shipment of shipments;let s = index">
@@ -345,7 +415,7 @@
                       <mat-panel-title>
                         <span class="line-height-lg">Shipment {{s+1}}</span>
                         <button type="button" (click)="deleteShipment(s)"
-                          class="btn btn-xs btn-danger pull-right mt-1-c1"><i class="fas fa-minus"></i> Delete Shipment</button>
+                          class="btn btn-xs btn-danger pull-right mt-1-c1"> Delete Shipment</button>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="form-group row">
@@ -383,7 +453,7 @@
                                 <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].shipmentControlNumber'"
                                   placeholder="Enter unique number, min 4 characters, max 12 characters"
-                                  [(ngModel)]="shipment.shipmentControlNumber">
+                                  [(ngModel)]="shipment.shipmentControlNumber" (change)="onChangeHideErrors('shipments['+s+'].shipmentControlNumber')">
                               </div>
                             </div>
                           </div>
@@ -549,8 +619,7 @@
                     </div>
                     <div class="form-group row" *ngFor="let thirdParty of shipment.thirdParties;let p = index">
                       <div class="col-lg-12 text-right">
-                        <button type="button" (click)="deleteThirdParty(p,s)" class="btn btn-sm btn-danger">
-                          <i class="fas fa-minus"></i> Delete Third Party</button>
+                        <button type="button" (click)="deleteThirdParty(p,s)" class="btn btn-sm btn-danger"> Delete Third Party</button>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
                         <div class="row">
@@ -565,7 +634,6 @@
                                 {{thirdParty.description}}</ng-option>
                             </ng-select>
                           </div>
-
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -591,21 +659,21 @@
                                  placeholder="Type Address" [disabled]="thirdParty.address.manual">
                               <div class="checkbox-custom pt-2">
                                  <input [(ngModel)]="thirdParty.address.manual" name="manual{{p}}"
-                                    (change)="manAddress($event,s,p)" type="checkbox">
+                                    (change)="manAddress($event,s,p, 'thirdParty')" type="checkbox">
                                  <label for="man_address">Type Manually</label>
                               </div>
                               <div class="map-search__results bg-white">
                                  <ul class="p-0 m-0 text-left">
                                     <li *ngFor="let item of searchResults;">
                                        <a href="javascript:;"
-                                          (click)="userAddress(s, p, item)">{{item.address.label}}</a>
+                                          (click)="userAddress(s, p, item, 'thirdParty')">{{item.address.label}}</a>
                                     </li>
                                  </ul>
                               </div>
                            </div>
                            <div class="col-lg-2 mar-top-37">
                               <a class="btn btn-dark mr-2" href="javascript:;"
-                                 (click)="clearUserLocation(s,p);">Clear</a>
+                                 (click)="clearUserLocation(s,p,'thirdParty');">Clear</a>
                            </div>
                         </div>
                         <div class="address-inner" *ngIf="thirdParty.address.manual">
@@ -639,7 +707,7 @@
                                     (change)="resetThirdPartyCity(s,p)"
                                     [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateID'"
                                     [(ngModel)]="thirdParty.address.stateID">
-                                    <ng-container *ngFor="let state of thirdPartyStates| async">
+                                    <ng-container *ngFor="let state of modalStates| async">
                                       <ng-option *ngIf="state.countryID == shipments[s].thirdParties[p].address.countryID"
                                         [value]="state.stateID"> {{state.stateCode}} - {{state.stateName}}</ng-option>
                                     </ng-container>
@@ -658,7 +726,7 @@
                                   <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyCitySelect"
                                     [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.cityID'"
                                     [(ngModel)]="thirdParty.address.cityID">
-                                    <ng-container *ngFor="let city of thirdPartyCities| async">
+                                    <ng-container *ngFor="let city of modalCities| async">
                                       <ng-option *ngIf="city.stateID == shipments[s].thirdParties[p].address.stateID"
                                         [value]="city.cityID"> {{city.cityName}}</ng-option>
                                     </ng-container>
@@ -683,7 +751,7 @@
 
                      </div>
                    </div>
-                      <!-- new address div ends -->
+                  <!-- new address div ends -->
                     </div>
                     <div class="form-group row">
                       <div class="col-lg-12 text-right">
@@ -705,7 +773,7 @@
                     <div class="form-group row" *ngFor="let commodity of shipment.commodities;let i = index">
                       <div class="col-lg-12 text-right">
                         <button type="button" *ngIf="i != 0;" (click)="deleteCommodity(i,s)"
-                          class="btn btn-sm btn-danger"> <i class="fas fa-minus"></i> Delete Commodity</button>
+                          class="btn btn-sm btn-danger">Delete Commodity</button>
                       </div>
                       <div class="col-lg-5 offset-lg-1">
                         <div class="row">

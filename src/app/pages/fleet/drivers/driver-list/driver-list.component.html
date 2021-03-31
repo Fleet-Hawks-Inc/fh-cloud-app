@@ -14,13 +14,13 @@
                   <div class="col-md-2 col-lg-3">
                      <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
-                          placeholder="Search Driver" class="form-control" (input)="getSuggestions($event.target.value)">
+                          placeholder="Search driver by name" class="form-control" (input)="getSuggestions($event.target.value)">
                      </div>
                      <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                         <ul>
                            <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
                            (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
-                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.lastName }}</li>
+                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.middleName}} {{ suggestedDriver.lastName }}</li>
                         </ul>
                      </div>
                   </div>
@@ -50,19 +50,19 @@
                         <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
                            <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.name"
+                              <label><input type="checkbox" disabled [(ngModel)]="hideShow.name"
                               name="name" (change)="hideShowColumn()"> Name </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.dutyStatus"
+                              <label><input type="checkbox" disabled [(ngModel)]="hideShow.dutyStatus"
                               name="dutyStatus" (change)="hideShowColumn()"> Duty Status </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.location"
+                              <label><input type="checkbox" disabled [(ngModel)]="hideShow.location"
                               name="location" (change)="hideShowColumn()"> Location </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.currCycle"
+                              <label><input type="checkbox" disabled [(ngModel)]="hideShow.currCycle"
                               name="currCycle" (change)="hideShowColumn()"> Current Cycle </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
@@ -86,7 +86,7 @@
                               name="document" (change)="hideShowColumn()"> Document </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
-                              <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                              <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
                               name="status" (change)="hideShowColumn()"> Status </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
@@ -115,11 +115,11 @@
                            </a>
                         </div>
                      </div>
-                     <button type="button" (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
-                     <button type="button" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
+                     <button type="button" disabled (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
+                     <button type="button" disabled (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
 
                      <div class="btn-group btn-group1 flex-wrap mr-2">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                        <button disabled type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                            aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">

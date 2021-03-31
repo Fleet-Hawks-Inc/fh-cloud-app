@@ -37,6 +37,7 @@ export class AddIssueComponent implements OnInit {
   assets = [];
   contacts = [];
   drivers = [];
+  users = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedFiles = [];
@@ -76,6 +77,7 @@ export class AddIssueComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
+    this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
     if (this.issueID) {
       this.title = 'Edit Issue';
@@ -88,7 +90,6 @@ export class AddIssueComponent implements OnInit {
     });
   }
   cancel() {
-    console.log('back', window.history)
     this.location.back(); // <-- go back to previous location on cancel
   }
 
@@ -101,6 +102,11 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
+    fetchUsers(){
+      this.apiService.getData('users').subscribe((result: any) => {
+        this.users = result.Items;
+      });
+    }
     fetchDrivers() {
       this.apiService.getData('drivers').subscribe((result: any) => {
         this.drivers = result.Items;
@@ -111,11 +117,15 @@ export class AddIssueComponent implements OnInit {
     }
     onChangeUnitType(value: any) {
       this.unitType = value;
+      if(this.issueID){
+        this.unitID = '';
+      }
+
     }
   addIssue() {
     this.hideErrors();
     const data = {
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitType: this.unitType,
       unitID: this.unitID,
       currentStatus: this.currentStatus,
@@ -200,12 +210,12 @@ hideErrors() {
     if (obj === 'uploadedDocs') {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i])
+        this.uploadedDocs.push(files[i]);
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-          this.uploadedPhotos.push(files[i])
+          this.uploadedPhotos.push(files[i]);
       }
     }
   }

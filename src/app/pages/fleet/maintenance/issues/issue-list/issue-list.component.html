@@ -1,7 +1,7 @@
 <section class="body">
-    
+
     <div class="inner-wrapper">
-        
+
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header">
                 <div class="row px-4" style="padding-top: 10px">
@@ -9,11 +9,28 @@
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
                                 class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search issues by vehicle/asset" />
+                                placeholder="Search issues by vehicle" />
                         </div>
-                        <div *ngFor="let suggestedUnit of suggestedUnits" class="suggestionClass"
-                            (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)">
-                            {{ suggestedUnit.unitName }}
+                        <div *ngIf="suggestedUnits?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer;"
+                               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName,'vehicle')">
+                               {{ suggestedUnit.unitName }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group-sm mb-3">
+                            <input autocomplete="off" type="text" name="assetUnitName" [(ngModel)]="assetUnitName"
+                                class="form-control" (input)="getAssetsSugg($event.target.value)"
+                                placeholder="Search issues by asset" />
+                        </div>
+                        <div *ngIf="suggestedUnitsAssets?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let suggestedUnit of suggestedUnitsAssets" style="cursor: pointer;"
+                               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName,'asset')">
+                               {{ suggestedUnit.unitName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
@@ -23,7 +40,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-2">
-                        <ng-select placeholder="Search issue by status" name="issueStatus" [(ngModel)]="issueStatus">                                               
+                        <ng-select placeholder="Search issue by status" name="issueStatus" [(ngModel)]="issueStatus">
                             <ng-option value="OPEN">OPEN</ng-option>
                             <ng-option value="RESOLVED">RESOLVED</ng-option>
                             <ng-option value="CLOSED">CLOSED</ng-option>
@@ -34,8 +51,8 @@
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                  
-                    <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
+
+                    <div class="col-md-2 col-lg-2 text-right pr-2 page-buttons">
                         <div class="btn-group flex-wrap">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
@@ -65,8 +82,8 @@
                                 <table class="row-border hover table table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Unit Type</th>
-                                            <th>Vehicle/Assets</th>
+                                            <th>Unit Name</th>
+                                            <th>Vehicle/Asset</th>
                                             <th>Issue</th>
                                             <th>Reported On</th>
                                             <th>Reported By</th>
@@ -77,7 +94,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngIf="issues.length == 0" class="text-center">
-											<td colspan="8">No records found</td>
+											<td colspan="8">{{dataMessage}}</td>
 										</tr>
                                         <tr *ngFor="let issue of issues" style="cursor: pointer;">
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
@@ -95,10 +112,10 @@
                                                 {{issue.reportedDate}}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{driverList[issue.reportedBy]}}
+                                                {{ usersList[issue.reportedBy] }}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{ issue.assignedTo }}
+                                                {{ usersList[issue.assignedTo] }}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 <span class="badge badge-dark p-1">

@@ -3,6 +3,8 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import {environment} from '../../../../../environments/environment';
+import { rest } from "lodash";
 
 @Component({
   selector: "app-vehicle-detail",
@@ -13,7 +15,7 @@ export class VehicleDetailComponent implements OnInit {
   slides = [];
   docs = [];
   Asseturl = this.apiService.AssetUrl;
-
+  public environment = environment;
   /**
    * Vehicle Prop
    */
@@ -35,7 +37,7 @@ export class VehicleDetailComponent implements OnInit {
   stateID = "";
   driverID = "";
   teamDriverID = "";
-  serviceProgramID = "";
+  serviceProgramID = [];
   primaryMeter = "";
   repeatByTime = "";
   repeatByTimeUnit = "";
@@ -102,6 +104,11 @@ export class VehicleDetailComponent implements OnInit {
     fuelQuality: "",
     fuelTankTwoCapacity: 0,
     oilCapacity: 0,
+    fuelTankOneType: '',
+    fuelTankTwoType: '',
+    oilCapacityType: '',
+    defType: '',
+    def: ''
   };
   wheelsAndTyres = {
     numberOfTyres: 0,
@@ -153,11 +160,14 @@ export class VehicleDetailComponent implements OnInit {
   loan = {
     loanVendorID: "",
     amountOfLoan: "",
+    amountOfLoanCurrency: "",
     aspiration: "",
     annualPercentageRate: "",
     downPayment: "",
+    downPaymentCurrency: "",
     dateOfLoan: "",
     monthlyPayment: "",
+    monthlyPaymentCurrency: "",
     firstPaymentDate: "",
     numberOfPayments: "",
     loadEndDate: "",
@@ -182,6 +192,7 @@ export class VehicleDetailComponent implements OnInit {
   servicePrograms = [];
   serviceHistory = [];
   devices = [];
+  fuelTypes = {};
 
   slideConfig = {
     slidesToShow: 1,
@@ -189,7 +200,7 @@ export class VehicleDetailComponent implements OnInit {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 1500,
+    autoplaySpeed: 5000,
   };
 
   constructor(
@@ -205,10 +216,11 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    this.fetchInspectionForms();
-    this.fetchFuel();
-    this.fetchServiceProgams();
-    this.fetchServiceHistory();
+    // this.fetchInspectionForms();
+    // this.fetchFuel();
+    // this.fetchServiceProgams();
+    // this.fetchServiceHistory();
+    this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
     this.fetchVehicleModelList();
@@ -305,7 +317,14 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.issues = result.Items;
+        console.log('this.issues', this.issues);
       });
+  }
+
+  fetchFuelTypes(){
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypes = result;
+    });
   }
 
   getVehicle() {
@@ -323,7 +342,7 @@ export class VehicleDetailComponent implements OnInit {
         this.stateID = result.stateID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
-        this.serviceProgramID = result.serviceProgramID;
+        this.serviceProgramID = result.servicePrograms;
         this.primaryMeter = result.primaryMeter;
         this.repeatByTime = result.repeatByTime;
         this.repeatByTimeUnit = result.repeatByTimeUnit;
@@ -347,7 +366,7 @@ export class VehicleDetailComponent implements OnInit {
           outOfServiceDate: result.lifeCycle.outOfServiceDate,
           outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
           startDate: result.lifeCycle.startDate,
-          estimatedServiceYear: result.lifeCycle.estimatedServiceYear,
+          estimatedServiceYear: result.lifeCycle.estimatedServiceYears,
         };
         this.specifications = {
           height: result.specifications.height,
@@ -388,9 +407,14 @@ export class VehicleDetailComponent implements OnInit {
         this.fluid = {
           fuelType: result.fluid.fuelType,
           fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
+          fuelTankOneType: result.fluid.fuelTankOneType,
           fuelQuality: result.fluid.fuelQuality,
+          fuelTankTwoType: result.fluid.fuelTankTwoType,
           fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
           oilCapacity: result.fluid.oilCapacity,
+          oilCapacityType: result.fluid.oilCapacityType,
+          defType: result.fluid.defType,
+          def: result.fluid.def
         };
         this.wheelsAndTyres = {
           numberOfTyres: result.wheelsAndTyres.numberOfTyres,
@@ -442,9 +466,12 @@ export class VehicleDetailComponent implements OnInit {
         this.loan = {
           loanVendorID: result.loan.loanVendorID,
           amountOfLoan: result.loan.amountOfLoan,
+          amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
           aspiration: result.loan.aspiration,
           annualPercentageRate: result.loan.annualPercentageRate,
           downPayment: result.loan.downPayment,
+          downPaymentCurrency: result.loan.downPaymentCurrency,
+          monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
           dateOfLoan: result.loan.dateOfLoan,
           monthlyPayment: result.loan.monthlyPayment,
           firstPaymentDate: result.loan.firstPaymentDate,

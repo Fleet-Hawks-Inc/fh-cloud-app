@@ -53,12 +53,10 @@
                         </li>
                      </ul>
                   </div>
-
                   <div class="card-body pt-0">
                         <div class="tab-content pt-2" id="myTabContent" style="box-shadow:none;border:none;">
                            <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic"
                            role="tabpanel" aria-labelledby="addDriverBasic-tab">
-
                            <div>
                               <div class="form-group row">
                                  <div class="col-lg-10">
@@ -91,7 +89,6 @@
                                              </div>
                                           </div>
                                        </div>
-
                                        <div class="col-lg-10" id="employeeIDDiv"
                                           *ngIf="driverData.driverType == 'employee'">
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Employee
@@ -101,7 +98,7 @@
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
                                              </div> -->
-                                             <input id="txtEmpId" [(ngModel)]="driverData.employeeId" name="employeeId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter employee ID of driver">
                                           </div>
                                        </div>
@@ -110,7 +107,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-3">Contractor
                                              ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="input-group">
-                                             <input [(ngModel)]="driverData.contractorId" name="contractorId" type="text"
+                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter contractor ID of driver">
                                           </div>
                                        </div>
@@ -169,7 +166,6 @@
                                                    class="form-control" placeholder="Enter last name">
                                              </div>
                                           </div>
-
                                        </div>
                                        <div class="col-lg-10" *ngIf="driverData.driverType != 'contractor'">
                                           <div class="row">
@@ -179,7 +175,7 @@
                                                 <input id="sltDate" (click)="onChangeHideErrors('startDate');d11.toggle()"
                                                    ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="driverData.startDate"
                                                    name="startDate" type="text" class="form-control"
-                                                   placeholder="Select start sate">
+                                                   placeholder="Select start date">
                                              </div>
 
                                              
@@ -237,9 +233,7 @@
                                                    placeholder="Enter confirm password">
                                              </div>
                                           </div>
-
                                        </div>
-
                                        <div class="col-lg-10">
                                           <label
                                              class="control-label font-weight-bold text-lg-right pt-2">Citizenship<span
@@ -270,19 +264,12 @@
                                           <label
                                              class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group&nbsp;
                                              <span class="text-1 optional-label-color">(optional)</span></label>
-
-
                                           <ng-select class="form-control form-control-sm"
                                              [(ngModel)]="driverData.groupID" name="groupID"
                                              placeholder="Select group of which driver will be part of">
-
                                              <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                                                 {{group.groupName}}</ng-option>
-
                                           </ng-select>
-
-
-
                                        </div>
                                        <div class="col-lg-1 mar-top-37  pl-0">
                                           <a data-toggle="modal" data-target="#addDriverGroupModal" href="javascript:;"
@@ -335,8 +322,8 @@
                                        <div class="col-lg-10  text-center">
                                           <div id="male_photo" class="business_image_style position-relative mx-auto"
                                              style="display: block;">
-                                             <img [src]="driverProfileSrc" id="male_photo" 
-                                                  alt="driver image" 
+                                             <img [src]="driverProfileSrc" id="male_photo"
+                                                  alt="driver image"
                                                   class="w-100 h-100"
                                                   style="object-fit: cover;">
                                              <span class="text-danger profile-cross" (click)="removeProfile()"
@@ -400,14 +387,14 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input id="txtWorkMail" [(ngModel)]="driverData.workEmail" name="workEmail" type="text"
+                                          <input [(ngModel)]="driverData.email" name="email" type="text"
                                              class="form-control"
                                              placeholder="Enter the official email address of the driver">
                                        </div>
-                                         
+
                                       </div>
 
-                                       
+
                                     </div>
                                  </div>
                               </div>
@@ -462,9 +449,9 @@
                                     <div class="col-lg-3 mar-top-37">
                                        <a class="btn btn-dark mr-2" href="javascript:;"
                                           (click)="clearUserLocation(i);">Clear</a>
-                                       <a *ngIf="driverData.address.length == 1" (click)="addAddress();"
-                                          class="btn btn-success" href="javascript:;"><i class="fa fa-plus"></i> Add
-                                          Another Address</a>
+                                       <button type="button" [disabled]="driverData.address.length == 2" *ngIf="i === 0;" (click)="addAddress();"
+                                          class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                          Another Address</button>
                                        <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
                                           class="btn btn-success" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
@@ -700,9 +687,9 @@
                                        <div class="row">
                                           <div class="col-5"></div>
                                           <div class="col-5 text-right">
-                                             <a href="javascript:;" *ngIf="i === 0;" (click)="addDocument()"
+                                             <button type="button" [disabled]="driverData.documentDetails.length == 3" *ngIf="i === 0;" (click)="addDocument()"
                                                 id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add
-                                                Another Document</a>
+                                                Another Document</button>
                                           </div>
                                        </div>
 
@@ -1179,7 +1166,7 @@
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Type<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                             <ng-select 
+                                             <ng-select
                                                 [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                                                 (change)="onChangeHideErrors('hosDetails.type')"
                                                 placeholder="Select the record keeping type">
@@ -1195,7 +1182,7 @@
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Cycle<span
                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <ng-select [(ngModel)]="driverData.hosDetails.hosCycle"
-                                                name="hosDetails.hosCycle" 
+                                                name="hosDetails.hosCycle"
                                                 (change)="onChangeHideErrors('hosDetails.hosCycle')"
                                                 class="form-control populate"
                                                 placeholder="Select the cycle for the driver">
@@ -1287,7 +1274,7 @@
                            </div>
                         </div>
                      </div>
-                  
+
 
                      <div class="form-group row mt-3">
                         <div class="col-lg-12 text-right pb-4 pr-5">
@@ -1308,12 +1295,12 @@
       </section>
 
       <div class="modal fade" id="addDriverGroupModal" tabindex="-1" role="dialog" aria-labelledby="addDriverGroupModal"
-         aria-hidden="true">
+         aria-hidden="true" data-keyboard="false" data-backdrop="static">
          <div class="modal-dialog" style="max-width: 600px;" role="document">
             <div class="modal-content">
                <div class="modal-header">
                   <h5 class="modal-title">Add Group</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
                      <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                   </button>
                </div>
@@ -1353,7 +1340,7 @@
                   </div>
                </div>
                <div class="modal-footer text-right">
-                  <a class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</a>
+                  <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
                   <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
                </div>
             </div>

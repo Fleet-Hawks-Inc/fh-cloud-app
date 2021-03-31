@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer} from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-
+import {environment} from '../../../../../environments/environment';
 @Component({
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
@@ -13,12 +13,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DriverDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
+  environment = environment.isFeatureEnabled;
   platform: any;
   profile: string;
   driverName: string;
   CDL: string;
   workPhone: string;
-  workEmail: string;
+  email: string;
   homeTerminal: string;
   cycle: string;
   private driverID: string;
@@ -151,7 +152,7 @@ export class DriverDetailComponent implements OnInit {
           this.driverData = await result['Items'][0];
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
-          this.workEmail = this.driverData.workEmail;
+          this.email = this.driverData.email;
           this.workPhone = this.driverData.workPhone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
@@ -177,8 +178,7 @@ export class DriverDetailComponent implements OnInit {
           }
           
           this.driverType = this.driverData.driverType;
-          this.employeeId = this.driverData.employeeId;
-          this.contractorId = this.driverData.contractorId;
+          this.employeeId = this.driverData.employeeContractorId;
           this.ownerOperator = this.driverData.ownerOperator;
           
           this.companyId = this.driverData.companyId;

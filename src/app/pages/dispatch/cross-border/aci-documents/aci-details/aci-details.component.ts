@@ -20,6 +20,9 @@ export class AciDetailsComponent implements OnInit {
   subLocation: string;
   estimatedArrivalDateTime: string;
   estimatedArrivalTimeZone: string;
+  countryCodeName: any = {};
+  assetTypeCode: any = {};
+  stateCodeToName: any = {};
   truck: any = {
     number: '',
     type: '',
@@ -116,8 +119,26 @@ export class AciDetailsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params['entryID'];
+    this.entryID = this.route.snapshot.params[`entryID`];
     this.fetchACIEntry();
+    this.fetchCountriesCodeName();
+    this.fetchAssetsCodeName();
+    this.fetchStatesCodeName();
+  }
+  fetchCountriesCodeName() {
+    this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
+    this.countryCodeName = result;
+    });
+  }
+  fetchAssetsCodeName() {
+    this.apiService.getData('borderAssetTypes/get/list').subscribe((result: any) => {
+    this.assetTypeCode = result;
+    });
+  }
+  fetchStatesCodeName() {
+    this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
+    this.stateCodeToName = result;
+    });
   }
   fetchACIEntry() {
     this.apiService

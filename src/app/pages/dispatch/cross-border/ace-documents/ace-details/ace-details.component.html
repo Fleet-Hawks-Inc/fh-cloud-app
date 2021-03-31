@@ -137,7 +137,7 @@
 
                 </div>
                 <!-- SHIPMENT DIV -->
-                <div class="row mt-3">
+                <div class="row mt-3" *ngIf="shipments?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -180,7 +180,7 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>{{shipment.shipper.address.addressLine}}
                                                 {{shipment.shipper.address.city}}
-                                                {{shipment.shipper.address.stateProvince}}
+                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}}
                                                 {{shipment.shipper.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
@@ -188,7 +188,7 @@
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>{{shipment.consignee.address.addressLine}}
                                                 {{shipment.consignee.address.city}}
-                                                {{shipment.consignee.address.stateProvince}}
+                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}}
                                                 {{shipment.consignee.address.postalCode}}
 
                                             </td>
@@ -379,10 +379,11 @@
                                     <tbody>
                                         <tr *ngFor="let trailer of trailers">
                                             <td>{{trailer.number}}</td>
-                                            <td>{{trailer.type}}</td>
+                                            <td><span *ngIf="trailer.type === 'OE'">Others</span>
+                                              <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.aceId}}</td>
                                             <td><span
-                                                    *ngFor="let license of trailer.licensePlates;">{{license.stateProvince}}</span>
+                                                    *ngFor="let license of trailer.licensePlates;">{{stateCodeToName[license.stateProvince]}}</span>
                                             </td>
                                             <td><span
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
@@ -518,7 +519,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Province of Loading:</th>
-                                        <td>{{shipmentData.provinceOfLoading}}</td>
+                                        <td>{{stateCodeToName[shipmentData.provinceOfLoading]}}</td>
                                     </tr>
 
 
@@ -607,7 +608,7 @@
                                         <td>{{thirdParty.name}}</td>
                                         <td>{{thirdParty.type}}</td>
                                         <td>{{thirdParty.address.addressLine}},
-                                            {{thirdParty.address.city}},{{thirdParty.address.stateProvince}},{{thirdParty.address.postalCode}}
+                                            {{thirdParty.address.city}},{{stateCodeToName[thirdParty.address.stateProvince]}},{{thirdParty.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -648,13 +649,13 @@
                                                 class="font-weight-semibold">Number</span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span><span> {{commodity.hazmatDetails.unCode}}<br></span>
+                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span>{{commodity.hazmatDetails.emergencyContactName}}
+                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span>{{commodity.hazmatDetails.contactPhone}}<br>
+                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Contact
-                                                Email:</span>{{commodity.hazmatDetails.contactEmail}}
+                                                Email:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
                                         </td>
                                         <td><span
                                                 class="font-weight-semibold">C4LineReleaseNumber:</span>{{commodity.c4LineReleaseNumber}}<br>
@@ -721,7 +722,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
-                                        <td>{{driverData.citizenshipCountry}}</td>
+                                        <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date Of Birth:</th>
@@ -731,9 +732,43 @@
                             </table>
                         </div>
                     </div>
+                    <!-- US Address -->
+                    <div class="row">
+                      <div class="col-lg-12"><h4>US Address Details</h4></div>
+                      <div class="col-lg-6">
+                          <table class="table table-bordered m-0">
+                              <tbody>
+                                <tr>
+                                  <th width="40%" class="back-color-gray">Address:</th>
+                                  <td>{{driverData.usAddress.addressLine}}</td>
+                              </tr>
+                                  <tr>
+                                      <th width="40%" class="back-color-gray">
+                                          State:</th>
+                                      <td>{{driverData.usAddress.state}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                      <div class="col-lg-6">
+                          <table class="table table-bordered m-0">
+                              <tbody>
+
+                                  <tr>
+                                    <th width="40%" class="back-color-gray">City:</th>
+                                    <td>{{driverData.usAddress.city}}</td>
+                                </tr>
+                                  <tr>
+                                      <th width="40%" class="back-color-gray">ZipCode:</th>
+                                      <td>{{driverData.usAddress.zipCode}}</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
                     <!-- travel documents -->
                     <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Travel Documents Details</h4></div>
+                      <div class="col-lg-12"><h4>Driver Document(s) Details</h4></div>
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
@@ -746,10 +781,9 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
+                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
                                         <td>{{travelDocument.type}}</td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -804,7 +838,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Citizenship Country:</th>
-                                        <td>{{passengerData.citizenshipCountry}}</td>
+                                        <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
                                     </tr>
 
                                 </tbody>
@@ -826,7 +860,7 @@
                                 <tbody>
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
-                                        <td>{{travelDocument.stateProvince}}</td>
+                                        <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
                                         <td>{{travelDocument.type}}</td>
                                     </tr>
 

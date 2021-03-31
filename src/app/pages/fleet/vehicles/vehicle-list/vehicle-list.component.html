@@ -21,7 +21,7 @@
                     <div class="row px-2" style="padding-top: 8px">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
+                                <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle by name"
                                     [(ngModel)]="vehicleIdentification" class="form-control"
                                     (input)="getSuggestions($event.target.value)" />
                             </div>
@@ -203,7 +203,7 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngIf="vehicles.length == 0" class="text-center">
-                                                <td colspan="13">No records found</td>
+                                                <td colspan="13">{{ dataMessage }}</td>
                                             </tr>
                                             <tr *ngFor="let vehicle of vehicles; let i = index">
                                                 <td  *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">

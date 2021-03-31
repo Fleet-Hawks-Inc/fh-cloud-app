@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../../fleet/constants';
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -9,6 +10,8 @@ declare var $: any;
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit {
+
+  dataMessage: string = Constants.FETCHING_DATA;
   orders = [];
   confirmOrders = [];
   dispatchOrders = [];
@@ -107,9 +110,21 @@ export class OrdersListComponent implements OnInit {
     this.initDataTableConfirmed();
     this.initDataTableDispatched();
     this.initDataTableDelivered();
+    this.initDataTableCancelled();
+    this.initDataTableInvoiced();
+    this.initDataTablePartlyPaid();
   }
 
   fetchOrders = () => {
+    this.allordersCount = 0;
+    this.confirmedOrdersCount = 0;
+    this.dispatchedOrdersCount = 0;
+    this.deliveredOrdersCount = 0;
+    this.cancelledOrdersCount = 0;
+    this.quotedOrdersCount = 0;
+    this.invoicedOrdersCount = 0;
+    this.partiallyPaidOrdersCount = 0;
+    
     this.apiService.getData('orders').subscribe({
       complete: () => {},
       error: () => {},
@@ -154,9 +169,13 @@ export class OrdersListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.orders = [];
-    this.apiService.getData('orders/fetch/records/all?filter=true&searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
+    // this.orders = [];
+    this.apiService.getData('orders/fetch/records/all?searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('all');
         this.orders = result['Items'];
         if (this.orderFiltr.searchValue !== '' || this.orderFiltr.start !== '' ) {
           this.ordersStartPoint = 1;
@@ -190,9 +209,14 @@ export class OrdersListComponent implements OnInit {
 
   initDataTableConfirmed() {
     this.spinner.show();
-    this.confirmOrders = [];
-    this.apiService.getData('orders/fetch/records/confirmed?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.confirmLastEvaluatedKey)
+    // this.confirmOrders = [];
+    this.apiService.getData('orders/fetch/records/confirmed?searchValue=&startDate=&endDate=&category=&lastKey=' + this.confirmLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('confirmed');
+        console.log('confirmed result',result);
         this.confirmOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -222,10 +246,16 @@ export class OrdersListComponent implements OnInit {
 
   initDataTableDispatched() {
     this.spinner.show();
-    this.dispatchOrders = [];
-    this.apiService.getData('orders/fetch/records/dispatched?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.dispatchLastEvaluatedKey)
+    // this.dispatchOrders = [];
+    this.apiService.getData('orders/fetch/records/dispatched?searchValue=&startDate=&endDate=&category=&lastKey=' + this.dispatchLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('dispatched');
         this.dispatchOrders = result['Items'];
+
+        console.log('this.dispatchOrders', result)
        
         if (result['LastEvaluatedKey'] !== undefined) {
           this.dispatchOrdersNext = false;
@@ -254,9 +284,13 @@ export class OrdersListComponent implements OnInit {
 
   initDataTableDelivered() {
     this.spinner.show();
-    this.deliveredOrders = [];
-    this.apiService.getData('orders/fetch/records/delivered?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.deliverLastEvaluatedKey)
+    // this.deliveredOrders = [];
+    this.apiService.getData('orders/fetch/records/delivered?searchValue=&startDate=&endDate=&category=&lastKey=' + this.deliverLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('delivered');
         this.deliveredOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -286,9 +320,13 @@ export class OrdersListComponent implements OnInit {
 
   initDataTableCancelled() {
     this.spinner.show();
-    this.cancelledOrders = [];
-    this.apiService.getData('orders/fetch/records/cancelled?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.cancelLastEvaluatedKey)
+    // this.cancelledOrders = [];
+    this.apiService.getData('orders/fetch/records/cancelled?searchValue=&startDate=&endDate=&category=&lastKey=' + this.cancelLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('cancelled');
         this.cancelledOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -318,9 +356,13 @@ export class OrdersListComponent implements OnInit {
 
   initDataTableInvoiced() {
     this.spinner.show();
-    this.invoicedOrders = [];
-    this.apiService.getData('orders/fetch/records/invoiced?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.invoiceLastEvaluatedKey)
+    // this.invoicedOrders = [];
+    this.apiService.getData('orders/fetch/records/invoiced?searchValue=&startDate=&endDate=&category=&lastKey=' + this.invoiceLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('invoiced');
         this.invoicedOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -350,9 +392,13 @@ export class OrdersListComponent implements OnInit {
 
   initDataTablePartlyPaid() {
     this.spinner.show();
-    this.partiallyOrders = [];
-    this.apiService.getData('orders/fetch/records/partiallyPaid?filter=true&searchValue=&startDate=&endDate=&category=&lastKey=' + this.partialPaidLastEvaluatedKey)
+    // this.partiallyOrders = [];
+    this.apiService.getData('orders/fetch/records/partiallyPaid?searchValue=&startDate=&endDate=&category=&lastKey=' + this.partialPaidLastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal('partiallyPaid');
         this.partiallyOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -438,9 +484,44 @@ export class OrdersListComponent implements OnInit {
       this.apiService
         .getData(`orders/isDeleted/${orderID}/${status}`)
         .subscribe((result: any) => {
+          this.ordersDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.fetchOrders();
           this.initDataTable();
+
+          if(this.activeTab == 'confirmed') {
+            this.confirmOrdersDraw = 0;
+            this.confirmLastEvaluatedKey = '';
+            this.initDataTableConfirmed();
+
+          } else if(this.activeTab == 'dispatched') {
+            this.dispatchOrdersDraw = 0;
+            this.dispatchLastEvaluatedKey = '';
+            this.initDataTableDispatched();
+
+          } else if(this.activeTab == 'delivered') {
+            this.deliverOrdersDraw = 0;
+            this.deliverLastEvaluatedKey = '';
+            this.initDataTableDelivered();
+
+          } else if(this.activeTab == 'cancelled') {
+            this.cancelOrdersDraw = 0;
+            this.cancelLastEvaluatedKey = '';
+            this.initDataTableCancelled();
+
+          } else if(this.activeTab == 'invoiced') {
+            this.invoiceOrdersDraw = 0;
+            this.invoiceLastEvaluatedKey = '';
+            this.initDataTableInvoiced();
+            
+          } else if(this.activeTab == 'partiallyPaid') {
+            this.partialPaidOrdersDraw = 0;
+            this.partialPaidLastEvaluatedKey = '';
+            this.initDataTablePartlyPaid();
+            
+          }
+
           this.toastr.success('Order deleted successfully!');
-          
         });
     }
   }
@@ -480,39 +561,53 @@ export class OrdersListComponent implements OnInit {
   // next button func
   nextResults(type) {
     if(type == 'all') {
+      this.ordersNext = true;
+      this.ordersPrev = true;
       this.ordersDraw += 1;
       this.initDataTable();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'confirmed') {
+      this.confirmOrdersNext = true;
+      this.confirmOrdersPrev = true;
       this.confirmOrdersDraw += 1;
       this.initDataTableConfirmed();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'dispatched') {
+      this.dispatchOrdersNext = true;
+      this.dispatchOrdersPrev = true;
       this.dispatchOrdersDraw += 1;
       this.initDataTableDispatched();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'delivered') {
+      this.deliverOrdersNext = true;
+      this.deliverOrdersPrev = true;
       this.deliverOrdersDraw += 1;
       this.initDataTableDelivered();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'cancelled') {
+      this.cancelOrdersNext = true;
+      this.cancelOrdersPrev = true;
       this.cancelOrdersDraw += 1;
       this.initDataTableCancelled();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'invoiced') {
+      this.invoiceOrdersNext = true;
+      this.invoiceOrdersPrev = true;
       this.invoiceOrdersDraw += 1;
       this.initDataTableInvoiced();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'partiallyPaid') {
+      this.partialPaidOrdersNext = true;
+      this.partialPaidOrdersPrev = true;
       this.partialPaidOrdersDraw += 1;
       this.initDataTablePartlyPaid();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     }
   }
@@ -520,46 +615,60 @@ export class OrdersListComponent implements OnInit {
   // prev button func
   prevResults(type) {
     if(type == 'all') {
+      this.ordersNext = true;
+      this.ordersPrev = true;
       this.ordersDraw -= 1;
       this.lastEvaluatedKey = this.ordersPrevEvauatedKeys[this.ordersDraw];
       this.initDataTable();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'confirmed') {
+      this.confirmOrdersNext = true;
+      this.confirmOrdersPrev = true;
       this.confirmOrdersDraw -= 1;
       this.confirmLastEvaluatedKey = this.confirmOrdersPrevEvauatedKeys[this.confirmOrdersDraw];
       this.initDataTableConfirmed();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'dispatched') {
+      this.dispatchOrdersNext = true;
+      this.dispatchOrdersPrev = true;
       this.dispatchOrdersDraw -= 1;
       this.dispatchLastEvaluatedKey = this.dispatchOrdersPrevEvauatedKeys[this.dispatchOrdersDraw];
       this.initDataTableDispatched();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'delivered') {
+      this.deliverOrdersNext = true;
+      this.deliverOrdersPrev = true;
       this.deliverOrdersDraw -= 1;
       this.deliverLastEvaluatedKey = this.deliverOrdersPrevEvauatedKeys[this.deliverOrdersDraw];
       this.initDataTableDispatched();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'cancelled') {
+      this.cancelOrdersNext = true;
+      this.cancelOrdersPrev = true;
       this.cancelOrdersDraw -= 1;
       this.cancelLastEvaluatedKey = this.cancelOrdersPrevEvauatedKeys[this.cancelOrdersDraw];
       this.initDataTableCancelled();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'invoiced') {
+      this.invoiceOrdersNext = true;
+      this.invoiceOrdersPrev = true;
       this.invoiceOrdersDraw -= 1;
       this.invoiceLastEvaluatedKey = this.invoiceOrdersPrevEvauatedKeys[this.invoiceOrdersDraw];
       this.initDataTableInvoiced();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     } else if(type == 'partiallyPaid') {
+      this.partialPaidOrdersNext = true;
+      this.partialPaidOrdersPrev = true;
       this.partialPaidOrdersDraw -= 1;
       this.partialPaidLastEvaluatedKey = this.partialPaidOrdersPrevEvauatedKeys[this.partialPaidOrdersDraw];
       this.initDataTablePartlyPaid();
-      this.getStartandEndVal(type);
+      // this.getStartandEndVal(type);
 
     }
   }

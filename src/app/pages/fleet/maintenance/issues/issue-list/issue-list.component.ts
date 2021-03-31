@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Constants from '../../../constants';
 declare var $: any;
 
 @Component({
@@ -12,6 +13,7 @@ declare var $: any;
 })
 export class IssueListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Issues List';
   issues = [];
   driverList: any = {};
@@ -25,6 +27,10 @@ export class IssueListComponent implements OnInit {
   issueName = '';
   issueStatus = '';
   suggestedUnits = [];
+  usersList:any = {};
+  assetUnitName = '';
+  assetUnitID = '';
+  suggestedUnitsAssets = [];
 
   totalRecords = 20;
   pageLength = 10;
@@ -44,6 +50,7 @@ export class IssueListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchDriverList();
     this.fetchAssetList();
+    this.fetchUsersList();
     this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
@@ -52,18 +59,26 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  setUnit(unitID, unitName) {
-    this.unitName = unitName;
-    this.unitID = unitID;
-    this.suggestedUnits = [];
+  setUnit(unitID, unitName, type) {
+    if(type == 'vehicle') {
+      this.unitName = unitName;
+      this.unitID = unitID;
+      this.suggestedUnits = [];
+    } else {
+      this.assetUnitName = unitName;
+      this.assetUnitID = unitID;
+      this.suggestedUnitsAssets = [];
+    }
   }
 
   getSuggestions(value) {
-    this.apiService
+    value = value.toLowerCase();
+
+    if(value != '') {
+      this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
-
         this.suggestedUnits = [];
         for (let i = 0; i < result.length; i++) {
           this.suggestedUnits.push({
@@ -71,24 +86,31 @@ export class IssueListComponent implements OnInit {
             unitName: result[i].vehicleIdentification
           });
         }
-        this.getAssetsSugg(value);
       });
+    } else {
+      this.unitID = '';
+      this.suggestedUnits = [];
+    }
   }
 
   getAssetsSugg(value) {
-    this.apiService
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
         result = result.Items;
+        this.suggestedUnitsAssets = [];
         for (let i = 0; i < result.length; i++) {
-          this.suggestedUnits.push({
+          this.suggestedUnitsAssets.push({
             unitID: result[i].assetID,
             unitName: result[i].assetIdentification
           });
         }
       });
-    if (this.suggestedUnits.length === 0) {
-      this.unitID = '';
+    } else {
+      this.assetUnitID = '';
+      this.suggestedUnitsAssets = [];
     }
   }
   fetchVehicleList() {
@@ -106,12 +128,21 @@ export class IssueListComponent implements OnInit {
       this.assetList = result;
     });
   }
+  fetchUsersList() {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.usersList = result;
+    });
+  }
   fetchIssuesCount() {
-    this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus).subscribe({
+    this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&asset=' + this.assetUnitID + '&currentStatus=' + this.issueStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.unitID != '' || this.issueName != '' || this.issueStatus != '') {
+          this.issuesEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -131,8 +162,15 @@ export class IssueListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedUnits = [];
+        this.suggestedUnitsAssets = [];
+        this.getStartandEndVal();
+
         this.issues = result['Items'];
         if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
           this.issuesStartPoint = 1;
@@ -146,7 +184,7 @@ export class IssueListComponent implements OnInit {
             this.issuesPrevEvauatedKeys.push(result['LastEvaluatedKey'].issueID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].issueID;
-          
+
         } else {
           this.issuesNext = true;
           this.lastEvaluatedKey = '';
@@ -166,23 +204,30 @@ export class IssueListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
+    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '' || this.assetUnitID !== '') {
       this.fetchIssuesCount();
+      this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
       this.initDataTable();
+      this.suggestedUnits = [];
+      this.suggestedUnitsAssets = []
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '') {
+    if (this.unitID !== '' || this.issueName !== '' || this.issueStatus !== '' || this.assetUnitID !== '') {
       this.unitID = '';
       this.unitName = '';
       this.issueName = '';
       this.issueStatus = '';
-
+      this.assetUnitID = '';
+      this.assetUnitName = '';
+      this.suggestedUnitsAssets = []
+      this.suggestedUnits = [];
       this.fetchIssuesCount();
+      this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
       this.initDataTable();
       this.resetCountResult();
@@ -198,17 +243,19 @@ export class IssueListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.issuesNext = true;
+    this.issuesPrev = true;
     this.issuesDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.issuesNext = true;
+    this.issuesPrev = true;
     this.issuesDraw -= 1;
     this.lastEvaluatedKey = this.issuesPrevEvauatedKeys[this.issuesDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

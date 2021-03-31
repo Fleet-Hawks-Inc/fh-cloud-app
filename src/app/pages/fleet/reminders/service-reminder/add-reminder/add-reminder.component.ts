@@ -21,9 +21,11 @@ export class AddReminderComponent implements OnInit {
     reminderType: constants.REMINDER_SERVICE,
     reminderTasks: {
       task: '',
-      remindByDays: 0,
+      remindByDays: 1,
       odometer: 0,
     },
+    lastCompletionDate: [],
+    lastCompletedOdometer: [],
     subscribers: [],
     sendEmail: false
   };
@@ -40,7 +42,7 @@ export class AddReminderComponent implements OnInit {
   groups = [];
   groupData = {
     groupName: '',
-    groupType : constants.GROUP_USERS,
+    groupType: constants.GROUP_USERS,
     description: '',
     groupMembers: []
   };
@@ -116,7 +118,9 @@ export class AddReminderComponent implements OnInit {
         this.reminderData.reminderIdentification = result.reminderIdentification;
         this.reminderData.reminderTasks.task = result.reminderTasks.task;
         this.reminderData.reminderTasks.odometer = result.reminderTasks.odometer;
-        this.time = result.reminderTasks.remindByDays;
+        this.reminderData.reminderTasks.remindByDays = result.reminderTasks.remindByDays;
+        this.reminderData.lastCompletedOdometer = result.lastCompletedOdometer;
+        this.reminderData.lastCompletionDate = result.lastCompletionDate;
         this.timeType = 'Day(s)';
         this.reminderData.sendEmail = result.sendEmail;
         this.reminderData.subscribers = this.test;
@@ -148,71 +152,70 @@ export class AddReminderComponent implements OnInit {
   }
   addReminder() {
     this.hideErrors();
-    if (this.time > 0) {
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
-        case 'Year(s)': {
-          this.numberOfDays = this.time * 365;
-          break;
-        }
-        default:
-          {
-            this.numberOfDays = this.time * 0;
-            break;
-          }
+    switch (this.timeType) {
+      case 'Day(s)': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
-
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      this.apiService.postData('reminders', this.reminderData).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Reminder added successfully');
-          this.cancel();
-          this.reminderData = {
-            reminderIdentification: '',
-            reminderType: constants.REMINDER_SERVICE,
-            reminderTasks: {
-              task: '',
-              remindByDays: 0,
-              odometer: 0,
-            },
-            subscribers: [],
-            sendEmail: false
-          };
-        },
-      });
-    } else {
-      this.toastr.warning('Time Must Be Positive Value');
+      case 'Month(s)': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'Week(s)': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+      case 'Year(s)': {
+        this.numberOfDays = this.time * 365;
+        break;
+      }
+      default:
+        {
+          this.numberOfDays = this.time * 0;
+          break;
+        }
     }
+
+    // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.apiService.postData('reminders', this.reminderData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Service Reminder Added Successfully!');
+        this.cancel();
+        this.reminderData = {
+          reminderIdentification: '',
+          reminderType: constants.REMINDER_SERVICE,
+          reminderTasks: {
+            task: '',
+            remindByDays: 0,
+            odometer: 0,
+          },
+          lastCompletionDate: [],
+          lastCompletedOdometer: [],
+          subscribers: [],
+          sendEmail: false
+        };
+      },
+    });
+
   }
 
   throwErrors() {
@@ -264,7 +267,7 @@ export class AddReminderComponent implements OnInit {
           }
       }
 
-      this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+      // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
       this.apiService.putData('reminders', this.reminderData).subscribe({
         complete: () => { },
@@ -286,7 +289,7 @@ export class AddReminderComponent implements OnInit {
         },
         next: (res) => {
           this.response = res;
-          this.toastr.success('Reminder Updated Successfully');
+          this.toastr.success('Service Reminder Updated Successfully!');
           this.Success = '';
           this.cancel();
           this.reminderData = {
@@ -297,6 +300,8 @@ export class AddReminderComponent implements OnInit {
               remindByDays: 0,
               odometer: 0,
             },
+            lastCompletionDate: [],
+            lastCompletedOdometer: [],
             subscribers: [],
             sendEmail: false
           };
@@ -309,7 +314,7 @@ export class AddReminderComponent implements OnInit {
 
 
   // SERVICE TASK
-  addServiceTask(){
+  addServiceTask() {
     this.apiService.postData('tasks', this.serviceTask).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -364,6 +369,12 @@ export class AddReminderComponent implements OnInit {
         this.toastr.success('Group added successfully');
         $('#addGroupModal').modal('hide');
         this.fetchGroups();
+        this.groupData = {
+          groupName: '',
+          groupType: constants.GROUP_USERS,
+          description: '',
+          groupMembers: []
+        };
       },
     });
   }

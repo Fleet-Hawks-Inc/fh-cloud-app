@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
+import Constants from '../../../constants';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -11,12 +12,14 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ServiceListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Logs';
   // dtOptions: any = {};
   logs = [];
 
   suggestedVehicles = [];
   vehicleID = '';
+  taskID = '';
   currentStatus = '';
   vehicleIdentification = '';
   vehiclesObject: any = {};
@@ -35,7 +38,8 @@ export class ServiceListComponent implements OnInit {
   serviceLogPrevEvauatedKeys = [''];
   serviceLogStartPoint = 1;
   serviceLogEndPoint = this.pageLength;
-  
+
+  vendorAddress: any;
   vendorsData: any;
 
   constructor(
@@ -114,6 +118,10 @@ export class ServiceListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.vehicleID != '') {
+          this.serviceLogEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -124,16 +132,24 @@ export class ServiceListComponent implements OnInit {
   }
 
   openComponent(vendorID) {
+    this.vendorsData = [];
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
       this.vendorsData =  res.Items;
+      this.vendorAddress = res.Items[0].address;
     })
   }
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
+
+    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedVehicles = [];
+        this.getStartandEndVal();
+
         this.logs = result['Items'];
         if (this.vehicleID != '') {
           this.serviceLogStartPoint = 1;
@@ -162,12 +178,13 @@ export class ServiceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+        
       });
   }
 
   searchFilter() {
-    if (this.vehicleID !== '') {
+    if (this.vehicleID !== '' || this.taskID !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.fetchLogsCount();
       this.initDataTable();
@@ -177,8 +194,9 @@ export class ServiceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.vehicleID !== '') {
+    if (this.vehicleID !== '' || this.taskID !== '') {
       this.vehicleID = '';
+      this.dataMessage = Constants.FETCHING_DATA;
       this.vehicleIdentification = '';
       this.logs = [];
       this.fetchLogsCount();
@@ -209,17 +227,19 @@ export class ServiceListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.serviceLogNext = true;
+    this.serviceLogPrev = true;
     this.serviceLogDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.serviceLogNext = true;
+    this.serviceLogPrev = true;
     this.serviceLogDraw -= 1;
     this.lastEvaluatedKey = this.serviceLogPrevEvauatedKeys[this.serviceLogDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

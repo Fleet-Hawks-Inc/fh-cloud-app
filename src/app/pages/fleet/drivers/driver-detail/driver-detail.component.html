@@ -52,7 +52,7 @@
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-5 p-2 font-weight-bold text-4 text-left back-color-gray">Email:</div>
-                                <div class="col-lg-7 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
+                                <div class="col-lg-7 p-2 bor_half">{{email ? email : '-'}}</div>
 
                              </div>
                           </div>
@@ -65,13 +65,13 @@
                        <div class="col-lg-9 col-xl-9 pl-0 pr-0">
                           <div class=" ">
                              <ul class="nav nav-tabs top-tabs pl-3" style="background-color:white;">
-                                <li class="nav-item active">
+                                <li class="nav-item active" *ngIf="!environment">
                                    <a class="nav-link active" href="#logsDriverProfile" data-toggle="tab">Logs</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" *ngIf="!environment">
                                    <a class="nav-link" href="#vUtilizationDriverProfile" data-toggle="tab">Vehicle Utilization</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" *ngIf="!environment">
                                    <a class="nav-link" href="#driverScorecardDriverProfile" data-toggle="tab">Scorecard</a>
                                 </li>
                                 <li class="nav-item">
@@ -82,7 +82,7 @@
                                 </li>
                              </ul>
                              <div class="tab-content mt-1" style="box-shadow:none;border:none;">
-                                <div id="logsDriverProfile" class="tab-pane active">
+                                <div id="logsDriverProfile" class="tab-pane">
                                    <div >
                                       <table class="table table-striped table-bordered simple-table">
                                          <thead>
@@ -439,7 +439,7 @@
                                 </div>
                                 <!-- ScoreCard end-->
                                 <!-- DRIVER DOCUMENTS START -->
-                                <div id="driverDocumentsDriverProfile" class="tab-pane">
+                                <div id="driverDocumentsDriverProfile" class="tab-pane active">
                                    <div>
                                       <table class="table table-striped table-bordered simple-table">
                                          <thead>
@@ -680,7 +680,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="col-lg-3 col-xl-3">
+                       <div class="col-lg-3 col-xl-3" *ngIf="!environment">
                           <label class="control-label font-weight-bold text-5">Summary</label>
                           <div class="col-lg-12 summary_box">
                              <label class="control-label font-weight-bold ml-2">Compliance</label>
@@ -707,7 +707,7 @@
                              </div>
                           </div>
                        </div>
-                       <div class="col-lg-9 col-xl-9">
+                       <div class="col-lg-12">
                           <label class="font-weight-bold text-5">Driver Location</label>
                           <div id="map" style="height:400px;"></div>
                        </div>
@@ -762,7 +762,7 @@
                                     </div>
                                     <div class="row m-0" *ngIf="driverType != 'employee'">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contractor ID:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{contractorId}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
                                     </div>
                                     <div class="row m-0" *ngIf="driverType != 'employee'">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
@@ -791,23 +791,23 @@
                                     </div>
                                     <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Birth:</div>
-                                       <div class="col-lg-6 p-2 bor_half">{{DOB | date: 'dd/MM/yyyy'}}</div>
+                                       <div class="col-lg-6 p-2 bor_half">{{DOB}}</div>
                                    </div>
                                    <div class="row  m-0" *ngIf="driverType == 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{startDate | date: 'dd/MM/yyyy'}}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{startDate}}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType == 'employee'">
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{terminationDate ? (terminationDate | date: 'dd/MM/yyyy')  : '-' }}</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{terminationDate ? terminationDate  : '-' }}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType != 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Date:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractStart ? (contractStart | date: 'dd/MM/yyyy') : '-'}}</div>
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{contractStart ? contractStart : '-'}}</div>
                                  </div>
                                  <div class="row  m-0" *ngIf="driverType != 'employee'">
-                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End:</div>
-                                    <div class="col-lg-6 p-2 bor_half">{{contractEnd ? (contractEnd | date: 'dd/MM/yyyy') : '-'}}</div>
+                                    <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
+                                    <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
                                  </div>
                                    <div class="row" *ngIf="absDocs.length > 0">
                                     <div class="col-lg-12 mt-2">
@@ -855,7 +855,7 @@
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Work Email:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{workEmail ? workEmail : '-'}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{email ? email : '-'}}</div>
                                     </div>
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
