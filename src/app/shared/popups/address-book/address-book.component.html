@@ -45,8 +45,8 @@
                             <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false" (click)="setActiveDiv('consignee')">Consignee</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Consignor</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="customer-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="customer" aria-selected="false" (click)="setActiveDiv('customer')">Customer</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('company')">Employee</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('staff')">Factoring Company</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li>
+                            <li class="nav-item"> <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('company')">Factoring Company</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator" role="tab" aria-controls="ownerOperator" aria-selected="false" (click)="setActiveDiv('operator')">Owner Operator</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')">Vendor</a> </li>
                         </ul>
@@ -104,7 +104,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="customers.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageCustomer }}</td>
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, customer)">{{customer.companyName}}</td>
@@ -201,7 +201,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="brokers.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageBroker }}</td>
                                     </tr>
                                     <tr *ngFor="let broker of brokers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, broker)">{{broker.companyName}}</td>
@@ -297,7 +297,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="vendors.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageVendor }}</td>
                                     </tr>
                                     <tr *ngFor="let vendor of vendors;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, vendor)">{{vendor.companyName}}</td>
@@ -393,7 +393,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="carriers.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageCarrier }}</td>
                                     </tr>
                                     <tr *ngFor="let carrier of carriers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, carrier)">{{carrier.companyName}}</td>
@@ -489,7 +489,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="ownerOperatorss.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageOwner }}</td>
                                     </tr>
                                     <tr *ngFor="let operator of ownerOperatorss;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, operator)">{{operator.companyName}}</td>
@@ -586,7 +586,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="shippers.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageConsignor }}</td>
                                     </tr>
                                     <tr *ngFor="let shipper of shippers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, shipper)">{{shipper.companyName}}</td>
@@ -682,7 +682,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="receivers.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageConsignee }}</td>
                                     </tr>
                                     <tr *ngFor="let receiver of receivers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, receiver)">{{receiver.companyName}}</td>
@@ -782,7 +782,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="staffs.length == 0" class="text-center">
-                                        <td colspan="8">No records found</td>
+                                        <td colspan="8">{{ dataMessageEmployee }}</td>
                                     </tr>
                                     <tr *ngFor="let staff of staffs;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, staff)">{{staff.companyName}}</td>
@@ -881,7 +881,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="fcCompanies.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessageFactoring }}</td>
                                     </tr>
                                     <tr *ngFor="let company of fcCompanies;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, company)">{{company.companyName}}</td>
@@ -1360,7 +1360,7 @@
                                                         </ng-select>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> 
                                             <div class="col-lg-4 offset-lg-1">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span>

@@ -144,6 +144,9 @@ export class DriverListComponent implements OnInit {
       .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         result.Items.map((v)=>{
+          if(v.middleName == undefined) {
+            v.middleName = '';
+          }
           if(v.lastName == undefined) {
             v.lastName = '';
           }
