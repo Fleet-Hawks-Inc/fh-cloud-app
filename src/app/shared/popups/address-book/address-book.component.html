@@ -856,7 +856,7 @@
                                     <div *ngIf="suggestedCompany?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUserq of suggestedCompany" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUserq.name, 'company')"> {{
+                                                (click)="setSearchValues(suggestedUserq.searchVall, suggestedUserq.name, 'company')"> {{
                                                 suggestedUserq.name }}
                                             </li>
                                         </ul>
