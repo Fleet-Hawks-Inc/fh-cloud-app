@@ -268,6 +268,8 @@ export class DriverListComponent implements OnInit {
         .subscribe((result: any) => {
 
           this.drivers = [];
+          this.driverDraw = 0;
+          this.lastEvaluatedKey = '';
           this.fetchDriversCount();
           this.initDataTable();
           this.toastr.success('Driver is deactivated!');

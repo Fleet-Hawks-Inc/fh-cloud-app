@@ -78,7 +78,7 @@
                                     <div *ngIf="suggestedCustomers?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedCustomers" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.customerID, suggestedUser.name, 'customer')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'customer')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -175,7 +175,7 @@
                                     <div *ngIf="suggestedBrokers?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedBrokers" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.brokerID, suggestedUser.name, 'broker')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'broker')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -272,7 +272,7 @@
                                     <div *ngIf="suggestedVendors?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedVendors" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.vendorID, suggestedUser.name, 'vendor')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'vendor')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -368,7 +368,7 @@
                                     <div *ngIf="suggestedCarriers?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedCarriers" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.infoID, suggestedUser.name, 'carrier')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'carrier')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -464,7 +464,7 @@
                                     <div *ngIf="suggestedOperators?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedOperators" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.operatorID, suggestedUser.name, 'operator')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'operator')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -560,7 +560,7 @@
                                     <div *ngIf="suggestedShipper?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedShipper" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.shipperID, suggestedUser.name, 'shipper')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'shipper')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -657,7 +657,7 @@
                                     <div *ngIf="suggestedConsignees?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedConsignees" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.receiverID, suggestedUser.name, 'consignee')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'consignee')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -755,7 +755,7 @@
                                     <div *ngIf="suggestedStaffs?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUser of suggestedStaffs" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUser.staffID, suggestedUser.name, 'staff')"> {{
+                                                (click)="setSearchValues(suggestedUser.searchVall, suggestedUser.name, 'staff')"> {{
                                                 suggestedUser.name }}
                                             </li>
                                         </ul>
@@ -856,7 +856,7 @@
                                     <div *ngIf="suggestedCompany?.length > 0" class="result-suggestions">
                                         <ul>
                                             <li *ngFor="let suggestedUserq of suggestedCompany" style="cursor: pointer;"
-                                                (click)="setSearchValues(suggestedUserq.factoringCompanyID, suggestedUserq.name, 'company')"> {{
+                                                (click)="setSearchValues(suggestedUserq.searchVall, suggestedUserq.name, 'company')"> {{
                                                 suggestedUserq.name }}
                                             </li>
                                         </ul>
@@ -1142,8 +1142,8 @@
             <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 2" class="btn btn-success btnNext">Next</a>
 
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <a type="button" class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 1" (click)="addVendor()">Submit</a>
-            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 1" (click)="updateVendor()">Update</a>
+            <button type="button" class="btn btn-success" *ngIf="!updateButton && custCurrentTab > 1" (click)="addVendor()" [disabled]="vendorDisabled">Submit</button>
+            <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 1" (click)="updateVendor()" [disabled]="vendorDisabled">Update</button>
         </div>
       </div>
     </div>
@@ -1523,8 +1523,8 @@
                                         <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
 
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <a href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addCustomer()" class="btn btn-success">Submit</a>
-                                        <a href="javascript:;" *ngIf="updateButton && custCurrentTab > 2" (click)="updateCustomer()" class="btn btn-success">Update</a>
+                                        <button type="button" *ngIf="!updateButton && custCurrentTab > 2" (click)="addCustomer()" class="btn btn-success" [disabled]="customerDisabled">Submit</button>
+                                        <button type="button" *ngIf="updateButton && custCurrentTab > 2" (click)="updateCustomer()" class="btn btn-success" [disabled]="customerDisabled">Update</button>
                                      </div>
                                   </div>
                             </form>
@@ -1843,8 +1843,8 @@
                                             <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
 
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 2" (click)="addBroker()">Submit</a>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 2" (click)="updateBroker()">Update</a>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 2" (click)="addBroker()" [disabled]="brokerDisabled">Submit</button>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 2" (click)="updateBroker()" [disabled]="brokerDisabled">Update</button>
 
                                         </div>
                                     </div>
@@ -2327,8 +2327,8 @@
                                             <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
                                             <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext">Next</a>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addCarrier()">Submit</a>
-                                            <a href="javascript:;" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateCarrier()">Update</a>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addCarrier()" [disabled]="carrierDisabled">Submit</button>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateCarrier()" [disabled]="carrierDisabled">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -2722,8 +2722,8 @@
                                             <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext">Next</a>
 
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <a class="btn btn-success modal-dismiss" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()">Submit</a>
-                                            <a class="btn btn-success modal-dismiss" href="javascript:;" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()">Update</a>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
+                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()" [disabled]="operatorDisabled">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -2994,8 +2994,8 @@
                                 <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext mr-2">Next</a>
 
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addShipper()">Submit</a>
-                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2" (click)="updateShipper()">Update</a>
+                                <button type="button" class="btn btn-success"  *ngIf="!updateButton && custCurrentTab > 2" (click)="addShipper()" [disabled]="consignorDisabled">Submit</button>
+                                <button type="button" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2" (click)="updateShipper()" [disabled]="consignorDisabled">Update</button>
                             </div>
                         </div>
                     </form>
@@ -3262,10 +3262,10 @@
                                 <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
 
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2"
-                                    (click)="addConsignee()">Submit</a>
-                                <a href="javascript:;" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2"
-                                    (click)="updateConsignee()">Update</a>
+                                <button type="button" class="btn btn-success" *ngIf="!updateButton && custCurrentTab > 2"
+                                    (click)="addConsignee()" [disabled]="consigneeDisabled">Submit</button>
+                                <button type="button" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2"
+                                    (click)="updateConsignee()" [disabled]="consigneeDisabled">Update</button>
                             </div>
                         </div>
 
@@ -3516,8 +3516,8 @@
                                         <a href="javascript:;" (click)="nextStep()" *ngIf="custCurrentTab < 3" class="btn btn-success btnNext">Next</a>
 
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 2" (click)="addFCompany()">Submit</a>
-                                        <a class="btn btn-success" href="javascript:;" *ngIf="updateButton && custCurrentTab > 2" (click)="updateFCompany()">Update</a>
+                                        <button type="button" class="btn btn-success" *ngIf="!updateButton && custCurrentTab > 2" (click)="addFCompany()" [disabled]="companyDisabled">Submit</button>
+                                        <button type="button" class="btn btn-success" *ngIf="updateButton && custCurrentTab > 2" (click)="updateFCompany()" [disabled]="companyDisabled">Update</button>
 
                                     </div>
                                 </div>
@@ -3914,11 +3914,11 @@
                                         <a href="javascript:;" (click)="nextStep()" *ngIf="custCurrentTab < 4"
                                             class="btn btn-success btnNext">Next</a>
 
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <a class="btn btn-success" href="javascript:;" *ngIf="!updateButton && custCurrentTab > 3"
-                                            (click)="addStaff()">Submit</a>
-                                        <a href="javascript:;" *ngIf="updateButton && custCurrentTab > 3" (click)="updateStaff()"
-                                            class="btn btn-success">Update</a>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success" *ngIf="!updateButton && custCurrentTab > 3"
+                                            (click)="addStaff()" [disabled]="employeeDisabled">Submit</button>
+                                        <button type="button" *ngIf="updateButton && custCurrentTab > 3" (click)="updateStaff()"
+                                            class="btn btn-success" [disabled]="employeeDisabled">Update</button>
                                     </div>
                                 </div>
                             </form>
@@ -3965,8 +3965,11 @@
                         Additional Contact
                     </a>
                 </li>
-
-
+                <li class="nav-item" *ngIf="userDetailData.fcDetails"> <a href="#customerFactoringDetails"
+                    data-toggle="tab" class="nav-link text-center">
+                        Factoring Details
+                    </a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div id="customerBasicDetails" class="tab-pane active">
@@ -4044,15 +4047,15 @@
                                     </tr>
                                     <tr *ngIf="userDetailData.csa">
                                         <th width="40%" class="back-color-gray">CSA:</th>
-                                        <td>{{userDetailData.csa}}</td>
+                                        <td>Yes</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.ctpat">
                                         <th width="40%" class="back-color-gray">CTPAT:</th>
-                                        <td>{{userDetailData.ctpat}}</td>
+                                        <td>Yes</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.pip">
                                         <th width="40%" class="back-color-gray">PIP:</th>
-                                        <td>{{userDetailData.pip}}</td>
+                                        <td>Yes</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -4060,32 +4063,35 @@
                     </div>
                 </div>
                 <div id="customerAddressDetails" class="tab-pane ">
-                    <table style="float: left;" [style.width]="userDetailData.address.length > 1 ? '50%' : '100%'"
-                        class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
+                    <table style="float: left;" class="table table-bordered mb-2" *ngFor="let item of userDetailData.address">
                         <tbody>
                             <tr>
                                 <th width="40%" class="back-color-gray">Address Type:</th>
                                 <td>{{item.addressType}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="item.manual == true">
                                 <th width="40%" class="back-color-gray"> Country:</th>
                                 <td>{{item.countryName}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="item.manual == true">
                                 <th width="40%" class="back-color-gray">State:</th>
                                 <td>{{item.stateName}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="item.manual == true">
                                 <th width="40%" class="back-color-gray"> City:</th>
                                 <td>{{item.cityName}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="item.manual == true">
                                 <th width="40%" class="back-color-gray">Zip Code:</th>
                                 <td>{{item.zipCode}}</td>
                             </tr>
-                            <tr>
+                            <tr *ngIf="item.manual == true">
                                 <th width="40%" class="back-color-gray">Address:</th>
                                 <td>{{item.address1}} {{item.address2}}</td>
+                            </tr>
+                            <tr *ngIf="item.manual == false">
+                                <th width="40%" class="back-color-gray">Address:</th>
+                                <td>{{item.userLocation}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -4125,12 +4131,11 @@
                     </table>
                 </div>
                 <div id="customPaymentDetails" class="tab-pane" *ngIf="userDetailData.paymentDetails">
-
                     <table class="table table-bordered m-0">
                         <tbody>
                             <tr *ngIf="userDetailData.paymentDetails.inBonded">
                                 <th width="40%" class="back-color-gray">In-Bonded Carrier:</th>
-                                <td>{{userDetailData.paymentDetails.inBonded}}</td>
+                                <td>Yes</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.mc">
                                 <th width="40%" class="back-color-gray">MC:</th>
@@ -4165,7 +4170,37 @@
                                 <th width="40%" class="back-color-gray">Payroll Type:</th>
                                 <td>{{userDetailData.paymentDetails.payrollType}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.payrollRate">
+
+                            <tr *ngIf="userDetailData.paymentDetails.loadedMiles && userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
+                                <th width="40%" class="back-color-gray">Loaded Miles:</th>
+                                <td>{{userDetailData.paymentDetails.loadedMiles}} {{userDetailData.paymentDetails.loadedMilesCurrency}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.paymentDetails.emptyMiles && userDetailData.paymentDetails.payrollType == 'Pay Per Mile'">
+                                <th width="40%" class="back-color-gray">Empty Miles:</th>
+                                <td>{{userDetailData.paymentDetails.emptyMiles}} {{userDetailData.paymentDetails.emptyMilesCurrency}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.paymentDetails.payrollPercent && userDetailData.paymentDetails.payrollType == 'Percentage'">
+                                <th width="40%" class="back-color-gray">Payroll Load Pay Percent:</th>
+                                <td>{{userDetailData.paymentDetails.payrollPercent}}% of {{userDetailData.paymentDetails.percentType}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Pay Per Hour'">
+                                <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                                <td>{{userDetailData.paymentDetails.payrollRate}} {{userDetailData.paymentDetails.payrollRateCurrency}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.paymentDetails.deliveryRate && userDetailData.paymentDetails.payrollType == 'Pay Per Delivery'">
+                                <th width="40%" class="back-color-gray">Payroll Delivery Rate:</th>
+                                <td>{{userDetailData.paymentDetails.deliveryRate}} {{userDetailData.paymentDetails.deliveryRateCurrency}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Flat'">
+                                <th width="40%" class="back-color-gray">Payroll Rate:</th>
+                                <td>{{userDetailData.paymentDetails.payrollRate}}</td>
+                            </tr>
+                            <tr *ngIf="userDetailData.paymentDetails.payrollRate && userDetailData.paymentDetails.payrollType == 'Hours'">
                                 <th width="40%" class="back-color-gray">Payroll Rate:</th>
                                 <td>{{userDetailData.paymentDetails.payrollRate}}</td>
                             </tr>
@@ -4179,12 +4214,17 @@
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.applyTax">
                                 <th width="40%" class="back-color-gray">Apply Tax (on Settlement):</th>
-                                <td>{{userDetailData.paymentDetails.applyTax}}</td>
+                                <td>Yes</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
                                 <th width="40%" class="back-color-gray">WSIB:</th>
+                                <td>Yes</td>
+                            </tr>
+                            <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
+                                <th width="40%" class="back-color-gray">WSIB Account Number:</th>
                                 <td>{{userDetailData.paymentDetails.wsibAccountNumber}}</td>
                             </tr>
+
                             <tr *ngIf="userDetailData.paymentDetails.wsibExpiry">
                                 <th width="40%" class="back-color-gray">WSIB Expiry:</th>
                                 <td>{{userDetailData.paymentDetails.wsibExpiry}}</td>
@@ -4225,9 +4265,40 @@
                                 <th width="40%" class="back-color-gray">Department:</th>
                                 <td>{{userDetailData.userAccount.department}}</td>
                             </tr>
+
                             <tr *ngIf="userDetailData.userAccount.contractEndDate">
                                 <th width="40%" class="back-color-gray">Designation:</th>
                                 <td>{{userDetailData.userAccount.designation}}</td>
+                            </tr>
+                            
+                            <tr *ngIf="userDetailData.userData.username">
+                                <th width="40%" class="back-color-gray">Enable Login:</th>
+                                <td>Yes</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.userData.username">
+                                <th width="40%" class="back-color-gray">Username:</th>
+                                <td>{{userDetailData.userData.username}}</td>
+                            </tr>
+
+                            <tr *ngIf="userDetailData.userData.userType">
+                                <th width="40%" class="back-color-gray">User Type:</th>
+                                <td>{{userDetailData.userData.userType}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="customerFactoringDetails" class="tab-pane" *ngIf="userDetailData.fcDetails">
+                    <table class="table table-bordered m-0">
+                        <tbody>
+                            <tr>
+                                <th width="40%" class="back-color-gray">Account Number:</th>
+                                <td>{{ (userDetailData.fcDetails.accountNumber) ? userDetailData.fcDetails.accountNumber : '-'}}</td>
+                            </tr>
+                            <tr *ngIf="userDetailData.fcDetails.factoringRate">
+                                <th width="40%" class="back-color-gray">Factoring Rate:</th>
+                                <td>{{(userDetailData.fcDetails.factoringRate) ? userDetailData.fcDetails.factoringRate : '-'}}{{(userDetailData.fcDetails.factoringUnit) ? userDetailData.fcDetails.factoringUnit : '-'}}</td>
                             </tr>
                         </tbody>
                     </table>

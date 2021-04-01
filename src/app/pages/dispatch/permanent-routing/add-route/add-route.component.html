@@ -417,8 +417,8 @@
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
                                             routerLink="/dispatch/routes/list">Cancel</a>
-                                        <a *ngIf="!routeID" href="javascript:;" (click)="addRoute()" class="btn btn-success mt-1">Create Route</a>
-                                        <a *ngIf="routeID" href="javascript:;" (click)="updateRoute()" class="btn btn-success mt-1">Update Route</a> 
+                                        <button type="button" *ngIf="!routeID" (click)="addRoute()" [disabled]="routeBtnStatus" class="btn btn-success mt-1">Create Route</button>
+                                        <button type="button" *ngIf="routeID" (click)="updateRoute()" [disabled]="routeBtnStatus" class="btn btn-success mt-1">Update Route</button> 
                                     </div>
                                 </div>
                             </form>

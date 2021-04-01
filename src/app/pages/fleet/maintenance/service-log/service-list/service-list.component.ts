@@ -13,6 +13,7 @@ import Constants from '../../../constants';
 export class ServiceListComponent implements OnInit {
 
   dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageVendorDtl: string = Constants.FETCHING_DATA;
   title = 'Service Logs';
   // dtOptions: any = {};
   logs = [];
@@ -41,6 +42,9 @@ export class ServiceListComponent implements OnInit {
 
   vendorAddress: any;
   vendorsData: any;
+  vendorTextStatus = false;
+  basicActive = 'active';
+  addressActive = '';
 
   constructor(
       private apiService: ApiService,
@@ -135,8 +139,12 @@ export class ServiceListComponent implements OnInit {
     this.vendorsData = [];
     localStorage.setItem('vendorID', vendorID);
     $('#vendorDtlModal').modal('show');
+    this.basicActive = 'active';
+    this.addressActive = '';
+    this.vendorTextStatus = true;
     this.apiService.getData(`vendors/${vendorID}`).subscribe(res => {
-      this.vendorsData =  res.Items;
+      this.vendorTextStatus = false;
+      this.vendorsData =  res.Items[0];
       this.vendorAddress = res.Items[0].address;
     })
   }
