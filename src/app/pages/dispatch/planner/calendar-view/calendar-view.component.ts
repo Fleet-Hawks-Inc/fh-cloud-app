@@ -34,7 +34,8 @@ export class CalendarViewComponent implements OnInit {
   tripData = {
     tripPlanning: [],
     tripStatus: '',
-    tripID: ''
+    tripID: '',
+    driverIDs: []
   };
   response: any = '';
   form;
@@ -59,6 +60,7 @@ export class CalendarViewComponent implements OnInit {
 
   ngOnInit() {
     // this.fetchAllOrder();
+    this.fetchAllTrips();
     this.fetchCustomers();
     this.fetchTrips();
     this.fetchVehicles();
@@ -110,6 +112,21 @@ export class CalendarViewComponent implements OnInit {
       })
   }
 
+  fetchAllTrips() {
+    this.apiService.getData('trips')
+      .subscribe((result: any) => {
+        console.log('all result', result);
+        result.Items.map((i) => { 
+          let eventObj = {
+            title: '#' + i.tripNo,
+            date:  moment(i.dateCreated,'YYYY-MM-DD').format('YYYY-MM-DD')
+          };
+          this.events.push(eventObj);
+        });
+        console.log(this.events);
+      })
+  }
+
   fetchCoDriver(driverID) {
     this.codrivers = this.drivers.filter(function (obj) {
       if (obj.driverID !== driverID) {
@@ -142,11 +159,13 @@ export class CalendarViewComponent implements OnInit {
         this.tempTextFieldValues.driverName = '';
         this.tempTextFieldValues.driverUsername = '';
         this.assetDataDriverUsername = '';
+        this.tempTextFieldValues.driverID = '';
       } else {
         $(".codriverClass").removeClass('td_border');
         this.tempTextFieldValues.coDriverName = '';
         this.tempTextFieldValues.coDriverUsername = '';
         this.assetDataCoDriverUsername = '';
+        this.tempTextFieldValues.coDriverID = '';
       }
     } else {
       if (type === 'driver') {
@@ -157,6 +176,7 @@ export class CalendarViewComponent implements OnInit {
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.assetDataCoDriverUsername = '';
+        this.tempTextFieldValues.driverID = $event.driverID;
         if (eventType === 'click') {
           this.assetDataDriverUsername = $event.userName;
         }
@@ -168,6 +188,7 @@ export class CalendarViewComponent implements OnInit {
       } else if (type === 'codriver') {
         this.tempTextFieldValues.coDriverName = $event.fullName;
         this.tempTextFieldValues.coDriverUsername = $event.userName;
+        this.tempTextFieldValues.coDriverID = $event.driverID;
         if (eventType === 'click') {
           this.assetDataCoDriverUsername = $event.userName;
         }
@@ -218,13 +239,18 @@ export class CalendarViewComponent implements OnInit {
     }
   }
 
-  saveAssetModalData() {
-
+  async saveAssetModalData() {
+    let selectedDriverids = [];
     if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
       this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.trailer.length != 0) {
       let planData = this.tripData.tripPlanning;
+
+      selectedDriverids.push(this.tempTextFieldValues.coDriverID);
+      selectedDriverids.push(this.tempTextFieldValues.driverID);
       
       for (let i = 0; i < planData.length; i++) {
+        this.tripData.tripPlanning[i].coDriverID = this.tempTextFieldValues.coDriverID;
+        this.tripData.tripPlanning[i].driverID = this.tempTextFieldValues.driverID;
         this.tripData.tripPlanning[i].codriverUsername = this.tempTextFieldValues.coDriverUsername;
         this.tripData.tripPlanning[i].driverUsername = this.tempTextFieldValues.driverUsername;
         this.tripData.tripPlanning[i].vehicleID = this.tempTextFieldValues.vehicleID;
@@ -235,7 +261,8 @@ export class CalendarViewComponent implements OnInit {
           this.tripData.tripPlanning[i].assetID.push(element2.id)
         }
       }
-
+      this.tripData.driverIDs = await selectedDriverids;
+      this.tripData.tripStatus = 'dispatched';
       this.apiService.putData('trips', this.tripData).subscribe({
         complete: () => {
         },
@@ -261,7 +288,10 @@ export class CalendarViewComponent implements OnInit {
             });
         },
         next: (res) => {
-          this.updateTripStatus(this.tripData.tripID)
+          this.spinner.hide();
+          this.response = res;
+          $('#assetModal').modal('hide');
+          this.toastr.success('Assignment done successfully');
         },
       });
     } else {
@@ -278,7 +308,7 @@ export class CalendarViewComponent implements OnInit {
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-        delete result.timeCreated;
+        // delete result.timeCreated;
         delete result.timeModified;
         this.tripData = result;
         this.OrderIDs = this.tripData['orderId'];
@@ -301,7 +331,6 @@ export class CalendarViewComponent implements OnInit {
 
   fetchTrips() {
     this.spinner.show();
-
     const tripResponse = this.apiService.getData('trips/status/confirmed');
     const orderResponse = this.apiService.getData('orders');
     forkJoin([tripResponse, orderResponse]).subscribe(value => {
@@ -326,13 +355,6 @@ export class CalendarViewComponent implements OnInit {
         // element.date = element.date;
         element.time = element.tripPlan[0].pickupTime;
 
-        //calendar data
-        let eventObj = {
-          title: '#' + element.tripNo,
-          date:  moment(element.date,'DD-MM-YYYY').format('YYYY-MM-DD')
-        };
-        this.events.push(eventObj);
-
         if (element.tripPlan.length >= 2) {
           let lastloc = element.tripPlan.length - 1
           drop = element.tripPlan[lastloc].location;
@@ -340,41 +362,6 @@ export class CalendarViewComponent implements OnInit {
         }
       }
     }
-  }
-
-  updateTripStatus(tripId) {
-    this.apiService.getData('trips/update-status/'+tripId+'/dispatched').subscribe({
-      complete: () => {
-      },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide();
-              this.throwErrors();
-            },
-            error: () => {
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        this.spinner.hide();
-        this.response = res;
-        $('#assetModal').modal('hide');
-        this.updateOrderStatus();
-        this.toastr.success('Assignment done successfully');
-      },
-    });
   }
 
   fetchAllOrder() {
@@ -441,8 +428,7 @@ export class CalendarViewComponent implements OnInit {
               tripObj.customersArr.push(cusObj);
 
               //for unique customer-id in array 
-              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>
-                [item['customerId'], item])).values()];
+              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
             }
           });
         }
@@ -481,22 +467,5 @@ export class CalendarViewComponent implements OnInit {
           }
         }
     });
-  }
-
-  updateOrderStatus() {
-    for (let i = 0; i < this.OrderIDs.length; i++) {
-      const orderID = this.OrderIDs[i];
-
-      this.apiService.getData('orders/' + orderID)
-        .subscribe((result: any) => {
-          let orderData = result.Items[0];
-          console.log(orderData);
-          if (orderData.orderStatus == 'confirmed') {
-            this.apiService.getData('orders/update/orderStatus/' + orderID + '/dispatched')
-              .subscribe((result: any) => {
-              });
-          }
-        });
-    }
   }
 }

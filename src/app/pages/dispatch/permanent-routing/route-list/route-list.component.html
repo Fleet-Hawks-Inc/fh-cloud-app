@@ -9,9 +9,13 @@
                             <input type="text" class="form-control" [(ngModel)]="searchedRouteName" name="searchedRouteName"
                             (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Route Name">
                         </div>
-                        <div *ngFor="let data of suggestedRoutes" style="cursor: pointer" (click)="searchSelectedRoute(data)">
-                            {{ data.name }}
-                        </div>
+                        <div *ngIf="suggestedRoutes?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let data of suggestedRoutes" style="cursor: pointer;" (click)="searchSelectedRoute(data)">
+                                {{ data.routeName }}
+                                </li>
+                            </ul>
+                         </div>
                     </div>
 
                     <div class="col-md-2 col-lg-2">   
@@ -52,7 +56,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="routes.length == 0" class="text-center">
-                                        <td colspan="6">No records found</td>
+                                        <td colspan="6">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let route of routes; let i= index">
                                         <td routerLink="/dispatch/routes/detail/{{ route.routeID }}">{{ route.routeName }}</td>
