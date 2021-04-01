@@ -39,7 +39,7 @@
 
                <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons">
                   <div class="btn-group flex-wrap" style="min-width:190px;">
-                     <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                     <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                      <div class="dropdown-menu dutystatwd" role="menu">
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin"
@@ -103,9 +103,9 @@
                         </a>
                      </div>
                   </div>
-                  <button type="button" disabled (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
-                  <button type="button" disabled ="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
-                  <div class="btn-group flex-wrap mr-2">
+                  <button type="button" *ngIf="!environment" (click)="mapShow()" id="map_view_btn" class="btn btn-sm btn-default mr-2">Map View</button>
+                  <button type="button" *ngIf="!environment" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-sm btn-success mr-2">List View</button>
+                  <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                      <button type="button" disabled class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                         <a class="dropdown-item text-1" href="javascript:;">Import</a>

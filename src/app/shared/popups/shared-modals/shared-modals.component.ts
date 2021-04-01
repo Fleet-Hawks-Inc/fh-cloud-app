@@ -455,7 +455,8 @@ years = [];
 
   async ngOnInit() {
     this.fetchCountries();
-    this.fetchAssetManufacturers();
+    // this.fetchAssetManufacturers();
+    
     this.fetchAssetModels();
     this.newManufacturers();
     this.fetchVehicles();
@@ -477,6 +478,7 @@ years = [];
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
+    this.listService.fetchAssetManufacturers();
 
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
@@ -495,6 +497,7 @@ years = [];
     this.models = this.listService.modelList;
     this.drivers = this.listService.driversList;
     this.ownerOperators = this.listService.ownerOperatorList;
+    this.assetManufacturers = this.listService.assetManufacturesList;
 
     await this.getCurrentuser();
     this.listService.ownerOperatorList;
@@ -544,15 +547,15 @@ fetchDrivers(){
     this.drivers = result.Items;
   });
 }
-   /**
-   * fetch asset manufacturers
-   */
-  fetchAssetManufacturers(){
-    this.apiService.getData('assetManufacturers')
-      .subscribe((result: any) => {
-        this.assetManufacturers = result.Items;
-      });
-  }
+  //  /**
+  //  * fetch asset manufacturers
+  //  */
+  // fetchAssetManufacturers(){
+  //   this.apiService.getData('assetManufacturers')
+  //     .subscribe((result: any) => {
+  //       this.assetManufacturers = result.Items;
+  //     });
+  // }
 
   fetchAssetModels() {
     this.apiService.getData('assetModels')

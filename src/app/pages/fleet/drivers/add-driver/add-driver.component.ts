@@ -38,7 +38,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   hasLic: boolean = false;
   hasPay: boolean = false;
   hasHos: boolean = false;
-
+  hasCrossBrdr: boolean = false;
+  
   addressField = -1;
   currentTab = 1;
   userLocation: any;
@@ -69,6 +70,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   driverAddress = {
     address: [],
   };
+  isEdit: boolean = false;
   driverData = {
     employeeContractorId: '',
     driverType: 'employee',
@@ -392,6 +394,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } else {
       this.hasDocs = false;
     }
+    if($('#addDriverCrossBorder .error').length > 0 && this.currentTab >= 4) {
+      this.hasCrossBrdr = true;
+    } else {
+      this.hasCrossBrdr = false;
+    }
+    
     if($('#licence .error').length > 0 && this.currentTab >= 5) {
       this.hasLic = true;
     } else {
@@ -903,12 +911,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
    * fetch driver data
    */
   fetchDriverByID() {
+    this.isEdit = true;
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
-
+        
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;

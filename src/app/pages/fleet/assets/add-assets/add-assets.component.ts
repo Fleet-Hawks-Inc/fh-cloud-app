@@ -35,8 +35,10 @@ export class AddAssetsComponent implements OnInit {
       year: '',
       manufacturer: '',
       model: '',
-      length: '',
+      length: 0,
       lengthUnit: '',
+      height: 0,
+      heightUnit: '',
       axle: '',
       GVWR: '',
       GVWR_Unit: '',
@@ -192,6 +194,8 @@ export class AddAssetsComponent implements OnInit {
         model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        height: this.assetsData.assetDetails.height,
+        heightUnit: this.assetsData.assetDetails.heightUnit,
         axle: this.assetsData.assetDetails.axle,
         GVWR: this.assetsData.assetDetails.GVWR,
         GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,
@@ -309,6 +313,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.model = result.assetDetails.model;
         this.assetsData.assetDetails.length = result.assetDetails.length;
         this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
+        this.assetsData.assetDetails.height = result.assetDetails.height,
+        this.assetsData.assetDetails.heightUnit = result.assetDetails.heightUnit,
         this.assetsData.assetDetails.axle = result.assetDetails.axle;
         this.assetsData.assetDetails.GVWR = result.assetDetails.GVWR;
         this.assetsData.assetDetails.GVWR_Unit = result.assetDetails.GVWR_Unit;
@@ -374,6 +380,8 @@ export class AddAssetsComponent implements OnInit {
         model: this.assetsData.assetDetails.model,
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
+        height: this.assetsData.assetDetails.height,
+        heightUnit: this.assetsData.assetDetails.heightUnit,
         axle: this.assetsData.assetDetails.axle,
         GVWR: this.assetsData.assetDetails.GVWR,
         GVWR_Unit: this.assetsData.assetDetails.GVWR_Unit,

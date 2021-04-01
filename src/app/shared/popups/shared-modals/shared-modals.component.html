@@ -243,7 +243,7 @@
                   <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset Make</label>
                   <ng-select [(ngModel)]="assetModelData.manufacturerID" name="manufacturerID"
                     class="form-control populate" placeholder="Enter make of the asset">
-                    <ng-option *ngFor="let manufacturer of assetManufacturers" [value]="manufacturer.manufacturerID">
+                    <ng-option *ngFor="let manufacturer of assetManufacturers | async" [value]="manufacturer.manufacturerID">
                       {{manufacturer.manufacturerName}}</ng-option>
 
                   </ng-select>
@@ -271,7 +271,7 @@
 
 <!--Service program modal-->
 <div class="modal fade" id="addVehicleProgramModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleProgramModal" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 1024px" role="document">
+  <div class="modal-dialog" style="max-width: 1190px" role="document">
        <div class="modal-content">
        <div class="modal-header">
              <h5 class="modal-title">New Service Program</h5>
@@ -282,7 +282,7 @@
        <div class="modal-body text-dark">
    
             
-             <section role="main" class="content-body pt-0 pr-0 pl-0">
+             <section role="main" class="">
                 <header class="page-header pr-5">
                    <div class="row pr-1 mr-1" style="padding-top:10px;">
        
@@ -298,7 +298,7 @@
        
                 </header>
                 <div class="row">
-                   <div class="col pr-0">
+                   <div class="col">
                       <div class="card-body text-dark">
                          <form class="form-horizontal form-bordered" id="serviceProgramForm" method="get">
                             <div class="form-group row">
@@ -307,9 +307,9 @@
                                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
                                      Program Details</label>
                                </div>
-                               <div class="col-lg-5 offset-lg-1">
+                               <div class="col-lg-5">
                                   <div class="row pt-2">
-                                     <div class="col-lg-10">
+                                     <div class="col-lg-12">
                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service
                                            Program Name</label>
                                         <input [(ngModel)]="serviceData.programName" name="programName"
@@ -318,14 +318,14 @@
                                   </div>
                                  
                                </div>
-                               <div class="col-lg-5 offset-lg-1">
+                               <div class="col-lg-7">
                                   <div class="row pt-2">
-                                     <div class="col-lg-10">
+                                     <div class="col-lg-12">
                                         <label
                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
                                         <textarea [(ngModel)]="serviceData.description" name="description"
-                                           class="form-control" rows="3"></textarea>
+                                           class="form-control h-auto" rows="3"></textarea>
                                      </div>
                                   </div>
                                </div>
@@ -338,9 +338,9 @@
                                </div>
                                <div class="col-lg-12 ">
                                   <div class="row" *ngFor="let task of serviceData.serviceScheduleDetails;let i = index">
-                                     <div class="col-lg-5 offset-lg-1">
+                                     <div class="col-lg-5">
                                         <div class="row pt-2">
-                                           <div class="col-lg-10">
+                                           <div class="col-lg-12">
        
                                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                  Service Tasks</label>
@@ -351,16 +351,16 @@
                                               </ng-select>
                                               
                                            </div>
-                                           <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
+                                           <!-- <div class="col-lg-2  mar-top-37" *ngIf="i == 0">
                                               <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                                           </div>
+                                           </div> -->
                                         </div>
                                      </div>
-                                     <div class="col-lg-5 offset-lg-1">
+                                     <div class="col-lg-7">
                                         <div class="row pt-2">
-                                           <div class="col-lg-10">
+                                           <div class="col-12">
                                               <div class="row">
-                                                 <div class="col-lg-4">
+                                                 <div class="col-lg-5">
                                                     <label
                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat
                                                        By Time </label>
@@ -389,7 +389,7 @@
                                                     <input [(ngModel)]="task.repeatByOdometer"
                                                     [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                                  </div>
-                                                 <div class="col-lg-3 pt-4 mt-2">
+                                                 <div class="col-lg-2 pt-4 mt-2 pl-0">
                                                     <button *ngIf="i == 0"(click)="addDocument()" class="btn btn-success add-more">Add More</button>
                                                     <button *ngIf="i != 0" class="btn btn-success" (click)="removeTasks(i)"><i class="fas fa-minus"></i></button>
                                                  </div>
@@ -413,9 +413,9 @@
                                      class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Vehicle
                                      Details</label>
                                </div>
-                               <div class="col-lg-5 offset-lg-1">
+                               <div class="col-lg-5">
                                   <div class="row pt-2">
-                                     <div class="col-lg-10">
+                                     <div class="col-lg-12">
                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                            Vehicle for Service Program&nbsp; <span
                                class="text-1 optional-label-color">(optional)</span></label>
@@ -1182,14 +1182,14 @@
                                         <div class="col-lg-12">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                               Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                           <input [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
+                                           <input (change)="onChangeHideErrors('workPhone')" [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
                                               class="form-control"
                                               placeholder="Enter the official phone number of the driver">
                                         </div>
                                         <div class="col-lg-12">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                               Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                           <input [(ngModel)]="driverData.email" name="email" type="text"
+                                           <input (change)="onChangeHideErrors('email')" [(ngModel)]="driverData.email" name="email" type="text"
                                               class="form-control"
                                               placeholder="Enter the official email address of the driver">
                                         </div>
@@ -1863,7 +1863,6 @@
                                     <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                  </ng-select>
                            </div>
-                           {{issuesData.unitType}}
                            <div class="col-12" *ngIf="issuesData.unitType == 'asset'">
                                  <label
                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
