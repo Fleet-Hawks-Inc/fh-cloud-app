@@ -28,17 +28,26 @@
                                <table class="table table-bordered table-responsive-lg">
                                       <tbody>
                                          <tr>
-                                            <td class="back-color-gray font-weight-bold">Asset Name/ID</td>
-                                            <td class="text-capitalize">{{assetIdentification}}</td>
+                                            <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
+                                            <td width="60%" class="text-capitalize">{{assetIdentification}}</td>
                                          </tr>
                                          <tr>
-                                            <td class="back-color-gray font-weight-bold">VIN</td>
-                                            <td class="text-capitalize">{{VIN}}</td>
+                                            <td width="40%" class="back-color-gray font-weight-bold">VIN</td>
+                                            <td width="60%" class="text-capitalize">{{VIN}}</td>
                                          </tr>
-                                         <!-- <tr>
-                                            <td class="back-color-gray font-weight-bold">Asset Gateway S/N</td>
-                                            <td class="text-capitalize">none</td>
-                                         </tr> -->
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">Group</td>
+                                            <td class="text-capitalize">{{groupID ? groupsObjects[groupID] : '-'}}</td>
+                                         </tr>
+                                         <tr>
+                                             <td class="back-color-gray font-weight-bold">Start Date</td>
+                                             <td class="text-capitalize">{{startDate}}</td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray font-weight-bold">Asset status</td>
+                                             <td class="text-capitalize">{{status}}</td>
+                                          </tr>
+                                           
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Type</td>
                                             <td class="text-capitalize">{{assetObjects[assetType]}}</td>
@@ -48,17 +57,26 @@
                                             <td class="text-capitalize">{{licencePlateNumber}}</td>
                                          </tr>
                                          <tr>
-                                            <td class="back-color-gray font-weight-bold">Licence State</td>
-                                            <td class="text-capitalize">{{statesObject[licenceStateID]}}</td>
+                                          <td class="back-color-gray font-weight-bold">Annual safety date</td>
+                                          <td class="text-capitalize">{{annualSafetyDate}}</td>
+                                       </tr>
+                                         
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">Licence Province & Country </td>
+                                            <td class="text-capitalize">{{statesObject[licenceStateID]}}, {{countriesObject[licenceCountryID]}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                            <td class="text-capitalize">{{year}}, {{manufacturer ? manufacturersObjects[manufacturer] : '-'}} <span *ngIf="model">&amp;</span> {{model ? modelsObjects[model] : '-'}}</td>
+                                            <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model">&amp;</span> {{modelsObjects[model]}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Length</td>
-                                            <td class="text-capitalize">{{length ? length : '-'}} {{lengthUnit}}</td>
+                                            <td class="text-capitalize">{{length ? length : '-'}}</td>
                                          </tr>
+                                         <tr>
+                                          <td class="back-color-gray font-weight-bold">Height</td>
+                                          <td class="text-capitalize">{{height ? height : '-'}}</td>
+                                       </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Axles</td>
                                             <td class="text-capitalize">{{axle ? axle : '-'}}</td>
@@ -85,59 +103,29 @@
                                    </table>
                              </div>
                          </div>
-                         <div class="row mt-3">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Insurance Details</label>
-                          </div>
-                          <div class="col-lg-12">
-                           <table class="table table-bordered table-responsive-lg">
-                              <tbody>
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
-                                    <td  width="60%">{{dateOfIssue ? (dateOfIssue | date : 'yyyy/MM/dd') : '-'}} </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Date of Expiry</td>
-                                    <td>{{dateOfExpiry ? (dateOfExpiry | date : 'yyyy/MM/dd') : '-'}}</td>
-                                 </tr>
-
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Premium Amount</td>
-                                    <td>{{premiumAmount ? premiumAmount : '-'}} {{premiumCurrency}}</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
-                                    <td class="text-capitalize">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
-                                 </tr>
-
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Vendor</td>
-                                    <td class="text-capitalize">{{vendor ? vendorObjects[vendor] : '-'}}</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                          </div>
-                          <div class="col-lg-12" *ngIf="!environment">
-                             <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Two-Way Commands</label>
-                          </div>
-                          <div class="col-lg-12" *ngIf="!environment">
-                             <table class="table table-striped table-bordered">
-                                   <thead>
-                                      <tr>
-                                         <th>Set Temperature</th>
-                                         <th>Actual Temperature</th>
-                                         <th>Clear Fault Code</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr>
-                                         <td>21 F</td>
-                                         <td>23 F</td>
-                                         <td><button class="btn btn-sm btn-dark">Clear</button></td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                             </div>
+                         <div class="row mt-3" *ngIf="!environment">
+                          
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Two-Way Commands</label>
+                           </div>
+                              <div class="col-lg-12">
+                              <table class="table table-striped table-bordered">
+                                    <thead>
+                                       <tr>
+                                          <th>Set Temperature</th>
+                                          <th>Actual Temperature</th>
+                                          <th>Clear Fault Code</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <td>21 F</td>
+                                          <td>23 F</td>
+                                          <td><button class="btn btn-sm btn-dark">Clear</button></td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
                           </div>
                           <div class="row" *ngIf="!environment">
                              <div class="col-lg-12">
@@ -203,7 +191,28 @@
                                 </div>
                              </div>
                           </div>
-                      </div>
+                           <div class="row mt-3">
+                              <div class="col-lg-12">
+                                 <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Cross Border Details</label>
+                              </div>
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">ACI</td>
+                                          <td width="60%">{{ACIID ? ACIID : '-'}} </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">ACE</td>
+                                          <td>{{ACEID ? ACEID : '-'}}</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+
+                      
                       <div class="col-lg-6">
                           <div class="row">
                              <div class="col-lg-12" *ngIf="!environment"><label class="control-label font-weight-bold text-3">Reefer Temperature Graph:</label><span
@@ -215,6 +224,37 @@
                                 </canvas>
 
                              </div>
+                             <div class="col-lg-12 mt-3">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Insurance Details</label>
+                           </div>
+                           <div class="col-lg-12">
+                            <table class="table table-bordered table-responsive-lg">
+                               <tbody>
+                                  <tr>
+                                     <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
+                                     <td  width="60%">{{dateOfIssue ? dateOfIssue : '-'}} </td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Date of Expiry</td>
+                                     <td>{{dateOfExpiry ? dateOfExpiry : '-'}}</td>
+                                  </tr>
+ 
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Premium Amount</td>
+                                     <td>{{premiumAmount ? premiumAmount : '-'}} {{premiumCurrency}}</td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
+                                     <td class="text-capitalize">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
+                                  </tr>
+ 
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Vendor</td>
+                                     <td class="text-capitalize">{{vendor ? vendorObjects[vendor] : '-'}}</td>
+                                  </tr>
+                               </tbody>
+                            </table>
+                           </div>
                              <div class="col-lg-12 mt-3">
                                    <label class="control-label font-weight-bold text-3">Map Location:</label>
                                    <div id="map" style="height: 400px;width: 100%;"></div>
@@ -237,7 +277,9 @@
                                    </div>
                                 </div>
                              </div>
+                             
                           </div>
+                          
                       </div>
                    </div>
 

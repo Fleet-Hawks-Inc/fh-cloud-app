@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
+import {environment} from '../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
   assetTypesObjects: any = {};

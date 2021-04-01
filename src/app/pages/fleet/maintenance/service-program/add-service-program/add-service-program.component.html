@@ -139,8 +139,7 @@
                            <div class="row pt-2">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                    Vehicle for Service Program&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label>
+                                    Vehicle for Service Program<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="serviceData.vehicles"
                                     name="vehicles" style="width: 100%;">
                                     <ng-option *ngFor="let vehicle of vehicles | async" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>

@@ -161,6 +161,25 @@
                     </div>
                   </div>
                   <div class="row mt-2">
+					<div class="col-lg-5">
+						<label class="control-label font-weight-bold font-bold text-lg-right pt-2">Height<span
+							class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+						<div class="row">
+						  <div class="col-lg-6">
+							<input [(ngModel)]="assetsData.assetDetails.height" name="assetDetails.height" type="number"
+							  class="form-control" placeholder="eg. 10,20 etc.">
+						  </div>
+						  <div class="col-lg-6 pl-0">
+							<ng-select [(ngModel)]="assetsData.assetDetails.heightUnit" name="assetDetails.heightUnit"
+							  placeholder="Select unit">
+  
+							  <ng-option value="Feet">Feet</ng-option>
+							  <ng-option value="Meters">Meters</ng-option>
+  
+							</ng-select>
+						  </div>
+						</div>
+					</div>
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Length&nbsp; <span
                           class="text-1 optional-label-color">(optional)</span></label>
@@ -180,6 +199,7 @@
                         </div>
                       </div>
                     </div>
+					
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Axles&nbsp; <span
                           class="text-1 optional-label-color">(optional)</span></label>

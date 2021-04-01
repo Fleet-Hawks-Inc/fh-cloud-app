@@ -5,14 +5,15 @@ import { ToastrService } from 'ngx-toastr';
 import { HereMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
-
+import {environment} from '../../../../../environments/environment';
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.css'],
 })
 export class VehicleListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
+  
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Vehicle List';
   vehicles = [];
