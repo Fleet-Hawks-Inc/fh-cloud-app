@@ -600,9 +600,8 @@ export class AddAccountComponent implements OnInit {
     formData.append('data', JSON.stringify(data));
     try {
       if(this.counter > 0) {
-        let multipleCarrier = true;
         return await new Promise((resolve, reject) => {
-          this.apiService.postData(`carriers/${masterCarrierID}`, formData, true).subscribe({
+          this.apiService.postData(`carriers/${this.masterCarrierID}`, formData, true).subscribe({
             complete: () => { },
             error: (err: any) => {
               from(err.error)
@@ -712,8 +711,7 @@ export class AddAccountComponent implements OnInit {
         });
       } else {
         return await new Promise((resolve, reject) => {
-          let multipleCarrier = false;
-          this.apiService.postData(`carriers/${masterCarrierID}`, formData, true).subscribe({
+          this.apiService.postData(`carriers/${this.masterCarrierID}`, formData, true).subscribe({
             complete: () => { },
             error: (err: any) => {
               from(err.error)
@@ -877,6 +875,5 @@ export class AddAccountComponent implements OnInit {
   this.toaster.success('Carrier added successfully.');
   $('#ascCmpModal').modal('hide');
   this.router.navigateByUrl('/Login');
-
   }
 }
