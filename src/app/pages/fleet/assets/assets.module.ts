@@ -37,7 +37,8 @@ const routes: Routes = [
      return {
        year: + parseInt(parts[0]),
        month: + parseInt(parts[1]),
-       day: + parseInt(parts[2]) }
+       day: + parseInt(parts[2])
+     }
    }
  
    toModel(date: NgbDateStruct): string // from internal model -> your mode
@@ -59,9 +60,9 @@ const routes: Routes = [
      if (value) {
        const date = value.split(this.DELIMITER);
        return {
-         year : parseInt(date[2], 10),
-         month : parseInt(date[1], 10),
-         day : parseInt(date[0], 10),
+         year: parseInt(date[2], 10),
+         month: parseInt(date[1], 10),
+         day: parseInt(date[0], 10),
  
        };
      }
@@ -69,7 +70,7 @@ const routes: Routes = [
    }
  
    format(date: NgbDateStruct | null): string {
-     return date ? date.year + this.DELIMITER + date.month  + this.DELIMITER +  date.day : '';
+     return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
    }
  }
 
@@ -91,6 +92,8 @@ const routes: Routes = [
     NgxSpinnerModule,
     ChartsModule
   ],
-  providers: [unsavedChangesGuard]
+  providers: [unsavedChangesGuard,
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},]
 })
 export class AssetsModule {}

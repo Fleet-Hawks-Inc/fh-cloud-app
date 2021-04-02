@@ -6,7 +6,7 @@ declare var $: any;
 import * as moment from 'moment';
 import Constants from '../../../constants';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListContactRenewComponent implements OnInit {
 
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData: any = [];
   contacts: [];

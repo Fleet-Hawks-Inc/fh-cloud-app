@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import Constants from '../../../constants';
+import { environment } from '../../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrls: ['./vehicle-renew-list.component.css']
 })
 export class VehicleRenewListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};

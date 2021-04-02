@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import Constants from '../../../constants';
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -12,6 +13,7 @@ import Constants from '../../../constants';
 })
 export class ServiceListComponent implements OnInit {
 
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageVendorDtl: string = Constants.FETCHING_DATA;
   title = 'Service Logs';

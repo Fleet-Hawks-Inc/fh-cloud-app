@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import Constants from '../../../constants';
 declare var $: any;
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -15,6 +15,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListingComponent implements OnInit {
 
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};

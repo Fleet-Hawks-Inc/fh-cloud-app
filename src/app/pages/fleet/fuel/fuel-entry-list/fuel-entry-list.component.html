@@ -1,8 +1,4 @@
 <section class="body">
-	<!-- start: header -->
-	<app-header></app-header>
-	<!-- end: header -->
-
 	<div class="inner-wrapper">
 		<section role="main" class="content-body pl-0">
 			<header class="page-header">
@@ -42,7 +38,7 @@
 							<button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
 						</div>
 						<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
-							<div class="btn-group flex-wrap">
+							<div class="btn-group flex-wrap" *ngIf="!environment">
 								<button type="button" class="btn btn-success btn-sm dropdown-toggle"
 									data-toggle="dropdown" aria-expanded="false">Actions<span
 										class="caret"></span></button>
