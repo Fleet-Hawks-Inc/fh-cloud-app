@@ -8,9 +8,9 @@ import { map } from 'rxjs/operators';
 import { from, forkJoin  } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from '../../../../services/here-map.service';
 import * as moment from "moment";
 declare var $: any;
-
 
 @Component({
   selector: 'app-calendar-view',
@@ -20,7 +20,7 @@ declare var $: any;
 export class CalendarViewComponent implements OnInit {
 
   constructor(private apiService: ApiService,
-   private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+   private toastr: ToastrService, private spinner: NgxSpinnerService, private route: ActivatedRoute, private hereMap: HereMapService) { }
 
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, listPlugin ];
   vehicles = [];
@@ -57,11 +57,12 @@ export class CalendarViewComponent implements OnInit {
   customersArr = [];
   customersObjects = [];
   OrderIDs = [];
+  viewType = 'map';
+  allCustomers = [];
+  tempIndex:any = '';
 
   ngOnInit() {
-    // this.fetchAllOrder();
     this.fetchAllTrips();
-    this.fetchCustomers();
     this.fetchTrips();
     this.fetchVehicles();
     this.fetchAssets();
@@ -113,17 +114,29 @@ export class CalendarViewComponent implements OnInit {
   }
 
   fetchAllTrips() {
+    let backgroundColor = '';
+    let borderColor = '';
     this.apiService.getData('trips')
       .subscribe((result: any) => {
-        console.log('all result', result);
         result.Items.map((i) => { 
+          if(i.tripStatus == 'confirmed') {
+            backgroundColor = '#005ce6';
+            borderColor = '#005ce6';
+          } else if(i.tripStatus == 'delivered') {
+            backgroundColor = '#29a329';
+            borderColor = '#29a329';
+          } else if(i.tripStatus == 'dispatched') {
+            backgroundColor = '#0099ff';
+            borderColor = '#0099ff';
+          }
           let eventObj = {
-            title: '#' + i.tripNo,
-            date:  moment(i.dateCreated,'YYYY-MM-DD').format('YYYY-MM-DD')
+            title: '#' + i.tripNo + '\n Status: '+ i.tripStatus,
+            date:  moment(i.dateCreated,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            backgroundColor: backgroundColor,
+            borderColor: borderColor
           };
           this.events.push(eventObj);
         });
-        console.log(this.events);
       })
   }
 
@@ -263,6 +276,7 @@ export class CalendarViewComponent implements OnInit {
       }
       this.tripData.driverIDs = await selectedDriverids;
       this.tripData.tripStatus = 'dispatched';
+      this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
       this.apiService.putData('trips', this.tripData).subscribe({
         complete: () => {
         },
@@ -290,6 +304,7 @@ export class CalendarViewComponent implements OnInit {
         next: (res) => {
           this.spinner.hide();
           this.response = res;
+          this.tempIndex = '';
           $('#assetModal').modal('hide');
           this.toastr.success('Assignment done successfully');
         },
@@ -300,7 +315,8 @@ export class CalendarViewComponent implements OnInit {
     }
   }
 
-  showAssignModal(tripID) {
+  showAssignModal(tripID, index) {
+    this.tempIndex = index;
     this.emptyAssetModalFields();
     
     this.spinner.show();
@@ -391,7 +407,7 @@ export class CalendarViewComponent implements OnInit {
       });
   }
 
-  orderTripValues(val) {
+  async orderTripValues(val) {
     let fetchedTrip = val[0];
     let fetchedOrder = val[1];
 
@@ -433,39 +449,48 @@ export class CalendarViewComponent implements OnInit {
           });
         }
         this.tempTrips.push(tripObj);
+        // console.log('this.tempTrip', this.tempTrips);
       }
     }
-    this.getTripsData(this.tempTrips);
+    await this.fetchCustomers();
+    await this.getTripsData(this.tempTrips);
+    
   }
 
   /*
     * Get all customers
    */
   fetchCustomers() {
-    this.apiService.getData('customers').subscribe((result: any) => {
-        for (let p = 0; p < this.tempTrips.length; p++) {
-          const element = this.tempTrips[p];
-          if(element.customersArr.length > 0) {
-            for (let w = 0; w < element.customersArr.length; w++) {
-              const elementp = element.customersArr[w];
-  
-              result.Items.filter(function (obj) {
-                if (obj.customerID == elementp.customerId) {
-                  elementp.name = obj.companyName;
-  
-                  let custName = obj.companyName.split(' ');
-                  if(custName[0] != undefined) {
-                    elementp.icon = custName[0].charAt(0).toUpperCase();
-                  }
-  
-                  if(custName[1] != undefined) {
-                    elementp.icon += custName[1].charAt(0).toUpperCase();
-                  }
-                }
-              });
-            }
-          }
-        }
+    this.apiService.getData('customers/get/all').subscribe((result: any) => {
+      this.allCustomers = result.Items;
+      this.assignCompanyName();
     });
+  }
+
+  assignCompanyName() {
+    for (let p = 0; p < this.tempTrips.length; p++) {
+      const element = this.tempTrips[p];
+      if(element.customersArr.length > 0) {
+        for (let w = 0; w < element.customersArr.length; w++) {
+          const elementp = element.customersArr[w];
+
+          this.allCustomers.map(function (obj) {
+            if (obj.customerID == elementp.customerId) {
+              console.log('obj.companyName', obj.companyName)
+              elementp.name = obj.companyName;
+
+              let custName = obj.companyName.split(' ');
+              if(custName[0] != undefined) {
+                elementp.icon = custName[0].charAt(0).toUpperCase();
+              }
+
+              if(custName[1] != undefined) {
+                elementp.icon += custName[1].charAt(0).toUpperCase();
+              }
+            }
+          });
+        }
+      }
+    }
   }
 }

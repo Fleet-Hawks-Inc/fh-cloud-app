@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import Constants from '../../../constants';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.component.html',
@@ -19,8 +20,8 @@ export class ServiceListComponent implements OnInit {
   logs = [];
 
   suggestedVehicles = [];
-  vehicleID = '';
-  taskID = '';
+  vehicleID = null;
+  taskID = null;
   currentStatus = '';
   vehicleIdentification = '';
   vehiclesObject: any = {};
@@ -45,6 +46,9 @@ export class ServiceListComponent implements OnInit {
   vendorTextStatus = false;
   basicActive = 'active';
   addressActive = '';
+  allVehicles = [];
+  allAssets = [];
+  assetID = null;
 
   constructor(
       private apiService: ApiService,
@@ -61,6 +65,8 @@ export class ServiceListComponent implements OnInit {
     this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
     this.initDataTable();
+    this.fetchAllAssets();
+    this.fetchAllVehicles();
   }
 
   getSuggestions(value) {
@@ -117,13 +123,13 @@ export class ServiceListComponent implements OnInit {
   }
 
   fetchLogsCount() {
-    this.apiService.getData('serviceLogs/get/count?vehicleID='+this.vehicleID).subscribe({
+    this.apiService.getData('serviceLogs/get/count?vehicleID='+this.vehicleID+'&asset=' +this.assetID+ '&taskID='+this.taskID).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != '') {
+        if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogEndPoint = this.totalRecords;
         }
       },
@@ -150,7 +156,7 @@ export class ServiceListComponent implements OnInit {
   }
   initDataTable() {
 
-    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID +'&asset=' +this.assetID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -159,7 +165,7 @@ export class ServiceListComponent implements OnInit {
         this.getStartandEndVal();
 
         this.logs = result['Items'];
-        if (this.vehicleID != '') {
+        if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;
         }
@@ -191,7 +197,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.vehicleID !== '' || this.taskID !== '') {
+    if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.fetchLogsCount();
@@ -202,10 +208,12 @@ export class ServiceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.vehicleID !== '' || this.taskID !== '') {
-      this.vehicleID = '';
+    if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
+      this.vehicleID = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.vehicleIdentification = '';
+      this.assetID = null;
+      this.taskID = null;
       this.logs = [];
       this.fetchLogsCount();
       this.initDataTable();
@@ -254,5 +262,17 @@ export class ServiceListComponent implements OnInit {
     this.serviceLogStartPoint = 1;
     this.serviceLogEndPoint = this.pageLength;
     this.serviceLogDraw = 0;
+  }
+
+  fetchAllVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.allVehicles = result.Items;
+    });
+  }
+
+  fetchAllAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.allAssets = result.Items;
+    });
   }
 }
