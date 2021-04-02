@@ -5,6 +5,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
+import { Router,ActivatedRoute } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -15,17 +16,25 @@ export class AddAccountComponent implements OnInit {
   @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
+  counter = 0;
   activeTab = 1;
-
+  ascCmp = [];
+  penAscCmp = [];
   CCC = '';
   DBAName = '';
   DOT = '';
   EIN = '';
   MC = '';
   SCAC = '';
-  CTPAT = '';
-  CSA = '';
+  CTPAT = false;
+  CSA = false;
+  PIP = false;
+  hasBasic = false;
+  hasBusiness = false;
+  hasAddress = false;
+  hasBank = false;
   cargoInsurance = '';
+  confirmationForm;
   email = '';
   userName = '';
   carrierName = '';
@@ -37,7 +46,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
-   uploadedLogo = '';
+  uploadedLogo = '';
   fleets = {
     curtainSide: 0,
     dryVans: 0,
@@ -120,6 +129,8 @@ export class AddAccountComponent implements OnInit {
   countriesBank = [];
   statesBank = [];
   citiesBank = [];
+  masterCarrierName = '';
+  masterCarrierID = '';
   errors = {};
   form;
   response: any = '';
@@ -128,11 +139,14 @@ export class AddAccountComponent implements OnInit {
   errorClass = false; // to show error when password and confirm password don't match
   Error = '';
   Success = '';
-  constructor(private apiService: ApiService, private toaster: ToastrService, private HereMap: HereMapService,) {
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toaster: ToastrService, private router: Router,
+    private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
   ngOnInit() {
+    this.carrierID = this.route.snapshot.params[`driverID`];
+
     this.fetchCountries();
     this.fetchBankCountries();
     this.searchLocation(); // search location on keyup
@@ -214,7 +228,8 @@ export class AddAccountComponent implements OnInit {
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;    }
+      return result.Items[0].countryID;
+    }
     return '';
   }
 
@@ -468,11 +483,51 @@ export class AddAccountComponent implements OnInit {
       this.bank.addressDetails.splice(i, 1);
     }
   }
+  /**
+   *
+   *  to check error at each step
+   */
+
+  async validateTabErrors() {
+    if ($('#basic .error').length > 0 && this.activeTab >= 1) {
+      this.hasBasic = true;
+    } else {
+      this.hasBasic = false;
+    }
+    if ($('#business .error').length > 0 && this.activeTab >= 2) {
+      this.hasBusiness = true;
+    } else {
+      this.hasBusiness = false;
+    }
+    if ($('#address .error').length > 0 && this.activeTab >= 3) {
+      this.hasAddress = true;
+    } else {
+      this.hasAddress = false;
+    }
+    if ($('#bankDetails .error').length > 0 && this.activeTab >= 4) {
+      this.hasBank = true;
+    } else {
+      this.hasBank = false;
+    }
+  }
+  async nextStep() {
+    if (!this.carrierID) {
+      await this.onSubmit();
+    }
+    this.validateTabErrors();
+    if ($('#basic .error').length > 0 && this.activeTab == 1) return;
+    if ($('#business .error').length > 0 && this.activeTab == 2) return;
+    if ($('#address .error').length > 0 && this.activeTab == 3) return;
+    if ($('#bankDetails .error').length > 0 && this.activeTab == 4) return;
+
+    this.activeTab++;
+
+  }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if (this.password === this.confirmPassword && this.password !== '') {
+    //  if (this.password === this.confirmPassword && this.password !== '') {
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
       if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
@@ -499,6 +554,7 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
+    this.masterCarrierName = this.carrierName;
     const data = {
       CCC: this.CCC,
       DBAName: this.DBAName,
@@ -511,6 +567,7 @@ export class AddAccountComponent implements OnInit {
       userName: this.userName,
       CTPAT: this.CTPAT,
       CSA: this.CSA,
+      PIP: this.PIP,
       carrierName: this.carrierName,
       findingWay: this.findingWay,
       firstName: this.firstName,
@@ -528,53 +585,257 @@ export class AddAccountComponent implements OnInit {
         trailers: this.fleets.trailers,
         trucks: this.fleets.trucks
       },
-      bank: this.bank
+      bank: this.bank,
+      ascCmp: [],
+      penAscCmp: []
     };
+    console.log('data', this.masterCarrierName);
     // create form data instance
     const formData = new FormData();
-
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
     formData.append('data', JSON.stringify(data));
-    this.apiService.postData('carriers', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
+    try {
+      if(this.counter > 0) {
+        let multipleCarrier = true;
+        return await new Promise((resolve, reject) => {
+          this.apiService.postData(`carriers/${masterCarrierID}`, formData, true).subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    this.hasError = true;
+                    if (err) return reject(err);
+                  },
+                  error: () => { },
+                  next: () => { },
+                });
             },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.toaster.success('Account Added successfully');
-      },
-    });
-  } else {
-    this.errorClass = true;
-    this.activeTab = 1;
-  }
+            next: (res) => {
+              this.response = res;
+              this.Success = '';
+              this.toaster.success('Carrier added successfully.');
+              $('#ascCmpModal').modal('show');
+              let data = {
+                activeTab: 1,
+                ascCmp: [],
+                penAscCmp: [],
+                CCC: '',
+                DBAName: '',
+                DOT: '',
+                EIN: '',
+                MC: '',
+                SCAC: '',
+                CTPAT: false,
+                CSA: false,
+                PIP: false,
+                hasBasic: false,
+                hasBusiness: false,
+                hasAddress: false,
+                hasBank: false,
+                cargoInsurance: '',
+                email: '',
+                userName: '',
+                carrierName: '',
+                carrierBusinessName: '',
+                findingWay: '',
+                firstName: '',
+                lastName: '',
+                liabilityInsurance: '',
+                password: '',
+                confirmPassword: '',
+                phone: '',
+                uploadedLogo: '',
+                fleets: {
+                  curtainSide: 0,
+                  dryVans: 0,
+                  flatbed: 0,
+                  reefers: 0,
+                  totalFleets: 0,
+                  trailers: 0,
+                  trucks: 0,
+                },
+                addressDetails: [{
+                  addressType: '',
+                  countryID: '',
+                  countryName: '',
+                  stateID: '',
+                  stateName: '',
+                  cityID: '',
+                  cityName: '',
+                  zipCode: '',
+                  address1: '',
+                  address2: '',
+                  geoCords: {
+                    lat: '',
+                    lng: ''
+                  },
+                  manual: false
+                }],
+                bank: {
+                  branchName: '',
+                  accountNumber: '',
+                  routingNumber: '',
+                  institutionalNumber: '',
+                  addressDetails: [{
+                    addressType: '',
+                    countryID: '',
+                    countryName: '',
+                    stateID: '',
+                    stateName: '',
+                    cityID: '',
+                    cityName: '',
+                    zipCode: '',
+                    address1: '',
+                    address2: '',
+                    geoCords: {
+                      lat: '',
+                      lng: ''
+                    },
+                    manual: false
+                  }]
+                }
+              };
+            },
+          })
+        });
+      } else {
+        return await new Promise((resolve, reject) => {
+          let multipleCarrier = false;
+          this.apiService.postData(`carriers/${masterCarrierID}`, formData, true).subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    this.hasError = true;
+                    if (err) return reject(err);
+                  },
+                  error: () => { },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              this.response = res;
+              this.Success = '';
+              this.toaster.success('Carrier added successfully.');
+              $('#ascCmpModal').modal('show');
+              let data = {
+                activeTab: 1,
+                ascCmp: [],
+                penAscCmp: [],
+                CCC: '',
+                DBAName: '',
+                DOT: '',
+                EIN: '',
+                MC: '',
+                SCAC: '',
+                CTPAT: false,
+                CSA: false,
+                PIP: false,
+                hasBasic: false,
+                hasBusiness: false,
+                hasAddress: false,
+                hasBank: false,
+                cargoInsurance: '',
+                email: '',
+                userName: '',
+                carrierName: '',
+                carrierBusinessName: '',
+                findingWay: '',
+                firstName: '',
+                lastName: '',
+                liabilityInsurance: '',
+                password: '',
+                confirmPassword: '',
+                phone: '',
+                uploadedLogo: '',
+                fleets: {
+                  curtainSide: 0,
+                  dryVans: 0,
+                  flatbed: 0,
+                  reefers: 0,
+                  totalFleets: 0,
+                  trailers: 0,
+                  trucks: 0,
+                },
+                addressDetails: [{
+                  addressType: '',
+                  countryID: '',
+                  countryName: '',
+                  stateID: '',
+                  stateName: '',
+                  cityID: '',
+                  cityName: '',
+                  zipCode: '',
+                  address1: '',
+                  address2: '',
+                  geoCords: {
+                    lat: '',
+                    lng: ''
+                  },
+                  manual: false
+                }],
+                bank: {
+                  branchName: '',
+                  accountNumber: '',
+                  routingNumber: '',
+                  institutionalNumber: '',
+                  addressDetails: [{
+                    addressType: '',
+                    countryID: '',
+                    countryName: '',
+                    stateID: '',
+                    stateName: '',
+                    cityID: '',
+                    cityName: '',
+                    zipCode: '',
+                    address1: '',
+                    address2: '',
+                    geoCords: {
+                      lat: '',
+                      lng: ''
+                    },
+                    manual: false
+                  }]
+                }
+              };
+            },
+          })
+        });
+      }
+
+    } catch (error) {
+      return 'error found';
+    }
   }
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
+
+    this.validateTabErrors()
     // this.vehicleForm.showErrors(this.errors);
   }
   hideErrors() {
@@ -602,5 +863,20 @@ export class AddAccountComponent implements OnInit {
 
   changeTab(value) {
     this.activeTab = value;
+  }
+  yesFn() {
+    this.counter = this.counter++;
+    this.masterCarrierName = 'FHhardeep';
+    this.apiService.getData('carriers/carrierIDFromName/' + this.masterCarrierName).subscribe((res: any) => {
+    this.masterCarrierID = res.Items[0].carrierID;
+    });
+    this.activeTab = 1;
+    $('#ascCmpModal').modal('hide');
+  }
+  noFn() {
+  this.toaster.success('Carrier added successfully.');
+  $('#ascCmpModal').modal('hide');
+  this.router.navigateByUrl('/Login');
+
   }
 }
