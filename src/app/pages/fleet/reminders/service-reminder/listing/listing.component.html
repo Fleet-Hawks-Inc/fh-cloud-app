@@ -13,17 +13,9 @@
                 <div class="row pr-1 mr-1" style="padding-top:8px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
-                            <input type="text" autocomplete="off" name="vehicleIdentification"
-                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search by vehicle"
-                                (input)="getSuggestions($event.target.value)" />
-                        </div>
-                        <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
-                                    (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"> {{
-                                        suggestedVehicle.vehicleIdentification }}
-                                </li>
-                            </ul>
+                            <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
+                                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
 

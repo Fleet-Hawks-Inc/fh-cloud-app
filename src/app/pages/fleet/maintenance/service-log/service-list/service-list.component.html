@@ -7,7 +7,7 @@
             
                 <form class="form-horizontal" method="get">
                     <div class="row pr-1 mr-1" style="padding-top:9px;">
-                        <div class="col-md-2 col-lg-2">
+                        <!-- <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
                                 <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
                                 class="form-control" (input)="getSuggestions($event.target.value)"
@@ -20,7 +20,22 @@
                                    > {{ suggestedUnit.vehicleIdentification }}</li>
                                 </ul>
                              </div>
-                        </div>
+                        </div> -->
+
+                        <div class="col-md-2 col-lg-2 pr-0 pl-0">
+							<div class="input-group input-group-sm mb-3"> 
+								<ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search issues by vehicle">
+									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+								</ng-select>
+							</div>
+						</div>
+						<div class="col-md-2 col-lg-2 pr-0 pl-2">
+							<div class="input-group input-group-sm mb-3">
+								<ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search issues by asset">
+									<ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
+								</ng-select>
+							</div>
+						</div>
 
                         <div class="col-md-2  col-lg-2">
                             <ng-select placeholder="Select Task" class="form-control populate" name="taskID" [(ngModel)]="taskID">
@@ -38,6 +53,7 @@
 
                         <div class="col-md-6 col-lg-6 text-right pr-1 text-right">
                             <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -76,6 +92,7 @@
                                                         <table class="row-border hover table table-bordered table-striped mb-0">
                                                             <thead>
                                                                 <tr>
+                                                                    <th width="10%">Unit Name</th>
                                                                     <th width="20%">Vehicle/Asset</th>
                                                                     <th width="15%">Completion Date/Meter</th>
                                                                     <th width="50%">Details</th>
@@ -86,14 +103,15 @@
                                         
                                                             <tbody>
                                                                 <tr *ngIf="logs.length == 0" class="text-center">
-                                                                    <td colspan="5">{{dataMessage}}</td>
+                                                                    <td colspan="6">{{dataMessage}}</td>
                                                                 </tr>
                                                                 <tr class="cursorpoint" *ngFor="let item of logs; let i = index;">
-                                        
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
-                                                                        <span class="font-weight-bold">{{vehiclesObject[item.vehicleID]}}</span>
-                                                                        <span *ngIf="!item?.vehicleID"
-                                                                            class="font-weight-bold">{{assetsObject[item.assetID]}}</span><br>
+                                                                        {{item.unitType}}
+                                                                    </td>
+                                                                    <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
+                                                                        {{vehiclesObject[item.vehicleID]}}
+                                                                        <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br>
                                                                         <span class="text-success text-capitalize">{{item.unitStatus}}</span>
                                                                     </td>
                                                                     <td>{{item.completionDate | date : 'dd-MM-yyyy'}}<br><span *ngIf="item?.vehicleID"

@@ -43,7 +43,8 @@ export class FuelEntryListComponent implements OnInit {
   vehicleID = '';
   amount = '';
   vehicleIdentification = '';
-  unitID = '';
+  unitID = null;
+  assetUnitID = null;
   unitName: string;
   start: any = '';
   end: any = '';
@@ -58,6 +59,8 @@ export class FuelEntryListComponent implements OnInit {
   fuelPrevEvauatedKeys = [''];
   fuelStartPoint = 1;
   fuelEndPoint = this.pageLength;
+  allVehicles = [];
+  allAssets = [];
 
   constructor(
     private apiService: ApiService,
@@ -74,6 +77,8 @@ export class FuelEntryListComponent implements OnInit {
     this.fetchTripList();
     this.fetchDriverList();
     this.initDataTable();
+    this.fetchAllAssets();
+    this.fetchAllVehicles();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -167,13 +172,13 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
   fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end).subscribe({
+    this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.unitID != '' || this.start != '' || this.end != '') {
+        if(this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
           this.fuelEndPoint = this.totalRecords;
         }
       },
@@ -204,7 +209,7 @@ export class FuelEntryListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
@@ -212,7 +217,7 @@ export class FuelEntryListComponent implements OnInit {
       this.getStartandEndVal();
 
       this.fuelList = result[`Items`];
-      if (this.unitID !== '') {
+      if(this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
@@ -244,7 +249,7 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
+    if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
       if(this.fromDate !== '') {
         this.start = this.fromDate;
       }
@@ -261,11 +266,11 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.unitID !== '' || this.fromDate !== '' || this.toDate !== '' || this.unitName !== '') {
-      this.unitID = '';
+    if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
+      this.unitID = null;
       this.fromDate = '';
       this.toDate = '';
-      this.unitName = '';
+      this.assetUnitID = null;
       this.start = '';
       this.end = '';
       this.dataMessage = Constants.FETCHING_DATA;
@@ -306,5 +311,17 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelStartPoint = 1;
     this.fuelEndPoint = this.pageLength;
     this.fuelDraw = 0;
+  }
+
+  fetchAllVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.allVehicles = result.Items;
+    });
+  }
+
+  fetchAllAssets() {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.allAssets = result.Items;
+    });
   }
 }

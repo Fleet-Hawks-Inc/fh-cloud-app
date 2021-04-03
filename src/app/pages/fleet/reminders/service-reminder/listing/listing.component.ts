@@ -36,11 +36,11 @@ export class ListingComponent implements OnInit {
   taskName: string;
   newData = [];
   suggestedVehicles = [];
-  vehicleID = '';
+  vehicleID = null;
   serviceTasks = [];
   tasksList = [];
-  searchServiceTask = '';
-  filterStatus: string;
+  searchServiceTask = null;
+  filterStatus = null;
   inServiceOdometer: string;
   myMath = 'Math';
   totalRecords = 20;
@@ -53,6 +53,7 @@ export class ListingComponent implements OnInit {
   servicePrevEvauatedKeys = [''];
   serviceStartPoint = 1;
   serviceEndPoint = this.pageLength;
+  allVehicles:any = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -62,18 +63,27 @@ export class ListingComponent implements OnInit {
     this.fetchTasksList();
     this.fetchVehicleList();
     this.fetchServiceTaks();
-    this.initDataTable()
+    this.initDataTable();
+    this.fetchAllVehicles();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
   }
+
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
     });
   }
+
+  fetchAllVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.allVehicles = result.Items;
+    });
+  }
+
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => {
       this.tasksList = result;
@@ -199,7 +209,7 @@ export class ListingComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if (this.vehicleID != '' || this.searchServiceTask != '') {
+        if (this.vehicleID != null || this.searchServiceTask != null) {
           this.serviceEndPoint = this.totalRecords;
         }
       },
@@ -217,7 +227,7 @@ export class ListingComponent implements OnInit {
         this.getStartandEndVal();
         this.allRemindersData = result[`Items`];
         this.fetchReminders();
-        if (this.vehicleID !== '' || this.searchServiceTask !== '') {
+        if (this.vehicleID != null || this.searchServiceTask != null) {
           this.serviceStartPoint = 1;
           this.serviceEndPoint = this.totalRecords;
         }
@@ -249,8 +259,7 @@ export class ListingComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.vehicleID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
-      || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+    if (this.searchServiceTask !== null || this.filterStatus !== null || this.vehicleID !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -261,12 +270,11 @@ export class ListingComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.vehicleID !== '' || this.searchServiceTask !== '' || this.searchServiceTask !== null || this.searchServiceTask !== undefined
-      || this.filterStatus !== '' || this.filterStatus !== null || this.filterStatus !== undefined) {
-      this.vehicleID = '';
+    if (this.searchServiceTask !== null || this.filterStatus !== null || this.vehicleID !== null) {
+      this.vehicleID = null;
       this.vehicleIdentification = '';
-      this.searchServiceTask = '';
-      this.filterStatus = '';
+      this.searchServiceTask = null;
+      this.filterStatus = null;
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -293,7 +301,7 @@ export class ListingComponent implements OnInit {
     this.serviceEndPoint = this.serviceStartPoint + this.pageLength - 1;
   }
 
-  // next button func
+  // next button func 
   nextResults() {
     this.serviceNext = true;
     this.servicePrev = true;

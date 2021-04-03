@@ -6,31 +6,17 @@
             <header class="page-header pr-5">
                 <div class="row px-4" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2 pr-0 pl-0">
-                        <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName"
-                                class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search issues by vehicle" />
-                        </div>
-                        <div *ngIf="suggestedUnits?.length > 0" class="result-suggestions">
-                            <ul>
-                               <li *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer;"
-                               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName,'vehicle')">
-                               {{ suggestedUnit.unitName }}</li>
-                            </ul>
+                        <div class="input-group input-group-sm mb-3"> 
+                            <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
+                                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="assetUnitName" [(ngModel)]="assetUnitName"
-                                class="form-control" (input)="getAssetsSugg($event.target.value)"
-                                placeholder="Search issues by asset" />
-                        </div>
-                        <div *ngIf="suggestedUnitsAssets?.length > 0" class="result-suggestions">
-                            <ul>
-                               <li *ngFor="let suggestedUnit of suggestedUnitsAssets" style="cursor: pointer;"
-                               (click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName,'asset')">
-                               {{ suggestedUnit.unitName }}</li>
-                            </ul>
+                            <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;" placeholder="Search issues by asset">
+                                <ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
