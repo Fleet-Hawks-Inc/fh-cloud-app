@@ -30,7 +30,8 @@ export class MapViewComponent implements OnInit {
     tripData = {
       tripPlanning: [],
       tripStatus: '',
-      tripID: ''
+      tripID: '',
+      driverIDs:[]
     };
     response: any = '';
     form;
@@ -45,18 +46,49 @@ export class MapViewComponent implements OnInit {
     assetDataCoDriverUsername = '';
     informationAsset = [];
     OrderIDs = [];
+    allCustomers = [];
+    tempIndex:any = '';
 
   ngOnInit() {
     this.mapShow();
+    this.fetchAllTrips();
     this.fetchTrips();
-    this.fetchCustomers();
+    // this.fetchCustomers();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
   }
 
+  fetchAllTrips() {
+    let backgroundColor = '';
+    let borderColor = '';
+    this.apiService.getData('trips')
+      .subscribe((result: any) => {
+        result.Items.map((i) => { 
+          if(i.tripStatus == 'confirmed') {
+            backgroundColor = '#005ce6';
+            borderColor = '#005ce6';
+          } else if(i.tripStatus == 'delivered') {
+            backgroundColor = '#29a329';
+            borderColor = '#29a329';
+          } else if(i.tripStatus == 'dispatched') {
+            backgroundColor = '#0099ff';
+            borderColor = '#0099ff';
+          }
+          let eventObj = {
+            title: '#' + i.tripNo + '\n Status: '+ i.tripStatus,
+            date:  moment(i.dateCreated,'YYYY-MM-DD').format('YYYY-MM-DD'),
+            backgroundColor: backgroundColor,
+            borderColor: borderColor
+          };
+          this.events.push(eventObj);
+        });
+      })
+  }
+
   mapShow() {
-      this.hereMap.mapInit();
+    this.hereMap.mapSetAPI();
+    this.hereMap.mapInit();
   }
 
   emptyAssetModalFields() {
@@ -135,21 +167,24 @@ export class MapViewComponent implements OnInit {
         this.tempTextFieldValues.driverName = '';
         this.tempTextFieldValues.driverUsername = '';
         this.assetDataDriverUsername = '';
+        this.tempTextFieldValues.driverID = '';
       } else {
         $(".codriverClass").removeClass('td_border');
         this.tempTextFieldValues.coDriverName = '';
         this.tempTextFieldValues.coDriverUsername = '';
         this.assetDataCoDriverUsername = '';
+        this.tempTextFieldValues.coDriverID = '';
       }
     } else {
       if (type === 'driver') {
         // alert('here')
         await this.spinner.show();
         this.assetDataCoDriverUsername = ''; //reset the codriver selected
-        await this.fetchCoDriver($event.driverID);
+        this.fetchCoDriver($event.driverID);
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.assetDataCoDriverUsername = '';
+        this.tempTextFieldValues.driverID = $event.driverID;
         if (eventType === 'click') {
           this.assetDataDriverUsername = $event.userName;
         }
@@ -161,6 +196,7 @@ export class MapViewComponent implements OnInit {
       } else if (type === 'codriver') {
         this.tempTextFieldValues.coDriverName = $event.fullName;
         this.tempTextFieldValues.coDriverUsername = $event.userName;
+        this.tempTextFieldValues.coDriverID = $event.driverID;
         if (eventType === 'click') {
           this.assetDataCoDriverUsername = $event.userName;
         }
@@ -210,61 +246,72 @@ export class MapViewComponent implements OnInit {
     }
   }
 
-  saveAssetModalData() {
+  async saveAssetModalData() {
+    let selectedDriverids = [];
+    if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
+      this.tempTextFieldValues.vehicleID != '' || this.tempTextFieldValues.trailer.length != 0) {
+      let planData = this.tripData.tripPlanning;
 
-    if(this.tempTextFieldValues.coDriverUsername === '' || this.tempTextFieldValues.driverUsername === '' || 
-      this.tempTextFieldValues.vehicleID === '' || this.tempTextFieldValues.trailer.length === 0) {
+      selectedDriverids.push(this.tempTextFieldValues.coDriverID);
+      selectedDriverids.push(this.tempTextFieldValues.driverID);
+      
+      for (let i = 0; i < planData.length; i++) {
+        this.tripData.tripPlanning[i].coDriverID = this.tempTextFieldValues.coDriverID;
+        this.tripData.tripPlanning[i].driverID = this.tempTextFieldValues.driverID;
+        this.tripData.tripPlanning[i].codriverUsername = this.tempTextFieldValues.coDriverUsername;
+        this.tripData.tripPlanning[i].driverUsername = this.tempTextFieldValues.driverUsername;
+        this.tripData.tripPlanning[i].vehicleID = this.tempTextFieldValues.vehicleID;
 
-        this.toastr.error('Please select all the assignment values');
-        return false;
-    }
-
-    let planData = this.tripData.tripPlanning;
-    
-    for (let i = 0; i < planData.length; i++) {
-      this.tripData.tripPlanning[i].codriverUsername = this.tempTextFieldValues.coDriverUsername;
-      this.tripData.tripPlanning[i].driverUsername = this.tempTextFieldValues.driverUsername;
-      this.tripData.tripPlanning[i].vehicleID = this.tempTextFieldValues.vehicleID;
-
-      this.tripData.tripPlanning[i].assetID = [];
-      for (let j = 0; j < this.tempTextFieldValues.trailer.length; j++) {
-        const element2 = this.tempTextFieldValues.trailer[j];
-        this.tripData.tripPlanning[i].assetID.push(element2.id)
+        this.tripData.tripPlanning[i].assetID = [];
+        for (let j = 0; j < this.tempTextFieldValues.trailer.length; j++) {
+          const element2 = this.tempTextFieldValues.trailer[j];
+          this.tripData.tripPlanning[i].assetID.push(element2.id)
+        }
       }
-    }
+      this.tripData.driverIDs = await selectedDriverids;
+      this.tripData.tripStatus = 'dispatched';
 
-    this.apiService.putData('trips', this.tripData).subscribe({
-      complete: () => {
-      },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide();
-              this.throwErrors();
-            },
-            error: () => {
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        this.updateTripStatus(this.tripData.tripID)
-      },
-    });
+      this.tempTrips[this.tempIndex].tripStatus = 'dispatched';
+      this.apiService.putData('trips', this.tripData).subscribe({
+        complete: () => {
+        },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                // We Can Use This Method
+                const key = val.message.match(/"([^']+)"/)[1];
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide();
+                this.throwErrors();
+              },
+              error: () => {
+              },
+              next: () => {
+              },
+            });
+        },
+        next: (res) => {
+          this.spinner.hide();
+          this.response = res;
+          $('#assetModal').modal('hide');
+          this.tempIndex = '';
+          this.toastr.success('Assignment done successfully');
+        },
+      });
+    } else {
+      $("#assetModal").modal('hide');
+      return false;
+    }
   }
 
-  showAssignModal(tripID) {
+  showAssignModal(tripID, index) {
+    this.tempIndex = index;
     this.emptyAssetModalFields();
     
     this.spinner.show();
@@ -272,18 +319,18 @@ export class MapViewComponent implements OnInit {
     this.apiService.getData('trips/' + tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-        delete result.timeCreated;
+        // delete result.timeCreated;
         delete result.timeModified;
         this.tripData = result;
         this.OrderIDs = this.tripData['orderId'];
 
         if(this.tripData.tripPlanning.length === 0) { 
-          this.toastr.error('Trip plan for selected trip is empty. Please create one to assign');
+          this.toastr.error('The trip plan for the selected trip is empty. Please create one to assign.');
           this.spinner.hide();
           return false;
         }
 
-        if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'planned') {
+        if(this.tripData.tripStatus === 'pending' || this.tripData.tripStatus === 'confirmed') {
           $("#assetModal").modal('show');
           this.spinner.hide();
         } else {
@@ -304,7 +351,7 @@ export class MapViewComponent implements OnInit {
     });
   }
 
-  orderTripValues(val) {
+  async orderTripValues(val) {
     let fetchedTrip = val[0];
     let fetchedOrder = val[1];
 
@@ -341,15 +388,17 @@ export class MapViewComponent implements OnInit {
               tripObj.customersArr.push(cusObj);
 
               //for unique customer-id in array 
-              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>
-                [item['customerId'], item])).values()];
+              tripObj.customersArr = [...new Map(tripObj.customersArr.map(item =>[item['customerId'], item])).values()];
             }
           });
         }
         this.tempTrips.push(tripObj);
+        // console.log('this.tempTrip', this.tempTrips);
       }
     }
-    this.getTripsData(this.tempTrips);
+    await this.fetchCustomers();
+    await this.getTripsData(this.tempTrips);
+    
   }
 
   throwErrors() {
@@ -367,13 +416,6 @@ export class MapViewComponent implements OnInit {
         element.pickupLocation = pickup;
         element.time = element.tripPlan[0].pickupTime;
 
-        //calendar data
-        let eventObj = {
-          title: '#' + element.tripNo,
-          date:  moment(element.date,'DD-MM-YYYY').format('YYYY-MM-DD')
-        };
-        this.events.push(eventObj);
-
         if (element.tripPlan.length >= 2) {
           let lastloc = element.tripPlan.length - 1
           drop = element.tripPlan[lastloc].location;
@@ -383,86 +425,42 @@ export class MapViewComponent implements OnInit {
     }
   }
 
+  
   /*
     * Get all customers
    */
   fetchCustomers() {
-    this.apiService.getData('customers').subscribe((result: any) => {
-        for (let p = 0; p < this.tempTrips.length; p++) {
-          const element = this.tempTrips[p];
-          if(element.customersArr.length > 0) {
-            for (let w = 0; w < element.customersArr.length; w++) {
-              const elementp = element.customersArr[w];
-  
-              result.Items.filter(function (obj) {
-                if (obj.customerID == elementp.customerId) {
-                  elementp.name = obj.companyName;
-  
-                  let custName = obj.companyName.split(' ');
-                  if(custName[0] != undefined) {
-                    elementp.icon = custName[0].charAt(0).toUpperCase();
-                  }
-  
-                  if(custName[1] != undefined) {
-                    elementp.icon += custName[1].charAt(0).toUpperCase();
-                  }
-                }
-              });
+    this.apiService.getData('customers/get/all').subscribe((result: any) => {
+      this.allCustomers = result.Items;
+      this.assignCompanyName();
+    });
+  }
+
+  assignCompanyName() {
+    for (let p = 0; p < this.tempTrips.length; p++) {
+      const element = this.tempTrips[p];
+      if(element.customersArr.length > 0) {
+        for (let w = 0; w < element.customersArr.length; w++) {
+          const elementp = element.customersArr[w];
+
+          this.allCustomers.map(function (obj) {
+            if (obj.customerID == elementp.customerId) {
+              console.log('obj.companyName', obj.companyName)
+              elementp.name = obj.companyName;
+
+              let custName = obj.companyName.split(' ');
+              if(custName[0] != undefined) {
+                elementp.icon = custName[0].charAt(0).toUpperCase();
+              }
+
+              if(custName[1] != undefined) {
+                elementp.icon += custName[1].charAt(0).toUpperCase();
+              }
             }
-          }
-        }
-    });
-  }
-
-  updateTripStatus(tripId) {
-    this.apiService.getData('trips/update-status/'+tripId+'/dispatched').subscribe({
-      complete: () => {
-      },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide();
-              this.throwErrors();
-            },
-            error: () => {
-            },
-            next: () => {
-            },
           });
-      },
-      next: (res) => {
-        this.spinner.hide();
-        this.response = res;
-        $('#assetModal').modal('hide');
-        this.toastr.success('Assignment done successfully.');
-      },
-    });
-  }
-
-  updateOrderStatus() {
-    for (let i = 0; i < this.OrderIDs.length; i++) {
-      const orderID = this.OrderIDs[i];
-
-      this.apiService.getData('orders/' + orderID)
-        .subscribe((result: any) => {
-          let orderData = result.Items[0];
-          console.log(orderData);
-          if (orderData.orderStatus == 'confirmed') {
-            this.apiService.getData('orders/update/orderStatus/' + orderID + '/dispatched')
-              .subscribe((result: any) => {
-              });
-          }
-        });
+        }
+      }
     }
   }
+
 }

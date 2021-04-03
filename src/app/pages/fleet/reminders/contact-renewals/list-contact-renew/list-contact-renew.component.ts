@@ -26,10 +26,10 @@ export class ListContactRenewComponent implements OnInit {
   newData = [];
   filterStatus: string;
   usersList:any = {};
-  contactID = '';
+  contactID = null;
   firstName = '';
   serviceTasks = [];
-  searchServiceTask = '';
+  searchServiceTask = null;
   suggestedContacts = [];
   filterValue = "item.reminderTasks.reminderStatus == 'OVERDUE' || item.reminderTasks.reminderStatus == 'DUE SOON'";
   totalRecords = 20;
@@ -43,17 +43,19 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
   loading = false;
+  allVehicles = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.fetchAllVehicles();
     this.getRemindersCount();
     this.fetchServiceTaks();
     this.fetchRenewals();
     this.fetchGroups();
     this.fetchUsersList();
     this.fetchTasksList();
-    this.initDataTable()
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -147,7 +149,7 @@ export class ListContactRenewComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.contactID != '' || this.searchServiceTask != '') {
+        if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewEndPoint = this.totalRecords;
         }
       },
@@ -165,7 +167,7 @@ export class ListContactRenewComponent implements OnInit {
         this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
-        if (this.contactID !== '' || this.searchServiceTask !== '' ) {
+        if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;
         }
@@ -197,8 +199,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.contactID !== '' || this.searchServiceTask !== '' && this.searchServiceTask !== null && this.searchServiceTask !== undefined
-      || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount()
@@ -209,11 +210,10 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.contactID !== '' || this.searchServiceTask !== '' || this.searchServiceTask !== null || this.searchServiceTask !== undefined
-      || this.filterStatus !== '' || this.filterStatus !== null || this.filterStatus !== undefined) {
-      this.contactID = '';
+    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+      this.contactID = null;
       this.firstName = '';
-      this.searchServiceTask = '';
+      this.searchServiceTask = null;
       this.filterStatus = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
@@ -276,5 +276,11 @@ export class ListContactRenewComponent implements OnInit {
     this.contactRenewStartPoint = 1;
     this.contactRenewEndPoint = this.pageLength;
     this.contactRenewDraw = 0;
+  }
+
+  fetchAllVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.allVehicles = result.Items;
+    });
   }
 }

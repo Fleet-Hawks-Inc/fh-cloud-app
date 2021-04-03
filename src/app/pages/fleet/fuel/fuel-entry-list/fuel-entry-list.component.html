@@ -7,17 +7,19 @@
 		<section role="main" class="content-body pl-0">
 			<header class="page-header">
 				<form class="form-horizontal" method="get" name="form" id="form_">
-					<div class="row pr-4 pl-4" style="padding-top:9px;">
+					<div class="row pr-4 pl-4" style="padding-top:9px;"> 
 						<div class="col-md-2 col-lg-2 pr-0 pl-0">
-							<div class="input-group input-group-sm mb-3">
-								<input autocomplete="off" type="text" name="unitName" [(ngModel)]="unitName" class="form-control"
-									(input)="getSuggestions($event.target.value)" placeholder="Search Fuel Entry by Unit" />
+							<div class="input-group input-group-sm mb-3"> 
+								<ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
+									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+								</ng-select>
 							</div>
-							<div *ngIf="suggestedUnits?.length > 0" class="result-suggestions">
-								<ul>
-									<li *ngFor="let suggestedUnit of suggestedUnits" style="cursor: pointer;"
-										(click)="setUnit(suggestedUnit.unitID, suggestedUnit.unitName)"> {{ suggestedUnit.unitName }}</li>
-								</ul>
+						</div>
+						<div class="col-md-2 col-lg-2 pr-0 pl-2">
+							<div class="input-group input-group-sm mb-3">
+								<ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;" placeholder="Search issues by asset">
+									<ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
+								</ng-select>
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-3">
@@ -27,12 +29,12 @@
 										<i class="fas fa-calendar-alt"></i>
 									</span>
 								</span>
-								<input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="DD-MM-YYYY" (click)="from.toggle()"
+								<input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="YYYY/MM/DD" (click)="from.toggle()"
 									ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off">
 								<span class="input-group-text border-left-0 border-right-0 rounded-0">
 									to
 								</span>
-								<input [(ngModel)]="toDate" name="toDate" type="text" placeholder="DD-MM-YYYY" (click)="to.toggle()"
+								<input [(ngModel)]="toDate" name="toDate" type="text" placeholder="YYYY/MM/DD" (click)="to.toggle()"
 									ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off">
 							</div>
 						</div>
@@ -41,7 +43,7 @@
 								class="btn btn-sm btn-success mr-2">Search</button>
 							<button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
 						</div>
-						<div class="col-md-5  col-lg-5 text-right pr-5 page-buttons">
+						<div class="col-md-3  col-lg-3 text-right pr-5 page-buttons">
 							<div class="btn-group flex-wrap">
 								<button type="button" class="btn btn-success btn-sm dropdown-toggle"
 									data-toggle="dropdown" aria-expanded="false">Actions<span
