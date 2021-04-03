@@ -5,7 +5,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -130,7 +130,7 @@ export class AddAccountComponent implements OnInit {
   statesBank = [];
   citiesBank = [];
   masterCarrierName = '';
-  masterCarrierID = '';
+  masterCarrierID = '1';
   errors = {};
   form;
   response: any = '';
@@ -554,7 +554,9 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
-    this.masterCarrierName = this.carrierName;
+    if (this.counter === 0) {
+      this.masterCarrierName = this.carrierName;
+    }
     const data = {
       CCC: this.CCC,
       DBAName: this.DBAName,
@@ -574,6 +576,7 @@ export class AddAccountComponent implements OnInit {
       lastName: this.lastName,
       liabilityInsurance: this.liabilityInsurance,
       password: this.password,
+      confirmPassword: this.confirmPassword,
       addressDetails: this.addressDetails,
       phone: this.phone,
       fleets: {
@@ -599,228 +602,37 @@ export class AddAccountComponent implements OnInit {
     // append other fields
     formData.append('data', JSON.stringify(data));
     try {
-      if(this.counter > 0) {
-        return await new Promise((resolve, reject) => {
-          this.apiService.postData(`carriers/${this.masterCarrierID}`, formData, true).subscribe({
-            complete: () => { },
-            error: (err: any) => {
-              from(err.error)
-                .pipe(
-                  map((val: any) => {
-                    val.message = val.message.replace(/".*"/, 'This Field');
-                    this.errors[val.context.label] = val.message;
-                  })
-                )
-                .subscribe({
-                  complete: () => {
-                    this.throwErrors();
-                    this.hasError = true;
-                    if (err) return reject(err);
-                  },
-                  error: () => { },
-                  next: () => { },
-                });
-            },
-            next: (res) => {
-              this.response = res;
-              this.Success = '';
-              this.toaster.success('Carrier added successfully.');
-              $('#ascCmpModal').modal('show');
-              let data = {
-                activeTab: 1,
-                ascCmp: [],
-                penAscCmp: [],
-                CCC: '',
-                DBAName: '',
-                DOT: '',
-                EIN: '',
-                MC: '',
-                SCAC: '',
-                CTPAT: false,
-                CSA: false,
-                PIP: false,
-                hasBasic: false,
-                hasBusiness: false,
-                hasAddress: false,
-                hasBank: false,
-                cargoInsurance: '',
-                email: '',
-                userName: '',
-                carrierName: '',
-                carrierBusinessName: '',
-                findingWay: '',
-                firstName: '',
-                lastName: '',
-                liabilityInsurance: '',
-                password: '',
-                confirmPassword: '',
-                phone: '',
-                uploadedLogo: '',
-                fleets: {
-                  curtainSide: 0,
-                  dryVans: 0,
-                  flatbed: 0,
-                  reefers: 0,
-                  totalFleets: 0,
-                  trailers: 0,
-                  trucks: 0,
+      return await new Promise((resolve, reject) => {
+        this.apiService.postData(`carriers/${this.masterCarrierID}`, formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.hasError = true;
+                  if (err) return reject(err);
                 },
-                addressDetails: [{
-                  addressType: '',
-                  countryID: '',
-                  countryName: '',
-                  stateID: '',
-                  stateName: '',
-                  cityID: '',
-                  cityName: '',
-                  zipCode: '',
-                  address1: '',
-                  address2: '',
-                  geoCords: {
-                    lat: '',
-                    lng: ''
-                  },
-                  manual: false
-                }],
-                bank: {
-                  branchName: '',
-                  accountNumber: '',
-                  routingNumber: '',
-                  institutionalNumber: '',
-                  addressDetails: [{
-                    addressType: '',
-                    countryID: '',
-                    countryName: '',
-                    stateID: '',
-                    stateName: '',
-                    cityID: '',
-                    cityName: '',
-                    zipCode: '',
-                    address1: '',
-                    address2: '',
-                    geoCords: {
-                      lat: '',
-                      lng: ''
-                    },
-                    manual: false
-                  }]
-                }
-              };
-            },
-          })
-        });
-      } else {
-        return await new Promise((resolve, reject) => {
-          this.apiService.postData(`carriers/${this.masterCarrierID}`, formData, true).subscribe({
-            complete: () => { },
-            error: (err: any) => {
-              from(err.error)
-                .pipe(
-                  map((val: any) => {
-                    val.message = val.message.replace(/".*"/, 'This Field');
-                    this.errors[val.context.label] = val.message;
-                  })
-                )
-                .subscribe({
-                  complete: () => {
-                    this.throwErrors();
-                    this.hasError = true;
-                    if (err) return reject(err);
-                  },
-                  error: () => { },
-                  next: () => { },
-                });
-            },
-            next: (res) => {
-              this.response = res;
-              this.Success = '';
-              this.toaster.success('Carrier added successfully.');
+                error: () => { },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.response = res;
+            this.Success = '';
+            this.toaster.success('Carrier added successfully.');
+            if (this.counter <=3 ){
               $('#ascCmpModal').modal('show');
-              let data = {
-                activeTab: 1,
-                ascCmp: [],
-                penAscCmp: [],
-                CCC: '',
-                DBAName: '',
-                DOT: '',
-                EIN: '',
-                MC: '',
-                SCAC: '',
-                CTPAT: false,
-                CSA: false,
-                PIP: false,
-                hasBasic: false,
-                hasBusiness: false,
-                hasAddress: false,
-                hasBank: false,
-                cargoInsurance: '',
-                email: '',
-                userName: '',
-                carrierName: '',
-                carrierBusinessName: '',
-                findingWay: '',
-                firstName: '',
-                lastName: '',
-                liabilityInsurance: '',
-                password: '',
-                confirmPassword: '',
-                phone: '',
-                uploadedLogo: '',
-                fleets: {
-                  curtainSide: 0,
-                  dryVans: 0,
-                  flatbed: 0,
-                  reefers: 0,
-                  totalFleets: 0,
-                  trailers: 0,
-                  trucks: 0,
-                },
-                addressDetails: [{
-                  addressType: '',
-                  countryID: '',
-                  countryName: '',
-                  stateID: '',
-                  stateName: '',
-                  cityID: '',
-                  cityName: '',
-                  zipCode: '',
-                  address1: '',
-                  address2: '',
-                  geoCords: {
-                    lat: '',
-                    lng: ''
-                  },
-                  manual: false
-                }],
-                bank: {
-                  branchName: '',
-                  accountNumber: '',
-                  routingNumber: '',
-                  institutionalNumber: '',
-                  addressDetails: [{
-                    addressType: '',
-                    countryID: '',
-                    countryName: '',
-                    stateID: '',
-                    stateName: '',
-                    cityID: '',
-                    cityName: '',
-                    zipCode: '',
-                    address1: '',
-                    address2: '',
-                    geoCords: {
-                      lat: '',
-                      lng: ''
-                    },
-                    manual: false
-                  }]
-                }
-              };
-            },
-          })
-        });
-      }
-
+            }
+          },
+        })
+      });
     } catch (error) {
       return 'error found';
     }
@@ -833,7 +645,7 @@ export class AddAccountComponent implements OnInit {
           .addClass('error');
       });
 
-    this.validateTabErrors()
+    this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);
   }
   hideErrors() {
@@ -863,17 +675,98 @@ export class AddAccountComponent implements OnInit {
     this.activeTab = value;
   }
   yesFn() {
-    this.counter = this.counter++;
-    this.masterCarrierName = 'FHhardeep';
+    this.counter = this.counter + 1;
     this.apiService.getData('carriers/carrierIDFromName/' + this.masterCarrierName).subscribe((res: any) => {
-    this.masterCarrierID = res.Items[0].carrierID;
+      this.masterCarrierID = res.Items[0].carrierID;
     });
     this.activeTab = 1;
+    this.ascCmp = [];
+    this.penAscCmp = [];
+    this.CCC = '';
+    this.DBAName = '';
+    this.DOT = '';
+    this.EIN = '';
+    this.MC = '';
+    this.SCAC = '';
+    this.CTPAT = false;
+    this.CSA = false;
+    this.PIP = false;
+    this.hasBasic = false;
+    this.hasBusiness = false;
+    this.hasAddress = false;
+    this.hasBank = false;
+    this.cargoInsurance = '';
+    this.email = '';
+    this.userName = '';
+    this.carrierName = '';
+    this.carrierBusinessName = '';
+    this.findingWay = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.liabilityInsurance = '';
+    this.password = '';
+    this.confirmPassword = '';
+    this.phone = '';
+    this.uploadedLogo = '';
+    this.fleets = {
+      curtainSide: 0,
+      dryVans: 0,
+      flatbed: 0,
+      reefers: 0,
+      totalFleets: 0,
+      trailers: 0,
+      trucks: 0,
+    };
+    this.addressDetails = [{
+      addressType: '',
+      countryID: '',
+      countryName: '',
+      stateID: '',
+      stateName: '',
+      cityID: '',
+      cityName: '',
+      zipCode: '',
+      address1: '',
+      address2: '',
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      manual: false
+    }];
+    this.bank = {
+      branchName: '',
+      accountNumber: '',
+      routingNumber: '',
+      institutionalNumber: '',
+      addressDetails: [{
+        addressType: '',
+        countryID: '',
+        countryName: '',
+        stateID: '',
+        stateName: '',
+        cityID: '',
+        cityName: '',
+        zipCode: '',
+        address1: '',
+        address2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        manual: false
+      }]
+    };
     $('#ascCmpModal').modal('hide');
   }
   noFn() {
-  this.toaster.success('Carrier added successfully.');
-  $('#ascCmpModal').modal('hide');
-  this.router.navigateByUrl('/Login');
+    this.toaster.success('Carrier added successfully.');
+    $('#ascCmpModal').modal('hide');
+    if (this.counter > 0){
+     this.toaster.success('Your associated company(s) request has been sent to Fleet Hawks Inc for approval and you will be notified via email.');
+    }else{
+      this.router.navigateByUrl('/Login');
+    }
+
   }
 }

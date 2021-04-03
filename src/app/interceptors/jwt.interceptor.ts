@@ -24,7 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         let arr = request.url.split('/');
 
-        if((arr[5] == 'countries' || arr[5] == 'states' || arr[5] == 'cities' || arr[5] == 'carriers') && request.method != 'POST') return next.handle(request);
+        if((arr[5] == 'countries' || arr[5] == 'states' || arr[5] == 'cities') && request.method == 'GET') return next.handle(request);
         if(arr[5] == 'carriers' && request.method == 'POST') return next.handle(request);
 
         return from(Auth.currentSession())

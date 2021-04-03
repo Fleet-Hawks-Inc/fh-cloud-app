@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Auth } from 'aws-amplify';
 import {Router} from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-all-carriers',
@@ -11,14 +12,18 @@ import {Router} from '@angular/router';
 })
 export class AllCarriersComponent implements OnInit {
   carriersList = [];
-  dataMessage: string = 'Fetching Data.....'
+  pendingCarriersList = [];
+  carrierNameList: any  = {};
+  dataMessage = 'Fetching Data.....';
   constructor(
-      private apiService: ApiService, 
+      private apiService: ApiService,
       private spinner: NgxSpinnerService,
+      private toastr: ToastrService,
       public router: Router) { }
 
   async ngOnInit() {
     this.fetchCarriers();
+    this.carrierNameListFn();
   }
 
   fetchCarriers(){
@@ -28,12 +33,25 @@ export class AllCarriersComponent implements OnInit {
         this.dataMessage = 'No Data Found';
       }
       this.carriersList = result.Items;
+      this.pendingCarriersList = this.carriersList.filter( e => e.penAscCmp.length > 0);
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
     });
-  }
 
+  }
+  carrierNameListFn() {
+    this.apiService.getData('carriers/get/list').subscribe((result: any) => {
+      this.carrierNameList = result;
+    });
+  }
+  approveCarrier(carrierID) {
+    this.apiService.getData(`carriers/approvecarrier/${carrierID}`).subscribe((result:any) => {
+      if(result) {
+        this.toastr.success('Carrier and associated company(s) approved.');
+      }
+    });
+  }
   Logout() {
     Auth.signOut();
     localStorage.removeItem('vehicle');
@@ -43,7 +61,7 @@ export class AllCarriersComponent implements OnInit {
     localStorage.removeItem('carrierID')
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
-     
+
   }
 
   selectCarrier(carrierID, carrierBusiness){
