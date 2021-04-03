@@ -2345,7 +2345,7 @@
 <!-- ADD owner operator MODAL -->
 <div class="modal fade" id="addOwnerOperatorModal" tabindex="-1" role="dialog" aria-labelledby="addOwnerOperatorModal"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px;" role="document">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 960px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">{{ modalTitle }} Owner Operator</h5>
@@ -2355,7 +2355,7 @@
             </div>
             <div class="modal-body text-dark">
                 <div class="card-body text-dark">
-                    <section class="card form-wizard" id="w1">
+                    <section class="card form-wizard mb-0" id="w1">
                         <div class="card-body card-body-nopadding">
                             <div class="">
                                 <ul class="nav top-tabs nav-tabs">
@@ -2386,7 +2386,7 @@
                                 <div class="tab-content">
                                     <div id="ownerBasic" [ngClass]="{'active show': custCurrentTab == 1}" class="tab-pane p-3 active">
                                         <div class="row pt-3">
-                                            <div class="col-lg-5 offset-lg-1">
+                                            <div class="col-lg-6">
                                                 <div class="row text-dark">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Company Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -2425,9 +2425,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-6">
                                                 <div class="row  mar-top-37">
-                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="business_image_style"
+                                                    <div class="col-lg-7 offset-lg-4 margin_50 text-center"> <img class="img-fluid"
                                                             [src]="profilePath" />
                                                         <div class="btn btn-sm btn-success overflow-hidden mt-3 position-relative" style="cursor: pointer;"> {{ imageText }}
                                                             <input (change)="uploadDriverImg($event)" type="file" class="hidden_input1 w-100" />
@@ -2439,7 +2439,7 @@
                                     </div>
                                     <div id="ownerPaymentDetails" [ngClass]="{'active show': custCurrentTab == 2}" class="tab-pane p-3">
                                         <div class="row">
-                                            <div class="col-lg-10 offset-lg-1">
+                                            <div class="col-lg-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card#&nbsp;<i
@@ -2481,11 +2481,11 @@
 
                                                     <div class="col-lg-6">
                                                         <div class="row" id="payPerHourForm" *ngIf="ownerData.paymentDetails.payrollType == 'Pay Per Hour'">
-                                                            <div class="col-lg-5">
+                                                            <div class="col-lg-6">
                                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
                                                                 <input type="number" class="form-control" [(ngModel)]="ownerData.paymentDetails.payrollRate" name="paymentDetails.payrollRate" placeholder="Enter Rate">
                                                             </div>
-                                                            <div class="col-lg-4">
+                                                            <div class="col-lg-6">
                                                                 <label class="control-label font-weight-bold text-lg-right pt-4"></label>
                                                                 <ng-select [(ngModel)]="ownerData.paymentDetails.payrollRateCurrency" class="form-control" name="paymentDetails.payrollRateCurrency" placeholder="Select Currency">
                                                                     <ng-option value="CAD">CAD</ng-option>
@@ -2497,13 +2497,13 @@
                                                             <div class="col-lg-10">
                                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
                                                                 <div class="row">
-                                                                    <div class="col-lg-2 pr-0">
+                                                                    <div class="col-lg-3">
                                                                         <input type="number" class="form-control" [(ngModel)]="ownerData.paymentDetails.payrollPercent" name="paymentDetails.payrollPercent">
                                                                     </div>
-                                                                    <div class="col-lg-2 px-0">
+                                                                    <div class="col-lg-1">
                                                                         <label class="font-weight-bold">% of</label>
                                                                     </div>
-                                                                    <div class="col-lg-8 px-0">
+                                                                    <div class="col-lg-8">
                                                                         <ng-select [(ngModel)]="ownerData.paymentDetails.percentType" class="form-control" name="paymentDetails.percentType" placeholder="Select Percent Type">
                                                                             <ng-option value="Freight Fees" selected=true>Freight Fees</ng-option>
                                                                             <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge</ng-option>
@@ -2515,24 +2515,24 @@
                                                         </div>
                                                         <div>
                                                             <div class="row" id="payPerMileForm" *ngIf="ownerData.paymentDetails.payrollType == 'Pay Per Mile'">
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-8">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
                                                                     <input type="number" [(ngModel)]="ownerData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
                                                                         class="form-control" placeholder="Enter Loaded Miles">
                                                                 </div>
-                                                                <div class="col-lg-2">
+                                                                <div class="col-lg-4">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
                                                                     <ng-select [(ngModel)]="ownerData.paymentDetails.loadedMilesCurrency" class="form-control" name="paymentDetails.loadedMilesCurrency" placeholder="Select Currency">
                                                                         <ng-option value="CAD">CAD</ng-option>
                                                                         <ng-option value="USD">USD</ng-option>
                                                                     </ng-select>
                                                                 </div>
-                                                                <div class="col-lg-4">
+                                                                <div class="col-lg-8">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles</label>
                                                                     <input type="number" [(ngModel)]="ownerData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
                                                                         class="form-control" placeholder="Enter Empty Miles">
                                                                 </div>
-                                                                <div class="col-lg-2">
+                                                                <div class="col-lg-4">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-4"></label>
                                                                     <ng-select [(ngModel)]="ownerData.paymentDetails.emptyMilesCurrency" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
                                                                         <ng-option value="CAD">CAD</ng-option>
@@ -2563,7 +2563,7 @@
                                     </div>
                                     <div id="ownerAddressDetails" [ngClass]="{'active show': custCurrentTab == 3}" class="tab-pane p-3">
                                         <div class="row pt-3 address-item"  *ngFor="let item of ownerData.address;let i = index;">
-                                            <div class="col-lg-3 offset-lg-1">
+                                            <div class="col-lg-5">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label
@@ -2578,13 +2578,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4 offset-lg-1">
+                                            <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}"
                                                 (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white">
-                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults">
+                                                <div class="map-search__results bg-white" *ngIf="searchResults">
+                                                    <ul class="p-0 m-0 text-left" >
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;" (click)="userAddress(ownerData, i, item)">{{item.address.label}}</a>
                                                         </li>
@@ -2603,10 +2603,10 @@
                                                 <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'operator')" class="btn btn-success"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
-                                            <div *ngIf="item.manual" class="row">
-                                                <div class="col-lg-4 offset-lg-1 pt-4">
+                                            <div *ngIf="item.manual" class="row mx-0">
+                                                <div class="col-lg-5 pt-4">
                                                     <div class="row">
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
                                                             <ng-select (change)= "getStates($event, 'operator', i)" [(ngModel)]="item.countryID"
@@ -2615,7 +2615,7 @@
                                                                 <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 State</label>
                                                             <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateID"
@@ -2624,7 +2624,7 @@
                                                                 <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-6">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
@@ -2634,7 +2634,7 @@
                                                                 <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-6">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                                 Code</label>
@@ -2668,7 +2668,7 @@
                                     </div>
                                     <div id="ownerAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane p-3">
                                         <div class="row">
-                                            <div class="col-lg-5 offset-lg-1">
+                                            <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
@@ -2690,7 +2690,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -2717,13 +2717,16 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-lg-12 text-right pr-5">
-                                            <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious mr-2">Prev</button>
-                                            <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext">Next</a>
-
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
-                                            <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()" [disabled]="operatorDisabled">Update</button>
+                                        <div class="col-lg-12 text-right">
+                                            <div class="row px-3">
+                                                <div class="col-lg-12">
+                                                    <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious ml-2">Prev</button>
+                                                    <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext ml-2">Next</a>
+                                                    <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
+                                                    <button type="button" class="btn btn-default ml-2" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()" [disabled]="operatorDisabled">Update</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

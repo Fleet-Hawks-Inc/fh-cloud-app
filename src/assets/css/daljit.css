@@ -676,3 +676,9 @@ label.error {
 .minWidth50 {
     min-width: 50px;
 }
+.minWidth130 {
+    min-width: 130px;
+}
+.hand-icon {
+    cursor: pointer;
+}
