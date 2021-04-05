@@ -470,6 +470,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.driverData.address[i]['userLocation'] = '';
+      this.driverData.address[i].zipCode = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
       this.driverData.address[i].countryID = '';
@@ -808,9 +809,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-
-
+    
     this.driverData.address[i].userLocation = result.address.label;
+    this.driverData.address[i].zipCode = result.address.postalCode;
 
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;

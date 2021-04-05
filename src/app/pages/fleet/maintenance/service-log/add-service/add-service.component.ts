@@ -155,10 +155,12 @@ export class AddServiceComponent implements OnInit {
 
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchVendors();
+    // this.fetchVendors();
+
     this.fetchInventory();
     this.fetchAssets();
     // this.fetchTasks();
+    this.listService.fetchVendors();
     this.listService.fetchTasks();
     this.fetchAllTasksIDs();    
     // this.searchLocation();
@@ -197,6 +199,7 @@ export class AddServiceComponent implements OnInit {
     //  }
 
      this.tasks = this.listService.tasksList;
+     this.vendors = this.listService.vendorList;
      
      
   }
