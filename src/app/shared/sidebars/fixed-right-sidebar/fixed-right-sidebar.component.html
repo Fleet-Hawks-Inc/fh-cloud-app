@@ -1,5 +1,5 @@
 
-<div class="prtsidebar text-dark">
+<div class="prtsidebar text-dark" *ngIf="!environment">
     <a href="#" data-toggle="tooltip" data-placement="left" title="" data-original-title="Settings">
         <img src="./assets/img/icon-set.png">
     </a>
@@ -22,6 +22,3 @@
         </a>
     </div>
 </div>
-
-<app-address-book></app-address-book>
-<app-shared-modals></app-shared-modals>
