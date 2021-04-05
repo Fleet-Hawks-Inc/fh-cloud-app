@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {forkJoin} from 'rxjs';
+import { forkJoin } from 'rxjs';
 declare var $: any;
 import * as moment from 'moment';
 
@@ -28,7 +28,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   response: any = '';
   hasError = false;
-  hasSuccess = false; 
+  hasSuccess = false;
   Error = '';
   Success = '';
   activityData = {
@@ -117,79 +117,79 @@ export class DispatchOverviewComponent implements OnInit {
     this.fetchAciManifest();
   }
 
-  async dispatchData(){ 
+  async dispatchData() {
     const current = this;
     current.spinner.show()
-    let latestEventActivities = new Promise(function(resolve, reject){
+    let latestEventActivities = new Promise(function (resolve, reject) {
       current.apiService.getData('activities').
-      subscribe(async (result: any) => {
+        subscribe(async (result: any) => {
           let activityGetUrl = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
 
-            if(element.tableName === 'serviceroutes') {
+            if (element.tableName === 'serviceroutes') {
               element.type = 'Route No.';
               element.typeValue = '';
 
-              let url = current.apiService.getData('routes/'+element.eventID);
+              let url = current.apiService.getData('routes/' + element.eventID);
               activityGetUrl.push(url);
             }
 
-            if(i === result.Items.length-1) {
+            if (i === result.Items.length - 1) {
               forkJoin(activityGetUrl)
-              .subscribe(serviceResp=> {
-                for (let j = 0; j < serviceResp.length; j++) {
-                  const element2 = serviceResp[j];
-                  if(element.tableName === 'serviceroutes') { 
-                    result.Items[j].typeValue = element2.Items[0].routeNo;
+                .subscribe(serviceResp => {
+                  for (let j = 0; j < serviceResp.length; j++) {
+                    const element2: any = serviceResp[j];
+                    if (element.tableName === 'serviceroutes') {
+                      result.Items[j].typeValue = element2.Items[0].routeNo;
+                    }
                   }
-                }
-                resolve(result.Items);
-                current.spinner.hide();
-              });
+                  resolve(result.Items);
+                  current.spinner.hide();
+                });
             }
           }
-      })
+        })
     })
 
-    let todayPickupCount = new Promise(function(resolve, reject){
+    let todayPickupCount = new Promise(function (resolve, reject) {
       let pickupObj = {
         todPickupCount: 0,
         tomPickupCount: 0
       };
-      var todayDate = new Date(); 
+      var todayDate = new Date();
       var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
       current.apiService.getData('trips').
-      subscribe((result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
-          const element = result.Items[i];
-          if(element.isDeleted === 0 && element.tripStatus === 'confirmed'){
-              if(element.dateCreated != '' && element.dateCreated != undefined) {
+        subscribe((result: any) => {
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
+            if (element.isDeleted === 0 && element.tripStatus === 'confirmed') {
+              if (element.dateCreated != '' && element.dateCreated != undefined) {
                 let pickDate = element.dateCreated.split("-");
-                var dateOne = new Date(pickDate[0], pickDate[1]-1, pickDate[2]);
-                if (todayDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)) { 
-                    pickupObj.todPickupCount = pickupObj.todPickupCount+1;
-                } else if(tomorrowDate.setHours(0,0,0,0) === dateOne.setHours(0,0,0,0)){
-                    pickupObj.tomPickupCount = pickupObj.tomPickupCount+1;
+                var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
+                if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                  pickupObj.todPickupCount = pickupObj.todPickupCount + 1;
+                } else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                  pickupObj.tomPickupCount = pickupObj.tomPickupCount + 1;
                 }
               }
-            resolve(pickupObj);
+              resolve(pickupObj);
+            }
           }
-        }
-      })
+        })
     })
 
-    await latestEventActivities.then(function(result){
+    await latestEventActivities.then(function (result) {
       this.activities = result;
       current.spinner.hide()
     }.bind(this))
 
-    await todayPickupCount.then(function(result){
+    await todayPickupCount.then(function (result) {
       this.todaysPickCount = result.todPickupCount;
       this.tomorrowsPickCount = result.tomPickupCount;
-      
+
     }.bind(this));
-    
+
   }
 
   fetchActiveTrips() {
@@ -201,38 +201,38 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
-  fetchAllTrips() { 
+  fetchAllTrips() {
     this.spinner.show();
     this.apiService.getData('trips').
       subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if(element.dateCreated !== '' && element.dateCreated !== undefined) {
+          if (element.dateCreated !== '' && element.dateCreated !== undefined) {
             let tripDate = element.dateCreated.split('-');
             let tripMonth = tripDate[1];
-            if(tripMonth == '1' || tripMonth == '01') {
+            if (tripMonth == '1' || tripMonth == '01') {
               this.tripsMonths.jan += 1;
-            } else if(tripMonth == '2' || tripMonth == '02') {
+            } else if (tripMonth == '2' || tripMonth == '02') {
               this.tripsMonths.feb += 1;
-            } else if(tripMonth == '3' || tripMonth == '03') {
+            } else if (tripMonth == '3' || tripMonth == '03') {
               this.tripsMonths.march += 1;
-            } else if(tripMonth == '4' || tripMonth == '04') {
+            } else if (tripMonth == '4' || tripMonth == '04') {
               this.tripsMonths.april += 1;
-            } else if(tripMonth == '5' || tripMonth == '05') {
+            } else if (tripMonth == '5' || tripMonth == '05') {
               this.tripsMonths.may += 1;
-            } else if(tripMonth == '6' || tripMonth == '06') {
+            } else if (tripMonth == '6' || tripMonth == '06') {
               this.tripsMonths.june += 1;
-            } else if(tripMonth == '7' || tripMonth == '07') {
+            } else if (tripMonth == '7' || tripMonth == '07') {
               this.tripsMonths.july += 1;
-            } else if(tripMonth == '8' || tripMonth == '08') {
+            } else if (tripMonth == '8' || tripMonth == '08') {
               this.tripsMonths.aug += 1;
-            } else if(tripMonth == '9' || tripMonth == '09') {
+            } else if (tripMonth == '9' || tripMonth == '09') {
               this.tripsMonths.sept += 1;
-            } else if(tripMonth == '10') {
+            } else if (tripMonth == '10') {
               this.tripsMonths.oct += 1;
-            } else if(tripMonth == '11') {
+            } else if (tripMonth == '11') {
               this.tripsMonths.nov += 1;
-            } else if(tripMonth == '12') {
+            } else if (tripMonth == '12') {
               this.tripsMonths.dec += 1;
             }
           }
@@ -269,17 +269,17 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('activities').
       subscribe(async (result: any) => {
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-  
-            if(element.tableName === 'serviceroutes') {
-              element.type = 'Route No.';
-              this.fetchRouteDetail(element.eventID, i, function(data){
-                element.typeValue = data;
-                this.activities.push(element);
-              }.bind(this));
-            }
+        for (let i = 0; i < result.Items.length; i++) {
+          const element = result.Items[i];
+
+          if (element.tableName === 'serviceroutes') {
+            element.type = 'Route No.';
+            this.fetchRouteDetail(element.eventID, i, function (data) {
+              element.typeValue = data;
+              this.activities.push(element);
+            }.bind(this));
           }
+        }
         this.spinner.hide();
       })
   }
@@ -304,8 +304,8 @@ export class DispatchOverviewComponent implements OnInit {
       })
   }
 
-  fetchRouteDetail(routeID, index, callback){
-    this.apiService.getData('routes/'+routeID).
+  fetchRouteDetail(routeID, index, callback) {
+    this.apiService.getData('routes/' + routeID).
       subscribe((result: any) => {
         result = result.Items[0];
         // this.activities[index].typeValue   = result.routeNo;
@@ -319,37 +319,37 @@ export class DispatchOverviewComponent implements OnInit {
       subscribe((result: any) => {
         let data = result.Items;
         this.aceManifestCount = result.Count;
-        if(result.Count > 0) {
+        if (result.Count > 0) {
           for (let i = 0; i < data.length; i++) {
             const element = data[i];
 
-            if(element.timeCreated != undefined && element.timeCreated != '') {
+            if (element.timeCreated != undefined && element.timeCreated != '') {
               let check = moment(element.timeCreated);
               let eventMonth = check.format('M');
 
-              if(eventMonth == '1' || eventMonth == '01') {
+              if (eventMonth == '1' || eventMonth == '01') {
                 this.aceMonths.jan += 1;
-              } else if(eventMonth == '2' || eventMonth == '02') {
+              } else if (eventMonth == '2' || eventMonth == '02') {
                 this.aceMonths.feb += 1;
-              } else if(eventMonth == '3' || eventMonth == '03') {
+              } else if (eventMonth == '3' || eventMonth == '03') {
                 this.aceMonths.march += 1;
-              } else if(eventMonth == '4' || eventMonth == '04') {
+              } else if (eventMonth == '4' || eventMonth == '04') {
                 this.aceMonths.april += 1;
-              } else if(eventMonth == '5' || eventMonth == '05') {
+              } else if (eventMonth == '5' || eventMonth == '05') {
                 this.aceMonths.may += 1;
-              } else if(eventMonth == '6' || eventMonth == '06') {
+              } else if (eventMonth == '6' || eventMonth == '06') {
                 this.aceMonths.june += 1;
-              } else if(eventMonth == '7' || eventMonth == '07') {
+              } else if (eventMonth == '7' || eventMonth == '07') {
                 this.aceMonths.july += 1;
-              } else if(eventMonth == '8' || eventMonth == '08') {
+              } else if (eventMonth == '8' || eventMonth == '08') {
                 this.aceMonths.aug += 1;
-              } else if(eventMonth == '9' || eventMonth == '09') {
+              } else if (eventMonth == '9' || eventMonth == '09') {
                 this.aceMonths.sept += 1;
-              } else if(eventMonth == '10') {
+              } else if (eventMonth == '10') {
                 this.aceMonths.oct += 1;
-              } else if(eventMonth == '11') {
+              } else if (eventMonth == '11') {
                 this.aceMonths.nov += 1;
-              } else if(eventMonth == '12') {
+              } else if (eventMonth == '12') {
                 this.aceMonths.dec += 1;
               }
             }
@@ -368,37 +368,37 @@ export class DispatchOverviewComponent implements OnInit {
         let data = result.Items;
         this.aciManifestCount = result.Count;
 
-        if(result.Count > 0) {
+        if (result.Count > 0) {
           for (let i = 0; i < data.length; i++) {
             const element = data[i];
 
-            if(element.timeCreated != undefined && element.timeCreated != '') {
+            if (element.timeCreated != undefined && element.timeCreated != '') {
               let check = moment(element.timeCreated);
               let eventMonth = check.format('M');
 
-              if(eventMonth == '1' || eventMonth == '01') {
+              if (eventMonth == '1' || eventMonth == '01') {
                 this.aciMonths.jan += 1;
-              } else if(eventMonth == '2' || eventMonth == '02') {
+              } else if (eventMonth == '2' || eventMonth == '02') {
                 this.aciMonths.feb += 1;
-              } else if(eventMonth == '3' || eventMonth == '03') {
+              } else if (eventMonth == '3' || eventMonth == '03') {
                 this.aciMonths.march += 1;
-              } else if(eventMonth == '4' || eventMonth == '04') {
+              } else if (eventMonth == '4' || eventMonth == '04') {
                 this.aciMonths.april += 1;
-              } else if(eventMonth == '5' || eventMonth == '05') {
+              } else if (eventMonth == '5' || eventMonth == '05') {
                 this.aciMonths.may += 1;
-              } else if(eventMonth == '6' || eventMonth == '06') {
+              } else if (eventMonth == '6' || eventMonth == '06') {
                 this.aciMonths.june += 1;
-              } else if(eventMonth == '7' || eventMonth == '07') {
+              } else if (eventMonth == '7' || eventMonth == '07') {
                 this.aciMonths.july += 1;
-              } else if(eventMonth == '8' || eventMonth == '08') {
+              } else if (eventMonth == '8' || eventMonth == '08') {
                 this.aciMonths.aug += 1;
-              } else if(eventMonth == '9' || eventMonth == '09') {
+              } else if (eventMonth == '9' || eventMonth == '09') {
                 this.aciMonths.sept += 1;
-              } else if(eventMonth == '10') {
+              } else if (eventMonth == '10') {
                 this.aciMonths.oct += 1;
-              } else if(eventMonth == '11') {
+              } else if (eventMonth == '11') {
                 this.aciMonths.nov += 1;
-              } else if(eventMonth == '12') {
+              } else if (eventMonth == '12') {
                 this.aciMonths.dec += 1;
               }
             }
@@ -416,35 +416,35 @@ export class DispatchOverviewComponent implements OnInit {
       responsive: true,
       // maintainAspectRatio: false,
       tooltips: {
-          mode: 'index',
-          intersect: false,
+        mode: 'index',
+        intersect: false,
       },
       hover: {
-          mode: 'nearest',
-          intersect: true
+        mode: 'nearest',
+        intersect: true
       },
       legend: {
-          position: 'top',
-          labels: {
-            boxWidth: 10
-          }
+        position: 'top',
+        labels: {
+          boxWidth: 10
+        }
       },
       scales: {
         yAxes: [{
-           display: true,
-           scaleLabel: {
-              display: true,
-           },
-           ticks: {
-              min: 0,
-              stepSize: 10,
-              suggestedMin: 0,
-              callback: (value, index, values) => {
-                 return value;
-              }
-           }
+          display: true,
+          scaleLabel: {
+            display: true,
+          },
+          ticks: {
+            min: 0,
+            stepSize: 10,
+            suggestedMin: 0,
+            callback: (value, index, values) => {
+              return value;
+            }
+          }
         }]
-     }
+      }
     };
     this.chartLabels = ['January', 'February', 'March', ' April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.chartType = 'line';
@@ -465,7 +465,7 @@ export class DispatchOverviewComponent implements OnInit {
         borderColor: '#000',
         borderWidth: 1,
         data: this.aciGraphData
-     }
+      }
     ];
   }
 
@@ -475,24 +475,24 @@ export class DispatchOverviewComponent implements OnInit {
       responsive: true,
       // maintainAspectRatio: false,
       tooltips: {
-          mode: 'index',
-          intersect: false,
+        mode: 'index',
+        intersect: false,
       },
       hover: {
-          mode: 'nearest',
-          intersect: true
+        mode: 'nearest',
+        intersect: true
       },
       legend: {
-          position: 'top',
-          labels: {
-            boxWidth: 10
-          }
+        position: 'top',
+        labels: {
+          boxWidth: 10
+        }
       },
       scales: {
         xAxes: [{
           barPercentage: 0.4
         }]
-     }
+      }
     };
     this.tripChartLabels = ['January', 'February', 'March', ' April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     this.tripChartType = 'bar';
@@ -505,7 +505,7 @@ export class DispatchOverviewComponent implements OnInit {
         borderColor: '#9c9ea1',
         borderWidth: 1,
         data: this.tripGraphData,
-     }
+      }
     ];
   }
 }

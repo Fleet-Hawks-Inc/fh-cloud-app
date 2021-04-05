@@ -153,30 +153,30 @@ export class PdfAutomationComponent implements OnInit {
           let files: any = e.target.files[0];
           console.log(files);
 
-          const contentType = files.type;
-          const bucket = new S3(
-            {
-              accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
-              secretAccessKey: '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',
-              region: 'us-east-2'
-            }
-          );
+          // const contentType = files.type;
+          // const bucket = new S3(
+          //   {
+          //     accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
+          //     secretAccessKey: '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',
+          //     region: 'us-east-2'
+          //   }
+          // );
 
-          const params = {
-            Bucket: 'pdfautomation-bucket',
-            Key: files.name,
-            Body: files,
-            ACL: 'public-read',
-            ContentType: contentType
-          };
-          bucket.upload(params, function (err, data) {
-            if (err) {
-              console.log('There was an error uploading your file: ', err);
-              return false;
-            }
-            console.log('Successfully uploaded file.', data);
-            return true;
-          });
+          // const params = {
+          //   Bucket: 'pdfautomation-bucket',
+          //   Key: files.name,
+          //   Body: files,
+          //   ACL: 'public-read',
+          //   ContentType: contentType
+          // };
+          // bucket.upload(params, function (err, data) {
+          //   if (err) {
+          //     console.log('There was an error uploading your file: ', err);
+          //     return false;
+          //   }
+          //   console.log('Successfully uploaded file.', data);
+          //   return true;
+          // });
           //for upload progress   
           /*bucket.upload(params).on('httpUploadProgress', function (evt) {
                     console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
@@ -283,33 +283,33 @@ export class PdfAutomationComponent implements OnInit {
       }
         uf.onchange = (e?: HTMLInputEvent) => {
 
-          let files: any = e.target.files[0];
-          console.log(files);
+          // let files: any = e.target.files[0];
+          // console.log(files);
 
-          const contentType = files.type;
-          const bucket = new S3(
-            {
-              accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
-              secretAccessKey: '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',
-              region: 'us-east-2'
-            }
-          );
+          // const contentType = files.type;
+          // const bucket = new S3(
+          //   {
+          //     accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
+          //     secretAccessKey: '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',
+          //     region: 'us-east-2'
+          //   }
+          // );
 
-          const params = {
-            Bucket: 'pdfautomation-bucket',
-            Key: files.name,
-            Body: files,
-            ACL: 'public-read',
-            ContentType: contentType
-          };
-          bucket.upload(params, function (err, data) {
-            if (err) {
-              console.log('There was an error uploading your file: ', err);
-              return false;
-            }
-            console.log('Successfully uploaded file.', data);
-            return true;
-          });
+          // const params = {
+          //   Bucket: 'pdfautomation-bucket',
+          //   Key: files.name,
+          //   Body: files,
+          //   ACL: 'public-read',
+          //   ContentType: contentType
+          // };
+          // bucket.upload(params, function (err, data) {
+          //   if (err) {
+          //     console.log('There was an error uploading your file: ', err);
+          //     return false;
+          //   }
+          //   console.log('Successfully uploaded file.', data);
+          //   return true;
+          // });
           //for upload progress   
           /*bucket.upload(params).on('httpUploadProgress', function (evt) {
                     console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
@@ -327,80 +327,79 @@ export class PdfAutomationComponent implements OnInit {
 
 
 
-          for (var i = 0, f; f = files[i]; i++) {
-            console.log("working")
+          // for (var i = 0, f; f = files[i]; i++) {
+          //   console.log("working")
 
-            var reader = new FileReader();
+          //   var reader = new FileReader();
 
-            if (!f.type.match('image.*')) {
-              continue;
-            }
-            reader.onload = (function (theFile) {
-              return function (evt) {
+          //   if (!f.type.match('image.*')) {
+          //     continue;
+          //   }
+          //   reader.onload = (function (theFile) {
+          //     return function (evt) {
 
-                var span = document.createElement('span');
-                span.innerHTML = ['<img class="thumb" src="', evt.target.result,
-                  '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById('list').insertBefore(span, null);
-              };
-            })(f);
+          //       var span = document.createElement('span');
+          //       span.innerHTML = ['<img class="thumb" src="', evt.target.result,
+          //         '" title="', escape(theFile.name), '"/>'].join('');
+          //       document.getElementById('list').insertBefore(span, null);
+          //     };
+          //   })(f);
 
 
-            reader.readAsDataURL(f);
-          }
+          //   reader.readAsDataURL(f);
+          // }
           // (async () => {
           //   await delay(2000);
 
 
 
-          console.log("hello!");
-          console.log(files.webkitRelativePath)
-          const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
+        
+          // const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
 
 
 
-             console.log("uf.onchange");
+          //    console.log("uf.onchange");
        
-          // Loaded via <script> tag, create shortcut to access PDF.js exports.
-          const pdfjsLib = window['pdfjs-dist/build/pdf'];
+          // // Loaded via <script> tag, create shortcut to access PDF.js exports.
+          // const pdfjsLib = window['pdfjs-dist/build/pdf'];
 
-          // The workerSrc property shall be specified.
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+          // // The workerSrc property shall be specified.
+          // pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
 
-          const loadingTask = pdfjsLib.getDocument(url);
-
-
-          loadingTask.promise.then((pdf) => {
-            console.log('PDF loaded');
+          // //const loadingTask = pdfjsLib.getDocument(url);
 
 
-            const pageNumber = 1;
-            pdf.getPage(pageNumber).then(function (page) {
-              console.log('Page loaded');
-
-              const scale = 2;
-              const viewport = page.getViewport({ scale: scale });
+          // loadingTask.promise.then((pdf) => {
+          //   console.log('PDF loaded');
 
 
-              const canvasShadowed = canvas;
-              const context = canvasShadowed.getContext('2d');
+          //   const pageNumber = 1;
+          //   pdf.getPage(pageNumber).then(function (page) {
+          //     console.log('Page loaded');
 
-              canvasShadowed.height = viewport.height;
-              canvasShadowed.width = viewport.width;
+          //     const scale = 2;
+          //     const viewport = page.getViewport({ scale: scale });
 
-              const renderContext = {
-                canvasContext: context,
-                viewport
-              };
-              renderTask = page.render(renderContext);
-              renderTask.promise.then(() => {
-                console.log('Page rendered');
-              });
-            });
-          }, (reason) => {
-            // PDF loading error
-            console.error(reason);
-          });
+
+          //     const canvasShadowed = canvas;
+          //     const context = canvasShadowed.getContext('2d');
+
+          //     canvasShadowed.height = viewport.height;
+          //     canvasShadowed.width = viewport.width;
+
+          //     const renderContext = {
+          //       canvasContext: context,
+          //       viewport
+          //     };
+          //     renderTask = page.render(renderContext);
+          //     renderTask.promise.then(() => {
+          //       console.log('Page rendered');
+          //     });
+          //   });
+          // }, (reason) => {
+          //   // PDF loading error
+          //   console.error(reason);
+          // });
 
 
           (async () => {

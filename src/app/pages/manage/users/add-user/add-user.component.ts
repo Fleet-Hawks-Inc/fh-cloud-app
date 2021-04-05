@@ -4,11 +4,11 @@ import { ApiService } from '../../../../services';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
-import {Router, ActivatedRoute, RouterStateSnapshot, RouterState} from '@angular/router';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
-import { NgForm} from '@angular/forms';
-import {NgbCalendar, NgbDateAdapter, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -16,7 +16,7 @@ declare var $: any;
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  @ViewChild('userForm',null) userForm: NgForm;
+  @ViewChild('userForm') userForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   pageTitle = 'Add User';
   userID: string;
@@ -27,85 +27,87 @@ export class AddUserComponent implements OnInit {
   cities = [];
   users: [];
   groups = [];
- /**
-  * form data
-  */
+  /**
+   * form data
+   */
 
-      firstName = '';
-      lastName = '';
-      employeeID = '';
-      dateOfBirth = '';
-      phone = '';
-      email = '';
-      currentStatus = '';
-      showIcons = false;
-    addressDetails = [{
-      addressType:'',
-      countryID: '',
-      countryName: '',
-      stateID: '',
-      stateName: '',
-      cityID: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
-      geoCords: {
-        lat: '',
-        lng: ''
-      },
-      manual: false
-    }];
-    userImage: '';
-      departmentName = '';
-      userType = '';
-      groupID = '';
-      userName = '';
-      userPassword = '';
-      confirmUserPassword = '';
-      timeCreated = '';
-      disableInput = false; // to disable username nd password fields while editing
-      /**
-       * variable to show error
-       */
-      errorClass = false;
-      isSubmitted = false;
-      deletedAddress = [];
- /**
-  * Photo data
-  **/
- profileTitle = 'Add';
- selectedFiles: FileList;
- selectedFileNames: Map<any, any>;
- public userProfileSrc: any = 'assets/img/driver/driver.png';
- uploadedPhotos = [];
- /**
- *Group Properties
-*/
-groupData = {
-  groupName: '',
-  groupType: Constants.GROUP_USERS,
-  description: '',
-  groupMembers: []
-};
- selectPhoto(event) {
-  let files = [...event.target.files];
-  const reader = new FileReader();
-  reader.onload = e => this.userProfileSrc = reader.result;
-  reader.readAsDataURL(files[0]);
-  this.uploadedPhotos = [];
-  this.uploadedPhotos.push(files[0])
+  firstName = '';
+  lastName = '';
+  employeeID = '';
+  dateOfBirth = '';
+  phone = '';
+  email = '';
+  currentStatus = '';
+  showIcons = false;
+  addressDetails = [{
+    addressType: '',
+    countryID: '',
+    countryName: '',
+    stateID: '',
+    stateName: '',
+    cityID: '',
+    cityName: '',
+    zipCode: '',
+    address1: '',
+    address2: '',
+    geoCords: {
+      lat: '',
+      lng: ''
+    },
+    manual: false
+  }];
+  userImage: '';
+  departmentName = '';
+  userType = '';
+  groupID = '';
+  userName = '';
+  userPassword = '';
+  confirmUserPassword = '';
+  timeCreated = '';
+  disableInput = false; // to disable username nd password fields while editing
+  /**
+   * variable to show error
+   */
+  errorClass = false;
+  isSubmitted = false;
+  deletedAddress = [];
+  /**
+   * Photo data
+   **/
+  profileTitle = 'Add';
+  selectedFiles: FileList;
+  selectedFileNames: Map<any, any>;
+  public userProfileSrc: any = 'assets/img/driver/driver.png';
+  uploadedPhotos = [];
+  /**
+  *Group Properties
+ */
+  groupData = {
+    groupName: '',
+    groupType: Constants.GROUP_USERS,
+    description: '',
+    groupMembers: []
+  };
 
-  if(this.uploadedPhotos.length > 0) {
-    this.profileTitle = 'Change';
+
+  selectPhoto(event) {
+    let files = [...event.target.files];
+    const reader = new FileReader();
+    reader.onload = e => this.userProfileSrc = reader.result;
+    reader.readAsDataURL(files[0]);
+    this.uploadedPhotos = [];
+    this.uploadedPhotos.push(files[0])
+
+    if (this.uploadedPhotos.length > 0) {
+      this.profileTitle = 'Change';
+    }
   }
-}
-removeProfile() {
-  this.userProfileSrc = 'assets/img/driver/driver.png';
-  this.uploadedPhotos = [];
-  this.profileTitle = 'Add';
-  this.showIcons = false;
-}
+  removeProfile() {
+    this.userProfileSrc = 'assets/img/driver/driver.png';
+    this.uploadedPhotos = [];
+    this.profileTitle = 'Add';
+    this.showIcons = false;
+  }
 
   /**
    * address
@@ -126,10 +128,10 @@ removeProfile() {
   errors = {};
   Success = '';
   constructor(private location: Location,
-    private HereMap: HereMapService,private dateAdapter: NgbDateAdapter<string>,private ngbCalendar: NgbCalendar, private apiService: ApiService, private toastr: ToastrService, private router: Router,private route: ActivatedRoute) { }
-    get today() {
-      return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
-    }
+    private HereMap: HereMapService, private dateAdapter: NgbDateAdapter<string>, private ngbCalendar: NgbCalendar, private apiService: ApiService, private toastr: ToastrService, private router: Router, private route: ActivatedRoute) { }
+  get today() {
+    return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
+  }
   ngOnInit() {
     this.userID = this.route.snapshot.params[`userID`];
     if (this.userID) {
@@ -160,7 +162,7 @@ removeProfile() {
   fetchAddress() {
     this.apiService.getData('addresses')
       .subscribe((result: any) => {
-    });
+      });
   }
   manAddress(event, i) {
     if (event.target.checked) {
@@ -170,7 +172,7 @@ removeProfile() {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  cancelModel(){
+  cancelModel() {
     $('#addGroupModal').modal('hide');
   }
   fetchUsers() {
@@ -342,19 +344,19 @@ removeProfile() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if (this.userPassword === this.confirmUserPassword && this.userPassword !== ''){
+    if (this.userPassword === this.confirmUserPassword && this.userPassword !== '') {
       for (let i = 0; i < this.addressDetails.length; i++) {
         const element = this.addressDetails[i];
         if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
           let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
           ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
           let result = await this.HereMap.geoCode(fullAddress);
-          if(result.items.length > 0) {
+          if (result.items.length > 0) {
             result = result.items[0];
             element.geoCords.lat = result.position.lat;
             element.geoCords.lng = result.position.lng;
-            }
           }
+        }
       }
       const data = {
         firstName: this.firstName,
@@ -368,20 +370,20 @@ removeProfile() {
         userType: this.userType,
         groupID: this.groupID,
         userName: this.userName,
-        password : this.userPassword,
+        password: this.userPassword,
         addressDetails: this.addressDetails
-    };
-        // create form data instance
-        const formData = new FormData();
+      };
+      // create form data instance
+      const formData = new FormData();
 
-        //append photos if any
-        for(let i = 0; i < this.uploadedPhotos.length; i++){
-          formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-        }
-         //append other fields
+      //append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      //append other fields
       formData.append('data', JSON.stringify(data));
 
-      this.apiService.postData('users',formData, true).subscribe({
+      this.apiService.postData('users', formData, true).subscribe({
         complete: () => { },
         error: (err: any) => {
           from(err.error)
@@ -405,10 +407,10 @@ removeProfile() {
           this.response = res;
           this.isSubmitted = true;
           this.toastr.success('User Added Successfully.');
-         // this.location.back();
+          // this.location.back();
         }
       });
-    } else{
+    } else {
       this.errorClass = true;
     }
 
@@ -443,14 +445,14 @@ removeProfile() {
       this.employeeID = result.employeeID;
       this.dateOfBirth = result.dateOfBirth;
       this.phone = result.phone;
-      this. email = result.email;
+      this.email = result.email;
       this.currentStatus = result.currentStatus;
       this.departmentName = result.departmentName;
       this.userType = result.userType;
       this.groupID = result.groupID;
       this.userName = result.userName;
       this.timeCreated = result.timeCreated;
-      if(result.userImage !== '' && result.userImage !== undefined) {
+      if (result.userImage !== '' && result.userImage !== undefined) {
         this.userProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.userImage}`;
         this.showIcons = true;
         this.profileTitle = 'Change';
@@ -459,8 +461,8 @@ removeProfile() {
         this.showIcons = false;
       }
       for (let i = 0; i < result.addressDetails.length; i++) {
-         this.getStates(result.addressDetails[i].countryID);
-         this.getCities(result.addressDetails[i].stateID);
+        this.getStates(result.addressDetails[i].countryID);
+        this.getCities(result.addressDetails[i].stateID);
         if (result.addressDetails[i].manual) {
           this.newAddress.push({
             addressID: result.addressDetails[i].addressID,
@@ -509,7 +511,7 @@ removeProfile() {
   /**
    * update user
    */
- async updateUser() {
+  async updateUser() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -520,9 +522,9 @@ removeProfile() {
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+          result = result.items[0];
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
         }
       }
     }
@@ -538,17 +540,17 @@ removeProfile() {
       userType: this.userType,
       groupID: this.groupID,
       userName: this.userName,
-      timeCreated : this.timeCreated,
+      timeCreated: this.timeCreated,
       addressDetails: this.addressDetails
-  };
-      // create form data instance
-      const formData = new FormData();
+    };
+    // create form data instance
+    const formData = new FormData();
 
-      //append photos if any
-      for(let i = 0; i < this.uploadedPhotos.length; i++){
-        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-      }
-       //append other fields
+    //append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+    //append other fields
     formData.append('data', JSON.stringify(data));
 
     this.apiService.putData('users', formData, true).subscribe({
@@ -577,7 +579,7 @@ removeProfile() {
         this.isSubmitted = true;
         for (let i = 0; i < this.deletedAddress.length; i++) {
           const element = this.deletedAddress[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
 
         }
         this.toastr.success('User Updated Successfully.');

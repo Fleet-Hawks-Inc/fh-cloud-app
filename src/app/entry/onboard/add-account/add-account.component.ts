@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  @ViewChild('carrierForm', null) carrierForm: NgForm;
+  @ViewChild('carrierForm') carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   activeTab = 1;
