@@ -6,20 +6,9 @@
                 <div class="row pr-1 mr-1" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-md mb-3">
-                            <input type="text" autocomplete="off" name="firstName" [(ngModel)]="firstName"
-                                class="form-control" (input)="getSuggestions($event.target.value)"
-                                placeholder="Search by contact" />
-                        </div>
-                        <div *ngFor="let suggestedContact of suggestedContacts" class="suggestionClass" (click)="
-                            setContact(
-                              suggestedContact.userName,
-                              suggestedContact.firstName,
-                              suggestedContact.lastName
-                            )
-                          ">
-                            {{ suggestedContact.firstName}} {{ suggestedContact.lastName}}
-                        </div>
+                        <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" placeholder="Search by vehicle">
+                            <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                        </ng-select>
                     </div>
 
                     <div class="col-lg-2 col-md-2">
@@ -48,7 +37,7 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-2">
+                        <div class="btn-group flex-wrap mr-2" *ngIf=!environment>
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"

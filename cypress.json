@@ -1,6 +1,6 @@
 {
-    "baseUrl":"http://localhost:4200/",
-    "viewportHeight":1080,
-    "viewportWidth":1920,
-    "experimentalStudio":true
+    "baseUrl": "http://localhost:4200",
+    "experimentalStudio": true,
+    "testerUserName":"e2etestcarrier",
+    "testerPassword":"FleetHawks@1302"
 }

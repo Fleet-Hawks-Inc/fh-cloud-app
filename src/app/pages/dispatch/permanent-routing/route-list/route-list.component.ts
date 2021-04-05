@@ -3,6 +3,7 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
 declare var $: any;
 
 @Component({
@@ -13,6 +14,7 @@ declare var $: any;
 
 export class RouteListComponent implements OnInit {
   
+  dataMessage: string = Constants.FETCHING_DATA;
   title = "Permanent Routes";
   routes = [];
   suggestedRoutes = [];
@@ -22,7 +24,7 @@ export class RouteListComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
   routesLength = 0;
@@ -57,6 +59,8 @@ export class RouteListComponent implements OnInit {
       complete: () => {},
       error: () => {},
       next: (result: any) => {
+        this.routeDraw = 0;
+        this.lastEvaluatedKey = '';
         this.fetchRoutes();
         this.initDataTable();
         this.spinner.hide();
@@ -70,6 +74,12 @@ export class RouteListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('routes/fetch/records?search=' + this.searchedRouteId + '&lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedRoutes = [];
+        this.getStartandEndVal();
+
         this.routes = result['Items'];
         if (this.searchedRouteId != '') {
           this.routeStartPoint = 1;
@@ -104,34 +114,34 @@ export class RouteListComponent implements OnInit {
 
   getSuggestions(searchvalue='') {
     this.suggestedRoutes = [];
+    this.searchedRouteId = '';
     if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
       this.apiService.getData('routes/get/suggestions/'+searchvalue).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
-          this.suggestedRoutes = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-  
-            let obj = {
-              id: element.routeID,
-              name: element.routeName
-            };
-            this.suggestedRoutes.push(obj)
-          }
+          this.suggestedRoutes = result.Items;
         }
       })
     }    
   }
 
   searchSelectedRoute(route) {
-    this.searchedRouteId = route.id;
-    this.searchedRouteName = route.name;
+    this.searchedRouteId = route.routeName;
+    this.searchedRouteName = route.routeName;
     this.suggestedRoutes = [];
   }
 
   searchFilter() {
-    if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
+    if(this.searchedRouteName !== '') {
+      if(this.searchedRouteId == '') {
+        this.searchedRouteId = this.searchedRouteName;
+      }
+      this.routes = [];
+      this.suggestedRoutes = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchRoutes();
       this.initDataTable();
     } else {
       return false;
@@ -142,6 +152,11 @@ export class RouteListComponent implements OnInit {
     if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
       this.searchedRouteId = '';
       this.searchedRouteName = '';
+      this.routes = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.suggestedRoutes = [];
+      this.fetchRoutes();
+      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -155,17 +170,19 @@ export class RouteListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.routeNext = true;
+    this.routePrev = true;
     this.routeDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.routeNext = true;
+    this.routePrev = true;
     this.routeDraw -= 1;
     this.lastEvaluatedKey = this.routePrevEvauatedKeys[this.routeDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

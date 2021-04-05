@@ -26,6 +26,7 @@ import { HosDetailComponent } from './hos-violation/hos-detail/hos-detail.compon
 import { ScorecardListComponent } from './driver-scorecard/scorecard-list/scorecard-list.component';
 import { ScorecardDetailComponent } from './driver-scorecard/scorecard-detail/scorecard-detail.component';
 
+
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */

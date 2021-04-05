@@ -86,6 +86,7 @@ export class AddRouteComponent implements OnInit {
   weekClass = '';
   biClass = '';
   isDaily = false;
+  routeBtnStatus = false;
 
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
@@ -98,7 +99,7 @@ export class AddRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mapShow();
+    // this.mapShow();
     this.listService.fetchVehicles();
     this.listService.fetchDrivers();
     this.listService.fetchAssets();
@@ -221,6 +222,7 @@ calculateActualMiles(miles){
     }
     
     // this.spinner.show();
+    this.routeBtnStatus = true;
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -238,8 +240,10 @@ calculateActualMiles(miles){
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.routeBtnStatus = false;
             },
             error: () => {
+              this.routeBtnStatus = false;
             },
             next: () => {
             },
@@ -247,6 +251,7 @@ calculateActualMiles(miles){
       },
       next: (res) => {
         this.response = res;
+        this.routeBtnStatus = false;
         this.toastr.success('Route added successfully.');
         this.router.navigateByUrl('/dispatch/routes/list');
       },
@@ -443,6 +448,7 @@ calculateActualMiles(miles){
   updateRoute() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.routeBtnStatus = true;
     if (this.routeData.recurring.recurringRoute === true) {
       if(this.routeData.recurring.recurringType == '') {
         this.toastr.error('Please select recurring type.');
@@ -467,14 +473,18 @@ calculateActualMiles(miles){
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.routeBtnStatus = false;
             },
-            error: () => {},
+            error: () => {
+              this.routeBtnStatus = false;
+            },
             next: () => {},
           });
       },
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.routeBtnStatus = false;
         this.router.navigateByUrl('/dispatch/routes/list');
         this.toastr.success('Route updated successfully.');
       },

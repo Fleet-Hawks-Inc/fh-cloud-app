@@ -32,7 +32,7 @@
                               [routerLink]="">Documents Details</a>
                         </li>
                         <li class="nav-item">
-                           <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)"
+                           <a class="nav-link" [ngClass]="{'active': currentTab == 4, 'tab-error': hasCrossBrdr}" (click)="tabChange(4)"
                               [routerLink]="">Cross Border</a>
                         </li>
                         <li class="nav-item">
@@ -98,7 +98,7 @@
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
                                              </div> -->
-                                             <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                             <input [disabled]="isEdit" [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter employee ID of driver">
                                           </div>
                                        </div>
@@ -141,7 +141,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">User
                                              Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input id="txtUserName" [(ngModel)]="driverData.userName" name="userName" type="text"
+                                          <input [disabled]="isEdit" [(ngModel)]="driverData.userName" name="userName" type="text"
                                              class="form-control" placeholder="Enter username for the driver">
                                        </div>
                                        <div class="col-lg-10">
@@ -1331,7 +1331,7 @@
                                        class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
                                           class="text-1 optional-label-color">(optional)</span></label>
                                     <textarea [(ngModel)]="groupData.description" name="description"
-                                       class="form-control" rows="4" placeholder="Enter group description"></textarea>
+                                       class="form-control h-auto" rows="4" placeholder="Enter group description"></textarea>
                                  </div>
                               </div>
                            </div>

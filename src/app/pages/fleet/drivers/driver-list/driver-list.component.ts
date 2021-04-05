@@ -7,7 +7,7 @@ import { HereMapService } from '../../../../services/here-map.service';
 import { Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
-
+import {environment} from '../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -16,7 +16,7 @@ declare var $: any;
   styleUrls: ['./driver-list.component.css'],
 })
 export class DriverListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   allDocumentsTypes: any;
   documentsTypesObects: any = {};
 
@@ -268,6 +268,8 @@ export class DriverListComponent implements OnInit {
         .subscribe((result: any) => {
 
           this.drivers = [];
+          this.driverDraw = 0;
+          this.lastEvaluatedKey = '';
           this.fetchDriversCount();
           this.initDataTable();
           this.toastr.success('Driver is deactivated!');

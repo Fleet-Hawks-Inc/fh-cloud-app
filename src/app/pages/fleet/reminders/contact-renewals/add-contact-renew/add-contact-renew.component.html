@@ -52,7 +52,7 @@
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
                                     style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
-                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
+                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
                                     </ng-option>
                                     <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
                                     </ng-option>
@@ -92,7 +92,7 @@
                            <div class="row pt-2">
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <input class="form-control" placeholder="dd-mm-yyyy" name="dueDate"
+                                 <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
                                     [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker
                                     #d="ngbDatepicker" />
                               </div>
@@ -174,53 +174,53 @@
 
 <!-- GROUP MODAL -->
 <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
-   <div class="modal-dialog" style="max-width: 600px;" role="document">
-     <div class="modal-content">
-      <div class="modal-header">
-         <h5 class="modal-title">Add Group</h5>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                 <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-             </button>
-      </div>
-      <div class="modal-body text-dark">
-             <div class="card-body p-0">
-            <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
-               <div class="form-row">
+  <div class="modal-dialog" style="max-width: 600px;" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <h5 class="modal-title">Add Users Group</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+            </button>
+     </div>
+     <div class="modal-body text-dark">
+            <div class="card-body p-0">
+           <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+              <div class="form-row">
+                <div class="form-group col-lg-12">
+                  <label class="control-label font-weight-bold">Group Name</label>
+                  <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name">
+                </div>
+              </div>
+              <div class="form-row">
                  <div class="form-group col-lg-12">
-                   <label class="control-label font-weight-bold">Group Name</label>
-                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter group name">
+                   <label class="control-label font-weight-bold">Group Members&nbsp;<span
+                    class="text-1 optional-label-color">(optional)</span></label>
+                   <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members, other users"
+                   style="width: 100%;">
+                   <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
+                   </ng-option>
+                </ng-select>
                  </div>
                </div>
-               <div class="form-row">
-                  <div class="form-group col-lg-12">
-                    <label class="control-label font-weight-bold">Group Members&nbsp;<span
-                     class="text-1 optional-label-color">(optional)</span></label>
-                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members"
-                    style="width: 100%;">
-                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.userName}}
-                    </ng-option>
-                 </ng-select>
+              <div class="form-row">
+                <div class="form-group col-lg-12">
+                  <div class="row">
+                    <div class="col-lg-12">
+                       <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
+                          class="text-1 optional-label-color">(optional)</span></label>
+                       <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
+                    </div>
                   </div>
                 </div>
-               <div class="form-row">
-                 <div class="form-group col-lg-12">
-                   <div class="row">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
-                           class="text-1 optional-label-color">(optional)</span></label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter group description"></textarea>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-            </form>
-          </div>
-      </div>
-      <div class="modal-footer text-right">
+              </div>
+           </form>
+         </div>
+     </div>
+     <div class="modal-footer text-right">
 
-         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-         <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
-      </div>
-   </div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+     </div>
+  </div>
 </div>
 </div>

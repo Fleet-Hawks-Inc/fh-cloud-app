@@ -29,7 +29,7 @@
                         [(ngModel)]="currentStatus" 
                         name="currentStatus"
                         placeholder="Select Type"
-                        class="form-control populate">
+                        class="form-control form-control-sm populate">
                        
                         <ng-option value="All">All</ng-option>
                         <ng-option value="On Duty">On Duty</ng-option>
@@ -47,7 +47,7 @@
 
                   <div class="col-md-5 col-lg-5 pr-1 text-right page-buttons">
                      <div class="btn-group flex-wrap" style="min-width:190px;">
-                        <button type="button" class="mb-1 mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                        <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" disabled [(ngModel)]="hideShow.name"
@@ -115,11 +115,11 @@
                            </a>
                         </div>
                      </div>
-                     <button type="button" disabled (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
-                     <button type="button" disabled (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
+                     <button type="button" *ngIf="!environment" (click)="mapShow()" id="map_view_btn" class="btn btn-default btn-sm mr-2 ml-2">Map View</button>
+                     <button type="button" *ngIf="!environment" (click)="listView = true;mapView = false;" id="list_view_btn" class="btn btn-success btn-sm mr-2">List View</button>
 
-                     <div class="btn-group btn-group1 flex-wrap mr-2">
-                        <button disabled type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                     <div class="btn-group btn-group1 flex-wrap mr-2" *ngIf="!environment">
+                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                            aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">

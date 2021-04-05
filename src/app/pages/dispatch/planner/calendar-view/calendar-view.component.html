@@ -50,7 +50,7 @@
                                 </div>
 
                                  <ul class="m-0 p-0 mt-4">
-                                    <li class=" mb-2 border" *ngFor="let trip of tempTrips">
+                                    <li class=" mb-2 border" *ngFor="let trip of tempTrips; let i=index;">
                                        <div class="fc-event-main">
                                           <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
 
@@ -59,7 +59,7 @@
                                                 {{ customer.name }}
                                              </div>
 
-                                             <a href="javascript:;" (click)="showAssignModal(trip.tripID)" *ngIf="trip.tripStatus == 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
+                                             <a href="javascript:;" (click)="showAssignModal(trip.tripID, i)" *ngIf="trip.tripStatus == 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
                                              <a href="javascript:;" *ngIf="trip.tripStatus != 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assigned</a>
                                           </h5>
                                           <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}</p>

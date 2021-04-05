@@ -242,74 +242,71 @@ export class AddReminderComponent implements OnInit {
   // UPDATING REMINDER
   updateReminder() {
     this.hideErrors();
-    if (this.time > 0) {
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
-        case 'Year(s)': {
-          this.numberOfDays = this.time * 365;
-          break;
-        }
-        default:
-          {
-            this.numberOfDays = this.time * 0;
-            break;
-          }
+    switch (this.timeType) {
+      case 'Day(s)': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
-
-      // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-      this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
-      this.apiService.putData('reminders', this.reminderData).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.toastr.success('Service Reminder Updated Successfully!');
-          this.Success = '';
-          this.cancel();
-          this.reminderData = {
-            reminderIdentification: '',
-            reminderType: constants.REMINDER_SERVICE,
-            reminderTasks: {
-              task: '',
-              remindByDays: 0,
-              odometer: 0,
-            },
-            lastCompletionDate: [],
-            lastCompletedOdometer: [],
-            subscribers: [],
-            sendEmail: false
-          };
-        },
-      });
-    } else {
-      this.toastr.warning('Time Must Be Positive Value');
+      case 'Month(s)': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'Week(s)': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+      case 'Year(s)': {
+        this.numberOfDays = this.time * 365;
+        break;
+      }
+      default:
+        {
+          this.numberOfDays = this.time * 0;
+          break;
+        }
     }
+
+    // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.apiService.putData('reminders', this.reminderData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toastr.success('Service Reminder Updated Successfully!');
+        this.Success = '';
+        this.cancel();
+        this.reminderData = {
+          reminderIdentification: '',
+          reminderType: constants.REMINDER_SERVICE,
+          reminderTasks: {
+            task: '',
+            remindByDays: 0,
+            odometer: 0,
+          },
+          lastCompletionDate: [],
+          lastCompletedOdometer: [],
+          subscribers: [],
+          sendEmail: false
+        };
+      },
+    });
+
   }
 
 

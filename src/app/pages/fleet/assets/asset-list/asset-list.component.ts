@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
+import {environment} from '../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
   assetTypesObjects: any = {};
@@ -76,7 +77,7 @@ export class AssetListComponent implements OnInit {
 
   suggestedAssets = [];
   assetID = '';
-  currentStatus = '';
+  currentStatus = null;
   assetIdentification = '';
   assetTypeList: any  = {};
   totalRecords = 10;
@@ -164,7 +165,7 @@ export class AssetListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.assetID != '' || this.currentStatus != '') {
+        if(this.assetID != '' || this.currentStatus != null) {
           this.assetEndPoint = this.totalRecords;
         }
       },
@@ -218,7 +219,7 @@ export class AssetListComponent implements OnInit {
 
         this.allData = result['Items'];
 
-        if(this.assetID != '') {
+        if(this.assetID != '' || this.currentStatus != null) {
           this.assetStartPoint = 1;
           this.assetEndPoint = this.totalRecords;
         }
@@ -250,7 +251,7 @@ export class AssetListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.assetIdentification !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.currentStatus !== null) {
       if(this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
@@ -265,10 +266,10 @@ export class AssetListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.assetIdentification !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.currentStatus !== null) {
       this.assetID = '';
       this.assetIdentification = '';
-      this.currentStatus = '';
+      this.currentStatus = null;
       this.suggestedAssets = [];
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;

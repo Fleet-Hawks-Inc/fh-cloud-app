@@ -20,6 +20,11 @@ import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-repo
 import { IftaReportHistoryComponent } from './ifta/ifta-report-history/ifta-report-history.component';
 import { IftaReturnDetailsComponent } from './ifta/ifta-return-details/ifta-return-details.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {AddInspectionComponent} from './dvir/inspection/add-inspection/add-inspection.component';
+import {EditInspectionComponent} from './dvir/inspection/edit-inspection/edit-inspection.component';
+import {ListInspectionComponent} from './dvir/inspection/list-inspection/list-inspection.component'
+import {ViewInspectionComponent} from './dvir/inspection/view-inspection/view-inspection.component'
+
 @NgModule({
   imports: [CommonModule,
     ComplianceRoutingModule,
@@ -42,6 +47,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
     InspectionSummaryComponent,
     GenerateQuarterlyReportComponent,
     IftaReportHistoryComponent,
+    AddInspectionComponent,
+    EditInspectionComponent,
+    ListInspectionComponent,
+    ViewInspectionComponent,
     IftaReturnDetailsComponent],
 })
 export class ComplianceModule {

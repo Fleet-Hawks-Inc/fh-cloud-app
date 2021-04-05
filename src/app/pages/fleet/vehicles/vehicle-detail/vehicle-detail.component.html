@@ -1,21 +1,14 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-  <!-- end: header -->
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
     <section role="main" class="content-body pl-0 pt-0 pr-0">
       <header class="page-header pr-5">
         <div class="row pr-1 mr-1" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
-            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Vehicle Details</h4>
+            <h4 class="text-4 mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
-            <div class="btn-group flex-wrap">
+            <div class="btn-group flex-wrap" *ngIf="!environment.isFeatureEnabled">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                  aria-expanded="false">Actions<span class="caret"></span></button>
               <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -86,15 +79,16 @@
                         <li class="nav-item">
                           <a
                             class="nav-link"
-                            id="vehicle-engine-tab"
+                            id="vehicle-fluids-tab"
                             data-toggle="tab"
-                            href="#vehicle-engine"
+                            href="#vehicle-fluids"
                             role="tab"
-                            aria-controls="vehicle-engine"
+                            aria-controls="vehicle-fluids"
                             aria-selected="true"
-                            >Engine & Transmission</a
+                            >Fluids</a
                           >
                         </li>
+                        
                         <li class="nav-item">
                           <a
                             class="nav-link"
@@ -110,13 +104,13 @@
                         <li class="nav-item">
                           <a
                             class="nav-link"
-                            id="vehicle-fluids-tab"
+                            id="vehicle-engine-tab"
                             data-toggle="tab"
-                            href="#vehicle-fluids"
+                            href="#vehicle-engine"
                             role="tab"
-                            aria-controls="vehicle-fluids"
+                            aria-controls="vehicle-engine"
                             aria-selected="true"
-                            >Fluids</a
+                            >Engine & Transmission</a
                           >
                         </li>
                         <li class="nav-item">
@@ -223,7 +217,7 @@
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
-                              Type:
+                              Vehicle Type:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ vehicleType }}
@@ -253,7 +247,7 @@
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
-                              License Plate:
+                            Plate Number:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ plateNumber }}
@@ -309,10 +303,20 @@
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
-                              Registration State/Province:
+                              Registration Province:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ statesList[stateID] }}
+                            </div>
+                          </div>
+                          <div class="row m-0">
+                            <div
+                              class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            >
+                              Registration Country:
+                            </div>
+                            <div class="col-lg-8 p-2 border-box">
+                              {{countriesList[countryID]}}
                             </div>
                           </div>
                           <div class="row m-0">

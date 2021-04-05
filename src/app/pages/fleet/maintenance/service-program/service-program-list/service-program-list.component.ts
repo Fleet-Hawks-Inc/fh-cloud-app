@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../../constants';
 declare var $: any;
-
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-service-program-list',
   templateUrl: './service-program-list.component.html',
@@ -12,6 +12,7 @@ declare var $: any;
 })
 export class ServiceProgramListComponent implements  OnInit {
 
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Program List';
   // dtOptions: any = {};
