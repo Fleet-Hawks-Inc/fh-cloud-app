@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   isCarrierID: any;
   userRole:any = '';
   carriers: any = [];
+  smallName: string;
   carrierBusiness;
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
@@ -77,6 +78,8 @@ fetchCarrier(){
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.userRole = this.currentUser.userType;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    let outputName = this.currentUser.match(/\b(\w)/g);
+    this.smallName = outputName.join('');
   }
   /**
    * show 'login as' div for cloud admin

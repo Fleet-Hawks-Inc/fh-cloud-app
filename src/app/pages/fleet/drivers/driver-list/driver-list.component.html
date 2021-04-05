@@ -8,10 +8,10 @@
    <div class="inner-wrapper">
       
       <section role="main" class="content-body pl-0 pr-0 pt-0">
-         <header class="page-header pr-5">
+         <header class="page-header">
             <form class="form-horizontal" method="get">
-               <div class="row pr-1 mr-1" style="padding-top:8px;">
-                  <div class="col-md-2 col-lg-3">
+               <div class="row" style="padding-top:8px;">
+                  <div class="col-md-2 col-lg-2 pr-1">
                      <div class="input-group input-group-md">
                         <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
                           placeholder="Search driver by name" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -24,11 +24,11 @@
                         </ul>
                      </div>
                   </div>
-                  <div class="col-md-2 col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-1">
                      <ng-select
                         [(ngModel)]="currentStatus" 
                         name="currentStatus"
-                        placeholder="Select Type"
+                        placeholder="Select type"
                         class="form-control form-control-sm populate">
                        
                         <ng-option value="All">All</ng-option>
@@ -41,13 +41,13 @@
                   </div>
 
                   <div class="col-md-2  col-lg-2">
-                     <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                     <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
                      <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                   </div>
 
-                  <div class="col-md-5 col-lg-5 pr-1 text-right page-buttons">
+                  <div class="col-md-6 text-right page-buttons">
                      <div class="btn-group flex-wrap" style="min-width:190px;">
-                        <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                        <button type="button" class="mr-3 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd" role="menu">
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" disabled [(ngModel)]="hideShow.name"
