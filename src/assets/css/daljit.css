@@ -676,3 +676,37 @@ label.error {
 .minWidth50 {
     min-width: 50px;
 }
+.minWidth130 {
+    min-width: 130px;
+}
+.hand-icon {
+    cursor: pointer;
+}
+.height460{
+    min-height: 460px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
+.header .header-right .userbox {
+    display: inline-flex;
+    align-items: center;
+}
+.header .header-right .userbox > .dropdown{
+    border-left: 1px solid #e0e0e0;
+    padding-left: 25px;
+    margin-left: 20px;
+}
+.header .header-right .userbox.show {
+    border-left: none;
+}
+.header .header-right .profile-picture {
+    background-color: #ededed;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}

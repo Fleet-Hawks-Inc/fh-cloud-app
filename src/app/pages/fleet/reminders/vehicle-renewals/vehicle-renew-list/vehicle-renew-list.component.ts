@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import Constants from '../../../constants';
+import { environment } from '../../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
   styleUrls: ['./vehicle-renew-list.component.css']
 })
 export class VehicleRenewListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   public remindersData = [];
   // dtOptions: any = {};
@@ -29,10 +30,10 @@ export class VehicleRenewListComponent implements OnInit {
   currentDate = moment();
   newData = [];
   suggestedVehicles = [];
-  vehicleID = '';
+  vehicleID = null;
   unitID = '';
   unitName = '';
-  searchServiceTask = '';
+  searchServiceTask = null;
   serviceTasks = [];
   filterStatus: string;
 
@@ -46,11 +47,13 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleRenewPrevEvauatedKeys = [''];
   vehicleRenewStartPoint = 1;
   vehicleRenewEndPoint = this.pageLength;
+  allVehicles = [];
 
   constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getRemindersCount();
+    this.fetchAllVehicles();
     this.fetchServiceTaks();
     this.fetchVehicles();
     this.fetchGroupsList();
@@ -169,7 +172,7 @@ export class VehicleRenewListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != '' || this.searchServiceTask != '') {
+        if(this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
       },
@@ -187,7 +190,7 @@ export class VehicleRenewListComponent implements OnInit {
         this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
-        if (this.vehicleID !== '' || this.searchServiceTask !== '' ) {
+        if(this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewStartPoint = 1;
           this.vehicleRenewEndPoint = this.totalRecords;
         }
@@ -219,8 +222,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.vehicleID !== '' || this.searchServiceTask !== ''  && this.searchServiceTask !== null && this.searchServiceTask !== undefined
-    || this.filterStatus !== '' && this.filterStatus !== null && this.filterStatus !== undefined) {
+    if(this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -231,11 +233,10 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.vehicleID !== '' || this.searchServiceTask !== '' || this.searchServiceTask !== null || this.searchServiceTask !== undefined
-    || this.filterStatus !== '' || this.filterStatus !== null || this.filterStatus !== undefined) {
-      this.vehicleID = '';
+    if(this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
+      this.vehicleID = null;
       this.vehicleIdentification = '';
-      this.searchServiceTask = '';
+      this.searchServiceTask = null;
       this.filterStatus = '';
 
       this.remindersData = [];
@@ -287,5 +288,11 @@ export class VehicleRenewListComponent implements OnInit {
     this.vehicleRenewStartPoint = 1;
     this.vehicleRenewEndPoint = this.pageLength;
     this.vehicleRenewDraw = 0;
+  }
+
+  fetchAllVehicles() {
+    this.apiService.getData('vehicles').subscribe((result: any) => {
+      this.allVehicles = result.Items;
+    });
   }
 }

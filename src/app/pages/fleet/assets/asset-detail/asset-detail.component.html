@@ -9,7 +9,7 @@
              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                 Asset Details
              </div>
-             <div class="col-md-8  col-lg-8 text-right pr-5">
+             <div class="col-md-8  col-lg-8 text-right pr-4">
               <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Assets List</a>
            </div>
           </div>
@@ -21,9 +21,6 @@
                 <div class=" row">
                       <div class="col-lg-6">
                          <div class="row">
-                            <div class="col-lg-12">
-                               <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Asset Details</label>
-                            </div>
                             <div class="col-lg-12">
                                <table class="table table-bordered table-responsive-lg">
                                       <tbody>
@@ -49,7 +46,7 @@
                                           </tr>
                                            
                                          <tr>
-                                            <td class="back-color-gray font-weight-bold">Type</td>
+                                            <td class="back-color-gray font-weight-bold">Asset Type</td>
                                             <td class="text-capitalize">{{assetObjects[assetType]}}</td>
                                          </tr>
                                          <tr>
@@ -57,7 +54,7 @@
                                             <td class="text-capitalize">{{licencePlateNumber}}</td>
                                          </tr>
                                          <tr>
-                                          <td class="back-color-gray font-weight-bold">Annual safety date</td>
+                                          <td class="back-color-gray font-weight-bold">Annual Safety Date</td>
                                           <td class="text-capitalize">{{annualSafetyDate}}</td>
                                        </tr>
                                          
@@ -67,7 +64,7 @@
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                            <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model">&amp;</span> {{modelsObjects[model]}}</td>
+                                            <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model"> &amp;</span> {{modelsObjects[model]}}</td>
                                          </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">Length</td>
@@ -163,51 +160,53 @@
                               </table>
                              </div>
                           </div>
-                          <div class="row">
-
-                             <div class="col-lg-12" *ngIf="assetsImages?.length > 0">
-                                <div class="vehicle-common-box p-3 mb-3">
-                                   <div class="row">
-                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                                   </div>
-                                   <hr class="solid mt-3">
-                                   <div class="row">
-                                      <div class="col-lg-6" *ngFor="let item of assetsImages; let i=index;">
-                                         <div class="vehicle-photo-box">
-                                            <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                                            <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
-                                            <hr class="m-3">
-                                            <div class="row">
-                                               <div class="col-lg-8"> Image {{i+1}}</div>
-                                               <div class="col-lg-4 text-right">
-                                                  <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
-                                                     <i class="fas fa-times text-danger" (click)="delete('image',item.name)"></i>
-                                                  </a>
-                                               </div>
-                                            </div>
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
+                          
                            <div class="row mt-3">
                               <div class="col-lg-12">
-                                 <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Cross Border Details</label>
+                                 <label class="control-label font-weight-bold text-lg-right text-dark text-4">Cross Border Details</label>
                               </div>
                               <div class="col-lg-12">
                                  <table class="table table-bordered table-responsive-lg">
                                     <tbody>
                                        <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">ACI</td>
+                                          <td width="40%" class="back-color-gray font-weight-bold">ACI ID</td>
                                           <td width="60%">{{ACIID ? ACIID : '-'}} </td>
                                        </tr>
                                        <tr>
-                                          <td class="back-color-gray font-weight-bold">ACE</td>
+                                          <td class="back-color-gray font-weight-bold">ACE ID</td>
                                           <td>{{ACEID ? ACEID : '-'}}</td>
                                        </tr>
                                     </tbody>
                                  </table>
+                              </div>
+                           </div>
+
+                           <div class="row">
+
+                              <div class="col-lg-12" *ngIf="assetsImages?.length > 0">
+                                 <div class="vehicle-common-box p-3 mb-3">
+                                    <div class="row">
+                                       <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                    </div>
+                                    <hr class="solid mt-3">
+                                    <div class="row">
+                                       <div class="col-lg-6" *ngFor="let item of assetsImages; let i=index;">
+                                          <div class="vehicle-photo-box">
+                                             <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                             <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                                             <hr class="m-3">
+                                             <div class="row">
+                                                <div class="col-lg-8"> Image {{i+1}}</div>
+                                                <div class="col-lg-4 text-right">
+                                                   <a href="javascript:;" (click)="delete('image',item.name)" class="modal-with-form">
+                                                      <i class="fas fa-times text-danger" (click)="delete('image',item.name)"></i>
+                                                   </a>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -224,8 +223,8 @@
                                 </canvas>
 
                              </div>
-                             <div class="col-lg-12 mt-3">
-                              <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Insurance Details</label>
+                             <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4">Insurance Details</label>
                            </div>
                            <div class="col-lg-12">
                             <table class="table table-bordered table-responsive-lg">
@@ -262,7 +261,7 @@
                              <div class="col-lg-12 mt-3" *ngIf="assetsDocs?.length > 0">
                                 <div class="vehicle-common-box p-3">
                                    <div class="row">
-                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
+                                      <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label></div>
                                    </div>
                                    <hr class="solid mt-3">
                                    <div class="row mb-1" *ngFor="let doc of assetsDocs;let d= index">

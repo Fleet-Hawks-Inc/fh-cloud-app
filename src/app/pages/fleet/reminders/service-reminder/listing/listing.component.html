@@ -1,29 +1,13 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pl-0 pt-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:8px;">
+            <header class="page-header">
+                <div class="row px-2" style="padding-top:8px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
-                            <input type="text" autocomplete="off" name="vehicleIdentification"
-                                [(ngModel)]="vehicleIdentification" class="form-control" placeholder="Search by vehicle"
-                                (input)="getSuggestions($event.target.value)" />
-                        </div>
-                        <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
-                                    (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"> {{
-                                        suggestedVehicle.vehicleIdentification }}
-                                </li>
-                            </ul>
+                            <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
+                                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
 
@@ -53,7 +37,7 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-2">
+                        <div class="btn-group flex-wrap mr-2" *ngIf=!environment>
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"

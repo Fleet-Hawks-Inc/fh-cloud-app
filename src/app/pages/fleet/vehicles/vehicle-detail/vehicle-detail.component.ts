@@ -24,6 +24,7 @@ export class VehicleDetailComponent implements OnInit {
   vehicleManufacturersList: any = {};
   groupsList: any = {};
   statesList: any = {};
+  countriesList: any = {};
   vendors = {};
 
   vehicleID = "";
@@ -35,6 +36,7 @@ export class VehicleDetailComponent implements OnInit {
   modelID = "";
   plateNumber = "";
   stateID = "";
+  countryID = "";
   driverID = "";
   teamDriverID = "";
   serviceProgramID = [];
@@ -223,6 +225,7 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
+    this.fetchCountriesList();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
@@ -250,6 +253,12 @@ export class VehicleDetailComponent implements OnInit {
       this.statesList = result;
     });
   }
+  fetchCountriesList() {
+    this.apiService.getData("countries/get/list").subscribe((result: any) => {
+      this.countriesList = result;
+    });
+  }
+  
   fetchVehicleModelList() {
     this.apiService
       .getData("vehicleModels/get/list")
@@ -340,6 +349,7 @@ export class VehicleDetailComponent implements OnInit {
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
+        this.countryID = result.countryID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;
