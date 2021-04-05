@@ -10,7 +10,8 @@
     "buildProd": "ng build --configuration=production --base-href . ",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "cypress": "concurrently \"npm run start\" \"cypress open\""
   },
   "private": true,
   "dependencies": {
@@ -94,6 +95,8 @@
     "@types/node": "8.10.59",
     "@types/randomstring": "^1.1.6",
     "codelyzer": "5.0.0",
+    "concurrently": "^6.0.0",
+    "cypress": "^6.8.0",
     "jasmine-core": "3.4.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "4.1.0",

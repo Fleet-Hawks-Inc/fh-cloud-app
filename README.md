@@ -98,3 +98,14 @@ Eg: Linux/MAc
 terminal> export NODE_OPTIONS="--max-old-space-size=8192"
 terminal> ng build
 ```
+
+### Running `cypress` tests
+
+Use following command to run cypress tests
+
+``` 
+npm run cypress
+```
+This will start local dashboard app and cypress tests. Make sure you have service url which is `BaseUrl` pointing to "https://fleetservice.ap-south-1.fleethawks.com/api/v1/" in environment.ts
+
+
