@@ -323,9 +323,11 @@ export class DriverListComponent implements OnInit {
 
   searchFilter() {
     if(this.driverName !== '' || this.dutyStatus !== '') {
+      this.driverName = this.driverName.toLowerCase();
       if(this.driverID == '') {
         this.driverID = this.driverName;
       }
+      this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedDrivers = [];
       this.fetchDriversCount();
