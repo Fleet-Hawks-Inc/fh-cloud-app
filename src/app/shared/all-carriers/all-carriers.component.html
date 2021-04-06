@@ -4,9 +4,9 @@
     </div>
 </div>
 <div class="row justify-content-center h-100 align-items-center custom-bg mt-5">
-  <div class="col-8">
+  <div class="col-8" *ngIf="pendingCarriersList?.length > 0">
       <div class="card">
-          <h3>Associated Company(s) Approval...</h3>
+          <h3>Associated Company(s) Pending Approval...</h3>
           <div class="card-body text-dark">
               <table id="diverTbl2" class="row-border hover table table-bordered table-striped mb-0">
                   <thead>
@@ -55,7 +55,7 @@
                        </td>
                       <td class="text-capitalize">{{item.firstName}} {{item.lastName}}</td>
                       <td class="">{{item.phone}}</td>
-                      <td class="">{{item.carrierEmail}}</td>
+                      <td class="">{{item.email}}</td>
                       <td class="">{{item.timeCreated | date: 'yyyy/MM/dd'}}</td>
                    </tr>
                    <tr *ngIf="carriersList?.length == 0">

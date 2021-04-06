@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
   { path: 'onboard', component: AddAccountComponent },
+  { path: 'editCarrier/:carrierID', component: AddAccountComponent},
   {
     path: 'Dashboard',
     component: DashboardComponent,

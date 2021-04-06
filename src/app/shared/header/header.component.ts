@@ -3,6 +3,7 @@ import {SharedServiceService} from '../../services/shared-service.service';
 import {Auth} from 'aws-amplify';
 import {Router} from '@angular/router';
 import { ApiService } from 'src/app/services';
+declare var $: any;
 
 @Component({
   selector: 'app-header',
@@ -32,25 +33,24 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getLoggedUserForCloud();
     this.getCurrentuser();
     this.fetchCarrier();
-    this.getLoggedUserForCloud();
-    
+
   }
 
   onNavSelected(nav: string) {
-    localStorage.setItem('active-header', nav); 
+    localStorage.setItem('active-header', nav);
     this.navClicked.emit(nav);
     this.sharedService.activeParentNav.next(nav);
   }
 fetchCarrier(){
-  this.apiService.getData('carriers/getCarrier')
+  this.apiService.getData(`carriers/getCarrier`)
       .subscribe((result: any) => {
         this.carriers = result.Items[0];
         this.logoSrc = 'assets/img/logo.png';
-        // console.log("this.carriers",this.carriers)
         // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
+        // if (this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
         //   this.logoSrc = 'assets/img/logo.png';
         // }
       });
@@ -65,12 +65,12 @@ fetchCarrier(){
     localStorage.removeItem('carrierID');
     localStorage.removeItem('loggin-carrier');
     localStorage.removeItem('issueVehicleID');
-    localStorage.removeItem('carrierID')
+    localStorage.removeItem('carrierID');
     localStorage.removeItem('active-header');
-    
+
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
-     
+
   }
 
   getCurrentuser = async () => {
@@ -86,7 +86,7 @@ fetchCarrier(){
     if(this.isCarrierID != undefined && this.isCarrierID != null) {
       this.carrierBusiness = localStorage.getItem('carrierBusiness');
     }
-    
+
   }
 
   switchCarrier(){
@@ -94,5 +94,8 @@ fetchCarrier(){
     this.router.navigateByUrl('/carriers');
     localStorage.removeItem('loggin-carrier');
   }
-
+  editCarrier(carrierID) {
+   // this.router.navigate(['/editCarrier/' + carrierID]);
+    $('#companyProfileModal').modal('hide');
+  }
 }

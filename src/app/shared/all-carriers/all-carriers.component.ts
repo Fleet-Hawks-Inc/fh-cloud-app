@@ -14,6 +14,7 @@ export class AllCarriersComponent implements OnInit {
   carriersList = [];
   pendingCarriersList = [];
   carrierNameList: any  = {};
+  carriers = [];
   dataMessage = 'Fetching Data.....';
   constructor(
       private apiService: ApiService,
@@ -29,11 +30,13 @@ export class AllCarriersComponent implements OnInit {
   fetchCarriers(){
     this.spinner.show();
     this.apiService.getData('carriers').subscribe((result: any) => {
-      if(result.Items.length == 0) {
+      if (result.Items.length == 0) {
         this.dataMessage = 'No Data Found';
       }
-      this.carriersList = result.Items;
-      this.pendingCarriersList = this.carriersList.filter( e => e.penAscCmp.length > 0);
+      this.carriers = result.Items;
+      console.log('this.carriers', this.carriers);
+      this.carriersList = this.carriers.filter( e => e.penAscCmp.length == 0);
+      this.pendingCarriersList = this.carriers.filter( e => e.penAscCmp.length > 0);
       this.spinner.hide();
     }, err => {
       this.spinner.hide();
@@ -43,13 +46,15 @@ export class AllCarriersComponent implements OnInit {
   carrierNameListFn() {
     this.apiService.getData('carriers/get/list').subscribe((result: any) => {
       this.carrierNameList = result;
+      console.log('this.carrierNameList',this.carrierNameList);
     });
   }
   approveCarrier(carrierID) {
     this.apiService.getData(`carriers/approvecarrier/${carrierID}`).subscribe((result:any) => {
-      if(result) {
+      if (result) {
         this.toastr.success('Carrier and associated company(s) approved.');
       }
+      this.fetchCarriers();
     });
   }
   Logout() {

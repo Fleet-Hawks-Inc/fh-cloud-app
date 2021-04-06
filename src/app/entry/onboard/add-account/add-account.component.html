@@ -12,7 +12,7 @@
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
-                    <h2 class="mt-1">Create Your Fleet Hawks Account</h2>
+                    <h2 class="mt-1">Sign Up For Fleet Hawks Account</h2>
                  </div>
                 </div>
                 <div class="row mt-4">
@@ -40,7 +40,7 @@
                                   <label class="control-label  font-weight-bold text-lg-right pt-2">First
                                      Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input id="firstName"type="text" class="form-control" [(ngModel)]="firstName"
-                                     name="firstName">
+                                     name="firstName" placeholder="eg. John">
 
                                </div>
                               </div>
@@ -49,7 +49,7 @@
                                   <label class="control-label  font-weight-bold text-lg-right pt-2">Last
                                      Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName"
-                                     name="lastName">
+                                     name="lastName" placeholder="eg. Smith">
 
                                </div>
 
@@ -60,7 +60,7 @@
                                   <label class="control-label  font-weight-bold text-lg-right pt-2">User Name<span
                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input id="un" type="text" class="form-control" [(ngModel)]="userName"
-                                    [class.error]='errorClass' name="userName">
+                                    [class.error]='errorClass' name="userName" placeholder="eg. johnsmith12">
                                 </div>
 
                             </div>
@@ -69,13 +69,13 @@
                                 <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input id="pd" type="password" class="form-control" [(ngModel)]="password"
-                                  [class.error]='errorClass' name="password">
+                                  [class.error]='errorClass' name="password" placeholder="eg. johnSmith#123">
                               </div>
                               <div class="col-lg-5">
                                 <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm
                                   Password<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <input id="cnf" type="password" class="form-control" name="confirmPassword"
-                                  [class.error]='errorClass' [(ngModel)]="confirmPassword">
+                                  [class.error]='errorClass' [(ngModel)]="confirmPassword" placeholder="eg. johnSmith#123">
                               </div>
                               <div class="col-lg-10">
                                 <div id="errormsg" *ngIf="errorClass" class="text-danger">Password and
@@ -98,7 +98,7 @@
                                   <label
                                      class="control-label  font-weight-bold text-lg-right pt-2">Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input id="mail"type="text" class="form-control" [(ngModel)]="email"
-                                     name="email">
+                                     name="email" placeholder="eg. johnsmith123@mail.com">
                                </div>
                                <div class="col-lg-2"></div>
                                <div class="col-lg-10">
@@ -125,7 +125,7 @@
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Registered Company
                                   Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName">
+                                <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName" placeholder="eg. XYZ123 Inc">
                               </div>
                             </div>
                             <div class="row">
@@ -192,18 +192,18 @@
                             <div class="row">
                               <div class="col-lg-5 offset-lg-2">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name</label>
-                                <input type="text" class="form-control" [(ngModel)]="DBAName" name="DBAName">
+                                <input type="text" class="form-control" [(ngModel)]="DBAName" name="DBAName" placeholder="eg. XYZ Logistics">
                               </div>
 
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">EIN&nbsp;<i
                                   class="fas fa-question-circle" data-toggle="tooltip"
                                   data-placement="top"
-                                  title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business
+                                  title="Employer Identification Number (EIN) is a unique 9 digit identification number that is assigned to a business
                                   entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
                                   for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
                                <span class="text-1 optional-label-color">(optional)</span></label>
-                                <input type="text" class="form-control" [(ngModel)]="EIN" name="EIN" placeholder="Enter 9 digit EIN number">
+                                <input type="text" class="form-control" [(ngModel)]="EIN" name="EIN" placeholder="eg. 123456789" maxlength="9">
                               </div>
                             </div>
                             <div class="row">
@@ -211,15 +211,15 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
                                   class="fas fa-question-circle" data-toggle="tooltip"
                                   data-placement="top"
-                                  title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                <input type="text" class="form-control" [(ngModel)]="MC" name="MC" placeholder="Enter 6 digit MC number">
+                                  title="MC number (Motor Carrier number) 6 digit number is an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                <input type="text" class="form-control" [(ngModel)]="MC" name="MC" maxlength="6" placeholder="eg. 8055684">
                               </div>
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">DOT#<span class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i
                                   class="fas fa-question-circle" data-toggle="tooltip"
                                   data-placement="top"
-                                  title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i></label>
-                                <input type="text" class="form-control" [(ngModel)]="DOT" name="DOT" placeholder="Enter 8 digit  DOT number" minlength="8">
+                                  title="Department of Transportation(DOT) number (8 digit number) is  an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i></label>
+                                <input type="number" class="form-control" [(ngModel)]="DOT" name="DOT" placeholder="eg. 87650055" maxlength="8">
                               </div>
                             </div>
                             <div class="row">
@@ -228,14 +228,14 @@
                                   class="fas fa-question-circle" data-toggle="tooltip"
                                   data-placement="top"
                                   title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                <input type="text" class="form-control" maxlength="4" [(ngModel)]="CCC" name="CCC">
+                                <input type="text" class="form-control" maxlength="4" [(ngModel)]="CCC" name="CCC" placeholder="eg. 123T">
                               </div>
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
                                   class="fas fa-question-circle" data-toggle="tooltip"
                                   data-placement="top"
                                   title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC">
+                                <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. FRTY">
                               </div>
                             </div>
                             <div class="row">
@@ -300,8 +300,8 @@
                                     <span class="text-1 optional-label-color">(optional)</span></label>
                                   <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
                                     placeholder="Select address type">
-                                    <ng-option value="Mailing">Mailing</ng-option>
-                                    <ng-option value="Yard">Yard</ng-option>
+                                    <ng-option value="mailing">Mailing</ng-option>
+                                    <ng-option value="yard">Yard</ng-option>
                                   </ng-select>
                                 </div>
                               </div>
@@ -407,32 +407,49 @@
                             <div class="row">
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Branch Name</label>
-                                <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName">
+                                <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" placeholder="eg. XYZ Bank">
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Account Number</label>
-                                <input type="text" class="form-control" [(ngModel)]="bank.accountNumber"
-                                  name="accountNumber">
+                                <input type="number" class="form-control" [(ngModel)]="bank.accountNumber"
+                                  name="accountNumber" placeholder="eg. 12123456701">
                               </div>
                             </div>
                           </div>
                           <div class="col-lg-6">
+
                             <div class="row">
                               <div class="col-lg-10 offset-lg-2">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Routing/Transit
-                                  Number</label>
-                                <input type="text" class="form-control" [(ngModel)]="bank.routingNumber"
-                                  name="routingNumber">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Institution
+                                  Number&nbsp;<i
+                                  class="fas fa-question-circle" data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i></label>
+                                <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber"
+                                  name="institutionNumber" placeholder="eg. 219" maxlength="3">
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-lg-10 offset-lg-2">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Institutional
-                                  Number</label>
-                                <input type="text" class="form-control" [(ngModel)]="bank.institutionalNumber"
-                                  name="institutionalNumber">
+                              <div class="col-lg-5 offset-lg-2">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Routing
+                                  Number&nbsp;<i
+                                  class="fas fa-question-circle" data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i></label>
+                                <input type="number" class="form-control" [(ngModel)]="bank.routingNumber"
+                                  name="routingNumber" placeholder="eg. 023456789" maxlength="9">
+                              </div>
+                              <div class="col-lg-5">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Transit
+                                  Number&nbsp;<i
+                                  class="fas fa-question-circle" data-toggle="tooltip"
+                                  data-placement="top"
+                                  title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry. This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
+                                  The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i></label>
+                                <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"
+                                  name="transitNumber" placeholder="eg. 12345-789" maxlength="9">
                               </div>
                             </div>
                           </div>
@@ -453,7 +470,7 @@
                                     <span class="text-1 optional-label-color">(optional)</span></label>
                                   <ng-select [(ngModel)]="item.addressType"
                                     name="bank.addressDetails[{{i}}].addressType" placeholder="Select address type">
-                                    <ng-option value="Mailing">Mailing</ng-option>
+                                    <ng-option value="mailing">Mailing</ng-option>
                                   </ng-select>
                                 </div>
                               </div>
@@ -550,6 +567,7 @@
                 </div>
                 <div class="row mt-4">
                   <div class="col-lg-11 text-right">
+                    <button type="button" (click)="cancel()" *ngIf="activeTab == 1" class="btn btn-default mr-2">Cancel</button>
                     <button type="button" (click)="previous()" *ngIf="activeTab != 1" class="btn btn-default mr-2">Previous</button>
                     <a *ngIf="activeTab != 4" [routerLink]="" (click)="nextStep()" class="btn btn-success">Save & Next</a>
                     <button type="submit" *ngIf="activeTab == 4" class="btn btn-success">Save</button>

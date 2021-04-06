@@ -41,7 +41,7 @@
 
                             <a class="nav-link" [routerLink]="['/dispatch', 'overview']" (click)="onNavSelected('dispatch')">
 
-                                Routing & Dispatch 
+                                Routing & Dispatch
                             </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'safety'">
@@ -83,7 +83,7 @@
 
         <!-- <span class="separator"></span> -->
         <div style="display: inline-block;color: #000011;font-size: .9rem;" *ngIf="isCarrierID != null">
-           
+
             <div class="dropdown d-inline-block mx-3">
                 <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Login as: {{carrierBusiness}}
@@ -110,7 +110,7 @@
                 <ul class="list-unstyled mb-2 text-dark">
                     <li class="divider"></li>
                     <li>
-                       <a role="menuitem" tabindex="-1" href="#companyProfileModal" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
+                       <a role="menuitem" tabindex="-1" href="javascript:;" data-toggle="modal" (click)="fetchCarrier()" data-target="#companyProfileModal" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
                     <li>
                        <a role="menuitem" tabindex="-1" href="#"><i class="fas fa-user"></i> Account Setting</a>
@@ -124,3 +124,356 @@
     </div>
     <!-- end: search & user box -->
 </header>
+
+<div class="modal fade" id="companyProfileModal" tabindex="-1" role="dialog" aria-labelledby="companyProfileModalTitle"
+   aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="companyProfileModalTitle">Company Profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+           </button>
+         </div>
+         <div class="modal-body text-dark">
+
+          <form class="form-horizontal form-bordered" method="get">
+            <div class="row text-center">
+               <div class="col-lg-12">
+                  <h1 class=""><img src="assets/img/fh.png" alt="FH Admin" /> {{carriers.carrierName}}  </h1>
+               </div>
+            </div>
+            <div class="row mt-4">
+               <div class="col-lg-12">
+                  <div class="m-2">
+                     <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                        <li class="nav-item">
+                           <a class="nav-link active" id="basic-tab" data-toggle="tab" href="#basic" role="tab" aria-controls="basic" aria-selected="true">Basic Details</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="business-tab" data-toggle="tab" href="#business" role="tab" aria-controls="business" aria-selected="false">Business</a>
+                       </li>
+                        <li class="nav-item">
+                           <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" id="bankDetails-tab" data-toggle="tab" href="#bankDetails" role="tab" aria-controls="bankDetails" aria-selected="false">Bank Details</a>
+                        </li>
+                     </ul>
+                  </div>
+                  <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                     <div class="tab-pane show active" id="basic" role="tabpanel" aria-labelledby="basic-tab">
+                        <div>
+                           <div class="row">
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                  <table class="table table-bordered table-responsive-lg">
+                                      <tbody>
+                                         <tr>
+                                            <td width="40%" class="back-color-gray font-weight-bold">First Name</td>
+                                            <td  width="60%">{{carriers.firstName}}</td>
+                                         </tr>
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">Last Name</td>
+                                            <td>{{carriers.lastName}}</td>
+                                         </tr>
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">Email</td>
+                                            <td>{{carriers.email}}</td>
+                                         </tr>
+
+
+                                      </tbody>
+                                   </table>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="row">
+                                      <table class="table table-bordered table-responsive-lg">
+                                          <tbody>
+                                             <tr>
+                                              <td width="40%" class="back-color-gray font-weight-bold">Phone</td>
+                                              <td width="60%">{{carriers.phone}}</td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Finding Way</td>
+                                              <td>{{carriers.findingway}}</td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">UserName</td>
+                                              <td>{{carriers.userName}}</td>
+                                           </tr>
+                                          </tbody>
+                                       </table>
+                                 </div>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- BUSINESS -->
+                     <div class="tab-pane fade" id="business" role="tabpanel" aria-labelledby="business-tab">
+                      <div>
+                         <div class="row">
+                            <div class="col-lg-6">
+                               <div class="row">
+                                <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Registered Name</td>
+                                          <td  width="60%">{{carriers.carrierName}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">DBA Name</td>
+                                          <td>{{carriers.DBAName}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">EIN#</td>
+                                          <td>{{carriers.EIN}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">MC#</td>
+                                          <td>{{carriers.MC}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">DOT</td>
+                                          <td>{{carriers.DOT}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">CCC</td>
+                                          <td>{{carriers.CCC}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">SCAC</td>
+                                          <td>{{carriers.SCAC}}</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="back-color-gray font-weight-bold">Liability Ins#</td>
+                                          <td>{{carriers.liabilityInsurance}}</td>
+                                       </tr>
+                                       <tr>
+                                        <td class="back-color-gray font-weight-bold">Cargo Ins#</td>
+                                        <td>{{carriers.cargoInsurance}}</td>
+                                     </tr>
+
+                                    </tbody>
+                                 </table>
+                               </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <table class="table table-bordered table-responsive-lg">
+                                        <tbody>
+                                           <tr>
+                                              <td width="40%" class="back-color-gray font-weight-bold">Number of Fleets</td>
+                                              <td  width="60%"><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Trucks</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Trailers</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Reefer(s)</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Dry Van(s)</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Flatbed(s)</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatBed}}</span></td>
+                                           </tr>
+                                           <tr>
+                                              <td class="back-color-gray font-weight-bold">Curtain Side(s)</td>
+                                              <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide}}</span></td>
+                                           </tr>
+                                           <tr>
+                                          <td class="back-color-gray font-weight-bold">CSA</td>
+                                          <td><span *ngIf ="carriers.CSA">{{carriers.CSA}}</span></td>
+                                       </tr>
+                                       <tr>
+                                        <td class="back-color-gray font-weight-bold">CT-PAT</td>
+                                        <td> <span *ngIf ="carriers.CTPAT">{{carriers.CTPAT}}</span></td>
+                                     </tr>
+                                     <tr>
+                                      <td class="back-color-gray font-weight-bold">PIP</td>
+                                      <td> <span *ngIf ="carriers.PIP">{{carriers.PIP}}</span></td>
+                                   </tr>
+                                        </tbody>
+                                     </table>
+                               </div>
+
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                     <!-- ADDRESS -->
+                     <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                        <div>
+                           <div class="row" *ngFor="let address of carriers.address;">
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                  <table class="table table-bordered table-responsive-lg">
+                                      <tbody>
+                                         <tr>
+                                            <td width="40%" class="back-color-gray font-weight-bold">Address</td>
+                                            <td  width="60%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address1}}</span></td>
+                                         </tr>
+                                         <tr *ngIf="address.manual">
+                                            <td class="back-color-gray font-weight-bold">Address 2</td>
+                                            <td><span *ngIf="address.manual">{{address.address2}}</span></td>
+                                         </tr>
+                                         <tr>
+                                          <td class="back-color-gray font-weight-bold">Address Type</td>
+                                          <td>{{address.addressType}}</td>
+                                       </tr>
+                                      </tbody>
+                                   </table>
+                                 </div>
+                              </div>
+                              <div class="col-lg-6">
+                                 <div class="row">
+                                  <table class="table table-bordered table-responsive-lg">
+                                      <tbody>
+                                        <tr>
+                                          <td width="40%" class="back-color-gray font-weight-bold">Country</td>
+                                          <td width="60%"><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{address.countryID}}</span></td>
+                                       </tr>
+                                         <tr>
+                                            <td  class="back-color-gray font-weight-bold">State</td>
+                                            <td ><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{address.stateID}}</span></td>
+                                         </tr>
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">City</td>
+                                            <td><span *ngIf="!address.manual">{{address.cityName}}</span><span *ngIf="address.manual">{{address.cityID}}</span></td>
+                                         </tr>
+                                         <tr *ngIf="address.manual">
+                                            <td class="back-color-gray font-weight-bold">ZIP/Postal Code</td>
+                                            <td>{{address.zipCode}}</td>
+                                         </tr>
+                                      </tbody>
+                                   </table>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Bank Details -->
+                     <div class="tab-pane fade" id="bankDetails" role="tabpanel" aria-labelledby="bankDetails-tab">
+                        <div class="row" *ngFor="let bank of carriers.bank">
+                           <div class="col-lg-6">
+                              <div class="row">
+                                  <table class="table table-bordered table-responsive-lg">
+                                      <tbody>
+                                         <tr>
+                                            <td width="40%" class="back-color-gray font-weight-bold">Branch Name</td>
+                                            <td width="60%" >{{bank.branchName}}</td>
+                                         </tr>
+                                         <tr>
+                                            <td class="back-color-gray font-weight-bold">Routing#</td>
+                                            <td>{{bank.routingNumber}}</td>
+                                         </tr>
+                                         <tr>
+                                          <td class="back-color-gray font-weight-bold">Transit#</td>
+                                          <td>{{bank.transitNumber}}</td>
+                                       </tr>
+                                      </tbody>
+                                   </table>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="row" *ngFor="let address of bank.address">
+                                  <table class="table table-bordered table-responsive-lg">
+                                    <tbody>
+                                      <tr>
+                                         <td width="40%" class="back-color-gray font-weight-bold">Institution#</td>
+                                         <td width="60%">{{bank.institutionNumber}}</td>
+                                      </tr>
+                                      <tr>
+                                       <td class="back-color-gray font-weight-bold">Account#</td>
+                                       <td>{{bank.accountNumber}}</td>
+                                    </tr>
+                                   </tbody>
+                                   </table>
+                              </div>
+                           </div>
+<div class="col-lg-12 p-0">
+  <div class="row" *ngFor="let address of bank.address">
+    <div class="col-lg-12 " *ngIf="!address.manual">
+      <table class="table table-bordered table-responsive-lg">
+        <tbody>
+          <tr *ngIf="!address.manual">
+            <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
+            <td width="60%">{{address.addressType}}</td>
+         </tr>
+           <tr *ngIf="!address.manual">
+              <td width="40%" class="back-color-gray font-weight-bold">Address</td>
+              <td  width="60%"><span *ngIf="!address.manual">{{address.bankLocation}}</span><span *ngIf="address.manual">{{address.address1}}</span></td>
+           </tr>
+        </tbody>
+     </table>
+    </div>
+    <div class="col-lg-6 " *ngIf="address.manual">
+      <table class="table table-bordered table-responsive-lg">
+        <tbody>
+          <tr>
+            <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
+            <td width="60%">{{address.addressType}}</td>
+         </tr>
+           <tr>
+              <td width="40%" class="back-color-gray font-weight-bold">Address1</td>
+              <td  width="60%">{{address.address1}}</td>
+           </tr>
+           <tr>
+            <td width="40%" class="back-color-gray font-weight-bold">Address2</td>
+            <td  width="60%">{{address.address2}}</td>
+         </tr>
+
+        </tbody>
+     </table>
+    </div>
+    <div class="col-lg-6 " *ngIf="address.manual">
+      <table class="table table-bordered table-responsive-lg">
+        <tbody>
+         <tr>
+          <td width="40%"  class="back-color-gray font-weight-bold">Country</td>
+          <td width="60%">{{address.countryID}}</td>
+       </tr>
+       <tr>
+          <td class="back-color-gray font-weight-bold">State</td>
+          <td >{{address.stateID}}</td>
+        </tr>
+         <tr>
+            <td class="back-color-gray font-weight-bold">City</td>
+            <td>{{address.cityID}}</td>
+         </tr>
+         <tr>
+          <td class="back-color-gray font-weight-bold">ZIP/Postal Code</td>
+          <td>{{address.zipCode}}</td>
+       </tr>
+        </tbody>
+     </table>
+    </div>
+  </div>
+</div>
+                        </div>
+
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </form>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-default" (click)="editCarrier(carriers.carrierID)">Edit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>

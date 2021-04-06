@@ -68,7 +68,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ConfirmEqualValidatorDirective,
     ErrorComponent,
     UnsavedChangesComponent,
-    AddAccountComponent
+    AddAccountComponent,
   ],
   imports: [
     AmplifyAngularModule,
