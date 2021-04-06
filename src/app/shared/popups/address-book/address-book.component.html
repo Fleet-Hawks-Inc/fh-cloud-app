@@ -2354,11 +2354,11 @@
                 </button>
             </div>
             <div class="modal-body text-dark">
-                <div class="card-body text-dark">
+                <div class="card-body text-dark px-0">
                     <section class="card form-wizard mb-0" id="w1">
                         <div class="card-body card-body-nopadding">
                             <div class="">
-                                <ul class="nav top-tabs nav-tabs">
+                                <ul class="nav top-tabs nav-tabs px-2">
                                     <li class="nav-item active">
                                         <a [ngClass]="{'active': custCurrentTab == 1}" (click)="tabChange(1)" href="javascript:;" data-toggle="tab" class="nav-link text-center active">
                                             Basic Details
@@ -2383,9 +2383,9 @@
                                 </ul>
                             </div>
                             <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="operatorForm">
-                                <div class="tab-content">
-                                    <div id="ownerBasic" [ngClass]="{'active show': custCurrentTab == 1}" class="tab-pane p-3 active">
-                                        <div class="row pt-3">
+                                <div class="tab-content px-0">
+                                    <div id="ownerBasic" [ngClass]="{'active show': custCurrentTab == 1}" class="tab-pane p-3 active height460">
+                                        <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="row text-dark">
                                                     <div class="col-lg-12">
@@ -2437,7 +2437,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="ownerPaymentDetails" [ngClass]="{'active show': custCurrentTab == 2}" class="tab-pane p-3">
+                                    <div id="ownerPaymentDetails" [ngClass]="{'active show': custCurrentTab == 2}" class="tab-pane p-3 height460">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="row">
@@ -2561,8 +2561,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="ownerAddressDetails" [ngClass]="{'active show': custCurrentTab == 3}" class="tab-pane p-3">
-                                        <div class="row pt-3 address-item"  *ngFor="let item of ownerData.address;let i = index;">
+                                    <div id="ownerAddressDetails" [ngClass]="{'active show': custCurrentTab == 3}" class="tab-pane p-3 height460">
+                                        <div class="row address-item"  *ngFor="let item of ownerData.address;let i = index;">
                                             <div class="col-lg-5">
                                                 <div class="row">
                                                     <div class="col-lg-12">
@@ -2583,7 +2583,7 @@
                                                     Your Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}"
                                                 (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults">
+                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
                                                     <ul class="p-0 m-0 text-left" >
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;" (click)="userAddress(ownerData, i, item)">{{item.address.label}}</a>
@@ -2666,7 +2666,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="ownerAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane p-3">
+                                    <div id="ownerAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane p-3 height460">
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="row">
@@ -2716,13 +2716,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row ">
                                         <div class="col-lg-12 text-right">
                                             <div class="row px-3">
                                                 <div class="col-lg-12">
                                                     <button type="button"  *ngIf="custCurrentTab > 1"  (click)="prevStep()" class="btn btn-default btnPrevious ml-2">Prev</button>
                                                     <a href="javascript:;" (click)="nextStep()"  *ngIf="custCurrentTab < 4" class="btn btn-success btnNext ml-2">Next</a>
-                                                    <button type="button" class="btn btn-success modal-dismiss" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
+                                                    <button type="button" class="btn btn-success modal-dismiss ml-2" *ngIf="!updateButton && custCurrentTab > 3" (click)="addOwnerOperator()" [disabled]="operatorDisabled">Submit</button>
                                                     <button type="button" class="btn btn-default ml-2" data-dismiss="modal">Close</button>
                                                     <button type="button" class="btn btn-success modal-dismiss" *ngIf="updateButton && custCurrentTab > 3" (click)="updateOwnerOperator()" [disabled]="operatorDisabled">Update</button>
                                                 </div>

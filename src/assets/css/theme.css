@@ -220,7 +220,7 @@ a:active {
 	/* Layout Fixed - Content Body */
 	html.fixed .content-body {
 		margin-left: 255px;
-		margin-right: 50px;
+		margin-right: 0px;
 	}
 
 	html.fixed .content-body.has-toolbar {
@@ -233,7 +233,9 @@ a:active {
 
 	/* Layout Fixed - Page header */
 	html.fixed .page-header {
-		left: 270px; padding-left:10px;
+		left: 270px; 
+		padding-left:10px;
+		padding-right:10px;
 		margin: 0;
 		position: fixed;
 		right: 0;

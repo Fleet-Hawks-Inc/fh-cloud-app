@@ -24,7 +24,7 @@ declare var H: any;
   ],
 })
 export class MapDashboardComponent implements OnInit, AfterViewInit {
-
+  environment = environment.isFeatureEnabled;
   title = 'Map Dashboard';
   visible = false;
 

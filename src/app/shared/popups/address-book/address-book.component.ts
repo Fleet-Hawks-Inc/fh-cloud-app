@@ -735,8 +735,7 @@ export class AddressBookComponent implements OnInit {
   async userAddress(data: any, i: number, item: any) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    $('div').removeClass('show-search__result');
-
+   
     data.address[i].userLocation = result.address.label;
     data.address[i].geoCords.lat = result.position.lat;
     data.address[i].geoCords.lng = result.position.lng;
@@ -753,6 +752,8 @@ export class AddressBookComponent implements OnInit {
     if (result.address.street != undefined) {
       data.address[i].street = result.address.street;
     }
+
+    $('div').removeClass('show-search__result');
   }
 
   async fetchCountriesByName(name: string) {

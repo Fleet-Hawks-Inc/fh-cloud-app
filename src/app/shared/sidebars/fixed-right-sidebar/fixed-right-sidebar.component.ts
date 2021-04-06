@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { environment} from './../../../../environments/environment';
 @Component({
   selector: 'app-fixed-right-sidebar',
   templateUrl: './fixed-right-sidebar.component.html',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FixedRightSidebarComponent implements OnInit {
   showAddressBook = false;
-
+  environment = environment.isFeatureEnabled;
   constructor() { }
 
   ngOnInit() {
