@@ -56,8 +56,8 @@ it('login and then go to Map Dashdashboard and then add asset and then delete as
     cy.get('input[name="assetDetails.height"]').first().type('10');//height
     cy.get('div:nth-of-type(3) > div:nth-of-type(1) > .row > .col-lg-6.pl-0 > ng-select[role="listbox"] input[role="combobox"]').first().click();
     cy.get('[role="option"]:nth-of-type(2) .ng-star-inserted').last().click();//height type
-    const imagefile = 'download.jpg';
-    cy.get('input[name="uploadedPhotos"]').attachFile(imagefile);
+    const imagefile1 = 'download.jpg';
+    cy.get('input[name="uploadedPhotos"]').attachFile(imagefile1);
     const file2 = 'load1.pdf';
     cy.get('[name="uploadedDocs"]').attachFile(file2);
     cy.get('[class="col-lg-11 text-right"] #nextBtn').first().click();
