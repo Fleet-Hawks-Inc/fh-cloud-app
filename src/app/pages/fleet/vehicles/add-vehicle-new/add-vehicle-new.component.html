@@ -1,27 +1,19 @@
 <section class="body">
-   <!-- start: header -->
-   <!-- <app-header></app-header> -->
-
-   <!-- end: header -->
-
-   <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <!-- <app-sidebar></app-sidebar> -->
-      <!-- end: sidebar -->
-
+      <div class="inner-wrapper">
+      
       <section role="main" class="content-body pt-0 pr-0 pl-0">
 
-         <header class="page-header pr-5">
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
+         <header class="page-header">
+            <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 text-dark">{{title}}</h4>
                </div>
-               <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/fleet/vehicles/list"
+               <div class="col-md-8 col-lg-8 text-right"> <a routerLink="/fleet/vehicles/list"
                      class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a> </div>
             </div>
          </header>
          <div class="row text-dark">
-            <div class="col pr-0 pb-3">
+            <div class="col pr-0 pb-3 bg-white">
 
                <div class="p-2">
                   <ul class="nav nav-tabs top-tabs mt-2" id="top-tabs" role="tablist">
@@ -160,9 +152,9 @@
                                              </optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
-                                             class="btn btn-sm btn-success modal-with-form"><i
+                                             class="btn cus-btn-padd btn-success modal-with-form"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
@@ -178,9 +170,9 @@
                                              </optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelModal"
-                                             class="btn btn-sm btn-success modal-with-form"><i
+                                             class="btn cus-btn-padd btn-success modal-with-form"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
 
@@ -214,9 +206,9 @@
                                              </optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                             class="btn btn-sm btn-success modal-with-form"><i
+                                             class="btn cus-btn-padd btn-success modal-with-form"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
 
@@ -234,9 +226,9 @@
                                              </optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" (click)="gotoVehiclePage();"
-                                             class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                             class="btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Driver's Team
@@ -251,9 +243,9 @@
                                              </optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" (click)="gotoVehiclePage();"
-                                             class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a>
+                                             class="btn cus-btn-padd btn-success"><i class="fas fa-plus"></i></a>
                                        </div>
                                     </div>
                                  </div>
@@ -300,7 +292,7 @@
                                     <div class="row">
                                        <div class="col-lg-10 text-center">
                                           <div class="mt-3">
-                                             <div class="btn btn-sm btn-success position-relative overflow-hidden">
+                                             <div class="btn cus-btn-padd btn-success position-relative overflow-hidden">
                                                 <i class="fas fa-plus"></i> Add Photo
                                                 <input (change)="selectDocuments($event, 'uploadedPhotos')"
                                                    class="hidden_input1 w-100" name="uploadedPhotos" type="file"
@@ -332,9 +324,9 @@
 
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <button data-toggle="modal" data-target="#addVehicleProgramModal"
-                                             type="button" class="btn btn-sm btn-success"><i
+                                             type="button" class="btn cus-btn-padd btn-success"><i
                                                 class="fas fa-plus"></i></button>
                                        </div>
                                     </div>
@@ -403,8 +395,8 @@
                                              [(ngModel)]="currentStatus" placeholder="Select status of the vehicle">
                                              <optgroup label="">
                                                 <ng-option value="active">Active</ng-option>
-                                                <ng-option value="inActive">Inactive</ng-option>
-                                                <ng-option value="outOfService">Out of Service</ng-option>
+                                                <ng-option value="in-active">Inactive</ng-option>
+                                                <ng-option value="out of service">Out of Service</ng-option>
                                                 <ng-option value="sold">Sold</ng-option>
                                              </optgroup>
                                           </ng-select>
@@ -420,9 +412,9 @@
                                              <optgroup>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2 mar-top-37">
+                                       <div class="col-lg-2 mar-top-37 px-0">
                                           <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                             class="modal-with-form btn btn-sm btn-success text-light"><i
+                                             class="modal-with-form btn cus-btn-padd btn-success text-light"><i
                                                 class="fas fa-plus"></i></button>
                                        </div>
                                     </div>
@@ -456,6 +448,12 @@
                                                 </ng-container>
                                              </optgroup>
                                           </ng-select>
+                                       </div>
+                                       <div class="col-lg-1 mar-top-37 pl-0"
+                                          *ngIf="ownership == 'Owner Operator'">
+                                          <a data-toggle="modal" data-target="#addOwnerOperatorModal"
+                                             href="javascript:;" class="modal-with-form btn btn-sm btn-success"><i
+                                                class="fas fa-plus"></i></a>
                                        </div>
                                     </div>
                                  </div>
@@ -1123,9 +1121,9 @@
                                                 value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                             class="btn btn-sm btn-success modal-with-form"><i
+                                             class="btn cus-btn-padd btn-success modal-with-form"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                     </div>
@@ -1795,7 +1793,7 @@
                                        Detail</label>
                                  </div>
                                  <div class="col-lg-5 offset-lg-1">
-                                    <div class="d-flex">
+                                    <div class="row">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
                                              Vendor&nbsp; <span
@@ -1810,43 +1808,48 @@
 
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                             class="btn btn-sm btn-success modal-with-form">
+                                             class="btn cus-btn-padd btn-success modal-with-form">
                                              <em class="fas fa-plus"></em></a>
                                        </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
-                                          Price&nbsp; <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
-                                       <div class="row">
-                                          <div class="col-lg-6">
-                                             <input class="form-control" name="purchase.purchasePrice" type="number"
-                                                min="1" [(ngModel)]="purchase.purchasePrice"
-                                                placeholder="Enter purchase price">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
+                                             Price&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
+                                          <div class="row">
+                                             <div class="col-lg-6">
+                                                <input class="form-control" name="purchase.purchasePrice" type="number"
+                                                   min="1" [(ngModel)]="purchase.purchasePrice"
+                                                   placeholder="Enter purchase price">
+                                             </div>
+                                             <div class="col-lg-6">
+                                                <ng-select class="form-control populate"
+                                                   name="purchase.purchasePriceCurrency"
+                                                   [(ngModel)]="purchase.purchasePriceCurrency"
+                                                   placeholder="Select currency">
+                                                   <optgroup label="">
+                                                      <ng-option value="USD">USD</ng-option>
+                                                      <ng-option value="CAD">CAD</ng-option>
+                                                   </optgroup>
+                                                </ng-select>
+                                             </div>
                                           </div>
-                                          <div class="col-lg-6">
-                                             <ng-select class="form-control populate"
-                                                name="purchase.purchasePriceCurrency"
-                                                [(ngModel)]="purchase.purchasePriceCurrency"
-                                                placeholder="Select currency">
-                                                <optgroup label="">
-                                                   <ng-option value="USD">USD</ng-option>
-                                                   <ng-option value="CAD">CAD</ng-option>
-                                                </optgroup>
-                                             </ng-select>
-                                          </div>
+   
                                        </div>
-
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
-                                          Date&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                       <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" name="purchase.purchaseDate"
-                                          [(ngModel)]="purchase.purchaseDate">
-
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
+                                             Date&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                          <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" name="purchase.purchaseDate"
+                                             [(ngModel)]="purchase.purchaseDate">
+   
+                                       </div>
                                     </div>
+                                   <div class="row">
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
                                           Odometer&nbsp; <span
@@ -1855,9 +1858,10 @@
                                           min="1" [(ngModel)]="purchase.purchaseOdometer"
                                           placeholder="Enter purchase odometer">
                                     </div>
+                                   </div>
                                  </div>
                                  <div class="col-lg-5 offset-lg-1">
-                                    <div class="d-flex">
+                                    <div class="row">
                                        <div class="col-lg-7">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
                                              Expiration Date&nbsp; <span
@@ -1876,20 +1880,24 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
-                                          Expiration Meter&nbsp; <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
-                                       <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="1"
-                                          [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="Expiration Meter">
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
+                                             Expiration Meter&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
+                                          <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="1"
+                                             [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="Expiration Meter">
+                                       </div>
                                     </div>
-                                    <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
-                                          Comments&nbsp; <span
-                                             class="text-1 optional-label-color">(optional)</span></label>
-                                       <textarea type="text" rows="3" class="form-control"
-                                          name="purchase.purchaseComments" [(ngModel)]="purchase.purchaseComments"
-                                          placeholder="Add comments about vehicle purchase"></textarea>
+                                    <div class="row">
+                                       <div class="col-lg-10">
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
+                                             Comments&nbsp; <span
+                                                class="text-1 optional-label-color">(optional)</span></label>
+                                          <textarea type="text" rows="3" class="form-control"
+                                             name="purchase.purchaseComments" [(ngModel)]="purchase.purchaseComments"
+                                             placeholder="Add comments about vehicle purchase"></textarea>
+                                       </div>
                                     </div>
                                  </div>
                               </div>
@@ -1916,9 +1924,9 @@
                                                 value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-2  mar-top-37">
+                                       <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
-                                             class="btn btn-sm btn-success modal-with-form"><i
+                                             class="btn cus-btn-padd btn-success modal-with-form"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                     </div>

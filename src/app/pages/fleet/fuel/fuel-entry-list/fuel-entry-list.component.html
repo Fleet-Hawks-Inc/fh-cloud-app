@@ -1,14 +1,10 @@
 <section class="body">
-	<!-- start: header -->
-	<app-header></app-header>
-	<!-- end: header -->
-
 	<div class="inner-wrapper">
 		<section role="main" class="content-body pl-0">
 			<header class="page-header">
 				<form class="form-horizontal" method="get" name="form" id="form_">
-					<div class="row pr-4 pl-4" style="padding-top:9px;"> 
-						<div class="col-md-2 col-lg-2 pr-0 pl-0">
+					<div class="row px-2" style="padding-top:9px;"> 
+						<div class="col-md-2 col-lg-2">
 							<div class="input-group input-group-sm mb-3"> 
 								<ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
 									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
@@ -43,8 +39,9 @@
 								class="btn btn-sm btn-success mr-2">Search</button>
 							<button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
 						</div>
-						<div class="col-md-3  col-lg-3 text-right pr-5 page-buttons">
-							<div class="btn-group flex-wrap">
+						<div class="col-md-3 text-right page-buttons">
+							<div class="btn-group flex-wrap" *ngIf="!environment">
+
 								<button type="button" class="btn btn-success btn-sm dropdown-toggle"
 									data-toggle="dropdown" aria-expanded="false">Actions<span
 										class="caret"></span></button>

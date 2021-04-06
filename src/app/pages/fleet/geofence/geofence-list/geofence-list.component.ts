@@ -6,6 +6,7 @@ import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../constants';
+import { environment } from '../../../../../environments/environment';
 declare var $: any;
 declare var L: any;
 
@@ -15,7 +16,7 @@ declare var L: any;
   styleUrls: ['./geofence-list.component.css']
 })
 export class GeofenceListComponent implements OnInit {
-  
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   private map: any;
   selectID;

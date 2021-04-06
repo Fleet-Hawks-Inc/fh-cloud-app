@@ -4,7 +4,7 @@
 
         <section role="main" class="content-body pt-0 pr-0 pl-0">
             <header class="page-header">
-                <div class="row px-4" style="padding-top: 10px">
+                <div class="row px-2" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2 pr-0 pl-0">
                         <div class="input-group input-group-sm mb-3"> 
                             <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2 text-right pr-2 page-buttons">
-                        <div class="btn-group flex-wrap">
+                        <div class="btn-group flex-wrap" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
                                 Actions<span class="caret"></span>

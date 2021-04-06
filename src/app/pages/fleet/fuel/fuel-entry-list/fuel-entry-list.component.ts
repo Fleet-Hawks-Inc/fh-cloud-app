@@ -4,6 +4,7 @@ import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
+import { environment } from '../../../../../environments/environment';
 declare var $: any;
 
 @Component({
@@ -14,6 +15,7 @@ declare var $: any;
 })
 export class FuelEntryListComponent implements OnInit {
 
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Fuel Entries List';
   fromDate: any = '';

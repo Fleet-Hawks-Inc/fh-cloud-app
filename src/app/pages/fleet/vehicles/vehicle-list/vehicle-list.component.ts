@@ -6,6 +6,7 @@ import { HereMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
@@ -39,14 +40,14 @@ export class VehicleListComponent implements OnInit {
     vehicleName: true,
     vehicleType: true,
     make: true,
-    model: true,
+    model: false,
     lastLocation: true,
-    trip: true,
+    trip: false,
     plateNo: true,
     fuelType: true,
     status: true,
-    group: true,
-    ownership: true,
+    group: false,
+    ownership: false,
     driver: false,
     serviceProgram: false,
     serviceDate: false,
@@ -63,8 +64,10 @@ export class VehicleListComponent implements OnInit {
   vehiclePrevEvauatedKeys = [''];
   vehicleStartPoint = 1;
   vehicleEndPoint = this.pageLength;
+  vehicleTypeObects: any = {};
+  fuelTypesObjects: any = {};
 
-  constructor(private apiService: ApiService, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
   ngOnInit() {
     this.fetchGroups();
@@ -75,10 +78,17 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVehiclesList();
     this.initDataTable();
+    this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
+    });
+
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b['code']] = b['name'], a;
+    }, {});
     });
   }
 
@@ -171,6 +181,12 @@ export class VehicleListComponent implements OnInit {
    */
   export() {
     $('.buttons-excel').trigger('click');
+  }
+
+  fetchFuelTypesbyIDs(){
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypesObjects = result;
+    });
   }
 
   initDataTable() {
@@ -288,7 +304,9 @@ export class VehicleListComponent implements OnInit {
     if(this.hideShow.model == false) {
       $('.col5').css('display','none');
     } else {
+      $('.col5').removeClass('extra');
       $('.col5').css('display','');
+      $('.col5').css('min-width','120px');
     }
 
     if(this.hideShow.lastLocation == false) {
@@ -300,7 +318,9 @@ export class VehicleListComponent implements OnInit {
     if(this.hideShow.trip == false) {
       $('.col7').css('display','none');
     } else {
+      $('.col7').removeClass('extra');
       $('.col7').css('display','');
+      $('.col7').css('min-width','200px');
     }
 
     if(this.hideShow.plateNo == false) {
@@ -324,13 +344,17 @@ export class VehicleListComponent implements OnInit {
     if(this.hideShow.group == false) {
       $('.col11').css('display','none');
     } else {
+      $('.col11').removeClass('extra');
       $('.col11').css('display','');
+      $('.col11').css('min-width','200px');
     }
 
     if(this.hideShow.ownership == false) {
       $('.col12').css('display','none');
     } else {
+      $('.col12').removeClass('extra');
       $('.col12').css('display','');
+      $('.col12').css('min-width','200px');
     }
 
     //extra columns
@@ -339,6 +363,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
+      $('.col13').css('min-width','200px');
     }
 
     if(this.hideShow.serviceProgram == false) {
@@ -346,6 +371,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
+      $('.col14').css('min-width','200px');
     }
 
     if(this.hideShow.serviceDate == false) {
@@ -353,6 +379,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col15').removeClass('extra');
       $('.col15').css('display','');
+      $('.col15').css('min-width','200px');
     }
     
     if(this.hideShow.insuranceVendor == false) {
@@ -360,6 +387,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col16').removeClass('extra');
       $('.col16').css('display','');
+      $('.col16').css('min-width','200px');
     }
 
     if(this.hideShow.insuranceAmount == false) {
@@ -367,6 +395,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col17').removeClass('extra');
       $('.col17').css('display','');
+      $('.col17').css('min-width','200px');
     }
 
     if(this.hideShow.engineSummary == false) {
@@ -374,6 +403,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col18').removeClass('extra');
       $('.col18').css('display','');
+      $('.col18').css('min-width','200px');
     }
 
     if(this.hideShow.primaryMeter == false) {
@@ -381,6 +411,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col19').removeClass('extra');
       $('.col19').css('display','');
+      $('.col19').css('min-width','200px');
     }
 
     if(this.hideShow.fuelUnit == false) {
@@ -388,6 +419,7 @@ export class VehicleListComponent implements OnInit {
     } else { 
       $('.col20').removeClass('extra');
       $('.col20').css('display','');
+      $('.col20').css('min-width','200px');
     }
   }
 

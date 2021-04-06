@@ -5,20 +5,12 @@
  </style>
 
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-
+       
         <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header pr-5">
+            <header class="page-header">
                 <form class="form-horizontal" method="get">
-                    <div class="row px-2" style="padding-top: 8px">
+                    <div class="row" style="padding-top: 8px">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle by name"
@@ -53,30 +45,30 @@
                         </div>
                         <div class="col-md-6 col-lg-6 text-right pr-3 page-buttons">
                             <div class="btn-group flex-wrap" style="min-width:190px;">
-                                <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                                <button type="button" class="mr-3 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                                 <div class="dropdown-menu dutystatwd" role="menu">
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.vin"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin"
                                       name="vin" (change)="hideShowColumn()"> VIN </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.vehicleName"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.vehicleName"
                                       name="vehicleName" (change)="hideShowColumn()"> Vehicle Name </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.vehicleType"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.vehicleType"
                                       name="vehicleType" (change)="hideShowColumn()"> Vehicle Type </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.make"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.make"
                                       name="make" (change)="hideShowColumn()"> Make </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
                                       <label><input type="checkbox" [(ngModel)]="hideShow.model"
-                                      name="model" (change)="hideShowColumn()"> Modal </label>
+                                      name="model" (change)="hideShowColumn()"> Model </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.lastLocation"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.lastLocation"
                                       name="lastLocation" (change)="hideShowColumn()"> Last Location </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
@@ -84,15 +76,15 @@
                                       name="trip" (change)="hideShowColumn()"> Trip </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.plateNo"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.plateNo"
                                       name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.fuelType"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.fuelType"
                                       name="fuelType" (change)="hideShowColumn()"> Fuel Type </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.status"
+                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
                                          name="status" (change)="hideShowColumn()"> Status </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
@@ -163,7 +155,7 @@
                                     <a class="dropdown-item text-1" (click)="export()">Export</a>
                                 </div>
                             </div>
-                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm mx-2"
+                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm"
                                 style="color: white"><i class="fas fa-plus"></i> Add Vehicle</a>
                         </div>
                     </div>
@@ -182,14 +174,13 @@
                                                 <th class="col2 minWidth200">Vehicle Name</th>
                                                 <th class="col3 minWidth200">Vehicle Type</th>
                                                 <th class="col4 minWidth200">Make</th>
-                                                <th class="col5 minWidth200">Model</th>
+                                                <th class="col5 extra">Model</th>
                                                 <th class="col6 minWidth200">Last Location</th>
-                                                <th class="col7 minWidth200">Trip</th>
-                                                <th class="col8 minWidth200">Plate Number</th>
+                                                <th class="col7 extra">Trip</th>
+                                                <th class="col8 minWidth130">Plate Number</th>
                                                 <th class="col9 minWidth200">Fuel Type</th>
-                                                <th class="col10 minWidth200">Current Status</th>
-                                                <th class="col11 minWidth200">Group</th>
-                                                <th class="col12 minWidth200">Ownership</th>
+                                                <th class="col11 extra">Group</th>
+                                                <th class="col12 extra">Ownership</th>
                                                 <th class="col13 extra">Assigned Driver</th>
                                                 <th class="col14 extra">Service Program</th>
                                                 <th class="col15 extra">In Service Date</th>
@@ -198,6 +189,7 @@
                                                 <th class="col18 extra">Engine Summary</th>
                                                 <th class="col19 extra">Primary Meter</th>
                                                 <th class="col20 extra">Fuel Unit</th>
+                                                <th class="col10 minWidth120">Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -206,66 +198,66 @@
                                                 <td colspan="13">{{ dataMessage }}</td>
                                             </tr>
                                             <tr *ngFor="let vehicle of vehicles; let i = index">
-                                                <td  *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.vin" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicle.VIN }}
                                                 </td>
-                                                <td  *ngIf="hideShow.vehicleName" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.vehicleName" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ vehicle.vehicleIdentification }}
                                                 </td>
-                                                <td  *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{ vehicle.vehicleType }}
+                                                <td class="hand-icon" *ngIf="hideShow.vehicleType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{ vehicleTypeObects[vehicle.vehicleType] }}
                                                 </td>
-                                                <td  *ngIf="hideShow.make" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.make" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicleManufacturersList[vehicle.manufacturerID]}}
                                                 </td>
-                                                <td  *ngIf="hideShow.model" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.model" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicleModelList[vehicle.modelID]}}
                                                 </td>
-                                                <td  *ngIf="hideShow.lastLocation" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.lastLocation" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     Ontario
                                                 </td>
-                                                <td  *ngIf="hideShow.trip" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.trip" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     111
                                                 </td>
-                                                <td  *ngIf="hideShow.plateNo" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.plateNo" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.plateNumber}}
                                                 </td>
-                                                <td  *ngIf="hideShow.fuelType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.fluid.fuelType}}
+                                                <td class="hand-icon" *ngIf="hideShow.fuelType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                    {{fuelTypesObjects[vehicle.fluid.fuelType]}}
                                                 </td>
-                                                <td  *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.currentStatus}}
                                                 </td>
-                                                <td  *ngIf="hideShow.group" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.group" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{groupsList[vehicle.groupID]}}
                                                 </td>
-                                                <td  *ngIf="hideShow.ownership" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.ownership" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.ownership}}
                                                 </td>
 
                                                 <!-- extra columns -->
-                                                <td  *ngIf="hideShow.driver" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.driver" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ driversList[vehicle.driverID] }}
                                                 </td>
-                                                <td  *ngIf="hideShow.serviceProgram" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.serviceProgram" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{ serviceProgramsList[vehicle.serviceProgramID] }}
                                                 </td>
-                                                <td  *ngIf="hideShow.serviceDate" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.serviceDate" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.lifeCycle.inServiceDate | date:'dd-MM-yyyy'}}
                                                 </td>
-                                                <td  *ngIf="hideShow.insuranceVendor" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.insuranceVendor" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vendorsList[vehicle.insurance.vendorID]}}
                                                 </td>
-                                                <td  *ngIf="hideShow.insuranceAmount" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.insuranceAmount" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.insurance.amount}}
                                                 </td>
-                                                <td  *ngIf="hideShow.engineSummary" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.engineSummary" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.engine.engineSummary}}
                                                 </td>
-                                                <td  *ngIf="hideShow.primaryMeter" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.primaryMeter" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.settings.primaryMeter}}
                                                 </td>
-                                                <td  *ngIf="hideShow.fuelUnit" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
+                                                <td class="hand-icon" *ngIf="hideShow.fuelUnit" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.settings.fuelUnit}}
                                                 </td>
                                                 

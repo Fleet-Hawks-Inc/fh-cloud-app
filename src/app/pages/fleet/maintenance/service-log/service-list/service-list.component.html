@@ -3,10 +3,10 @@
     <div class="inner-wrapper">
        
         <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5 service-log-header">
+            <header class="page-header service-log-header">
             
                 <form class="form-horizontal" method="get">
-                    <div class="row pr-1 mr-1" style="padding-top:9px;">
+                    <div class="row px-2" style="padding-top:9px;">
                         <!-- <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-sm mb-3">
                                 <input autocomplete="off" type="text" name="vehicleIdentification" [(ngModel)]="vehicleIdentification"
@@ -51,8 +51,9 @@
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
-                        <div class="col-md-4 col-lg-4 text-right pr-1 text-right">
-                            <div class="btn-group flex-wrap mr-2">
+                        <div class="col-md-4 col-lg-4 text-right text-right">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false">Actions<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -93,8 +94,8 @@
                                                                 <tr>
                                                                     <th width="10%">Unit Name</th>
                                                                     <th width="20%">Vehicle/Asset</th>
-                                                                    <th width="15%">Completion Date/Meter</th>
-                                                                    <th width="50%">Details</th>
+                                                                    <th width="15%">Completion Date/Odometer</th>
+                                                                    <th width="40%">Details</th>
                                                                     <th width="15%">Total</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -111,9 +112,14 @@
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                                         {{vehiclesObject[item.vehicleID]}}
                                                                         <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br>
-                                                                        <span class="text-success text-capitalize">{{item.unitStatus}}</span>
+                                                                        <span class="text-success text-capitalize" 
+                                                                            [ngClass]="{'text-danger': item.currentStatus == 'sold', 
+                                                                            'text-muted' : item.currentStatus === 'out of service'}"
+                                                                        >
+                                                                            {{item.currentStatus}}
+                                                                        </span>
                                                                     </td>
-                                                                    <td>{{item.completionDate | date : 'dd-MM-yyyy'}}<br><span *ngIf="item?.vehicleID"
+                                                                    <td>{{item.completionDate | date : 'yyyy-mm-dd'}}<br><span *ngIf="item?.vehicleID"
                                                                             class="font-size-12">{{item.odometer}} miles</span></td>
                                                                     <td>
                                                                         <div>

@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import Constants from '../../constants';
 import { HereMapService } from '../../../../services';
+import { Environment } from 'aws-sdk/clients/lambda';
+import { environment } from '../../../../../environments/environment';
 declare var H: any;
 declare var $: any;
 @Component({
@@ -13,7 +15,7 @@ declare var $: any;
   styleUrls: ['./fuel-entry-details.component.css']
 })
 export class FuelEntryDetailsComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   title = 'Fuel Entry';
   Asseturl = this.apiService.AssetUrl;
   fuelList;
@@ -119,6 +121,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchWEXuseTypeCode();
     this.carrierID = this.apiService.getCarrierID();
     this.fetchVehicleList();
+    this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
     this.fetchFuelEntry();
   }

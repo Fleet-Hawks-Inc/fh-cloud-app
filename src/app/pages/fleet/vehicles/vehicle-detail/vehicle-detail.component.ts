@@ -5,6 +5,7 @@ declare var $: any;
 import { ToastrService } from "ngx-toastr";
 import {environment} from '../../../../../environments/environment';
 import { rest } from "lodash";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-vehicle-detail",
@@ -24,6 +25,7 @@ export class VehicleDetailComponent implements OnInit {
   vehicleManufacturersList: any = {};
   groupsList: any = {};
   statesList: any = {};
+  countriesList: any = {};
   vendors = {};
 
   vehicleID = "";
@@ -35,6 +37,7 @@ export class VehicleDetailComponent implements OnInit {
   modelID = "";
   plateNumber = "";
   stateID = "";
+  countryID = "";
   driverID = "";
   teamDriverID = "";
   serviceProgramID = [];
@@ -203,11 +206,13 @@ export class VehicleDetailComponent implements OnInit {
     autoplaySpeed: 5000,
   };
 
+  vehicleTypeObects: any = {};
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-
+    private httpClient: HttpClient,
     private toastr: ToastrService
   ) {}
 
@@ -223,10 +228,17 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
+    this.fetchCountriesList();
     this.fetchVehicleModelList();
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
     this.fetchVendorsList();
+
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b['code']] = b['name'], a;
+    }, {});
+    });
   }
 
   fetchVendorsList() {
@@ -250,6 +262,12 @@ export class VehicleDetailComponent implements OnInit {
       this.statesList = result;
     });
   }
+  fetchCountriesList() {
+    this.apiService.getData("countries/get/list").subscribe((result: any) => {
+      this.countriesList = result;
+    });
+  }
+  
   fetchVehicleModelList() {
     this.apiService
       .getData("vehicleModels/get/list")
@@ -340,6 +358,7 @@ export class VehicleDetailComponent implements OnInit {
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
+        this.countryID = result.countryID;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;

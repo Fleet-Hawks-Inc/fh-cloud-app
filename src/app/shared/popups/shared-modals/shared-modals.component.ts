@@ -1633,6 +1633,7 @@ fetchDrivers(){
   }
 
   issuesUnitType(value: string) {
+    this.issuesData.unitID = '';
     this.issuesData.unitType = value;
   }
 
