@@ -52,9 +52,9 @@ export class InventoryListComponent implements OnInit {
    */
   itemID = '';
   itemName = '';
-  itemGroupID = '';
+  itemGroupID = null;
   groupName = '';
-  vendorID = ''
+  vendorID = null
   companyName = '';
   suggestedVendors = [];
   suggestedItems = [];
@@ -77,8 +77,8 @@ export class InventoryListComponent implements OnInit {
   requiredItemName = '';
   requiredCompanyName = '';
   requiredPartNumber = '';
-  requiredItemID = '';
-  requiredVendorID = '';
+  requiredItemID = null;
+  requiredVendorID = null;
   requiredSuggestedItems = [];
 
   inventoryNext = false;
@@ -94,10 +94,14 @@ export class InventoryListComponent implements OnInit {
   requiredInventoryPrevEvauatedKeys = [''];
   requiredInventoryStartPoint = 1;
   requiredInventoryEndPoint = this.pageLength;
-  totalRecordsRequired = 20;
+  totalRecordsRequired = 10;
   requiredLastEvaluatedKey = '';
   currentTab = 'inv';
   requiredSuggestedVendors = [];
+  allVendors:any = [];
+  allCompanies:any = [];
+  searchItems:any = [];
+  requiredSuggestedPartNo = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
@@ -110,37 +114,9 @@ export class InventoryListComponent implements OnInit {
     this.initDataTable();
     this.fetchRequiredItemsCount();
     this.initDataTableRequired();
-  }
-
-  getVendorSuggestions(value, type) {
-    if(value != '') {
-      value = value.toLowerCase();
-      this.apiService
-      .getData(`vendors/suggestion/${value}`)
-      .subscribe((result) => {
-        if(type == 'inv') {
-          this.suggestedVendors = result.Items;
-        } else {
-          this.requiredSuggestedVendors = result.Items;
-        }
-      });
-    } else {
-      this.suggestedVendors = [];
-      this.requiredSuggestedVendors = [];
-    }
-    
-  }
-
-  setVendor (vendorID, companyName, type) {
-    if(type == 'inv') {
-      this.companyName = companyName;
-      this.vendorID = vendorID;
-      this.suggestedVendors = [];
-    } else {
-      this.requiredCompanyName = companyName;
-      this.requiredVendorID = vendorID;
-      this.requiredSuggestedVendors = [];
-    }
+    this.fetchAllVendors();
+    this.fetchAllCompanies();
+    this.fetchAllItems();
   }
 
   getItemSuggestions(value, type) {
@@ -165,6 +141,24 @@ export class InventoryListComponent implements OnInit {
     }
   }
 
+  getPartNumberSuggestions(value) {
+    if(value != '') {
+      value = value.toLowerCase();
+      this.apiService
+      .getData(`requiredItems/suggestion/${value}`)
+      .subscribe((result) => {
+        this.requiredSuggestedPartNo = result.Items;
+      });
+    } else {
+      this.requiredSuggestedPartNo = [];
+    }
+  }
+
+  setPartNo (itemName) {
+    this.requiredPartNumber = itemName;
+    this.requiredSuggestedPartNo = [];
+  }
+
   setItem (itemID, itemName, type) {
     if(type == 'inv') {
       this.itemName = itemName;
@@ -172,32 +166,16 @@ export class InventoryListComponent implements OnInit {
       this.suggestedItems = [];
     } else {
       this.requiredItemName = itemName;
-      this.requiredItemID = itemID;
+      this.requiredItemID = itemName;
       this.requiredSuggestedItems = [];
     }
   }
 
-  getItemGroupSuggestions(value) {
-    if(value != '') {
-      value = value.toLowerCase();
-      this.apiService
-      .getData(`itemGroups/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedItemGroups = result.Items;
-      });
-    } else {
-      this.suggestedItemGroups = [];
-    }
-  }
-
-  setItemGroup (itemGroupID, groupName) {
-    this.groupName = groupName;
-    this.itemGroupID = itemGroupID;
-    this.suggestedItemGroups = [];
-  }
   resetFilter(){
-    if (this.itemName !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
-      this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+    if (this.itemName !== '' || this.vendorID !== null || this.itemGroupID !== null) {
+      this.itemID = this.itemName = this.groupName = this.companyName = '';
+      this.vendorID = null;
+      this.itemGroupID = null;
       this.fetchItemsCount();
       this.items = [];
       this.suggestedItems = [];
@@ -210,9 +188,12 @@ export class InventoryListComponent implements OnInit {
   }
 
   resetRequiredFilter(){
-    if (this.requiredItemID !== '' || this.requiredItemName !== '' || this.requiredVendorID !== '' || this.requiredPartNumber !== '') {
-      this.requiredItemID = this.requiredItemName = this.requiredVendorID = this.requiredCompanyName =  this.requiredPartNumber = '';
+    if (this.requiredItemID !== null || this.requiredItemName !== '' || this.requiredVendorID !== null || this.requiredPartNumber !== '') {
+      this.requiredItemName = this.requiredCompanyName =  this.requiredPartNumber = '';
+      this.requiredItemID = null;
+      this.requiredVendorID = null;
       this.fetchRequiredItemsCount();
+      this.requiredSuggestedPartNo = [];
       this.requiredItems = [];
       this.dataMessageReq = Constants.FETCHING_DATA;
       this.initDataTableRequired();
@@ -245,7 +226,7 @@ export class InventoryListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.itemID != '' || this.vendorID != '' || this.itemGroupID != '') {
+        if(this.itemID != '' || this.vendorID != null || this.itemGroupID != null) {
           this.inventoryEndPoint = this.totalRecords;
         }
       },
@@ -259,7 +240,7 @@ export class InventoryListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecordsRequired = result.Count;
 
-        if(this.requiredItemID != '' || this.requiredVendorID != '' || this.requiredPartNumber != '') {
+        if(this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
           this.requiredInventoryEndPoint = this.totalRecords;
         }
       },
@@ -304,7 +285,7 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('inv');
         
         this.items = result['Items'];
-        if (this.vendorID != '') {
+        if (this.vendorID != null || this.itemGroupID != null || this.itemID != null) {
           this.inventoryStartPoint = 1;
           this.inventoryEndPoint = this.totalRecords;
         }
@@ -342,12 +323,11 @@ export class InventoryListComponent implements OnInit {
         if(result.Items.length == 0) {
           this.dataMessageReq = Constants.NO_RECORDS_FOUND;
         }
-        this.requiredSuggestedItems = [];
-        this.requiredSuggestedVendors = [];
+        this.requiredSuggestedPartNo = [];
         this.getStartandEndVal('req');
 
         this.requiredItems = result['Items'];
-        if (this.requiredVendorID != '' || this.requiredItemID != '' || this.requiredPartNumber != '') {
+        if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
           this.requiredInventoryStartPoint = 1;
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
         }
@@ -458,7 +438,8 @@ export class InventoryListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.itemName !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+    if (this.itemName !== '' || this.vendorID !== null || this.itemGroupID !== null) {
+      this.itemName = this.itemName.toLowerCase();
       if(this.itemID == '') {
         this.itemID = this.itemName;
       }
@@ -475,12 +456,12 @@ export class InventoryListComponent implements OnInit {
   }
 
   searchRequiredFilter() {
-    if (this.requiredItemID !== '' || this.requiredItemName !== '' || this.requiredVendorID !== '' || this.requiredPartNumber !== '') {
+    if (this.requiredItemID !== '' || this.requiredVendorID !== null || this.requiredPartNumber !== '') {
+      this.requiredItems = [];
+      this.requiredSuggestedPartNo = [];
       this.fetchRequiredItemsCount();
       this.dataMessageReq = Constants.FETCHING_DATA;
-      this.requiredItems = []
-      this.requiredSuggestedItems = [];
-      this.requiredSuggestedVendors = [];
+      this.requiredSuggestedPartNo = [];
       this.initDataTableRequired();
     } else {
       return false;
@@ -597,5 +578,23 @@ export class InventoryListComponent implements OnInit {
 
   tabChange(type) {
     this.currentTab = type;
+  }
+
+  fetchAllVendors() {
+    this.apiService.getData('vendors').subscribe((result: any) => {
+      this.allVendors = result.Items;
+    });
+  }
+
+  fetchAllCompanies() {
+    this.apiService.getData('itemGroups').subscribe((result: any) => {
+      this.allCompanies = result.Items;
+    });
+  }
+
+  fetchAllItems(){
+    this.apiService.getData(`items`).subscribe((result) => {
+      this.searchItems = result.Items;
+    })
   }
 }

@@ -1,228 +1,289 @@
 <style>
-   .boxes{
+   .boxes {
       cursor: pointer;
    }
 </style>
 <section class="body">
    <div class="inner-wrapper">
-       <section role="main" class="content-body pagebody">
-           <header class="page-header pr-5">
-            
+      <section role="main" class="content-body pagebody">
+         <header class="page-header pr-5">
+
             <div class="row pr-1 mr-1" style="padding-top:10px;">
-               <div class="col-md-2 col-lg-2">
+               <div class="col-md-3 col-lg-3">
                   <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Routing &amp; Dispatch Overview</h4>
                </div>
-               <div class="col-md-10 col-lg-10 text-right pr-1">
-                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;" routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                 <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
+               <div class="col-md-9 col-lg-9 text-right pr-1">
+                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                     routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                     routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
+                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
+                     routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
+                  <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"
+                     routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
                </div>
             </div>
 
-              
-              
-           </header>
-           <div class="routing-overview__wrapper m-3">
-              <div class="row">
-                 <div class="col-8">
-                    <div class="row my-3">
-                       <div class="col-6 pr-2 boxes" routerLink="/dispatch/trips/trip-list">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h4 class="m-0">Active Trips</h4>
-                                <h3 class="mt-1 mb-0 font-weight-bold">{{ activeTripsCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-route fa-fw text-dark" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-6 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h4 class="m-0">Total Trips</h4>
-                                <h3 class="mt-1 mb-0 font-weight-bold">{{ totalTripsCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-4 pr-2 boxes" routerLink="/dispatch/routes/list">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Permanent Routes</h3>
-                                <h3 class="mt-1  mb-0 font-weight-bold">{{ permanentRoutesCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                 <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-4 px-2 boxes" routerLink="/dispatch/trips/trip-list">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Today Pickup</h3>
-                                <h3 class="mt-1 mb-0 font-weight-bold">{{ todaysPickCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-truck-loading text-dark fa-fw" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
 
-                       <div class="col-4 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Tomorrow Pickup</h3>
-                                <h3 class="mt-1 mb-0 font-weight-bold">{{ tomorrowsPickCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-truck-loading text-dark" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
 
-                    <div class="row mt-3">
-                       <div class="col-4 pr-2">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Serving Customers</h3>
-                                <h3 class="mt-1  mb-0 font-weight-bold">{{ customerCount }}</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-users text-dark" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-4 px-2">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Average Cost Per Mile</h3>
-                                <p class="m-0">Loaded</p>
-                                <h3 class="mt-1  mb-0 font-weight-bold">-</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="fas fa-dollar-sign text-dark" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
+         </header>
+         <div class="routing-overview__wrapper m-3">
+            <div class="row">
+               <div class="col-8">
+                  <div class="row my-3">
+                     <div class="col-6 pr-2 boxes" routerLink="/dispatch/trips/trip-list">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h4 class="m-0">Active Trips</h4>
+                              <h3 class="mt-1 mb-0 font-weight-bold">{{ activeTripsCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-route fa-fw text-dark" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-6 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h4 class="m-0">Total Trips</h4>
+                              <h3 class="mt-1 mb-0 font-weight-bold">{{ totalTripsCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-4 pr-2 boxes" routerLink="/dispatch/routes/list">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Permanent Routes</h3>
+                              <h3 class="mt-1  mb-0 font-weight-bold">{{ permanentRoutesCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-4 px-2 boxes" routerLink="/dispatch/trips/trip-list">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Today Pickup</h3>
+                              <h3 class="mt-1 mb-0 font-weight-bold">{{ todaysPickCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-truck-loading text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
 
-                       <div class="col-4 pl-2">
-                          <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                             <div>
-                                <h3 class="m-0 f-17">Average Cost Per Mile</h3>
-                                <p class="m-0">Empty</p>
-                                <h3 class="mt-1  mb-0 font-weight-bold">-</h3>
-                             </div>
-                             <div class="grey-bg p-4" style="color: #979797;">
-                                 <i class="fas fa-dollar-sign fa-fw text-dark" style="font-size:20px;"></i>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row mt-3">
-                    <div class="col-12 pl-2">
-                    <div class="bg-white p-2">
-                       <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
+                     <div class="col-4 pl-2 boxes" routerLink="/dispatch/trips/trip-list">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Tomorrow Pickup</h3>
+                              <h3 class="mt-1 mb-0 font-weight-bold">{{ tomorrowsPickCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-truck-loading text-dark" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
 
-                       <div class="row my-4">
-                          <div class="col-6 pr-1">
-                             <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
-                                <h4 class="m-0 font-weight-bold">ACE</h4>
-                                <h4 class="m-0">{{ aceManifestCount }}</h4>
-                             </div>
-                          </div>
-                          <div class="col-6 pl-1">
-                             <div class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
-                                <h4 class="m-0  font-weight-bold">ACI</h4>
-                                <h4 class="m-0">{{ aciManifestCount }}</h4>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row mt-4 text-dark">
-                       <div class="col-3 pr-2">
-                          <div class="bg-white py-5 p-3 text-center">
-                             <h3 class="m-0 f-17">On Time</h3>
-                             <h3 class="mt-2 mb-0">93%</h3>
-                          </div>
-                       </div>
-                       <div class="col-3 px-2">
-                          <div class="bg-white py-5 p-3 text-center">
-                             <h3 class="m-0 f-17">Late</h3>
-                             <h3 class="mt-2 mb-0">7%</h3>
-                          </div>
-                       </div>
-                       <div class="col-3 px-2" routerLink="/fleet/vehicles/list">
-                          <div class="bg-white py-5 p-3 text-center">
-                             <h3 class="m-0 f-17">Available Vehicles</h3>
-                             <h3 class="mt-2 mb-0">{{ availableVehiclesCount }}</h3>
-                          </div>
-                       </div>
-                       <div class="col-3 pl-2" routerLink="/fleet/drivers/list">
-                          <div class="bg-white py-5 p-3 text-center">
-                             <h3 class="m-0 f-17">Available Drivers</h3>
-                             <h3 class="mt-2 mb-0">{{ availableDriversCount }}</h3>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-                    </div>
-                 </div>
-                 <div class="col-4 pl-1">
-                    <div class="bg-white p-3 ">
-                       <p class="mb-2 text-4 font-weight-bold text-dark">Activity Timelines</p>
-                       <div class="timeline dispatch-timeline timeline-simple changelog pb-3" style="max-height: 709px;overflow-x: auto;">
-                          <div class="tm-body text-dark py-0">
-                             <ol class="tm-items" *ngIf="activities.length > 0">
-                                <li *ngFor="let data of activities">
-                                   <div class="tm-box">
-                                      <span class="release-date">{{ data.timeCreated | date:'MMM d, y - h:mm:ss a' }}</span>
-                                      <ul class="list-unstyled">
-                                         <li>
-                                            <b class="text-success">User</b> {{ data.message }}
-                                            <p class="m-0">{{ data.type }}: <b>{{ data.typeValue }}</b></p>
-                                         </li>
-                                      </ul>
-                                   </div>
-                                </li>
-                             </ol>
-                          </div>
-                       </div>
-                       <div class="text-right"  *ngIf="activities.length > 10">
-                          <a href="javascript:;" class="btn btn-success btn-xs">More..</a>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-              <div class="row mt-3">
-                 <div class="col-6 pr-2">
-                 <div class="bg-white p-2">
-                       <p class="mb-2 text-4 font-weight-bold text-dark">Trips</p>
-                       <div><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                       <canvas baseChart [datasets]="tripChartData" [labels]="tripChartLabels" [options]="tripChartOptions"
-                          [legend]="tripChartLegend" [chartType]="tripChartType">
-                       </canvas>
-                      </div>
-                    </div>
-                 </div>
-                 <div class="col-6 pl-2">
-                    <div class="bg-white p-2">
-                       <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
-                       <div><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                       <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                          [legend]="chartLegend" [chartType]="chartType">
-                       </canvas>
-                      </div>
-                    </div>
-                 </div>
-              </div>
-           </div>
-       </section>
+                  <div class="row mt-3">
+                     <div class="col-4 pr-2">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Serving Customers</h3>
+                              <h3 class="mt-1  mb-0 font-weight-bold">{{ customerCount }}</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-users text-dark" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-4 px-2">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Average Cost Per Mile</h3>
+                              <p class="m-0">Loaded</p>
+                              <h3 class="mt-1  mb-0 font-weight-bold">-</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-dollar-sign text-dark" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-4 pl-2">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h3 class="m-0 f-17">Average Cost Per Mile</h3>
+                              <p class="m-0">Empty</p>
+                              <h3 class="mt-1  mb-0 font-weight-bold">-</h3>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="fas fa-dollar-sign fa-fw text-dark" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row mt-3">
+                     <div class="col-12 pl-2">
+                        <div class="bg-white p-2">
+                           <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
+
+                           <div class="row my-4">
+                              <div class="col-6 pr-1">
+                                 <div
+                                    class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
+                                    <h4 class="m-0 font-weight-bold">ACE</h4>
+                                    <h4 class="m-0">{{ aceManifestCount }}</h4>
+                                 </div>
+                              </div>
+                              <div class="col-6 pl-1">
+                                 <div
+                                    class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
+                                    <h4 class="m-0  font-weight-bold">ACI</h4>
+                                    <h4 class="m-0">{{ aciManifestCount }}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row mt-4 text-dark">
+                           <div class="col-3 pr-2">
+                              <div class="bg-white py-5 p-3 text-center">
+                                 <h3 class="m-0 f-17">On Time</h3>
+                                 <h3 class="mt-2 mb-0">93%</h3>
+                              </div>
+                           </div>
+                           <div class="col-3 px-2">
+                              <div class="bg-white py-5 p-3 text-center">
+                                 <h3 class="m-0 f-17">Late</h3>
+                                 <h3 class="mt-2 mb-0">7%</h3>
+                              </div>
+                           </div>
+                           <div class="col-3 px-2" routerLink="/fleet/vehicles/list">
+                              <div class="bg-white py-5 p-3 text-center">
+                                 <h3 class="m-0 f-17">Available Vehicles</h3>
+                                 <h3 class="mt-2 mb-0">{{ availableVehiclesCount }}</h3>
+                              </div>
+                           </div>
+                           <div class="col-3 pl-2" routerLink="/fleet/drivers/list">
+                              <div class="bg-white py-5 p-3 text-center">
+                                 <h3 class="m-0 f-17">Available Drivers</h3>
+                                 <h3 class="mt-2 mb-0">{{ availableDriversCount }}</h3>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4 pl-1">
+                  <div class="bg-white p-3 ">
+                     <p class="mb-2 text-4 font-weight-bold text-dark">Activity Timelines</p>
+                     <div class="timeline dispatch-timeline timeline-simple changelog pb-3 mb-4"
+                        style="max-height: 709px;overflow-x: auto;">
+                        <div class="tm-body text-dark py-0">
+                           <ol class="tm-items" *ngIf="activities.length > 0">
+                              <li *ngFor="let data of activities">
+                                 <div class="tm-box">
+                                    <span class="release-date">{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</span>
+                                    <ul class="list-unstyled">
+                                       <li>
+                                          {{ data.rest }} <b class="text-success">{{ data.last }}</b>
+                                       </li>
+                                    </ul>
+                                 </div>
+                              </li>
+                           </ol>
+                        </div>
+                     </div>
+                     <div class="text-right" *ngIf="totalRecords.length > 10">
+                        <a href="javascript:;" data-toggle="modal" data-target="#acttimelinemodal" class="btn btn-success btn-xs modal-with-form">More..</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row mt-3">
+               <div class="col-6 pr-2">
+                  <div class="bg-white p-2">
+                     <p class="mb-2 text-4 font-weight-bold text-dark">Trips</p>
+                     <div>
+                        <div class="chartjs-size-monitor">
+                           <div class="chartjs-size-monitor-expand">
+                              <div class=""></div>
+                           </div>
+                           <div class="chartjs-size-monitor-shrink">
+                              <div class=""></div>
+                           </div>
+                        </div>
+                        <canvas baseChart [datasets]="tripChartData" [labels]="tripChartLabels"
+                           [options]="tripChartOptions" [legend]="tripChartLegend" [chartType]="tripChartType">
+                        </canvas>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-6 pl-2">
+                  <div class="bg-white p-2">
+                     <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
+                     <div>
+                        <div class="chartjs-size-monitor">
+                           <div class="chartjs-size-monitor-expand">
+                              <div class=""></div>
+                           </div>
+                           <div class="chartjs-size-monitor-shrink">
+                              <div class=""></div>
+                           </div>
+                        </div>
+                        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                           [legend]="chartLegend" [chartType]="chartType">
+                        </canvas>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
    </div>
 </section>
+
+<div class="modal fade" id="acttimelinemodal" role="dialog" tabindex="-1">
+   <div class="modal-dialog" role="document">
+       <!-- Modal content-->
+       <div class="modal-content">
+           <div class="modal-header">
+               <h4 class="modal-title">Notes</h4>
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+           </div>
+           <div class="modal-body">
+               <table class="row-border hover table table-bordered table-striped mb-0 ">
+                   <thead>
+                       <tr class="bgcol2">
+                           <th class="text-2">Date/Time</th>
+                           <!-- <th class="text-2">User</th> -->
+                           <th class="text-2">Activities</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr *ngFor="let data of allActivities">
+                           <td>{{ data.eventTime | date:'y/MM/dd - HH:mm:ss a' }}</td>
+                           <!-- <td>Dispatcher</td> -->
+                           <td>{{ data.eventParams.message }}</td>
+                       </tr>
+                   </tbody>
+               </table>
+               <div class="row mt-3 dtPaginate" *ngIf="allActivities.length > 0">
+                  <div class="col-6">
+                      Showing {{ dispatchStartPoint }} to {{ dispatchEndPoint }} of {{ totalRecords }} enteries
+                  </div>
+                  <div class="col-6 text-right">
+                      <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="dispatchPrev">Prev</button>
+                      <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="dispatchNext">Next</button>
+                  </div>
+              </div>
+           </div>
+       </div>
+   </div>
+</div>

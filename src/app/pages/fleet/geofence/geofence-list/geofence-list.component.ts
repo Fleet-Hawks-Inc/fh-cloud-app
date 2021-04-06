@@ -35,7 +35,7 @@ export class GeofenceListComponent implements OnInit {
 
   suggestedGeofences = [];
   geofenceID = '';
-  type = '';
+  type = null;
   geofenceName = '';
   geofencesTypes: any = {};
 
@@ -113,7 +113,8 @@ export class GeofenceListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.geofenceName !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== null) {
+      this.geofenceName = this.geofenceName.toLowerCase();
       if(this.geofenceID == '') {
         this.geofenceID = this.geofenceName;
       }
@@ -127,10 +128,10 @@ export class GeofenceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.geofenceName !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== null) {
       this.geofenceID = '';
       this.geofenceName = '';
-      this.type = '';
+      this.type = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.geofences = [];
       this.fetchLogsCount();
@@ -142,6 +143,7 @@ export class GeofenceListComponent implements OnInit {
   }
 
   getSuggestions(value) {
+    value = value.toLowerCase();
     this.apiService
       .getData(`geofences/suggestion/${value}`)
       .subscribe((result) => {
@@ -219,7 +221,7 @@ export class GeofenceListComponent implements OnInit {
         this.getStartandEndVal();
 
         this.geofences = result['Items'];
-        if (this.geofenceID != '' || this.type != '') {
+        if (this.geofenceID != '' || this.type != null) {
           this.geoStartPoint = 1;
           this.geoEndPoint = this.totalRecords;
         }
@@ -257,7 +259,7 @@ export class GeofenceListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.geofenceID != '' || this.type != '') {
+        if(this.geofenceID != '' || this.type != null) {
           this.geoEndPoint = this.totalRecords;
         }
       },

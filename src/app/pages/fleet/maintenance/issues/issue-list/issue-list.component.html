@@ -22,7 +22,14 @@
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
-                                placeholder="Search Issue by Name" />
+                                placeholder="Search Issue by Name" (input)="getSuggestions($event.target.value)"/>
+                        </div>
+                        <div *ngIf="suggestedIssues?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let data of suggestedIssues" style="cursor: pointer;"
+                                    (click)="setIssue(data.issueName)">{{
+                                    data.issueName }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-2">
