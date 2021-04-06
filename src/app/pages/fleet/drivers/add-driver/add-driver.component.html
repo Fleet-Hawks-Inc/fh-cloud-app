@@ -3,11 +3,11 @@
 
       <section role="main" class="content-body pt-0 pr-0 pl-0">
          <header class="page-header">
-            <div class="row pr-4 pl-2" style="padding-top:10px;">
+            <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                </div>
-               <div class="col-md-8  col-lg-8 text-right pr-5">
+               <div class="col-md-8  col-lg-8 text-right">
                   <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
                      List</a>
                </div>
@@ -255,7 +255,7 @@
                                        </div>
                                        <div class="col-lg-2  mar-top-37 pl-0">
                                           <a (click)="gotoVehiclePage();" href="javascript:;"
-                                             class="btn btn-sm btn-success"><em class="fas fa-plus"></em></a>
+                                             class="btn btn-success cus-btn-padd"><em class="fas fa-plus"></em></a>
                                        </div>
                                        <div class="col-lg-10">
                                           <label
@@ -270,7 +270,7 @@
                                        </div>
                                        <div class="col-lg-1 mar-top-37  pl-0">
                                           <a data-toggle="modal" data-target="#addDriverGroupModal" href="javascript:;"
-                                             class="modal-with-form btn btn-sm btn-success">
+                                             class="modal-with-form btn cus-btn-padd btn-success">
                                              <em class="fas fa-plus"></em>
                                          </a>
                                         </div>
@@ -329,7 +329,7 @@
                                              </span>
                                           </div>
                                           <div class="mt-2">
-                                             <div class="btn btn-sm btn-success overflow-hidden position-relative"
+                                             <div class="btn cus-btn-padd btn-success overflow-hidden position-relative"
                                                 style="cursor: pointer;"><em class="fas fa-plus"></em> {{profileTitle}}
                                                 Photo
                                                 <input (change)="selectPhoto($event)"
@@ -443,14 +443,14 @@
                                           </ul>
                                        </div>
                                     </div>
-                                    <div class="col-lg-3 mar-top-37">
-                                       <a class="btn btn-dark mr-2" href="javascript:;"
+                                    <div class="col-lg-3 mar-top-37 pl-0">
+                                       <a class="btn btn-dark cus-btn-padd mr-2" href="javascript:;"
                                           (click)="clearUserLocation(i);">Clear</a>
                                        <button type="button" [disabled]="driverData.address.length == 2" *ngIf="i === 0;" (click)="addAddress();"
-                                          class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                          class="btn cus-btn-padd btn-success"><i class="fa fa-plus"></i> Add
                                           Another Address</button>
                                        <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
-                                          class="btn btn-success" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
+                                          class="btn btn-danger cus-btn-padd" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                  </div>
                                  <div class="address-inner" *ngIf="item.manual">
@@ -575,9 +575,9 @@
                                                    [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                                                    placeholder="Select licence issuing authority">
                                              </div>
-                                             <div class="col-lg-1 mar-top-37">
+                                             <div class="col-lg-1 mar-top-37 pl-0">
                                                 <a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)"
-                                                   class="btn btn-success"><i class="fa fa-minus"></i></a>
+                                                   class="btn btn-danger cus-btn-padd"><i class="fa fa-minus"></i></a>
                                              </div>
                                           </div>
                                        </div>
@@ -683,7 +683,7 @@
                                           <div class="col-5"></div>
                                           <div class="col-5 text-right">
                                              <button type="button" [disabled]="driverData.documentDetails.length == 3" *ngIf="i === 0;" (click)="addDocument()"
-                                                id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                                id="add-document" class="btn btn-success cus-btn-padd"><i class="fa fa-plus"></i> Add
                                                 Another Document</button>
                                           </div>
                                        </div>
@@ -1273,14 +1273,14 @@
 
                      <div class="form-group row mt-3">
                         <div class="col-lg-12 text-right pb-4 pr-5">
-                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+                           <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
                            <button type="button" *ngIf="currentTab > 1" (click)="prevStep()"
-                              class="btn btn-default btnPrevious mr-2">Prev</button>
+                              class="btn btn-default btnPrevious cus-btn-padd mr-2">Prev</button>
                            <a href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 8"
-                              class="btn btn-success btnNext">Save & Next</a>
-                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Save</button>
+                              class="btn btn-success cus-btn-padd btnNext">Save & Next</a>
+                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="cus-btn-padd btn btn-success">Save</button>
                            <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()"
-                              class="btn btn-success">Update</a>
+                              class="btn cus-btn-padd btn-success">Update</a>
 
                         </div>
                      </div>

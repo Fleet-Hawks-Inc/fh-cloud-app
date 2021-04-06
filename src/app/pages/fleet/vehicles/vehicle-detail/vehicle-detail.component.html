@@ -1,12 +1,12 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
+          <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
             <div class="btn-group flex-wrap" *ngIf="!environment.isFeatureEnabled">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -220,7 +220,7 @@
                               Vehicle Type:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ vehicleType }}
+                              {{ vehicleTypeObects[vehicleType] }}
                             </div>
                           </div>
                           <div class="row m-0">

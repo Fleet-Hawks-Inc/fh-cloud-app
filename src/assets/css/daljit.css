@@ -710,3 +710,12 @@ label.error {
     height: 30px;
     border-radius: 50%;
 }
+
+.cus-btn-padd {
+    padding: 6px 14px !important;
+    margin-top: 1px;
+    line-height: 1.4rem;
+}
+.form-control {
+    min-height: 36px !important;
+}

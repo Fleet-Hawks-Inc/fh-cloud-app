@@ -3,12 +3,14 @@ import { ApiService } from '../../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../../../environments/environment';
 @Component({
   selector: 'app-issue-detail',
   templateUrl: './issue-detail.component.html',
   styleUrls: ['./issue-detail.component.css']
 })
 export class IssueDetailComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   photoSlides = [];
   docSlides = [];
   Asseturl = this.apiService.AssetUrl;

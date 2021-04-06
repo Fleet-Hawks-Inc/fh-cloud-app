@@ -1,26 +1,17 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-
-  <!-- end: header -->
-
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
     <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Inventory Details</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
+          <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/inventory/list" class="btn btn-sm btn-default mr-2" ><i class="fas fa-list"></i> Inventory List</a >
 
             <a routerLink="/fleet/inventory/add" class="btn btn-success btn-sm"  ><i class="fas fa-plus"></i> Add Inventory</a
             >
-            <div class="btn-group flex-wrap">
+            <div class="btn-group flex-wrap" *ngIf="!environment">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                  aria-expanded="false">Actions<span class="caret"></span></button>
               <div class="dropdown-menu" role="menu" x-placement="bottom-start"

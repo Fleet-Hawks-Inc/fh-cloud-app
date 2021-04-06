@@ -65,6 +65,7 @@ export class VehicleListComponent implements OnInit {
   vehicleStartPoint = 1;
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
+  fuelTypesObjects: any = {};
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
@@ -77,6 +78,7 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVehiclesList();
     this.initDataTable();
+    this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -179,6 +181,12 @@ export class VehicleListComponent implements OnInit {
    */
   export() {
     $('.buttons-excel').trigger('click');
+  }
+
+  fetchFuelTypesbyIDs(){
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypesObjects = result;
+    });
   }
 
   initDataTable() {
