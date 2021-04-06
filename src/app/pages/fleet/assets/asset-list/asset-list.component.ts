@@ -252,6 +252,7 @@ export class AssetListComponent implements OnInit {
 
   searchFilter() {
     if (this.assetIdentification !== '' || this.currentStatus !== null) {
+      this.assetIdentification = this.assetIdentification.toLowerCase();
       if(this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
