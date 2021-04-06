@@ -105,8 +105,8 @@ export class HereMapService {
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.ui.getControl('mapsettings').setDisabled(true);
-    this.ui.getControl('mapsettings').setVisibility(false);
+    this.ui.getControl('mapsettings').setDisabled(false);
+    this.ui.getControl('mapsettings').setVisibility(true);
 
 
     // let mapSettings = this.ui.getControl('mapsettings');
