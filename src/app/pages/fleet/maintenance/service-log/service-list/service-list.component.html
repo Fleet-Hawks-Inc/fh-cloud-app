@@ -94,8 +94,8 @@
                                                                 <tr>
                                                                     <th width="10%">Unit Name</th>
                                                                     <th width="20%">Vehicle/Asset</th>
-                                                                    <th width="15%">Completion Date/Meter</th>
-                                                                    <th width="50%">Details</th>
+                                                                    <th width="15%">Completion Date/Odometer</th>
+                                                                    <th width="40%">Details</th>
                                                                     <th width="15%">Total</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -112,9 +112,14 @@
                                                                     <td routerLink="/fleet/maintenance/service-log/detail/{{item.logID}}">
                                                                         {{vehiclesObject[item.vehicleID]}}
                                                                         <span *ngIf="!item?.vehicleID">{{assetsObject[item.assetID]}}</span><br>
-                                                                        <span class="text-success text-capitalize">{{item.unitStatus}}</span>
+                                                                        <span class="text-success text-capitalize" 
+                                                                            [ngClass]="{'text-danger': item.currentStatus == 'sold', 
+                                                                            'text-muted' : item.currentStatus === 'out of service'}"
+                                                                        >
+                                                                            {{item.currentStatus}}
+                                                                        </span>
                                                                     </td>
-                                                                    <td>{{item.completionDate | date : 'dd-MM-yyyy'}}<br><span *ngIf="item?.vehicleID"
+                                                                    <td>{{item.completionDate | date : 'yyyy-mm-dd'}}<br><span *ngIf="item?.vehicleID"
                                                                             class="font-size-12">{{item.odometer}} miles</span></td>
                                                                     <td>
                                                                         <div>

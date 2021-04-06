@@ -5,6 +5,7 @@ declare var $: any;
 import { ToastrService } from "ngx-toastr";
 import {environment} from '../../../../../environments/environment';
 import { rest } from "lodash";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: "app-vehicle-detail",
@@ -205,11 +206,13 @@ export class VehicleDetailComponent implements OnInit {
     autoplaySpeed: 5000,
   };
 
+  vehicleTypeObects: any = {};
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-
+    private httpClient: HttpClient,
     private toastr: ToastrService
   ) {}
 
@@ -230,6 +233,12 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
     this.fetchVendorsList();
+
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b['code']] = b['name'], a;
+    }, {});
+    });
   }
 
   fetchVendorsList() {
