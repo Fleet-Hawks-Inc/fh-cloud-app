@@ -49,25 +49,31 @@ export class RouteListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.searchedRouteId != '') {
+          this.routeEndPoint = result.Count;
+        }
       },
     });
   }
 
   deleteRoute(routeID) {
-    this.spinner.show();
-    this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.routeDraw = 0;
-        this.lastEvaluatedKey = '';
-        this.fetchRoutes();
-        this.initDataTable();
-        this.spinner.hide();
-        this.hasSuccess = true;
-        this.toastr.success('Route deleted successfully.');
-      }
-    })
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.spinner.show(); 
+      this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
+        complete: () => {},
+        error: () => {},
+        next: (result: any) => {
+          this.routeDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.fetchRoutes();
+          this.initDataTable();
+          this.spinner.hide();
+          this.hasSuccess = true;
+          this.toastr.success('Route deleted successfully.');
+        }
+      })
+    }
   }
 
   initDataTable() {
@@ -135,6 +141,7 @@ export class RouteListComponent implements OnInit {
 
   searchFilter() {
     if(this.searchedRouteName !== '') {
+      this.searchedRouteName = this.searchedRouteName.toLowerCase();
       if(this.searchedRouteId == '') {
         this.searchedRouteId = this.searchedRouteName;
       }

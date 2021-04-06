@@ -190,6 +190,7 @@ export class AddTripComponent implements OnInit {
         this.fetchAssetsByIDs();
         this.fetchVehiclesByIDs();
         this.getCurrentuser();
+        this.fetchAllCarrierIDs();
         if (this.tripID != undefined) {
             this.fetchTripDetail();
         }
@@ -201,7 +202,7 @@ export class AddTripComponent implements OnInit {
 
     
     fetchCarriers() {
-        this.apiService.getData('carriers')
+        this.apiService.getData('externalCarriers')
             .subscribe((result: any) => {
                 this.carriers = result.Items;
             })
@@ -1293,9 +1294,10 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchAllCarrierIDs() {
-        this.apiService.getData('carriers/get/list')
+        this.apiService.getData('externalCarriers/get/list')
             .subscribe((result: any) => {
                 this.carriersObject = result;
+                console.log('this.carriersObject', this.carriersObject);
             });
     }
 
@@ -1343,6 +1345,7 @@ export class AddTripComponent implements OnInit {
         this.spinner.show();
         this.apiService.getData('trips/' + this.tripID).
             subscribe((result: any) => {
+                console.log('inn detaill');
                 result = result.Items[0];
                 let temp = '';
                 let tempUnit = null;
