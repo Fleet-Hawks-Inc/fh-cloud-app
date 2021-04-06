@@ -105,17 +105,20 @@ export class HereMapService {
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.ui.getControl('mapsettings').setDisabled(false);
+   this.ui.getControl('mapsettings').setDisabled(false);
+   this.ui.getControl('mapsettings').setAlignment('bottom-left');
+   this.ui.getControl('zoom').setAlignment('bottom-left');
+   this.ui.getControl('scalebar').setAlignment('bottom-left');
     this.ui.getControl('mapsettings').setVisibility(true);
 
 
-    // let mapSettings = this.ui.getControl('mapsettings');
-    // let zoom = this.ui.getControl('zoom');
-    // let scalebar = this.ui.getControl('scalebar');
+  //   let mapSettings = this.ui.getControl('mapsettings');
+  //   let zoom = this.ui.getControl('zoom');
+  //   let scalebar = this.ui.getControl('scalebar');
 
-    // mapSettings.setAlignment('bottom-left');
-    // zoom.setAlignment('bottom-left');
-    // scalebar.setAlignment('bottom-left');
+  //   mapSettings
+  //   zoom.setAlignment('bottom-left');
+  //   scalebar.setAlignment('bottom-left');
     
      return this.map;
   }
