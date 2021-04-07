@@ -15,7 +15,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm start
+          start: |
+            export NODE_OPTIONS="--max-old-space-size=8192"
+            npm start
           wait-on: "http://localhost:4200"
           wait-on-timeout: 120
           browser: chrome
