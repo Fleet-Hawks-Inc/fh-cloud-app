@@ -1,16 +1,16 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0 pl-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top: 10px">
+      <header class="page-header">
+        <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
             Order Detail
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
+          <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"
               ><i class="fas fa-list"></i> All Orders</a
             >
-            <div class="btn-group flex-wrap">
+            <div class="btn-group flex-wrap" *ngIf="!environment">
               <button
                 type="button"
                 class="btn btn-success btn-sm dropdown-toggle"

@@ -1,9 +1,9 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body p-0">
-            <header class="page-header pr-5" *ngIf="activeDiv === 'ace'">
+            <header class="page-header" *ngIf="activeDiv === 'ace'">
                <form class="form-horizontal" method="get">
-                  <div class="row px-2" style="padding-top:10px;">
+                  <div class="row" style="padding-top:10px;">
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group mb-3">
                             <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control"
@@ -55,7 +55,7 @@
                             <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
                      <div class="col-md-3 col-lg-3 text-right">
-                        <div class="btn-group flex-wrap">
+                        <div class="btn-group flex-wrap" *ngIf="!environment">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 
@@ -68,9 +68,9 @@
                   </div>
                </form>
             </header>
-            <header class="page-header pr-5" *ngIf="activeDiv === 'aci'">
+            <header class="page-header" *ngIf="activeDiv === 'aci'">
                <form class="form-horizontal" method="get">
-                  <div class="row px-2" style="padding-top:10px;">
+                  <div class="row" style="padding-top:10px;">
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <div class="input-group input-group mb-3">
                             <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control"
@@ -122,7 +122,7 @@
                      </div>
                      <div class="col-md-3 col-lg-3 text-right">
 
-                        <div class="btn-group flex-wrap">
+                        <div class="btn-group flex-wrap" *ngIf="!environment">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
 

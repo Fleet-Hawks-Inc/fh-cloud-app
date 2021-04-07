@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 declare var $: any;
 @Component({
@@ -62,7 +63,7 @@ export class EManifestsComponent implements OnInit {
   aciPrevEvauatedKeys = [''];
   aciStartPoint = 1;
   aciEndPoint = this.pageLength;
-
+  environment = environment.isFeatureEnabled;
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,

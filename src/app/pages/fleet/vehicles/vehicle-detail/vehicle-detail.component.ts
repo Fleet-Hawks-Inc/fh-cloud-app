@@ -418,7 +418,7 @@ export class VehicleDetailComponent implements OnInit {
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
           dateOfExpiry: result.insurance.dateOfExpiry,
-          remiderEvery: result.insurance.remiderEvery,
+          remiderEvery: `${result.insurance.reminder} ${result.insurance.remiderEvery}`,
           policyNumber: result.insurance.policyNumber,
           amount: result.insurance.amount,
           amountCurrency: result.insurance.amountCurrency,

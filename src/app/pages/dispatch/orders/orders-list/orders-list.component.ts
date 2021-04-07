@@ -3,6 +3,7 @@ import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -10,7 +11,7 @@ declare var $: any;
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   orders = [];
   confirmOrders = [];
