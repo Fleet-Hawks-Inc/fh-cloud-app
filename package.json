@@ -80,7 +80,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.29",
-    "@angular/cli": "^11.2.7",
+    "@angular/cli": "^8.3.29",
     "@angular/compiler-cli": "^8.2.14",
     "@angular/language-service": "^8.2.14",
     "@types/datatables.net": "^1.10.19",
@@ -96,7 +96,7 @@
     "@types/randomstring": "^1.1.6",
     "codelyzer": "5.0.0",
     "concurrently": "^6.0.0",
-    "cypress": "^6.8.0",
+    "cypress": "7.0.0",
     "cypress-file-upload": "^5.0.3",
     "jasmine-core": "3.4.0",
     "jasmine-spec-reporter": "4.2.1",
