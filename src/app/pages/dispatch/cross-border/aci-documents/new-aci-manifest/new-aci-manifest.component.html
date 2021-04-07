@@ -164,9 +164,9 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                           Co-Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers"
+                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" (click)="fixCoDrivers()"
                           placeholder="Select co-driver">
-                          <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
+                          <ng-option *ngFor="let driver of fetchedCoDrivers" [value]="driver.driverID">
                             {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
