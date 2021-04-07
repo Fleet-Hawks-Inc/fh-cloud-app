@@ -135,8 +135,8 @@ export class ListingComponent implements OnInit {
       const testOdometer = this.allRemindersData[j].lastCompletedOdometer.sort().reverse();
       lastCompleted =  moment(testDate[0]).format(`YYYY/MM/DD`);
       serviceOdometer = +testOdometer[0];
-      this.currentOdometer = +testOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
-      const convertedDate = moment(lastCompleted, `DD-MM-YYYY`).add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
+      this.currentOdometer = serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
+      const convertedDate = moment(lastCompleted).add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
       remainingDays = convertedDate.diff(this.currentDate, 'days');
       remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
       if (remainingDays < 0) {
@@ -301,7 +301,7 @@ export class ListingComponent implements OnInit {
     this.serviceEndPoint = this.serviceStartPoint + this.pageLength - 1;
   }
 
-  // next button func 
+  // next button func
   nextResults() {
     this.serviceNext = true;
     this.servicePrev = true;

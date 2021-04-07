@@ -44,12 +44,12 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
   loading = false;
-  allVehicles = [];
+  allUsers = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.fetchAllVehicles();
+    this.fetchAllUsers();
     this.getRemindersCount();
     this.fetchServiceTaks();
     this.fetchRenewals();
@@ -84,6 +84,7 @@ export class ListContactRenewComponent implements OnInit {
   fetchUsersList() {
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.usersList = result;
+      console.log('this.usersList', this.usersList);
     });
   }
   setFilterStatus(val) {
@@ -103,43 +104,43 @@ export class ListContactRenewComponent implements OnInit {
 
   }
   fetchRenewals = async () => {
-    this.remindersData = [];
-    for (let j = 0; j < this.allRemindersData.length; j++) {
-      let reminderStatus: string;
-      if (this.allRemindersData[j].reminderType === 'contact') {
-        const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate, 'DD-MM-YYYY');
-        const remainingDays = convertedDate.diff(this.currentDate, 'days');
+    // this.remindersData = [];
+    // for (let j = 0; j < this.allRemindersData.length; j++) {
+    //   let reminderStatus: string;
+    //   if (this.allRemindersData[j].reminderType === 'contact') {
+    //     const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate, 'DD-MM-YYYY');
+    //     const remainingDays = convertedDate.diff(this.currentDate, 'days');
 
-        if (remainingDays < 0) {
-          reminderStatus = 'OVERDUE';
-        }
-        else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
-          reminderStatus = 'DUE SOON';
-        }
-        const data = {
-          reminderID: this.allRemindersData[j].reminderID,
-          reminderIdentification: this.allRemindersData[j].reminderIdentification,
-          reminderTasks: {
-            task: this.allRemindersData[j].reminderTasks.task,
-            remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-            remainingDays: remainingDays,
-            reminderStatus: reminderStatus,
-            dueDate: this.allRemindersData[j].reminderTasks.dueDate,
-          },
-          subscribers: this.allRemindersData[j].subscribers,
-        };
-        this.remindersData.push(data);
-      }
-    }
-    if (this.filterStatus === Constants.OVERDUE) {
-      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-    }
-    else if (this.filterStatus === Constants.DUE_SOON) {
-      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-    }
-    else if (this.filterStatus === Constants.ALL){
-      this.remindersData = this.remindersData;
-    }
+    //     if (remainingDays < 0) {
+    //       reminderStatus = 'OVERDUE';
+    //     }
+    //     else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
+    //       reminderStatus = 'DUE SOON';
+    //     }
+    //     const data = {
+    //       reminderID: this.allRemindersData[j].reminderID,
+    //       reminderIdentification: this.allRemindersData[j].reminderIdentification,
+    //       reminderTasks: {
+    //         task: this.allRemindersData[j].reminderTasks.task,
+    //         remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+    //         remainingDays: remainingDays,
+    //         reminderStatus: reminderStatus,
+    //         dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+    //       },
+    //       subscribers: this.allRemindersData[j].subscribers,
+    //     };
+    //     this.remindersData.push(data);
+    //   }
+    // }
+    // if (this.filterStatus === Constants.OVERDUE) {
+    //   this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+    // }
+    // else if (this.filterStatus === Constants.DUE_SOON) {
+    //   this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+    // }
+    // else if (this.filterStatus === Constants.ALL){
+    //   this.remindersData = this.remindersData;
+    // }
 
   }
 
@@ -149,7 +150,7 @@ export class ListContactRenewComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-
+  // console.log('fetcehd result',result);
         if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewEndPoint = this.totalRecords;
         }
@@ -166,7 +167,8 @@ export class ListContactRenewComponent implements OnInit {
         }
         this.suggestedContacts = [];
         this.getStartandEndVal();
-        this.allRemindersData = result['Items'];
+        this.remindersData = result[`Items`];
+        console.log('this.remindersData',this.remindersData);
         this.fetchRenewals();
         if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
@@ -180,7 +182,7 @@ export class ListContactRenewComponent implements OnInit {
             this.contactRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
-          
+
         } else {
           this.contactRenewNext = true;
           this.lastEvaluatedKey = '';
@@ -203,7 +205,7 @@ export class ListContactRenewComponent implements OnInit {
     if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount()
+      this.getRemindersCount();
       this.initDataTable();
     } else {
       return false;
@@ -218,7 +220,7 @@ export class ListContactRenewComponent implements OnInit {
       this.filterStatus = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
-      this.getRemindersCount()
+      this.getRemindersCount();
       this.initDataTable();
       this.resetCountResult();
     } else {
@@ -233,7 +235,7 @@ export class ListContactRenewComponent implements OnInit {
       .subscribe((result: any) => {
 
         this.remindersData = [];
-        this.getRemindersCount()
+        this.getRemindersCount();
         this.initDataTable();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });
@@ -279,9 +281,9 @@ export class ListContactRenewComponent implements OnInit {
     this.contactRenewDraw = 0;
   }
 
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
+  fetchAllUsers() {
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.allUsers = result.Items;
     });
   }
 }

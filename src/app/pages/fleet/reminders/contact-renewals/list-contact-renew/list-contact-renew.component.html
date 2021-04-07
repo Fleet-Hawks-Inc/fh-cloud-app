@@ -6,8 +6,8 @@
                 <div class="row px-2" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" placeholder="Search by vehicle">
-                            <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                        <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" placeholder="Search by contact">
+                            <ng-option *ngFor="let data of allUsers" [value]="data.userName">{{data.firstName}} {{data.lastName}}</ng-option>
                         </ng-select>
                     </div>
 
@@ -87,9 +87,9 @@
                                         <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
                                             <td>{{usersList[item.reminderIdentification]}}</td>
                                             <td> <span class="text-warning font-weight-bold font-size-12"
-                                                    *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                    *ngIf="item.reminderStatus === 'dueSoon'">DUE SOON<br></span>
                                                 <span class="text-danger font-weight-bold font-size-12"
-                                                    *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                                    *ngIf="item.reminderStatus === 'overdue'">OVERDUE<br></span>
                                                 <span class="font-weight-bold"
                                                     title="Task">{{tasksList[item.reminderTasks.task]}}</span>
                                             </td>
