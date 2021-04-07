@@ -473,9 +473,9 @@
                                              </div>
                                              <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                   State</label>
+                                                   Province</label>
                                                 <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                   name="stateID{{i}}" placeholder="Select state">
+                                                   name="stateID{{i}}" placeholder="Select Province">
 
                                                    <ng-option class="text-capitalize" *ngFor="let state of states"
                                                       value="{{state.stateID}}">{{state.stateName}}</ng-option>
@@ -602,13 +602,13 @@
                                           </div>
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                Issuing State<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                Issuing Province<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                              </label>
                                              <ng-select
                                                 (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
                                                 [(ngModel)]="document.issuingState"
                                                 [attr.name]="'documentDetails['+i+'].issuingState'"
-                                                [ngModelOptions]="{standalone: true}" placeholder="Select issuing state">
+                                                [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
                                                 <ng-option class="text-capitalize" *ngFor="let state of states"
                                                    value="{{state.stateID}}">{{state.stateName}}</ng-option>
 
@@ -815,9 +815,9 @@
                                        </div>
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Issued
-                                             State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.licenceDetails.issuedState"
-                                             name="licenceDetails.issuedState" placeholder="Select state"
+                                             name="licenceDetails.issuedState" placeholder="Select Province"
                                              (change)="onChangeHideErrors('licenceDetails.issuedState');getCities($event)">
 
                                              <ng-option class="text-capitalize" *ngFor="let state of states"
