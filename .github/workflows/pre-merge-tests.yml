@@ -1,4 +1,4 @@
-name: End-to-end tests
+name: Pre-Merge E2E tests
 on: [pull_request]
 jobs:
   cypress-run:
