@@ -545,34 +545,25 @@
                                        </ng-select>
                                     </div>
                                  </div> -->
-                                    <div class="row ">
-                                       <!-- <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign DVIR</label>
-                                      <input type="file" class="form-control p-0">
-                                    </div> -->
-                                       <div class="col-lg-10">
-                                          <div class="checkbox mt-4">
-                                             <label>
-                                                <input type="checkbox" value="" name="inspectionFormID"
-                                                   [(ngModel)]="inspectionFormID">
-                                                Assign default truck inspection form
-                                             </label>
-                                          </div>
-                                       </div>
-                                       <div class="col-lg-10">
-                                          <div class="checkbox">
-                                             <label>
-                                                <input type="checkbox" value="" name="inspectionFormID"
-                                                   [(ngModel)]="inspectionFormID">
-                                                Assign default trailer inspection form
-                                             </label>
-                                          </div>
-                                       </div>
-                                       <div class="col-lg-10">
-                                          <button type="button" class="modal-with-form btn btn-success">Add custom
-                                             inspection form</button>
-                                       </div>
+                                 <div class="row ">
+                                    <div class="col-lg-10">
+                                      <div class="checkbox mt-4">
+                                        <label
+                                          class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
+                                          the Inspection Form</label>
+                                        <div class="d-flex">
+                                          <select [(ngModel)]="inspectionFormID" [ngModelOptions]="{standalone: true}"
+                                            class="form-control" placeHolder="Select Inspectin Form">
+                                            <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
+                                              {{iForm.inspectionFormName}}</option>
+                                          </select>
+                                          <a href="/compliance/dvir/inspection-add" target="_blank"
+                                            class="modal-with-form btn btn-success"><i class="fas fa-plus"></i></a>
+                                        </div>
+                                      </div>
                                     </div>
+          
+                                  </div>
                                  </div>
                               </div>
                            </div>
@@ -594,7 +585,6 @@
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top" title="Date vehicle entered fleet service."></i>
                                        </label>
-
                                        <input type="date" class="form-control" name="lifeCycle.inServiceDate"
                                           [(ngModel)]="lifeCycle.inServiceDate">
                                     </div>
@@ -841,8 +831,6 @@
                                              data-placement="top"
                                              title="Is equal to Passenger Volume + Cargo Volume"></i>&nbsp; <span
                                              class="text-1 optional-label-color">(optional)</span></label>
-
-
                                        <div class="input-group">
                                           <input type="text" class="form-control"
                                              name="specifications.interiorVolume"
@@ -862,8 +850,6 @@
                                              data-placement="top"
                                              title="Volume of the area for passengers"></i>&nbsp; <span
                                              class="text-1 optional-label-color">(optional)</span></label>
-
-
                                        <div class="input-group">
                                           <input type="text" class="form-control"
                                              name="specifications.passangerVolume"
@@ -881,8 +867,6 @@
                                           <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top" title="Volume of the area for cargo."></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
-
-
                                        <div class="input-group">
                                           <input type="text" class="form-control" name="specifications.cargoVolume"
                                              [(ngModel)]="specifications.cargoVolume" placeholder="eg. 250,255 etc.">
@@ -983,8 +967,6 @@
                                              data-placement="top"
                                              title="Standard towing capacity of the vehicle."></i>&nbsp; <span
                                              class="text-1 optional-label-color">(optional)</span></label>
-
-
                                        <div class="input-group">
                                           <input type="text" class="form-control"
                                              name="specifications.towingCapacity"
@@ -1005,7 +987,6 @@
                                              data-placement="top"
                                              title="Maximum allowable weight vehicle can hold excluding driver and fuel."></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
-
                                        <div class="input-group">
                                           <input type="text" class="form-control" name="specifications.maxPayload"
                                              [(ngModel)]="specifications.maxPayload" placeholder="eg. 800,900 etc.">
@@ -1029,7 +1010,6 @@
                                              data-placement="top"
                                              title="EPA(Environmental Protection Agency) fuel economy(MPG) in city streets."></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
-
                                        <input type="number" class="form-control" name="specifications.EPACity"
                                           [(ngModel)]="specifications.EPACity" placeholder="eg. 20,30 etc.">
                                     </div>
@@ -1039,7 +1019,6 @@
                                              data-placement="top"
                                              title="EPA(Environmental Protection Agency) fuel economy(MPG) on open highway."></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
-
                                        <input type="number" class="form-control" name="specifications.EPAHighway"
                                           [(ngModel)]="specifications.EPAHighway" placeholder="eg. 20,30 etc.">
                                     </div>
@@ -1053,7 +1032,6 @@
                                              data-placement="top"
                                              title="EPA(Environmental Protection Agency) combined is fuel economy(MPG) in city streets and open highway."></i>&nbsp;
                                           <span class="text-1 optional-label-color">(optional)</span></label>
-
                                        <input type="number" class="form-control" name="specifications.EPACombined"
                                           [(ngModel)]="specifications.EPACombined" placeholder="eg. 16,20,30 etc.">
                                     </div>
@@ -1387,7 +1365,6 @@
                                            data-placement="top"
                                            title="Length from centre of front wheel to centre of rear wheel"></i>&nbsp;
                                         <span class="text-1 optional-label-color">(optional)</span></label>
-
                                      <div class="input-group">
                                         <input type="text" class="form-control" name="wheelsAndTyres.wheelbase"
                                            [(ngModel)]="wheelsAndTyres.wheelbase" placeholder="eg. 150">
@@ -1498,7 +1475,6 @@
                                            data-placement="top"
                                            title="Tyre pressure in pounds per square inch or PSI"></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="wheelsAndTyres.rearTyrePSI"
                                         [(ngModel)]="wheelsAndTyres.rearTyrePSI" placeholder="eg. 50,60 etc.">
                                   </div> -->
@@ -1546,7 +1522,6 @@
                                            data-placement="top"
                                            title="Method for drawing air into the engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.aspiration"
                                         [(ngModel)]="engine.aspiration" placeholder="eg. Turbocharger">
                                   </div>
@@ -1555,7 +1530,6 @@
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Block type of the engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.blockType"
                                         [(ngModel)]="engine.blockType" placeholder="eg. V,I,R,F etc.">
                                   </div>
@@ -1565,8 +1539,6 @@
                                            data-placement="top"
                                            title="Diameter of the holes in the engine block used for cylinders"></i>&nbsp;
                                         <span class="text-1 optional-label-color">(optional)</span></label>
-
-
                                      <div class="input-group">
                                         <input type="text" class="form-control" name="engine.bore"
                                            [(ngModel)]="engine.bore" placeholder="eg. 3.17">
@@ -1582,29 +1554,24 @@
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Type of camshift."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.camType"
                                         [(ngModel)]="engine.camType" placeholder="eg. DOHC etc.">
                                   </div>
                                   <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Stroke
-
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Piston distance during combustion cycle."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.stroke"
                                         [(ngModel)]="engine.stroke" placeholder="eg. 3.45">
                                   </div>
                                   <div class="col-lg-5">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Valves
-
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top"
                                            title="Total number of valves in the engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.valves"
                                         [(ngModel)]="engine.valves" placeholder="eg. 14,16 etc">
                                   </div> -->
@@ -1649,7 +1616,6 @@
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Compression ratio."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.compression"
                                         [(ngModel)]="engine.compression" placeholder=" eg.10.5">
                                   </div> -->
@@ -1659,7 +1625,6 @@
                                            data-placement="top"
                                            title="Number of cylinders in the engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.cylinders"
                                         [(ngModel)]="engine.cylinders" placeholder="eg. 4,8 etc.">
                                   </div>
@@ -1669,7 +1634,6 @@
                                            data-placement="top"
                                            title="Total volume displayed during one firing cycle of the engine."></i>&nbsp;
                                         <span class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.displacement"
                                         [(ngModel)]="engine.displacement" placeholder="eg. 1.5,1.6 etc.">
                                   </div>
@@ -1680,7 +1644,6 @@
                                            data-placement="top"
                                            title="Method for drawing fuel into engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.fuelIndication"
                                         [(ngModel)]="engine.fuelIndication"
                                         placeholder="eg. Sequential Port Fuel Injection">
@@ -1690,7 +1653,6 @@
                                         <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                            data-placement="top" title="Octane Rating"></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.fuelQuality"
                                         [(ngModel)]="engine.fuelQuality" placeholder="eg. 87 etc.">
                                   </div>
@@ -1700,7 +1662,6 @@
                                            data-placement="top"
                                            title="Maximum power of the engine in the horse power."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.maxHP"
                                         [(ngModel)]="engine.maxHP" placeholder="eg. 120,121 etc.">
                                   </div>
@@ -1710,7 +1671,6 @@
                                            data-placement="top"
                                            title="Max torque delivered by engine in foot-pounds."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="number" class="form-control" name="engine.maxTorque"
                                         [(ngModel)]="engine.maxTorque" placeholder="eg.200,300 etc.">
                                   </div>
@@ -1720,7 +1680,6 @@
                                            data-placement="top"
                                            title="Max safe speed of operating an engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.readlineRPM"
                                         [(ngModel)]="engine.readlineRPM" placeholder="eg. 5000.6000 etc.">
                                   </div> -->
@@ -1752,7 +1711,6 @@
                                            data-placement="top"
                                            title="Brand specific name of the engine."></i>&nbsp; <span
                                            class="text-1 optional-label-color">(optional)</span></label>
-
                                      <input type="text" class="form-control" name="engine.transmissonBrand"
                                         [(ngModel)]="engine.transmissonBrand" placeholder="eg. XYZ">
                                   </div> -->

@@ -799,7 +799,7 @@ export class TripListComponent implements OnInit {
   }
 
   fetchAllCarrierIDs() {
-    this.apiService.getData('carriers/get/list')
+    this.apiService.getData('externalCarriers/get/list')
       .subscribe((result: any) => {
         this.carriersObject = result;
       });

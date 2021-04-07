@@ -231,6 +231,7 @@ export class VehicleListComponent implements OnInit {
 
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+      this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if(this.vehicleID == '') {
         this.vehicleID = this.vehicleIdentification;
       }
