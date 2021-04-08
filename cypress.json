@@ -1,8 +1,11 @@
 {
-    "baseUrl": "https://devapp.fleethawks.com",
+    "baseUrl": "http://localhost:4200",
     "experimentalStudio": true,
     "viewportHeight": 1080,
     "viewportWidth": 1920,
     "testerUserName": "e2etestcarrier",
-    "testerPassword": "FleetHawks@2502"
+    "testerPassword": "FleetHawks@2502",
+    "defaultCommandTimeout": 60000,
+    "requestTimeout": 8000,
+    "pageLoadTimeout": 80000
 }
