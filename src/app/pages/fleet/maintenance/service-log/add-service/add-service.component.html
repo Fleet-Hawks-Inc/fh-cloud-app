@@ -5,7 +5,7 @@
 
        <section role="main" class="content-body pt-0 pl-0">
            <header class="page-header">
-              <div class="row pr-5" style="padding-top:10px;">
+              <div class="row" style="padding-top:10px;">
                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                     {{pageTitle}}
                  </div>
@@ -102,11 +102,11 @@
                               <div class="col-lg-10" data-select2-id="118">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
-                                     <ng-option *ngFor="let vendor of vendors;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
+                                     <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                  </ng-select>
                               </div>
                               <div class="col-lg-2  mar-top-37 pl-0">
-                                  <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                  <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                                </div>
                            </div>
                              <div class="row">
@@ -132,7 +132,7 @@
                           <div class="col-lg-10 offset-lg-1">
                              <div class="row">
                                 <div class="col-lg-12 mb-2 text-right p-0">
-                                   <a (click)="gotoIssuePage()" href="javascript:;" class="btn btn-sm btn-success"><em class="fas fa-plus"></em>Add Issue</a>
+                                   <a (click)="gotoIssuePage()" href="javascript:;" class="btn cus-btn-padd btn-success"><em class="fas fa-plus"></em>Add Issue</a>
                                 </div>
                                 <table class="table table-bordered table-responsive-lg table-striped mb-0" id="openIssueTable">
                                    <thead>
@@ -175,14 +175,14 @@
                                     </ng-container> -->
                                  </div>
                                  <div class="col-lg-2  mar-top-37 pl-0">
-                                    <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                    <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
                                  </div>
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1" *ngIf="serviceData.unitType !== 'asset'">
-                             <div class="row pt-2">
-                                <div class="col-lg-10 text-right">
-                                   <a href="javascript:;" (click)="openReminders()"><label class="btn btn-dark text-3 pt-2">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
+                             <div class="row pt-2 mt-2">
+                                <div class="col-lg-10 text-right mt-4">
+                                   <a href="javascript:;" (click)="openReminders()"><label class="btn btn-dark text-3 pt-2 mt-1">Service Reminders<span class="text-danger font-weight-bold"> {{reminders.length}}</span></label></a>
                                 </div>
                              </div>
                           </div>
@@ -278,9 +278,9 @@
                              </div>
                           </div>
                           <div class="col-lg-5 offset-lg-1">
-                             <div class="row pt-2">
-                                <div class="col-lg-10 text-right">
-                                   <a href="javascript:;" (click)="showPartModal()" class="modal-with-form"><label class="btn btn-dark text-3 pt-2">Part Missing, Click Here To Request</label></a>
+                             <div class="row pt-2 mt-2">
+                                <div class="col-lg-10 text-right mt-4">
+                                   <a href="javascript:;" (click)="showPartModal()" class="modal-with-form"><label class="btn btn-dark text-3 pt-2 mt-1">Part Missing, Click Here To Request</label></a>
                                 </div>
                              </div>
                           </div>
@@ -324,12 +324,14 @@
                                 <table class="table">
                                    <tbody>
                                       <tr>
-                                         <td colspan="4"></td>
+                                         <td width="27%"></td>
+                                         <td width="17%"></td>
+                                         <td width="28%"></td>
                                          <td width="10%"><label [innerHtml]="totalQuantity" class="control-label font-weight-bold text-5">0</label></td>
-                                         <td width="10%"></td>
+                                         <td width="12%"></td>
+                                         <td width="10%"><label [innerHtml]="totalPartsPrice"  class="control-label font-weight-bold text-5 m-0">0.00</label></td>
                                          <td width="10%">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <label [innerHtml]="totalPartsPrice"  class="control-label font-weight-bold text-5 m-0">0.00</label>
                                                 <ng-select [(ngModel)]="serviceData.allServiceParts.currency" [ngModelOptions]="{standalone: true}" (change)="currencyChange($event)">
                                                    <ng-option value="CAD">CAD</ng-option>
                                                    <ng-option value="USD">USD</ng-option>
@@ -389,11 +391,20 @@
                        </div>
 
                        <div class="form-group row">
-                          <div class="col-lg-11 text-right">
-                             <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2" id="">Cancel</a>
-                             <a *ngIf="!logID" href="javascript:;" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
-                             <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
-                          </div>
+                        <div class="col-lg-12 text-right">
+                           <div class="row">
+                             <div class="col-5 offset-1">&nbsp;</div>
+                             <div class="col-5 offset-1">
+                               <div class="row">
+                                 <div class="col-10">
+                                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default mr-2" id="">Cancel</a>
+                                    <a *ngIf="!logID" href="javascript:;" (click)="addService()" class="btn btn-success" id="nextBtn">Save</a>
+                                    <a *ngIf="logID" (click)="updateService()" class="btn btn-success">Update</a>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
                        </div>
                     </form>
                  </div>
@@ -546,7 +557,7 @@
                               Vendor</label>
                            <ng-select [(ngModel)]="partData.preferredVendorID"
                               name="preferredVendorID" style="width: 100%;" placeholder="Select preferred vendor">
-                              <ng-option *ngFor="let data of vendors;" value="{{data.vendorID}}">{{data.companyName}}</ng-option>
+                              <ng-option *ngFor="let data of vendors | async;" value="{{data.vendorID}}">{{data.companyName}}</ng-option>
                            </ng-select>
                         </div>
                      </div>

@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 
 @Component({
@@ -14,7 +15,7 @@ declare var $: any;
   styleUrls: ['./trip-list.component.css']
 })
 export class TripListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageConfirm: string = Constants.FETCHING_DATA;
   dataMessageDispatch: string = Constants.FETCHING_DATA;
@@ -798,7 +799,7 @@ export class TripListComponent implements OnInit {
   }
 
   fetchAllCarrierIDs() {
-    this.apiService.getData('carriers/get/list')
+    this.apiService.getData('externalCarriers/get/list')
       .subscribe((result: any) => {
         this.carriersObject = result;
       });

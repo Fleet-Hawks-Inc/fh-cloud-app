@@ -3,6 +3,7 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: "app-inventory-detail",
@@ -11,7 +12,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class InventoryDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
-
+  environment = environment.isFeatureEnabled;
   /**
    * form props
    */

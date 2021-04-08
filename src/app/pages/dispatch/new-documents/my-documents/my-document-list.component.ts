@@ -8,6 +8,7 @@ declare var $: any;
 import * as moment from "moment";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-document-list',
@@ -15,7 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./my-document-list.component.css']
 })
 export class MyDocumentListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;

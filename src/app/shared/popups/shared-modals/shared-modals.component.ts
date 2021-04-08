@@ -419,6 +419,8 @@ assetsData = {
     year: '',
     manufacturer: '',
     model: '',
+    height: '',
+    heightUnit: '',
     length: '',
     lengthUnit: '',
     axle: '',
@@ -1633,6 +1635,7 @@ fetchDrivers(){
   }
 
   issuesUnitType(value: string) {
+    this.issuesData.unitID = '';
     this.issuesData.unitType = value;
   }
 
@@ -1716,6 +1719,51 @@ fetchDrivers(){
         this.listService.fetchAssets();
         $('#addAsset').modal('hide');
         this.toastr.success('Asset added successfully.');
+        this.assetsData = {
+          assetIdentification: '',
+          groupID: '',
+          VIN: '',
+          startDate: '',
+          assetDetails: {
+            assetType: '',
+            currentStatus: '',
+            year: '',
+            manufacturer: '',
+            model: '',
+            height: '',
+            heightUnit: '',
+            length: '',
+            lengthUnit: '',
+            axle: '',
+            GVWR: '',
+            GVWR_Unit: '',
+            GAWR: '',
+            GAWR_Unit: '',
+            ownerShip: '',
+            ownerOperator: '',
+            licenceCountryID: '',
+            licenceStateID: '',
+            licencePlateNumber: '',
+            annualSafetyDate: '',
+            annualSafetyReminder: true,
+            remarks: '',
+          },
+          insuranceDetails: {
+            dateOfIssue: '',
+            premiumAmount: '',
+            premiumCurrency: '',
+            dateOfExpiry: '',
+            reminderBefore: '',
+            reminderBeforeUnit: '',
+            vendor: ''
+          },
+          crossBorderDetails: {
+            ACI_ID: '',
+            ACE_ID: ''
+          },
+          uploadedPhotos: [],
+          uploadedDocs: []
+        };
       },
     });
   }

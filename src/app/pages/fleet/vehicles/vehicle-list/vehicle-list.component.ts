@@ -65,6 +65,7 @@ export class VehicleListComponent implements OnInit {
   vehicleStartPoint = 1;
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
+  fuelTypesObjects: any = {};
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
 
@@ -77,6 +78,7 @@ export class VehicleListComponent implements OnInit {
     this.fetchServiceProgramsList();
     this.fetchVehiclesList();
     this.initDataTable();
+    this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -181,6 +183,12 @@ export class VehicleListComponent implements OnInit {
     $('.buttons-excel').trigger('click');
   }
 
+  fetchFuelTypesbyIDs(){
+    this.apiService.getData('fuelTypes/get/list').subscribe((result: any) => {
+      this.fuelTypesObjects = result;
+    });
+  }
+
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('vehicles/fetch/records?vehicle='+this.vehicleID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
@@ -223,6 +231,7 @@ export class VehicleListComponent implements OnInit {
 
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+      this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if(this.vehicleID == '') {
         this.vehicleID = this.vehicleIdentification;
       }

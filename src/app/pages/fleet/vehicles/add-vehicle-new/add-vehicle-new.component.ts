@@ -311,6 +311,7 @@ vehicles= [];
   }
 
 
+
   fetchDrivers(){
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -349,7 +350,7 @@ vehicles= [];
 
   fetchInspectionForms() {
     this.apiService
-      .getData('inspectionForms/type/Vehicle')
+      .getData('inspectionForms/type/vehicle')
       .subscribe((result: any) => {
         this.inspectionForms = result.Items;
       });
@@ -521,6 +522,7 @@ vehicles= [];
       },
       activeTab: this.activeTab
     };
+    console.log(data);
     // create form data instance
     const formData = new FormData();
 

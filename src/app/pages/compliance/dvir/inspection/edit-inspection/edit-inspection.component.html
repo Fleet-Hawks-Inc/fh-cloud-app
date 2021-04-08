@@ -47,8 +47,8 @@
                                     <div class="row mt-2">
                                         <div class="col-lg-10">
                                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection Parameters <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <div class="param-wrapper">
-                                        <div class="col-lg-6" *ngFor="let param of parameters let t=index;">
+                                            <div class="param-wrapper d-flex">
+                                        <div class="col-lg-6 d-flex" *ngFor="let param of parameters let t=index;">
                                             <input type="text" class="form-control" name="param" [ngModelOptions]="{standalone: true}" [(ngModel)]="param.name" [disabled]="t != (parameters.length)-1">
                                         <!-- <div class="col-lg-2 mar-top-37"> -->
                                             <button type="button" class="btn btn-sm btn-success" *ngIf="t == (parameters.length)-1" (click)="addFormParam()"><i
@@ -68,7 +68,7 @@
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right"> 
                                         <ng-template [ngIf]="defaultParameterCount < 1">
-                                    <input type="checkbox" class="form-control" name="defaultCheckbox" id="defaultCheckbox" [(ngModel)]="isDefaultInspectionType"> Make this form as default
+                                    <input type="checkbox" class="" name="defaultCheckbox" id="defaultCheckbox" [(ngModel)]="isDefaultInspectionType"> Make this form as default
                                 </ng-template>
                                     <button (click)="cancel()" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</button>
                                     <button (click)="updateInspectionForm()"class="btn btn-success mt-1 modal-confirm">Update</button>

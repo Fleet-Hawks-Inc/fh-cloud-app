@@ -32,28 +32,16 @@
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="companyName" [(ngModel)]="companyName"
-                                class="form-control" (input)="getVendorSuggestions($event.target.value,'inv')"
-                                placeholder="Search items by vendor" />
-                        </div>
-                        <div *ngIf="suggestedVendors?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let suggestedVendor of suggestedVendors" style="cursor: pointer;"
-                                    (click)="setVendor(suggestedVendor.vendorID, suggestedVendor.companyName,'inv')"> {{ suggestedVendor.companyName }}</li>
-                            </ul>
+                            <ng-select [(ngModel)]="vendorID" name="vendorID" style="width: 100%;" placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="groupName" [(ngModel)]="groupName"
-                                class="form-control" (input)="getItemGroupSuggestions($event.target.value)"
-                                placeholder="Search items by category" />
-                        </div>
-                        <div *ngIf="suggestedItemGroups?.length > 0" class="result-suggestions">
-                            <ul>
-                                <li *ngFor="let suggestedItemGroup of suggestedItemGroups" style="cursor: pointer;"
-                                    (click)="setItemGroup(suggestedItemGroup.groupID, suggestedItemGroup.groupName)"> {{ suggestedItemGroup.groupName }}</li>
-                            </ul>
+                            <ng-select [(ngModel)]="itemGroupID" name="itemGroupID" style="width: 100%;" placeholder="Search items by category">
+                                <ng-option *ngFor="let data of allCompanies" [value]="data.groupID">{{data.groupName}}</ng-option>
+                            </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
@@ -129,36 +117,28 @@
                 <div class="row px-2" *ngIf="currentTab == 'rinv'" style="padding-top: 9px">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="requiredItemName" [(ngModel)]="requiredItemName"
-                                class="form-control" (input)="getItemSuggestions($event.target.value,'req')"
-                                placeholder="Search items by name" />
+                            <ng-select [(ngModel)]="requiredItemID" name="requiredItemID" style="width: 100%;" placeholder="Search items by name">
+                                <ng-option *ngFor="let data of searchItems" [value]="data.partNumber">{{data.itemName}}</ng-option>
+                            </ng-select>
                         </div>
-                        <div *ngIf="requiredSuggestedItems?.length > 0" class="result-suggestions">
-                            <ul>
-                               <li *ngFor="let data of requiredSuggestedItems" style="cursor: pointer;"
-                               (click)="setItem(data.partNumber, data.itemName,'req')">
-                               {{ data.itemName }}</li>
-                            </ul>
-                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <input autocomplete="off" type="text" name="requiredCompanyName" [(ngModel)]="requiredCompanyName"
-                                class="form-control" (input)="getVendorSuggestions($event.target.value,'req')"
-                                placeholder="Search items by vendor" />
+                            <ng-select [(ngModel)]="requiredVendorID" name="requiredVendorID" style="width: 100%;" placeholder="Search items by vendor">
+                                <ng-option *ngFor="let data of allVendors" [value]="data.vendorID">{{data.companyName}}</ng-option>
+                            </ng-select>
                         </div>
-                        <div *ngIf="requiredSuggestedVendors?.length > 0" class="result-suggestions">
-                            <ul>
-                               <li *ngFor="let data of requiredSuggestedVendors" style="cursor: pointer;"
-                               (click)="setVendor(data.vendorID, data.companyName,'req')">
-                               {{ data.companyName }}</li>
-                            </ul>
-                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <input autocomplete="off" type="text" name="requiredPartNumber" [(ngModel)]="requiredPartNumber"
-                                class="form-control" placeholder="Search by part#"/>
+                                class="form-control" (input)="getPartNumberSuggestions($event.target.value)" placeholder="Search by part#"/>
+                        </div>
+                        <div *ngIf="requiredSuggestedPartNo?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let data of requiredSuggestedPartNo" style="cursor: pointer;"
+                                    (click)="setPartNo(data.partNumber)"> {{ data.partNumber }}</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2">
