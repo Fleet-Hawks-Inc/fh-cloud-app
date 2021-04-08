@@ -7,11 +7,11 @@ describe('vehicle Test', function () {
         cy.get(':nth-child(2) > .input-group > .form-control').clear();
         cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
         cy.get('#btnsubmit').click();
-        cy.wait(4000);
+        
         cy.get('fleet-sidebar > ul > li:nth-of-type(3) > .nav-link').first().click({force:true});
-        cy.wait(2000);
+       
         cy.get('.col-md-6 > .btn-success').first().click({force:true});
-        cy.wait(5000);
+        
         cy.get('#details [name="vehicleIdentification"]').first().type('Tesla Benz');//vehicle number
         cy.get('div#details > div > div:nth-of-type(1) > div:nth-of-type(2) > div > div:nth-of-type(2) > ng-select[role="listbox"] input[role="combobox"]').first().click();
         cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(16)').last().click();//vehicle type
@@ -104,7 +104,7 @@ describe('vehicle Test', function () {
         cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
         cy.get('#btnsubmit').click();
         cy.get(':nth-child(3) > .nav-link > .fas').first().click({force:true});
-        cy.wait(2000);
+      
        cy.get('form[method="get"] input[name="vehicleIdentification"]').first().click();
        cy.get('form[method="get"] input[name="vehicleIdentification"').last().type('tesla benz');
        cy.get('section[role="main"]  form[method="get"] ul > li:nth-of-type(1)').click({force: true});
@@ -121,9 +121,9 @@ describe('vehicle Test', function () {
         cy.get(':nth-child(2) > .input-group > .form-control').clear();
         cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
         cy.get('#btnsubmit').click();
-        cy.wait(4000);
+       
         cy.get(':nth-child(3) > .nav-link > .fas').first().click({force:true});
-        cy.wait(5000);
+       
         cy.get('#dropdownMenuButton-0').first().click();
         cy.get(':nth-child(1) > :nth-child(9) > .dropdown > .dropdown-menu > [href="javascript:;"]').last().click();
 
@@ -135,12 +135,12 @@ describe('vehicle Test', function () {
         cy.get(':nth-child(2) > .input-group > .form-control').clear();
         cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
         cy.get('#btnsubmit').click();
-        cy.wait(4000);
+        
         cy.get(':nth-child(3) > .nav-link > .fas').first().click({force:true });
-        cy.wait(5000);
+       
         cy.get('.col-md-6 > .btn-success').first().click({force:true});
         cy.get('.btn.btn-success.mt-4.ng-star-inserted').first().click();
-        cy.wait(2000);
+        
         cy.get('div#details > div > div:nth-of-type(1) label#vehicleIdentification-error').contains('This Field is not allowed to be empty');
         cy.get(':nth-child(2) > #vehicleType-error').contains('This Field is not allowed to be empty');
         cy.get(':nth-child(3) > #VIN-error').contains('This Field is not allowed to be empty');
