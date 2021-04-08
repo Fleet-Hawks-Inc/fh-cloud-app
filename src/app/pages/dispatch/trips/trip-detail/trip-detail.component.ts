@@ -47,8 +47,10 @@ export class TripDetailComponent implements OnInit {
   selectedFileNames: Map<any, any>;
   documentID = [];
   allFetchedOrders = [];
+  customersObjects = [];
 
   ngOnInit() {
+    this.fetchCustomersByIDs();
     this.tripID = this.route.snapshot.params['tripID'];
     this.fetchTripDetail();
     this.mapShow();
@@ -58,7 +60,14 @@ export class TripDetailComponent implements OnInit {
   }
 
   mapShow() {
+    this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
+  }
+
+  fetchCustomersByIDs() {
+    this.apiService.getData('customers/get/list').subscribe((result: any) => {
+      this.customersObjects = result;
+    });
   }
 
   fetchTripDetail() {
@@ -391,11 +400,11 @@ export class TripDetailComponent implements OnInit {
 
   setOrdersDataFormat(orders) {
     orders.map((i) => {
-      i.pickupLocations = '';
-      i.deliveryLocations = '';
+      i.pickupLocations = [];
+      i.deliveryLocations = [];
       if (i.shippersReceiversInfo) {
-          let ind = 1;
-          let ind2 = 1;
+          // let ind = 1;
+          // let ind2 = 1;
           i.shippersReceiversInfo.map((j) => {
               j.receivers.map((k) => {
                   let dateTime = '';
@@ -403,8 +412,9 @@ export class TripDetailComponent implements OnInit {
                       let dmy = k.dateAndTime.split(' ');
                       dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
                   }
-                  i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
-                  ind++;
+                  i.deliveryLocations.push(k.dropOffLocation);
+                  // i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
+                  // ind++;
               })
           })
 
@@ -415,8 +425,9 @@ export class TripDetailComponent implements OnInit {
                       let dmy = n.dateAndTime.split(' ');
                       dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
                   }
-                  i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
-                  ind2++;
+                  i.pickupLocations.push(n.pickupLocation);
+                  // i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
+                  // ind2++;
               })
           })
       }

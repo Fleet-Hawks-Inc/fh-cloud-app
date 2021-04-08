@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-company-documents',
@@ -15,6 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements OnInit {
+  dataMessage: string = Constants.FETCHING_DATA;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;
@@ -81,12 +83,26 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchDocuments();
+    this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
     this.initDataTable();
     $(document).ready(() => {
       this.form = $('#form_').validate();
+    });
+  }
+
+  fetchDocumentsCount() {
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+
+        if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
+          this.docEndPoint = this.totalRecords;
+        }
+      },
     });
   }
 
@@ -290,10 +306,15 @@ export class CompanyDocumentsComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestions = [];
+        this.getStartandEndVal();
         this.documents = result['Items'];
-        if (this.filterValues.docID !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
+        if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
           this.docEndPoint = this.totalRecords;
         }
@@ -331,6 +352,9 @@ export class CompanyDocumentsComponent implements OnInit {
 
   searchFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       if (this.filterValues.startDate !== '') {
         let start = this.filterValues.startDate;
         this.filterValues.start = moment(start + ' 00:00:01').format("X");
@@ -342,6 +366,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.filterValues.end = this.filterValues.end * 1000;
       }
       this.pageLength = this.totalRecords;
+      this.fetchDocumentsCount();
       this.initDataTable();
     } else {
       return false;
@@ -350,6 +375,9 @@ export class CompanyDocumentsComponent implements OnInit {
 
   resetFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       this.filterValues = {
         docID: '',
         searchValue: '',
@@ -358,8 +386,9 @@ export class CompanyDocumentsComponent implements OnInit {
         start: <any>'',
         end: <any>''
       };
-      this.pageLength = 10;
+      this.fetchDocumentsCount();
       this.initDataTable();
+      this.resetCountResult();
     } else {
       return false;
     }
@@ -402,7 +431,6 @@ export class CompanyDocumentsComponent implements OnInit {
   nextResults() {
     this.docDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
@@ -410,7 +438,6 @@ export class CompanyDocumentsComponent implements OnInit {
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

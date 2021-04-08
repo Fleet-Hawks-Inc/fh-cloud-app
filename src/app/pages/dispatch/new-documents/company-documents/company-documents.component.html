@@ -10,9 +10,13 @@
                                 <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
                                 (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
                             </div> 
-                            <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
-                                {{ data.name }}
-                            </div>
+                            <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                                <ul>
+                                   <li *ngFor="let data of suggestions" style="cursor: pointer;"
+                                   (click)="searchSelectedRoute(data)"
+                                   >{{ data.name }}</li>
+                                </ul>
+                             </div>
                         </div>
 
                         <div class="col-lg-3 col-md-3">
@@ -23,14 +27,14 @@
                                     </span>
                                 </span>
                                 <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                     class="form-control" autocomplete="off">
 
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="filterValues.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                             </div>
                         </div>
@@ -79,7 +83,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="documents.length == 0" class="text-center">
-                                        <td colspan="8">No records found</td>
+                                        <td colspan="8">{{dataMessage}}</td>
                                     </tr>
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
@@ -87,8 +91,8 @@
                                         <td>{{document.docType}}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedBy}}</td>
-                                        <td>Created: {{document.timeCreated | date: 'dd-MM-yyyy'}} <br>
-                                            Last modified: {{document.timeModified | date: 'dd-MM-yyyy'}}
+                                        <td>Created: {{document.timeCreated | date: 'yyyy/MM/dd'}} <br>
+                                            Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
                                         </td>
                                         <td>{{document.description ? document.description : '-'}}</td>
                                         <td>
