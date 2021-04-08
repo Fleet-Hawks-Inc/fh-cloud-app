@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
-    "build": "ng build",
+    "build": "ng build --aot",
     "buildPreprod": "ng build --configuration=preprod --base-href . ",
     "buildDev": "ng build --configuration=dev --base-href . ",
     "buildProd": "ng build --configuration=production --base-href . ",
@@ -96,7 +96,7 @@
     "@types/randomstring": "^1.1.6",
     "codelyzer": "5.0.0",
     "concurrently": "^6.0.0",
-    "cypress": "^6.8.0",
+    "cypress": "7.0.0",
     "cypress-file-upload": "^5.0.3",
     "jasmine-core": "3.4.0",
     "jasmine-spec-reporter": "4.2.1",
