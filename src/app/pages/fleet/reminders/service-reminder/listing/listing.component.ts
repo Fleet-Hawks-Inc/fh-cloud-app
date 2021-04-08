@@ -31,7 +31,7 @@ export class ListingComponent implements OnInit {
   unitID = '';
   unitName = '';
   suggestedUnits = [];
-  currentDate = moment();
+  currentDate = moment().format('YYYY-MM-DD');
   currentOdometer = 1500;
   taskName: string;
   newData = [];
@@ -125,7 +125,6 @@ export class ListingComponent implements OnInit {
   }
   fetchReminders = async () => {
     this.remindersData = [];
-    let lastCompleted;
     let serviceOdometer = 0;
     let remainingDays = 0;
     let remainingMiles = 0;
@@ -133,10 +132,16 @@ export class ListingComponent implements OnInit {
       let reminderStatus: string;
       const testDate = this.allRemindersData[j].lastCompletionDate.sort().reverse();
       const testOdometer = this.allRemindersData[j].lastCompletedOdometer.sort().reverse();
-      lastCompleted =  moment(testDate[0]).format(`YYYY/MM/DD`);
-      serviceOdometer = +testOdometer[0];
-      this.currentOdometer = +testOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
-      const convertedDate = moment(lastCompleted, `DD-MM-YYYY`).add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
+      if(testOdometer == ''){
+        serviceOdometer = (this.allRemindersData[j].reminderTasks.odometer / 2);
+      } else{
+        serviceOdometer = +testOdometer[0];
+      }
+      let someDateString = moment(testDate[0]).format('YYYY-MM-DD');
+      let  lastCompleted  = moment(someDateString, 'YYYY-MM-DD');
+
+      this.currentOdometer = serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer / 2);
+      const convertedDate = moment(lastCompleted, `YYYY-MM-DD`).add(this.allRemindersData[j].reminderTasks.remindByDays, 'days');
       remainingDays = convertedDate.diff(this.currentDate, 'days');
       remainingMiles = (serviceOdometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
       if (remainingDays < 0) {
@@ -193,7 +198,6 @@ export class ListingComponent implements OnInit {
       this.apiService
         .getData(`reminders/isDeleted/${entryID}/` + 1)
         .subscribe((result: any) => {
-          // console.log('result', result);
           this.remindersData = [];
           this.getRemindersCount();
           this.initDataTable();
@@ -301,7 +305,7 @@ export class ListingComponent implements OnInit {
     this.serviceEndPoint = this.serviceStartPoint + this.pageLength - 1;
   }
 
-  // next button func 
+  // next button func
   nextResults() {
     this.serviceNext = true;
     this.servicePrev = true;
