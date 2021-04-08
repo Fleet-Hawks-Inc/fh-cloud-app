@@ -17,7 +17,7 @@ describe("Assets Test", function () {
             .first()
             .click();
 
-        cy.get(".col-md-6 > .btn-success").first({ force: true }).click();
+        cy.get(".col-md-6 > .btn-success").first().click();
 
         cy.get('form#form_ > .row input[name="assetIdentification"]').type(
             "Xyz1456"
@@ -72,7 +72,7 @@ describe("Assets Test", function () {
         cy.get('input[name="uploadedPhotos"]').attachFile(imagefile1);
         const file2 = "load1.pdf";
         cy.get('[name="uploadedDocs"]').attachFile(file2);
-        cy.get("#nextBtn").first().click(); //save
+        cy.get("#nextBtn").click(); //save
     });
     it("should list the asset which was added and then verify the added asset is listed by name/other properties", function () {
         cy.visit("/#/Login");
