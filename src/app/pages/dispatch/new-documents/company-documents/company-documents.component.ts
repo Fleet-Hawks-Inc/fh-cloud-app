@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-company-documents',
@@ -15,6 +16,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;

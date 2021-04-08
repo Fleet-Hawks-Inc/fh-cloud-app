@@ -3,9 +3,9 @@
 
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header pr-5">
+            <header class="page-header">
                 <form class="form-horizontal" method="get">
-                    <div class="row pr-1 mr-1" style="padding-top:9px;">
+                    <div class="row" style="padding-top:9px;">
                         
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
@@ -63,8 +63,8 @@
                             <button type="button" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
 
-                        <div class="col-md-3 col-lg-3 text-right pr-1">
-                            <div class="btn-group flex-wrap mr-2">
+                        <div class="col-md-3 col-lg-3 text-right">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                     data-toggle="dropdown" aria-expanded="false">Actions<span
                                         class="caret"></span></button>

@@ -1,17 +1,17 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pt-0 pl-0 pr-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:9px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:9px;">
                     
                     <div class="col-md-4 col-lg-4 text-dark">
                         <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }}</span> <span class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
                     </div>
                     
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                    <div class="col-md-8 col-lg-8 text-right">
                         <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
                         <div class="btn-group flex-wrap mr-2">
-                            <button type="button" class="mb-1 btn btn-success btn-sm dropdown-toggle"
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                 data-toggle="dropdown" aria-expanded="false">Send to Manifest<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -20,7 +20,7 @@
                             </div>
                         </div>
 
-                        <div class="btn-group flex-wrap mr-2">
+                        <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
