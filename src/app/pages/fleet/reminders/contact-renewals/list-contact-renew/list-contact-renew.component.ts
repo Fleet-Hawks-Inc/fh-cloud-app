@@ -23,7 +23,7 @@ export class ListContactRenewComponent implements OnInit {
   allRemindersData = [];
   subcribersArray = [];
   groups: any = {};
-  currentDate = moment();
+  currentDate = moment().format('YYYY-MM-DD');
   newData = [];
   filterStatus: string;
   usersList:any = {};
@@ -44,7 +44,7 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
   loading = false;
-  allVehicles = [];
+  allUsers = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -70,7 +70,6 @@ export class ListContactRenewComponent implements OnInit {
   }
   fetchServiceTaks() {
     let test = [];
-    let taskType = 'contact';
     this.apiService.getData('tasks').subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
@@ -89,27 +88,19 @@ export class ListContactRenewComponent implements OnInit {
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  setContact(userName, firstName, lastName) {
-    this.firstName = firstName +' '+ lastName;
-    this.contactID = userName;
-    this.suggestedContacts = [];
-  }
-  getSuggestions(value) {
-    this.apiService
-      .getData(`users/get/suggestions/${value}`)
-      .subscribe((result) => {
-        this.suggestedContacts = result.Items;
-      });
-
+  fetchAllVehicles() {
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.allUsers = result.Items;
+    });
   }
   fetchRenewals = async () => {
     this.remindersData = [];
     for (let j = 0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
       if (this.allRemindersData[j].reminderType === 'contact') {
-        const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate, 'DD-MM-YYYY');
-        const remainingDays = convertedDate.diff(this.currentDate, 'days');
-
+        let someDateString = moment(this.allRemindersData[j].reminderTasks.dueDate).format('YYYY-MM-DD');
+    let newDueDate = moment(someDateString, 'YYYY-MM-DD');
+    const remainingDays = newDueDate.diff(this.currentDate, 'days');
         if (remainingDays < 0) {
           reminderStatus = 'OVERDUE';
         }
@@ -164,23 +155,22 @@ export class ListContactRenewComponent implements OnInit {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.suggestedContacts = [];
         this.getStartandEndVal();
-        this.allRemindersData = result['Items'];
+        this.allRemindersData = result[`Items`];
         this.fetchRenewals();
         if(this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
           this.contactRenewNext = false;
           // for prev button
-          if (!this.contactRenewPrevEvauatedKeys.includes(result['LastEvaluatedKey'].reminderID)) {
-            this.contactRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
+          if (!this.contactRenewPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].reminderID)) {
+            this.contactRenewPrevEvauatedKeys.push(result[`LastEvaluatedKey`].reminderID);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
-          
+          this.lastEvaluatedKey = result[`LastEvaluatedKey`].reminderID;
+
         } else {
           this.contactRenewNext = true;
           this.lastEvaluatedKey = '';
@@ -203,7 +193,7 @@ export class ListContactRenewComponent implements OnInit {
     if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount()
+      this.getRemindersCount();
       this.initDataTable();
     } else {
       return false;
@@ -218,7 +208,7 @@ export class ListContactRenewComponent implements OnInit {
       this.filterStatus = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
-      this.getRemindersCount()
+      this.getRemindersCount();
       this.initDataTable();
       this.resetCountResult();
     } else {
@@ -279,9 +269,5 @@ export class ListContactRenewComponent implements OnInit {
     this.contactRenewDraw = 0;
   }
 
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
-    });
-  }
+
 }

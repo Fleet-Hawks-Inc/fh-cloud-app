@@ -35,7 +35,7 @@ export class AddContactRenewComponent implements OnInit {
   contactRenewalForm;
   numberOfDays: number;
   time = 1;
-  timeType = 'Day(s)';
+  timeType = 'day';
   vehicles = [];
   contacts = [];
   drivers = [];
@@ -134,15 +134,15 @@ export class AddContactRenewComponent implements OnInit {
   addRenewal() {
     this.hideErrors();
     switch (this.timeType) {
-      case 'Day(s)': {
+      case 'day': {
         this.numberOfDays = this.time * 1;
         break;
       }
-      case 'Month(s)': {
+      case 'month': {
         this.numberOfDays = this.time * 30;
         break;
       }
-      case 'Week(s)': {
+      case 'week': {
         this.numberOfDays = this.time * 7;
         break;
       }
