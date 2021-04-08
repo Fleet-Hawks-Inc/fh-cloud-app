@@ -9,6 +9,7 @@ import * as moment from "moment";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-document-list',
@@ -16,8 +17,8 @@ import  Constants  from '../../../fleet/constants';
   styleUrls: ['./my-document-list.component.css']
 })
 export class MyDocumentListComponent implements OnInit {
-
   dataMessage: string = Constants.FETCHING_DATA;
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;

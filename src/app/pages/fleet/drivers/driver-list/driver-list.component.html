@@ -486,7 +486,7 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.licenceDetails.CDL_Number}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
-                                          class="font-weight-bold">Issue State:
+                                          class="font-weight-bold">Issue Province:
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                                     
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>

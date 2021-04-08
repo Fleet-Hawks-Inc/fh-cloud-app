@@ -21,13 +21,13 @@ export class VehicleRenewListComponent implements OnInit {
   vehicles = [];
   vehicleName: string;
   vehicleList: any = {};
-  tasksList: any  = {};
+  tasksList: any = {};
   groups; any = {};
   group: string;
   subcribersArray = [];
   allRemindersData = [];
   vehicleIdentification = '';
-  currentDate = moment();
+  currentDate = moment().format('YYYY-MM-DD');
   newData = [];
   suggestedVehicles = [];
   vehicleID = null;
@@ -49,7 +49,7 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleRenewEndPoint = this.pageLength;
   allVehicles = [];
 
-  constructor(private apiService: ApiService, private router: Router,private spinner: NgxSpinnerService, private toastr: ToastrService) { }
+  constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getRemindersCount();
@@ -103,29 +103,30 @@ export class VehicleRenewListComponent implements OnInit {
 
   fetchRenewals = async () => {
     this.remindersData = [];
-    for(let j=0; j < this.allRemindersData.length; j++) {
+    for (let j = 0; j < this.allRemindersData.length; j++) {
       let reminderStatus: string;
-        const convertedDate = moment(this.allRemindersData[j].reminderTasks.dueDate,'DD-MM-YYYY');
-        const remainingDays = convertedDate.diff(this.currentDate, 'days');
-        if (remainingDays < 0 ) {
-          reminderStatus = 'OVERDUE';
-        }
-        else if( remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays &&  remainingDays >= 0) {
-          reminderStatus = 'DUE SOON';
-        }
-        const data = {
-          reminderID: this.allRemindersData[j].reminderID,
-          reminderIdentification: this.allRemindersData[j].reminderIdentification,
-          reminderTasks: {
-            task: this.allRemindersData[j].reminderTasks.task,
-            remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-            reminderStatus: reminderStatus,
-            remainingDays: remainingDays,
-            dueDate: this.allRemindersData[j].reminderTasks.dueDate,
-          },
-          subscribers : this.allRemindersData[j].subscribers,
-          };
-        this.remindersData.push(data);
+      let someDateString = moment(this.allRemindersData[j].reminderTasks.dueDate).format('YYYY-MM-DD');
+      let newDueDate = moment(someDateString, 'YYYY-MM-DD');
+      const remainingDays = newDueDate.diff(this.currentDate, 'days');
+      if (remainingDays < 0) {
+        reminderStatus = 'OVERDUE';
+      }
+      else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
+        reminderStatus = 'DUE SOON';
+      }
+      const data = {
+        reminderID: this.allRemindersData[j].reminderID,
+        reminderIdentification: this.allRemindersData[j].reminderIdentification,
+        reminderTasks: {
+          task: this.allRemindersData[j].reminderTasks.task,
+          remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+          reminderStatus: reminderStatus,
+          remainingDays: remainingDays,
+          dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+        },
+        subscribers: this.allRemindersData[j].subscribers,
+      };
+      this.remindersData.push(data);
     }
     if (this.filterStatus === Constants.OVERDUE) {
       this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
@@ -141,13 +142,13 @@ export class VehicleRenewListComponent implements OnInit {
   deleteRenewal(entryID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`reminders/isDeleted/${entryID}/` + 1)
-      .subscribe((result: any) => {
-        this.remindersData = [];
-        this.getRemindersCount();
-        this.initDataTable();
-        this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
-      });
+        .getData(`reminders/isDeleted/${entryID}/` + 1)
+        .subscribe((result: any) => {
+          this.remindersData = [];
+          this.getRemindersCount();
+          this.initDataTable();
+          this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
+        });
     }
   }
 
@@ -167,12 +168,12 @@ export class VehicleRenewListComponent implements OnInit {
 
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle').subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != null || this.searchServiceTask != null) {
+        if (this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
       },
@@ -183,14 +184,14 @@ export class VehicleRenewListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
         this.allRemindersData = result['Items'];
         this.fetchRenewals();
-        if(this.vehicleID != null || this.searchServiceTask != null) {
+        if (this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewStartPoint = 1;
           this.vehicleRenewEndPoint = this.totalRecords;
         }
@@ -222,7 +223,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
+    if (this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -233,7 +234,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
+    if (this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
       this.vehicleID = null;
       this.vehicleIdentification = '';
       this.searchServiceTask = null;
@@ -250,7 +251,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   sendEmailNotification(value) {
-    if(value.reminderTasks.reminderStatus !== undefined && value.reminderTasks.reminderStatus !== '') {
+    if (value.reminderTasks.reminderStatus !== undefined && value.reminderTasks.reminderStatus !== '') {
       this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?type=vehicle&status=${value.reminderTasks.reminderStatus}`).subscribe((result) => {
         this.toastr.success('Email sent successfully');
       });

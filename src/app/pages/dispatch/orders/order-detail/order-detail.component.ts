@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 
 @Component({
@@ -12,6 +13,7 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   docs = [];
   localPhotos = [];
   uploadedDocs = [];

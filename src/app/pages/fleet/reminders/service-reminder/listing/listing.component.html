@@ -99,7 +99,7 @@
                                                 <br>
                                                 {{item.reminderTasks.remainingMiles}} miles from now
                                             </td>
-                                            <td>{{item.lastCompleted}}</td>
+                                            <td>{{item.lastCompleted | date:'yyyy-MM-dd'}}</td>
                                             <td><span *ngFor="let s of item.subscribers">
                                                     <span *ngIf="s.subscriberType === 'user'">
                                                         {{s.subscriberIdentification}},
@@ -119,7 +119,7 @@
                                                             Service</a>
                                                         <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
                                                         <a routerLink="/fleet/reminders/service-reminder/edit/{{item.reminderID }}"
-                                                            class="dropdown-item text-1">Edit</a> 
+                                                            class="dropdown-item text-1">Edit</a>
                                                         <a href="javascript:;" class="dropdown-item text-1"
                                                             (click)="deleteReminder(item.reminderID)">Delete</a>
                                                     </div>

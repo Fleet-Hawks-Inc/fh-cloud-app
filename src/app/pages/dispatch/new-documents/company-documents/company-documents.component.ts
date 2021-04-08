@@ -9,6 +9,7 @@ import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-company-documents',
@@ -17,6 +18,7 @@ import  Constants  from '../../../fleet/constants';
 })
 export class CompanyDocumentsComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;
