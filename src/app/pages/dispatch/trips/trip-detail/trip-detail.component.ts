@@ -6,14 +6,14 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
-
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-trip-detail',
   templateUrl: './trip-detail.component.html',
   styleUrls: ['./trip-detail.component.css']
 })
 export class TripDetailComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   constructor(private apiService: ApiService, private route: ActivatedRoute,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
       this.selectedFileNames = new Map<any, any>();
@@ -58,6 +58,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   mapShow() {
+    this.hereMap.mapSetAPI()
     this.hereMap.mapInit();
   }
 

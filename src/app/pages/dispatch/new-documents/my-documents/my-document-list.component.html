@@ -1,8 +1,8 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body p-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue"
@@ -38,8 +38,8 @@
                             class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                     </div>
-                    <div class="col-lg-5 pr-1">
-                        <div class="btn-group flex-wrap pull-right">
+                    <div class="col-lg-5">
+                        <div class="btn-group flex-wrap pull-right" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
                                 data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
