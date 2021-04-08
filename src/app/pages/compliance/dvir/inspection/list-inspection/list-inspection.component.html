@@ -1,93 +1,186 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-  
-    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <app-sidebar></app-sidebar>
-      <!-- end: sidebar -->
-  
-      <section role="main" class="content-body pt-0 pl-0 pr-0">
-            <header class="page-header pr-5">
-                <div class="row pr-4 pl-2" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4">
-                       <h4 class="text-4 mt-0 mb-0 text-dark">Inspection Forms</h4>
-                    </div>
- 
-            <div class="col-md-8 col-lg-8 text-right pr-5">
-                <div class="btn-group">
-                    <a routerLink="/compliance/dvir/inspection-add" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Inspection Form</a>
-                </div>
-              </div>
-            </div>
-        </header>
-                   <div class="tab-content p-0" id="myTabContent">
-                      <div class="tab-pane show active" id="inspectionf" role="tabpanel" aria-labelledby="all-tab">
-                         <div id="DataTables_Table_16_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="DataTables_Table_16_length"><label>Show <select name="DataTables_Table_16_length" aria-controls="DataTables_Table_16" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer" id="DataTables_Table_16" role="grid">
-                             <thead>
-                                 <tr role="row"><th width="10%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" data-column-index="0" aria-sort="ascending" aria-label="Sr. No.: activate to sort column descending" style="width: 148px;">Sr. No.</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" data-column-index="1" aria-label="Form Name: activate to sort column ascending" style="width: 1250.4px;">Form Name</th><th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1" data-column-index="2" aria-label="Action: activate to sort column ascending" style="width: 232.8px;">Action</th></tr>
-                             </thead>
-                             <tbody >
-                                 <div *ngFor="let iForm of inspectionForms; index as i">
-                                 <tr class="cursorpoint even" role="row">
-                                  <a routerLink='/compliance/dvir/inspection-details/{{iForm.inspectionFormID}}'>   <td class="sorting_1">{{i+1}}</td>
-                                     <td>{{iForm.inspectionFormName}}</td>
-                                    </a>
-                                     <div class="btn-group flex-wrap">
-                                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
-                                           <a class="dropdown-item text-1" routerLink='/compliance/dvir/inspection-edit/{{iForm.inspectionFormID}}'>Edit</a>
-                                            <a class="dropdown-item text-1 modal-with-form" (click)="deleteForm(iForm.inspectionFormID)">Delete</a>
-                                        </div>
-                                     </div>
-                                 </tr>
-                                 </div>
-                                 
-                       
-                                 </tbody>
-                         </table></div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_16_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="DataTables_Table_16_previous"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="DataTables_Table_16_next"><a href="#" aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-                      </div>
-                      
-                      
-                      <div class="tab-pane fade" id="dvirdiv" role="tabpanel" aria-labelledby="reefer-tab">
-                         <div id="simple-table1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-lg-6"><div class="dataTables_length" id="simple-table1_length"><label>Show <select name="simple-table1_length" aria-controls="simple-table1" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-lg-6"></div></div><div class="table-responsive"><table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer" id="simple-table1" role="grid">
-                            <thead>
-                               <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" data-column-index="0" aria-sort="ascending" aria-label="Sr. No.: activate to sort column descending" style="width: 0px;">Sr. No.</th><th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" data-column-index="1" aria-label="Vehicle/Asset: activate to sort column ascending" style="width: 0px;">Vehicle/Asset</th><th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" data-column-index="2" aria-label="Defects: activate to sort column ascending" style="width: 0px;">Defects</th><th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" data-column-index="3" aria-label="Form Name: activate to sort column ascending" style="width: 0px;">Form Name</th><th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1" data-column-index="4" aria-label="Date/Time: activate to sort column ascending" style="width: 0px;">Date/Time</th></tr>
-                            </thead>
-                            <tbody>
-                               
-                               
-                                
-                               
-                               
-                            <tr class="cursorpoint odd" role="row">
-                                  <td onclick="window.location='divr-detail.php'" class="sorting_1">01</td>
-                                  <td onclick="window.location='divr-detail.php'">Volve-32559</td>
-                                  <td onclick="window.location='divr-detail.php'">Transmission</td>
-                                  <td onclick="window.location='divr-detail.php'">Form Name Here</td>
-                                  <td onclick="window.location='divr-detail.php'">15/03/2021, 04:55 AM</td>
-                               </tr><tr class="cursorpoint even" role="row">
-                                  <td onclick="window.location='divr-detail.php'" class="sorting_1">02</td>
-                                  <td onclick="window.location='divr-detail.php'">Ford-1109</td>
-                                  <td onclick="window.location='divr-detail.php'">Front Axle</td>
-                                  <td onclick="window.location='divr-detail.php'">1109 Pre inspection</td>
-                                  <td onclick="window.location='divr-detail.php'">10/03/2021, 11:15 AM</td>
-                               </tr><tr class="cursorpoint odd" role="row">
-                                  <td onclick="window.location='divr-detail.php'" class="sorting_1">03</td>
-                                  <td onclick="window.location='divr-detail.php'">Nissan-2258</td>
-                                  <td onclick="window.location='divr-detail.php'">Fuel Tanks</td>
-                                  <td onclick="window.location='divr-detail.php'">N2258 Post inspection</td>
-                                  <td onclick="window.location='divr-detail.php'">11/03/2021, 03:00 PM</td>
-                               </tr></tbody>
-                         </table></div><div class="dataTables_paginate paging_simple_numbers" id="simple-table1_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="simple-table1_previous"><a href="#" aria-controls="simple-table1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="simple-table1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item next disabled" id="simple-table1_next"><a href="#" aria-controls="simple-table1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div>
-                      </div>
-                   </div>
-                   
-                   
+  <!-- start: header -->
+  <app-header></app-header>
+  <!-- end: header -->
 
-                     
-                 
-             </section>
-         </div>
- </section>
+  <div class="inner-wrapper">
+    <!-- start: sidebar -->
+    <app-sidebar></app-sidebar>
+    <!-- end: sidebar -->
+
+    <section role="main" class="content-body pt-0 pl-0 pr-0">
+      <header class="page-header pr-5">
+        <div class="row pr-4 pl-2" style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mt-0 mb-0 text-dark">Inspection Forms</h4>
+          </div>
+
+          <div class="col-md-8 col-lg-8 text-right pr-5">
+            <div class="btn-group">
+              <a routerLink="/compliance/dvir/inspection-add" class="btn btn-success btn-sm " style="color:white;"><i
+                  class="fas fa-plus"></i> Add Inspection Form</a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="tab-content p-0" id="myTabContent">
+        <div class="tab-pane show active" id="inspectionf" role="tabpanel" aria-labelledby="all-tab">
+          <div id="DataTables_Table_16_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="dataTables_length" id="DataTables_Table_16_length">
+                  <label>Show <select name="DataTables_Table_16_length" aria-controls="DataTables_Table_16"
+                      class="custom-select custom-select-sm form-control form-control-sm">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select> entries</label></div>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+            <div class="table-responsive">
+              <table
+                class="table table-bordered table-responsive-lg table-striped mb-0 simple-table dataTable no-footer"
+                id="DataTables_Table_16" role="grid">
+                <thead>
+                  <tr role="row">
+                    <th width="10%" class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                      colspan="1" data-column-index="0" aria-sort="ascending"
+                      aria-label="Sr. No.: activate to sort column descending" style="width: 148px;">Sr. No.</th>
+                    <th class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
+                      data-column-index="1" aria-label="Form Name: activate to sort column ascending"
+                      style="width: 1250.4px;">Form Name</th>
+                    <th width="15%" class="sorting" tabindex="0" aria-controls="DataTables_Table_16" rowspan="1"
+                      colspan="1" data-column-index="2" aria-label="Action: activate to sort column ascending"
+                      style="width: 232.8px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <ngx-spinner></ngx-spinner>
+                    <tr class="cursorpoint even" role="row" *ngFor="let iForm of inspectionForms; index as i">
+                      <td width='10%' routerLink='/compliance/dvir/inspection-details/{{iForm.inspectionFormID}}'
+                        class='sorting_1'>{{i+1}}</td>
+                      <td style="width: 1250.4px;"
+                        routerLink='/compliance/dvir/inspection-details/{{iForm.inspectionFormID}}'>
+                        {{iForm.inspectionFormName}}</td>
+                      <div width="15%" class="btn-group flex-wrap">
+                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown" aria-expanded="false"><i
+                            class="fas fa-ellipsis-v"></i></button>
+                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                          <a class="dropdown-item text-1"
+                            routerLink='/compliance/dvir/inspection-edit/{{iForm.inspectionFormID}}'>Edit</a>
+                          <a class="dropdown-item text-1 modal-with-form"
+                            (click)="deleteForm(iForm.inspectionFormID)">Delete</a>
+                        </div>
+                      </div>
+                    </tr>
+
+
+
+                </tbody>
+              </table>
+            </div>
+            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_16_paginate">
+              <ul class="pagination">
+                <li class="paginate_button page-item previous disabled" id="DataTables_Table_16_previous"><a href="#"
+                    aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                <li class="paginate_button page-item active"><a href="#" aria-controls="DataTables_Table_16"
+                    data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                <li class="paginate_button page-item next disabled" id="DataTables_Table_16_next"><a href="#"
+                    aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="dvirdiv" role="tabpanel" aria-labelledby="reefer-tab">
+          <div id="simple-table1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="dataTables_length" id="simple-table1_length"><label>Show <select name="simple-table1_length"
+                      aria-controls="simple-table1" class="custom-select custom-select-sm form-control form-control-sm">
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select> entries</label></div>
+              </div>
+              <div class="col-lg-6"></div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer"
+                id="simple-table1" role="grid">
+                <thead>
+                  <tr role="row">
+                    <th class="sorting_asc" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
+                      data-column-index="0" aria-sort="ascending"
+                      aria-label="Sr. No.: activate to sort column descending" style="width: 0px;">Sr. No.</th>
+                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
+                      data-column-index="1" aria-label="Vehicle/Asset: activate to sort column ascending"
+                      style="width: 0px;">Vehicle/Asset</th>
+                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
+                      data-column-index="2" aria-label="Defects: activate to sort column ascending" style="width: 0px;">
+                      Defects</th>
+                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
+                      data-column-index="3" aria-label="Form Name: activate to sort column ascending"
+                      style="width: 0px;">Form Name</th>
+                    <th class="sorting" tabindex="0" aria-controls="simple-table1" rowspan="1" colspan="1"
+                      data-column-index="4" aria-label="Date/Time: activate to sort column ascending"
+                      style="width: 0px;">Date/Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+
+
+
+
+                  <tr class="cursorpoint odd" role="row">
+                    <td onclick="window.location='divr-detail.php'" class="sorting_1">01</td>
+                    <td onclick="window.location='divr-detail.php'">Volve-32559</td>
+                    <td onclick="window.location='divr-detail.php'">Transmission</td>
+                    <td onclick="window.location='divr-detail.php'">Form Name Here</td>
+                    <td onclick="window.location='divr-detail.php'">15/03/2021, 04:55 AM</td>
+                  </tr>
+                  <tr class="cursorpoint even" role="row">
+                    <td onclick="window.location='divr-detail.php'" class="sorting_1">02</td>
+                    <td onclick="window.location='divr-detail.php'">Ford-1109</td>
+                    <td onclick="window.location='divr-detail.php'">Front Axle</td>
+                    <td onclick="window.location='divr-detail.php'">1109 Pre inspection</td>
+                    <td onclick="window.location='divr-detail.php'">10/03/2021, 11:15 AM</td>
+                  </tr>
+                  <tr class="cursorpoint odd" role="row">
+                    <td onclick="window.location='divr-detail.php'" class="sorting_1">03</td>
+                    <td onclick="window.location='divr-detail.php'">Nissan-2258</td>
+                    <td onclick="window.location='divr-detail.php'">Fuel Tanks</td>
+                    <td onclick="window.location='divr-detail.php'">N2258 Post inspection</td>
+                    <td onclick="window.location='divr-detail.php'">11/03/2021, 03:00 PM</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="dataTables_paginate paging_simple_numbers" id="simple-table1_paginate">
+              <ul class="pagination">
+                <li class="paginate_button page-item previous disabled" id="simple-table1_previous"><a href="#"
+                    aria-controls="simple-table1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                <li class="paginate_button page-item active"><a href="#" aria-controls="simple-table1" data-dt-idx="1"
+                    tabindex="0" class="page-link">1</a></li>
+                <li class="paginate_button page-item next disabled" id="simple-table1_next"><a href="#"
+                    aria-controls="simple-table1" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    </section>
+  </div>
+</section>

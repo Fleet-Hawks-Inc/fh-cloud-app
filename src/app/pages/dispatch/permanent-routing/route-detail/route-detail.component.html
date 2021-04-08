@@ -6,21 +6,18 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body">
-            <header class="page-header pr-5">
+            <header class="page-header">
 
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <h4 class="text-4 mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
+                    
                     <div class="col-md-10 col-lg-10 text-right pr-1">
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
+                        <a routerLink="/dispatch/routes/list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i> All Routes</a>
+
                         <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"
-                            routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
+                            routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Add Route</a>
                     </div>
                 </div>
 
@@ -61,17 +58,19 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                            <div>
-                                <h4 class="m-0">Notes</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ notes }}</h3>
-                            </div>
-                            <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
-                            </div>
+                           <div>
+                              <h4 class="m-0">Notes</h4>
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 500" data-toggle="modal" data-target="#routeNotes" class="modal-with-form">See All</a></p>
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes == ''"> - </p>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
                         </div>
-                    </div>
+                     </div>
 
                     <div class="col-3 pr-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
@@ -151,35 +150,24 @@
                         </div>
                     </div>
 
-
-                    <!-- <div class="col-12 pl-2 mb-4">
-                            <div class="bg-white p-3">
-                                <div class="mapclass vehiclemain" id="map_view">
-                                    <div id="map" class=""></div>
-                                </div>
-                            </div>
-                        </div> -->
-
                     <div class="col-lg-12 pl-2 mb-4">
                         <div class="mapclass vehiclemain" id="map_view">
                             <div id="map" class=""></div>
                         </div>
                     </div>
 
-
-                    <div class="col-12 pl-2 mb-4">
+                    <div class="col-12 pl-2 mb-4" *ngFor="let data of stopInformation; let i=index;">
                         <div class="bg-white p-3 d-flex text-dark">
-                            <div class="grey-bg pull-left p-4" style="color: #979797;">
-                                <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
-                            </div>
-
-                            <div class="pull-left ml-3">
-                                <h4 class="m-0">Stop Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold"
-                                    *ngFor="let data of stopInformation; let i=index;">Stop {{i+1}}: {{ data.stopName }}
-                                </h3>
-                            </div>
-
+                           <div class="grey-bg pull-left p-4" style="color: #979797;">
+                              <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                           
+                           <div class="pull-left ml-3">
+                              <h4 class="m-0">Stop {{i+1}}</h4>
+                              <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ data.stopName }}</h3>
+                              <p class="mb-0" *ngIf="data.stopNotes != ''">Note: {{ data.stopNotes }}</p>
+                           </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -187,3 +175,33 @@
         </section>
     </div>
 </section>
+
+<div class="modal fade" id="routeNotes" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Notes</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group row text-dark">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="mb-0">
+                                        {{ notes }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

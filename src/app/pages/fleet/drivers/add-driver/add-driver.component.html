@@ -3,11 +3,11 @@
 
       <section role="main" class="content-body pt-0 pr-0 pl-0">
          <header class="page-header">
-            <div class="row pr-4 pl-2" style="padding-top:10px;">
+            <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                </div>
-               <div class="col-md-8  col-lg-8 text-right pr-5">
+               <div class="col-md-8  col-lg-8 text-right">
                   <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
                      List</a>
                </div>
@@ -98,7 +98,7 @@
                                                 <span class="input-group-text text-uppercase"
                                                    style="padding:0.2rem 0.75rem">{{prefixOutput}}</span>
                                              </div> -->
-                                             <input [disabled]="isEdit" [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
+                                             <input [disabled]="isEdit" (change)="onChangeHideErrors('employeeContractorId')" [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                                 class="form-control" placeholder="Enter employee ID of driver">
                                           </div>
                                        </div>
@@ -113,7 +113,7 @@
                                        </div>
                                        <div class="col-lg-10" id="companyDiv"
                                           *ngIf="driverData.driverType == 'contractor'">
-                                          <label class="control-label font-weight-bold text-lg-right pt-3">Owner
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Owner
                                              Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
                                              class="form-control form-control-sm" placeholder="Select Owner Operator"
@@ -122,10 +122,10 @@
                                                 value="{{item.operatorID}}">{{item.companyName}}</ng-option>
                                           </ng-select>
                                        </div>
-                                       <div class="col-lg-1 mt-5  pl-0"
+                                       <div class="col-lg-2  mar-top-37 pl-0"
                                           *ngIf="driverData.driverType == 'contractor'">
                                           <a data-toggle="modal" data-target="#addOwnerOperatorModal"
-                                             href="javascript:;" class="modal-with-form btn btn-sm btn-success"><i
+                                             href="javascript:;" class="modal-with-form btn cus-btn-padd btn-success"><i
                                                 class="fas fa-plus"></i></a>
                                        </div>
                                        <div class="col-lg-10">
@@ -141,7 +141,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">User
                                              Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input [disabled]="isEdit" [(ngModel)]="driverData.userName" name="userName" type="text"
+                                          <input [disabled]="isEdit" (change)="onChangeHideErrors('userName')" [(ngModel)]="driverData.userName" name="userName" type="text"
                                              class="form-control" placeholder="Enter username for the driver">
                                        </div>
                                        <div class="col-lg-10">
@@ -149,7 +149,7 @@
                                              <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                    Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="driverData.firstName" name="firstName" type="text"
+                                                <input [(ngModel)]="driverData.firstName" (change)="onChangeHideErrors('firstName')" name="firstName" type="text"
                                                    class="form-control" placeholder="Enter first name">
                                              </div>
                                              <div class="col-lg-4">
@@ -162,7 +162,7 @@
                                              <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                    Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="driverData.lastName" name="lastName" type="text"
+                                                <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')" name="lastName" type="text"
                                                    class="form-control" placeholder="Enter last name">
                                              </div>
                                           </div>
@@ -219,14 +219,14 @@
                                                    class="control-label font-weight-bold text-lg-right pt-2">Password<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="driverData.password" name="password" type="text"
-                                                   class="form-control" placeholder="Enter password">
+                                                   class="form-control" (change)="onChangeHideErrors('password')" placeholder="Enter password">
                                              </div>
                                              <div class="col-lg-6">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Confirm
                                                    Password<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
-                                                   type="text" data-plugin-datepicker="" class="form-control"
+                                                   type="text" (change)="onChangeHideErrors('confirmPassword')" class="form-control"
                                                    placeholder="Enter confirm password">
                                              </div>
                                           </div>
@@ -255,7 +255,7 @@
                                        </div>
                                        <div class="col-lg-2  mar-top-37 pl-0">
                                           <a (click)="gotoVehiclePage();" href="javascript:;"
-                                             class="btn btn-sm btn-success"><em class="fas fa-plus"></em></a>
+                                             class="btn btn-success cus-btn-padd"><em class="fas fa-plus"></em></a>
                                        </div>
                                        <div class="col-lg-10">
                                           <label
@@ -270,7 +270,7 @@
                                        </div>
                                        <div class="col-lg-1 mar-top-37  pl-0">
                                           <a data-toggle="modal" data-target="#addDriverGroupModal" href="javascript:;"
-                                             class="modal-with-form btn btn-sm btn-success">
+                                             class="modal-with-form btn cus-btn-padd btn-success">
                                              <em class="fas fa-plus"></em>
                                          </a>
                                         </div>
@@ -329,7 +329,7 @@
                                              </span>
                                           </div>
                                           <div class="mt-2">
-                                             <div class="btn btn-sm btn-success overflow-hidden position-relative"
+                                             <div class="btn cus-btn-padd btn-success overflow-hidden position-relative"
                                                 style="cursor: pointer;"><em class="fas fa-plus"></em> {{profileTitle}}
                                                 Photo
                                                 <input (change)="selectPhoto($event)"
@@ -378,14 +378,14 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
-                                             class="form-control"
+                                             class="form-control" (change)="onChangeHideErrors('workPhone')"
                                              placeholder="Enter the official phone number of the driver">
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
                                              Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.email" name="email" type="text"
-                                             class="form-control"
+                                             class="form-control" (change)="onChangeHideErrors('email')"
                                              placeholder="Enter the official email address of the driver">
                                        </div>
 
@@ -443,14 +443,14 @@
                                           </ul>
                                        </div>
                                     </div>
-                                    <div class="col-lg-3 mar-top-37">
-                                       <a class="btn btn-dark mr-2" href="javascript:;"
+                                    <div class="col-lg-3 mar-top-37 pl-0">
+                                       <a class="btn btn-dark cus-btn-padd mr-2" href="javascript:;"
                                           (click)="clearUserLocation(i);">Clear</a>
                                        <button type="button" [disabled]="driverData.address.length == 2" *ngIf="i === 0;" (click)="addAddress();"
-                                          class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                          class="btn cus-btn-padd btn-success"><i class="fa fa-plus"></i> Add
                                           Another Address</button>
                                        <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
-                                          class="btn btn-success" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
+                                          class="btn btn-danger cus-btn-padd" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                  </div>
                                  <div class="address-inner" *ngIf="item.manual">
@@ -473,9 +473,9 @@
                                              </div>
                                              <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                   State</label>
+                                                   Province</label>
                                                 <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                                   name="stateID{{i}}" placeholder="Select state">
+                                                   name="stateID{{i}}" placeholder="Select Province">
 
                                                    <ng-option class="text-capitalize" *ngFor="let state of states"
                                                       value="{{state.stateID}}">{{state.stateName}}</ng-option>
@@ -575,9 +575,9 @@
                                                    [ngModelOptions]="{standalone: true}" type="text" class="form-control"
                                                    placeholder="Select licence issuing authority">
                                              </div>
-                                             <div class="col-lg-1 mar-top-37">
+                                             <div class="col-lg-1 mar-top-37 pl-0">
                                                 <a href="javascript:;" *ngIf="i != 0;" (click)="remove('document', i)"
-                                                   class="btn btn-success"><i class="fa fa-minus"></i></a>
+                                                   class="btn btn-danger cus-btn-padd"><i class="fa fa-minus"></i></a>
                                              </div>
                                           </div>
                                        </div>
@@ -602,13 +602,13 @@
                                           </div>
                                           <div class="col-lg-5">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                Issuing State<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                Issuing Province<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                              </label>
                                              <ng-select
                                                 (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
                                                 [(ngModel)]="document.issuingState"
                                                 [attr.name]="'documentDetails['+i+'].issuingState'"
-                                                [ngModelOptions]="{standalone: true}" placeholder="Select issuing state">
+                                                [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
                                                 <ng-option class="text-capitalize" *ngFor="let state of states"
                                                    value="{{state.stateID}}">{{state.stateName}}</ng-option>
 
@@ -683,7 +683,7 @@
                                           <div class="col-5"></div>
                                           <div class="col-5 text-right">
                                              <button type="button" [disabled]="driverData.documentDetails.length == 3" *ngIf="i === 0;" (click)="addDocument()"
-                                                id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add
+                                                id="add-document" class="btn btn-success cus-btn-padd"><i class="fa fa-plus"></i> Add
                                                 Another Document</button>
                                           </div>
                                        </div>
@@ -815,9 +815,9 @@
                                        </div>
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Issued
-                                             State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select [(ngModel)]="driverData.licenceDetails.issuedState"
-                                             name="licenceDetails.issuedState" placeholder="Select state"
+                                             name="licenceDetails.issuedState" placeholder="Select Province"
                                              (change)="onChangeHideErrors('licenceDetails.issuedState');getCities($event)">
 
                                              <ng-option class="text-capitalize" *ngFor="let state of states"
@@ -1273,14 +1273,14 @@
 
                      <div class="form-group row mt-3">
                         <div class="col-lg-12 text-right pb-4 pr-5">
-                           <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+                           <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
                            <button type="button" *ngIf="currentTab > 1" (click)="prevStep()"
-                              class="btn btn-default btnPrevious mr-2">Prev</button>
+                              class="btn btn-default btnPrevious cus-btn-padd mr-2">Prev</button>
                            <a href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 8"
-                              class="btn btn-success btnNext">Save & Next</a>
-                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="btn btn-success">Save</button>
+                              class="btn btn-success cus-btn-padd btnNext">Save & Next</a>
+                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="cus-btn-padd btn btn-success">Save</button>
                            <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()"
-                              class="btn btn-success">Update</a>
+                              class="btn cus-btn-padd btn-success">Update</a>
 
                         </div>
                      </div>

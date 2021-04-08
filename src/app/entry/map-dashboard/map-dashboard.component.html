@@ -6,211 +6,26 @@
    }
 </style>
 <section class="body">
-   <!-- <app-header></app-header> -->
-
    <div class="inner-wrapper">
-      <!-- start: sidebar -->
-      <!-- <app-sidebar></app-sidebar> -->
-      <!-- end: sidebar -->
-
-      <!-- <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a href="index.html">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <div class="mapclass drivermain">
-        <div
-          class="map"
-          id="map"
-          style="width: 100%; height:200px, border-radius: 5px; padding:10px"
-        ></div>
-
-        <div class="iconR" id="arrowR" *ngIf="visible">
-          <a [routerLink]="" (click)="valuechange()"
-            ><i class="fas fa-arrow-right"></i
-          ></a>
-        </div>
-
-        <div class="iconL" id="arrowL" *ngIf="!visible">
-          <a [routerLink]="" (click)="valuechange()"
-            ><i class="fas fa-arrow-left"></i
-          ></a>
-        </div>
-
-        <div
-          class="drivelist"
-          style="overflow-y: scroll; overflow-x: hidden; height: 100%;"
-          id="driverList"
-          *ngIf="visible"
-          [@slideInOut]
-        >
-          <div *ngFor="let driver of frontEndData.drivers">
-            <div class="driverdetail" style="padding: 5px; cursor:grab;" (click)="flyToDriver(driver.location)">
-              <p class="mb-2 text-4 font-weight-semibold text-dark">
-                <span class="onduty pull-right">ON</span>
-                {{ driver.driverName }}
-              </p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">Cycle</p>
-              <p class="driverstatus mb-0">Kingston, Toronto, ON K7L 5K4</p>
-
-              <p class="mb-2 mt-3 text-4 font-weight-semibold text-dark">
-                Trip Info
-              </p>
-              <div
-                class="tripscrolbar mb-3"
-                style="overflow-x: scroll; overflow-y: hidden; width: 400px;"
-              >
-                <div class="tripbar"></div>
-                <div class="tripbarfinish"></div>
-                <div class="tripdot1"></div>
-                <div class="tripdot2"></div>
-                <div class="tripdot3"></div>
-                <div class="tripdot4"></div>
-                <div class="tripdot5"></div>
-                <div class="tripdot6"></div>
-
-                <div class="tripdt1">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 1<br />00:00
-                  </p>
-                </div>
-                <div class="tripdt2">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 2<br />00:00
-                  </p>
-                </div>
-                <div class="tripdt3">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 3<br />00:00
-                  </p>
-                </div>
-                <div class="tripdt4">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 4<br />00:00
-                  </p>
-                </div>
-                <div class="tripdt5">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 5<br />00:00
-                  </p>
-                </div>
-                <div class="tripdt6">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Day 6<br />00:00
-                  </p>
-                </div>
-
-                <div class="triploc1">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 1
-                  </p>
-                </div>
-                <div class="triploc2">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 2
-                  </p>
-                </div>
-                <div class="triploc3">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 3
-                  </p>
-                </div>
-                <div class="triploc4">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 4
-                  </p>
-                </div>
-                <div class="triploc5">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 5
-                  </p>
-                </div>
-                <div class="triploc6">
-                  <p class="line-height-xs text-2 font-weight-bold">
-                    Location 6
-                  </p>
-                </div>
-              </div>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">
-                Temperature Requirements
-                <span class="pull-right text-right"
-                  >-10<sup>o</sup>C C to -20<sup>o</sup></span
-                >
-              </p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">
-                Schedule Requirements
-                <span class="pull-right"
-                  ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
-                    On Time
-                  </button></span
-                >
-              </p>
-
-              <p class="mb-2 text-4 font-weight-semibold text-dark">
-                Load Status
-                <span class="pull-right"
-                  ><button class="mb-0 mt-0 mr-1 btn btn-xs btn-dark">
-                    Partial
-                  </button></span
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> -->
+      
       <section role="main" class="content-body">
          <header class="page-header">
 
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <div class="row " style="padding-top:10px;">
                <div class="col-lg-7">
                   <h4 class="text-4 mt-0 mb-0 text-dark">Driver Dashboard</h4>
                </div>
-               <!-- <div class="col-lg-2">
-               <div class="input-group">
-                  <input type="text" id="destinationLocation" value="{{destinationLocation}}"
-                     placeholder="Choose Location" (keyup)="searchTerm.next($event);" [(ngModel)]="search"
-                     name="search" class="form-control mapinput">
-                  <span class="input-group-append">
-                  <span class="input-group-text">
-                  <i class="fas fa-search"></i>
-                  </span>
-                  </span>
-               </div>
-               <div class="map-search__results bg-white">
-                  <ul class="p-0 m-0 text-left">
-                    <li *ngFor="let item of searchResults; let i = index">
-                      <a href="javascript:;" (click)="userDestination(item.address.label)" class="{{item.address.label}}">{{item.address.label}}</a>
-                    </li>
-                  </ul>
-                </div>
-            </div> -->
-               <div class="col-lg-5 text-right pr-1">
+               <div class="col-lg-5 text-right">
                   <div class="btn-group flex-wrap">
                      <button type="button" class="mb-1 mr-2 btn btn-success btn-sm dropdown-toggle"
                         data-toggle="dropdown" aria-expanded="false">Duty Status<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">ON</a>
-                        <a class="dropdown-item text-1" href="">OFF</a>
-                        <a class="dropdown-item text-1" href="">D</a>
-                        <a class="dropdown-item text-1" href="">SB</a>
-                        <a class="dropdown-item text-1" href="">YM</a>
+                        <a class="dropdown-item text-1" href="javascript:;">ON</a>
+                        <a class="dropdown-item text-1" href="javascript:;">OFF</a>
+                        <a class="dropdown-item text-1" href="javascript:;">D</a>
+                        <a class="dropdown-item text-1" href="javascript:;">SB</a>
+                        <a class="dropdown-item text-1" href="javascript:;">YM</a>
                      </div>
                   </div>
                   <div class="btn-group flex-wrap">
@@ -218,8 +33,8 @@
                         data-toggle="dropdown" aria-expanded="false">Schedule<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">On Time</a>
-                        <a class="dropdown-item text-1" href="">Late</a>
+                        <a class="dropdown-item text-1" href="javascript:;">On Time</a>
+                        <a class="dropdown-item text-1" href="javascript:;">Late</a>
                      </div>
                   </div>
                   <div class="btn-group flex-wrap">
@@ -227,9 +42,9 @@
                         aria-expanded="false">Load Type<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">FTL</a>
-                        <a class="dropdown-item text-1" href="">LTL</a>
-                        <a class="dropdown-item text-1" href="">Reefer</a>
+                        <a class="dropdown-item text-1" href="javascript:;">FTL</a>
+                        <a class="dropdown-item text-1" href="javascript:;">LTL</a>
+                        <a class="dropdown-item text-1" href="javascript:;">Reefer</a>
                      </div>
                   </div>
                </div>

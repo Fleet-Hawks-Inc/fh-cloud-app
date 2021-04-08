@@ -99,7 +99,6 @@ export class AddRouteComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.mapShow();
     this.listService.fetchVehicles();
     this.listService.fetchDrivers();
     this.listService.fetchAssets();
@@ -107,6 +106,7 @@ export class AddRouteComponent implements OnInit {
     if(this.routeID != undefined) {
       this.pageTitle = 'Edit Route';
     } else {
+      this.mapShow();
       this.pageTitle = 'Add Route';
     } 
     

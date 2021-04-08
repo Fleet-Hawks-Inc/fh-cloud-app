@@ -8,6 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import {Auth} from 'aws-amplify';
 import  Constants  from '../../../pages/fleet/constants';
+import { environment } from 'src/environments/environment';
 
 declare var $: any;
 @Component({
@@ -16,6 +17,7 @@ declare var $: any;
   styleUrls: ['./address-book.component.css']
 })
 export class AddressBookComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   @ViewChild("content", {static: false}) modalContent: TemplateRef<any>;
   Asseturl = this.apiService.AssetUrl;
   customers = [];
@@ -2334,7 +2336,7 @@ export class AddressBookComponent implements OnInit {
 
       this.uploadedPhotos.push(file)
       if(this.uploadedPhotos.length > 0) {
-        this.imageText = 'Change Picture';
+        this.imageText = 'Change Photo';
       }
     }
   }
@@ -2750,7 +2752,7 @@ export class AddressBookComponent implements OnInit {
     this.hideErrors();
     this.searchResults = [];
     this.profilePath = this.defaultProfilePath;
-    this.imageText = 'Add Picture';
+    this.imageText = 'Add Photo';
     this.custCurrentTab = 1;
 
     // Customer Object
