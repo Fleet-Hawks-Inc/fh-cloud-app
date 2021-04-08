@@ -1042,6 +1042,7 @@ export class AddTripComponent implements OnInit {
                     mileType: '',
                     miles: '',
                     vehicleID: '',
+                    vehicleName:'',
                     assetID: [],
                     driverUsername: '',
                     codriverUsername: '',
@@ -1063,6 +1064,7 @@ export class AddTripComponent implements OnInit {
                 obj.mileType = element.mileType;
                 obj.miles = element.miles;
                 obj.vehicleID = element.vehicleID;
+                obj.vehicleName=this.vehiclesObjects[element.vehicleID]
                 obj.pickupTime = element.pickupTime;
                 obj.dropTime = element.dropTime;
                 obj.actualPickupTime = element.actualPickupTime;
@@ -1528,6 +1530,7 @@ export class AddTripComponent implements OnInit {
                 mileType: '',
                 miles: '',
                 vehicleID: '',
+                vehicleName:'',
                 assetID: [],
                 driverUsername: '',
                 codriverUsername: '',
@@ -1551,6 +1554,7 @@ export class AddTripComponent implements OnInit {
             obj.mileType = element.mileType;
             obj.miles = element.miles;
             obj.vehicleID = element.vehicleID;
+            obj.vehicleName=this.vehiclesObjects[element.vehicleID]
 
             //   obj.time = element.time;
             obj.pickupTime = element.pickupTime;
@@ -1582,9 +1586,9 @@ export class AddTripComponent implements OnInit {
 
             this.tripData.tripPlanning.push(obj);
         }
-
+        console.log(this.tripData);
+        
         this.tripData.driverIDs = selectedDriverids;
-
         // this.spinner.show();
         this.errors = {};
         this.hasError = false;
