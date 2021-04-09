@@ -164,13 +164,13 @@
              <div class="card-body p-0">
             <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                <div class="form-row">
-                 <div class="form-group col-lg-12">
+                 <div class="col-lg-12">
                    <label class="control-label font-weight-bold">Group Name</label>
                    <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name">
                  </div>
                </div>
-               <div class="form-row">
-                  <div class="form-group col-lg-12">
+               <div class="form-row mt-2">
+                  <div class="col-lg-12">
                     <label class="control-label font-weight-bold">Group Members&nbsp;<span
                      class="text-1 optional-label-color">(optional)</span></label>
                     <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members, other users"
@@ -180,16 +180,12 @@
                  </ng-select>
                   </div>
                 </div>
-               <div class="form-row">
-                 <div class="form-group col-lg-12">
-                   <div class="row">
-                     <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
-                           class="text-1 optional-label-color">(optional)</span></label>
-                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
-                     </div>
-                   </div>
-                 </div>
+               <div class="form-row mt-2">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
+                     class="text-1 optional-label-color">(optional)</span></label>
+                  <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
+               </div>
                </div>
             </form>
           </div>
