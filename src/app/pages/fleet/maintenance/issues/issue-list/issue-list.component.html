@@ -6,7 +6,7 @@
             <header class="page-header">
                 <div class="row px-2" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2 pr-0 pl-0">
-                        <div class="input-group input-group-sm mb-3"> 
+                        <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
                                 <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
                             </ng-select>
@@ -82,7 +82,7 @@
                                             <th>Reported By</th>
                                             <th>Assigned To</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

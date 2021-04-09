@@ -161,7 +161,7 @@
                                             <th>Consignee</th>
                                             <th>Total Commodities</th>
                                             <th>Total Quantity</th>
-                                            <th width="10%">Action </th>
+                                            <th width="10%">Actions </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -236,12 +236,12 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Type</th>
-                                            <th>Driver Number</th>
-                                            <th>Fast ID</th>
-                                            <th>Travel Documents#</th>
+                                            <th>Driver#</th>
+                                            <th>Fast Card#</th>
+                                            <th>Documents#</th>
 
                                             <!-- <th>Address</th> -->
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -304,9 +304,9 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Truck on<b>{{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Vehicle on<b>{{tripNumber}}</b></h4>
                                 <div class=" pull-right">
-                                    <button class="btn btn-success btn-sm"> Set IIT Status</button>
+                                    <!-- <button class="btn btn-success btn-sm"> Set IIT Status</button> -->
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -320,14 +320,14 @@
                                             <th width="15%">Licence Plate</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-toggle="modal" data-target="#showTruckDetails"
                                         class="modal-with-form cursor-pointer">
                                             <td>{{truck.number}}</td>
-                                            <td>{{truck.type}}</td>
+                                            <td>{{vehicleTypeObects[truck.type]}}</td>
                                             <td>{{truck.vinNumber}}</td>
                                             <td>{{truck.dotNumber}}</td>
                                             <td><span
@@ -352,7 +352,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Trailers on <b>{{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Asset(s) on <b>{{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
                                         class="btn btn-success btn-sm mr-1"> Set IIT Status</a> -->
@@ -364,7 +364,7 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="10%">Trailer#</th>
+                                            <th width="10%">Asset#</th>
                                             <th width="10%">Type</th>
                                             <th width="15%">ACE ID</th>
                                             <th width="10%">Licence Province</th>
@@ -373,7 +373,7 @@
 
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -454,7 +454,7 @@
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Truck Insurance Details</h5>
+                <h5 class="modal-title">Vehicle Insurance Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
@@ -511,7 +511,7 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Shipment Type:</th>
-                                        <td>{{shipmentData.type}}</td>
+                                        <td>{{shipmentTypeObects[shipmentData.type]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Shipment Control Number:</th>
@@ -530,7 +530,7 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Shipper:</th>
+                                        <th width="40%" class="back-color-gray">Consignor:</th>
                                         <td>{{shipmentData.shipperName}}</td>
                                     </tr>
                                     <tr>
@@ -554,8 +554,8 @@
                               <table class="table table-bordered m-0">
                                   <tbody>
                                       <tr>
-                                          <th width="40%" class="back-color-gray">Type:</th>
-                                          <td>{{shipmentData.inBondDetails.type}}</td>
+                                          <th width="40%" class="back-color-gray">Entry Type:</th>
+                                          <td>{{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
                                       </tr>
                                       <tr>
                                           <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
@@ -574,7 +574,7 @@
                               <table class="table table-bordered m-0">
                                   <tbody>
                                       <tr>
-                                          <th width="40%" class="back-color-gray">US Destination:</th>
+                                          <th width="40%" class="back-color-gray">US In-bond Destination:</th>
                                           <td>{{shipmentData.inBondDetails.usDestination}}</td>
                                       </tr>
                                       <tr>
@@ -582,7 +582,7 @@
                                           <td>{{shipmentData.inBondDetails.irsNumber}}</td>
                                       </tr>
                                       <tr>
-                                          <th width="40%" class="back-color-gray">Estimated Departure Date:</th>
+                                          <th width="40%" class="back-color-gray">Est US Departure Date:</th>
                                           <td>{{shipmentData.inBondDetails.estimatedDepartureDate}}</td>
                                       </tr>
                                   </tbody>
@@ -606,7 +606,7 @@
                                 <tbody>
                                     <tr *ngFor="let thirdParty of shipmentData.thirdParties">
                                         <td>{{thirdParty.name}}</td>
-                                        <td>{{thirdParty.type}}</td>
+                                        <td>{{thirdPartyTypesObects[thirdParty.type]}}</td>
                                         <td>{{thirdParty.address.addressLine}},
                                             {{thirdParty.address.city}},{{stateCodeToName[thirdParty.address.stateProvince]}},{{thirdParty.address.postalCode}}
                                         </td>
@@ -623,37 +623,42 @@
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th> Commodity Description </th>
+                                        <th> Description </th>
                                         <th> Loaded On</th>
-                                        <th >Hazmat Details</th>
+                                        <th >Hazardous Details</th>
                                         <th>Other Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let commodity of shipmentData.commodities">
                                         <td><span
-                                                class="font-weight-semibold">Description:</span>{{commodity.description}}<br>
+                                                class="font-weight-semibold">Commodity:</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
                                                 *ngIf="commodity.value">Value:</span>{{commodity.value}}<br
                                                 *ngIf="commodity.value">
                                             <span class="font-weight-semibold">Quantity:</span>{{commodity.quantity}}
-                                            {{commodity.packagingUnit}} <br>
+                                            {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:</span> {{commodity.weight}}
-                                            {{commodity.weightUnit}}<br>
+                                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
+                                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
+                                            <br>
                                             <span class="font-weight-semibold">Country of Origin:</span>
-                                            {{commodity.countryOfOrigin}}
+                                            {{countryCodeName[commodity.countryOfOrigin]}}
                                         </td>
                                         <td><span
-                                                class="font-weight-semibold">Type:</span>{{commodity.loadedOn.type}}<br>
+                                                class="font-weight-semibold">Type:</span><span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
                                             <span
-                                                class="font-weight-semibold">Number</span>{{commodity.loadedOn.number}}
+                                                class="font-weight-semibold">
+                                                <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span> &nbsp;Name/Number:</span>{{commodity.loadedOn.number}}
                                         </td>
-                                        <td><span class="font-weight-semibold">UN
+                                        <td><span class="font-weight-semibold">Hazmat
                                                 Code:</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
                                                 Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                                                Number:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Contact
                                                 Email:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
                                         </td>
@@ -717,11 +722,11 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Fast CardNumber:</th>
+                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
                                         <td>{{driverData.fastCardNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship Country:</th>
+                                        <th width="40%" class="back-color-gray">Citizenship:</th>
                                         <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
                                     </tr>
                                     <tr>
@@ -773,7 +778,7 @@
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th>Document Number </th>
+                                        <th>Document# </th>
                                         <th>Issuing State/Province</th>
                                         <th>Document Type</th>
                                     </tr>
@@ -782,7 +787,7 @@
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
                                         <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
-                                        <td>{{travelDocument.type}}</td>
+                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -833,11 +838,11 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Fast CardNumber:</th>
+                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
                                         <td>{{passengerData.fastCardNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship Country:</th>
+                                        <th width="40%" class="back-color-gray">Citizenship:</th>
                                         <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
                                     </tr>
 
@@ -847,21 +852,24 @@
                     </div>
                     <!-- travel documents -->
                     <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Travel Documents Details</h4></div>
+                        <div class="col-lg-12"><h4>Documents Details</h4></div>
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th>Document Number </th>
-                                        <th>Issuing State/Province</th>
+                                        <th>Document# </th>
                                         <th>Document Type</th>
+                                        <th>Issuing Country</th>
+                                        <th>Issuing State</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
+                                        <td>{{documentsTypesObects[travelDocument.type]}}</td>
+                                        <td>{{countryCodeName[travelDocument.country]}}</td>
                                         <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
-                                        <td>{{travelDocument.type}}</td>
                                     </tr>
 
                                 </tbody>
