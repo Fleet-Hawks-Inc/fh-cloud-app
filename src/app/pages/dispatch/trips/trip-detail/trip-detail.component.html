@@ -1,14 +1,13 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pt-0 pl-0 pr-0">
-            <header class="page-header">
-                <div class="row" style="padding-top:9px;">
-                    
+            <header class="page-header pr-5">
+                <div class="row pr-1 mr-1" style="padding-top:9px;">
                     <div class="col-md-4 col-lg-4 text-dark">
-                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }}</span> <span class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
-                    </div>
-                    
-                    <div class="col-md-8 col-lg-8 text-right">
+                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }} </span> <span class="badge p-1 badge-dark mt-2 mb-0">{{ tripData.tripStatus }}</span>
+                     </div>
+
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
                         <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
                         <div class="btn-group flex-wrap mr-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -20,6 +19,7 @@
                             </div>
                         </div>
 
+                        <!-- <div class="btn-group flex-wrap mr-2">
                         <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">Actions<span class="caret"></span></button>
@@ -27,7 +27,7 @@
                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
-                         </div>
+                         </div> -->
 
                         <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i>
                             Trips List</a>
@@ -41,15 +41,14 @@
                     <div class="col-lg-12">
                         <div class="">
                             <div class="row pl-3 pr-3">
-                                <div class="col-xl-9 col-12 mb-3 boxshadow1 pl-0 pr-0">
+                                <div class="col-xl-9 col-12 mb-3 vehicle-common-box orderinfoheight pl-0 pr-0">
                                     <div class="widgetload">
                                         <div class="widgettbload">
-                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                                    class="fas fa-file-alt"></i> Order Information</h2>
+                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i class="fas fa-file-alt"></i> Order
+                                                Information</h2>
                                         </div>
                                         <div class="widgetlinfo">
-                                            <table
-                                                class="table table-bordered table-responsive-md table-sm">
+                                            <table class="table table-bordered table-responsive-md table-sm">
                                                 <thead>
                                                     <tr>
                                                         <th>Order#</th>
@@ -57,31 +56,33 @@
                                                         <th>Invoice#</th>
                                                         <th>Pick Up Location</th>
                                                         <th>Delivery Location</th>
-
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr *ngFor="let data of allFetchedOrders">
                                                         <td>{{ data.orderNumber }}</td>
-                                                        <td>Customer</td>
+                                                        <td>{{ customersObjects[data.customerID] }}</td>
                                                         <td>INV-67785<br>Amount: {{ data.charges.freightFee.currency }} {{ data.totalAmount }}</td>
                                                         <td>
-                                                            <div [innerHTML]="data.pickupLocations"></div>
+                                                            <span *ngFor="let pick of data.pickupLocations; let i=index;"> 
+                                                                <span class="font-weight-bold" > Pickup {{ i+1 }} </span><br> 
+                                                                {{ pick }}
+                                                                <br>
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            <div [innerHTML]="data.deliveryLocations"></div>
+                                                            <span *ngFor="let drop of data.deliveryLocations; let j=index;"> 
+                                                                <span class="font-weight-bold" > Delivery {{ j+1 }} </span><br> 
+                                                                {{ drop }}
+                                                                <br>
+                                                            </span>
                                                         </td>
                                                     </tr>
-                                                    <!-- <tr>
-                                                        <td>100 street, King Town, Canada</td>
-                                                        <td>1 Main street, King Town, Canada</td>
-                                                    </tr> -->
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-
 
                                 <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
                                     <div class="col-xl-12 col-12 mb-3">
@@ -101,7 +102,7 @@
                                                         <div class="col-lg-4"> <label
                                                                 class="control-label font-weight-semibold">Upload BOL/POD</label></div>
                                                         <div class="col-lg-8">
-                                                            <input type="file" class="p-0 form-control border-0 mb-2" name="UploadBol" (change)="selectDocuments($event)"></div>
+                                                        <input type="file" class="p-0 form-control border-0 mb-2" name="UploadBol" (change)="selectDocuments($event)"></div>
                                                     </div>
 
 
@@ -211,19 +212,19 @@
                                             </div>
                                             <ul class="wizard-steps">
                                                 <li class="">
-                                                    <a class="" href=""><span>P</span>Regina, SK S4W 0T4</a>
+                                                    <a class="" href="javascript:;"><span>P</span>Regina, SK S4W 0T4</a>
                                                 </li>
                                                 <li class="">
-                                                    <a class="" href=""><span>1</span>Brandon, MB S4W 0T4</a>
+                                                    <a class="" href="javascript:;"><span>1</span>Brandon, MB S4W 0T4</a>
                                                 </li>
                                                 <li class="">
-                                                    <a class="" href=""><span>2</span>Winnipeg, YT R3P 0N3</a>
+                                                    <a class="" href="javascript:;"><span>2</span>Winnipeg, YT R3P 0N3</a>
                                                 </li>
                                                 <li class="">
-                                                    <a class="" href=""><span>3</span>Winnipeg, YT R3P 0N3</a>
+                                                    <a class="" href="javascript:;"><span>3</span>Winnipeg, YT R3P 0N3</a>
                                                 </li>
                                                 <li class="">
-                                                    <a class="" href=""><span>D</span>Regina, SK S4W 0T4</a>
+                                                    <a class="" href="javascript:;"><span>D</span>Regina, SK S4W 0T4</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -369,8 +370,8 @@
                                                         <i class="fas fa-dollar-sign"></i> Expenses</h2>
                                                 </div>
                                                 <div class="col-lg-4 text-right mt-2">
-                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class="btn btn-xs btn-dark mr-2"> Fuel Expenses</a>
-                                                    <a href="javascript:;" routerLink="/fleet/expenses/fuel/list" class="btn btn-xs btn-dark"> Other
+                                                    <a href="javascript:;" routerLink="/fleet/fuel/list" class="btn btn-xs btn-dark mr-2"> Fuel Expenses</a>
+                                                    <a href="javascript:;" routerLink="/fleet/fuel/list" class="btn btn-xs btn-dark"> Other
                                                         Expenses</a>
                                                 </div>
                                             </div>
