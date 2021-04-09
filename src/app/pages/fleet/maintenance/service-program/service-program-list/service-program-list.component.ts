@@ -28,6 +28,7 @@ export class ServiceProgramListComponent implements  OnInit {
   serviceProgramPrevEvauatedKeys = [''];
   serviceProgramStartPoint = 1;
   serviceProgramEndPoint = this.pageLength;
+  suggestions = [];
 
   constructor(
       private apiService: ApiService,
@@ -96,6 +97,7 @@ export class ServiceProgramListComponent implements  OnInit {
 
   searchFilter() {
     if (this.programeName !== '') {
+      this.programeName = this.programeName.toLowerCase();
       this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
       this.fetchProgramsCount();
@@ -157,5 +159,24 @@ export class ServiceProgramListComponent implements  OnInit {
     this.serviceProgramStartPoint = 1;
     this.serviceProgramEndPoint = this.pageLength;
     this.serviceProgramDraw = 0;
+  }
+
+  getSuggestions(searchvalue='') {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
+      this.apiService.getData('servicePrograms/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = result.Items;
+        }
+      })
+    } 
+  }
+
+  setData(value) {
+    this.programeName = value.trim();
+    this.suggestions = [];
   }
 }
