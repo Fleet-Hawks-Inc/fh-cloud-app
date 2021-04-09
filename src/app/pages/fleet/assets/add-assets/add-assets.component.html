@@ -357,14 +357,20 @@
                           class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
                           the Inspection Form</label>
                         <div class="d-flex">
-                          <select [(ngModel)]="inspectionFormID" [ngModelOptions]="{standalone: true}"
+                          <select [(ngModel)]="assetsData.inspectionFormID" [ngModelOptions]="{standalone: true}"
                             class="form-control" placeHolder="Select Inspectin Form">
+                            <ng-template [ngIf]="inspectionForms" [ngIfElse]="noForm">
                             <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
                               {{iForm.inspectionFormName}}</option>
-                          </select>
+                        </ng-template>
+                        <ng-template #noForm>
+                          <option > No form added.</option>
+                        </ng-template>
+                      </select>
                           <a href="/compliance/dvir/inspection-add" target="_blank"
                             class="modal-with-form btn btn-success"><i class="fas fa-plus"></i></a>
                         </div>
+
                       </div>
                     </div>
                   </div>

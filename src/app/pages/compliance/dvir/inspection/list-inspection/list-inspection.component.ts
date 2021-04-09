@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from "ngx-spinner";
 
 
 @Component({
@@ -12,15 +11,14 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class ListInspectionComponent implements OnInit {
 public inspectionForms: any;
   constructor(private apiService: ApiService,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService) { }
+    private toastr: ToastrService,) { }
   
 
   ngOnInit() {
     this.fetchInspectionForms();
   }
   fetchInspectionForms = () => {
-    this.spinner.show()
+    
     this.apiService.getData('inspectionForms').subscribe({
       complete: () => {
       },
@@ -30,7 +28,6 @@ public inspectionForms: any;
         this.inspectionForms = result.Items;
       },
     });
-    this.spinner.hide();
   }
 
   deleteForm(id){

@@ -25,6 +25,7 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
+    inspectionFormID:'',
     assetIdentification: '',
     groupID: '',
     VIN: '',
@@ -82,7 +83,7 @@ export class AddAssetsComponent implements OnInit {
   manufacturers: any = [];
   models: any = [];
   groups = [];
-  inspectionFormID:string='';
+  
 
 
   response: any = '';
@@ -192,6 +193,7 @@ export class AddAssetsComponent implements OnInit {
    * Add new asset
    */
   addAsset() {
+    console.log(this.assetsData.inspectionFormID);
     this.hideErrors();
     console.log('data', this.assetsData)
     const data = {
@@ -200,7 +202,7 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.inspectionFormID,
+      inspectionFormID:this.assetsData.inspectionFormID,
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
