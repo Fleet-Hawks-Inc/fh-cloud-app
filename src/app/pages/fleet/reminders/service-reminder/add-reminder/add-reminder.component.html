@@ -99,15 +99,15 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <div class="row">
                                           <div class="col-lg-6">
-                                             <input [(ngModel)]="reminderData.reminderTasks.remindByDays" name="reminderTasks.remindByDays" type="number" min='1'
+                                             <input [(ngModel)]="time" name="time" type="number" min='1'
                                                 class="form-control">
                                           </div>
                                           <div class="col-lg-6 pl-0">
                                              <ng-select [(ngModel)]="timeType" name="timeType">
-                                                   <ng-option value="Day(s)">Day(s)</ng-option>
-                                                   <ng-option value="Week(s)">Week(s)</ng-option>
-                                                   <ng-option value="Month(s)">Month(s)</ng-option>
-                                                   <ng-option value="Year(s)">Year(s)</ng-option>
+                                                   <ng-option value="day">Day(s)</ng-option>
+                                                   <ng-option value="week">Week(s)</ng-option>
+                                                   <ng-option value="month">Month(s)</ng-option>
+                                                   <ng-option value="year">Year(s)</ng-option>
                                              </ng-select>
                                           </div>
                                        </div>
