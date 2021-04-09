@@ -8,6 +8,7 @@ declare var $: any;
 import * as moment from "moment";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,6 +17,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./my-document-list.component.css']
 })
 export class MyDocumentListComponent implements OnInit {
+  dataMessage: string = Constants.FETCHING_DATA;
   environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
@@ -50,7 +52,7 @@ export class MyDocumentListComponent implements OnInit {
     uploadedDocs: ''
   };
 
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   serviceUrl = '';
   filterValues = {
@@ -84,7 +86,7 @@ export class MyDocumentListComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.fetchDocuments();
+    this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
     this.initDataTable();
@@ -93,18 +95,32 @@ export class MyDocumentListComponent implements OnInit {
     });
   }
 
-  fetchDocuments = () => {
-    this.apiService.getData('documents?userType=user').subscribe({
-      complete: () => { },
-      error: () => { },
+  // fetchDocuments = () => {
+  //   this.apiService.getData('documents?userType=user').subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       let data = result.Items.filter(function(v){ 
+  //         if(v.categoryType == 'user'){return v;} 
+  //       })
+  //       this.totalRecords = data.length;
+  //     }
+  //   });
+  // };
+
+  fetchDocumentsCount() {
+    this.apiService.getData('documents/get/count?categoryType=user&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
-        let data = result.Items.filter(function(v){ 
-          if(v.categoryType == 'user'){return v;} 
-        })
-        this.totalRecords = data.length;
-      }
+        this.totalRecords = result.Count;
+
+        if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
+          this.docEndPoint = this.totalRecords;
+        }
+      },
     });
-  };
+  }
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
@@ -166,7 +182,7 @@ export class MyDocumentListComponent implements OnInit {
           this.spinner.hide();
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
-          this.fetchDocuments();
+          this.fetchDocumentsCount();
           this.initDataTable();
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
@@ -278,7 +294,7 @@ export class MyDocumentListComponent implements OnInit {
       this.apiService
       .getData(`documents/isDeleted/${docID}/${value}`)
       .subscribe((result: any) => {
-        this.fetchDocuments();
+        this.fetchDocumentsCount();
         this.initDataTable();
       });
     }
@@ -286,8 +302,14 @@ export class MyDocumentListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('documents/fetch/records?categoryType=user&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('documents/fetch/records?categoryType=user&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestions = [];
+        this.getStartandEndVal();
+
         this.documents = result['Items'];
         if (this.filterValues.docID !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
@@ -322,6 +344,9 @@ export class MyDocumentListComponent implements OnInit {
 
   searchFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       if(this.filterValues.startDate !== '') {
         let start = this.filterValues.startDate;
         this.filterValues.start = moment(start+' 00:00:01').format("X");
@@ -333,6 +358,7 @@ export class MyDocumentListComponent implements OnInit {
         this.filterValues.end = this.filterValues.end*1000;
       }
       this.pageLength = this.totalRecords;
+      this.fetchDocumentsCount();
       this.initDataTable();
     } else {
       return false;
@@ -341,7 +367,9 @@ export class MyDocumentListComponent implements OnInit {
 
   resetFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
-      // this.spinner.show();
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       this.filterValues = {
         docID: '',
         searchValue: '',
@@ -350,7 +378,7 @@ export class MyDocumentListComponent implements OnInit {
         start: <any> '',
         end: <any> ''
       };
-      this.fetchDocuments();
+      this.fetchDocumentsCount();
       this.initDataTable();
       this.resetCountResult();
     } else {
@@ -381,7 +409,7 @@ export class MyDocumentListComponent implements OnInit {
   }
 
   searchSelectedRoute(document) {
-    this.filterValues.docID = document.id;
+    // this.filterValues.docID = document.id;
     this.filterValues.searchValue = document.name;
     this.suggestions = [];
   }
@@ -395,7 +423,6 @@ export class MyDocumentListComponent implements OnInit {
   nextResults() {
     this.docDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
@@ -403,7 +430,6 @@ export class MyDocumentListComponent implements OnInit {
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
