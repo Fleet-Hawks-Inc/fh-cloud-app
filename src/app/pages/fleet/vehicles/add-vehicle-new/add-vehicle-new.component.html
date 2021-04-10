@@ -1,6 +1,6 @@
 <section class="body">
       <div class="inner-wrapper">
-      
+
       <section role="main" class="content-body pt-0 pr-0 pl-0">
 
          <header class="page-header">
@@ -562,7 +562,7 @@
                                         </div>
                                       </div>
                                     </div>
-          
+
                                   </div>
                                  </div>
                               </div>
@@ -1795,7 +1795,7 @@
                                                 </ng-select>
                                              </div>
                                           </div>
-   
+
                                        </div>
                                     </div>
                                     <div class="row">
@@ -1804,7 +1804,7 @@
                                              Date&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                           <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" name="purchase.purchaseDate"
                                              [(ngModel)]="purchase.purchaseDate">
-   
+
                                        </div>
                                     </div>
                                    <div class="row">
@@ -2207,15 +2207,15 @@
             <div class="card-body p-0">
                <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                   <div class="form-row">
-                     <div class="form-group col-lg-12">
+                     <div class="col-lg-12">
                         <label class="control-label font-weight-bold">Vehicle Group Name</label>
                         <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
                            placeholder="Enter vehicle group name">
                      </div>
                   </div>
-                  <div class="form-row">
-                     <div class="form-group col-lg-12">
-                        <label class="control-label font-weight-bold pt-2">Vehicle Group Members&nbsp;<span
+                  <div class="form-row mt-2">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold">Vehicle Group Members&nbsp;<span
                               class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
                            placeholder="Select vehicle group members" style="width: 100%;">
@@ -2225,23 +2225,18 @@
                         </ng-select>
                      </div>
                   </div>
-                  <div class="form-row">
-                     <div class="form-group col-lg-12">
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
-                                    class="text-1 optional-label-color">(optional)</span></label>
-                              <textarea [(ngModel)]="groupData.description" name="description" class="form-control"
-                                 rows="4" id="comment" placeholder="Enter description of the group"></textarea>
-                           </div>
-                        </div>
-                     </div>
+                  <div class="form-row mt-2">
+                    <div class="col-lg-12">
+                      <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
+                            class="text-1 optional-label-color">(optional)</span></label>
+                      <textarea [(ngModel)]="groupData.description" name="description" class="form-control"
+                         rows="4" id="comment" placeholder="Enter description of the group"></textarea>
+                   </div>
                   </div>
                </form>
             </div>
          </div>
          <div class="modal-footer text-right">
-
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
          </div>
