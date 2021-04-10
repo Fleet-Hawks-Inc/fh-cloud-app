@@ -132,6 +132,8 @@ export class AceDetailsComponent implements OnInit {
   vehicleTypeObects: any = {};
   shipmentTypeObects: any = {};
   inBondTypeObects: any = {};
+  foreignDestinationListObjects: any = {};
+  USportsListObjects: any = {};
   sendBorderConnectOption = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService,
               private httpClient: HttpClient, private toastr: ToastrService, private router: Router) { }
@@ -148,6 +150,23 @@ export class AceDetailsComponent implements OnInit {
     this.fetchVehicleType();
     this.fetchShipmentType();
     this.fetchInBondType();
+    this.fetchforeignDestinationList();
+    this.fetchUSportsList();
+  }
+  fetchforeignDestinationList(){
+    this.httpClient.get('assets/jsonFiles/ACEforeignPorts.json').subscribe((data: any) => {
+      this.foreignDestinationListObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+    }, {});
+    });
+  }
+
+  fetchUSportsList(){
+    this.httpClient.get('assets/USports.json').subscribe((data: any) => {
+      this.USportsListObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+    }, {});
+    });
   }
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
