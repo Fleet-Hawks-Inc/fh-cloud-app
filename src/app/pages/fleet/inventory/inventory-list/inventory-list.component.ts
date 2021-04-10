@@ -265,6 +265,9 @@ export class InventoryListComponent implements OnInit {
       .getData(`items/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.items = [];
+        this.inventoryDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchItemsCount();
         this.initDataTable();
         this.toastr.success('Inventory Item Deleted Successfully!');
@@ -301,6 +304,10 @@ export class InventoryListComponent implements OnInit {
         } else {
           this.inventoryNext = true;
           this.lastEvaluatedKey = '';
+          this.inventoryEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.inventoryEndPoint) {
           this.inventoryEndPoint = this.totalRecords;
         }
 
@@ -343,6 +350,10 @@ export class InventoryListComponent implements OnInit {
         } else {
           this.requiredInventoryNext = true;
           this.requiredLastEvaluatedKey = '';
+          this.requiredInventoryEndPoint = this.totalRecordsRequired;
+        }
+
+        if(this.totalRecordsRequired < this.requiredInventoryEndPoint) {
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
         }
 
@@ -480,7 +491,11 @@ export class InventoryListComponent implements OnInit {
         .deleteData(`requiredItems/${entryID}`)
         .subscribe((result: any) => {
           this.requiredItems = [];
-          this.fetchRequiredItems();
+          this.requiredInventoryDraw = 0;
+          this.requiredLastEvaluatedKey = '';
+          this.dataMessageReq = Constants.FETCHING_DATA;
+          this.fetchRequiredItemsCount();
+          this.initDataTableRequired();
           this.toastr.success('Required Item Deleted Successfully!');
         });
     }

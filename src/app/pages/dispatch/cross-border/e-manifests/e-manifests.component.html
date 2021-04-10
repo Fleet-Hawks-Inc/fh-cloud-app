@@ -172,7 +172,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngIf="ACEList.length == 0" class="text-center">
-                                       <td colspan="11">No records found</td>
+                                       <td colspan="11">{{ dataMessage }}</td>
                                     </tr>
                                     <tr *ngFor = "let aceManifest of ACEList;">
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
@@ -234,7 +234,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngIf="ACIList.length == 0" class="text-center">
-                                       <td colspan="11">No records found</td>
+                                       <td colspan="11">{{ dataMessageACI }}</td>
                                     </tr>
                                     <tr *ngFor = "let aciManifest of ACIList;">
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>

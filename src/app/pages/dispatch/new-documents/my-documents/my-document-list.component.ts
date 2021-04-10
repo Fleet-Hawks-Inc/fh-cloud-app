@@ -293,10 +293,16 @@ export class MyDocumentListComponent implements OnInit {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
       .getData(`documents/isDeleted/${docID}/${value}`)
-      .subscribe((result: any) => {
-        this.fetchDocumentsCount();
-        this.initDataTable();
-      });
+        .subscribe((result: any) => {
+
+          this.documents = [];
+          this.docDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+
+          this.fetchDocumentsCount();
+          this.initDataTable();
+        });
     }
   }
 
@@ -327,6 +333,10 @@ export class MyDocumentListComponent implements OnInit {
         } else {
           this.docNext = true;
           this.lastEvaluatedKey = '';
+          this.docEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.docEndPoint) {
           this.docEndPoint = this.totalRecords;
         }
 

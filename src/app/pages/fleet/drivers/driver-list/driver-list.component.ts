@@ -270,6 +270,7 @@ export class DriverListComponent implements OnInit {
           this.drivers = [];
           this.driverDraw = 0;
           this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
           this.fetchDriversCount();
           this.initDataTable();
           this.toastr.success('Driver is deactivated!');
@@ -306,6 +307,10 @@ export class DriverListComponent implements OnInit {
         } else {
           this.driverNext = true;
           this.lastEvaluatedKey = '';
+          this.driverEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.driverEndPoint) {
           this.driverEndPoint = this.totalRecords;
         }
 
