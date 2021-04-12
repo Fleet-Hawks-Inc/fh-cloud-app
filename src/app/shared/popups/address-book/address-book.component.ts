@@ -4012,6 +4012,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.customerID = '';
       }
       if(this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
+        this.filterVal.customerCompanyName = this.filterVal.customerCompanyName.toLowerCase();
+        this.filterVal.customerName = this.filterVal.customerName.toLowerCase();
         this.suggestedCustomers = [];
         this.suggestedCustomerCompanies = [];
         if(this.filterVal.customerID == '') {
@@ -4031,6 +4033,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.brokerID = '';
       }
       if(this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
+        this.filterVal.brokerCompanyName = this.filterVal.brokerCompanyName.toLowerCase();
+        this.filterVal.brokerName = this.filterVal.brokerName.toLowerCase();
         if(this.filterVal.brokerID == '') {
           this.filterVal.brokerID = this.filterVal.brokerName;
         }
@@ -4050,6 +4054,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.vendorID = '';
       }
       if(this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
+        this.filterVal.vendorCompanyName = this.filterVal.vendorCompanyName.toLowerCase();
+        this.filterVal.vendorName = this.filterVal.vendorName.toLowerCase();
         if(this.filterVal.vendorID == '') {
           this.filterVal.vendorID = this.filterVal.vendorName;
         }
@@ -4069,6 +4075,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.carrierID = '';
       }
       if(this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
+        this.filterVal.carrierCompanyName = this.filterVal.carrierCompanyName.toLowerCase();
+        this.filterVal.carrierName = this.filterVal.carrierName.toLowerCase();
         if(this.filterVal.carrierID == '') {
           this.filterVal.carrierID = this.filterVal.carrierName;
         }
@@ -4088,6 +4096,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.operatorID = '';
       }
       if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
+        this.filterVal.operatorCompanyName = this.filterVal.operatorCompanyName.toLowerCase();
+        this.filterVal.operatorName = this.filterVal.operatorName.toLowerCase();
         if(this.filterVal.operatorID == '') {
           this.filterVal.operatorID = this.filterVal.operatorName;
         }
@@ -4107,6 +4117,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.shipperID = '';
       }
       if(this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
+        this.filterVal.shipperCompanyName = this.filterVal.shipperCompanyName.toLowerCase();
+        this.filterVal.shipperName = this.filterVal.shipperName.toLowerCase();
         if(this.filterVal.shipperID == '') {
           this.filterVal.shipperID = this.filterVal.shipperName;
         }
@@ -4126,6 +4138,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.consigneeID = '';
       }
       if(this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
+        this.filterVal.receiverCompanyName = this.filterVal.receiverCompanyName.toLowerCase();
+        this.filterVal.consigneeName = this.filterVal.consigneeName.toLowerCase();
         if(this.filterVal.consigneeID == '') {
           this.filterVal.consigneeID = this.filterVal.consigneeName;
         }
@@ -4145,6 +4159,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.staffID = '';
       }
       if(this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
+        this.filterVal.staffCompanyName = this.filterVal.staffCompanyName.toLowerCase();
+        this.filterVal.staffName = this.filterVal.staffName.toLowerCase();
         if(this.filterVal.staffID == '') {
           this.filterVal.staffID = this.filterVal.staffName;
         }
@@ -4164,6 +4180,9 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.companyID = '';
       }
       if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
+        this.filterVal.factoringCompanyName = this.filterVal.factoringCompanyName.toLowerCase();
+        this.filterVal.fcompanyName = this.filterVal.fcompanyName.toLowerCase();
+
         if(this.filterVal.companyID == '') {
           this.filterVal.companyID = this.filterVal.fcompanyName;
         }

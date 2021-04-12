@@ -158,7 +158,8 @@ export class AddOrdersComponent implements OnInit {
       totalMiles: null, 
       calculateBy: 'manual'
     },
-    remarks: ''
+    remarks: '',
+    loc: ''
   };
   response: any = "";
   hasError: boolean = false;
@@ -224,7 +225,8 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
-            pu: ""
+            del:""
+            // pu: ""
           },
         ],
         minTemprature: "",
@@ -513,8 +515,8 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit ||
-        !currentCommodity.pu
+        !currentCommodity.weightUnit
+        // !currentCommodity.pu
 
       ) {
         commoditiesFilled = false;
@@ -610,8 +612,9 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit ||
-        !currentCommodity.pu
+        !currentCommodity.weightUnit
+        // !currentCommodity.del
+        // !currentCommodity.pu
       ) {
         commoditiesFilled = false;
       }
@@ -725,7 +728,8 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
-        pu: ""
+        del:""
+        // pu: ""
       },
     ];
 
@@ -893,7 +897,8 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
-        pu : ""
+        del:""
+        // pu : ""
       });
     }
   }
@@ -975,7 +980,22 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+    //for location search in listing page
+    let selectedLoc = '';
+    for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
+      const element = this.orderData.shippersReceiversInfo[g];
+      element.receivers.map((h:any) => {
+        let newloc = h.dropOffLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
 
+      element.shippers.map((h:any) => {
+        let newloc = h.pickupLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+    }
+    this.orderData['loc'] = selectedLoc;
+    
     // create form data instance
     const formData = new FormData();
 
@@ -1431,6 +1451,22 @@ export class AddOrdersComponent implements OnInit {
       if (receivers.length == 0) flag = false;
     }
 
+    //for location search in listing page
+    let selectedLoc = '';
+    for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
+      const element = this.orderData.shippersReceiversInfo[g];
+      element.receivers.map((h:any) => {
+        let newloc = h.dropOffLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+
+      element.shippers.map((h:any) => {
+        let newloc = h.pickupLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+    }
+    this.orderData['loc'] = selectedLoc;
+
     if (!flag) {
       this.toastr.error(
         "Please add atleast one Consignor and Consignee in shipments."
@@ -1541,7 +1577,8 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
-            pu : ""
+            del : ""
+            // pu : ""
           },
         ],
         minTemprature: "",
