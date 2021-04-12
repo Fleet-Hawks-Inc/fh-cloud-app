@@ -11,6 +11,7 @@ export const environment = {
  // BaseUrl: 'http://localhost:3000/api/v1/',
 
 
+
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
   temp: 'search',
   LoginUrl: 'users/login',

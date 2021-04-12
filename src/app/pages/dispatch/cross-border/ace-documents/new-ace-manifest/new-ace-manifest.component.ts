@@ -311,7 +311,9 @@ export class NewAceManifestComponent implements OnInit {
       this.form = $('#form_').validate();
     });
   }
-
+  shipmentLoadedFn(s,i){
+    this.shipments[s].commodities[i].loadedOn.number = '';
+  }
 
   fixCoDrivers(){
     if(this.mainDriver){

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-ace-details',
   templateUrl: './ace-details.component.html',
@@ -123,8 +123,20 @@ export class AceDetailsComponent implements OnInit {
     fastCardNumber:'',
     travelDocuments: [],
   };
+  documentTypeList: any = [];
+  documentsTypesObects: any = {};
+  packagingUnitsObects: any  = {};
+  packagingList: any = {};
+  thirdPartyTypesList: any  = {};
+  thirdPartyTypesObects: any  = {};
+  vehicleTypeObects: any = {};
+  shipmentTypeObects: any = {};
+  inBondTypeObects: any = {};
+  foreignDestinationListObjects: any = {};
+  USportsListObjects: any = {};
   sendBorderConnectOption = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService, private toastr: ToastrService, private router: Router) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService,
+              private httpClient: HttpClient, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
@@ -132,6 +144,29 @@ export class AceDetailsComponent implements OnInit {
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
     this.fetchStatesCodeName();
+    this.fetchDocuments();
+    this.fetchPackagingUnits();
+    this.fetchThirdPartyTypes();
+    this.fetchVehicleType();
+    this.fetchShipmentType();
+    this.fetchInBondType();
+    this.fetchforeignDestinationList();
+    this.fetchUSportsList();
+  }
+  fetchforeignDestinationList(){
+    this.httpClient.get('assets/jsonFiles/ACEforeignPorts.json').subscribe((data: any) => {
+      this.foreignDestinationListObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+    }, {});
+    });
+  }
+
+  fetchUSportsList(){
+    this.httpClient.get('assets/USports.json').subscribe((data: any) => {
+      this.USportsListObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+    }, {});
+    });
   }
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
@@ -143,9 +178,58 @@ export class AceDetailsComponent implements OnInit {
     this.assetTypeCode = result;
     });
   }
+  fetchDocuments() {
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
+      this.documentTypeList = data;
+
+      this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+      }, {});
+    });
+  }
+  fetchThirdPartyTypes() {
+    this.httpClient.get('assets/jsonFiles/ACEthirdPartyTypes.json').subscribe(data =>{
+      this.thirdPartyTypesList = data;
+
+      this.thirdPartyTypesObects = this.thirdPartyTypesList.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+      }, {});
+    });
+  }
+  fetchPackagingUnits() {
+    this.httpClient.get('assets/packagingUnit.json').subscribe(data =>{
+      this.packagingList = data;
+
+      this.packagingUnitsObects = this.packagingList.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+      }, {});
+    });
+  }
   fetchStatesCodeName() {
     this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
     this.stateCodeToName = result;
+    });
+  }
+  fetchVehicleType() {
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+    }, {});
+    });
+  }
+
+  fetchInBondType() {
+    this.httpClient.get('assets/jsonFiles/ACEinbond-types.json').subscribe((data: any) => {
+      this.inBondTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`longDescription`], a;
+    }, {});
+    });
+  }
+  fetchShipmentType() {
+    this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
+      this.shipmentTypeObects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
     });
   }
   fetchACEEntry() {
@@ -167,6 +251,7 @@ export class AceDetailsComponent implements OnInit {
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
         this.spinner.hide(); // loader hide
+        console.log('this.driver', result.drivers);
       });
   }
   setStatus(entryID, val) {
@@ -238,6 +323,7 @@ export class AceDetailsComponent implements OnInit {
       travelDocuments: driverDataFetched[0].travelDocuments,
       usAddress: driverDataFetched[0].usAddress
     };
+
   }
   showPassengerDetails(passengerID) {
     const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);

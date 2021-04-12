@@ -236,7 +236,7 @@ export class VehicleDetailComponent implements OnInit {
 
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
       this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
-        return a[b['code']] = b['name'], a;
+        return a[b[`code`]] = b[`name`], a;
     }, {});
     });
   }
@@ -267,7 +267,7 @@ export class VehicleDetailComponent implements OnInit {
       this.countriesList = result;
     });
   }
-  
+
   fetchVehicleModelList() {
     this.apiService
       .getData("vehicleModels/get/list")
