@@ -202,6 +202,9 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelList = [];
         this.fuelEntriesCount();
         this.initDataTable();
+        this.fuelDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
@@ -233,6 +236,10 @@ export class FuelEntryListComponent implements OnInit {
       } else {
         this.fuelNext = true;
         this.lastEvaluatedKey = '';
+        this.fuelEndPoint = this.totalRecords;
+      }
+
+      if(this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 

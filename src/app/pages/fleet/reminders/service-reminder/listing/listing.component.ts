@@ -199,6 +199,9 @@ export class ListingComponent implements OnInit {
         .getData(`reminders/isDeleted/${entryID}/` + 1)
         .subscribe((result: any) => {
           this.remindersData = [];
+          this.serviceDraw = 0;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastEvaluatedKey = '';
           this.getRemindersCount();
           this.initDataTable();
           this.toastr.success('Service Reminder Deleted Successfully!');
@@ -247,6 +250,10 @@ export class ListingComponent implements OnInit {
         } else {
           this.serviceNext = true;
           this.lastEvaluatedKey = '';
+          this.serviceEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.serviceEndPoint) {
           this.serviceEndPoint = this.totalRecords;
         }
 

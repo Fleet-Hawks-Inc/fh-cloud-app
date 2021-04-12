@@ -145,6 +145,9 @@ export class VehicleRenewListComponent implements OnInit {
         .getData(`reminders/isDeleted/${entryID}/` + 1)
         .subscribe((result: any) => {
           this.remindersData = [];
+          this.vehicleRenewDraw = 0;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastEvaluatedKey = '';
           this.getRemindersCount();
           this.initDataTable();
           this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
@@ -207,6 +210,10 @@ export class VehicleRenewListComponent implements OnInit {
         } else {
           this.vehicleRenewNext = true;
           this.lastEvaluatedKey = '';
+          this.vehicleRenewEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.vehicleRenewEndPoint) {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
 

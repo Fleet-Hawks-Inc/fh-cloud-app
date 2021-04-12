@@ -1000,6 +1000,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addCustomerModal').modal('hide');
+        this.customerDraw = 0;
+        this.lastEvaluatedKeyCustomer = '';
+        this.dataMessageCustomer = Constants.FETCHING_DATA;
+
         this.showMainModal();
         // this.customers = [];
         this.activeDiv = 'customerTable';
@@ -1219,6 +1223,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addOwnerOperatorModal').modal('hide');
+        this.ownerOperatorDraw = 0;
+        this.lastEvaluatedKeyOperator = '';
+        this.dataMessageOwner = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
@@ -1293,6 +1301,9 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addBrokerModal').modal('hide');
+        this.brokerDraw = 0;
+        this.lastEvaluatedKeyBroker = '';
+        this.dataMessageBroker = Constants.FETCHING_DATA;
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
@@ -1440,6 +1451,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addVendorModal').modal('hide');
+        this.vendorDraw = 0;
+        this.lastEvaluatedKeyVendor = '';
+        this.dataMessageVendor = Constants.FETCHING_DATA;
+        
         this.showMainModal();
         this.vendors = [];
         this.fetchVendorsCount();
@@ -1589,6 +1604,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addCarrierModal').modal('hide');
+        this.carrierDraw = 0;
+        this.lastEvaluatedKeyCarrier = '';
+        this.dataMessageCarrier = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.carriers = [];
         this.activeDiv = 'carrierTable';
@@ -1755,6 +1774,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addShipperModal').modal('hide');
+        this.shipperDraw = 0;
+        this.lastEvaluatedKeyShipper = '';
+        this.dataMessageConsignor = Constants.FETCHING_DATA;
+
         this.shippers = [];
         this.showMainModal();
         this.fetchShippersCount();
@@ -1904,6 +1927,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addConsigneeModal').modal('hide');
+        this.consigneeDraw = 0;
+        this.lastEvaluatedKeyConsignee = '';
+        this.dataMessageConsignee = Constants.FETCHING_DATA;
+
         this.receivers = [];
         this.showMainModal();
         this.fetchConsigneeCount();
@@ -2050,6 +2077,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addFCModal').modal('hide');
+        this.companyDraw = 0;
+        this.lastEvaluatedKeyCompany = '';
+        this.dataMessageFactoring = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.fcCompanies = [];
         this.fetchFcCompaniesCount();
@@ -2201,6 +2232,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addStaffModal').modal('hide');
+        this.staffDraw = 0;
+        this.lastEvaluatedKeyStaff = '';
+        this.dataMessageEmployee = Constants.FETCHING_DATA;
+
         this.staffs = [];
         this.fetchStaffsCount();
         this.showMainModal();
@@ -2566,7 +2601,7 @@ export class AddressBookComponent implements OnInit {
         this.staffs = [];
         this.fetchStaffsCount();
         this.initDataTableStaff();
-        this.toastr.success('Staff deleted successfully');
+        this.toastr.success('Employee deleted successfully');
       });
     }
   }
@@ -2592,7 +2627,7 @@ export class AddressBookComponent implements OnInit {
       this.apiService
       .getData(`ownerOperators/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
-        this.vendorDraw = 0;
+        this.ownerOperatorDraw = 0;
         this.lastEvaluatedKeyOperator = '';
         this.dataMessageOwner = Constants.FETCHING_DATA;
         this.ownerOperatorss = [];

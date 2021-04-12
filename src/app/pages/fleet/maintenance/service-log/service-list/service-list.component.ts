@@ -186,6 +186,10 @@ export class ServiceListComponent implements OnInit {
           this.serviceLogEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.serviceLogEndPoint) {
+          this.serviceLogEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.serviceLogDraw > 0) {
           this.serviceLogPrev = false;
@@ -231,6 +235,9 @@ export class ServiceListComponent implements OnInit {
       .getData(`serviceLogs/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.logs = [];
+        this.serviceLogDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchLogsCount();
         this.initDataTable();
         this.toastr.success('Service Log Deleted Successfully!');
