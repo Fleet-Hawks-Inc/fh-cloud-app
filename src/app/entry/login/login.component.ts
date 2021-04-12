@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   showSigupCode = true;
   signUpCode = '';
   error  = '';
+  fieldTextType: boolean;
 
   constructor(private apiService: ApiService,
               private router: Router,
@@ -32,8 +33,13 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
   LoginAction() {
     this.hasError = false;
+    
     const data = JSON.stringify({'userName': this.email ,
       'password': this.password });
     this.apiService.getJwt('auth', data).
@@ -78,6 +84,7 @@ export class LoginComponent implements OnInit {
   }
   /** Cognito user action */
   loginAction1 = async () => {
+    if((this.userName)&&(this.password)){
     try {
       // This should go in Register component
       // await Auth.signUp({
@@ -132,6 +139,12 @@ export class LoginComponent implements OnInit {
       this.hasError = true;
       this.Error = err.message || 'Error during login';
     }
+  }
+  else{
+    this.hasError = true;
+    this.Error='Username and Password is required'
+
+  }
 
   }
   submitConfirmationCode = async () => {
