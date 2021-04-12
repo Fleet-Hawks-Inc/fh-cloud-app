@@ -2382,7 +2382,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCustomersCount() {
-    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName).subscribe({
+    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2392,7 +2392,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchOwnerOperatorsCount() {
-    this.apiService.getData('ownerOperators/get/count?operator='+this.filterVal.operatorID+'&companyName='+this.filterVal.operatorCompanyName).subscribe({
+    this.apiService.getData('ownerOperators/get/count?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2402,7 +2402,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchBrokersCount() {
-    this.apiService.getData('brokers/get/count?broker='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName).subscribe({
+    this.apiService.getData('brokers/get/count?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2412,7 +2412,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchVendorsCount() {
-    this.apiService.getData('vendors/get/count?vendor='+this.filterVal.vendorID+'&companyName='+this.filterVal.vendorCompanyName).subscribe({
+    this.apiService.getData('vendors/get/count?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2422,7 +2422,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCarriersCount() {
-    this.apiService.getData('externalCarriers/get/count?info='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName).subscribe({
+    this.apiService.getData('externalCarriers/get/count?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2432,7 +2432,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchShippersCount() {
-    this.apiService.getData('shippers/get/count?shipper='+this.filterVal.shipperID+'&companyName='+this.filterVal.shipperCompanyName).subscribe({
+    this.apiService.getData('shippers/get/count?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2442,7 +2442,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchConsigneeCount() {
-    this.apiService.getData('receivers/get/count?consignee='+this.filterVal.consigneeID+'&companyName='+this.filterVal.receiverCompanyName).subscribe({
+    this.apiService.getData('receivers/get/count?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2452,7 +2452,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchStaffsCount() {
-    this.apiService.getData('staffs/get/count?staff='+this.filterVal.staffID+'&companyName='+this.filterVal.staffCompanyName).subscribe({
+    this.apiService.getData('staffs/get/count?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2462,7 +2462,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchFcCompaniesCount() {
-    this.apiService.getData('factoringCompanies/get/count?company='+this.filterVal.companyID+'&companyName='+this.filterVal.factoringCompanyName).subscribe({
+    this.apiService.getData('factoringCompanies/get/count?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -3255,7 +3255,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName+'&lastKey='+this.lastEvaluatedKeyCustomer)
+    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCustomer)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCustomer = Constants.NO_RECORDS_FOUND;
@@ -3300,7 +3300,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableBroker() {
     this.spinner.show();
-    this.apiService.getData('brokers/fetch/records?broker='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName+'&lastKey='+this.lastEvaluatedKeyBroker)
+    this.apiService.getData('brokers/fetch/records?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyBroker)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageBroker = Constants.NO_RECORDS_FOUND;
@@ -3344,7 +3344,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableVendor() {
     this.spinner.show();
-    this.apiService.getData('vendors/fetch/records?vendor='+this.filterVal.vendorID+'&companyName='+this.filterVal.vendorCompanyName+'&lastKey='+this.lastEvaluatedKeyVendor)
+    this.apiService.getData('vendors/fetch/records?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyVendor)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageVendor = Constants.NO_RECORDS_FOUND;
@@ -3388,7 +3388,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCarrier() {
     this.spinner.show();
-    this.apiService.getData('externalCarriers/fetch/records?info='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName+'&lastKey='+this.lastEvaluatedKeyCarrier)
+    this.apiService.getData('externalCarriers/fetch/records?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCarrier)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCarrier = Constants.NO_RECORDS_FOUND;
@@ -3432,7 +3432,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableOperator() {
     this.spinner.show();
-    this.apiService.getData('ownerOperators/fetch/records?operator='+this.filterVal.operatorID+'&companyName='+this.filterVal.operatorCompanyName+'&lastKey='+this.lastEvaluatedKeyOperator)
+    this.apiService.getData('ownerOperators/fetch/records?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyOperator)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageOwner = Constants.NO_RECORDS_FOUND;
@@ -3476,7 +3476,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableShipper() {
     this.spinner.show();
-    this.apiService.getData('shippers/fetch/records?shipper='+this.filterVal.shipperID+'&companyName='+this.filterVal.shipperCompanyName+'&lastKey='+this.lastEvaluatedKeyShipper)
+    this.apiService.getData('shippers/fetch/records?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignor = Constants.NO_RECORDS_FOUND;
@@ -3520,7 +3520,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableConsignee() {
     this.spinner.show();
-    this.apiService.getData('receivers/fetch/records?consignee='+this.filterVal.consigneeID+'&companyName='+this.filterVal.receiverCompanyName+'&lastKey='+this.lastEvaluatedKeyConsignee)
+    this.apiService.getData('receivers/fetch/records?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyConsignee)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignee = Constants.NO_RECORDS_FOUND;
@@ -3564,7 +3564,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableStaff() {
     this.spinner.show();
-    this.apiService.getData('staffs/fetch/records?staff='+this.filterVal.staffID+'&companyName='+this.filterVal.staffCompanyName+'&lastKey='+this.lastEvaluatedKeyStaff)
+    this.apiService.getData('staffs/fetch/records?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyStaff)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageEmployee = Constants.NO_RECORDS_FOUND;
@@ -3608,7 +3608,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCompany() {
     this.spinner.show();
-    this.apiService.getData('factoringCompanies/fetch/records?company='+this.filterVal.companyID+'&companyName='+this.filterVal.factoringCompanyName+'&lastKey='+this.lastEvaluatedKeyCompany)
+    this.apiService.getData('factoringCompanies/fetch/records?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCompany)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageFactoring = Constants.NO_RECORDS_FOUND;
