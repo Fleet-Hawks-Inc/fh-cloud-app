@@ -177,6 +177,10 @@ export class ListContactRenewComponent implements OnInit {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.contactRenewEndPoint) {
+          this.contactRenewEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.contactRenewDraw > 0) {
           this.contactRenewPrev = false;
@@ -221,9 +225,11 @@ export class ListContactRenewComponent implements OnInit {
       this.apiService
       .getData(`reminders/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
-
         this.remindersData = [];
-        this.getRemindersCount()
+        this.contactRenewDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.getRemindersCount();
         this.initDataTable();
         this.toastr.success('Contact Renewal Reminder Deleted Successfully!');
       });

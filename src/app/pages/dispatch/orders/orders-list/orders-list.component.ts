@@ -196,6 +196,10 @@ export class OrdersListComponent implements OnInit {
           this.ordersEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.ordersEndPoint) {
+          this.ordersEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.ordersDraw > 0) {
           this.ordersPrev = false;
@@ -230,7 +234,11 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.confirmOrdersNext = true;
           this.confirmLastEvaluatedKey = '';
-          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
+          this.confirmOrdersEndPoint = this.confirmOrdersEndPoint;
+        }
+
+        if(this.confirmOrdersEndPoint < this.ordersEndPoint) {
+          this.ordersEndPoint = this.confirmedOrdersCount;
         }
 
         // disable prev btn
@@ -271,6 +279,10 @@ export class OrdersListComponent implements OnInit {
           this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
         }
 
+        if(this.dispatchedOrdersCount < this.dispatchOrdersEndPoint) {
+          this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
+        }
+
         // disable prev btn
         if (this.dispatchOrdersDraw > 0) {
           this.dispatchOrdersPrev = false;
@@ -304,6 +316,10 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.deliverOrdersNext = true;
           this.deliverLastEvaluatedKey = '';
+          this.deliverOrdersEndPoint = this.deliveredOrdersCount;
+        }
+
+        if(this.deliveredOrdersCount < this.deliverOrdersEndPoint) {
           this.deliverOrdersEndPoint = this.deliveredOrdersCount;
         }
 
@@ -343,6 +359,10 @@ export class OrdersListComponent implements OnInit {
           this.cancelOrdersEndPoint = this.cancelledOrdersCount;
         }
 
+        if(this.cancelledOrdersCount < this.cancelOrdersEndPoint) {
+          this.cancelOrdersEndPoint = this.cancelledOrdersCount;
+        }
+
         // disable prev btn
         if (this.cancelOrdersDraw > 0) {
           this.cancelOrdersPrev = false;
@@ -379,6 +399,10 @@ export class OrdersListComponent implements OnInit {
           this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
         }
 
+        if(this.invoicedOrdersCount < this.invoiceOrdersEndPoint) {
+          this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
+        }
+
         // disable prev btn
         if (this.invoiceOrdersDraw > 0) {
           this.invoiceOrdersPrev = false;
@@ -412,6 +436,10 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.partialPaidOrdersNext = true;
           this.partialPaidLastEvaluatedKey = '';
+          this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
+        }
+
+        if(this.partiallyPaidOrdersCount < this.partialPaidOrdersEndPoint) {
           this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
         }
 

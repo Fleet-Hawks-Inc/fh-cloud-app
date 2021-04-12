@@ -480,6 +480,10 @@ export class TripListComponent implements OnInit {
           this.tripEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.tripEndPoint) {
+          this.tripEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.tripDraw > 0) {
           this.tripPrev = false;
@@ -515,6 +519,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripConfirmedNext = true;
           this.tripConfirmedlastEvaluatedKey = '';
+          this.tripConfirmedEndPoint = this.confirmedTripsCount;
+        }
+
+        if(this.confirmedTripsCount < this.tripConfirmedEndPoint) {
           this.tripConfirmedEndPoint = this.confirmedTripsCount;
         }
         
@@ -555,6 +563,10 @@ export class TripListComponent implements OnInit {
           this.tripDispatchedlastEvaluatedKey = '';
           this.tripDispatchedEndPoint = this.dispatchedTripsCount;
         }
+
+        if(this.dispatchedTripsCount < this.tripDispatchedEndPoint) {
+          this.tripDispatchedEndPoint = this.dispatchedTripsCount;
+        }
         
         // disable prev btn
         if (this.tripDispatchedDraw > 0) {
@@ -591,6 +603,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripStartedNext = true;
           this.tripStartedlastEvaluatedKey = '';
+          this.tripStartedEndPoint = this.startedTripsCount;
+        }
+
+        if(this.startedTripsCount < this.tripStartedEndPoint) {
           this.tripStartedEndPoint = this.startedTripsCount;
         }
         
@@ -631,6 +647,10 @@ export class TripListComponent implements OnInit {
           this.tripEnroutelastEvaluatedKey = '';
           this.tripEnrouteEndPoint = this.enrouteTripsCount;
         }
+
+        if(this.enrouteTripsCount < this.tripEnrouteEndPoint) {
+          this.tripEnrouteEndPoint = this.enrouteTripsCount;
+        }
         
         // disable prev btn
         if (this.tripEnrouteDraw > 0) {
@@ -669,6 +689,10 @@ export class TripListComponent implements OnInit {
           this.tripCancellastEvaluatedKey = '';
           this.tripCancelEndPoint = this.cancelledTripsCount;
         }
+
+        if(this.cancelledTripsCount < this.tripCancelEndPoint) {
+          this.tripCancelEndPoint = this.cancelledTripsCount;
+        }
         
         // disable prev btn
         if (this.tripCancelDraw > 0) {
@@ -705,6 +729,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripDeliverNext = true;
           this.tripDeliverlastEvaluatedKey = '';
+          this.tripDeliverEndPoint = this.deliveredTripsCount;
+        }
+
+        if(this.deliveredTripsCount < this.tripDeliverEndPoint) {
           this.tripDeliverEndPoint = this.deliveredTripsCount;
         }
         

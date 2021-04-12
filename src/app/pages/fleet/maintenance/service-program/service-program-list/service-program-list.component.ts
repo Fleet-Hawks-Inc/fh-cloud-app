@@ -83,6 +83,10 @@ export class ServiceProgramListComponent implements  OnInit {
           this.serviceProgramEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.serviceProgramEndPoint) {
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.serviceProgramDraw > 0) {
           this.serviceProgramPrev = false;
@@ -126,6 +130,9 @@ export class ServiceProgramListComponent implements  OnInit {
       .getData(`servicePrograms/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.programs = [];
+        this.serviceProgramDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchProgramsCount();
         this.initDataTable();
         this.toastr.success('Service Program Deleted Successfully!');

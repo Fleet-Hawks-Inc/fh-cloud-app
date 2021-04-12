@@ -300,6 +300,11 @@ export class CompanyDocumentsComponent implements OnInit {
       this.apiService
         .getData(`documents/isDeleted/${docID}/${value}`)
         .subscribe((result: any) => {
+          this.documents = [];
+          this.docDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+
           this.fetchDocuments();
           this.initDataTable();
         });
@@ -332,6 +337,10 @@ export class CompanyDocumentsComponent implements OnInit {
         } else {
           this.docNext = true;
           this.lastEvaluatedKey = '';
+          this.docEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.docEndPoint) {
           this.docEndPoint = this.totalRecords;
         }
 

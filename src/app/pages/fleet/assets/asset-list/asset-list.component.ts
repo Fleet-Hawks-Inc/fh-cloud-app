@@ -189,8 +189,11 @@ export class AssetListComponent implements OnInit {
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
         this.allData = [];
+        this.assetDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchAssetsCount();
-        // this.rerender();
+        this.initDataTable();
         this.toastr.success('Asset deleted successfully');
       });
     }
@@ -235,6 +238,10 @@ export class AssetListComponent implements OnInit {
         } else {
           this.assetNext = true;
           this.lastEvaluatedKey = '';
+          this.assetEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.assetEndPoint) {
           this.assetEndPoint = this.totalRecords;
         }
 

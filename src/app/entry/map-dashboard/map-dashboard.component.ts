@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HereMapService } from '../../services';
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { ApiService } from '../../services';
 declare var $: any;
 declare var H: any;
 
@@ -45,13 +46,15 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   center = { lat: 30.900965, lng: 75.857277 };
   marker;
-  constructor(private HereMap: HereMapService) { }
+  activeTrips = [];
+  constructor(private HereMap: HereMapService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.platform=this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
     this.searchLocation();
     this.showDriverData();
+    this.fetchActiveTrips();
 
     // Entire Fleet Tree initialization
     $(function () {
@@ -299,7 +302,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
           drivingCycle: '10D',
           vehicle: 'F 3650',
           trailer: '2356',
-          scheduleStatus: 'Late',
+          scheduleStatus: 'Late', 
           dispatchId: 'DIS-6140',
           loadCapacity: '1200 tonnes',
           speed: '40 mile/hr',
@@ -333,5 +336,16 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {}
+
+  fetchActiveTrips() {
+    this.apiService.getData('trips/get/active').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.activeTrips = result;
+        console.log('this.activeTrips', this.activeTrips);
+      },
+    });
+  }
 
 }

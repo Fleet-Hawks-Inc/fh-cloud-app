@@ -65,6 +65,8 @@ export class RouteListComponent implements OnInit {
         complete: () => {},
         error: () => {},
         next: (result: any) => {
+          this.routes = [];
+          this.dataMessage = Constants.FETCHING_DATA;
           this.routeDraw = 0;
           this.lastEvaluatedKey = '';
           this.fetchRoutes();
@@ -104,6 +106,10 @@ export class RouteListComponent implements OnInit {
         } else {
           this.routeNext = true;
           this.lastEvaluatedKey = '';
+          this.routeEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.routeEndPoint) {
           this.routeEndPoint = this.totalRecords;
         }
 

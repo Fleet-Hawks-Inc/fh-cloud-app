@@ -219,6 +219,10 @@ export class VehicleListComponent implements OnInit {
           this.vehicleEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.vehicleEndPoint) {
+          this.vehicleEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.vehicleDraw > 0) {
           this.vehiclePrev = false;
@@ -268,6 +272,9 @@ export class VehicleListComponent implements OnInit {
       .subscribe((result: any) => {
 
         this.vehicles = [];
+        this.vehicleDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
         this.fetchVehiclesCount();
         this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
