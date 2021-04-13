@@ -157,7 +157,7 @@
                                             <th>Shipment Number</th>
                                             <!-- <th>Entry Status</th> -->
                                             <th>Type</th>
-                                            <th>Shipper</th>
+                                            <th>Consignor</th>
                                             <th>Consignee</th>
                                             <th>Total Commodities</th>
                                             <th>Total Quantity</th>
@@ -313,11 +313,11 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="10%">Truck#</th>
+                                            <th width="10%">Vehicle Name</th>
                                             <th width="10%">Type</th>
                                             <th width="15%">VIN#</th>
                                             <th width="10%">DOT Number</th>
-                                            <th width="15%">Licence Plate</th>
+                                            <th width="15%">Licence Plate Number</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -334,7 +334,7 @@
                                                 *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td>IIT Status</td>
-                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}}&nbsp;</span></td>
+                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
@@ -364,13 +364,11 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="10%">Asset#</th>
+                                            <th width="10%">Asset Name</th>
                                             <th width="10%">Type</th>
                                             <th width="15%">ACE ID</th>
                                             <th width="10%">Licence Province</th>
-                                            <th width="15%">Licence Plate</th>
-
-
+                                            <th width="15%">Licence Plate Number</th>
                                             <th width="15%">IIT</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -389,7 +387,7 @@
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td>IIT Status</td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}&nbsp;</span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -632,21 +630,21 @@
                                 <tbody>
                                     <tr *ngFor="let commodity of shipmentData.commodities">
                                         <td><span
-                                                class="font-weight-semibold">Commodity:</span>{{commodity.description}}<br>
+                                                class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:</span>{{commodity.value}}<br
+                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}<br
                                                 *ngIf="commodity.value">
-                                            <span class="font-weight-semibold">Quantity:</span>{{commodity.quantity}}
+                                            <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
-                                            <span class="font-weight-semibold">Weight:</span> {{commodity.weight}}
+                                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
                                             <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
                                             <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
                                             <br>
-                                            <span class="font-weight-semibold">Country of Origin:</span>
+                                            <span class="font-weight-semibold">Country of Origin:&nbsp;</span>
                                             {{countryCodeName[commodity.countryOfOrigin]}}
                                         </td>
                                         <td><span
-                                                class="font-weight-semibold">Type:</span><span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                                class="font-weight-semibold">Type:&nbsp;</span><span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
                                                 <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span><br>
                                             <span
                                                 class="font-weight-semibold">
@@ -654,19 +652,19 @@
                                                 <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span> &nbsp;Name/Number:</span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">Hazmat
-                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
+                                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
+                                                Name:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Number:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                                                Number:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Contact
-                                                Email:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
+                                                Email:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactEmail}}</span>
                                         </td>
                                         <td><span
                                                 class="font-weight-semibold">C4LineReleaseNumber:</span>{{commodity.c4LineReleaseNumber}}<br>
                                             <span class="font-weight-semibold">Harmonized
-                                                Code:</span>{{commodity.harmonizedCode}}<br>
-                                            <span class="font-weight-semibold">Marks and Numbers:</span><span
+                                                Code:&nbsp;</span>{{commodity.harmonizedCode}}<br>
+                                            <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
                                                 *ngFor="let marks of commodity.marksAndNumbers">{{marks}},</span>
                                         </td>
                                     </tr>
@@ -861,7 +859,6 @@
                                         <th>Document Type</th>
                                         <th>Issuing Country</th>
                                         <th>Issuing State</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>

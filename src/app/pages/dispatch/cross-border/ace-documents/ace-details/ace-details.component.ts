@@ -251,7 +251,6 @@ export class AceDetailsComponent implements OnInit {
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
         this.spinner.hide(); // loader hide
-        console.log('this.driver', result.drivers);
       });
   }
   setStatus(entryID, val) {
