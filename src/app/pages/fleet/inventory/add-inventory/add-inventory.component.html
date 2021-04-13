@@ -32,7 +32,7 @@
                   <div class="row">
                     <div class="col-lg-10">
                       <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Part Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label >
+                        class="control-label font-weight-bold text-lg-right pt-2">Part#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label >
                       <input
                         type="text"
                         name="partNumber"
@@ -97,6 +97,7 @@
                         <div class="col-lg-6">
                           <input
                             type="number"
+                            min="0"
                             class="form-control"
                             name="cost"
                             [(ngModel)]="cost"
@@ -128,6 +129,7 @@
                       >
                       <input
                         type="number"
+                        min="0"
                         class="form-control"
                         name="quantity"
                         [(ngModel)]="quantity"
@@ -205,12 +207,14 @@
                             class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label
                           >
+                          
                         </div>
                         <div class="col-lg-4">
                           <label
                             class="control-label font-weight-bold text-lg-right pt-2"
                             >Row&nbsp; <span
-                            class="text-1 optional-label-color">(optional)</span></label
+                            class="text-1 optional-label-color">(optional)</span>
+                            </label
                           >
                         </div>
                         <div class="col-lg-4">
@@ -291,6 +295,7 @@
                         >
                         <input
                           type="number"
+                          min="0"
                           class="form-control"
                           name="trackingQuantity"
                           [(ngModel)]="trackingQuantity"
@@ -307,6 +312,7 @@
                         >
                         <input
                           type="number"
+                          min="0"
                           class="form-control"
                           name="reorderPoint"
                           [(ngModel)]="reorderPoint"
@@ -321,9 +327,10 @@
                         >
                         <input
                           type="number"
+                          min="0"
                           class="form-control"
                           name="reorderQuality"
-                          [(ngModel)]="reorderQuality"
+                          [(ngModel)]="reorderQualiity"
                           placeholder="Reorder quantity"
                         />
                       </div>
@@ -341,6 +348,7 @@
                         >
                         <input
                           type="number"
+                          min="0"
                           class="form-control"
                           name="leadTime"
                           [(ngModel)]="leadTime"
@@ -405,6 +413,7 @@
                           >
                           <input
                             type="number"
+                            min="0"
                             class="form-control"
                             name="days"
                             [(ngModel)]="days"
@@ -419,6 +428,7 @@
                           >
                           <input
                             type="number"
+                            min="0"
                             class="form-control"
                             name="time"
                             [(ngModel)]="time"

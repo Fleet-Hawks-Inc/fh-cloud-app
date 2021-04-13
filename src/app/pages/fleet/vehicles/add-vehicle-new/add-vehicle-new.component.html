@@ -55,7 +55,7 @@
                                     <div class="row">
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
-                                             Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                             Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                              <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                 data-placement="top" title="Name or Number for Vehicle."></i>
                                           </label>
@@ -74,7 +74,8 @@
                                        <div class="col-lg-10">
 
                                           <label class="control-label font-weight-bold text-lg-right pt-2">VIN<span
-                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                                data-placement="top" title="Vehicle Identification Number."></i></label>
                                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
                                              placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705">
                                        </div>
@@ -609,7 +610,7 @@
                                                 title="Odometer reading on in-service date."></i></label>
 
                                           <input type="number" class="form-control" name="lifeCycle.inServiceOdometer"
-                                             min="1" [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500">
+                                             min="0" [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500">
                                        </div>
                                     </div>
                                  </div>
@@ -631,7 +632,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input type="number" class="form-control"
-                                             name="lifeCycle.estimatedServiceYears" min="1"
+                                             name="lifeCycle.estimatedServiceYears" min="0"
                                              [(ngModel)]="lifeCycle.estimatedServiceYears"
                                              placeholder="eg. 5,10,20 years etc.">
                                        </div>
@@ -644,7 +645,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input type="number" class="form-control"
-                                             name="lifeCycle.estimatedServiceMonths" min="1"
+                                             name="lifeCycle.estimatedServiceMonths" min="0"
                                              [(ngModel)]="lifeCycle.estimatedServiceMonths"
                                              placeholder="eg. 10,20,30 etc.">
                                        </div>
@@ -661,7 +662,7 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input type="text" class="form-control" name="lifeCycle.estimatedResaleValue"
-                                             min="1" [(ngModel)]="lifeCycle.estimatedResaleValue"
+                                             min="0" [(ngModel)]="lifeCycle.estimatedResaleValue"
                                              placeholder="eg. 4500 CAD">
                                        </div>
                                     </div>
@@ -676,7 +677,7 @@
                                                 title="Estimated service life in miles - Miles vehicle is expected to run before retiring from fleet service."></i>&nbsp;
                                              <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" min="1"
+                                          <input type="number" class="form-control" min="0"
                                              name="lifeCycle.estimatedServiceMiles"
                                              [(ngModel)]="lifeCycle.estimatedServiceMiles" placeholder="eg. 100000">
                                        </div>
@@ -715,7 +716,7 @@
                                                 title="Final odometer reading on out-of-service date"></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" min="1"
+                                          <input type="number" class="form-control" min="0"
                                              name="lifeCycle.outOfServiceOdometer"
                                              [(ngModel)]="lifeCycle.outOfServiceOdometer" placeholder="eg. 200000">
                                        </div>
@@ -741,7 +742,7 @@
 
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" min="1" class="form-control"
+                                                <input type="number" min="0" class="form-control"
                                                    name="specifications.height" [(ngModel)]="specifications.height">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -885,7 +886,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" min="1"
+                                                <input type="number" class="form-control" min="0"
                                                    name="specifications..groundClearnce"
                                                    [(ngModel)]="specifications.groundClearnce">
                                              </div>
@@ -894,8 +895,6 @@
                                                    name="specifications..groundClearnceUnit"
                                                    [(ngModel)]="specifications.groundClearnceUnit">
                                                    <ng-option value="Feet">Feet</ng-option>
-                                                   <ng-option value="Centimeters">Centimeters</ng-option>
-                                                   <ng-option value="Inches">Inches</ng-option>
                                                    <ng-option value="Meter">Meter</ng-option>
                                                 </ng-select>
                                              </div>
@@ -1057,7 +1056,7 @@
                                              Issue&nbsp;
 
                                              <span class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" class="form-control" name="insurance.dateOfIssue"
+                                          <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker" class="form-control" Placeholder ="yyyy/mm/dd" name="insurance.dateOfIssue"
                                              [(ngModel)]="insurance.dateOfIssue">
                                        </div>
                                        <div class="col-lg-5">
@@ -1069,7 +1068,7 @@
                                           <div class="row">
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control" name="insurance.premiumAmount"
-                                                   min="1" [(ngModel)]="insurance.premiumAmount"
+                                                   min="0" [(ngModel)]="insurance.premiumAmount"
                                                    placeholder="eg. 100,200 etc.">
                                              </div>
                                              <div class="col-lg-6">
@@ -1114,7 +1113,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                              Expiry&nbsp;
                                              <span class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control" name="insurance.dateOfExpiry"
+                                          <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker" class="form-control"  Placeholder ="yyyy/mm/dd" name="insurance.dateOfExpiry"
                                              [(ngModel)]="insurance.dateOfExpiry">
                                        </div>
                                        <div class="col-lg-5">
@@ -1125,7 +1124,7 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" name="insurance.reminder" min="1"
+                                                <input type="number" class="form-control" name="insurance.reminder" min="0"
                                                    [(ngModel)]="insurance.reminder">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -1158,7 +1157,7 @@
                                           <div class="row">
                                              <div class="col-lg-6">
 
-                                                <input type="number" class="form-control" name="insurance.amount" min="1"
+                                                <input type="number" class="form-control" name="insurance.amount" min="0"
                                                    [(ngModel)]="insurance.amount" placeholder="eg. 45000.50000 etc.">
                                              </div>
                                              <div class="col-lg-6">
@@ -1224,7 +1223,7 @@
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control"
                                                    name="fluid.fuelTankOneCapacity"
-                                                   min="1"
+                                                   min="0"
                                                    [(ngModel)]="fluid.fuelTankOneCapacity"
                                                    placeholder="eg. 100,200 etc.">
                                              </div>
@@ -1248,7 +1247,7 @@
                                           <div class="row">
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control"
-                                                   name="fluid.fuelTankTwoCapacity" min="1"
+                                                   name="fluid.fuelTankTwoCapacity" min="0"
                                                    [(ngModel)]="fluid.fuelTankTwoCapacity"
                                                    placeholder="eg. 100,200 etc.">
                                              </div>
@@ -1278,7 +1277,7 @@
                                              Capacity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" name="fluid.oilCapacity" min="1"
+                                                <input type="number" class="form-control" name="fluid.oilCapacity" min="0"
                                                    [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200 etc.">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -1303,7 +1302,7 @@
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" class="form-control" name="fluid.def" min="1"
+                                                <input type="number" class="form-control" name="fluid.def" min="0"
                                                    [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc.">
                                              </div>
                                              <div class="col-lg-6 pl-0">
@@ -1340,7 +1339,7 @@
                                                 data-placement="top" title="Number of tires"></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
                                           <input type="number" class="form-control" name="wheelsAndTyres.numberOfTyres"
-                                             min="1" [(ngModel)]="wheelsAndTyres.numberOfTyres"
+                                             min="0" [(ngModel)]="wheelsAndTyres.numberOfTyres"
                                              placeholder="eg. 16,18 etc.">
                                        </div>
                                        <!-- <div class="col-lg-5">
@@ -1586,7 +1585,7 @@
                                                 title="Number of cylinders in the engine."></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" name="engine.cylinders" min="1"
+                                          <input type="number" class="form-control" name="engine.cylinders" min="0"
                                              [(ngModel)]="engine.cylinders" placeholder="eg. 4,8 etc.">
                                        </div>
                                        <div class="col-lg-5">
@@ -1597,7 +1596,7 @@
                                                 title="Piston distance during combustion cycle."></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" name="engine.stroke" min="1"
+                                          <input type="number" class="form-control" name="engine.stroke" min="0"
                                              [(ngModel)]="engine.stroke" placeholder="eg. 3.45">
                                        </div>
                                        <div class="col-lg-5">
@@ -1608,7 +1607,7 @@
                                                 title="Total number of valves in the engine."></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" name="engine.valves" min="1"
+                                          <input type="number" class="form-control" name="engine.valves" min="0"
                                              [(ngModel)]="engine.valves" placeholder="eg. 14,16 etc">
                                        </div>
                                        <!-- <div class="col-lg-5">
@@ -1734,7 +1733,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input type="number" class="form-control" name="engine.transmissionGears"
-                                             min="1" [(ngModel)]="engine.transmissionGears" placeholder="eg. 4,6 etc.">
+                                             min="0" [(ngModel)]="engine.transmissionGears" placeholder="eg. 4,6 etc.">
                                        </div>
                                     </div>
                                  </div>
@@ -1780,7 +1779,7 @@
                                           <div class="row">
                                              <div class="col-lg-6">
                                                 <input class="form-control" name="purchase.purchasePrice" type="number"
-                                                   min="1" [(ngModel)]="purchase.purchasePrice"
+                                                   min="0" [(ngModel)]="purchase.purchasePrice"
                                                    placeholder="Enter purchase price">
                                              </div>
                                              <div class="col-lg-6">
@@ -1802,7 +1801,7 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Purchase
                                              Date&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" name="purchase.purchaseDate"
+                                          <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker" class="form-control" Placeholder="yyyy/mm/dd" name="purchase.purchaseDate"
                                              [(ngModel)]="purchase.purchaseDate">
 
                                        </div>
@@ -1813,7 +1812,7 @@
                                           Odometer&nbsp; <span
                                              class="text-1 optional-label-color">(optional)</span></label>
                                        <input type="number" class="form-control" name="purchase.purchaseOdometer"
-                                          min="1" [(ngModel)]="purchase.purchaseOdometer"
+                                          min="0" [(ngModel)]="purchase.purchaseOdometer"
                                           placeholder="Enter purchase odometer">
                                     </div>
                                    </div>
@@ -1824,7 +1823,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
                                              Expiration Date&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control" name="purchase.warrantyExpirationDate"
+                                          <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" class="form-control"  Placeholder="yyyy/mm/dd" name="purchase.warrantyExpirationDate"
                                              [(ngModel)]="purchase.warrantyExpirationDate">
                                        </div>
                                        <div class="col-lg-3">
@@ -1843,7 +1842,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Warranty
                                              Expiration Meter&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="1"
+                                          <input type="number" class="form-control" name="purchase.warrantyExpirationMeter" min="0"
                                              [(ngModel)]="purchase.warrantyExpirationMeter" placeholder="Expiration Meter">
                                        </div>
                                     </div>
@@ -1895,7 +1894,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" min="1" class="form-control"
+                                                <input type="number" min="0" class="form-control"
                                                    name="loan.amountOfLoan" [(ngModel)]="loan.amountOfLoan"
                                                    placeholder="Enter loan amount">
                                              </div>
@@ -1924,7 +1923,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Annual
                                              % Rate&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input type="number" min="1" class="form-control"
+                                          <input type="number" min="0" class="form-control"
                                              name="loan.annualPercentageRate" [(ngModel)]="loan.annualPercentageRate"
                                              placeholder="eg. 2,3 etc.">
                                        </div>
@@ -1934,7 +1933,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" min="1" class="form-control"
+                                                <input type="number" min="0" class="form-control"
                                                    name="loan.downPayment" [(ngModel)]="loan.downPayment"
                                                    placeholder="Enter down payment">
                                              </div>
@@ -1953,7 +1952,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                                              Loan&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d8.toggle()" ngbDatepicker #d8="ngbDatepicker" class="form-control" name="loan.dateOfLoan"
+                                          <input (click)="d8.toggle()" ngbDatepicker #d8="ngbDatepicker" class="form-control"  Placeholder="yyyy/mm/dd" name="loan.dateOfLoan"
                                              [(ngModel)]="loan.dateOfLoan">
                                        </div>
                                        <!-- <div class="col-lg-5">
@@ -1972,7 +1971,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Loan End
                                              Date&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input (click)="d9.toggle()" ngbDatepicker #d9 ="ngbDatepicker" class="form-control" name="loan.loadEndDate"
+                                          <input (click)="d9.toggle()" ngbDatepicker #d9 ="ngbDatepicker" class="form-control" Placeholder="yyyy/mm/dd" name="loan.loadEndDate"
                                              [(ngModel)]="loan.loadEndDate">
                                        </div>
                                     </div>
@@ -1983,7 +1982,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Number of
                                              Payments&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
-                                          <input type="number" min="1" class="form-control" name="loan.numberOfPayments"
+                                          <input type="number" min="0" class="form-control" name="loan.numberOfPayments"
                                              [(ngModel)]="loan.numberOfPayments"
                                              placeholder="Enter total loan payments eg. 10,20">
                                        </div>
@@ -1993,7 +1992,7 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
                                           <div class="row">
                                              <div class="col-lg-6">
-                                                <input type="number" min="1" class="form-control"
+                                                <input type="number" min="0" class="form-control"
                                                    name="loan.monthlyPayment" [(ngModel)]="loan.monthlyPayment"
                                                    placeholder="Enter monthly payment">
                                              </div>

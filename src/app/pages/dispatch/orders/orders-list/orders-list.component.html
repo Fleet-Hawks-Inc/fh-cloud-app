@@ -20,13 +20,13 @@
                                     </span>
                                 </span>
                                 <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    placeholder="YYYY-MM-DD" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    placeholder="YYYY-MM-DD" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                     <a class="dropdown-item text-1" href="javascript:;"
                                         (click)="selectCategory('Vehicle')">Vehicle</a>
                                     <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Trailer')">Trailer</a>
+                                        (click)="selectCategory('Trailer')">Asset</a>
                                     <a class="dropdown-item text-1" href="javascript:;"
                                         (click)="selectCategory('Vendor')">Vendor</a>
                                     <a class="dropdown-item text-1" href="javascript:;"
@@ -124,11 +124,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0" >
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -197,11 +197,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -270,11 +270,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -343,11 +343,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -416,11 +416,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -489,11 +489,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
@@ -562,11 +562,11 @@
                             <table class="row-border hover table table-bordered table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Order</th>
+                                        <th>Order#</th>
                                         <th>Type</th>
                                         <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
+                                        <th>Pickup Location</th>
+                                        <th>Drop Off Location</th>
                                         <th>Commodity</th>
                                         <th>Amount</th>
                                         <th>Status</th>
