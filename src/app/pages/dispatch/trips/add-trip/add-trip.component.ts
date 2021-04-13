@@ -339,7 +339,9 @@ export class AddTripComponent implements OnInit {
 
         if(locations.length > 0) {
             // this.getCoords(locations);
-            this.resetMap();
+            // this.resetMap();
+            this.actualMiles = 0;
+            this.getMiles();
         }
 
         if (this.trips.length > 0) {
@@ -1019,7 +1021,7 @@ export class AddTripComponent implements OnInit {
 
         delete this.tripData.reeferTemperatureUnit;
         this.tripData.orderId = this.OrderIDs;
-        this.tripData.tripPlanning = [];
+        this.tripData.tripPlanning = []; 
         let planData = this.trips
 
         if (planData.length == 0) {
