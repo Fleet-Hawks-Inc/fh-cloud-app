@@ -29,7 +29,7 @@ describe(" reminders tests", () => {
     cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
     cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click({ force: true });
     cy.get('.col-10 > .btn-success').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
   /* === Test Created with Cypress Studio === */
   it('search and reset the reminder', function () {

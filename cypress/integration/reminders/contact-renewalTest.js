@@ -31,7 +31,7 @@ describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
   it('Search and reset the reminder', function () {
-    /* ==== Generated with Cypress Studio ==== */
+    
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -42,7 +42,7 @@ describe(" reminders tests", () => {
     cy.get('.wtopnav > .nav > :nth-child(3) > .nav-link').click();
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
-    //cy.get('#a6a9d792ba53-0').click();
+
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tyres renewal{enter}');
     //cy.get('#a3df10f1d2e2-0 > .ng-option-label').click();
