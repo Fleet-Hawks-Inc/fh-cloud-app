@@ -46,10 +46,12 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
-                                                    Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    Order# <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
+
                                                     [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234" autocomplete="off">
+
                                             </div>
                                         </div>
 
@@ -133,15 +135,15 @@
                                                     <!-- <th>Date</th> -->
                                                     <!-- <th>Time</th> -->
                                                     <th>Pickup Time</th>
-                                                    <th>Drop Time</th>
+                                                    <th>Drop Off Time</th>
                                                     <th>Actual Pickup Time</th>
-                                                    <th>Actual Drop Time</th>
+                                                    <th>Actual Drop Off Time</th>
                                                     <th>Name</th>
                                                     <th>Location</th>
                                                     <th>Loaded/ Empty</th>
                                                     <th>Miles</th>
                                                     <th>Vehicle</th>
-                                                    <th>Assets</th>
+                                                    <th>Asset</th>
                                                     <th>Driver</th>
                                                     <th>Co- Driver</th>
                                                     <th>Carrier</th>
@@ -595,8 +597,8 @@
                                                                 <th></th>
                                                                 <th class="text-2">Order#</th>
                                                                 <th class="text-2">Customer</th>
-                                                                <th class="text-2">P/L</th>
-                                                                <th class="text-2">D/L</th>
+                                                                <th class="text-2">Pickup Location</th>
+                                                                <th class="text-2">Drop Off Location</th>
                                                                 <th class="text-2">Total Amount</th>
                                                             </tr>
                                                         </thead>
@@ -637,11 +639,11 @@
                                                 <thead>
                                                     <tr class="">
                                                         <th><input type="checkbox" name="checkUncheckltl"
-                                                                (change)="checkUncheckAll('ltl')"></th>
+                                                            (change)="checkUncheckAll('ltl')"></th>
                                                         <th class="text-2">Order#</th>
                                                         <th class="text-2">Customer</th>
-                                                        <th class="text-2">P/L</th>
-                                                        <th class="text-2">D/L</th>
+                                                        <th class="text-2">Pickup Location</th>
+                                                        <th class="text-2">Drop Off Location</th>
                                                         <th class="text-2">Total Amount</th>
                                                     </tr>
                                                 </thead>
@@ -708,7 +710,7 @@
                         <thead>
                             <tr>
                                 <th width="25%">Vehicle</th>
-                                <th width="25%">Assets</th>
+                                <th width="25%">Asset</th>
                                 <th width="25%">Driver</th>
                                 <th>Co-Driver</th>
                             </tr>

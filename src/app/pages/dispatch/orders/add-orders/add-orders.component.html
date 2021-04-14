@@ -194,7 +194,7 @@
                                                    {{address.cityName}}</label>
                                              </div>
                                              <div class="col-lg-6">
-                                                <label class="control-label text-lg-right"><span class=" font-weight-bold">State:</span>
+                                                <label class="control-label text-lg-right"><span class=" font-weight-bold">Province:</span>
                                                    {{address.stateName}}</label>
                                              </div>
                                              <div class="col-lg-6">
@@ -238,8 +238,8 @@
                      <div class="col-lg-5 offset-lg-1">
                         <div class="row">
                            <div class="col-lg-10">
-                              <label class="control-label font-weight-bold labelmt text-3 text-dark">Order
-                                 Number
+                              <label class="control-label font-weight-bold labelmt text-3 text-dark">Order#
+                                 
                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               </label>
 
@@ -969,6 +969,7 @@
                                                                      for="inputDefault">DEL#
 
                                                                      <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+
                                                                   </label>
    
                                                                   <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{z}}"
@@ -1146,7 +1147,7 @@
                                     [(ngModel)]="orderData.additionalDetails.dropTrailer" name="dropTrailer"
                                     type="checkbox" id="droptrailer">
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                    for="droptrailer">Drop Trailer</label>
+                                    for="droptrailer">Drop Asset</label>
                               </div>
 
                            </div>
@@ -1159,7 +1160,7 @@
                            
                            <div class="col-lg-8 offset-lg-2">
                               <label class="control-label font-weight-bold text-3 text-dark"
-                                 for="inputDefault">Trailer Type</label>
+                                 for="inputDefault">Asset Type</label>
 
                               <ng-select placeholder="eg. Reefer" [(ngModel)]="orderData.additionalDetails.trailerType" name="trailerType"
                                  class="form-control populate">
@@ -1223,7 +1224,7 @@
                         <!--Tempratures-->
                         <div class="row mt-2" *ngIf="orderData.additionalDetails.loadType.reefer">
                            <div class="col-lg-10 offset-lg-2">
-                              <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temprature</label>
+                              <label class="control-label font-weight-bold text-3 text-dark" for="inputDefault">Temperature</label>
                            </div>
                            <div class="col-lg-4 offset-lg-2">
                               <input
@@ -1314,7 +1315,7 @@
                                  <label class="btn btn-outline btn-miles milesCommon" id="manual"
                                     [class.active]="orderData.milesInfo.calculateBy === 'manual'" (click)="getMiles('manual')">
                                     <input type="radio" [(ngModel)]="orderData.milesInfo.calculateBy" name="calculateBy"
-                                       hidden value="manual"> manual </label>
+                                       hidden value="manual"> Manual </label>
                                  </div>
                                  
 
@@ -1393,7 +1394,7 @@
                               <div class="input-group mb-3">
                                  <input [(ngModel)]="orderData.charges.freightFee.amount" name="freight_amount"
 
-                                    (blur)="calculateAmount()"  #freightAmt="ngModel" required freightAmt type="number" class="form-control" placeholder="0.00">
+                                    (blur)="calculateAmount()"  #freightAmt="ngModel" required freightAmt type="number" min="0" class="form-control" placeholder="0.00">
                                  <span class="text-danger"
                                     *ngIf="isSubmit &&  !orderData.charges.freightFee.amount">
                                     This Field is required
@@ -1439,7 +1440,7 @@
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
                                  <input [(ngModel)]="orderData.charges.fuelSurcharge.amount" name="fuel_amount"
-                                    (blur)="calculateAmount()" type="number" class="form-control" placeholder="0.00">
+                                    (blur)="calculateAmount()" type="number" min="0"  class="form-control" placeholder="0.00">
                               </div>
                            </div>
                            <div class="col-lg-2">
@@ -1474,7 +1475,7 @@
                            <div class="col-lg-2">
                               <div class="input-group mb-3">
                                  <input (blur)="calculateAmount()"
-                                    [(ngModel)]="item.amount" name="accessfee_amount{{i}}" type="number"
+                                    [(ngModel)]="item.amount" name="accessfee_amount{{i}}" type="number" min="0" 
                                     class="form-control" placeholder="0.00">
                               </div>
                            </div>
@@ -1518,7 +1519,7 @@
                               <div class="input-group mb-3">
                                  <input (blur)="calculateAmount()"
                                     [(ngModel)]="item.amount" name="amount{{i}}"
-                                    type="number" class="form-control" placeholder="0.00">
+                                    type="number"  min="0" class="form-control" placeholder="0.00">
                               </div>
                            </div>
                            <div class="col-lg-2">
@@ -1646,7 +1647,7 @@
                               
                               <div class="row mt-3">
                                  <div class="col-lg-5">
-                                    <input type="number" name="advance" [(ngModel)]="orderData.advance" class="form-control" (blur)="calculateAmount()">
+                                    <input type="number" min="0"  name="advance" [(ngModel)]="orderData.advance" class="form-control" (blur)="calculateAmount()">
                                  </div>
                               </div>
                               <div class="row mt-4">
