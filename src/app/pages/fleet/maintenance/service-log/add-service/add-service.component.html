@@ -10,7 +10,7 @@
                     {{pageTitle}}
                  </div>
                  <div class="col-md-8  col-lg-8 text-right">
-                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i>  Service Log</a>
+                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i>  Service Logs List</a>
                  </div>
               </div>
            </header>
@@ -45,7 +45,7 @@
 
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Vehicle ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service">
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
@@ -53,7 +53,7 @@
                              </div>
                              <div class="row" *ngIf="serviceData.unitType === 'asset'">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Asset ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2" > Select Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service">
                                      <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
                                  </ng-select>
@@ -77,7 +77,7 @@
                           <div class="col-lg-5 offset-lg-1">
                              <div class="row pt-2">
                                 <div class="col-lg-10">
-                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bill No<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                   <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Bill#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                    <input disabled [(ngModel)]="serviceData.reference" name="reference" type="text" class="form-control"  placeholder="Enter reference number">
                                 </div>
                              </div>
@@ -100,7 +100,7 @@
                            </div> -->
                            <div class="row">
                               <div class="col-lg-10" data-select2-id="118">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor ID<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
                                      <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                  </ng-select>
