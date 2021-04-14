@@ -44,7 +44,7 @@ it('search-reset the reminder', function() {
 
   cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
   cy.wait(1000);
-  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck{enter}');
+  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz{enter}');
   cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
   cy.get('.ng-option-label').first().click({force: true});
   cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
