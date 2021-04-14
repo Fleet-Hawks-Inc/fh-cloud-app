@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   AddUserComponent,
   UserDetailsComponent,
-  UsersListComponent
+  UsersListComponent,
+  CompanyProfileComponent,
+  EditProfileComponent
 } from './index';
 
 const COMPONENTS = [
@@ -20,6 +22,14 @@ const routes: Routes = [
       { path: 'list', component: UsersListComponent},
       { path: 'detail/:userID', component: UserDetailsComponent },
       { path: 'edit/:userID', component: AddUserComponent},
+    ],
+  },
+  {
+    path: 'company',
+    children: [
+      { path: 'detail/:companyID', component: CompanyProfileComponent },
+      { path: 'edit/:companyID', component: EditProfileComponent }
+
     ],
   },
 ];

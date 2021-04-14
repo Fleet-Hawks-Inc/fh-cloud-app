@@ -5,6 +5,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
+import { Location } from '@angular/common';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -12,7 +13,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  @ViewChild('carrierForm', null) carrierForm: NgForm;
+ // @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   activeTab = 1;
@@ -38,7 +39,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
-   uploadedLogo = '';
+  uploadedLogo = '';
   fleets = {
     curtainSide: 0,
     dryVans: 0,
@@ -90,14 +91,13 @@ export class AddAccountComponent implements OnInit {
   states = [];
   cities = [];
   errors = {};
-  form;
+  carrierForm;
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  errorClass = false; // to show error when password and confirm password don't match
   Error = '';
   Success = '';
-  constructor(private apiService: ApiService, private toaster: ToastrService, private HereMap: HereMapService) {
+  constructor(private apiService: ApiService, private toaster: ToastrService,private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -105,7 +105,7 @@ export class AddAccountComponent implements OnInit {
     this.fetchCountries();
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
-      this.form = $('#carrierForm').validate();
+      this.carrierForm = $('#carrierForm').validate();
     });
   }
   /**
@@ -147,23 +147,28 @@ export class AddAccountComponent implements OnInit {
     this.addressDetails[i].cityName = result;
   }
   addAddress() {
-    this.addressDetails.push({
-      addressType: '',
-      countryID: '',
-      countryName: '',
-      stateID: '',
-      stateName: '',
-      cityID: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
-      geoCords: {
-        lat: '',
-        lng: ''
-      },
-      manual: false
-    });
+    if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
+      this.toaster.warning('Maximum 3 addresses are allowed.');
+    }
+    else {
+      this.addressDetails.push({
+        addressType: '',
+        countryID: '',
+        countryName: '',
+        stateID: '',
+        stateName: '',
+        cityID: '',
+        cityName: '',
+        zipCode: '',
+        address1: '',
+        address2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        manual: false
+      });
+    }
   }
   fetchCountries() {
     this.apiService.getData('countries')
@@ -171,7 +176,7 @@ export class AddAccountComponent implements OnInit {
         this.countries = result.Items;
         this.countries.map(elem => {
           if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
-            this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
+            this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID });
           }
         });
       });
@@ -181,7 +186,8 @@ export class AddAccountComponent implements OnInit {
       .toPromise();
     if (result.Items.length > 0) {
       this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;    }
+      return result.Items[0].countryID;
+    }
     return '';
   }
 
@@ -264,7 +270,7 @@ export class AddAccountComponent implements OnInit {
     this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
     this.addressDetails[i].stateID = '';
     this.addressDetails[i].cityID = '';
-    this.addressDetails[i].zipCode = '';
+    this.addressDetails[i].zipCode = result.address.postalCode;
 
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
@@ -273,9 +279,12 @@ export class AddAccountComponent implements OnInit {
       result.address.street = '';
     }
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
 
   async onSubmit() {
+    console.log('hello');
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -287,6 +296,7 @@ export class AddAccountComponent implements OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
+          console.log('address part', result);
           element.geoCords.lat = result.position.lat;
           element.geoCords.lng = result.position.lng;
         }
@@ -335,9 +345,11 @@ export class AddAccountComponent implements OnInit {
     }
     // append other fields
     formData.append('data', JSON.stringify(data));
-    this.apiService.postData('carriers', formData, true).subscribe({
+
+    this.apiService.postData('carriers/add', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        console.log('error', err);
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -355,20 +367,21 @@ export class AddAccountComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.toaster.success('Account Added successfully');
+        this.toaster.success('Carrier created successfully.');
+        this.cancel();
       },
     });
 
+
+
   }
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
   hideErrors() {
     from(Object.keys(this.errors))
@@ -385,15 +398,5 @@ export class AddAccountComponent implements OnInit {
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
-  next() {
-    this.activeTab++;
-  }
 
-  previous() {
-    this.activeTab--;
-  }
-
-  changeTab(value) {
-    this.activeTab = value;
-  }
 }
