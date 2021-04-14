@@ -46,7 +46,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(5) > .mr-2').click();
     cy.wait(1000);
     cy.get(':nth-child(5) > [type="button"]').click();
-    /* ==== End Cypress Studio ==== */
+
   });
   /* === Test Created with Cypress Studio === */
   it('Delete Issue', function () {

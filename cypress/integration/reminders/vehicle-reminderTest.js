@@ -29,7 +29,7 @@ describe(" reminders tests", () => {
     cy.get('.col-lg-8 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
     cy.get('#vehicleRenewalForm > :nth-child(1) > :nth-child(3)').last().click({ force: true });
     cy.get('.col-10 > .btn-success').click();
-    
+
   });
   /* === Test Created with Cypress Studio === */
   it('search and reset the reminder', function () {
@@ -52,7 +52,7 @@ describe(" reminders tests", () => {
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ALL{enter}');
     cy.get(':nth-child(4) > .mr-2').click();
     cy.get('.row > :nth-child(4) > [type="button"]').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
   /* === Test Created with Cypress Studio === */
   it('delete the reminder', function () {

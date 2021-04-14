@@ -31,7 +31,7 @@ describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
   it('Search and reset the reminder', function () {
-    
+
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -52,7 +52,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(4) > .mr-2').click();
     cy.get('.row > :nth-child(4) > [type="button"]').click();
 
-    /* ==== End Cypress Studio ==== */
+    
   });
   /* === Test Created with Cypress Studio === */
   it('Delete reminder', function () {

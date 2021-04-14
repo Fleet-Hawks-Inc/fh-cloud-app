@@ -27,7 +27,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').clear();
     cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > :nth-child(1) > :nth-child(2) > .form-control').type('101');
     cy.get('.col-10 > .btn-success').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
 
   /* === Test Created with Cypress Studio === */
