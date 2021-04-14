@@ -10,9 +10,13 @@
                                 <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
                                 (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
                             </div> 
-                            <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
-                                {{ data.name }}
-                            </div>
+                            <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                                <ul>
+                                   <li *ngFor="let data of suggestions" style="cursor: pointer;"
+                                   (click)="searchSelectedRoute(data)"
+                                   >{{ data.name }}</li>
+                                </ul>
+                             </div>
                         </div>
 
                         <div class="col-lg-3 col-md-3">
@@ -23,14 +27,14 @@
                                     </span>
                                 </span>
                                 <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                     class="form-control" autocomplete="off">
 
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="filterValues.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                             </div>
                         </div>
@@ -69,7 +73,7 @@
                                     <tr>
                                         <th width="10%">Document#</th>
                                         <th width="10%">Trip ID</th>
-                                        <th width="10%">Type</th>
+                                        <th width="10%">Document Type</th>
                                         <th width="10%">Document Name</th>
                                         <th width="10%">Uploaded By</th>
                                         <th width="10%">Uploaded On</th>
@@ -79,7 +83,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="documents.length == 0" class="text-center">
-                                        <td colspan="8">No records found</td>
+                                        <td colspan="8">{{dataMessage}}</td>
                                     </tr>
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
@@ -87,8 +91,8 @@
                                         <td>{{document.docType}}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedBy}}</td>
-                                        <td>Created: {{document.timeCreated | date: 'dd-MM-yyyy'}} <br>
-                                            Last modified: {{document.timeModified | date: 'dd-MM-yyyy'}}
+                                        <td>Created: {{document.timeCreated | date: 'yyyy/MM/dd'}} <br>
+                                            Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
                                         </td>
                                         <td>{{document.description ? document.description : '-'}}</td>
                                         <td>
@@ -184,34 +188,44 @@
                 <form class="form-horizontal" method="get" name="form" id="form_">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
-                            <label for="">Document#</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document#
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
                                 name="documentNumber" type="text" class="form-control">
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Select Trip ID</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Select Trip ID
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <ng-select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
                                 <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document Type</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Type
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
 
-                                <ng-option value="BOL">BOL</ng-option>
-                                <ng-option value="POD">POD</ng-option>
+                                <ng-option value="BOL">BOL#</ng-option>
+                                <ng-option value="POD">POD#</ng-option>
                                 <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
 
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document Name</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Name
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input [(ngModel)]="documentData.documentName" name="documentName" type="text"
                                 class="form-control">
                         </div>
                         <div class="form-group col-lg-12 mb-3">
-                            <label for="">Choose File</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
@@ -224,7 +238,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputAddress">Description</label>
+                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Description&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="documentData.description" name="description" class="form-control"
                             rows="3" id="textareaDefault"></textarea>
                     </div>

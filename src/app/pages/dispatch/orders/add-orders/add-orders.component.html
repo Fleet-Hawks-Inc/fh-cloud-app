@@ -104,13 +104,13 @@
                         </div>
                      -->
                        
-                     <div class="row justify-content-center">
+                     <!-- <div class="row justify-content-center">
                         <div class="col-lg-8">
                            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                               Launch demo modal
                            </button>
                         </div>
-                     </div>
+                     </div> -->
 
                         
 
@@ -618,17 +618,17 @@
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                      for="inputDefault">PU#
-                                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                     <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                   </label>
    
                                                                   <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
                                                                      name="pu{{z}}" type="text" class="form-control"
                                                                      id="inputDefault">
-                                                                  <span class="text-danger"
+                                                                  <!-- <span class="text-danger"
                                                                      *ngIf="isShipperSubmit && shippersReceivers[i].shippers.commodity[z].pu == ''"
                                                                      >
                                                                      This Field is required
-                                                                  </span>
+                                                                  </span> -->
                                                                </div>
                                                                
                                                             </div>
@@ -967,15 +967,17 @@
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                      for="inputDefault">DEL#
-                                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+
+                                                                     <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                   </label>
    
-                                                                  <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.pu" name="pu{{z}}"
+                                                                  <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{z}}"
+
                                                                      type="text" class="form-control" id="inputDefault">
-                                                                  <span class="text-danger"
-                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].pu == ''">
+                                                                  <!-- <span class="text-danger"
+                                                                     *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].del == ''">
                                                                      This Field is required
-                                                                  </span>
+                                                                  </span> -->
                                                                </div>
                                                                
                                                             </div>

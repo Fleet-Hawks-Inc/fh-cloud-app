@@ -89,8 +89,10 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select Trip Date
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
-                                                    placeholder="yyy-mm-dd" (click)="from.toggle()" ngbDatepicker
+
+                                                <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
+
                                                     #from="ngbDatepicker" class="form-control" autocomplete="off">
                                             </div>
                                         </div>

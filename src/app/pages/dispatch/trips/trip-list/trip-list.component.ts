@@ -8,6 +8,7 @@ import { from } from 'rxjs';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
 declare var $: any;
+import * as moment from "moment";
 
 @Component({
   selector: 'app-trip-list',
@@ -86,6 +87,36 @@ export class TripListComponent implements OnInit {
   };
   totalRecords = 20;
   confirmedTotalRecords = 20;
+  categoryFilter = [
+    {
+      'name': 'Trip Number',
+      'value': 'tripNo'
+    },
+    {
+      'name': 'Trip Type',
+      'value': 'tripType'
+    },
+    {
+      'name': 'Order Number',
+      'value': 'orderNo'
+    },
+    {
+      'name': 'Driver',
+      'value': 'driver'
+    },
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+    {
+      'name': 'Location',
+      'value': 'location'
+    },
+  ]
 
   pageLength = 10;
   serviceUrl = '';
@@ -93,7 +124,7 @@ export class TripListComponent implements OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: '',
+    category: null,
     start: '',
     end: ''
   };
@@ -158,6 +189,7 @@ export class TripListComponent implements OnInit {
   tripDeliverStartPoint = 1;
   tripDeliverEndPoint = this.pageLength;
   tripDeliverlastEvaluatedKey = '';
+  driversIDSObject = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -174,6 +206,7 @@ export class TripListComponent implements OnInit {
     this.fetchAllCarrierIDs();
     this.fetchAllDriverIDs();
     this.fetchAllOrderIDs();
+    this.fetchAllDrivers();
 
     this.initConfirmedDataTable();
     this.initDispatchedDataTable();
@@ -447,6 +480,10 @@ export class TripListComponent implements OnInit {
           this.tripEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.tripEndPoint) {
+          this.tripEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.tripDraw > 0) {
           this.tripPrev = false;
@@ -482,6 +519,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripConfirmedNext = true;
           this.tripConfirmedlastEvaluatedKey = '';
+          this.tripConfirmedEndPoint = this.confirmedTripsCount;
+        }
+
+        if(this.confirmedTripsCount < this.tripConfirmedEndPoint) {
           this.tripConfirmedEndPoint = this.confirmedTripsCount;
         }
         
@@ -522,6 +563,10 @@ export class TripListComponent implements OnInit {
           this.tripDispatchedlastEvaluatedKey = '';
           this.tripDispatchedEndPoint = this.dispatchedTripsCount;
         }
+
+        if(this.dispatchedTripsCount < this.tripDispatchedEndPoint) {
+          this.tripDispatchedEndPoint = this.dispatchedTripsCount;
+        }
         
         // disable prev btn
         if (this.tripDispatchedDraw > 0) {
@@ -558,6 +603,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripStartedNext = true;
           this.tripStartedlastEvaluatedKey = '';
+          this.tripStartedEndPoint = this.startedTripsCount;
+        }
+
+        if(this.startedTripsCount < this.tripStartedEndPoint) {
           this.tripStartedEndPoint = this.startedTripsCount;
         }
         
@@ -598,6 +647,10 @@ export class TripListComponent implements OnInit {
           this.tripEnroutelastEvaluatedKey = '';
           this.tripEnrouteEndPoint = this.enrouteTripsCount;
         }
+
+        if(this.enrouteTripsCount < this.tripEnrouteEndPoint) {
+          this.tripEnrouteEndPoint = this.enrouteTripsCount;
+        }
         
         // disable prev btn
         if (this.tripEnrouteDraw > 0) {
@@ -634,6 +687,10 @@ export class TripListComponent implements OnInit {
         } else {
           this.tripCancelNext = true;
           this.tripCancellastEvaluatedKey = '';
+          this.tripCancelEndPoint = this.cancelledTripsCount;
+        }
+
+        if(this.cancelledTripsCount < this.tripCancelEndPoint) {
           this.tripCancelEndPoint = this.cancelledTripsCount;
         }
         
@@ -674,6 +731,10 @@ export class TripListComponent implements OnInit {
           this.tripDeliverlastEvaluatedKey = '';
           this.tripDeliverEndPoint = this.deliveredTripsCount;
         }
+
+        if(this.deliveredTripsCount < this.tripDeliverEndPoint) {
+          this.tripDeliverEndPoint = this.deliveredTripsCount;
+        }
         
         // disable prev btn
         if (this.tripDeliverDraw > 0) {
@@ -689,30 +750,45 @@ export class TripListComponent implements OnInit {
 
   filterTrips() {
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
-    || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
+    || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
 
-      this.trips = [];
-      let sdate;
-      let edate;
-      if(this.tripsFiltr.startDate !== ''){
-        sdate = this.tripsFiltr.startDate.split('-');
-        if(sdate[0] < 10) {
-          sdate[0] = '0'+sdate[0]
+      if(this.tripsFiltr.startDate != '' && this.tripsFiltr.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.startDate == '' && this.tripsFiltr.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      }else {
+        if(this.tripsFiltr.category == 'location') {
+          this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.toLowerCase();
         }
-        this.tripsFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
-      }
-      if(this.tripsFiltr.endDate !== ''){
-        edate = this.tripsFiltr.endDate.split('-');
-        if(edate[0] < 10) {
-          edate[0] = '0'+edate[0]
+        
+        this.trips = [];
+        // let sdate;
+        // let edate;
+        if(this.tripsFiltr.startDate !== ''){
+          // sdate = this.tripsFiltr.startDate.split('-');
+          // if(sdate[0] < 10) {
+          //   sdate[0] = '0'+sdate[0]
+          // }
+          this.tripsFiltr.start = this.tripsFiltr.startDate;
         }
-        this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+        if(this.tripsFiltr.endDate !== ''){
+          // edate = this.tripsFiltr.endDate.split('-');
+          // if(edate[0] < 10) {
+          //   edate[0] = '0'+edate[0]
+          // }
+          this.tripsFiltr.end = this.tripsFiltr.endDate;
+        }
+        this.totalRecords = this.allTripsCount;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.activeTab = 'all';
+        this.fetchTripsCount();
+        this.initDataTable('all');
       }
-      this.totalRecords = this.allTripsCount;
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.activeTab = 'all';
-      this.fetchTripsCount();
-      this.initDataTable('all');
     } else {
       return false;
     }
@@ -725,7 +801,7 @@ export class TripListComponent implements OnInit {
         searchValue: '',
         startDate: '',
         endDate: '',
-        category: '',
+        category: null,
         start: '',
         end: ''
       };
@@ -736,31 +812,10 @@ export class TripListComponent implements OnInit {
       this.fetchTripsCount();
       this.initDataTable('all');
       this.getStartandEndVal('all');
+      this.resetEndPoint('all');
     } else {
       return false;
     }
-  }
-
-  selectCategory(type) {
-    let typeText = '';
-    this.tripsFiltr.category = type;
-
-    if (type === 'TripNo') {
-      typeText = 'Trip Number';
-      this.tripsFiltr.category = 'tripNo'
-    } else if (type === 'TripType') {
-      typeText = 'Trip Type';
-    } else if (type === 'OrderNo') {
-      typeText = 'Order Number';
-    } else if(type === 'TripType') {
-      typeText = 'Trip Type';
-    } else if(type === 'OrderNo') {
-      typeText = 'Order Number';
-    } else {
-      typeText = type;
-    }
-    
-    $("#categorySelect").text(typeText);
   }
 
   fetchAllStatesIDs() {
@@ -809,6 +864,13 @@ export class TripListComponent implements OnInit {
     this.apiService.getData('drivers/get/username-list')
       .subscribe((result: any) => {
         this.driversObject = result;
+      });
+  }
+
+  fetchAllDrivers() {
+    this.apiService.getData('drivers/get/list')
+      .subscribe((result: any) => {
+        this.driversIDSObject = result;
       });
   }
 
@@ -985,5 +1047,13 @@ export class TripListComponent implements OnInit {
 
   setActiveDiv(type){
     this.activeTab = type;
+  }
+
+  categoryChange(event) {
+    if(event == 'driver' || event == 'vehicle' || event == 'asset' || event == 'tripType') {
+      this.tripsFiltr.searchValue = null;
+    } else {
+      this.tripsFiltr.searchValue = '';
+    }
   }
 }

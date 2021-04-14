@@ -109,9 +109,9 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
+                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" id="mainDriver"  placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of fetchedDrivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                            {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
@@ -120,7 +120,7 @@
                         <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" (click)="fixCoDrivers()"
                           placeholder="Select co-driver">
                           <ng-option *ngFor="let driver of fetchedCoDrivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                            {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2  mar-top-37">
@@ -469,9 +469,9 @@
                           <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray
                               Date of Exit</label>
-                            <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'"
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                              [ngModelOptions]="{standalone: true}"  ngbDatepicker #d7="ngbDatepicker" [minDate]="getcurrentDate" (click)="d7.toggle();"
+                              [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'" placeholder="yyyy/mm/dd"
                               [(ngModel)]="shipment.goodsAstrayDateOfExit">
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'IN_BOND'">
@@ -535,9 +535,11 @@
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Estimated
                                   US Departure Date</label>
-                                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.estimatedDepartureDate'"
-                                  [(ngModel)]="shipment.inBondDetails.estimatedDepartureDate">
+                                  [(ngModel)]="shipment.inBondDetails.estimatedDepartureDate" placeholder="yyyy/mm/dd"
+                                  ngbDatepicker #d8="ngbDatepicker" [minDate]="getcurrentDate" (click)="d8.toggle();"
+                                  >
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Subject
@@ -780,15 +782,15 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                               On<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [ngModelOptions]="{standalone: true}"
+                            <ng-select [ngModelOptions]="{standalone: true}" (change)="shipmentLoadedFn(s,i)"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.type'"
                               [(ngModel)]="commodity.loadedOn.type">
-                              <ng-option value="TRUCK">TRUCK</ng-option>
-                              <ng-option value="TRAILER">TRAILER</ng-option>
+                              <ng-option value="TRUCK">Vehicle</ng-option>
+                              <ng-option value="TRAILER">Asset</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRUCK'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Truck
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
@@ -798,11 +800,11 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Trailer
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
-                              placeholder="Enter trailer number" [(ngModel)]="commodity.loadedOn.number">
+                              placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number">
                               <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
                                 {{asset.assetIdentification}}</ng-option>
                             </ng-select>

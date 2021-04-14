@@ -6,10 +6,23 @@
 
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-md mb-3">
+                            <ng-select [(ngModel)]="orderFiltr.category" name="category" placeholder="Search by Category" (change)="categoryChange($event)" >
+                                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
+                            </ng-select>
+                        </div> 
+
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3" *ngIf="orderFiltr.category != 'customer' && orderFiltr.category != 'orderType'">
                                 <input type="text" class="form-control" name="searchValue"
                                     [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
                             </div>
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Customer" *ngIf="orderFiltr.category == 'customer'">
+                                <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                            </ng-select>
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order Mode" *ngIf="orderFiltr.category == 'orderType'">
+                                <ng-option value="FTL"> FTL</ng-option>
+                                <ng-option value="LTL"> LTL</ng-option>
+                            </ng-select>
                         </div>
 
                         <div class="col-lg-3 col-md-3">
@@ -20,41 +33,17 @@
                                     </span>
                                 </span>
                                 <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
-                                    placeholder="yyyy-mm-dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+
+                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+
                                     class="form-control" autocomplete="off">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
-                                    placeholder="yyyy-mm-dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                                    class="form-control" autocomplete="off">
-                            </div>
-                        </div>
 
-                        <div class="col-md-2 col-lg-2">
-                            <div class="btn-group flex-wrap" style="width:100%;">
-                                <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle togglecolor" data-toggle="dropdown" id="categorySelect">Search by Category<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu dutystatwd" role="menu">
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('All')">All</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Company')">Company</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Customer')">Customer</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Driver')">Driver</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Vehicle')">Vehicle</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Trailer')">Trailer</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Vendor')">Vendor</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Broker')">Broker</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Location')">Location</a>
-                                </div>
+                                    placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    class="form-control" autocomplete="off">
                             </div>
                         </div>
 
@@ -126,6 +115,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date </th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -137,12 +127,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="orders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -199,7 +190,8 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
-                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Customer</th> 
                                         <th>Pickup</th>
                                         <th>Drop</th>
                                         <th>Commodity</th>
@@ -210,12 +202,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="confirmOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of confirmOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -272,6 +265,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date</th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -283,12 +277,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="dispatchOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of dispatchOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -345,6 +340,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date</th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -356,12 +352,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="deliveredOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of deliveredOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -418,6 +415,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date</th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -429,12 +427,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="cancelledOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of cancelledOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -491,6 +490,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date</th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -502,12 +502,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="invoicedOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of invoicedOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
@@ -564,6 +565,7 @@
                                     <tr>
                                         <th>Order</th>
                                         <th>Type</th>
+                                        <th>Date</th>
                                         <th>Customer</th>
                                         <th>Pickup</th>
                                         <th>Drop</th>
@@ -575,12 +577,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngIf="partiallyOrders.length == 0" class="text-center">
-                                        <td colspan="9">{{ dataMessage }}</td>
+                                        <td colspan="10">{{ dataMessage }}</td>
                                     </tr>
                                     <tr class="cursorpoint" *ngFor="let order of partiallyOrders;let i = index;">
                                         <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
                                             {{ order.orderNumber }}</td>
                                         <td>{{order.orderMode}}</td>
+                                        <td>{{order.creationDate | date:'yyyy/MM/dd'}}</td>
                                         <td>{{customersObjects[order.customerID]}}</td>
                                         <td>
                                             Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>

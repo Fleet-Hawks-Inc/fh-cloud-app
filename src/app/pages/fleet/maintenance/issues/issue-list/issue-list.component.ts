@@ -124,6 +124,9 @@ export class IssueListComponent implements OnInit {
       this.apiService
       .getData(`issues/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
+        this.issuesDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchIssuesCount();
         this.issues = [];
         this.initDataTable();
@@ -159,6 +162,10 @@ export class IssueListComponent implements OnInit {
         } else {
           this.issuesNext = true;
           this.lastEvaluatedKey = '';
+          this.issuesEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.issuesEndPoint) {
           this.issuesEndPoint = this.totalRecords;
         }
 

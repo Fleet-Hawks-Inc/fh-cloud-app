@@ -104,7 +104,7 @@ export class DispatchOverviewComponent implements OnInit {
   aciGraphData = [];
   allActivities = [];
 
-  totalRecords = 10;
+  totalRecords = 0;
   pageLength = 10;
   lastEvaluatedKey:any = '';
   dispatchLength = 0;

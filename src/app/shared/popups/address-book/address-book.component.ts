@@ -1000,6 +1000,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addCustomerModal').modal('hide');
+        this.customerDraw = 0;
+        this.lastEvaluatedKeyCustomer = '';
+        this.dataMessageCustomer = Constants.FETCHING_DATA;
+
         this.showMainModal();
         // this.customers = [];
         this.activeDiv = 'customerTable';
@@ -1219,6 +1223,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addOwnerOperatorModal').modal('hide');
+        this.ownerOperatorDraw = 0;
+        this.lastEvaluatedKeyOperator = '';
+        this.dataMessageOwner = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
@@ -1293,6 +1301,9 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addBrokerModal').modal('hide');
+        this.brokerDraw = 0;
+        this.lastEvaluatedKeyBroker = '';
+        this.dataMessageBroker = Constants.FETCHING_DATA;
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
@@ -1440,6 +1451,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addVendorModal').modal('hide');
+        this.vendorDraw = 0;
+        this.lastEvaluatedKeyVendor = '';
+        this.dataMessageVendor = Constants.FETCHING_DATA;
+        
         this.showMainModal();
         this.vendors = [];
         this.fetchVendorsCount();
@@ -1589,6 +1604,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addCarrierModal').modal('hide');
+        this.carrierDraw = 0;
+        this.lastEvaluatedKeyCarrier = '';
+        this.dataMessageCarrier = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.carriers = [];
         this.activeDiv = 'carrierTable';
@@ -1755,6 +1774,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addShipperModal').modal('hide');
+        this.shipperDraw = 0;
+        this.lastEvaluatedKeyShipper = '';
+        this.dataMessageConsignor = Constants.FETCHING_DATA;
+
         this.shippers = [];
         this.showMainModal();
         this.fetchShippersCount();
@@ -1904,6 +1927,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addConsigneeModal').modal('hide');
+        this.consigneeDraw = 0;
+        this.lastEvaluatedKeyConsignee = '';
+        this.dataMessageConsignee = Constants.FETCHING_DATA;
+
         this.receivers = [];
         this.showMainModal();
         this.fetchConsigneeCount();
@@ -2050,6 +2077,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addFCModal').modal('hide');
+        this.companyDraw = 0;
+        this.lastEvaluatedKeyCompany = '';
+        this.dataMessageFactoring = Constants.FETCHING_DATA;
+
         this.showMainModal();
         this.fcCompanies = [];
         this.fetchFcCompaniesCount();
@@ -2201,6 +2232,10 @@ export class AddressBookComponent implements OnInit {
         }
 
         $('#addStaffModal').modal('hide');
+        this.staffDraw = 0;
+        this.lastEvaluatedKeyStaff = '';
+        this.dataMessageEmployee = Constants.FETCHING_DATA;
+
         this.staffs = [];
         this.fetchStaffsCount();
         this.showMainModal();
@@ -2347,7 +2382,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCustomersCount() {
-    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName).subscribe({
+    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2357,7 +2392,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchOwnerOperatorsCount() {
-    this.apiService.getData('ownerOperators/get/count?operator='+this.filterVal.operatorID+'&companyName='+this.filterVal.operatorCompanyName).subscribe({
+    this.apiService.getData('ownerOperators/get/count?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2367,7 +2402,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchBrokersCount() {
-    this.apiService.getData('brokers/get/count?broker='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName).subscribe({
+    this.apiService.getData('brokers/get/count?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2377,7 +2412,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchVendorsCount() {
-    this.apiService.getData('vendors/get/count?vendor='+this.filterVal.vendorID+'&companyName='+this.filterVal.vendorCompanyName).subscribe({
+    this.apiService.getData('vendors/get/count?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2387,7 +2422,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCarriersCount() {
-    this.apiService.getData('externalCarriers/get/count?info='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName).subscribe({
+    this.apiService.getData('externalCarriers/get/count?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2397,7 +2432,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchShippersCount() {
-    this.apiService.getData('shippers/get/count?shipper='+this.filterVal.shipperID+'&companyName='+this.filterVal.shipperCompanyName).subscribe({
+    this.apiService.getData('shippers/get/count?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2407,7 +2442,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchConsigneeCount() {
-    this.apiService.getData('receivers/get/count?consignee='+this.filterVal.consigneeID+'&companyName='+this.filterVal.receiverCompanyName).subscribe({
+    this.apiService.getData('receivers/get/count?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2417,7 +2452,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchStaffsCount() {
-    this.apiService.getData('staffs/get/count?staff='+this.filterVal.staffID+'&companyName='+this.filterVal.staffCompanyName).subscribe({
+    this.apiService.getData('staffs/get/count?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2427,7 +2462,7 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchFcCompaniesCount() {
-    this.apiService.getData('factoringCompanies/get/count?company='+this.filterVal.companyID+'&companyName='+this.filterVal.factoringCompanyName).subscribe({
+    this.apiService.getData('factoringCompanies/get/count?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2566,7 +2601,7 @@ export class AddressBookComponent implements OnInit {
         this.staffs = [];
         this.fetchStaffsCount();
         this.initDataTableStaff();
-        this.toastr.success('Staff deleted successfully');
+        this.toastr.success('Employee deleted successfully');
       });
     }
   }
@@ -2592,7 +2627,7 @@ export class AddressBookComponent implements OnInit {
       this.apiService
       .getData(`ownerOperators/isDeleted/${userID}/${item.isDeleted}`)
       .subscribe((result: any) => {
-        this.vendorDraw = 0;
+        this.ownerOperatorDraw = 0;
         this.lastEvaluatedKeyOperator = '';
         this.dataMessageOwner = Constants.FETCHING_DATA;
         this.ownerOperatorss = [];
@@ -3220,7 +3255,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName+'&lastKey='+this.lastEvaluatedKeyCustomer)
+    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCustomer)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCustomer = Constants.NO_RECORDS_FOUND;
@@ -3265,7 +3300,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableBroker() {
     this.spinner.show();
-    this.apiService.getData('brokers/fetch/records?broker='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName+'&lastKey='+this.lastEvaluatedKeyBroker)
+    this.apiService.getData('brokers/fetch/records?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyBroker)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageBroker = Constants.NO_RECORDS_FOUND;
@@ -3309,7 +3344,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableVendor() {
     this.spinner.show();
-    this.apiService.getData('vendors/fetch/records?vendor='+this.filterVal.vendorID+'&companyName='+this.filterVal.vendorCompanyName+'&lastKey='+this.lastEvaluatedKeyVendor)
+    this.apiService.getData('vendors/fetch/records?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyVendor)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageVendor = Constants.NO_RECORDS_FOUND;
@@ -3353,7 +3388,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCarrier() {
     this.spinner.show();
-    this.apiService.getData('externalCarriers/fetch/records?info='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName+'&lastKey='+this.lastEvaluatedKeyCarrier)
+    this.apiService.getData('externalCarriers/fetch/records?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCarrier)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCarrier = Constants.NO_RECORDS_FOUND;
@@ -3397,7 +3432,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableOperator() {
     this.spinner.show();
-    this.apiService.getData('ownerOperators/fetch/records?operator='+this.filterVal.operatorID+'&companyName='+this.filterVal.operatorCompanyName+'&lastKey='+this.lastEvaluatedKeyOperator)
+    this.apiService.getData('ownerOperators/fetch/records?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyOperator)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageOwner = Constants.NO_RECORDS_FOUND;
@@ -3441,7 +3476,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableShipper() {
     this.spinner.show();
-    this.apiService.getData('shippers/fetch/records?shipper='+this.filterVal.shipperID+'&companyName='+this.filterVal.shipperCompanyName+'&lastKey='+this.lastEvaluatedKeyShipper)
+    this.apiService.getData('shippers/fetch/records?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignor = Constants.NO_RECORDS_FOUND;
@@ -3485,7 +3520,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableConsignee() {
     this.spinner.show();
-    this.apiService.getData('receivers/fetch/records?consignee='+this.filterVal.consigneeID+'&companyName='+this.filterVal.receiverCompanyName+'&lastKey='+this.lastEvaluatedKeyConsignee)
+    this.apiService.getData('receivers/fetch/records?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyConsignee)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignee = Constants.NO_RECORDS_FOUND;
@@ -3529,7 +3564,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableStaff() {
     this.spinner.show();
-    this.apiService.getData('staffs/fetch/records?staff='+this.filterVal.staffID+'&companyName='+this.filterVal.staffCompanyName+'&lastKey='+this.lastEvaluatedKeyStaff)
+    this.apiService.getData('staffs/fetch/records?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyStaff)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageEmployee = Constants.NO_RECORDS_FOUND;
@@ -3573,7 +3608,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCompany() {
     this.spinner.show();
-    this.apiService.getData('factoringCompanies/fetch/records?company='+this.filterVal.companyID+'&companyName='+this.filterVal.factoringCompanyName+'&lastKey='+this.lastEvaluatedKeyCompany)
+    this.apiService.getData('factoringCompanies/fetch/records?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCompany)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageFactoring = Constants.NO_RECORDS_FOUND;
@@ -3977,6 +4012,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.customerID = '';
       }
       if(this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
+        this.filterVal.customerCompanyName = this.filterVal.customerCompanyName.toLowerCase();
+        this.filterVal.customerName = this.filterVal.customerName.toLowerCase();
         this.suggestedCustomers = [];
         this.suggestedCustomerCompanies = [];
         if(this.filterVal.customerID == '') {
@@ -3996,6 +4033,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.brokerID = '';
       }
       if(this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
+        this.filterVal.brokerCompanyName = this.filterVal.brokerCompanyName.toLowerCase();
+        this.filterVal.brokerName = this.filterVal.brokerName.toLowerCase();
         if(this.filterVal.brokerID == '') {
           this.filterVal.brokerID = this.filterVal.brokerName;
         }
@@ -4015,6 +4054,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.vendorID = '';
       }
       if(this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
+        this.filterVal.vendorCompanyName = this.filterVal.vendorCompanyName.toLowerCase();
+        this.filterVal.vendorName = this.filterVal.vendorName.toLowerCase();
         if(this.filterVal.vendorID == '') {
           this.filterVal.vendorID = this.filterVal.vendorName;
         }
@@ -4034,6 +4075,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.carrierID = '';
       }
       if(this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
+        this.filterVal.carrierCompanyName = this.filterVal.carrierCompanyName.toLowerCase();
+        this.filterVal.carrierName = this.filterVal.carrierName.toLowerCase();
         if(this.filterVal.carrierID == '') {
           this.filterVal.carrierID = this.filterVal.carrierName;
         }
@@ -4053,6 +4096,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.operatorID = '';
       }
       if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
+        this.filterVal.operatorCompanyName = this.filterVal.operatorCompanyName.toLowerCase();
+        this.filterVal.operatorName = this.filterVal.operatorName.toLowerCase();
         if(this.filterVal.operatorID == '') {
           this.filterVal.operatorID = this.filterVal.operatorName;
         }
@@ -4072,6 +4117,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.shipperID = '';
       }
       if(this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
+        this.filterVal.shipperCompanyName = this.filterVal.shipperCompanyName.toLowerCase();
+        this.filterVal.shipperName = this.filterVal.shipperName.toLowerCase();
         if(this.filterVal.shipperID == '') {
           this.filterVal.shipperID = this.filterVal.shipperName;
         }
@@ -4091,6 +4138,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.consigneeID = '';
       }
       if(this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
+        this.filterVal.receiverCompanyName = this.filterVal.receiverCompanyName.toLowerCase();
+        this.filterVal.consigneeName = this.filterVal.consigneeName.toLowerCase();
         if(this.filterVal.consigneeID == '') {
           this.filterVal.consigneeID = this.filterVal.consigneeName;
         }
@@ -4110,6 +4159,8 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.staffID = '';
       }
       if(this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
+        this.filterVal.staffCompanyName = this.filterVal.staffCompanyName.toLowerCase();
+        this.filterVal.staffName = this.filterVal.staffName.toLowerCase();
         if(this.filterVal.staffID == '') {
           this.filterVal.staffID = this.filterVal.staffName;
         }
@@ -4129,6 +4180,9 @@ export class AddressBookComponent implements OnInit {
         this.filterVal.companyID = '';
       }
       if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
+        this.filterVal.factoringCompanyName = this.filterVal.factoringCompanyName.toLowerCase();
+        this.filterVal.fcompanyName = this.filterVal.fcompanyName.toLowerCase();
+
         if(this.filterVal.companyID == '') {
           this.filterVal.companyID = this.filterVal.fcompanyName;
         }

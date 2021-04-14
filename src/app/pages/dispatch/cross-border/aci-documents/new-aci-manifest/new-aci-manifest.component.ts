@@ -309,9 +309,9 @@ export class NewAciManifestComponent implements OnInit {
 
   fixCoDrivers(){
     if(this.mainDriver){
-      let currentDriver =this.mainDriver;
-      this.fetchedCoDrivers=this.drivers.filter(function(value, index, arr){ 
-        return value.driverID !=currentDriver;
+      let currentDriver = this.mainDriver;
+      this.fetchedCoDrivers = this.drivers.filter(value => {
+        return value.driverID !== currentDriver;
     });
     }
   }

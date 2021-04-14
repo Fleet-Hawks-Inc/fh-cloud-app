@@ -3,6 +3,7 @@ import { ApiService } from '../../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-aci-details',
   templateUrl: './aci-details.component.html',
@@ -110,13 +111,22 @@ export class AciDetailsComponent implements OnInit {
   borderResponses = [];
   errors = {};
   form;
+  documentTypeList: any = [];
+  documentsTypesObjects: any = {};
   response: any = '';
   hasError = false;
   hasSuccess = false;
   Error = '';
   Success = '';
   sendBorderConnectOption = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router) { }
+  packagingUnitsObjects: any = {};
+  vehicleTypeObjects: any = {};
+  cargoExemptionTypeObjects: any = {};
+  shipmentTypeObjects: any = {};
+  canadianPortsObjects: any = {};
+  subLocationObjects: any = {};
+  releaseOfficeObjects: any = {};
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router, private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
@@ -124,6 +134,14 @@ export class AciDetailsComponent implements OnInit {
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
     this.fetchStatesCodeName();
+    this.fetchDocuments();
+    this.fetchVehicleType();
+    this.fetchCargoExemptionType();
+    this.fetchPackagingUnits();
+    this. fetchShipmentType();
+    this.fetchCanadianPorts();
+    this.fetchSublocationList();
+    this.fetchReleaseOfficeList();
   }
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
@@ -135,9 +153,68 @@ export class AciDetailsComponent implements OnInit {
     this.assetTypeCode = result;
     });
   }
+  fetchVehicleType() {
+    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
+      this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+    }, {});
+    });
+  }
+  fetchSublocationList() {
+    this.httpClient.get('assets/ACIsubLocations.json').subscribe((data: any) => {
+      this.subLocationObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+    }, {});
+    });
+  }
+  fetchCargoExemptionType() {
+    this.httpClient.get('assets/ACIcargoExemption.json').subscribe((data: any) => {
+      this.cargoExemptionTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+    }, {});
+    });
+  }
+  fetchReleaseOfficeList() {
+    this.httpClient.get('assets/ACIReleaseOffice.json').subscribe((data: any) => {
+      this.releaseOfficeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`number`]] = b[`name`], a;
+    }, {});
+    });
+  }
+  fetchShipmentType() {
+    this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
+      this.shipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
+    });
+  }
+  fetchDocuments() {
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
+      this.documentTypeList = data;
+
+      this.documentsTypesObjects = this.documentTypeList.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+      }, {});
+    });
+  }
   fetchStatesCodeName() {
     this.apiService.getData('states/get/state/codeToName').subscribe((result: any) => {
     this.stateCodeToName = result;
+    });
+  }
+  fetchPackagingUnits() {
+    this.httpClient.get('assets/jsonFiles/ACIpackagingUnit.json').subscribe((data: any) =>{
+
+      this.packagingUnitsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`name`], a;
+      }, {});
+    });
+  }
+  fetchCanadianPorts() {
+    this.httpClient.get('assets/canadianPorts.json').subscribe((data: any) => {
+      this.canadianPortsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`number`]] = b[`name`], a;
+      }, {});
     });
   }
   fetchACIEntry() {
@@ -167,6 +244,7 @@ export class AciDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
+        console.log('fetched data', result);
       });
   }
 
