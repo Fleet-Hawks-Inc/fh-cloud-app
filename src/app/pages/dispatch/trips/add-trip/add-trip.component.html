@@ -38,7 +38,7 @@
                                                 </label>
 
                                                 <input type="text" class="form-control" name="tripNo"
-                                                    [(ngModel)]="tripData.tripNo" placeholder="Enter Trip#">
+                                                    [(ngModel)]="tripData.tripNo" placeholder="eg. Test007">
                                             </div>
                                         </div>
 
@@ -49,7 +49,7 @@
                                                     Order Number <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
-                                                    [(ngModel)]="orderNo" name="ordr" placeholder="Select Order Number" autocomplete="off">
+                                                    [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234" autocomplete="off">
                                             </div>
                                         </div>
 
@@ -60,7 +60,7 @@
                                                     Permanent Route
                                                 </label>
                                                 <ng-select [(ngModel)]="tripData.routeID" name="routeID"
-                                                    placeholder="Select Route">
+                                                    placeholder="eg. Calgary to Edmonton">
                                                     <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
@@ -79,7 +79,7 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">BOL/POD#
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
-                                                    [(ngModel)]="tripData.bol" placeholder="Enter BOL/POD#">
+                                                    [(ngModel)]="tripData.bol" placeholder="eg. 13253578">
                                             </div>
                                         </div>
 
@@ -90,7 +90,7 @@
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
                                                 <input [(ngModel)]="tripData.dateCreated" name="dateCreated" type="text"
-                                                    placeholder="Select Trip Date" (click)="from.toggle()" ngbDatepicker
+                                                    placeholder="yyy-mm-dd" (click)="from.toggle()" ngbDatepicker
                                                     #from="ngbDatepicker" class="form-control" autocomplete="off">
                                             </div>
                                         </div>
@@ -105,7 +105,7 @@
                                                         <input type="number" class="form-control"
                                                             name="reeferTemperature"
                                                             [(ngModel)]="tripData.reeferTemperature"
-                                                            placeholder="Enter reefer temperature">
+                                                            placeholder="eg. 340.95 °C or °F ">
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
                                                         <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"

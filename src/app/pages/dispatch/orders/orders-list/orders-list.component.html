@@ -20,13 +20,13 @@
                                     </span>
                                 </span>
                                 <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                    placeholder="yyyy-mm-dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+                                    placeholder="yyyy-mm-dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
                                     class="form-control" autocomplete="off">
                             </div>
                         </div>
