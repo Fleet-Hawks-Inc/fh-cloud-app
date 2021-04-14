@@ -4,7 +4,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add State</h5>
+        <h5 class="modal-title">Add Province</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
@@ -26,14 +26,14 @@
               </div>
               <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter State Name</label>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Province Name</label>
                   <input [(ngModel)]="stateData.stateName" placeholder="Enter state name" name="stateName" type="text"
                     class="form-control">
                 </div>
               </div>
               <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter State Code</label>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Enter Province Code</label>
                   <input [(ngModel)]="stateData.stateCode" placeholder="Enter state code" name="stateCode" type="text"
                     class="form-control">
                 </div>
@@ -44,7 +44,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
       </div>
     </div>
@@ -79,7 +79,7 @@
               </div>
               <div class="row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right pt-2">Select State </label>
+                  <label class="control-label font-weight-bold text-lg-right pt-2">Select Province </label>
                   <ng-select [(ngModel)]="cityData.stateID" name="stateID" class="form-control populate">
                     <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateName}}</ng-option>
 
@@ -99,7 +99,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;"  (click)="addCity()">Save</a>
       </div>
     </div>
@@ -134,7 +134,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addVehicleMake()">Save</a>
       </div>
@@ -181,7 +181,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;" 
           (click)="addVehicleModel()">Save</a>
       </div>
@@ -216,7 +216,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addAssetMake()">Save</a>
       </div>
@@ -261,7 +261,7 @@
         </section>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a type="button" class="btn btn-success" href="javascript:;"
           (click)="addAssetModel()">Save</a>
       </div>
@@ -390,8 +390,8 @@
                                                     [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                                  </div>
                                                  <div class="col-lg-2 pt-4 mt-2 pl-0">
-                                                    <button *ngIf="i == 0"(click)="addDocument()" class="btn btn-success add-more">Add More</button>
-                                                    <button *ngIf="i != 0" class="btn btn-success" (click)="removeTasks(i)"><i class="fas fa-minus"></i></button>
+                                                    <button *ngIf="i == 0"(click)="addDocument()" class="btn btn-success add-more"><i class="fas fa-plus"></i></button>
+                                                    <button *ngIf="i != 0" class="btn btn-danger" (click)="removeTasks(i)"><i class="fas fa-minus"></i></button>
                                                  </div>
                                               </div>
                                               
@@ -440,7 +440,7 @@
              </section>
        </div>
        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <a (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</a>
       </div>
     </div>
@@ -516,7 +516,7 @@
                     <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name/Number<span
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Name<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span>
                             <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="Name or Number for Vehicle."></i>
@@ -528,7 +528,8 @@
                         <div class="col-lg-12">
 
                           <label class="control-label font-weight-bold text-lg-right pt-2">VIN<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                              data-placement="top" title="Vehicle Identification Number."></i></label>
                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
                             placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705">
                         </div>
@@ -667,7 +668,7 @@
                           </ng-select>
                         </div>
                         <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">State<span
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Province<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID"
                             placeholder="Select state" id="stateSelect">
@@ -878,7 +879,7 @@
                     <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">DEF(Diesel Exhaust Fluid)
+                          <label class="control-label font-weight-bold text-lg-right pt-2">DEF (Diesel Exhaust Fluid)
                             Capacity<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <div class="row">
                             <div class="col-lg-6">
@@ -1173,14 +1174,14 @@
                                               placeholder="Select Date">
                                         </div>
                                         <div class="col-lg-12">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                           <label class="control-label font-weight-bold text-lg-right pt-2">
                                               Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input (change)="onChangeHideErrors('workPhone')" [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
                                               class="form-control"
                                               placeholder="Enter the official phone number of the driver">
                                         </div>
                                         <div class="col-lg-12">
-                                           <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                           <label class="control-label font-weight-bold text-lg-right pt-2">
                                               Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input (change)="onChangeHideErrors('email')" [(ngModel)]="driverData.email" name="email" type="text"
                                               class="form-control"
@@ -1299,7 +1300,7 @@
                                         </div>
                                         <div class="col-lg-6">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">
-                                              Issuing State<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                              Issuing Province<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                            </label>
                                            <ng-select
                                               (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event, i)"
@@ -1360,7 +1361,7 @@
                                               id="add-document" class="btn btn-success"><i class="fa fa-plus"></i> Add
                                               Another Document</a>
                                             <a href="javascript:;"  *ngIf="i != 0;" (click)="remove('document', i)"
-                                              class="btn btn-success"><i class="fa fa-minus"></i></a>
+                                              class="btn btn-danger"><i class="fa fa-minus"></i></a>
                                         </div>
                                      </div>
  
@@ -1380,11 +1381,11 @@
                                <div class="col-lg-6">
                                   <div class="row align-items-center">
                                      <div class="col-lg-12">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL Number<span
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">CDL#<span
                                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                         <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                            name="licenceDetails.CDL_Number" type="text" class="form-control"
-                                           placeholder="Enter CDL(Commercial Driving Licence) number"
+                                           placeholder="Enter CDL (Commercial Driving Licence) number"
                                            (change)="onChangeHideErrors('licenceDetails.CDL_Number')">
                                      </div>
                                      <div class="col-lg-12">
@@ -1425,7 +1426,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued
-                                          State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                          Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="driverData.licenceDetails.issuedState"
                                           name="licenceDetails.issuedState" placeholder="Select state"
                                           (change)="onChangeHideErrors('licenceDetails.issuedState')">
@@ -1479,7 +1480,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                            <label class="control-label font-weight-bold text-lg-right pt-2">SIN
-                                              Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                              <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                            <input (change)="onChangeHideErrors('paymentDetails.SIN_Number')"
                                               [(ngModel)]="driverData.paymentDetails.SIN_Number"
                                               name="paymentDetails.SIN_Number" type="text" class="form-control"
@@ -1961,7 +1962,7 @@
                                  <div class="row">
                                     <div class="col-lg-12">
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-                                          Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                          Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" [(ngModel)]="assetsData.assetIdentification"
                                           name="assetIdentification" class="form-control"
                                           placeholder="eg. XYZ,123 etc.">
@@ -1981,7 +1982,8 @@
                                     <div class="col-lg-12">
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span
-                                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                                             data-placement="top" title="Vehicle Identification Number."></i></label>
                                        <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
                                           placeholder="Enter VIN number of the asset" class="form-control">
                                     </div>
