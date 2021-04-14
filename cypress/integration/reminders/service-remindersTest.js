@@ -1,7 +1,7 @@
 describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
-  it('Add service-reminder test', function () {
+  it.only('Add service-reminder test', function () {
     /* ==== Generated with Cypress Studio ==== */
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -16,7 +16,7 @@ describe(" reminders tests", () => {
 
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz{enter}');
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
     //cy.get('#aa665db5fb90-0').click({ force: true });
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Delivery{enter}');
@@ -44,7 +44,7 @@ it('search-reset the reminder', function() {
 
   cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
   cy.wait(1000);
-  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz{enter}');
+  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
   cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
   cy.get('.ng-option-label').first().click({force: true});
   cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
@@ -66,15 +66,14 @@ it('Delete the reminder test', function() {
   cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
   cy.get('#btnsubmit').click();
   cy.get(':nth-child(6) > .nav-link > .fas').click();
-
-  cy.get(':nth-child(3) > :nth-child(6) > .btn-group > .btn > .fas').first().click({force: true});
-  cy.get(':nth-child(3) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(4)').click();
+  cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').first().click({force: true});
+  cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(4)').click();
   /* ==== End Cypress Studio ==== */
 });
 const { contains } = require("jquery");
 
 /* === Test Created with Cypress Studio === */
-it.only('validation error message', function() {
+it('validation error message', function() {
   /* ==== Generated with Cypress Studio ==== */
   cy.visit('http://localhost:4200/');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();

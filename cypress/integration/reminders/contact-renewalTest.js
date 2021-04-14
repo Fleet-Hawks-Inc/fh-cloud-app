@@ -41,7 +41,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(6) > .nav-link > .fas').click();
     cy.get('.wtopnav > .nav > :nth-child(3) > .nav-link').click();
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla car{enter}');
+    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
     //cy.get('#a6a9d792ba53-0').click();
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tyres renewal{enter}');

@@ -17,7 +17,7 @@ describe(" reminders tests", () => {
     cy.get('.col-md-4 > .btn').click();
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz{enter}');
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
 
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
@@ -45,7 +45,7 @@ describe(" reminders tests", () => {
     cy.wait(3000);
     cy.get('.bg-white.card  ul > li:nth-of-type(2) > .nav-link').click({ force: true }).should('not.exist');
     cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla benz{enter}');
+    cy.get('.page-header > .row > :nth-child(1) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
     cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
@@ -65,8 +65,9 @@ describe(" reminders tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(6) > .nav-link > .fas').click();
     cy.get('.wtopnav > .nav > :nth-child(2) > .nav-link').click();
-    cy.get(':nth-child(2) > :nth-child(6) > .btn-group > .btn').click();
-    cy.get(':nth-child(2) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
+    cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .btn > .fas').click();
+    cy.get(':nth-child(1) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
+    //cy.get(':nth-child(2) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
     /* ==== End Cypress Studio ==== */
   });
   /* === Test Created with Cypress Studio === */
