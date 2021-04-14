@@ -13,7 +13,7 @@ declare var $: any;
 })
 export class RouteDetailComponent implements OnInit {
 
-  pageTitle = "Route detail";
+  pageTitle = "Route Detail";
   form;
 
   routeID   = '';

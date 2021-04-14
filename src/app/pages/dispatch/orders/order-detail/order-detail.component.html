@@ -333,6 +333,7 @@
                                               
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
+                                              <th>PU#</th>
                                               <th>Quantity</th>
                                               <th>Weight</th>
                                              </tr>
@@ -341,6 +342,7 @@
                                              <tr *ngFor="let commodity of shipperReceiversInfo.shippers[j].commodity;let l = index">
                                               <td>{{l+1}}</td>
                                               <td>{{commodity.name}}</td>
+                                              <td>{{commodity.pu}}</td>
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
@@ -408,6 +410,7 @@
                                               
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
+                                              <th>DEL#</th>
                                               <th>Quantity</th>
                                               <th>Weight</th>
                                              </tr>
@@ -416,6 +419,7 @@
                                              <tr *ngFor="let commodity of shipperReceiversInfo.receivers[k].commodity;let m = index">
                                               <td>{{m+1}}</td>
                                               <td>{{commodity.name}}</td>
+                                              <td>{{commodity.del}}</td>
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
