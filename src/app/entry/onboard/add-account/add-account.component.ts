@@ -532,7 +532,7 @@ export class AddAccountComponent implements OnInit {
       },
       bank: this.bank
     };
-    console.log('data', data);return;
+    console.log('data', data);
     // create form data instance
     const formData = new FormData();
 
