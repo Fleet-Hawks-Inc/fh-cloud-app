@@ -23,13 +23,14 @@ export class AddAccountComponent implements OnInit {
   EIN = '';
   MC = '';
   SCAC = '';
-  CTPAT = '';
-  CSA = '';
+  CSA = false;
+  CTPAT = false;
+  PIP = false;
   cargoInsurance = '';
   email = '';
   userName = '';
   carrierName = '';
-  carrierBusinessName = '';
+  // carrierBusinessName = '';
   findingWay = '';
   firstName = '';
   lastName = '';
@@ -68,7 +69,7 @@ export class AddAccountComponent implements OnInit {
     branchName: '',
     accountNumber: '',
     routingNumber: '',
-    institutionalNumber: '',
+    institutionNumber: '',
     addressDetails: [{
       addressType: '',
       countryID: '',
@@ -472,7 +473,6 @@ export class AddAccountComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-    if (this.password === this.confirmPassword && this.password !== '') {
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
       if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
@@ -511,12 +511,14 @@ export class AddAccountComponent implements OnInit {
       userName: this.userName,
       CTPAT: this.CTPAT,
       CSA: this.CSA,
+      PIP: this.PIP,
       carrierName: this.carrierName,
       findingWay: this.findingWay,
       firstName: this.firstName,
       lastName: this.lastName,
       liabilityInsurance: this.liabilityInsurance,
       password: this.password,
+      confirmPassword: this.confirmPassword,
       addressDetails: this.addressDetails,
       phone: this.phone,
       fleets: {
@@ -530,6 +532,7 @@ export class AddAccountComponent implements OnInit {
       },
       bank: this.bank
     };
+    console.log('data', data);return;
     // create form data instance
     const formData = new FormData();
 
@@ -562,10 +565,7 @@ export class AddAccountComponent implements OnInit {
         this.toaster.success('Account Added successfully');
       },
     });
-  } else {
-    this.errorClass = true;
-    this.activeTab = 1;
-  }
+
   }
   throwErrors() {
     console.log(this.errors);
