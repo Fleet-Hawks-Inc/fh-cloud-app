@@ -19,7 +19,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(4) > .col-lg-10 > .form-control').click();
     cy.get('[aria-label="Thursday, April 1, 2021"] > .btn-light').click();
     cy.get('.pt-4 > .col-lg-10 > .form-control').clear();
-    cy.get('.pt-4 > .col-lg-10 > .form-control').type('12000');
+    cy.get('.pt-4 > .col-lg-10 > .form-control').type('10000');
     cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
     cy.get('.ng-option-label').click();
     cy.get(':nth-child(3) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();

@@ -31,7 +31,7 @@ describe(" reminders tests", () => {
     cy.get('.col-10 > .btn-success').click();
 
   });
-  /* === Test Created with Cypress Studio === */
+  
   it('search and reset the reminder', function () {
     /* ==== Generated with Cypress Studio ==== */
     cy.visit('http://localhost:4200/');
@@ -52,7 +52,7 @@ describe(" reminders tests", () => {
     cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ALL{enter}');
     cy.get(':nth-child(4) > .mr-2').click();
     cy.get('.row > :nth-child(4) > [type="button"]').click();
-    
+
   });
   /* === Test Created with Cypress Studio === */
   it('delete the reminder', function () {

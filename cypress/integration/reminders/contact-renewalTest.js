@@ -26,7 +26,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(3) > :nth-child(2) > :nth-child(1) > .form-control').click();
     cy.get('.ngb-dp-today > .btn-light').click();
     cy.get('.col-10 > .btn-success').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
 
   /* === Test Created with Cypress Studio === */
@@ -52,7 +52,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(4) > .mr-2').click();
     cy.get('.row > :nth-child(4) > [type="button"]').click();
 
-    
+
   });
   /* === Test Created with Cypress Studio === */
   it('Delete reminder', function () {
