@@ -15,7 +15,14 @@ export class CompanyProfileComponent implements OnInit {
  countryList: any = {};
  stateList: any  = {};
  cityList; any  = {};
-  constructor( private route: ActivatedRoute,private apiService: ApiService,) { }
+ bank: any = {
+  branchName: '',
+  accountNumber: '',
+  transitNumber: '',
+  routingNumber: '',
+  institutionNumber: '',
+};
+  constructor( private route: ActivatedRoute, private apiService: ApiService) { }
 
   ngOnInit() {
     this.companyID = this.route.snapshot.params[`companyID`];
@@ -25,7 +32,7 @@ export class CompanyProfileComponent implements OnInit {
     this. fetchCitiesList();
     this.fetchStatesList();
   }
-  fetchCarrier(){
+  fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
         .subscribe((result: any) => {
           this.carriers = result.Items[0];

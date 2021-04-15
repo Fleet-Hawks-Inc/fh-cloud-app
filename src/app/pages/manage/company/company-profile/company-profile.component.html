@@ -20,7 +20,7 @@
           <div class="bg-white">
             <div class="row p-3">
               <div class="col-1">
-                <img [src]="logoSrc">
+               <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc" class="img-fluid"></span>
               </div>
               <div class="col-11 text-dark">
                 <h1 class="font-weight-semibold text-7">{{carriers.carrierName}}</h1>
@@ -131,30 +131,32 @@
                       <td class="back-color-gray">Postal Code</td>
                       <td>{{address.zipCode}}</td>
                     </tr>
+                    <br>
                   </tbody>
+
                 </table>
               </div>
 
 
               <div class="col-lg-12">
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Detail</h2>
-                <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.bank">
+                <table class="table table-bordered table-responsive-lg" >
                   <tbody>
                     <tr>
                       <td width="20%" class="back-color-gray">Bank Name</td>
-                      <td width="30%">{{bank.branchName}}</td>
+                      <td width="30%"><span *ngIf="carriers.bank != undefined">{{carriers.bank.branchName}}</span></td>
                       <td width="20%" class="back-color-gray">Routing Number</td>
-                      <td width="30%">{{bank.routingNumber}}</td>
+                      <td width="30%"><span *ngIf="carriers.bank != undefined">{{carriers.bank.routingNumber}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Account Number</td>
-                      <td>{{bank.accountNumber}}</td>
+                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.accountNumber}}</span></td>
                       <td class="back-color-gray">Transit Number</td>
-                      <td>{{bank.transitNumber}}</td>
+                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.transitNumber}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Institution Number</td>
-                      <td>{{bank.institutionNumber}}</td>
+                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.institutionNumber}}</span></td>
                     </tr>
                   </tbody>
                 </table>

@@ -28,7 +28,7 @@ const routes: Routes = [
     path: 'company',
     children: [
       { path: 'detail/:companyID', component: CompanyProfileComponent },
-      { path: 'edit/:companyID', component: EditProfileComponent }
+      { path: 'edit/:carrierID', component: EditProfileComponent }
 
     ],
   },

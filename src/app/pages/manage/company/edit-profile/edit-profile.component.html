@@ -7,11 +7,11 @@
         <div class="col">
           <section class="card" style="align-items: center;">
             <div class="card-body pr-5 pl-5" style="width: 70%;">
-       <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm">
+       <form id="companyForm" class="form-horizontal form-bordered bg-white" name="companyForm">
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
-                    <h2 class="mt-1">Create Your Fleet Hawks Account</h2>
+                    <h2 class="mt-1">Edit Your Fleet Hawks Account</h2>
                   </div>
                 </div>
                 <div class="row">
@@ -37,10 +37,10 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="John Smith">
+                        <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="John Smith" disabled>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -52,7 +52,7 @@
                         <input id="cnf" type="password" class="form-control" name="confirmPassword" placeholder="eg. johnSmith@123"
                           [(ngModel)]="confirmPassword">
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -85,13 +85,11 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col-lg-12 mt-2">
                     <hr class="solid mt-4">
                   </div>
                 </div>
-
 
                 <div class="row">
                   <div class="col-lg-12">
@@ -153,10 +151,25 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo</label>
-                        <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo"
-                          type="file" class="form-control p-0">
+                        <input (change)="selectPhoto($event)" type="file" class="form-control p-0">
                       </div>
                     </div>
+                    <div class="row mt-2" >
+                      <div class="col-lg-5" >
+                         <div class="vehicle-photo-box">
+                            <img [src]="logoSrc" width="100%" class="img-fluid"
+                               style="height: 180px; object-fit: cover;">
+                            <hr class="m-3">
+                            <div class="row">
+                               <div class="col-lg-8">Logo</div>
+                               <div class="col-lg-4 text-right">
+                                  <i class="fas fa-times text-danger"  (click)="deleteLogo()"></i>
+
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -472,7 +485,7 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <button type="button" (click)="onSubmit()" class="btn btn-success" >Save</button>
+                    <button type="button" (click)="UpdateCarrier()" class="btn btn-success" >Update</button>
                   </div>
                 </div>
                 <div class="row mt-2">

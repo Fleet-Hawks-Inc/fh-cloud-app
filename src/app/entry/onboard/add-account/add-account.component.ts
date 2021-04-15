@@ -16,8 +16,6 @@ export class AddAccountComponent implements OnInit {
  // @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
-  activeTab = 1;
-
   CCC = '';
   DBAName = '';
   DOT = '';
@@ -303,6 +301,7 @@ export class AddAccountComponent implements OnInit {
       }
     }
     const data = {
+      entityType: 'carrier',
       CCC: this.CCC,
       DBAName: this.DBAName,
       DOT: this.DOT,
