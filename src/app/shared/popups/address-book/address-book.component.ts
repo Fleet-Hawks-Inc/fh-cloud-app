@@ -4962,15 +4962,16 @@ export class AddressBookComponent implements OnInit {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
     } 
-     
-
     await this.getSpecificCarrier(this.isCarrierID);
   }
 
   async getSpecificCarrier(id){
     this.apiService.getData(`carriers/${id}`)
       .subscribe((result: any) => {
-        this.currentUser = result.Items[0].businessName
+        if(result.Items.length > 0) {
+          this.currentUser = result.Items[0].businessName
+        }
+        
       });
   }
 }

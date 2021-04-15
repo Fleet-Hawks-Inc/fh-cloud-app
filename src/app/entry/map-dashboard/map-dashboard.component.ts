@@ -1,9 +1,10 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HereMapService } from '../../services';
+import { ApiService, HereMapService } from '../../services';
 import { Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { Auth } from 'aws-amplify';
 declare var $: any;
 declare var H: any;
 
@@ -25,6 +26,8 @@ declare var H: any;
 })
 export class MapDashboardComponent implements OnInit, AfterViewInit {
   environment = environment.isFeatureEnabled;
+  currentUser: any;
+  carrierID: any;
   title = 'Map Dashboard';
   visible = false;
 
@@ -33,26 +36,29 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   public map;
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  driverData: any;
   // Mapbox Integration
   style = 'mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g';
   lat = -104.618896;
   lng = 50.445210;
   isControlAdded = false;
-  frontEndData = {
-    drivers: {},
-  };
+  frontEndData: any  = [];
+  driverData: any = [];
 
   center = { lat: 30.900965, lng: 75.857277 };
   marker;
-  constructor(private HereMap: HereMapService) { }
+  constructor(
+    private HereMap: HereMapService,
+    private apiService: ApiService,
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.platform=this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
+    
     this.searchLocation();
     this.showDriverData();
-
+    this.carrierID = await this.getCurrentuser();
+    this.fetchAllStatesIDs();
     // Entire Fleet Tree initialization
     $(function () {
       $('#treeCheckbox').jstree({
@@ -117,7 +123,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
     const mockData = this.getDriverData();
     const geocoder = this.platform.getGeocodingService();
-    this.frontEndData = mockData;
+    // this.frontEndData = mockData;
 
     mockData.drivers.forEach(async driver => {
       const result = await geocoder.reverseGeocode(
@@ -334,4 +340,18 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {}
 
+
+  fetchAllStatesIDs() {
+    this.apiService.getData(`drivers/carrierby/${this.carrierID}`)
+      .subscribe((result: any) => {
+        this.driverData = result.Items;
+        console.log('frontEndData', this.frontEndData)
+      });
+  }
+
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    console.log('currentUser', this.currentUser.carrierID)
+    return this.currentUser.carrierID;
+  };
 }

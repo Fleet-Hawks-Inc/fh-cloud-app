@@ -762,6 +762,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       return await new Promise((resolve, reject) => {this.apiService.postData('drivers',formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        console.log('err.error', err.error.code)
+        if(err.error.code == 'InvalidParameterException'){
+            this.toastr.error('Please fill password field');
+        }
+        if(err.error.code == 'ResourceNotFoundException') {
+          this.toastr.error('ResourceNotFoundException');
+        }
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -793,7 +800,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.takeUntil$.next();
         this.takeUntil$.complete();
         this.spinner.hide();
-        this.cancel();
+        // this.cancel();
 
 
       },
