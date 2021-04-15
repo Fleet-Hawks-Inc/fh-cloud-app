@@ -56,8 +56,8 @@
                         <a data-toggle="modal" data-target="#addDocumentModal" href="javascript:;"
                             class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
                                 class="fas fa-plus"></i> Add Document</a>
-                        <button type="button" class="mb-1 mr-1 btn btn-success pull-right btn-sm"><i
-                                class="fas fa-download"></i> Download</button>
+                        <!-- <button type="button" class="mb-1 mr-1 btn btn-success pull-right btn-sm"><i
+                                class="fas fa-download"></i> Download</button> -->
                     </div>
                 </div>
                 <div class="right-wrapper text-right"></div>
@@ -71,7 +71,7 @@
                                     <tr>
                                         <th width="10%">Document#</th>
                                         <th width="10%">Trip ID</th>
-                                        <th width="10%">Type</th>
+                                        <th width="10%">Document Type</th>
                                         <th width="10%">Document Name</th>
                                         <th width="10%">Uploaded By</th>
                                         <th width="10%">Uploaded On</th>
@@ -136,7 +136,7 @@
     <div class="modal-dialog" style="max-width: 600px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
+                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
                 </button>
@@ -145,34 +145,42 @@
                 <form class="form-horizontal" method="get" name="form" id="form_">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
-                            <label for="">Document#</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document#
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
-                                name="documentNumber" type="text" class="form-control">
+                                name="documentNumber" type="text" class="form-control" placeholder="eg. 3801">
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Select Trip ID</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Select Trip ID
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <ng-select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
                                 <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document Type</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Type
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
-
-                                <ng-option value="BOL">BOL</ng-option>
-                                <ng-option value="POD">POD</ng-option>
+                                <ng-option value="BOL">BOL#</ng-option>
+                                <ng-option value="POD">POD#</ng-option>
                                 <ng-option value="Fuel Receipts">Fuel Receipts</ng-option>
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
-
                             </ng-select>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document Name</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Name
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input [(ngModel)]="documentData.documentName" name="documentName" type="text"
                                 class="form-control">
                         </div>
                         <div class="form-group col-lg-12 mb-3">
-                            <label for="">Choose File</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
@@ -185,7 +193,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputAddress">Description</label>
+                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Description&nbsp; <span
+                            class="text-1 optional-label-color">(optional)</span></label>
                         <textarea [(ngModel)]="documentData.description" name="description" class="form-control"
                             rows="3" id="textareaDefault"></textarea>
                     </div>

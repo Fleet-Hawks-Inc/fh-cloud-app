@@ -339,7 +339,9 @@ export class AddTripComponent implements OnInit {
 
         if(locations.length > 0) {
             // this.getCoords(locations);
-            this.resetMap();
+            // this.resetMap();
+            this.actualMiles = 0;
+            this.getMiles();
         }
 
         if (this.trips.length > 0) {
@@ -708,7 +710,9 @@ export class AddTripComponent implements OnInit {
                         this.calculateActualMiles(miles)
                     }
                     catch (error) {
-                        console.error(error)
+                        this.toastr.error('No route found with these locations.');
+                        return false;
+                        // console.error(error)
                     }
                     savedCord=endingPoint;
                 }
@@ -1014,12 +1018,13 @@ export class AddTripComponent implements OnInit {
         } else {
             this.tripData.reeferTemperature = '';
         }
-        this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
-        this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
+        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
+        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
 
+        this.tripData.dateCreated =  this.dateCreated;
         delete this.tripData.reeferTemperatureUnit;
         this.tripData.orderId = this.OrderIDs;
-        this.tripData.tripPlanning = [];
+        this.tripData.tripPlanning = []; 
         let planData = this.trips
 
         if (planData.length == 0) {
@@ -1394,7 +1399,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['tripNo'] = result.tripNo;
                 this.tripData['routeID'] = result.routeID;
                 this.tripData['bol'] = result.bol;
-                this.dateCreated = moment(result.dateCreated, 'x').format("YYYY-MM-DD");
+                this.dateCreated = result.dateCreated;
 
                 // allFetchedOrders
                 this.orderNo = '';
@@ -1531,8 +1536,10 @@ export class AddTripComponent implements OnInit {
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
-        this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
-        this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
+        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
+        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
+        this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+        // this.tripData.dateCreated =  this.dateCreated;
         let planData = this.trips;
 
         if (planData.length == 0) {

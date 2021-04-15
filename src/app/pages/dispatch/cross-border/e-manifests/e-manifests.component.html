@@ -4,55 +4,47 @@
             <header class="page-header" *ngIf="activeDiv === 'ace'">
                <form class="form-horizontal" method="get">
                   <div class="row" style="padding-top:10px;">
-                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3">
-                            <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control"
-                                placeholder="Search trip number/status" />
-                        </div>
-                    </div>
                      <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group mb-3">
-                            <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle"
-                                [(ngModel)]="vehicleIdentification" class="form-control"
-                                (input)="getSuggestions($event.target.value)" />
+                        <ng-select [(ngModel)]="filterCategory" name="filterCategory" placeholder="Search by Category"
+                           (change)="categoryChange($event,'ace')">
+                           <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
+                        </ng-select>
+                     </div>
+                     
+                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group mb-3" *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle'">
+                           <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control" placeholder="Search" />
                         </div>
-                        <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
-                           <ul>
-                               <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
-                                   (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"> {{
-                                       suggestedVehicle.vehicleIdentification }}
-                               </li>
-                           </ul>
-                       </div>
-                    </div>
+                     
+                        <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Driver"
+                           *ngIf="filterCategory == 'driver'">
+                           <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
+                     
+                        <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Vehicle"
+                           *ngIf="filterCategory == 'vehicle'">
+                           <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
+                     </div>
                      <div class="col-lg-3 col-md-3">
                         <div class="input-daterange input-group">
-                            <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                            </span>
-                            <input
-                            [(ngModel)]="fromDate" name="fromDate"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                            class="form-control" autocomplete="off">
-                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                to
-                            </span>
-                            <input
-                            [(ngModel)]="toDate" name="toDate"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                            class="form-control" autocomplete="off">
+                           <span class="input-group-prepend">
+                              <span class="input-group-text">
+                                 <i class="fas fa-calendar-alt"></i>
+                              </span>
+                           </span>
+                           <input [(ngModel)]="fromDate" name="fromDate" type="text" placeholder="yyyy/mm/dd" (click)="from.toggle()"
+                              ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off">
+                           <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                              to
+                           </span>
+                           <input [(ngModel)]="toDate" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker
+                              #to="ngbDatepicker" class="form-control" autocomplete="off">
                         </div>
-                    </div>
+                     </div>
                      <div class="col-md-2  col-lg-2">
-                        <button type="submit" (click)="searchACEFilter()"
-                                class="btn btn-sm btn-success mr-2">Search</button>
-                            <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
+                        <button type="submit" (click)="searchACEFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="button" (click)="resetACEFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
                      <div class="col-md-3 col-lg-3 text-right">
                         <div class="btn-group flex-wrap" *ngIf="!environment">
@@ -71,67 +63,64 @@
             <header class="page-header" *ngIf="activeDiv === 'aci'">
                <form class="form-horizontal" method="get">
                   <div class="row" style="padding-top:10px;">
-                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3">
-                            <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control"
-                                placeholder="Search trip number/status" />
-                        </div>
-                    </div>
                      <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group mb-3">
-                            <input type="text" autocomplete="off" name="vehicleIdentificationACI" placeholder="Search vehicle"
-                                [(ngModel)]="vehicleIdentificationACI" class="form-control"
-                                (input)="getSuggestionsACI($event.target.value)" />
+                        <ng-select [(ngModel)]="aciFilterCategory" name="aciFilterCategory" placeholder="Search by Category"
+                           (change)="categoryChange($event,'aci')">
+                           <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
+                        </ng-select>
+                     </div>
+            
+                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle'">
+                           <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control" placeholder="Search" />
                         </div>
-                        <div *ngFor="let suggestedVehicle of suggestedVehiclesACI" class="suggestionClass" (click)="
-                            setVehicleACI(
-                                suggestedVehicle.vehicleID,
-                                suggestedVehicle.vehicleIdentification
-                            )
-                            ">
-                            {{ suggestedVehicle.vehicleIdentification }}
-                        </div>
-                    </div>
+            
+                        <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Driver"
+                           *ngIf="aciFilterCategory == 'driver'">
+                           <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
+            
+                        <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Vehicle"
+                           *ngIf="aciFilterCategory == 'vehicle'">
+                           <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }} </ng-option>
+                        </ng-select>
+                     </div>
+            
                      <div class="col-lg-3 col-md-3">
                         <div class="input-daterange input-group">
-                            <span class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
-                            </span>
-                            <input
-                            [(ngModel)]="aciFromDate" name="aciFromDate"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                            class="form-control" autocomplete="off">
-                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                to
-                            </span>
-                            <input
-                            [(ngModel)]="aciToDate" name="aciToDate"
-                            type="text"
-                            placeholder="DD-MM-YYYY"
-                            (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                            class="form-control" autocomplete="off">
+                           <span class="input-group-prepend">
+                              <span class="input-group-text">
+                                 <i class="fas fa-calendar-alt"></i>
+                              </span>
+                           </span>
+                           <input [(ngModel)]="aciFromDate" name="aciFromDate" type="text" placeholder="yyyy/mm/dd"
+                              (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off">
+                           <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                              to
+                           </span>
+                           <input [(ngModel)]="aciToDate" name="aciToDate" type="text" placeholder="yyyy/mm/dd"
+                              (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off">
                         </div>
-                    </div>
+                     </div>
                      <div class="col-md-2  col-lg-2">
                         <button type="submit" (click)="searchACIFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                         <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
                      <div class="col-md-3 col-lg-3 text-right">
-
+            
                         <div class="btn-group flex-wrap" *ngIf="!environment">
-                           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                           <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-
+                           <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                              aria-expanded="false">Actions<span class="caret"></span></button>
+                           <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                              style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+            
                               <a class="dropdown-item text-1" href="">Import</a>
                               <a class="dropdown-item text-1" href="">Export</a>
                            </div>
                         </div>
-                        <a [routerLink] = "['/dispatch','cross-border','ACI-new-eManifest']"   class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
-
+                        <a [routerLink]="['/dispatch','cross-border','ACI-new-eManifest']" class="btn btn-success btn-sm mx-2"
+                           style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
+            
                      </div>
                   </div>
                </form>
@@ -150,7 +139,7 @@
                   <section class="card">
                      <div class="card-body">
                          <div class="tab-content p-0">
-                           <div class="tab-pane show active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
+                           <div class="tab-pane show table-responsive active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
                               <table class="table table-bordered table-responsive-lg table-striped mb-0" id="ace">
                                  <thead>
                                     <tr>
@@ -205,17 +194,18 @@
                                     </tr>
                                  </tbody>
                               </table>
-                              <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0">
-                                 <div class="col-6">
-                                    Showing {{ aceStartPoint }} to {{ aceEndPoint }} of {{ totalRecords }} enteries
-                                 </div>
-                                 <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('ace')" [disabled]="acePrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('ace')" [disabled]="aceNext">Next</button>
-                                 </div>
+                           </div>
+                           <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0 && activeDiv == 'ace'">
+                              <div class="col-6">
+                                 Showing {{ aceStartPoint }} to {{ aceEndPoint }} of {{ totalRecords }} enteries
+                              </div>
+                              <div class="col-6 text-right">
+                                 <button type="button" class="btn btn-default mr-2" (click)="prevResults('ace')" [disabled]="acePrev">Prev</button>
+                                 <button type="button" class="btn btn-default" (click)="nextResults('ace')" [disabled]="aceNext">Next</button>
                               </div>
                            </div>
-                           <div class="tab-pane" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
+
+                           <div class="tab-pane table-responsive" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
                                <table class="table table-bordered table-responsive-lg table-striped mb-0" id="aci">
                                  <thead>
                                     <tr>
@@ -267,14 +257,14 @@
                                     </tr>
                                  </tbody>
                               </table>
-                              <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0">
-                                 <div class="col-6">
-                                    Showing {{ aciStartPoint }} to {{ aciEndPoint }} of {{ totalACIRecords }} enteries
-                                 </div>
-                                 <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('aci')" [disabled]="aciPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('aci')" [disabled]="aciNext">Next</button>
-                                 </div>
+                           </div>
+                           <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0 && activeDiv == 'aci'">
+                              <div class="col-6">
+                                 Showing {{ aciStartPoint }} to {{ aciEndPoint }} of {{ totalACIRecords }} enteries
+                              </div>
+                              <div class="col-6 text-right">
+                                 <button type="button" class="btn btn-default mr-2" (click)="prevResults('aci')" [disabled]="aciPrev">Prev</button>
+                                 <button type="button" class="btn btn-default" (click)="nextResults('aci')" [disabled]="aciNext">Next</button>
                               </div>
                            </div>
                         </div>

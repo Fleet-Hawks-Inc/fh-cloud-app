@@ -165,7 +165,7 @@
                         <button type="button" class="btn cus-btn-padd btn-success" *ngIf="t === (fuelData.taxes.length)-1" (click)="addFuelTaxRow()"><i
                             class="fas fa-plus"></i></button>
                             <button type="button" (click)="deleteTaxRow(t)" *ngIf="t != (fuelData.taxes.length)-1" class="btn cus-btn-padd btn-danger"> <i
-                              class="fas fa-times"></i></button>
+                              class="fas fa-minus"></i></button>
                       </div>
                     </div>
                     <div class="row">
@@ -242,7 +242,7 @@
                     </div>
                     <div class="row" *ngIf="fuelData.paymentMode === 'FuelCard'">
                       <div class="col-lg-5 offset-lg-5">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Card Number<span
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Card#<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" name="fuelCardNumber"
                           [(ngModel)]="fuelData.fuelCardNumber">
@@ -293,7 +293,7 @@
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">State<span
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Province<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select placeholder="Select State" name="stateID" [(ngModel)]="fuelData.stateID">
                           <ng-container *ngFor="let state of states | async">
@@ -351,7 +351,7 @@
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row pt-2">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip ID&nbsp;
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip &nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select placeholder="Select Trip" name="tripID" [(ngModel)]="fuelData.tripID">
 

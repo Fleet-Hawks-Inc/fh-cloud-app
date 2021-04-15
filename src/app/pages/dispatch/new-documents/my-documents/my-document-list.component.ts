@@ -354,22 +354,32 @@ export class MyDocumentListComponent implements OnInit {
 
   searchFilter() {
     if(this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.documents = [];
-      this.suggestions = [];
-      if(this.filterValues.startDate !== '') {
-        let start = this.filterValues.startDate;
-        this.filterValues.start = moment(start+' 00:00:01').format("X");
-        this.filterValues.start = this.filterValues.start*1000;
+
+      if(this.filterValues.startDate !== '' && this.filterValues.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.filterValues.startDate == '' && this.filterValues.endDate !== '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.documents = [];
+        this.suggestions = [];
+        if(this.filterValues.startDate !== '') {
+          let start = this.filterValues.startDate;
+          this.filterValues.start = moment(start+' 00:00:01').format("X");
+          this.filterValues.start = this.filterValues.start*1000;
+        }
+        if(this.filterValues.endDate !== '') {
+          let end = this.filterValues.endDate;
+          this.filterValues.end = moment(end+' 23:59:59').format("X");
+          this.filterValues.end = this.filterValues.end*1000;
+        }
+        this.pageLength = this.totalRecords;
+        this.fetchDocumentsCount();
+        this.initDataTable();
       }
-      if(this.filterValues.endDate !== '') {
-        let end = this.filterValues.endDate;
-        this.filterValues.end = moment(end+' 23:59:59').format("X");
-        this.filterValues.end = this.filterValues.end*1000;
-      }
-      this.pageLength = this.totalRecords;
-      this.fetchDocumentsCount();
-      this.initDataTable();
+      
     } else {
       return false;
     }

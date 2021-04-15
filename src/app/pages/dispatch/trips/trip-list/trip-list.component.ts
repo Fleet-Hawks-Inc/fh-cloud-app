@@ -751,32 +751,44 @@ export class TripListComponent implements OnInit {
   filterTrips() {
     if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
     || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
-      if(this.tripsFiltr.category == 'location') {
-        this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.toLowerCase();
+
+      if(this.tripsFiltr.startDate != '' && this.tripsFiltr.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.startDate == '' && this.tripsFiltr.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      }else {
+        if(this.tripsFiltr.category == 'location') {
+          this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.toLowerCase();
+        }
+        
+        this.trips = [];
+        // let sdate;
+        // let edate;
+        if(this.tripsFiltr.startDate !== ''){
+          // sdate = this.tripsFiltr.startDate.split('-');
+          // if(sdate[0] < 10) {
+          //   sdate[0] = '0'+sdate[0]
+          // }
+          this.tripsFiltr.start = this.tripsFiltr.startDate;
+        }
+        if(this.tripsFiltr.endDate !== ''){
+          // edate = this.tripsFiltr.endDate.split('-');
+          // if(edate[0] < 10) {
+          //   edate[0] = '0'+edate[0]
+          // }
+          this.tripsFiltr.end = this.tripsFiltr.endDate;
+        }
+        this.totalRecords = this.allTripsCount;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.activeTab = 'all';
+        this.fetchTripsCount();
+        this.initDataTable('all');
       }
-      
-      this.trips = [];
-      // let sdate;
-      // let edate;
-      if(this.tripsFiltr.startDate !== ''){
-        // sdate = this.tripsFiltr.startDate.split('-');
-        // if(sdate[0] < 10) {
-        //   sdate[0] = '0'+sdate[0]
-        // }
-        this.tripsFiltr.start = moment(this.tripsFiltr.startDate, 'YYYY-MM-DD hh:mm:ss').format('x');
-      }
-      if(this.tripsFiltr.endDate !== ''){
-        // edate = this.tripsFiltr.endDate.split('-');
-        // if(edate[0] < 10) {
-        //   edate[0] = '0'+edate[0]
-        // }
-        this.tripsFiltr.end = moment(this.tripsFiltr.endDate, 'YYYY-MM-DD hh:mm:ss').format('x');
-      }
-      this.totalRecords = this.allTripsCount;
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.activeTab = 'all';
-      this.fetchTripsCount();
-      this.initDataTable('all');
     } else {
       return false;
     }
@@ -800,32 +812,11 @@ export class TripListComponent implements OnInit {
       this.fetchTripsCount();
       this.initDataTable('all');
       this.getStartandEndVal('all');
+      this.resetEndPoint('all');
     } else {
       return false;
     }
   }
-
-  // selectCategory(type) {
-  //   let typeText = '';
-  //   this.tripsFiltr.category = type;
-
-  //   if (type === 'TripNo') {
-  //     typeText = 'Trip Number';
-  //     this.tripsFiltr.category = 'tripNo'
-  //   } else if (type === 'TripType') {
-  //     typeText = 'Trip Type';
-  //   } else if (type === 'OrderNo') {
-  //     typeText = 'Order Number';
-  //   } else if(type === 'TripType') {
-  //     typeText = 'Trip Type';
-  //   } else if(type === 'OrderNo') {
-  //     typeText = 'Order Number';
-  //   } else {
-  //     typeText = type;
-  //   }
-    
-  //   $("#categorySelect").text(typeText);
-  // }
 
   fetchAllStatesIDs() {
     this.apiService.getData('states/get/list')
