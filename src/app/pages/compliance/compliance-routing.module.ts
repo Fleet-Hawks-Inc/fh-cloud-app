@@ -8,6 +8,7 @@ import { DriverHosComponent } from './hos/driver-hos/driver-hos.component';
 import { MileageComponent } from './ifta/mileage/mileage.component';
 import { ReportComponent } from './ifta/report/report.component';
 import { UnidentifiedComponent } from './hos/unidentified/unidentified.component';
+import { UncertifiedComponent } from './hos/uncertified/uncertified.component';
 import { InspectionSummaryComponent } from './dvir/inspection-summary/inspection-summary.component';
 import {InspectionDetailComponent} from './dvir/inspection-detail/inspection-detail.component';
 import { GenerateQuarterlyReportComponent } from './ifta/generate-quarterly-report/generate-quarterly-report.component';
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'edit/:userName/:eventDate', component: EditComponent },
       { path: 'detailed/:userName/:eventDate', component: DetailedComponent },
       { path: 'unidentified', component: UnidentifiedComponent },
+      { path: 'uncertified', component:  UncertifiedComponent},
       { path: 'summary', component: SummaryComponent },
       { path: 'driver-hos', component: DriverHosComponent },
     ],
