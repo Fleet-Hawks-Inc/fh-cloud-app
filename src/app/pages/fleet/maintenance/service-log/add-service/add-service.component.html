@@ -485,11 +485,11 @@
                      </div>
                      <div class="row" id="newPartDiv" *ngIf="partType == 'new'">
                         <div class="col-lg-6">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
                            <input type="text" class="form-control" placeholder="Enter part number" [(ngModel)]="partData.partNumber" name="partNumber">
                         </div>
                         <div class="col-lg-6">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Name</label>
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Item Name</label>
                            <input type="text" class="form-control" placeholder="Enter inventory part name eg. tires" [(ngModel)]="itemData.itemName" name="itemName">
                         </div>
                         <div class="col-lg-6">
@@ -540,7 +540,7 @@
                      </div>
                      <div class="row" id="existingPartDiv" *ngIf="partType == 'existing'">
                         <div class="col-lg-6">
-                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part Number</label>
+                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
                            <ng-select (change)="getPartDetail($event)" [(ngModel)]="partData.partNumber" name="partNumber" style="width: 100%;"
                               placeholder="Select part number">
                               <ng-option *ngFor="let data of inventoryItems;" value="{{data.partNumber}}">{{data.partNumber}}</ng-option>
@@ -566,7 +566,7 @@
             </div>
             <div class="modal-footer">
                <div class="col-md-12 text-right">
-                  <button class="btn btn-default modal-dismiss mr-3" data-dismiss="modal">Close</button>
+                  <button class="btn btn-default modal-dismiss mr-3" data-dismiss="modal">Cancel</button>
                   <a href="javascript:;" *ngIf="partType == 'existing'" (click)="fetchPartNumber()" class="btn btn-success" id="nextBtn">Save</a>
                   <a href="javascript:;" *ngIf="partType == 'new'" (click)="addInventory()" class="btn btn-success" id="nextBtn">Save</a>
                </div>
@@ -612,7 +612,7 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">
-               Close
+               Cancel
             </button>
             <button type="button" class="btn btn-success" (click)="addGroup()">
                Save
