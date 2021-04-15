@@ -59,15 +59,21 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Port of Entry:</th>
-                                                    <td>{{portOfEntry}}</td>
+                                                    <td>{{canadianPortsObjects[portOfEntry]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Estimated Arrival Date:</th>
-                                                    <td>{{estimatedArrivalDateTime}} </td>
+                                                    <td>{{estimatedArrivalDateTime}}
+                                                      &nbsp;
+                                                      <span *ngIf="estimatedArrivalTimeZone == 'PST'">Pacific Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone == 'AST'">Atlantic Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone == 'CST'">Central Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone == 'EST'">Eastern Standard Time</span>
+                                            <span *ngIf="estimatedArrivalTimeZone == 'MST'">Mountain Standard Time</span></td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Sub Location/Warehouse:</th>
-                                                    <td>{{subLocation}}</td>
+                                                    <td>{{subLocationObjects[subLocation]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Current Status:
@@ -213,12 +219,12 @@
                                     <thead>
                                         <tr>
                                             <th>Cargo Control Number</th>
-                                            <th>Shipper</th>
+                                            <th>Consignor</th>
                                             <th>Consignee</th>
                                             <th>Quantity</th>
                                             <th>Last Edited</th>
                                             <th>Loaded On</th>
-                                            <th  width="10%">Action</th>
+                                            <th  width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -246,12 +252,11 @@
                                                 {{shipment.consignee.address.city}}
                                                 {{stateCodeToName[shipment.consignee.address.stateProvince]}}
                                                 {{shipment.consignee.address.postalCode}}
-
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{commodity.packagingUnit}},</span>
+                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{packagingUnitsObjects[commodity.packagingUnit]}},</span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
@@ -260,7 +265,8 @@
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
-                                                {{shipment.loadedOn.type}} [{{shipment.loadedOn.number}}]</td>
+                                                <span *ngIf="shipment.loadedOn.type == 'TRUCK'">Vehicle</span>
+                                                <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset</span>[{{shipment.loadedOn.number}}]</td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -295,7 +301,7 @@
                                             <th>Name</th>
                                             <th>Type</th>
                                             <th>Driver Number</th>
-                                            <th>Travel Documents</th>
+                                            <th>Documents</th>
                                             <th  width="10%">Action</th>
                                         </tr>
                                     </thead>
@@ -354,7 +360,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Truck on <b> {{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Vehicle on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
                                         class="btn btn-success btn-sm"> Set Cargo Exemption</a>
@@ -364,24 +370,26 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="15%">Truck#</th>
-                                            <th width="15%">Truck Type</th>
-                                            <th width="15%">Licence Plate</th>
-                                            <th width="15%">Licence State/Province</th>
+                                            <th width="15%">Vehicle Name</th>
+                                            <th width="15%">Vehicle Type</th>
+                                            <th width="10%">Licence Plate Number</th>
+                                            <th width="10%">Licence State/Province</th>
+                                            <th width="10%">Licence Country</th>
                                             <th width="15%">IIT/Cargo Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-toggle="modal" data-target="#showTruckDetails"
                                             class="modal-with-form cursor-pointer" >
                                             <td> {{truck.number}} </td>
-                                            <td>{{truck.type}}</td>
+                                            <td>{{vehicleTypeObjects[truck.type]}}</td>
                                             <td>{{truck.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[truck.licensePlate.stateProvince]}}</td>
+                                            <td>{{countryCodeName[truck.licensePlate.country]}}</td>
                                             <td><span *ngFor="let cargo of truck.cargoExemptions">{{cargo}}&nbsp;</span></td>
-                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}}&nbsp;</span></td>
+                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -401,25 +409,25 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Trailers on <b> {{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Assets on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <!-- <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
                                         class="btn btn-success btn-sm mr-1"> Set Cargo Exemption</a> -->
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
                                 </div>
                             </div>
                             <div class="card-body border">
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th width="15%">Trailer#</th>
-                                            <th width="15%">Trailer Type</th>
-                                            <th width="15%">Licence Plate</th>
+                                            <th width="15%">Asset Name</th>
+                                            <th width="15%">Type</th>
+                                            <th width="15%">Licence Plate Number</th>
                                             <th width="15%">Licence State/Province</th>
-                                            <th width="15%">IIT/Cargo Exemption(s)</th>
+                                            <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -431,8 +439,8 @@
                                               <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[trailer.licensePlate.stateProvince]}}</td>
-                                            <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargo}}&nbsp;</span></td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}&nbsp;</span></td>
+                                            <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}}&nbsp;</span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -467,16 +475,17 @@
                                         <tr>
                                             <th>Container#</th>
                                             <th>Loaded On</th>
-                                            <th width="15%">Cargo Exemptions</th>
+                                            <th width="15%">Exemptions</th>
                                             <th width="15%">Seal Numbers</th>
-                                            <th width="10%">Action</th>
+                                            <th width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let container of containers">
                                             <td>{{container.number}}</td>
-                                            <td>{{container.loadedOn.type}}[{{container.loadedOn.number}}]</td>
-                                            <td>{{container.cargoExemptions}}</td>
+                                            <td><span *ngIf="container.loadedOn.type === 'TRAILER'">Asset</span>
+                                                <span *ngIf="container.loadedOn.type === 'TRUCK'">Vehicle</span>[{{container.loadedOn.number}}]</td>
+                                            <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}}</td>
                                             <td><span *ngFor="let seal of container.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
@@ -591,7 +600,7 @@
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Truck Insurance Details</h5>
+                <h5 class="modal-title">Vehicle Insurance Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
@@ -603,19 +612,19 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Truck Number:</th>
+                                        <th width="40%" class="back-color-gray">Vehicle#:</th>
                                         <td>{{truck.number}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Truck Type:</th>
+                                        <th width="40%" class="back-color-gray">Type:</th>
                                         <td>{{truck.type}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">VIN Number:</th>
+                                        <th width="40%" class="back-color-gray">VIN#:</th>
                                         <td>{{truck.vinNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">DOT Number:</th>
+                                        <th width="40%" class="back-color-gray">DOT#:</th>
                                         <td>{{truck.dotNumber}}</td>
                                     </tr>
                                     <tr>
@@ -632,7 +641,7 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Seals:</th>
+                                        <th width="40%" class="back-color-gray">Seal#:</th>
                                         <td><span *ngFor="let seal of truck.sealNumbers">{{seal}},</span></td>
                                     </tr>
                                     <tr>
@@ -644,7 +653,7 @@
                                         <td>{{truck.insurancePolicy.issuedDate}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Policy Number:</th>
+                                        <th width="40%" class="back-color-gray">Policy#:</th>
                                         <td>{{truck.insurancePolicy.policyNumber}}</td>
                                     </tr>
                                     <tr>
@@ -683,19 +692,19 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Shipment Type:</th>
-                                        <td>{{shipmentData.shipmentType}}</td>
+                                        <td>{{shipmentTypeObjects[shipmentData.shipmentType]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Cargo Control Number:</th>
                                         <td>{{shipmentData.cargoControlNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Port Of Entry:</th>
-                                        <td>{{shipmentData.portOfEntry}}</td>
+                                        <th width="40%" class="back-color-gray">Canadian Port Of Entry:</th>
+                                        <td>{{canadianPortsObjects[shipmentData.portOfEntry]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Release Office:</th>
-                                        <td>{{shipmentData.releaseOffice}}</td>
+                                        <td>{{releaseOfficeObjects[shipmentData.releaseOffice]}}</td>
                                     </tr>
 
                                 </tbody>
@@ -707,7 +716,12 @@
                                     <tr>
                                         <th width="40%" class="back-color-gray">Date/Time/TimeZone:</th>
                                         <td>{{shipmentData.estimatedArrivalDate}}
-                                            &nbsp;{{shipmentData.estimatedArrivalTimeZone}}</td>
+                                            &nbsp;<span *ngIf="shipmentData.estimatedArrivalTimeZone == 'PST'">Pacific Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'AST'">Atlantic Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'CST'">Central Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'EST'">Eastern Standard Time</span>
+                                            <span *ngIf="shipmentData.estimatedArrivalTimeZone == 'MST'">Mountain Standard Time</span>
+                                          </td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">City Of Loading:</th>
@@ -720,7 +734,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Shipper:</th>
+                                        <th width="40%" class="back-color-gray">Consignor:</th>
                                         <td>{{shipmentData.shipper}}</td>
                                     </tr>
                                     <tr>
@@ -731,33 +745,7 @@
                             </table>
                         </div>
                     </div>
-                    <!-- notify parties -->
-                    <div class="row mt-2" *ngIf="shipmentData.notifyParties?.length">
-                        <div class="col-lg-12">
-                            <h4>Notify Party Details</h4>
-                        </div>
-                        <div class="col-lg-12">
-                            <table class="table table-bordered table-striped m-0">
-                                <thead>
-                                    <tr>
-                                        <th> Name </th>
-                                        <th>Contact Number</th>
-                                        <th>Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let notifyParty of shipmentData.notifyParties">
-                                        <td>{{notifyParty.name}}</td>
-                                        <td>{{notifyParty.contactNumber}}</td>
-                                        <td>{{notifyParty.address.addressLine}},
-                                            {{notifyParty.address.city}},{{stateCodeToName[notifyParty.address.stateProvince]}},{{notifyParty.address.postalCode}}
-                                        </td>
-                                    </tr>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                     <!-- delivery destinations -->
                     <div class="row mt-2" *ngIf="shipmentData.deliveryDestinations?.length">
                         <div class="col-lg-12">
@@ -777,7 +765,7 @@
                                         <td>{{deliveryDestination.name}}</td>
                                         <td>{{deliveryDestination.contactNumber}}</td>
                                         <td>{{deliveryDestination.address.addressLine}},
-                                            {{deliveryDestination.address.city}},{{stateCodeToName[deliveryDestination.address.stateProvince]}},{{deliveryDestination.address.postalCode}}
+                                            {{deliveryDestination.address.city}},{{stateCodeToName[deliveryDestination.address.stateProvince]}},{{countryCodeName[deliveryDestination.address.country]}},{{deliveryDestination.address.postalCode}}
                                         </td>
                                     </tr>
 
@@ -785,6 +773,33 @@
                             </table>
                         </div>
                     </div>
+                    <!-- notify parties -->
+                    <div class="row mt-2" *ngIf="shipmentData.notifyParties?.length">
+                      <div class="col-lg-12">
+                          <h4>Notify Party Details</h4>
+                      </div>
+                      <div class="col-lg-12">
+                          <table class="table table-bordered table-striped m-0">
+                              <thead>
+                                  <tr>
+                                      <th> Name </th>
+                                      <th>Contact Number</th>
+                                      <th>Address</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngFor="let notifyParty of shipmentData.notifyParties">
+                                      <td>{{notifyParty.name}}</td>
+                                      <td>{{notifyParty.contactNumber}}</td>
+                                      <td>{{notifyParty.address.addressLine}},
+                                          {{notifyParty.address.city}},{{stateCodeToName[notifyParty.address.stateProvince]}},{{countryCodeName[notifyParty.address.country]}},{{notifyParty.address.postalCode}}
+                                      </td>
+                                  </tr>
+
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
                     <!-- commodities -->
                     <div class="row mt-2">
                         <div class="col-lg-12">
@@ -794,31 +809,32 @@
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th> Commodity Description </th>
-                                        <th>Hazmat Details</th>
+                                        <th>Commodity Description </th>
+                                        <th>Hazardous Details</th>
                                         <th>Other Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let commodity of shipmentData.commodities">
                                         <td><span
-                                                class="font-weight-semibold">Description:</span>{{commodity.description}}<br>
+                                                class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:</span>{{commodity.value}}<br
+                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}<br
                                                 *ngIf="commodity.value">
-                                            <span class="font-weight-semibold">Quantity:</span>{{commodity.quantity}}
-                                            {{commodity.packagingUnit}} <br>
-                                            <span class="font-weight-semibold">Weight:</span> {{commodity.weight}}
-                                            {{commodity.weightUnit}}
+                                            <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
+                                            {{packagingUnitsObjects[commodity.packagingUnit]}} <br>
+                                            <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
+                                            <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
+                                            <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
                                         </td>
                                         <td><span class="font-weight-semibold">UN
-                                                Code:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.unCode}}</span><br>
+                                                Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.unCode}}</span><br>
                                             <span class="font-weight-semibold">Emergency Contact
-                                                Name:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
+                                                Name:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                                                Phone:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Handling
-                                                Instructions:</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.handlingInstructions}}</span>
+                                                Instructions:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.handlingInstructions}}</span>
                                         </td>
                                         <td>
                                             <span class="font-weight-semibold">Marks and Numbers:</span>{{commodity.marksAndNumbers}}
@@ -856,7 +872,7 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">
-                                            Driver Number:</th>
+                                            Driver#:</th>
                                         <td>{{driverData.driverNumber}}</td>
                                     </tr>
                                     <tr>
@@ -877,11 +893,11 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Fast CardNumber:</th>
+                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
                                         <td>{{driverData.fastCardNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship Country:</th>
+                                        <th width="40%" class="back-color-gray">Citizenship:</th>
                                         <td>{{countryCodeName[driverData.citizenshipCountry]}}</td>
                                     </tr>
                                     <tr>
@@ -894,21 +910,25 @@
                     </div>
                     <!-- travel documents -->
                     <div class="row mt-2" *ngIf="driverData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Travel Documents Details</h4></div>
+                        <div class="col-lg-12"><h4>Documents Details</h4></div>
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th>Document Number </th>
-                                        <th>Issuing State/Province</th>
+                                        <th>Document#</th>
                                         <th>Document Type</th>
+                                        <th>Issuing Country</th>
+                                        <th>Issuing State/Province</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let travelDocument of driverData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
+                                        <td>{{documentsTypesObjects[travelDocument.type]}}</td>
+                                        <td>{{countryCodeName[travelDocument.country]}}</td>
                                         <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
-                                        <td>{{travelDocument.type}}</td>
+
                                     </tr>
 
                                 </tbody>
@@ -961,11 +981,11 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Fast CardNumber:</th>
+                                        <th width="40%" class="back-color-gray">Fast Card#:</th>
                                         <td>{{passengerData.fastCardNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Citizenship Country:</th>
+                                        <th width="40%" class="back-color-gray">Citizenship:</th>
                                         <td>{{countryCodeName[passengerData.citizenshipCountry]}}</td>
                                     </tr>
 
@@ -975,21 +995,23 @@
                     </div>
                     <!-- travel documents -->
                     <div class="row mt-2" *ngIf="passengerData.travelDocuments?.length">
-                        <div class="col-lg-12"><h4>Travel Documents Details</h4></div>
+                        <div class="col-lg-12"><h4>Documents Details</h4></div>
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
                                 <thead>
                                     <tr>
-                                        <th>Document Number </th>
-                                        <th>Issuing State/Province</th>
-                                        <th>Document Type</th>
+                                      <th>Document# </th>
+                                      <th>Document Type</th>
+                                      <th>Issuing Country</th>
+                                      <th>Issuing State</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let travelDocument of passengerData.travelDocuments">
                                         <td>{{travelDocument.number}}</td>
+                                        <td>{{documentsTypesObjects[travelDocument.type]}}</td>
+                                        <td>{{countryCodeName[travelDocument.country]}}</td>
                                         <td>{{stateCodeToName[travelDocument.stateProvince]}}</td>
-                                        <td>{{travelDocument.type}}</td>
                                     </tr>
 
                                 </tbody>

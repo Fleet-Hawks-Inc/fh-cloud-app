@@ -102,7 +102,7 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
                                 </a>
                             </div>
                         </div>
@@ -198,7 +198,7 @@
                                 </a>
                                 <a class="dropdown-item text-1" href="javascript:;">
                                     <label><input type="checkbox" [(ngModel)]="hideShow.reorderQuantity"
-                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quality </label>
+                                            name="reorderQuantity" (change)="hideShowColumn()"> Reorder Quantity </label>
                                 </a>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="col1">Part#</th>
-                                                        <th class="col2">Name</th>
+                                                        <th class="col2">Item Name</th>
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
                                                         <th class="col5">Quantity</th>
@@ -245,7 +245,7 @@
                                                         <th class="col8">Warehouse Details</th>
                                                         <th class="col9 extra">Warranty Days and Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
-                                                        <th class="col11 extra">Reorder Quality</th>
+                                                        <th class="col11 extra">Reorder Quantity</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -342,10 +342,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>Part#</th>
-                                                    <th>Name</th>
+                                                    <th>Item Name</th>
                                                     <th>Vendor</th>
                                                     <th>Quantity</th>
-                                                    <th>Action</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -415,8 +415,8 @@
 
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part
-                                        Number</label>
+                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#
+                                        </label>
                                     <input type="text" class="form-control" name="partNumber" [(ngModel)]="partNumber">
                                 </div>
                                 <div class="col-lg-6">
