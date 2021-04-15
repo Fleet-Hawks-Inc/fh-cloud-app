@@ -27,10 +27,19 @@
 
             <div class="input-group">
               <div class="logiconm mr-3">
-                <i class="fas fa-lock logicon text-5"></i>
+                <i class="fa fa-lock logicon text-5"></i>
               </div>
-              <input name="pwd" type="password" placeholder="Password" class="form-control login form-control-lg"
+              <input name="pwd"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg"
                 [(ngModel)]="password" />
+                <div class="input-group-append">
+                  <span class="input-group-text eye">
+                    <i class="fa" [ngClass]="{
+                      'fa-eye-slash': !fieldTextType,
+                      'fa-eye': fieldTextType
+                    }"
+                    (click)="toggleFieldTextType()"></i>
+                  </span>
+               </div>
 
             </div>
 

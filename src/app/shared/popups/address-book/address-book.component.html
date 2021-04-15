@@ -1348,7 +1348,7 @@
                                                         </ng-select>
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                             <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span>
@@ -1372,7 +1372,7 @@
                                                 <a class="btn btn-dark mr-2" href="javascript:;" (click)="clearAddress(i, 'customer')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(customerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'customer')" class="btn btn-success"
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'customer')" class="btn btn-danger"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -1507,7 +1507,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12 text-right pb-4 pr-5 mt-3">
-                                        
+
                                      </div>
                                   </div>
                             </form>
@@ -1636,7 +1636,7 @@
                                                         </label>
                                                         <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT#">
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
@@ -1704,7 +1704,7 @@
                                                 <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearAddress(i, 'broker')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(brokerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'broker')" class="btn btn-success"
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'broker')" class="btn btn-danger"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -1830,7 +1830,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                 </div>
                             </form>
                         </div>
@@ -2202,7 +2202,7 @@
                                                 <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearAddress(i, 'carrier')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(carrierData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'carrier')" class="btn btn-success"
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'carrier')" class="btn btn-danger"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -2319,7 +2319,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </form>
                         </div>
@@ -2603,7 +2603,7 @@
                                                 <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearAddress(i, 'operator')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(ownerData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'operator')" class="btn btn-success"
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'operator')" class="btn btn-danger"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -2719,7 +2719,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </form>
                         </div>
@@ -2878,7 +2878,7 @@
                                         <a href="javascript:;" class="btn btn-dark mr-3" (click)="clearAddress(i, 'shipper')">Clear</a>
                                         <a *ngIf="i == 0;" (click)="addAddress(shipperData);" class="btn btn-success"
                                             href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
-                                        <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'shipper')" class="btn btn-success"
+                                        <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'shipper')" class="btn btn-danger"
                                             href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                     <div *ngIf="item.manual" class="row">
@@ -2992,7 +2992,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>
@@ -3145,7 +3145,7 @@
                                         <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearAddress(i, 'consignee')">Clear</a>
                                         <a *ngIf="i == 0;" (click)="addAddress(consigneeData);" class="btn btn-success"
                                             href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
-                                        <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'consignee')" class="btn btn-success"
+                                        <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'consignee')" class="btn btn-danger"
                                             href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                     </div>
                                     <div *ngIf="item.manual" class="row">
@@ -3417,7 +3417,7 @@
                                                 <a href="javascript:;" class="btn btn-dark" (click)="clearAddress(i, 'company')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(fcCompanyData);" class="btn btn-success"
                                                     href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'company')" class="btn btn-success"
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'company')" class="btn btn-danger"
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -3683,7 +3683,7 @@
                                                 <a href="javascript:;" class="btn btn-dark" (click)="clearAddress(i, 'staff')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(staffData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
-                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'staff')" class="btn btn-success" href="javascript:;"><i
+                                                <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'staff')" class="btn btn-danger" href="javascript:;"><i
                                                         class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
@@ -4285,7 +4285,7 @@
                                 <th width="40%" class="back-color-gray">Designation:</th>
                                 <td>{{userDetailData.userAccount.designation}}</td>
                             </tr>
-                            
+
                             <tr *ngIf="userDetailData.userData.username">
                                 <th width="40%" class="back-color-gray">Enable Login:</th>
                                 <td>Yes</td>

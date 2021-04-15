@@ -82,7 +82,9 @@ describe('vehicle Test', function () {
         cy.get('input[name="engine.transmissionType"]').first().type('Continuously Variable');
         cy.get('input[name="engine.transmissionGears"]').first().type('6');
         cy.get('[class="btn btn-success mt-4 ng-star-inserted"]').first().click();//savenxt
+
         // cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();//Purchase vendor
+
         cy.get('input[name="purchase.purchasePrice"]').first().type('7000');
         cy.get('div#purchase  .pt-3.row > div:nth-of-type(2) > div:nth-of-type(2) ng-select[role="listbox"] input[role="combobox"]').first().click();
         cy.get('[role="option"]:nth-of-type(2) .ng-star-inserted').last().click();//purchase price
@@ -107,7 +109,8 @@ describe('vehicle Test', function () {
        cy.get('section[role="main"]  form[method="get"] ul > li:nth-of-type(1)').click({force: true});
        cy.get('[class="col-md-2 col-lg-2 pl-2"] [type="submit"]').first().click();
        cy.get('[class="col-md-2 col-lg-2 pl-2"] [type="button"]').first().click();
-     
+
+  
 
     });
     it('should allow user to delete vehicle', function () {

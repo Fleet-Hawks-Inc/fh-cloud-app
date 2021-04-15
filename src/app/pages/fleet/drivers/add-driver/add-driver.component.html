@@ -219,15 +219,15 @@
                                                    class="control-label font-weight-bold text-lg-right pt-2">Password<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="driverData.password" name="password" type="text"
-                                                   class="form-control" (change)="onChangeHideErrors('password')" placeholder="Enter password">
+                                                   class="form-control" (change)="onChangeHideErrors('password')" placeholder="JohnSmith@123">
                                              </div>
                                              <div class="col-lg-6">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Confirm
                                                    Password<span
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
+                                                <input [(ngModel)]="driverData.confirmPassword" name="confirm password"
                                                    type="text" (change)="onChangeHideErrors('confirmPassword')" class="form-control"
-                                                   placeholder="Enter confirm password">
+                                                   placeholder="JohnSmith@123">
                                              </div>
                                           </div>
                                        </div>
@@ -375,14 +375,14 @@
                                              placeholder="Select Birth Date">
                                        </div>
                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">
                                              Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
                                              class="form-control" (change)="onChangeHideErrors('workPhone')"
                                              placeholder="Enter the official phone number of the driver">
                                        </div>
                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">
                                              Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.email" name="email" type="text"
                                              class="form-control" (change)="onChangeHideErrors('email')"
@@ -735,7 +735,7 @@
                                        <div>
                                           <div class="row">
                                              <div class="col-lg-5">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">FAST#<i
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">FASTCard# <i
                                                       class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                       data-placement="top"
                                                       title="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i>&nbsp;
@@ -773,7 +773,7 @@
                                  <div class="col-lg-5 offset-lg-1">
                                     <div class="row align-items-center">
                                        <div class="col-lg-10">
-                                          <label class="control-label font-weight-bold text-lg-right pt-2">CDL Number<span
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">CDL#<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input [(ngModel)]="driverData.licenceDetails.CDL_Number"
                                              name="licenceDetails.CDL_Number" type="text" class="form-control"
@@ -898,8 +898,7 @@
                                              </ng-select>
                                           </div>
                                           <div class="col-lg-10">
-                                             <label class="control-label font-weight-bold text-lg-right pt-2">SIN
-                                                Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">SIN <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <input (change)="onChangeHideErrors('paymentDetails.SIN_Number')"
                                                 [(ngModel)]="driverData.paymentDetails.SIN_Number"
                                                 name="paymentDetails.SIN_Number" type="text" class="form-control"
