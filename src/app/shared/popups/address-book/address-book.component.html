@@ -96,8 +96,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Customer Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th width="5%">Actions</th>
                                     </tr>
@@ -107,8 +107,8 @@
                                         <td colspan="6">{{ dataMessageCustomer }}</td>
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, customer)">{{customer.companyName}}</td>
-                                        <td (click)="openDetail(content, customer)">{{customer.firstName}} {{customer.lastName}}</td>
+                                        <td (click)="openDetail(content, customer, 'Customer')">{{customer.companyName}}</td>
+                                        <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td>
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td *ngIf="customer.address[0]">
@@ -193,8 +193,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Broker Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -204,8 +204,8 @@
                                         <td colspan="6">{{ dataMessageBroker }}</td>
                                     </tr>
                                     <tr *ngFor="let broker of brokers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, broker)">{{broker.companyName}}</td>
-                                        <td (click)="openDetail(content, broker)">{{broker.firstName}} {{broker.lastName}}</td>
+                                        <td (click)="openDetail(content, broker,'Broker')">{{broker.companyName}}</td>
+                                        <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td>
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
                                         <td *ngIf="broker.address[0] != undefined">
@@ -289,8 +289,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Vendor Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -300,8 +300,8 @@
                                         <td colspan="6">{{ dataMessageVendor }}</td>
                                     </tr>
                                     <tr *ngFor="let vendor of vendors;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, vendor)">{{vendor.companyName}}</td>
-                                        <td (click)="openDetail(content, vendor)">{{vendor.firstName}} {{vendor.lastName}}</td>
+                                        <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.companyName}}</td>
+                                        <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td>
                                         <td>{{vendor.workEmail}}</td>
                                         <td>{{vendor.workPhone}}</td>
                                         <td *ngIf="vendor.address[0] != undefined">
@@ -385,8 +385,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Carrier Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -396,8 +396,8 @@
                                         <td colspan="6">{{ dataMessageCarrier }}</td>
                                     </tr>
                                     <tr *ngFor="let carrier of carriers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, carrier)">{{carrier.companyName}}</td>
-                                        <td (click)="openDetail(content, carrier)">{{carrier.firstName}} {{carrier.lastName}}</td>
+                                        <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.companyName}}</td>
+                                        <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td>
                                         <td>{{carrier.workEmail}}</td>
                                         <td>{{carrier.workPhone}}</td>
                                         <td *ngIf="carrier.address[0] != undefined">
@@ -481,8 +481,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Owner Operator Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -492,8 +492,8 @@
                                         <td colspan="6">{{ dataMessageOwner }}</td>
                                     </tr>
                                     <tr *ngFor="let operator of ownerOperatorss;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, operator)">{{operator.companyName}}</td>
-                                        <td (click)="openDetail(content, operator)">{{operator.firstName}} {{operator.lastName}}</td>
+                                        <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.companyName}}</td>
+                                        <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td>
                                         <td>{{operator.workEmail}}</td>
                                         <td>{{operator.workPhone}}</td>
                                         <td *ngIf="operator.address[0] != undefined">
@@ -578,8 +578,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Consignor Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -589,8 +589,8 @@
                                         <td colspan="6">{{ dataMessageConsignor }}</td>
                                     </tr>
                                     <tr *ngFor="let shipper of shippers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, shipper)">{{shipper.companyName}}</td>
-                                        <td (click)="openDetail(content, shipper)">{{shipper.firstName}} {{shipper.lastName}}</td>
+                                        <td (click)="openDetail(content, shipper, 'Shipper')">{{shipper.companyName}}</td>
+                                        <td (click)="openDetail(content, shipper, 'Shipper')">{{shipper.firstName}} {{shipper.lastName}}</td>
                                         <td>{{shipper.workEmail}}</td>
                                         <td>{{shipper.workPhone}}</td>
                                         <td *ngIf="shipper.address[0] != undefined">
@@ -674,8 +674,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Consignee Name</th>
-                                        <th width="20%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="20%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -685,8 +685,8 @@
                                         <td colspan="6">{{ dataMessageConsignee }}</td>
                                     </tr>
                                     <tr *ngFor="let receiver of receivers;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, receiver)">{{receiver.companyName}}</td>
-                                        <td (click)="openDetail(content, receiver)">{{receiver.firstName}} {{receiver.lastName}}</td>
+                                        <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.companyName}}</td>
+                                        <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td>
                                         <td>{{receiver.workEmail}}</td>
                                         <td>{{receiver.workPhone}}</td>
                                         <td *ngIf="receiver.address[0] != undefined">
@@ -774,8 +774,8 @@
                                         <th width="15%">Employee Name</th>
                                         <th width="10%">Department</th>
                                         <th width="10%">Designation</th>
-                                        <th width="15%">Email Address</th>
-                                        <th width="10%">Phone Number</th>
+                                        <th width="15%">Email</th>
+                                        <th width="10%">Phone</th>
                                         <th width="30%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -785,8 +785,8 @@
                                         <td colspan="8">{{ dataMessageEmployee }}</td>
                                     </tr>
                                     <tr *ngFor="let staff of staffs;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, staff)">{{staff.companyName}}</td>
-                                        <td (click)="openDetail(content, staff)">{{staff.firstName}} {{staff.lastName}}</td>
+                                        <td (click)="openDetail(content, staff, 'Employee')">{{staff.companyName}}</td>
+                                        <td (click)="openDetail(content, staff, 'Employee')">{{staff.firstName}} {{staff.lastName}}</td>
                                         <td>{{staff.userAccount.department}}</td>
                                         <td>{{staff.userAccount.designation}}</td>
                                         <td>{{staff.workEmail}}</td>
@@ -873,8 +873,8 @@
                                     <tr>
                                         <th width="15%">Company Name</th>
                                         <th width="15%">Contact Name</th>
-                                        <th width="15%">Email Address</th>
-                                        <th width="15%">Phone Number</th>
+                                        <th width="15%">Email</th>
+                                        <th width="15%">Phone</th>
                                         <th width="20%">Address</th>
                                         <th>Actions</th>
                                     </tr>
@@ -884,8 +884,8 @@
                                         <td colspan="6">{{ dataMessageFactoring }}</td>
                                     </tr>
                                     <tr *ngFor="let company of fcCompanies;let i = index;" class="cursorpoint">
-                                        <td (click)="openDetail(content, company)">{{company.companyName}}</td>
-                                        <td>{{company.firstName}} {{company.lastName}}</td>
+                                        <td (click)="openDetail(content, company, 'Factoring Company')">{{company.companyName}}</td>
+                                        <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td>
                                         <td>{{company.workEmail}}</td>
                                         <td>{{company.workPhone}}</td>
                                         <td *ngIf="company.address[0] != undefined">
@@ -968,13 +968,20 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                     Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="vendorData.companyName"
-                                                name="companyName" type="text" class="form-control" placeholder="Enter Company Name"> </div>
+                                                <input [(ngModel)]="vendorData.companyName" name="companyName" type="text" class="form-control"
+                                                    placeholder="Enter Company Name">
+                                            </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Account
-                                                    Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                    Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <input [(ngModel)]="vendorData.dbaName" name="dbaName" type="text" class="form-control"
+                                                    placeholder="Enter DBA Name">
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Account# &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="vendorData.accountNumber"
-                                                name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number"> </div>
+                                                name="accountNumber" type="text" class="form-control" placeholder="Enter Account#"> </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1040,7 +1047,7 @@
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);" class="form-control"
                                         placeholder="Type Address" [disabled]="item.manual">
-                                        <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                        <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
                                               <li *ngFor="let item of searchResults;">
                                                 <a href="javascript:;" (click)="userAddress(vendorData, i, item)">{{item.address.label}}</a>
@@ -1190,12 +1197,11 @@
                                                         name="companyName" type="text" class="form-control" placeholder="Enter Company Name" >
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">DBA
-                                                            Name 
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="customerData.dbaName"
-                                                        name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name">
+                                                        <input [(ngModel)]="customerData.dbaName" name="dbaName" type="text" class="form-control"
+                                                            placeholder="Enter DBA Name">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1221,23 +1227,22 @@
                                                             title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.ein"
-                                                        name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN number">
+                                                        name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Account
-                                                            Number &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                            class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.accountNumber"
-                                                        name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number">
+                                                        name="accountNumber" type="text" class="form-control" placeholder="Enter Account#">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            class="control-label font-weight-bold text-lg-right pt-2">
                                                             Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.workPhone"
-                                                        name="workPhone" type="text" class="form-control" placeholder="Enter Work Phone">
+                                                        name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1259,7 +1264,7 @@
                                                             in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.mc"
-                                                        name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
+                                                        name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC#">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
@@ -1269,7 +1274,7 @@
                                                             title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.dot"
-                                                        name="dot" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
+                                                        name="dot" type="text" class="form-control" placeholder="Enter 8 digit DOT#">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label
@@ -1289,23 +1294,6 @@
                                                             type="text" placeholder="Enter Fast Expiry" (click)="custexp.toggle()"
                                                             ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off">
                                                     </div>
-                                                    <!-- <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Trailer
-                                                            Preference &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                        </label>
-                                                        <ng-select [(ngModel)]="customerData.trailerPreference" name="trailerPreference" class="form-control"
-                                                            placeholder="Select Trailer Preference">
-                                                            <ng-option value="20 ft. sea container (closed top)">20 ft. sea container (closed top)</ng-option>
-                                                            <ng-option value="20 ft. sea container (open top)">20 ft. sea container (open top)</ng-option>
-                                                            <ng-option value="40 ft. sea container (closed top)">40 ft. sea container (closed top)</ng-option>
-                                                            <ng-option value="40 ft. sea container (open top)">40 ft. sea container (open top)</ng-option>
-                                                            <ng-option value="Auto carrier trailer">Auto carrier trailer</ng-option>
-                                                            <ng-option value="Beverage rack trailer">Beverage rack trailer</ng-option>
-                                                            <ng-option value="Chassis">Chassis</ng-option>
-                                                            <ng-option value="Container (closed top)">Container (closed top)</ng-option>
-                                                            <ng-option value="Drop back trailer">Drop back trailer</ng-option>
-                                                        </ng-select>
-                                                    </div> -->
                                                     <div class="col-lg-12 d-flex justify-content-between mar-top-37">
                                                         <div class="checkbox-custom pt-2">
                                                             <input [(ngModel)]="customerData.csa"
@@ -1334,11 +1322,11 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                            class="control-label font-weight-bold text-lg-right pt-2">
                                                             Email <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
                                                         <input [(ngModel)]="customerData.workEmail"
-                                                        name="workEmail" type="text" class="form-control" placeholder="Enter Work Email">
+                                                        name="workEmail" type="text" class="form-control" placeholder="Enter Email">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1482,7 +1470,7 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.designation"
-                                                        name="phone" type="text" class="form-control" placeholder="Enter Designation">
+                                                        name="designation" type="text" class="form-control" placeholder="Enter Designation">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1492,13 +1480,13 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.phone"
-                                                        name="email" type="text" class="form-control" placeholder="Enter Phone">
+                                                        name="phone" type="text" class="form-control" placeholder="Enter Phone">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="customerData.additionalContact.email"
-                                                        name="designation" type="text" class="form-control" placeholder="Enter Email">
+                                                        name="email" type="text" class="form-control" placeholder="Enter Email">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1600,13 +1588,15 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Company
-                                                            Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                            Name
+                                                            <span class="mandfield text-2 ml-1" *ngIf="brokerData.brokerType == 'company'"><sup>*</sup></span>
+                                                            &nbsp; <span class="text-1 optional-label-color" *ngIf="brokerData.brokerType == 'individual'">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
-                                                            Name
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                            DBA Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
                                                         <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name">
                                                     </div>
@@ -1627,7 +1617,7 @@
                                                           class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                           data-placement="top"
                                                           title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN number">
+                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="Enter 9 digit EIN">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
@@ -1636,7 +1626,7 @@
                                                           title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
                                                           in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
+                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
@@ -1644,7 +1634,7 @@
                                                           data-placement="top"
                                                           title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT number">
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT#">
                                                     </div>
                                                     
                                                 </div>
@@ -1658,10 +1648,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12 mt-1">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account
-                                                            Number &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account# &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number">
+                                                        <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="Enter Account#">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -1698,7 +1687,7 @@
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                                                 class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                                <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
                                                         <a href="javascript:;" (click)="userAddress(brokerData, i, item)">{{item.address.label}}</a>
@@ -1913,6 +1902,15 @@
                                                         </label>
                                                         <input [(ngModel)]="carrierData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
+
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        </label>
+                                                        <input [(ngModel)]="carrierData.dbaName" name="dbaName" type="text" class="form-control"
+                                                            placeholder="Enter DBA Name">
+                                                    </div>
+                                                    
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1984,14 +1982,14 @@
                                                       class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                       data-placement="top"
                                                       title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                    <input [(ngModel)]="carrierData.paymentDetails.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
+                                                    <input [(ngModel)]="carrierData.paymentDetails.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC#">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
                                                       class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                       data-placement="top"
                                                       title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                    <input [(ngModel)]="carrierData.paymentDetails.dot" maxlength="8" name="dot" type="text" class="form-control" placeholder="Enter 8 digit  DOT number">
+                                                    <input [(ngModel)]="carrierData.paymentDetails.dot" maxlength="8" name="dot" type="text" class="form-control" placeholder="Enter 8 digit DOT#">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">FAST Card# &nbsp;<i
@@ -1999,7 +1997,7 @@
                                                       data-placement="top"
                                                       title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                     <input [(ngModel)]="carrierData.paymentDetails.fast" name="fast" type="text"
-                                                        class="form-control" placeholder="Enter Fast">
+                                                        class="form-control" placeholder="Enter Fast#">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">FAST
@@ -2097,18 +2095,6 @@
                                                                     <ng-option value="USD">USD</ng-option>
                                                                 </ng-select>
                                                             </div>
-                                                            <div class="col-lg-8">
-                                                                <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles</label>
-                                                                <input type="number" [(ngModel)]="carrierData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
-                                                                    class="form-control" placeholder="Enter Empty Miles">
-                                                            </div>
-                                                            <div class="col-lg-4">
-                                                                <label class="control-label font-weight-bold text-lg-right pt-4"></label>
-                                                                <ng-select [(ngModel)]="carrierData.paymentDetails.emptyMilesCurrency" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
-                                                                    <ng-option value="CAD">CAD</ng-option>
-                                                                    <ng-option value="USD">USD</ng-option>
-                                                                </ng-select>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row" id="payPerDeliveryForm" *ngIf="carrierData.paymentDetails.payrollType == 'Pay Per Delivery'">
@@ -2124,6 +2110,23 @@
                                                                  <ng-option value="CAD">CAD</ng-option>
                                                                  <ng-option value="USD">USD</ng-option>
                                                            </ng-select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="row" id="payPerMileForm" *ngIf="carrierData.paymentDetails.payrollType == 'Pay Per Mile'">
+                                                        <div class="col-lg-8">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Empty Miles</label>
+                                                            <input type="number" [(ngModel)]="carrierData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
+                                                                class="form-control" placeholder="Enter Empty Miles">
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <label class="control-label font-weight-bold text-lg-right pt-4"></label>
+                                                            <ng-select [(ngModel)]="carrierData.paymentDetails.emptyMilesCurrency" class="form-control" name="paymentDetails.emptyMilesCurrency" placeholder="Select Currency">
+                                                                <ng-option value="CAD">CAD</ng-option>
+                                                                <ng-option value="USD">USD</ng-option>
+                                                            </ng-select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2145,9 +2148,9 @@
                                                 <div class="row wsib-wrapper col-12 row m-0 p-0" *ngIf="carrierData.paymentDetails.wsib">
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">WSIB
-                                                            Account Number</label>
+                                                            Account#</label>
                                                         <input [(ngModel)]="carrierData.paymentDetails.wsibAccountNumber" name="wsibAccountNumber"
-                                                            type="text" class="form-control" placeholder="Enter 7 digit WSIB account number">
+                                                            type="text" class="form-control" placeholder="Enter 7 digit WSIB account#">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">WSIB
@@ -2182,7 +2185,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                                <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
                                                         <a href="javascript:;" (click)="userAddress(carrierData, i, item)">{{item.address.label}}</a>
@@ -2386,6 +2389,13 @@
                                                         <input [(ngModel)]="ownerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
                                                     <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        </label>
+                                                        <input [(ngModel)]="ownerData.dbaName" name="dbaName" type="text" class="form-control"
+                                                            placeholder="Enter DBA Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
@@ -2576,7 +2586,7 @@
                                                     Your Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}"
                                                 (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                                <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left" >
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;" (click)="userAddress(ownerData, i, item)">{{item.address.label}}</a>
@@ -2770,6 +2780,13 @@
                                                     class="form-control" placeholder="Enter Company Name">
                                             </div>
                                             <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                    Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <input [(ngModel)]="shipperData.dbaName" name="dbaName" type="text" class="form-control"
+                                                    placeholder="Enter DBA Name">
+                                            </div>
+                                            <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="shipperData.firstName" name="firstName" type="text"
@@ -2787,14 +2804,14 @@
                                                   data-placement="top"
                                                   title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
                                                   in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
+                                                <input [(ngModel)]="shipperData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC#">
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
                                                     class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                     data-placement="top"
                                                     title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
+                                                <input [(ngModel)]="shipperData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT#">
                                             </div>
                                         </div>
                                     </div>
@@ -2843,7 +2860,7 @@
                                             Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                             (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                        <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                        <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
@@ -3030,6 +3047,13 @@
                                                     class="form-control" placeholder="Enter Company Name">
                                             </div>
                                             <div class="col-lg-12">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                    Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                </label>
+                                                <input [(ngModel)]="consigneeData.dbaName" name="dbaName" type="text" class="form-control"
+                                                    placeholder="Enter DBA Name">
+                                            </div>
+                                            <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="consigneeData.firstName" name="firstName" type="text"
@@ -3054,7 +3078,7 @@
                                                   class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                   data-placement="top"
                                                   title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT number">
+                                                <input [(ngModel)]="consigneeData.dot" name="dot" maxlength="8" type="text" class="form-control" placeholder="Enter 8 digit DOT#">
                                             </div>
                                         </div>
                                     </div>
@@ -3103,7 +3127,7 @@
                                             Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                             (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                        <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                        <div class="map-search__results bg-white">
                                             <ul class="p-0 m-0 text-left">
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
@@ -3309,6 +3333,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        </label>
+                                                        <input [(ngModel)]="fcCompanyData.dbaName" name="dbaName" type="text" class="form-control"
+                                                            placeholder="Enter DBA Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="fcCompanyData.firstName" name="firstName" type="text"
@@ -3368,7 +3399,7 @@
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                                     (keyup)="searchTerm.next($event);" class="form-control"
                                                     placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                                <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;"
@@ -3453,10 +3484,9 @@
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account
-                                                            Number &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Account# &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="fcCompanyData.fcDetails.accountNumber"
-                                                            name="accountNumber" type="text" class="form-control" placeholder="Enter Account Number">
+                                                            name="accountNumber" type="text" class="form-control" placeholder="Enter Account#">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Factoring
@@ -3559,6 +3589,13 @@
                                                             type="text" class="form-control" placeholder="Enter Company Name">
                                                     </div>
                                                     <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">DBA
+                                                            Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        </label>
+                                                        <input [(ngModel)]="staffData.dbaName" name="dbaName" type="text" class="form-control"
+                                                            placeholder="Enter DBA Name">
+                                                    </div>
+                                                    <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="staffData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter First Name">
@@ -3583,9 +3620,14 @@
                                                             class="form-control" autocomplete="off">
                                                     </div>
                                                     <div class="col-lg-12">
-                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Work
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                                            Email <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input [(ngModel)]="staffData.workEmail" name="workEmail" type="text" class="form-control" placeholder="Enter Email">
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="staffData.workPhone" name="workPhone" type="text" class="form-control" placeholder="Enter Work Phone">
+                                                        <input [(ngModel)]="staffData.workPhone" name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
                                                     </div>
                                                 </div>
                                             </div>
@@ -3623,7 +3665,7 @@
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                                     (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
-                                                <div class="map-search__results bg-white" *ngIf="searchResults?.length > 0">
+                                                <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                         <li *ngFor="let item of searchResults;">
                                                             <a href="javascript:;"
@@ -3911,9 +3953,13 @@
     <div class="modal-body text-dark">
         <div class="card-body text-dark p-0">
             <ul class="nav top-tabs nav-tabs wizard-steps">
-                <li class="nav-item active"> <a href="#customerBasicDetails" data-toggle="tab"
-                        class="nav-link text-center active">
+                <li class="nav-item active"> <a href="#customerBasicDetails" data-toggle="tab" class="nav-link text-center active">
                         Basic Details
+                    </a>
+                </li>
+                <li class="nav-item" *ngIf="userDetailData.paymentDetails"> <a href="#customPaymentDetails" data-toggle="tab"
+                        class="nav-link text-center">
+                        Payment
                     </a>
                 </li>
                 <li class="nav-item"> <a href="#customerAddressDetails" data-toggle="tab" class="nav-link text-center">
@@ -3923,11 +3969,6 @@
                 <li class="nav-item" *ngIf="userDetailData.userAccount"> <a href="#customerUserAccount"
                         data-toggle="tab" class="nav-link text-center">
                         User Account
-                    </a>
-                </li>
-                <li class="nav-item" *ngIf="userDetailData.paymentDetails"> <a href="#customPaymentDetails"
-                        data-toggle="tab" class="nav-link text-center">
-                        Payment
                     </a>
                 </li>
                 <li class="nav-item" *ngIf="userDetailData.additionalContact"> <a href="#customerAdditionalContact"
@@ -3966,7 +4007,7 @@
                                     </tr>
 
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Contact Name:</th>
+                                        <th width="40%" class="back-color-gray">{{detailTab}} Name:</th>
                                         <td>{{userDetailData.firstName}} {{userDetailData.lastName}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.companyName">
@@ -3974,15 +4015,15 @@
                                         <td>{{userDetailData.companyName}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.mc">
-                                        <th width="40%" class="back-color-gray">MC:</th>
+                                        <th width="40%" class="back-color-gray">MC#:</th>
                                         <td>{{userDetailData.mc}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.dot">
-                                        <th width="40%" class="back-color-gray">DOT:</th>
+                                        <th width="40%" class="back-color-gray">DOT#:</th>
                                         <td>{{userDetailData.dot}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.ein">
-                                        <th width="40%" class="back-color-gray">EIN:</th>
+                                        <th width="40%" class="back-color-gray">EIN#:</th>
                                         <td>{{userDetailData.ein}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.fast">
@@ -4000,7 +4041,7 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr *ngIf="userDetailData.fastExpiry">
-                                        <th width="40%" class="back-color-gray">Account Number:</th>
+                                        <th width="40%" class="back-color-gray">Account#:</th>
                                         <td>{{userDetailData.accountNumber}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.trailerPreference">
@@ -4008,11 +4049,11 @@
                                         <td>{{userDetailData.trailerPreference}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Work Phone:</th>
+                                        <th width="40%" class="back-color-gray">Phone:</th>
                                         <td>{{userDetailData.workPhone}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Work Email:</th>
+                                        <th width="40%" class="back-color-gray">Email:</th>
                                         <td>{{userDetailData.workEmail}}</td>
                                     </tr>
                                     <tr *ngIf="userDetailData.csa">
@@ -4056,8 +4097,12 @@
                                 <td>{{item.zipCode}}</td>
                             </tr>
                             <tr *ngIf="item.manual == true">
-                                <th width="40%" class="back-color-gray">Address:</th>
-                                <td>{{item.address1}} {{item.address2}}</td>
+                                <th width="40%" class="back-color-gray">Address1:</th>
+                                <td>{{item.address1}}</td>
+                            </tr>
+                            <tr *ngIf="item.manual == true">
+                                <th width="40%" class="back-color-gray">Address2:</th>
+                                <td>{{item.address2}}</td>
                             </tr>
                             <tr *ngIf="item.manual == false">
                                 <th width="40%" class="back-color-gray">Address:</th>
@@ -4191,7 +4236,7 @@
                                 <td>Yes</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.wsibAccountNumber">
-                                <th width="40%" class="back-color-gray">WSIB Account Number:</th>
+                                <th width="40%" class="back-color-gray">WSIB Account#:</th>
                                 <td>{{userDetailData.paymentDetails.wsibAccountNumber}}</td>
                             </tr>
 
@@ -4204,7 +4249,7 @@
                                 <td>{{userDetailData.paymentDetails.SIN}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.WCB">
-                                <th width="40%" class="back-color-gray">WCB:</th>
+                                <th width="40%" class="back-color-gray">WCB#:</th>
                                 <td>{{userDetailData.paymentDetails.WCB}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.healthCare">
@@ -4263,7 +4308,7 @@
                     <table class="table table-bordered m-0">
                         <tbody>
                             <tr>
-                                <th width="40%" class="back-color-gray">Account Number:</th>
+                                <th width="40%" class="back-color-gray">Account#:</th>
                                 <td>{{ (userDetailData.fcDetails.accountNumber) ? userDetailData.fcDetails.accountNumber : '-'}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.fcDetails.factoringRate">
