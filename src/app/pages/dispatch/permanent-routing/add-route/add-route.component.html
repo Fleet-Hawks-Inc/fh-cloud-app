@@ -24,13 +24,13 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeNo"
-                                                    [(ngModel)]="routeData.routeNo" placeholder="Enter route#"> </div>
+                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
-                                                    [(ngModel)]="routeData.routeName" placeholder="Enter route name"> </div>
+                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
@@ -112,7 +112,7 @@
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter source address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 01,Business Hub Center,New York,USA">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -128,27 +128,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCountry"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCountry"
-                                                    class="form-control" autocomplete="nope"  placeholder="Enter source country">
+                                                    class="form-control" autocomplete="nope"  placeholder="eg. Canada,USA">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
-                                                    class="form-control" placeholder="Enter source state" autocomplete="nope">
+                                                    class="form-control" placeholder="eg. Ontario" autocomplete="nope">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCity"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCity"
-                                                    class="form-control" placeholder="Enter source city" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="sourceInformation.sourceZipCode"
-                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="nope" placeholder="Enter source zip code">
+                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="nope" placeholder="eg. 66777">
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                                                     class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter destination address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -181,27 +181,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCountry"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCountry"
-                                                    class="form-control" placeholder="Enter destination country" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Canada" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
-                                                    class="form-control" placeholder="Enter destination state" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Alberta" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCity"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCity"
-                                                    class="form-control" placeholder="Enter destination city" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="destinationInformation.destinationZipCode"
-                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code" autocomplete="nope" >
+                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="eg. 66777" autocomplete="nope" >
                                             </div>
                                         </div>
                                     </div>

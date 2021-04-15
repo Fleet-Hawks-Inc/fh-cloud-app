@@ -143,6 +143,7 @@ export class AddressBookComponent implements OnInit {
   // ownerOperator Object
   ownerData = {
     companyName: '',
+    dbaName: '',
     firstName: '',
     lastName: '',
     workPhone: '',
@@ -200,6 +201,7 @@ export class AddressBookComponent implements OnInit {
   // Vendor Object
   vendorData = {
     companyName: '',
+    dbaName: '',
     accountNumber: '',
     firstName: '',
     lastName: '',
@@ -234,6 +236,7 @@ export class AddressBookComponent implements OnInit {
   // Carrier Object
   carrierData = {
     companyName: '',
+    dbaName: '',
     firstName: '',
     lastName: '',
     workPhone: '',
@@ -304,6 +307,7 @@ export class AddressBookComponent implements OnInit {
   // Shipper Object
   shipperData = {
     companyName: '',
+    dbaName: '',
     firstName: '',
     lastName: '',
     mc: '',
@@ -346,6 +350,7 @@ export class AddressBookComponent implements OnInit {
   // Consignee Object
   consigneeData = {
     companyName: '',
+    dbaName: '',
     firstName: '',
     lastName: '',
     mc: '',
@@ -388,6 +393,7 @@ export class AddressBookComponent implements OnInit {
   // fcCompany Object
   fcCompanyData = {
     companyName: '',
+    dbaName: '',
     isDefault: false,
     firstName: '',
     lastName: '',
@@ -426,6 +432,7 @@ export class AddressBookComponent implements OnInit {
    // Staff Object
    staffData = {
     companyName: '',
+    dbaName: '',
     firstName: '',
     lastName: '',
     employeeID: '',
@@ -667,6 +674,7 @@ export class AddressBookComponent implements OnInit {
   companyDisabled = false;
   operatorDisabled = false;
   vendorDisabled = false;
+  detailTab = '';
 
   constructor(
             private apiService: ApiService,
@@ -721,7 +729,7 @@ export class AddressBookComponent implements OnInit {
     });
   }
 
-  openDetail(targetModal, data) {
+  openDetail(targetModal, data, type) {
     this.userDetailData = {};
     if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
       this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;
@@ -732,6 +740,7 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     this.modalService.open(targetModal);
     this.userDetailData = data;
+    this.detailTab = type;
   }
 
   async userAddress(data: any, i: number, item: any) {
@@ -899,6 +908,7 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           this.customerDisabled = false;
           this.listService.fetchCustomers();
+          this.dataMessageCustomer = Constants.FETCHING_DATA;
           $('#addCustomerModal').modal('hide');
           this.showMainModal();
           this.customers = [];
@@ -1074,6 +1084,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.brokerDisabled = false;
+        this.dataMessageBroker = Constants.FETCHING_DATA;
         $('#addBrokerModal').modal('hide');
         this.fetchBrokersCount();
         this.showMainModal();
@@ -1145,6 +1156,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.operatorDisabled = false;
+        this.dataMessageOwner = Constants.FETCHING_DATA;
         $('#addOwnerOperatorModal').modal('hide');
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
@@ -1374,6 +1386,7 @@ export class AddressBookComponent implements OnInit {
           this.vendorDisabled = false;
           this.response = res;
           this.hasSuccess = true;
+          this.dataMessageVendor = Constants.FETCHING_DATA;
           $('#addVendorModal').modal('hide');
           this.toastr.success('Vendor Added Successfully');
           this.listService.fetchVendors();
@@ -1526,6 +1539,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.carrierDisabled = false;
+          this.dataMessageCarrier = Constants.FETCHING_DATA;
           $('#addCarrierModal').modal('hide');
           this.fetchCarriersCount();
           this.initDataTableCarrier();
@@ -1687,6 +1701,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.consignorDisabled = false;
+          this.dataMessageConsignor = Constants.FETCHING_DATA;
           $('#addShipperModal').modal('hide');
           this.listService.fetchShippers();
           this.fetchShippersCount();
@@ -1850,6 +1865,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.consigneeDisabled = false;
           this.hasSuccess = true;
+          this.dataMessageConsignee = Constants.FETCHING_DATA;
           $('#addConsigneeModal').modal('hide');
           this.listService.fetchReceivers();
           this.showMainModal();
@@ -2001,6 +2017,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.hasSuccess = true;
           this.companyDisabled = false;
+          this.dataMessageFactoring = Constants.FETCHING_DATA;
           $('#addFCModal').modal('hide');
           this.fetchFcCompaniesCount();
           this.showMainModal();
@@ -2156,6 +2173,7 @@ export class AddressBookComponent implements OnInit {
           if(this.staffData.loginEnabled){
             this.saveUserData();
           }
+          this.dataMessageEmployee = Constants.FETCHING_DATA;
           $('#addStaffModal').modal('hide');
           this.staffs = [];
           this.fetchStaffsCount();
@@ -2890,6 +2908,7 @@ export class AddressBookComponent implements OnInit {
     // ownerOperator Object
     this.ownerData = {
       companyName: this.currentUser,
+      dbaName: '',
       firstName: '',
       lastName: '',
       workPhone: '',
@@ -2947,6 +2966,7 @@ export class AddressBookComponent implements OnInit {
     // Vendor Object
     this.vendorData = {
       companyName: this.currentUser,
+      dbaName: '',
       accountNumber: '',
       firstName: '',
       lastName: '',
@@ -2981,6 +3001,7 @@ export class AddressBookComponent implements OnInit {
     // Carrier Object
     this.carrierData = {
       companyName: this.currentUser,
+      dbaName: '',
       firstName: '',
       lastName: '',
       workPhone: '',
@@ -3051,6 +3072,7 @@ export class AddressBookComponent implements OnInit {
     // Shipper Object
     this.shipperData = {
       companyName: this.currentUser,
+      dbaName: '',
       firstName: '',
       lastName: '',
       mc: '',
@@ -3093,6 +3115,7 @@ export class AddressBookComponent implements OnInit {
     // Consignee Object
     this.consigneeData = {
       companyName: this.currentUser,
+      dbaName: '',
       firstName: '',
       lastName: '',
       mc: '',
@@ -3135,6 +3158,7 @@ export class AddressBookComponent implements OnInit {
     // fcCompany Object
     this.fcCompanyData = {
       companyName: this.currentUser,
+      dbaName: '',
       isDefault: false,
       firstName: '',
       lastName: '',
@@ -3173,6 +3197,7 @@ export class AddressBookComponent implements OnInit {
     // Staff Object
     this.staffData = {
       companyName: this.currentUser,
+      dbaName: '',
       firstName: '',
       lastName: '',
       employeeID: '',
@@ -5018,13 +5043,13 @@ export class AddressBookComponent implements OnInit {
     } 
      
 
-    await this.getSpecificCarrier(this.isCarrierID);
+    // await this.getSpecificCarrier(this.isCarrierID);
   }
 
-  async getSpecificCarrier(id){
-    this.apiService.getData(`carriers/${id}`)
-      .subscribe((result: any) => {
-        this.currentUser = result.Items[0].businessName
-      });
-  }
+  // async getSpecificCarrier(id){
+  //   this.apiService.getData(`carriers/${id}`)
+  //     .subscribe((result: any) => {
+  //       this.currentUser = result.Items[0].carrierName
+  //     });
+  // }
 }
