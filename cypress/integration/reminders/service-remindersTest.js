@@ -1,7 +1,7 @@
 describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
-  it.only('Add service-reminder test', function () {
+  it('Add service-reminder test', function () {
     /* ==== Generated with Cypress Studio ==== */
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -16,8 +16,7 @@ describe(" reminders tests", () => {
 
     cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
-    //cy.get('#aa665db5fb90-0').click({ force: true });
+    cy.get(':nth-child(2) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('Delivery{enter}');
     cy.get('.col-lg-10 > :nth-child(1) > :nth-child(1) > .row > .pl-0 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').first().click();
@@ -44,7 +43,7 @@ it('search-reset the reminder', function() {
 
   cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
   cy.wait(1000);
-  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
+  cy.get('.input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
   cy.get('.page-header > .row > :nth-child(2) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
   cy.get('.ng-option-label').first().click({force: true});
   cy.get('.page-header > .row > :nth-child(3) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();

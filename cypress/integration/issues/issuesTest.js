@@ -12,8 +12,9 @@ describe(" reminders tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(7) > .nav-link > .fas').click();
     cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
-    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
-    cy.get('.ng-option-label').click();
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+    cy.get(':nth-child(2) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
+    //cy.get('.ng-option-label').click();
     cy.get('.col-lg-10 > #issueName').clear();
     cy.get('.col-lg-10 > #issueName').type('brake issue');
     cy.get(':nth-child(4) > .col-lg-10 > .form-control').click();
@@ -38,7 +39,7 @@ describe(" reminders tests", () => {
     cy.get('#btnsubmit').click();
     cy.get(':nth-child(7) > .nav-link > .fas').click();
     cy.get('.pl-0 > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
-    cy.get('.pl-0 > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla truck1{enter}');
+    cy.get('.pl-0 > .input-group > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('tesla {enter}');
     cy.get(':nth-child(3) > .input-group > .form-control').clear();
     cy.get(':nth-child(3) > .input-group > .form-control').type('brake issue');
     cy.get('.page-header > .row > :nth-child(4) > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
