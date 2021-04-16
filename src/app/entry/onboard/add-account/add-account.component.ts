@@ -101,6 +101,10 @@ export class AddAccountComponent implements OnInit {
   errorDOT = false;
   errorCCC =  false;
   errorSCAC = false;
+  errorRouting =  false;
+  errorTransit = false;
+  errorInstiution = false;
+  errorAccount = false;
   constructor(private apiService: ApiService, private toaster: ToastrService,private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -467,6 +471,60 @@ export class AddAccountComponent implements OnInit {
     }
     else{
       this.errorSCAC = false;
+    }
+    }
+   }
+
+   routingValidation(e) {
+    const routing = e.target.value;
+    if (routing.length === 0) {
+      this.errorRouting = false;
+    } else {
+      if (routing.length !== 9) {
+        this.errorRouting = true;
+    }
+    else {
+      this.errorRouting = false;
+    }
+    }
+   }
+   transitValidation(e) {
+    const transit = e.target.value;
+    if (transit.length === 0) {
+      this.errorTransit = false;
+    } else {
+      if (transit.length !== 9) {
+        this.errorTransit = true;
+    }
+    else {
+      this.errorTransit = false;
+    }
+    }
+   }
+   institutionValidation(e) {
+    const instiution = e.target.value;
+    if (instiution.length === 0) {
+      this.errorInstiution = false;
+    } else {
+      if (instiution.length !== 3) {
+        this.errorInstiution = true;
+    }
+    else {
+      this.errorInstiution = false;
+    }
+    }
+   }
+   accountValidation(e) {
+    const account = e.target.value;
+    console.log('data', account.length);
+    if (account.length === 0) {
+      this.errorAccount = false;
+    } else {
+      if (account.length > 12 || account.length < 7) {
+        this.errorAccount = true;
+    }
+    else {
+      this.errorAccount = false;
     }
     }
    }

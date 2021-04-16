@@ -438,7 +438,9 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <input type="number" class="form-control" [(ngModel)]="bank.accountNumber"
-                            placeholder="eg. 12123456701" name="accountNumber">
+                            placeholder="eg. 12123456701" name="accountNumber" (keyup)="accountValidation($event)" [class.error]="errorAccount">
+                            <div class="text-danger" *ngIf="errorAccount">Enter 7-12 digit account number.</div>
+
                         </div>
                       </div>
                     </div>
@@ -450,8 +452,9 @@
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
-                          <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
+                          <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber" (keyup)="routingValidation($event)" [class.error]="errorRouting"
                             placeholder="eg. 023456789" maxlength="9">
+                            <div class="text-danger" *ngIf="errorRouting">Enter 9 digit routing number.</div>
                         </div>
                       </div>
                       <div class="row">
@@ -463,8 +466,9 @@
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
-                          <input type="text" class="form-control" [(ngModel)]="bank.transitNumber" name="transitNumber"
+                          <input type="text" class="form-control" [(ngModel)]="bank.transitNumber" name="transitNumber" (keyup)="transitValidation($event)" [class.error]="errorTransit"
                             placeholder="eg. 12345-789" maxlength="9">
+                            <div class="text-danger" *ngIf="errorTransit">Enter 9 digit transit number.</div>
                         </div>
                       </div>
                       <div class="row">
@@ -474,8 +478,9 @@
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
-                          <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber" min="0"
+                          <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber" min="0" (keyup)="institutionValidation($event)" [class.error]="errorInstitution"
                             placeholder="eg. 219" maxlength="3" name="institutionNumber">
+                            <div class="text-danger" *ngIf="errorInstitution">Enter 3 digit institution number.</div>
                         </div>
                       </div>
                     </div>
