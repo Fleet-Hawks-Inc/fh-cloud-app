@@ -10,7 +10,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-2">
-                        <ng-select placeholder="Search user by status" name="currentStatus" [(ngModel)]="currentStatus">                                               
+                        <ng-select placeholder="Search user by status" name="currentStatus" [(ngModel)]="currentStatus">
                             <ng-option value="ACTIVE">Active</ng-option>
                             <ng-option value="INACTIVE">Inactive</ng-option>
                         </ng-select>
@@ -33,9 +33,7 @@
                             <ng-option value="Accounts">Accounts</ng-option>
                         </ng-select> -->
                     </div>
-                   
-                    
-                  
+
                     <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
                         <div class="btn-group flex-wrap">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -53,8 +51,8 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
-                        <!-- <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
-                            style="color: white"><i class="fas fa-plus"></i> Add User</a> -->
+                        <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
+                            style="color: white"><i class="fas fa-plus"></i> Add User</a>
                     </div>
                 </div>
             </header>
@@ -89,8 +87,8 @@
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userName}} </td>
                                             <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.departmentName}}</td> -->
                                             <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userType}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.phone}}</td> 
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td>                                
+                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.phone}}</td>
+                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td>
                                             <td><div class="btn-group flex-wrap">
                                                   <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
                                                   <div class="dropdown-menu" role="menu">
