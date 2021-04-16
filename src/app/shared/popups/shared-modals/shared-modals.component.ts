@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import  Constants  from '../../../../app/pages/fleet/constants';
+import constants from '../../../../app/pages/fleet/constants';
 import { Auth } from 'aws-amplify';
 
 declare var $: any;
@@ -51,7 +51,7 @@ stateData = {
 cityData = {
   countryID : '',
   stateID: '',
-  cityName: '', 
+  cityName: '',
 };
 vehicleMakeData = {
   manufacturerName: ''
@@ -210,7 +210,7 @@ vehicleID: string;
     purchaseComments: '',
     purchaseOdometer: '',
   };
-  
+
   loan = {
     loanVendorID: '',
     amountOfLoan: '',
@@ -403,7 +403,10 @@ inspectionForms = [];
 groups = [];
 drivers: any;
 groupData = {
-  groupType : Constants.GROUP_VEHICLES 
+  groupName: '',
+  groupType: 'vehicles',
+  description: '',
+  groupMembers: []
 };
 localPhotos = [];
 activeTab = 1;
@@ -458,7 +461,7 @@ years = [];
   async ngOnInit() {
     this.fetchCountries();
     // this.fetchAssetManufacturers();
-    
+
     this.fetchAssetModels();
     this.newManufacturers();
     this.fetchVehicles();
@@ -490,7 +493,7 @@ years = [];
       this.form = $('#assetMakeForm').validate();
       this.form = $('#assetModelForm').validate();
       this.form = $('#serviceProgramForm').validate();
-    });    
+    });
     this.httpClient.get('assets/vehicleType.json').subscribe(data => {
       this.vehicleTypeList = data;
     });
@@ -516,13 +519,13 @@ years = [];
   newManufacturers(){
     this.apiService.getData('manufacturers')
     .subscribe((result: any) => {
-      this.test = result.Items;   
+      this.test = result.Items;
       for(let i=0; i< this.test.length; i++){
-        
+
    }
-    }); 
+    });
  }
- 
+
  fetchCycles() {
   this.apiService.getData('cycles')
     .subscribe((result: any) => {
@@ -539,7 +542,7 @@ years = [];
 }
 
 fetchGroups() {
-  this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+  this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
     this.groups = result.Items;
   });
 }
@@ -584,7 +587,7 @@ fetchDrivers(){
 
   // Add state
   addState() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('states', this.stateData).
       subscribe({
         complete: () => { },
@@ -636,7 +639,7 @@ fetchDrivers(){
   }
   // add city
   addCity() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('cities', this.cityData).
       subscribe({
         complete: () => { },
@@ -668,7 +671,7 @@ fetchDrivers(){
   }
   // add vehicle make
   addVehicleMake() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('manufacturers', this.vehicleMakeData).
       subscribe({
         complete: () => { },
@@ -702,7 +705,7 @@ fetchDrivers(){
     *   add vehicle model
     * */
    addVehicleModel() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('vehicleModels', this.vehicleModelData).
       subscribe({
         complete: () => { },
@@ -735,9 +738,9 @@ fetchDrivers(){
   /**
    * add asset make
    */
-   
+
    addAssetMake() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('assetManufacturers', this.assetMakeData).
       subscribe({
         complete: () => { },
@@ -771,7 +774,7 @@ fetchDrivers(){
    */
    // add vehicle model
    addAssetModel() {
-    this.hideErrors();  
+    this.hideErrors();
     this.apiService.postData('assetModels', this.assetModelData).
       subscribe({
         complete: () => { },
@@ -810,10 +813,10 @@ fetchDrivers(){
       repeatByTimeUnit: '',
       repeatByOdometer: '',
     })
-    
+
   }
   addServiceProgram() {
-    
+
     this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
       complete: () => { },
@@ -844,7 +847,7 @@ fetchDrivers(){
   }
 
   addServiceTask() {
-   
+
     this.hideErrors();
     this.apiService.postData('tasks', this.taskData).subscribe({
       complete: () => { },
@@ -865,7 +868,7 @@ fetchDrivers(){
           });
       },
         next: (res) => {
-          
+
           this.toastr.success('Service Task added successfully');
           $('#addServiceTaskModal').modal('hide');
           this.taskData['taskName'] = '';
@@ -1072,7 +1075,7 @@ fetchDrivers(){
         measurmentUnit: this.settings.measurmentUnit,
       },
     };
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -1281,7 +1284,7 @@ fetchDrivers(){
     } catch (error) {
       return 'error found';
     }
-    
+
   }
 
   fetchFuelTypes(){
@@ -1313,12 +1316,12 @@ fetchDrivers(){
     this.stateID = '';
     $('#stateSelect').val('');
   }
-  
+
   async nextStep() {
     await this.onSubmit();
-    
+
     if(this.abstractDocs.length == 0 && this.currentTab == 1) {
-      this.abstractValid = true; 
+      this.abstractValid = true;
       return;
     }
     this.validateTabErrors();
@@ -1329,8 +1332,8 @@ fetchDrivers(){
     if($('#licence .error').length > 0 && this.currentTab == 5) return;
     if($('#payment .error').length > 0 && this.currentTab == 6) return;
     if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
-    
-    this.currentTab++; 
+
+    this.currentTab++;
 
   }
   prevStep() {
@@ -1400,8 +1403,8 @@ fetchDrivers(){
 
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
-    
-    
+
+
     try {
       return await new Promise((resolve, reject) => {this.apiService.postData('drivers',formData, true).subscribe({
       complete: () => { },
@@ -1513,7 +1516,7 @@ fetchDrivers(){
       this.driverData.documentDetails.splice(i, 1);
     }
   }
-  
+
   changePaymentModeForm(value) {
     if (value === 'Pay Per Mile') {
       delete this.driverData.paymentDetails.loadPayPercentage;
@@ -1541,7 +1544,7 @@ fetchDrivers(){
       delete this.driverData.paymentDetails.rateUnit;
       delete this.driverData.paymentDetails.waitingPay;
       delete this.driverData.paymentDetails.waitingPayUnit;
-      delete this.driverData.paymentDetails.waitingHourAfter;      
+      delete this.driverData.paymentDetails.waitingHourAfter;
 
     } else if (value === 'Pay Per Hour') {
       delete this.driverData.paymentDetails.deliveryRate;
@@ -1596,7 +1599,7 @@ fetchDrivers(){
 
   addIssue() {
     this.hideErrors();
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -1672,7 +1675,7 @@ fetchDrivers(){
       this.years.push(i);
     }
   }
-  
+
   /*
    * Add new asset
    */

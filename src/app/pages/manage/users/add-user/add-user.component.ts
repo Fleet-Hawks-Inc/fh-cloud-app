@@ -179,7 +179,7 @@ removeProfile() {
     })
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }

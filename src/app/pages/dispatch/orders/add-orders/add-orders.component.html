@@ -149,12 +149,14 @@
                            <div class="col-lg-10">
                               <label
                                  class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>                              
                               </label>
                               <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
-                                 name="orderData.customerID" #customerID="ngModel" required customerID class="form-control">
-                                 <ng-option  *ngFor="let customer of customers | async" value="{{customer.customerID}}">
-                                    {{customer.companyName}}
+
+                                 name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control">
+                                 <ng-option *ngFor="let customer of customers | async" value="{{customer.customerID}}">
+                                    {{customer.companyName}}   
+
                                  </ng-option>
                               </ng-select>
                               <span class="text-danger"
@@ -361,7 +363,7 @@
                                                             {{list.pickupLocation}}
                                                          </td>
                                                          <td>
-                                                            {{list.dateAndTime}}
+                                                            {{list.dateAndTime | date:'yyyy/MM/dd'}}
                                                          </td>
                                                          <td>
                                                             <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
@@ -387,7 +389,7 @@
                                                             {{list.dropOffLocation}}
                                                          </td>
                                                          <td>
-                                                            {{list.dateAndTime}}
+                                                            {{list.dateAndTime | date:'yyyy/MM/dd'}}
                                                          </td>
                                                          <td>
                                                             <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
@@ -438,7 +440,7 @@
 
                                                                <ng-select [(ngModel)]="item.shippers.shipperID"
                                                                   name="shipperID" #shipperID="ngModel" required
-                                                                  shipperID class="form-control">
+                                                                  shipperID placeholder="Select Consignor" class="form-control">
                                                                
                                                                      <ng-option *ngFor="let item of shippers | async" value="{{item.shipperID}}">{{item.companyName}}</ng-option>
                                                                
@@ -496,10 +498,11 @@
                                                                
 
                                                                <div class="input-group">
-                                                                  <input placeholder="eg. yyyy-mm-dd" [(ngModel)]="item.shippers.pickupDate"
-                                                                     name="pickupDate" type="text" #pickupDate="ngModel"
-                                                                     required pickupDate 
-                                                                     class="form-control "  ngbDatepicker #d6="ngbDatepicker"  (click)="d6.toggle();">
+
+                                                                     <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate" type="text"
+                                                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
+                                                                     class="form-control" autocomplete="off">
+
                                                                </div>
                                                                <span class="text-danger"
                                                                   *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
@@ -651,8 +654,9 @@
                                                                   
 
                                                                <div class="col-lg-6">
-                                                                  <ng-select placeholder="eg. select qantity" [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
-                                                                     <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
+
+                                                                  <ng-select [(ngModel)]="commodity.quantityUnit" name="quantityUnit{{z}}" placeholder="eg. select quantity"class="form-control" data-select2-id="19" tabindex="-1" aria-hidden="false">
+                                                    <ng-option value="Bag" data-select2-id="21">Bag</ng-option>
                                                                         <ng-option value="Bale" data-select2-id="285">Bale</ng-option>
                                                                         <ng-option value="Barrel" data-select2-id="286">Barrel</ng-option>
                                                                         <ng-option value="Basket" data-select2-id="287">Basket</ng-option>
@@ -798,7 +802,7 @@
 
                                                                <ng-select [(ngModel)]="item.receivers.receiverID"
                                                                   name="receiverID" #receiverID="ngModel" required
-                                                                  receiverID class="form-control" data-select2-id="16"
+                                                                  receiverID placeholder="Select Consignee"class="form-control" data-select2-id="16"
                                                                   tabindex="-1" aria-hidden="true">
                                                                   <ng-option *ngFor="let item of receivers | async;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
                                                                </ng-select>
@@ -851,10 +855,11 @@
                                                             </div>
                                                             <div class="col-lg-6">
                                                                <div class="input-group">
-                                                                  <input placeholder="eg. yyyy-mm-dd" [(ngModel)]="item.receivers.dropOffDate"
-                                                                     name="dropOffDate" #dropOffDate="ngModel" required
-                                                                     dropOffDate type="text" 
-                                                                     class="form-control" gbDatepicker #d7="ngbDatepicker"  (click)="d7.toggle();"  >
+
+                                                                  <input [(ngModel)]="item.receivers.dropOffDate" name="dropOffDate" type="text"
+                                                                     placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
+                                                                     class="form-control" autocomplete="off">
+
                                                                </div>
                                                                <span class="text-danger"
                                                                   *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffDate == ''">
@@ -1233,8 +1238,10 @@
                            </div>
                            <div class="col-lg-4">
                               <ng-select 
+
                               name="orderData.additionalDetails.refeerTemp.minTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTempratureUnit" data-plugin-selecttwo=""
-                                 class="form-control populate" data-select2-id="10"
+                                placeholder="select unit" class="form-control populate" data-select2-id="10"
+
                                  tabindex="-1" aria-hidden="true">
                                  
                                     <ng-option value="°C">°C</ng-option>
@@ -1260,7 +1267,7 @@
                               <ng-select 
                               name="orderData.additionalDetails.refeerTemp.maxTempratureUnit" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTempratureUnit" type="text" class="form-control"
                               data-plugin-selecttwo=""
-                                 class="form-control populate" data-select2-id="13"
+                              placeholder="select unit" class="form-control populate" data-select2-id="13"
                                  tabindex="-1" aria-hidden="true">
                                     <ng-option value="°C">°C</ng-option>
                                     <ng-option value="°F">°F</ng-option>
@@ -1405,7 +1412,7 @@
                               <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.freightFee.currency" 
                               #freightCur="ngModel" required freightCur  name="freight_currency"
 
-                                 class="form-control populate">
+                              placeholder="select currency" class="form-control populate">
 
                                  <ng-option value="CAD">CAD</ng-option>
                                  <ng-option value="USD">USD</ng-option>
@@ -1445,7 +1452,7 @@
                            </div>
                            <div class="col-lg-2">
                               <ng-select (change)="changeCurrency($event)" [(ngModel)]="orderData.charges.fuelSurcharge.currency" name="fuel_currency"
-                                 class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                              placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
 
                                  <ng-option value="CAD">CAD</ng-option>
                                  <ng-option value="USD">USD</ng-option>
@@ -1481,7 +1488,7 @@
                            </div>
                            <div class="col-lg-2">
                               <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="accessfee_currency{{i}}"
-                                 class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
+                              placeholder="select currency" class="form-control populate" data-select2-id="52" tabindex="-1" aria-hidden="true">
 
                                  <ng-option value="CAD">CAD</ng-option>
                                  <ng-option value="USD">USD</ng-option>
@@ -1524,7 +1531,7 @@
                            </div>
                            <div class="col-lg-2">
                               <ng-select (change)="changeCurrency($event)" [(ngModel)]="item.currency" name="currency{{i}}"
-                                 data-plugin-selecttwo="" class="form-control populate" data-select2-id="52"
+                                 data-plugin-selecttwo="" placeholder="select currency"  class="form-control populate" data-select2-id="52"
                                  tabindex="-1" aria-hidden="true">
 
                                  <ng-option value="CAD">CAD</ng-option>
@@ -1569,7 +1576,7 @@
                         <div class="row mt-3">
                            <div class="col-lg-10 offset-lg-2">
                               <label class="control-label font-weight-bold text-3 text-dark"
-                                 for="inputDefault">States</label>
+                                 for="inputDefault">Provinces</label>
                            </div>
                            <div class="col-lg-5 offset-lg-2">
                               <ng-select 
