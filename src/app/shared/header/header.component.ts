@@ -50,7 +50,6 @@ fetchCarrier(){
       .subscribe((result: any) => {
         this.carriers = result.Items[0];
         this.currentCarrierID = this.carriers.carrierID;
-        console.log('this.currentCarrierID',this.currentCarrierID);
         this.logoSrc = 'assets/img/logo.png';
         // console.log("this.carriers",this.carriers)
         // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;

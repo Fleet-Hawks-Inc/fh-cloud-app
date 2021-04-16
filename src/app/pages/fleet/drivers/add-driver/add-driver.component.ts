@@ -434,7 +434,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.validateTabErrors();
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
     if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
@@ -530,7 +529,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=drivers`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -540,11 +539,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .subscribe((result: any) => {
         this.countries = result.Items;
         this.countries.map(elem => {
-          if(elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
             this.addressCountries.push({countryName: elem.countryName, countryID: elem.countryID})
           }
-        })
-
+        });
       });
   }
 
