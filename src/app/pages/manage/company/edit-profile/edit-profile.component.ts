@@ -99,6 +99,12 @@ export class EditProfileComponent implements OnInit {
   Error = '';
   Success = '';
   existingPhotos = [];
+   // front end validation
+   errorEIN = false;
+   errorMC = false;
+   errorDOT = false;
+   errorCCC =  false;
+   errorSCAC = false;
   constructor(private apiService: ApiService,private toaster: ToastrService, private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -204,6 +210,7 @@ export class EditProfileComponent implements OnInit {
           this.bankID = this.carriers.bank.bankID;
           this.uploadedLogo = this.carriers.uploadedLogo;
           this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+
         });
   }
 
@@ -438,7 +445,8 @@ export class EditProfileComponent implements OnInit {
         routingNumber: this.bank.routingNumber,
         institutionNumber: this.bank.institutionNumber,
         bankID:  this.bankID
-      }
+      },
+      uploadedLogo: this.uploadedLogo
 
     };
     // create form data instance
@@ -509,4 +517,73 @@ export class EditProfileComponent implements OnInit {
       this.fetchCarrier();
     });
   }
+
+  // FRONT END VALIDATION
+  EINValidation(e) {
+    const EIN = e.target.value;
+    if (EIN.length == 0) {
+      this.errorEIN = false;
+    } else{
+      if (EIN.length != 9) {
+        this.errorEIN = true;
+    }
+    else{
+      this.errorEIN = false;
+    }
+    }
+
+   }
+   MCValidation(e) {
+    const MC = e.target.value;
+    if (MC.length == 0) {
+      this.errorMC = false;
+    } else{
+      if (MC.length != 6) {
+        this.errorMC = true;
+    }
+    else{
+      this.errorMC = false;
+    }
+    }
+   }
+   DOTValidation(e) {
+    const DOT = e.target.value;
+    if (DOT.length === 0) {
+      this.errorDOT = false;
+    } else{
+      if (DOT.length !== 8) {
+        this.errorDOT = true;
+    }
+    else{
+      this.errorDOT = false;
+    }
+    }
+   }
+
+   CCCValidation(e) {
+    const CCC = e.target.value;
+    if (CCC.length === 0) {
+      this.errorCCC = false;
+    } else{
+      if (CCC.length !== 4) {
+        this.errorCCC = true;
+    }
+    else{
+      this.errorCCC = false;
+    }
+    }
+   }
+   SCACValidation(e) {
+    const SCAC = e.target.value;
+    if (SCAC.length === 0) {
+      this.errorSCAC = false;
+    } else{
+      if (SCAC.length !== 4) {
+        this.errorSCAC = true;
+    }
+    else{
+      this.errorSCAC = false;
+    }
+    }
+   }
 }

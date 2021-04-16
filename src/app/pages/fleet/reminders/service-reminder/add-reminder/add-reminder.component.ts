@@ -97,7 +97,7 @@ export class AddReminderComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -287,7 +287,7 @@ export class AddReminderComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.toastr.success('Service Reminder Updated Successfully!');
+        this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();
         this.reminderData = {
