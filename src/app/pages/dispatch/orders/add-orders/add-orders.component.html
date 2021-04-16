@@ -361,7 +361,7 @@
                                                             {{list.pickupLocation}}
                                                          </td>
                                                          <td>
-                                                            {{list.dateAndTime}}
+                                                            {{list.dateAndTime | date:'yyyy/MM/dd'}}
                                                          </td>
                                                          <td>
                                                             <i (click)="editList('shipper', i, j)" class="fa fa-edit fa-fw"></i>
@@ -387,7 +387,7 @@
                                                             {{list.dropOffLocation}}
                                                          </td>
                                                          <td>
-                                                            {{list.dateAndTime}}
+                                                            {{list.dateAndTime | date:'yyyy/MM/dd'}}
                                                          </td>
                                                          <td>
                                                             <i (click)="editList('receiver', i, j)" class="fa fa-edit fa-fw"></i>
@@ -496,10 +496,9 @@
                                                                
 
                                                                <div class="input-group">
-                                                                  <input placeholder="eg. yyyy-mm-dd" [(ngModel)]="item.shippers.pickupDate"
-                                                                     name="pickupDate" type="date" #pickupDate="ngModel"
-                                                                     required pickupDate placeholder=""
-                                                                     class="form-control ">
+                                                                     <input [(ngModel)]="item.shippers.pickupDate" name="pickupDate" type="text"
+                                                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker #pickupDate="ngbDatepicker"
+                                                                     class="form-control" autocomplete="off">
                                                                </div>
                                                                <span class="text-danger"
                                                                   *ngIf="isShipperSubmit && shippersReceivers[i].shippers.pickupDate == ''"
@@ -851,10 +850,9 @@
                                                             </div>
                                                             <div class="col-lg-6">
                                                                <div class="input-group">
-                                                                  <input placeholder="eg. yyyy-mm-dd" [(ngModel)]="item.receivers.dropOffDate"
-                                                                     name="dropOffDate" #dropOffDate="ngModel" required
-                                                                     dropOffDate type="date" placeholder=""
-                                                                     class="form-control">
+                                                                  <input [(ngModel)]="item.receivers.dropOffDate" name="dropOffDate" type="text"
+                                                                     placeholder="yyyy/mm/dd" (click)="dropOffDate.toggle()" ngbDatepicker #dropOffDate="ngbDatepicker"
+                                                                     class="form-control" autocomplete="off">
                                                                </div>
                                                                <span class="text-danger"
                                                                   *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.dropOffDate == ''">

@@ -173,6 +173,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       homeTerminal: '',
       pcAllowed: false,
       ymAllowed: false,
+      hosCycleName:''
     },
     emergencyDetails: {
       name: '',
@@ -719,6 +720,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
 
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
@@ -1108,7 +1119,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.driverData['driverID'] = this.driverID;
 
-
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+    
     // create form data instance
     const formData = new FormData();
 
