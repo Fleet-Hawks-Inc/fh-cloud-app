@@ -230,10 +230,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.unitType = value;
     this.fuelData.fuelQtyAmt = 0;
     this.fuelData.fuelQty = 0;
-    this.calculate();
-    if (isNaN(this.fuelData.pricePerUnit)) {
-      this.fuelData.pricePerUnit = 0;
-    }
+
   }
   changeFuelUnit() {
     if (this.fuelQtyUnit === 'gallon') {
@@ -255,10 +252,6 @@ export class AddFuelEntryComponent implements OnInit {
 
   }
   addFuelEntry() {
-    // if (this.fileName === '') {
-    //   this.imageError = 'Please Choose Image To Upload';
-    //   return;
-    // }
     this.hideErrors();
     if (this.fuelQtyUnit === 'litre') {
       this.fuelData.fuelQty = this.fuelData.fuelQty;
@@ -409,10 +402,7 @@ export class AddFuelEntryComponent implements OnInit {
       this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
      this.fuelData.uploadedPhotos = this.existingPhotos;
-    if (this.fuelData.fuelDate !== '') {
-      //date in Y-m-d format
-      this.fuelData.fuelDate = this.fuelData.fuelDate.split('-').reverse().join('-');
-    }
+
      // create form data instance
      const formData = new FormData();
 
@@ -444,7 +434,7 @@ export class AddFuelEntryComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.toaster.success('Fuel Entry Updated successfully');
-        this.router.navigateByUrl('/fleet/expenses/fuel/list');
+        this.cancel();
       },
     });
   }
