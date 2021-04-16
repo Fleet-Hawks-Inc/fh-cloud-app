@@ -26,7 +26,12 @@ export class TripDetailComponent implements OnInit {
     tripNo: '',
     tripStatus: '',
     documents: [],
-    carrierID: ''
+    carrierID: '',
+    reeferTemperature:'',
+    reeferTemperatureUnit: '',
+    notifications: {},
+    bol: '',
+    dateCreated: ''
   };
   tripID = '';
   allAssetName = '';
