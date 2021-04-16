@@ -83,7 +83,7 @@ describe('vehicle Test', function () {
         cy.get('input[name="engine.transmissionGears"]').first().type('6');
         cy.get('[class="btn btn-success mt-4 ng-star-inserted"]').first().click();//savenxt
 
-        // cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();//Purchase vendor
+        // cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();//Purchase vendo
 
         cy.get('input[name="purchase.purchasePrice"]').first().type('7000');
         cy.get('div#purchase  .pt-3.row > div:nth-of-type(2) > div:nth-of-type(2) ng-select[role="listbox"] input[role="combobox"]').first().click();
