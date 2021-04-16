@@ -3,7 +3,7 @@ describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
   it.only('Add vehicle renewal reminder', function () {
-    /* ==== Generated with Cypress Studio ==== */
+
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -33,7 +33,7 @@ describe(" reminders tests", () => {
   });
 
   it('search and reset the reminder', function () {
-    /* ==== Generated with Cypress Studio ==== */
+
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -56,7 +56,7 @@ describe(" reminders tests", () => {
   });
   /* === Test Created with Cypress Studio === */
   it('delete the reminder', function () {
-    /* ==== Generated with Cypress Studio ==== */
+    
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -72,7 +72,7 @@ describe(" reminders tests", () => {
   });
   /* === Test Created with Cypress Studio === */
 it('validation error message', function() {
-  /* ==== Generated with Cypress Studio ==== */
+
   cy.visit('http://localhost:4200/');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
   cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');

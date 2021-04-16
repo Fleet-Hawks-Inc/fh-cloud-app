@@ -3,7 +3,7 @@ describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
   it('Add issue', function () {
-    /* ==== Generated with Cypress Studio ==== */
+   
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');

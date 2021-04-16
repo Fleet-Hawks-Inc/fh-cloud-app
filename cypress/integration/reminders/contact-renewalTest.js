@@ -54,7 +54,7 @@ describe(" reminders tests", () => {
 
 
   });
-  /* === Test Created with Cypress Studio === */
+  
   it('Delete reminder', function () {
     /* ==== Generated with Cypress Studio ==== */
     cy.visit('http://localhost:4200/');
