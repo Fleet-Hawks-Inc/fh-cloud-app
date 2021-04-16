@@ -682,3 +682,58 @@ label.error {
 .hand-icon {
     cursor: pointer;
 }
+.height460{
+    min-height: 460px;
+}
+.height525{
+    min-height: 525px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
+.header .header-right .userbox {
+    display: inline-flex;
+    align-items: center;
+}
+.header .header-right .userbox > .dropdown{
+    border-left: 1px solid #e0e0e0;
+    padding-left: 25px;
+    margin-left: 20px;
+}
+.header .header-right .userbox.show {
+    border-left: none;
+}
+.header .header-right .profile-picture {
+    background-color: #ededed;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.cus-btn-padd {
+    padding: 6px 14px !important;
+    margin-top: 1px;
+    line-height: 1.4rem;
+}
+.form-control {
+    min-height: 36px !important;
+}
+.address-book-icon {
+    position: fixed;
+    bottom: 30px;
+    left: 23px;
+    background: #ffffff;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+}
+.dropdown-item.active, .dropdown-item:active {
+    background-color: #47a447;
+}

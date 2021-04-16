@@ -1,12 +1,12 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pt-0 pr-0">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
-          <div class="col-md-8 col-lg-8 text-right pr-1">
+          <div class="col-md-8 col-lg-8 text-right">
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles List</a>
             <div class="btn-group flex-wrap" *ngIf="!environment.isFeatureEnabled">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -177,7 +177,7 @@
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
-                              Name:
+                              Vehicle Name:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ vehicleIdentification }}
@@ -220,7 +220,7 @@
                               Vehicle Type:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
-                              {{ vehicleType }}
+                              {{ vehicleTypeObects[vehicleType] }}
                             </div>
                           </div>
                           <div class="row m-0">
@@ -238,6 +238,11 @@
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
                               VIN/SN:
+
+
+
+
+                              
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ VIN }}
@@ -323,7 +328,7 @@
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                             >
-                              Color:
+                              Vehicle Color:
                             </div>
                             <div class="col-lg-8 p-2 border-box">
                               {{ vehicleColor }}
@@ -400,7 +405,7 @@
                             <div
                               class="col-lg-12 p-2 font-weight-bold text-4 border-box"
                             >
-                              Photos
+                              Photo(s)
                               <!-- <a href="#" class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i>Add Issue</a> -->
                             </div>
                           </div>
@@ -555,11 +560,11 @@
                               class="col-lg-12 p-2 font-weight-bold text-4"
                             >
                               Open Issues
-                              <a
+                              <!-- <a
                                 routerLink="/fleet/maintenance/issues/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
-                              >
+                              > -->
                               <a routerLink="/fleet/maintenance/issues/add"
                                 class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Issue</a
                               >
@@ -599,11 +604,11 @@
                           class="col-lg-12 p-2 font-weight-bold text-4"
                         >
                           Service Reminders
-                          <a
+                          <!-- <a
                             routerLink="/fleet/reminders/service-reminder/list"
                             class="btn btn-xs btn-dark pull-right ml-3"
                             >View All</a
-                          >
+                          > -->
                           <a
                             routerLink="/fleet/reminders/service-reminder/add"
                             class="btn btn-xs btn-default pull-right"
@@ -618,7 +623,7 @@
                                 <th width="25%">Due Date</th>
                                 <th width="25%">Remind Days</th>
                                 <th width="20%">Task Name</th>
-                                <th width="55%">Description</th>
+                                <th width="55%">Subscribers</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -647,11 +652,11 @@
                           <div class="row m-0 back-color-gray">
                             <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Renewal Reminders
-                              <a
+                              <!-- <a
                                 routerLink="/fleet/reminders/vehicle-renewals/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
-                              >
+                              > -->
                               <a
                                 routerLink="/fleet/reminders/vehicle-renewals/add"
                                 class="btn btn-xs btn-default pull-right"
@@ -665,7 +670,7 @@
                                   <th width="25%">Due Date</th>
                                   <th width="25%">Remind Days</th>
                                   <th width="20%">Task Name</th>
-                                  <th width="55%">Description</th>
+                                  <th width="55%">Subscribers</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -692,7 +697,7 @@
                             <div
                               class="col-lg-12 p-2 back-color-gray font-weight-bold text-4 border-box"
                             >
-                              Documents
+                              Document(s)
                             </div>
                           </div>
                           <table class="table table-responsive-lg mt-3 mb-0">
@@ -792,11 +797,11 @@
                           <div class="row m-0 back-color-gray">
                             <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Service Programs
-                              <a
+                              <!-- <a
                                 routerLink="/fleet/maintenance/service-program/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
-                              >
+                              > -->
                               <a
                                 routerLink="/fleet/maintenance/service-program/add"
                                 class="btn btn-xs btn-default pull-right"
@@ -838,11 +843,11 @@
                           <div class="row m-0 back-color-gray">
                             <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Service History
-                              <a
+                              <!-- <a
                                 routerLink="/fleet/maintenance/service-log/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
-                              >
+                              > -->
                               <a
                                 routerLink="/fleet/maintenance/service-log/add-service"
                                 class="btn btn-xs btn-default pull-right"
@@ -880,11 +885,11 @@
                           <div class="row m-0 back-color-gray">
                             <div class="col-lg-12 p-2 font-weight-bold text-4">
                               Fuel History
-                              <a
+                              <!-- <a
                                 routerLink="/fleet/fuel/list"
                                 class="btn btn-xs btn-dark pull-right ml-3"
                                 >View All</a
-                              >
+                              > -->
                               <a
                                 routerLink="/fleet/fuel/add"
                                 class="btn btn-xs btn-default pull-right"><i class="fas fa-plus"></i> Add Fuel Entry</a>
@@ -1541,7 +1546,7 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            Policy Number:
+                            Insurance Policy# :
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ insurance.policyNumber }}
@@ -1581,10 +1586,10 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            Reminder:
+                            Reminder Every:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
-                            {{ insurance.remiderEvery }}
+                            Every {{ insurance.remiderEvery }}
                           </div>
                         </div>
                       </div>
@@ -2029,7 +2034,7 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            DEF(Diesel Exhaust Fluid) Capacity:
+                            DEF (Diesel Exhaust Fluid) Capacity:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ fluid.def }} {{fluid.defType}}
@@ -2170,7 +2175,7 @@
                           <div
                             class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
                           >
-                            Annual Percentage Rate:
+                            Annual % Rate:
                           </div>
                           <div class="col-lg-8 p-2 border-box">
                             {{ loan.annualPercentageRate }}

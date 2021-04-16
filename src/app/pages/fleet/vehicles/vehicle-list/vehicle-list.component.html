@@ -8,9 +8,9 @@
     <div class="inner-wrapper">
        
         <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header pr-5">
+            <header class="page-header">
                 <form class="form-horizontal" method="get">
-                    <div class="row px-2" style="padding-top: 8px">
+                    <div class="row" style="padding-top: 8px">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle by name"
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6 text-right pr-3 page-buttons">
                             <div class="btn-group flex-wrap" style="min-width:190px;">
-                                <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                                <button type="button" class="mr-3 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                                 <div class="dropdown-menu dutystatwd" role="menu">
                                    <a class="dropdown-item text-1" href="javascript:;">
                                       <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin"
@@ -105,7 +105,7 @@
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
                                       <label><input type="checkbox" [(ngModel)]="hideShow.serviceDate"
-                                         name="serviceDate" (change)="hideShowColumn()"> In Service Date </label>
+                                         name="serviceDate" (change)="hideShowColumn()"> Start Date </label>
                                    </a>
                                    <a class="dropdown-item text-1" href="javascript:;">
                                       <label><input type="checkbox" [(ngModel)]="hideShow.insuranceVendor"
@@ -155,7 +155,7 @@
                                     <a class="dropdown-item text-1" (click)="export()">Export</a>
                                 </div>
                             </div>
-                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm mx-2"
+                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm"
                                 style="color: white"><i class="fas fa-plus"></i> Add Vehicle</a>
                         </div>
                     </div>
@@ -179,17 +179,18 @@
                                                 <th class="col7 extra">Trip</th>
                                                 <th class="col8 minWidth130">Plate Number</th>
                                                 <th class="col9 minWidth200">Fuel Type</th>
+                                                <th class="col10 minWidth120">Status</th>
                                                 <th class="col11 extra">Group</th>
                                                 <th class="col12 extra">Ownership</th>
                                                 <th class="col13 extra">Assigned Driver</th>
                                                 <th class="col14 extra">Service Program</th>
-                                                <th class="col15 extra">In Service Date</th>
+                                                <th class="col15 extra">Start Date</th>
                                                 <th class="col16 extra">Insurance Vendor</th>
                                                 <th class="col17 extra">Insurance Amount</th>
                                                 <th class="col18 extra">Engine Summary</th>
                                                 <th class="col19 extra">Primary Meter</th>
                                                 <th class="col20 extra">Fuel Unit</th>
-                                                <th class="col10 minWidth120">Status</th>
+                                                
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -223,7 +224,7 @@
                                                     {{vehicle.plateNumber}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.fuelType" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{vehicle.fluid.fuelType}}
+                                                    {{fuelTypesObjects[vehicle.fluid.fuelType]}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.status" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.currentStatus}}

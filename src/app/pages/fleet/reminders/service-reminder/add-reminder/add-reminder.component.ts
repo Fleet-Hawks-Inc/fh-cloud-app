@@ -31,7 +31,7 @@ export class AddReminderComponent implements OnInit {
   };
   numberOfDays: number;
   time = 1;
-  timeType = 'Day(s)';
+  timeType = 'day';
   serviceTask = {
     taskType: constants.TASK_SERVICE,
     taskName: '',
@@ -121,7 +121,7 @@ export class AddReminderComponent implements OnInit {
         this.reminderData.reminderTasks.remindByDays = result.reminderTasks.remindByDays;
         this.reminderData.lastCompletedOdometer = result.lastCompletedOdometer;
         this.reminderData.lastCompletionDate = result.lastCompletionDate;
-        this.timeType = 'Day(s)';
+        this.timeType = 'day';
         this.reminderData.sendEmail = result.sendEmail;
         this.reminderData.subscribers = this.test;
       });
@@ -153,19 +153,19 @@ export class AddReminderComponent implements OnInit {
   addReminder() {
     this.hideErrors();
     switch (this.timeType) {
-      case 'Day(s)': {
+      case 'day': {
         this.numberOfDays = this.time * 1;
         break;
       }
-      case 'Month(s)': {
+      case 'month': {
         this.numberOfDays = this.time * 30;
         break;
       }
-      case 'Week(s)': {
+      case 'week': {
         this.numberOfDays = this.time * 7;
         break;
       }
-      case 'Year(s)': {
+      case 'year': {
         this.numberOfDays = this.time * 365;
         break;
       }
@@ -175,8 +175,7 @@ export class AddReminderComponent implements OnInit {
           break;
         }
     }
-
-    // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
     this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },

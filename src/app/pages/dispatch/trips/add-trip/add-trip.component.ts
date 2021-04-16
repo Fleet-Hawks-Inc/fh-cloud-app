@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 import {Auth} from 'aws-amplify';
 import { GoogleMapsService } from 'src/app/services/google-maps.service';
 import { zipObject } from 'lodash';
+import * as moment from "moment";
 
 declare var $: any;
 
@@ -66,7 +67,10 @@ export class AddTripComponent implements OnInit {
         },
         tripStatus: 'confirmed',
         dateCreated: <any>'',
-        driverIDs: []
+        driverIDs: [],
+        vehicleIDs: [],
+        assetIDs: [],
+        loc: ''
     };
     ltlOrders = [];
     ftlOrders = [];
@@ -164,6 +168,7 @@ export class AddTripComponent implements OnInit {
     carriersObject = [];
     currentUser:any = '';
     OldOrderIDs = [];
+    dateCreated = '';
 
     ngOnInit() {
 
@@ -190,6 +195,7 @@ export class AddTripComponent implements OnInit {
         this.fetchAssetsByIDs();
         this.fetchVehiclesByIDs();
         this.getCurrentuser();
+        this.fetchAllCarrierIDs();
         if (this.tripID != undefined) {
             this.fetchTripDetail();
         }
@@ -201,7 +207,7 @@ export class AddTripComponent implements OnInit {
 
     
     fetchCarriers() {
-        this.apiService.getData('carriers')
+        this.apiService.getData('externalCarriers')
             .subscribe((result: any) => {
                 this.carriers = result.Items;
             })
@@ -333,7 +339,9 @@ export class AddTripComponent implements OnInit {
 
         if(locations.length > 0) {
             // this.getCoords(locations);
-            this.resetMap();
+            // this.resetMap();
+            this.actualMiles = 0;
+            this.getMiles();
         }
 
         if (this.trips.length > 0) {
@@ -702,7 +710,9 @@ export class AddTripComponent implements OnInit {
                         this.calculateActualMiles(miles)
                     }
                     catch (error) {
-                        console.error(error)
+                        this.toastr.error('No route found with these locations.');
+                        return false;
+                        // console.error(error)
                     }
                     savedCord=endingPoint;
                 }
@@ -1008,10 +1018,13 @@ export class AddTripComponent implements OnInit {
         } else {
             this.tripData.reeferTemperature = '';
         }
+        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
+        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
 
+        this.tripData.dateCreated =  this.dateCreated;
         delete this.tripData.reeferTemperatureUnit;
         this.tripData.orderId = this.OrderIDs;
-        this.tripData.tripPlanning = [];
+        this.tripData.tripPlanning = []; 
         let planData = this.trips
 
         if (planData.length == 0) {
@@ -1025,6 +1038,9 @@ export class AddTripComponent implements OnInit {
         }
 
         let selectedDriverids = [];
+        let selectedVehicles = [];
+        let selectedAssets = [];
+        let selectedLocations = '';
         if (planData.length >= 2) {
             let addedPlan = planData.map(function (v) { return v.type; });
 
@@ -1041,6 +1057,7 @@ export class AddTripComponent implements OnInit {
                     mileType: '',
                     miles: '',
                     vehicleID: '',
+                    vehicleName:'',
                     assetID: [],
                     driverUsername: '',
                     codriverUsername: '',
@@ -1062,6 +1079,7 @@ export class AddTripComponent implements OnInit {
                 obj.mileType = element.mileType;
                 obj.miles = element.miles;
                 obj.vehicleID = element.vehicleID;
+                obj.vehicleName=this.vehiclesObjects[element.vehicleID]
                 obj.pickupTime = element.pickupTime;
                 obj.dropTime = element.dropTime;
                 obj.actualPickupTime = element.actualPickupTime;
@@ -1072,17 +1090,38 @@ export class AddTripComponent implements OnInit {
                 obj.coDriverID = element.coDriverID;
 
                 if(element.driverID != '' && element.driverID != undefined) {
-                    selectedDriverids.push(element.driverID);
+                    if(!selectedDriverids.includes(element.driverID)) {
+                        selectedDriverids.push(element.driverID);
+                    }
                 }
 
                 if(element.coDriverID != '' && element.coDriverID != undefined) {
-                    selectedDriverids.push(element.coDriverID);
+                    if(!selectedDriverids.includes(element.coDriverID)) {
+                        selectedDriverids.push(element.coDriverID);
+                    }
+                }
+
+                if(element.vehicleID != '' && element.vehicleID != undefined) {
+                    if(!selectedVehicles.includes(element.vehicleID)) {
+                        selectedVehicles.push(element.vehicleID);
+                    }
+                }
+
+                if(element.locationName != '' && element.locationName != undefined) {
+                    element.locationName = element.locationName.replace(",", "");
+                    selectedLocations += element.locationName.toLowerCase() + '|';
                 }
 
                 if (element.trailer != '' && element.trailer != undefined) {
                     for (let j = 0; j < element.trailer.length; j++) {
                         const element1 = element.trailer[j];
                         obj.assetID.push(element1.id);
+
+                        if(element1.id != '' && element1.id != undefined) {
+                            if(!selectedAssets.includes(element1.id)) {
+                                selectedAssets.push(element1.id);
+                            }
+                        }
                     }
                 }
                 obj.driverUsername = element.driverUsername;
@@ -1093,6 +1132,9 @@ export class AddTripComponent implements OnInit {
             }
         }
         this.tripData.driverIDs = await selectedDriverids;
+        this.tripData.vehicleIDs = await selectedVehicles;
+        this.tripData.assetIDs = await selectedAssets;
+        this.tripData.loc = await selectedLocations;
         this.spinner.show();
         this.errors = {};
         this.hasError = false;
@@ -1293,7 +1335,7 @@ export class AddTripComponent implements OnInit {
     }
 
     fetchAllCarrierIDs() {
-        this.apiService.getData('carriers/get/list')
+        this.apiService.getData('externalCarriers/get/list')
             .subscribe((result: any) => {
                 this.carriersObject = result;
             });
@@ -1357,7 +1399,7 @@ export class AddTripComponent implements OnInit {
                 this.tripData['tripNo'] = result.tripNo;
                 this.tripData['routeID'] = result.routeID;
                 this.tripData['bol'] = result.bol;
-                this.tripData['dateCreated'] = result.dateCreated;
+                this.dateCreated = result.dateCreated;
 
                 // allFetchedOrders
                 this.orderNo = '';
@@ -1483,7 +1525,7 @@ export class AddTripComponent implements OnInit {
             })
     }
 
-    updateTrip() {
+    async updateTrip() {
         this.hideErrors();
         if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != '') {
             this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
@@ -1494,6 +1536,10 @@ export class AddTripComponent implements OnInit {
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
+        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
+        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
+        this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+        // this.tripData.dateCreated =  this.dateCreated;
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1515,6 +1561,10 @@ export class AddTripComponent implements OnInit {
             }
         }
         let selectedDriverids = [];
+        let selectedVehicles = [];
+        let selectedLocations = '';
+        let selectedAssets = [];
+
         for (let i = 0; i < planData.length; i++) {
 
             let obj = {
@@ -1525,6 +1575,7 @@ export class AddTripComponent implements OnInit {
                 mileType: '',
                 miles: '',
                 vehicleID: '',
+                vehicleName:'',
                 assetID: [],
                 driverUsername: '',
                 codriverUsername: '',
@@ -1548,6 +1599,7 @@ export class AddTripComponent implements OnInit {
             obj.mileType = element.mileType;
             obj.miles = element.miles;
             obj.vehicleID = element.vehicleID;
+            obj.vehicleName=this.vehiclesObjects[element.vehicleID]
 
             //   obj.time = element.time;
             obj.pickupTime = element.pickupTime;
@@ -1563,6 +1615,12 @@ export class AddTripComponent implements OnInit {
                 for (let j = 0; j < element.trailer.length; j++) {
                     const element1 = element.trailer[j];
                     obj.assetID.push(element1.id);
+
+                    if(element1.id != '' && element1.id != undefined) {
+                        if(!selectedAssets.includes(element1.id)) {
+                            selectedAssets.push(element1.id);
+                        }
+                    }
                 }
             }
             obj.driverUsername = element.driverUsername;
@@ -1570,17 +1628,36 @@ export class AddTripComponent implements OnInit {
             obj.carrierID = element.carrierID;
 
             if(element.driverID != '' && element.driverID != undefined) {
-                selectedDriverids.push(element.driverID);
+                if(!selectedDriverids.includes(element.driverID)) {
+                    selectedDriverids.push(element.driverID);
+                }
             }
 
             if(element.coDriverID != '' && element.coDriverID != undefined) {
-                selectedDriverids.push(element.coDriverID);
+                if(!selectedDriverids.includes(element.coDriverID)) {
+                    selectedDriverids.push(element.coDriverID);
+                }
+            }
+
+            if(element.vehicleID != '' && element.vehicleID != undefined) {
+                if(!selectedVehicles.includes(element.vehicleID)) {
+                    selectedVehicles.push(element.vehicleID);
+                }
+            }
+    
+            if(element.locationName != '' && element.locationName != undefined) {
+                element.locationName = element.locationName.replace(",", "");
+                selectedLocations += element.locationName.toLowerCase() + '|';
             }
 
             this.tripData.tripPlanning.push(obj);
         }
 
-        this.tripData.driverIDs = selectedDriverids;
+
+        this.tripData.driverIDs = await selectedDriverids;
+        this.tripData.vehicleIDs = await selectedVehicles;
+        this.tripData.assetIDs = await selectedAssets;
+        this.tripData.loc = await selectedLocations;
 
         // this.spinner.show();
         this.errors = {};
@@ -1632,7 +1709,7 @@ export class AddTripComponent implements OnInit {
         let day = '' + d.getDate();
         let year = d.getFullYear();
 
-        this.tripData.dateCreated = year+'-'+month+'-'+day;
+        this.dateCreated = year+'-'+month+'-'+day;
     }
 
     updateOrderStatus() {

@@ -189,8 +189,11 @@ export class AssetListComponent implements OnInit {
       .getData(`assets/isDeleted/${assetID}/${value}`)
       .subscribe((result: any) => {
         this.allData = [];
+        this.assetDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchAssetsCount();
-        // this.rerender();
+        this.initDataTable();
         this.toastr.success('Asset deleted successfully');
       });
     }
@@ -238,6 +241,10 @@ export class AssetListComponent implements OnInit {
           this.assetEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.assetEndPoint) {
+          this.assetEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.assetDraw > 0) {
           this.assetPrev = false;
@@ -252,6 +259,7 @@ export class AssetListComponent implements OnInit {
 
   searchFilter() {
     if (this.assetIdentification !== '' || this.currentStatus !== null) {
+      this.assetIdentification = this.assetIdentification.toLowerCase();
       if(this.assetID == '') {
         this.assetID = this.assetIdentification;
       }

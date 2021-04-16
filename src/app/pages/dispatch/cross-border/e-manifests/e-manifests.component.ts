@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
+import  Constants  from '../../../fleet/constants';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 
 declare var $: any;
 @Component({
@@ -12,6 +15,8 @@ declare var $: any;
 export class EManifestsComponent implements OnInit {
 
   activeDiv = 'ace';
+  dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageACI: string = Constants.FETCHING_DATA;
   countries = [];
   ACEList = [];
   ACIList = [];
@@ -62,6 +67,27 @@ export class EManifestsComponent implements OnInit {
   aciPrevEvauatedKeys = [''];
   aciStartPoint = 1;
   aciEndPoint = this.pageLength;
+  environment = environment.isFeatureEnabled;
+  categoryFilter = [
+    {
+      'name': 'Driver',
+      'value': 'driver'
+    },
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Port of entry',
+      'value': 'entryPort'
+    },
+    {
+      'name': 'Trip Number',
+      'value': 'tripNumber'
+    },
+  ];
+  filterCategory = null;
+  aciFilterCategory = null;
 
   constructor(
     private apiService: ApiService,
@@ -158,8 +184,11 @@ export class EManifestsComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('ACEeManifest/fetch/records?vehicleID=' + this.vehicleID + '&aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('ACEeManifest/fetch/records?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
         this.ACEList = result[`Items`];
         if (this.vehicleID !== '' || this.aceSearch !== '' || this.fromDate != '' || this.toDate != '') {
           this.aceStartPoint = 1;
@@ -180,6 +209,10 @@ export class EManifestsComponent implements OnInit {
           this.aceEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.aceEndPoint) {
+          this.aceEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.aceDraw > 0) {
           this.acePrev = false;
@@ -194,13 +227,29 @@ export class EManifestsComponent implements OnInit {
 
   searchACEFilter() {
     if (
-      this.vehicleID !== '' ||
       this.aceSearch !== '' ||
       this.fromDate !== '' ||
-      this.toDate !== ''
+      this.toDate !== '' || this.filterCategory != null
     ) {
-      this.getACECount();
-      this.initDataTable();
+
+      if(this.fromDate != '' && this.toDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.fromDate == '' && this.toDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.filterCategory != null && this.aceSearch == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      } else if(this.filterCategory != null && this.aceSearch == null){
+        this.toastr.error('Please select search value.');
+        return false;
+      } else {
+        this.ACEList = [];
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.getACECount();
+        this.initDataTable();
+      }
     } else {
       return false;
     }
@@ -208,17 +257,16 @@ export class EManifestsComponent implements OnInit {
 
   resetACEFilter() {
     if (
-      this.vehicleID !== '' ||
       this.aceSearch !== '' ||
       this.fromDate !== '' ||
       this.toDate !== ''
     ) {
-      this.vehicleID = '';
-      this.vehicleIdentification = '';
-      this.currentStatus = '';
+      this.dataMessage = Constants.FETCHING_DATA;
       this.aceSearch = '';
       this.fromDate = '';
       this.toDate = '';
+      this.ACEList = [];
+      this.filterCategory = null;
       this.getACECount();
       this.initDataTable();
       this.resetCountResult('ace');
@@ -231,6 +279,9 @@ export class EManifestsComponent implements OnInit {
       this.apiService
         .getData(`ACEeManifest/isDeleted/${entryID}/` + 1)
         .subscribe((result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.aceDraw = 0;
+          this.lastEvaluatedKey = '';
           this.getACECount();
           this.initDataTable();
           this.toastr.success('ACE eManifest Entry Deleted Successfully!');
@@ -255,12 +306,15 @@ export class EManifestsComponent implements OnInit {
 
   initDataTableACI() {
     this.spinner.show();
-    this.apiService.getData('ACIeManifest/fetch/records?vehicleID=' + this.vehicleID + '&aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate + '&lastKey=' + this.lastEvaluatedKeyACI)
+    this.apiService.getData('ACIeManifest/fetch/records?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessageACI = Constants.NO_RECORDS_FOUND;
+        }
         this.ACIList = result[`Items`];
-        if (this.vehicleID !== '' || this.aciSearch !== '' || this.aciFromDate != '' || this.aciToDate != '') {
+        if (this.aciSearch !== '' || this.aciFromDate != '' || this.aciToDate != '' || this.aciFilterCategory != null) {
           this.aciStartPoint = 1;
-          this.aciEndPoint = this.totalRecords;
+          this.aciEndPoint = this.totalACIRecords;
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
@@ -273,7 +327,11 @@ export class EManifestsComponent implements OnInit {
         } else {
           this.aciNext = true;
           this.lastEvaluatedKeyACI = '';
-          this.aciEndPoint = this.totalRecords;
+          this.aciEndPoint = this.totalACIRecords;
+        }
+
+        if(this.totalACIRecords < this.aciEndPoint) {
+          this.aciEndPoint = this.totalACIRecords;
         }
 
         // disable prev btn
@@ -290,13 +348,30 @@ export class EManifestsComponent implements OnInit {
 
   searchACIFilter() {
     if (
-      this.vehicleIDACI !== '' ||
+      this.aciFilterCategory !== null ||
       this.aciSearch !== '' ||
       this.aciFromDate !== '' ||
       this.aciToDate !== ''
     ) {
-      this.getACICount();
-      this.initDataTableACI();
+
+      if(this.aciFromDate != '' && this.aciToDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.aciFromDate == '' && this.aciToDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.aciFilterCategory != null && this.aciSearch == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      } else if(this.aciFilterCategory != null && this.aciSearch == null){
+        this.toastr.error('Please select search value.');
+        return false;
+      } else {
+        this.ACIList = [];
+        this.getACICount();
+        this.initDataTableACI();
+        this.dataMessageACI = Constants.FETCHING_DATA;
+      }
     } else {
       return false;
     }
@@ -308,8 +383,9 @@ export class EManifestsComponent implements OnInit {
       this.aciSearch !== '' || this.aciFromDate !== '' ||
       this.aciToDate !== ''
     ) {
-      this.vehicleIDACI = '';
-      this.vehicleIdentificationACI = '';
+      this.ACIList = [];
+      this.aciFilterCategory = null;
+      this.dataMessageACI = Constants.FETCHING_DATA;
       this.aciSearch = '';
       this.aciFromDate = '';
       this.aciToDate = '';
@@ -326,7 +402,11 @@ export class EManifestsComponent implements OnInit {
       this.apiService
         .getData(`ACIeManifest/isDeleted/${entryID}/` + 1)
         .subscribe((result: any) => {
-          this.initDataTable();
+          this.dataMessageACI = Constants.FETCHING_DATA;
+          this.aciDraw = 0;
+          this.lastEvaluatedKeyACI = '';
+          this.initDataTableACI();
+          this.getACICount();
           this.toastr.success('ACI eManifest Entry Deleted Successfully!');
         });
     }
@@ -348,7 +428,7 @@ export class EManifestsComponent implements OnInit {
   }
 
   getACECount() {
-    this.apiService.getData('ACEeManifest/get/count?vehicleID=' + this.vehicleID + '&aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate).subscribe({
+    this.apiService.getData('ACEeManifest/get/count?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -358,7 +438,7 @@ export class EManifestsComponent implements OnInit {
   }
 
   getACICount() {
-    this.apiService.getData('ACIeManifest/get/count?vehicleID=' + this.vehicleID + '&aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate).subscribe({
+    this.apiService.getData('ACIeManifest/get/count?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -400,7 +480,7 @@ export class EManifestsComponent implements OnInit {
     } else {
       this.aciDraw -= 1;
       this.lastEvaluatedKeyACI = this.aciPrevEvauatedKeys[this.aciDraw];
-      this.initDataTable();
+      this.initDataTableACI();
       this.getStartandEndVal('aci');
     }
   }
@@ -414,6 +494,22 @@ export class EManifestsComponent implements OnInit {
       this.aciStartPoint = 1;
       this.aciEndPoint = this.pageLength;
       this.aciDraw = 0;
+    }
+  }
+
+  categoryChange(event,type) {
+    if(event == 'driver' || event == 'vehicle') {
+      if(type == 'ace') {
+        this.aceSearch = null;
+      } else {
+        this.aciSearch = null;
+      }
+    } else {
+      if(type == 'ace') {
+        this.aceSearch = '';
+      } else {
+        this.aciSearch = '';
+      }
     }
   }
 }

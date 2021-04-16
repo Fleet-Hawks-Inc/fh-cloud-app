@@ -1,17 +1,9 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pl-0 pt-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
-                    
+            <header class="page-header">
+                <div class="row px-2" style="padding-top:10px;">
+
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
                             <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
@@ -82,7 +74,7 @@
                                             <th width="15%">Due Date</th>
                                             <th width="15%">Send Reminder</th>
                                             <th width="15%">Subscribers</th>
-                                            <th width="5%">Action</th>
+                                            <th width="5%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

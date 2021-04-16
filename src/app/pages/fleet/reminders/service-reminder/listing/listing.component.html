@@ -1,16 +1,8 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pl-0 pt-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:8px;">
+            <header class="page-header">
+                <div class="row px-2" style="padding-top:8px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-md mb-3">
                             <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;" placeholder="Search by vehicle">
@@ -83,7 +75,7 @@
                                             <th>Next Due</th>
                                             <th>Last Completed</th>
                                             <th>Subscribers</th>
-                                            <th>Action</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -107,7 +99,7 @@
                                                 <br>
                                                 {{item.reminderTasks.remainingMiles}} miles from now
                                             </td>
-                                            <td>{{item.lastCompleted}}</td>
+                                            <td>{{item.lastCompleted | date:'yyyy-MM-dd'}}</td>
                                             <td><span *ngFor="let s of item.subscribers">
                                                     <span *ngIf="s.subscriberType === 'user'">
                                                         {{s.subscriberIdentification}},
@@ -127,7 +119,7 @@
                                                             Service</a>
                                                         <a class="dropdown-item text-1" href="javascript:;" (click)="sendEmailNotification(item)">Send Notifications</a>
                                                         <a routerLink="/fleet/reminders/service-reminder/edit/{{item.reminderID }}"
-                                                            class="dropdown-item text-1">Edit</a> 
+                                                            class="dropdown-item text-1">Edit</a>
                                                         <a href="javascript:;" class="dropdown-item text-1"
                                                             (click)="deleteReminder(item.reminderID)">Delete</a>
                                                     </div>

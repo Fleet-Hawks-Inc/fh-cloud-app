@@ -1,10 +1,10 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
-          <div class="col-md-8  col-lg-8 text-right pr-1"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
+          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
               class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACI Manifests</a> </div>
         </div>
       </header>
@@ -164,9 +164,9 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                           Co-Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers"
+                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" (click)="fixCoDrivers()"
                           placeholder="Select co-driver">
-                          <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
+                          <ng-option *ngFor="let driver of fetchedCoDrivers" [value]="driver.driverID">
                             {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
@@ -374,7 +374,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [ngModelOptions]="{standalone: true}" [attr.name]="'containers['+i+'].loadedOn.type'"
                           [(ngModel)]="container.loadedOn.type">
-                          <ng-option value="TRUCK">TRUCK</ng-option>
+                          <ng-option value="TRUCK">VEHICLE</ng-option>
                           <ng-option value="TRAILER">ASSET</ng-option>
                         </ng-select>
                       </div>
@@ -454,8 +454,8 @@
                                   On<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].loadedOn.type'" [(ngModel)]="shipment.loadedOn.type">
-                                  <ng-option value="TRUCK">TRUCK</ng-option>
-                                  <ng-option value="TRAILER">TRAILER</ng-option>
+                                  <ng-option value="TRUCK">VEHICLE</ng-option>
+                                  <ng-option value="TRAILER">ASSET</ng-option>
                                   <ng-option value="CONTAINER">CONTAINER</ng-option>
                                 </ng-select>
                               </div>
@@ -1135,7 +1135,7 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12 text-right mt-2">
-                    <button type="button" (click)="addShipment()" class="btn btn-sm btn-success pull-right">Add
+                    <button type="button" (click)="addShipment()" class="btn btn-sm btn-success pull-right"> <i class="fas fa-plus"></i>Add
                       Shipment</button>
 
                   </div>
@@ -1144,7 +1144,7 @@
                 <!-- NEW ASSET DIV -->
                 <div class="row">
                   <div class="col-lg-12">
-                    <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Asset/Trailer
+                    <label class="control-label font-weight-bold text-lg-right text-dark text-4  pt-2">Asset
                       Details (optional)</label>
                   </div>
                   <div class="col-12">

@@ -1,0 +1,35 @@
+name: Pre-Merge E2E tests
+on: [pull_request]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12]
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: |
+            export NODE_OPTIONS="--max-old-space-size=8192"
+            npm start
+          wait-on: "http://localhost:4200"
+          wait-on-timeout: 120
+          browser: chrome
+          headless: true
+      - name: Store Artifacts
+        uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos

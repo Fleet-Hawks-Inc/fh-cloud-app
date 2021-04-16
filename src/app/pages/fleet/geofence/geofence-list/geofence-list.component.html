@@ -4,9 +4,9 @@
   <div class="inner-wrapper">
     
     <section role="main" class="content-body pt-0" style="padding-left: 15px;">
-      <header class="page-header pr-5">
+      <header class="page-header">
         <form>
-         <div class="row pr-1 mr-1" style="padding-top:8px;">
+         <div class="row px-2" style="padding-top:8px;">
               <div class="col-md-2 col-lg-2">
                <div class="input-group input-group-md mb-3">
                   <input type="text" autocomplete="off" placeholder="Search Geofence" name="geofenceName" [(ngModel)]="geofenceName" class="form-control" (input)="getSuggestions($event.target.value)">
@@ -36,7 +36,7 @@
                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                  <button class="btn btn-sm btn-success" (click)="resetFilter()" type="button">Reset</button>
               </div>
-              <div class="col-md-6 col-lg-6 text-right pr-1">
+              <div class="col-md-6 col-lg-6 text-right">
                  <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -44,7 +44,7 @@
                        <a class="dropdown-item text-1" href="javascript:;">Export</a>
                     </div>
                  </div>
-                 <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Geo-Fence</a>
+                 <a routerLink="/fleet/geofence/add" class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Geofence</a>
               </div>
            </div>
         </form>
@@ -60,7 +60,7 @@
                      <table class="row-border hover table table-bordered table-striped mb-0 geofence-table">
                         <thead>
                            <tr>
-                              <th style="width: 20%;" class="border-0 text-left">Geo-Fence Name</th>
+                              <th style="width: 20%;" class="border-0 text-left">Geofence Name</th>
                               <th style="width: 20%;" class="border-0">Location</th>
                               <th style="width: 20%;" class="border-0">Type</th>
                               <th style="width: 30%;" class="border-0">Description</th>

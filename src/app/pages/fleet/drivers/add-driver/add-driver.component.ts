@@ -39,7 +39,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   hasPay: boolean = false;
   hasHos: boolean = false;
   hasCrossBrdr: boolean = false;
-  
+
   addressField = -1;
   currentTab = 1;
   userLocation: any;
@@ -113,7 +113,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lng: ''
       },
       manual: false,
-      userLocation:''
+      userLocation: ''
     }],
     documentDetails: [{
       documentType: '',
@@ -399,7 +399,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } else {
       this.hasCrossBrdr = false;
     }
-    
+
     if($('#licence .error').length > 0 && this.currentTab >= 5) {
       this.hasLic = true;
     } else {
@@ -470,6 +470,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.driverData.address[i]['userLocation'] = '';
+      this.driverData.address[i].zipCode = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
       this.driverData.address[i].countryID = '';
@@ -809,8 +810,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
 
-
     this.driverData.address[i].userLocation = result.address.label;
+    this.driverData.address[i].zipCode = result.address.postalCode;
 
     this.driverData.address[i].geoCords.lat = result.position.lat;
     this.driverData.address[i].geoCords.lng = result.position.lng;
@@ -916,11 +917,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        
+
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
-        
+
         this.driverData.ownerOperator = result.ownerOperator;
 
         this.driverData.driverStatus = result.driverStatus;
@@ -1286,7 +1287,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.currentUserCarrier = isCarrierID;
       }
     }
-    
+
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType === 'yard') {
@@ -1298,12 +1299,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   closeGroupModal (){
     this.groupData = {
-      groupType : 'drivers', 
+      groupType : 'drivers',
       groupName: '',
       groupMembers: '',
       description: '',
     };
-   
+
     $("#addDriverGroupModal").modal("hide");
   }
 

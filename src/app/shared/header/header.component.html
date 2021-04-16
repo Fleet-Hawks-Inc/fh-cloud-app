@@ -41,7 +41,7 @@
 
                             <a class="nav-link" [routerLink]="['/dispatch', 'overview']" (click)="onNavSelected('dispatch')">
 
-                                Routing & Dispatch 
+                                Routing & Dispatch
                             </a>
                         </li>
                         <li class="" [class.active]="navSelected === 'safety'">
@@ -67,7 +67,7 @@
     </div>
 
     <!-- start: search & user box -->
-    <div class="header-right pt-2">
+    <div class="header-right">
 
         <!-- <form action="#" class="search nav-form">
             <div class="input-group">
@@ -83,7 +83,7 @@
 
         <!-- <span class="separator"></span> -->
         <div style="display: inline-block;color: #000011;font-size: .9rem;" *ngIf="isCarrierID != null">
-           
+
             <div class="dropdown d-inline-block mx-3">
                 <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Login as: {{carrierBusiness}}
@@ -93,10 +93,15 @@
                 </div>
               </div>
         </div>
-        <div id="userbox" class="userbox">
+        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal" class="modal-with-form address-book-icon" title="Address Book">
+            <i class="far fa-address-book text-dark" style="font-size:16px;"></i>
+        </a>
+        <div id="userbox" class="userbox mt-0">
+
             <a href="#" data-toggle="dropdown">
-                <figure class="profile-picture">
-                    <img src="assets/img/fh.png" alt="Joseph Doe" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
+                <figure class="profile-picture text-uppercase font-weight-bold">
+                    <!-- <img src="assets/img/fh.png" alt="Joseph Doe" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" /> -->
+                    <span>{{smallName}}</span>
                 </figure>
                 <div class="profile-info" data-lock-name="John Doe" data-lock-email="johndoe@okler.com">
                     <span class="name">{{ currentUser }}</span>
@@ -110,10 +115,10 @@
                 <ul class="list-unstyled mb-2 text-dark">
                     <li class="divider"></li>
                     <li>
-                       <a role="menuitem" tabindex="-1" href="#companyProfileModal" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
+                       <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{currentCarrierID}}" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
                     <li>
-                       <a role="menuitem" tabindex="-1" href="#"><i class="fas fa-user"></i> Account Setting</a>
+                       <a role="menuitem" tabindex="-1" href="javascript:;"><i class="fas fa-user"></i> Account Setting</a>
                     </li>
                     <li>
                        <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off"></i> Logout</a>
@@ -124,3 +129,6 @@
     </div>
     <!-- end: search & user box -->
 </header>
+
+<app-address-book></app-address-book>
+<app-shared-modals></app-shared-modals>

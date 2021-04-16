@@ -3,14 +3,21 @@
     <div class="inner-wrapper">
         
         <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header pr-5 service-program-header">
+            <header class="page-header service-program-header">
                 <form class="form-horizontal" method="get">
             
-                    <div class="row pr-1 mr-1" style="padding-top:9px;">
+                    <div class="row px-2" style="padding-top:9px;">
                         <div class="col-md-3 col-lg-3">
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control" placeholder="Search by program name">
+                            <div class="input-group input-group-sm mb-3"> 
+                                <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control" placeholder="Search by program name" (input)="getSuggestions($event.target.value)">
                             </div>
+                            <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                                <ul>
+                                   <li *ngFor="let data of suggestions" style="cursor: pointer;"
+                                   (click)="setData(data.programName)"
+                                   >{{ data.programName }}</li>
+                                </ul>
+                             </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2 pl-2">
@@ -18,7 +25,7 @@
                                 class="btn btn-sm btn-success mr-2">Search</button>
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
-                        <div class="col-md-6  col-lg-6 text-right pr-2 offset-1">
+                        <div class="col-md-6  col-lg-6 text-right offset-1">
 
             
                             <div class="btn-group flex-wrap mr-2" *ngIf="!environment">

@@ -3,12 +3,12 @@
     <div class="inner-wrapper">
 
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4">
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
                     </div>
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                    <div class="col-md-8 col-lg-8 text-right">
                         <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues List</a>
                     </div>
                 </div>
@@ -46,14 +46,14 @@
                                      <div class="row pt-2">
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">
                                                 <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID">
 
                                                 <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
@@ -82,7 +82,7 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
 												class="text-1 optional-label-color">(optional)</span></label>
-                                            <textarea [(ngModel)]="description" name="description" class="form-control" rows="3" placeholder="Enter description of the issue"></textarea>
+                                            <textarea [(ngModel)]="description" name="description" class="form-control h-auto" rows="3" placeholder="Enter description of the issue"></textarea>
                                         </div>
                                     </div>
 
@@ -182,11 +182,20 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-lg-11 text-right pr-0">
-                                    <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
-                                    <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
-                                    <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
-                                </div>
+                                <div class="col-lg-12 text-right">
+                                    <div class="row">
+                                       <div class="col-5 offset-1"></div>
+                                       <div class="col-5 offset-1">
+                                          <div class="row">
+                                             <div class="col-10">
+                                                <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
+                                                <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
+                                                <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
                             </div>
                         </form>
                     </div>

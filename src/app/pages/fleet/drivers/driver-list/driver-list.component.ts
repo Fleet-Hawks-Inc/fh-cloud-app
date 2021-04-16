@@ -270,6 +270,7 @@ export class DriverListComponent implements OnInit {
           this.drivers = [];
           this.driverDraw = 0;
           this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
           this.fetchDriversCount();
           this.initDataTable();
           this.toastr.success('Driver is deactivated!');
@@ -309,6 +310,10 @@ export class DriverListComponent implements OnInit {
           this.driverEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.driverEndPoint) {
+          this.driverEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.driverDraw > 0) {
           this.driverPrev = false;
@@ -323,9 +328,11 @@ export class DriverListComponent implements OnInit {
 
   searchFilter() {
     if(this.driverName !== '' || this.dutyStatus !== '') {
+      this.driverName = this.driverName.toLowerCase();
       if(this.driverID == '') {
         this.driverID = this.driverName;
       }
+      this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedDrivers = [];
       this.fetchDriversCount();

@@ -46,6 +46,7 @@ export class IssueListComponent implements OnInit {
   issuesEndPoint = this.pageLength;
   allVehicles = [];
   allAssets = [];
+  suggestedIssues = [];
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -65,60 +66,25 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  setUnit(unitID, unitName, type) {
-    if(type == 'vehicle') {
-      this.unitName = unitName;
-      this.unitID = unitID;
-      this.suggestedUnits = [];
-    } else {
-      this.assetUnitName = unitName;
-      this.assetUnitID = unitID;
-      this.suggestedUnitsAssets = [];
-    }
-  }
-
   getSuggestions(value) {
     value = value.toLowerCase();
 
     if(value != '') {
       this.apiService
-      .getData(`vehicles/suggestion/${value}`)
+      .getData(`issues/get/suggestions/${value}`)
       .subscribe((result) => {
-        result = result.Items;
-        this.suggestedUnits = [];
-        for (let i = 0; i < result.length; i++) {
-          this.suggestedUnits.push({
-            unitID: result[i].vehicleID,
-            unitName: result[i].vehicleIdentification
-          });
-        }
+        this.suggestedIssues = result.Items;
       });
     } else {
-      this.unitID = '';
-      this.suggestedUnits = [];
+      this.suggestedIssues = [];
     }
   }
 
-  getAssetsSugg(value) {
-    value = value.toLowerCase();
-    if(value != '') {
-      this.apiService
-      .getData(`assets/suggestion/${value}`)
-      .subscribe((result) => {
-        result = result.Items;
-        this.suggestedUnitsAssets = [];
-        for (let i = 0; i < result.length; i++) {
-          this.suggestedUnitsAssets.push({
-            unitID: result[i].assetID,
-            unitName: result[i].assetIdentification
-          });
-        }
-      });
-    } else {
-      this.assetUnitID = '';
-      this.suggestedUnitsAssets = [];
-    }
+  setIssue(issueName) {
+    this.issueName = issueName;
+    this.suggestedIssues = [];
   }
+
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -158,6 +124,9 @@ export class IssueListComponent implements OnInit {
       this.apiService
       .getData(`issues/isDeleted/${entryID}/` + 1)
       .subscribe((result: any) => {
+        this.issuesDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchIssuesCount();
         this.issues = [];
         this.initDataTable();
@@ -173,8 +142,7 @@ export class IssueListComponent implements OnInit {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.suggestedUnits = [];
-        this.suggestedUnitsAssets = [];
+        this.suggestedIssues = [];
         this.getStartandEndVal();
 
         this.issues = result['Items'];
@@ -197,6 +165,10 @@ export class IssueListComponent implements OnInit {
           this.issuesEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.issuesEndPoint) {
+          this.issuesEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.issuesDraw > 0) {
           this.issuesPrev = false;
@@ -211,12 +183,11 @@ export class IssueListComponent implements OnInit {
 
   searchFilter() {
     if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
+      this.issueName = this.issueName.toLowerCase();
       this.fetchIssuesCount();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
       this.initDataTable();
-      this.suggestedUnits = [];
-      this.suggestedUnitsAssets = []
     } else {
       return false;
     }
@@ -229,9 +200,7 @@ export class IssueListComponent implements OnInit {
       this.issueName = '';
       this.issueStatus = null;
       this.assetUnitID = null;
-      this.assetUnitName = '';
-      this.suggestedUnitsAssets = []
-      this.suggestedUnits = [];
+      this.suggestedIssues = [];
       this.fetchIssuesCount();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
