@@ -1307,15 +1307,15 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.taxesInfo = [
           {
             name: 'GST',
-            amount: state.GST,
+            amount: (state) ? state.GST : '',
           },
           {
             name: 'HST',
-            amount: state.HST,
+            amount: (state) ? state.HST: '',
           },
           {
             name: 'PST',
-            amount: state.PST,
+            amount: (state) ? state.PST : '',
           },
         ];
 

@@ -23,7 +23,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {AddInspectionComponent} from './dvir/inspection/add-inspection/add-inspection.component';
 import {EditInspectionComponent} from './dvir/inspection/edit-inspection/edit-inspection.component';
 import {ListInspectionComponent} from './dvir/inspection/list-inspection/list-inspection.component'
-import {ViewInspectionComponent} from './dvir/inspection/view-inspection/view-inspection.component'
+import {ViewInspectionComponent} from './dvir/inspection/view-inspection/view-inspection.component';
+import { UncertifiedComponent } from './hos/uncertified/uncertified.component'
 
 @NgModule({
   imports: [CommonModule,
@@ -51,7 +52,8 @@ import {ViewInspectionComponent} from './dvir/inspection/view-inspection/view-in
     EditInspectionComponent,
     ListInspectionComponent,
     ViewInspectionComponent,
-    IftaReturnDetailsComponent],
+    IftaReturnDetailsComponent,
+    UncertifiedComponent],
 })
 export class ComplianceModule {
 }

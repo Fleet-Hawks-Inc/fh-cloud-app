@@ -1973,7 +1973,7 @@
                                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                           [(ngModel)]="assetsData.startDate" name="startDate"
-                                          placeholder="Enter Start Date of the asset" class="form-control">
+                                          placeholder="yyyy/mm/dd" class="form-control">
                                     </div>
                                  </div>
                               </div>
@@ -1985,7 +1985,7 @@
                                              class="mandfield text-2 ml-1"><sup>*</sup></span><i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                              data-placement="top" title="Vehicle Identification Number."></i></label>
                                        <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                                          placeholder="Enter VIN number of the asset" class="form-control">
+                                          placeholder="15 digits Alphanumeric , eg. 78678678678678689" class="form-control">
                                     </div>
                                  </div>
                               </div>
@@ -2042,7 +2042,7 @@
                                          Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
                                        <input type="text" (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"
                                          name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
-                                         class="form-control">
+                                        placeholder="yyyy/mm/dd" class="form-control">
                                      </div>
                                      <div class="col-lg-6">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Asset
@@ -2087,7 +2087,7 @@
                                           Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID"
                                           name="assetDetails.licenceStateID" class="form-control populate"
-                                          placeholder="Select state">
+                                          placeholder="Select Province">
                                           <ng-option *ngFor="let state of states" value="{{state.stateID}}">
                                              {{state.stateName}}
                                           </ng-option>
@@ -2099,7 +2099,7 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                                           Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
-                                          placeholder="Enter licence plate number of asset"
+                                          placeholder="eg. 345678"
                                           name="assetDetails.licencePlateNumber" class="form-control" type="text">
                                     </div>
                                  </div>

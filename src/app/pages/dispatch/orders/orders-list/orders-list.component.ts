@@ -102,7 +102,7 @@ export class OrdersListComponent implements OnInit {
   categoryFilter = [
     {
       'name': 'Order Number',
-      'value': 'orderNo'
+      'value': 'orderNumber'
     },
     {
       'name': 'Customer',
@@ -496,20 +496,15 @@ export class OrdersListComponent implements OnInit {
         this.toastr.error('Please enter search value.');
         return false;
       }else {
+        if(this.orderFiltr.category == 'location') {
+          this.orderFiltr.searchValue = this.orderFiltr.searchValue.toLowerCase();
+        }
         let sdate;
         let edate;
         if(this.orderFiltr.startDate !== ''){
-          // sdate = this.orderFiltr.startDate.split('-');
-          // if(sdate[0] < 10) {
-          //   sdate[0] = '0'+sdate[0]
-          // }
           this.orderFiltr.start = this.orderFiltr.startDate;
         }
         if(this.orderFiltr.endDate !== ''){
-          // edate = this.orderFiltr.endDate.split('-');
-          // if(edate[0] < 10) {
-          //   edate[0] = '0'+edate[0]
-          // }
           this.orderFiltr.end = this.orderFiltr.endDate;
         }
         this.orders = [];
