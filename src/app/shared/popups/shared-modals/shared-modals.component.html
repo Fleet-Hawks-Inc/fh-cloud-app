@@ -1,3 +1,156 @@
+
+<!-- share vehicle location modal -->
+<div class="modal fade" id="sharevlocation" tabindex="-1" role="dialog" aria-labelledby="sharevlocation" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Share Location for Vehicle F3650</h5>
+      <button type="button" class="close" data-dismiss="modal">
+        <i class="far fa-window-close" style="font-size:25px;"> </i>
+      </button>
+
+      
+
+    </div>
+    <div class="modal-body text-dark">
+      <section class="card form-wizard" id="w1">
+        <div class="card-body card-body-nopadding">
+          
+         <form>
+            
+            <div class="form-row">
+              <div class="form-group col-lg-12">
+                <label class="control-label font-weight-bold pt-2">Location Link</label>
+                <input type="text" value="https://track.fh.com/v/55235-bkkhh0df5qz45891q786pb" class="form-control">
+              </div>
+            </div>
+            
+            <div class="form-row mt-2">
+              <div class="form-group mb-0 col-lg-6">
+                <label class="control-label font-weight-bold"> Set Link Expiry Date</label>
+                <input type="date" class="form-control">
+              </div>
+              
+              <div class="form-group mb-0 col-lg-6">
+                <label class="control-label font-weight-bold"> Set Link Expiry Time</label>
+                <input type="time" class="form-control">
+              </div>
+            </div>
+      
+            
+            <div class="form-row mt-2">
+              <div class="form-group col-lg-12">
+                <div class="row">
+                  <div class="col-lg-12">
+                     <label class="control-label font-weight-bold text-lg-right pt-2" >Email</label>
+                     <input type="text" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-row mt-2">
+              <div class="form-group col-lg-12">
+                <div class="row">
+                  <div class="col-lg-12">
+                     <label class="control-label font-weight-bold text-lg-right pt-2" >Notes (optional)</label>
+                     <textarea class="form-control heighta" placeholder="Enter notes" rows="3" id="textareaDefault"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+         </form>
+        </div>
+
+      </section>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- share asset location modal -->
+<div class="modal fade" id="sharetlocation" tabindex="-1" role="dialog" aria-labelledby="sharetlocation" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title">Share Location for Assets 2356</h5>
+         <button type="button" class="close" data-dismiss="modal">
+           <i class="far fa-window-close" style="font-size:25px;"> </i>
+         </button>
+   
+         
+   
+       </div>
+       <div class="modal-body text-dark">
+         <section class="card form-wizard" id="w1">
+           <div class="card-body card-body-nopadding">
+             
+            <form>
+            
+               <div class="form-row">
+                 <div class="form-group col-lg-12">
+                   <label class="control-label font-weight-bold pt-2">Location Link</label>
+                   <input type="text" value="https://track.fh.com/v/55235-bkkhh0df5qz45891q786pb" class="form-control">
+                 </div>
+               </div>
+               
+               <div class="form-row mt-2">
+                 <div class="form-group mb-0 col-lg-6">
+                   <label class="control-label font-weight-bold"> Set Link Expiry Date</label>
+                   <input type="date" class="form-control">
+                 </div>
+                 
+                 <div class="form-group mb-0 col-lg-6">
+                   <label class="control-label font-weight-bold"> Set Link Expiry Time</label>
+                   <input type="time" class="form-control">
+                 </div>
+               </div>
+         
+               
+               <div class="form-row mt-2">
+                 <div class="form-group col-lg-12">
+                   <div class="row">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold text-lg-right pt-2" >Email</label>
+                        <input type="text" class="form-control">
+                     </div>
+                   </div>
+                 </div>
+               </div>
+               
+               <div class="form-row mt-2">
+                 <div class="form-group col-lg-12">
+                   <div class="row">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold text-lg-right pt-2" >Notes (optional)</label>
+                        <textarea class="form-control heighta" placeholder="Enter notes" rows="3" id="textareaDefault"></textarea>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+            </form>
+
+           </div>
+   
+         </section>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         <a type="button" class="btn btn-success" href="javascript:;" (click)="addState()">Save</a>
+       </div>
+     </div>
+   </div>
+   </div>
+
+
+
 <!-- add state modal -->
 <div class="modal fade" id="addStateModal" tabindex="-1" role="dialog" aria-labelledby="addStateModal"
   aria-hidden="true">
