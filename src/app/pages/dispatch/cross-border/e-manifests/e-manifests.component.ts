@@ -245,6 +245,9 @@ export class EManifestsComponent implements OnInit {
         this.toastr.error('Please select search value.');
         return false;
       } else {
+        if(this.filterCategory == 'tripNumber'){
+          this.aceSearch = this.aceSearch.toLowerCase();
+        }
         this.ACEList = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.getACECount();
@@ -367,6 +370,10 @@ export class EManifestsComponent implements OnInit {
         this.toastr.error('Please select search value.');
         return false;
       } else {
+
+        if(this.aciFilterCategory == 'tripNumber'){
+          this.aciSearch = this.aciSearch.toLowerCase();
+        }
         this.ACIList = [];
         this.getACICount();
         this.initDataTableACI();

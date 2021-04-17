@@ -132,7 +132,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
                                                     class="form-control" placeholder="eg. Ontario" autocomplete="nope">
@@ -185,7 +185,7 @@
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
                                                     class="form-control" placeholder="eg. Alberta" autocomplete="nope" >
@@ -264,7 +264,7 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
-                                                            placeholder="Enter start date" (click)="d.toggle()" ngbDatepicker
+                                                            placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control">
                                                     </div>
                                                 </div>

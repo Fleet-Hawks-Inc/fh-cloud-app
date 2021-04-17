@@ -1013,16 +1013,15 @@ export class AddTripComponent implements OnInit {
 
     async createTrip() {
         this.hideErrors();
-        if (this.tripData.reeferTemperature != '') {
-            this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
-        } else {
-            this.tripData.reeferTemperature = '';
-        }
+        // if (this.tripData.reeferTemperature != '') {
+        //     this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
+        // } else {
+        //     this.tripData.reeferTemperature = '';
+        // }
         // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
         // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
-
-        this.tripData.dateCreated =  this.dateCreated;
-        delete this.tripData.reeferTemperatureUnit;
+        this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
+        // this.tripData.dateCreated =  this.dateCreated;
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = []; 
         let planData = this.trips
@@ -1386,16 +1385,18 @@ export class AddTripComponent implements OnInit {
         this.apiService.getData('trips/' + this.tripID).
             subscribe((result: any) => {
                 result = result.Items[0];
-                let temp = '';
-                let tempUnit = null;
-                if (result.reeferTemperature != undefined && result.reeferTemperature != '') {
-                    let refTemp = result.reeferTemperature;
-                    temp = refTemp.substring(0, refTemp.length - 1);
-                    tempUnit = refTemp.substring(refTemp.length - 1, refTemp.length);
-                }
+                console.log('trip result', result);
+                // let temp = '';
+                // let tempUnit = null;
+                // if (result.reeferTemperature != undefined && result.reeferTemperature != '') {
+                //     let refTemp = result.reeferTemperature;
+                //     temp = refTemp.substring(0, refTemp.length - 1);
+                //     tempUnit = refTemp.substring(refTemp.length - 1, refTemp.length);
+                // }
 
                 let tripPlanning = result.tripPlanning;
-
+                this.tripData['reeferTemperature'] = result.reeferTemperature;
+                this.tripData['reeferTemperatureUnit'] = result.reeferTemperatureUnit;
                 this.tripData['tripNo'] = result.tripNo;
                 this.tripData['routeID'] = result.routeID;
                 this.tripData['bol'] = result.bol;
@@ -1433,8 +1434,8 @@ export class AddTripComponent implements OnInit {
                 //     totalMiles: totalMilesOrder
                 // }
 
-                this.tripData['reeferTemperature'] = temp;
-                this.tripData['reeferTemperatureUnit'] = tempUnit;
+                // this.tripData['reeferTemperature'] = temp;
+                // this.tripData['reeferTemperatureUnit'] = tempUnit;
                 this.tripData['orderType'] = result.orderType;
                 this.tripData['timeCreated'] = result.timeCreated;
                 this.tripData['tripStatus'] = result.tripStatus;
@@ -1486,6 +1487,8 @@ export class AddTripComponent implements OnInit {
                         driverName: this.driversObjects[element.driverUsername],
                         driverUsername: element.driverUsername,
                         // location: element.location,
+                        driverID: element.driverID,
+                        coDriverID: element.coDriverID,
                         locationName: element.location,
                         mileType: element.mileType,
                         miles: element.miles,
@@ -1501,6 +1504,7 @@ export class AddTripComponent implements OnInit {
 
                     this.actualMiles += parseFloat(element.miles);
                     this.trips.push(obj);
+                    console.log('this.trips', this.trips);
                     let assetArr = [];
                     for (let j = 0; j < element.assetID.length; j++) {
                         const assetID = element.assetID[j];
@@ -1527,11 +1531,11 @@ export class AddTripComponent implements OnInit {
 
     async updateTrip() {
         this.hideErrors();
-        if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != '') {
-            this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
-        } else {
-            this.tripData.reeferTemperature = '';
-        }
+        // if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != '') {
+        //     this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
+        // } else {
+        //     this.tripData.reeferTemperature = '';
+        // }
 
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
@@ -1663,7 +1667,7 @@ export class AddTripComponent implements OnInit {
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-        delete this.tripData.reeferTemperatureUnit;
+        // delete this.tripData.reeferTemperatureUnit;
         this.updateOrderStatusToConfirmed();
 
         this.apiService.putData('trips', this.tripData).subscribe({
