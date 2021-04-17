@@ -1,5 +1,5 @@
 name: Pre-Merge E2E tests
-on: [pull_request]
+on: workflow_dispatch
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
