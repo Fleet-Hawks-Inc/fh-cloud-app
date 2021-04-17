@@ -290,7 +290,7 @@ setSrcValue(){
     this.hasSuccess = false;
     const data = {
       issueID: this.issueID,
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitID: this.unitID,
       unitType: this.unitType,
       currentStatus: this.currentStatus,

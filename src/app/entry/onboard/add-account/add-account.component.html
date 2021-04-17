@@ -37,7 +37,7 @@
                         <div class="col-lg-10">
                           <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="John Smith">
+                          <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="johnsmith" (keyup)="userNameValidationFn($event)">
                         </div>
                       </div>
                       <div class="row">
@@ -104,12 +104,13 @@
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Registered Company Name<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName" placeholder="eg. XYZ logistics">
+                          <input type="text" class="form-control" [(ngModel)]="carrierName" name="carrierName" pattern="[a-zA-Z ]*" placeholder="eg. XYZ logistics">
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Number of Fleets</label>
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Number of Fleets<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets">
                         </div>
                       </div>
@@ -179,14 +180,24 @@
                           <input type="number" class="form-control" placeholder="eg. 123435123"  (keyup)="EINValidation($event)" [class.error]="errorEIN"
                             [(ngModel)]="EIN" name="EIN">
                             <div class="text-danger" *ngIf="errorEIN">Enter 9 digit EIN.</div>
-
                         </div>
                       </div>
-                      <div class="row pt-2">
+                      <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Business Country<span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="bizCountry" name="bizCountry"
+                            placeholder="Select business operating country">
+                            <ng-option value="CA">Canada</ng-option>
+                            <ng-option value="US">United States of America</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+                      <div class="row pt-2" *ngIf="bizCountry==='US'">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">MC# <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i
+                          <label class="control-label font-weight-bold text-lg-right pt-2">MC# &nbsp;<i
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="MC number (Motor Carrier number) is 6 digit number, an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>
                             </label>
@@ -199,7 +210,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">DOT# <span
                               class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i class="fas fa-exclamation-circle"
                               data-toggle="tooltip" data-placement="top"
-                              title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i></label>
+                              title="A Department of Transportation (DOT) number is a 8 digit number the Federal Motor Carrier Safety Administration, or FMCSA, assigns to registered commercial vehicles. All carrier vehicles that weigh more than a certain amount, carry specific amounts of paying passengers or operate between state lines require DOT numbers."></i></label>
                           <input type="number" class="form-control" placeholder="Enter 8 digit  DOT number" (keyup)="DOTValidation($event)" [class.error]="errorDOT"
                             [(ngModel)]="DOT" name="DOT">
                             <div class="text-danger" *ngIf="errorDOT">Enter 8 digit DOT#.</div>
@@ -224,7 +235,6 @@
                             <span class="text-1 optional-label-color">(optional)</span></label>
                           <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" (keyup)="SCACValidation($event)" [class.error]="errorSCAC">
                           <div class="text-danger" *ngIf="errorSCAC">Enter 4 digit SCAC.</div>
-
                         </div>
                       </div>
                       <div class="row pt-2">

@@ -13,7 +13,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
- // @ViewChild('carrierForm', null) carrierForm: NgForm;
+  // @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   CCC = '';
@@ -37,6 +37,7 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
+  bizCountry = null;
   uploadedLogo = '';
   fleets = {
     curtainSide: 0,
@@ -48,7 +49,7 @@ export class AddAccountComponent implements OnInit {
     trucks: 0,
   };
   addressDetails = [{
-    addressType: '',
+    addressType: 'yard',
     countryID: '',
     countryName: '',
     stateID: '',
@@ -99,13 +100,13 @@ export class AddAccountComponent implements OnInit {
   errorEIN = false;
   errorMC = false;
   errorDOT = false;
-  errorCCC =  false;
+  errorCCC = false;
   errorSCAC = false;
-  errorRouting =  false;
+  errorRouting = false;
   errorTransit = false;
-  errorInstiution = false;
+  errorInstitution = false;
   errorAccount = false;
-  constructor(private apiService: ApiService, private toaster: ToastrService,private location: Location, private HereMap: HereMapService) {
+  constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -309,6 +310,7 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
+
     const data = {
       entityType: 'carrier',
       CCC: this.CCC,
@@ -323,8 +325,9 @@ export class AddAccountComponent implements OnInit {
       CTPAT: this.CTPAT,
       CSA: this.CSA,
       PIP: this.PIP,
-      carrierName: this.carrierName,
+      carrierName: this.carrierName.trim(),
       findingWay: this.findingWay,
+      bizCountry: this.bizCountry,
       firstName: this.firstName,
       lastName: this.lastName,
       liabilityInsurance: this.liabilityInsurance,
@@ -345,18 +348,15 @@ export class AddAccountComponent implements OnInit {
     };
     // create form data instance
     const formData = new FormData();
-
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
     formData.append('data', JSON.stringify(data));
-
     this.apiService.postData('carriers/add', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
-        console.log('error', err);
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -378,9 +378,6 @@ export class AddAccountComponent implements OnInit {
         this.cancel();
       },
     });
-
-
-
   }
   throwErrors() {
     from(Object.keys(this.errors))
@@ -411,121 +408,124 @@ export class AddAccountComponent implements OnInit {
     const EIN = e.target.value;
     if (EIN.length == 0) {
       this.errorEIN = false;
-    } else{
+    } else {
       if (EIN.length != 9) {
         this.errorEIN = true;
-    }
-    else{
-      this.errorEIN = false;
-    }
+      }
+      else {
+        this.errorEIN = false;
+      }
     }
 
-   }
-   MCValidation(e) {
+  }
+  MCValidation(e) {
     const MC = e.target.value;
     if (MC.length == 0) {
       this.errorMC = false;
-    } else{
+    } else {
       if (MC.length != 6) {
         this.errorMC = true;
+      }
+      else {
+        this.errorMC = false;
+      }
     }
-    else{
-      this.errorMC = false;
-    }
-    }
-   }
-   DOTValidation(e) {
+  }
+  DOTValidation(e) {
     const DOT = e.target.value;
     if (DOT.length === 0) {
       this.errorDOT = false;
-    } else{
+    } else {
       if (DOT.length !== 8) {
         this.errorDOT = true;
+      }
+      else {
+        this.errorDOT = false;
+      }
     }
-    else{
-      this.errorDOT = false;
-    }
-    }
-   }
+  }
 
-   CCCValidation(e) {
+  CCCValidation(e) {
     const CCC = e.target.value;
     if (CCC.length === 0) {
       this.errorCCC = false;
-    } else{
+    } else {
       if (CCC.length !== 4) {
         this.errorCCC = true;
+      }
+      else {
+        this.errorCCC = false;
+      }
     }
-    else{
-      this.errorCCC = false;
-    }
-    }
-   }
-   SCACValidation(e) {
+  }
+  SCACValidation(e) {
     const SCAC = e.target.value;
     if (SCAC.length === 0) {
       this.errorSCAC = false;
-    } else{
+    } else {
       if (SCAC.length !== 4) {
         this.errorSCAC = true;
+      }
+      else {
+        this.errorSCAC = false;
+      }
     }
-    else{
-      this.errorSCAC = false;
-    }
-    }
-   }
+  }
 
-   routingValidation(e) {
+  routingValidation(e) {
     const routing = e.target.value;
     if (routing.length === 0) {
       this.errorRouting = false;
     } else {
       if (routing.length !== 9) {
         this.errorRouting = true;
+      }
+      else {
+        this.errorRouting = false;
+      }
     }
-    else {
-      this.errorRouting = false;
-    }
-    }
-   }
-   transitValidation(e) {
+  }
+  transitValidation(e) {
     const transit = e.target.value;
     if (transit.length === 0) {
       this.errorTransit = false;
     } else {
       if (transit.length !== 9) {
         this.errorTransit = true;
+      }
+      else {
+        this.errorTransit = false;
+      }
     }
-    else {
-      this.errorTransit = false;
-    }
-    }
-   }
-   institutionValidation(e) {
+  }
+  institutionValidation(e) {
     const instiution = e.target.value;
     if (instiution.length === 0) {
-      this.errorInstiution = false;
+      this.errorInstitution = false;
     } else {
       if (instiution.length !== 3) {
-        this.errorInstiution = true;
+        this.errorInstitution = true;
+      }
+      else {
+        this.errorInstitution = false;
+      }
     }
-    else {
-      this.errorInstiution = false;
-    }
-    }
-   }
-   accountValidation(e) {
+  }
+  accountValidation(e) {
     const account = e.target.value;
-    console.log('data', account.length);
     if (account.length === 0) {
       this.errorAccount = false;
     } else {
       if (account.length > 12 || account.length < 7) {
         this.errorAccount = true;
+      }
+      else {
+        this.errorAccount = false;
+      }
     }
-    else {
-      this.errorAccount = false;
-    }
-    }
-   }
+  }
+  userNameValidationFn(e) {
+    const newString = e.target.value;
+    this.userName = newString.toLowerCase();
+  }
 }
