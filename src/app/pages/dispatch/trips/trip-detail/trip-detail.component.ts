@@ -29,7 +29,13 @@ export class TripDetailComponent implements OnInit {
     carrierID: '',
     reeferTemperature:'',
     reeferTemperatureUnit: '',
-    notifications: {},
+    notifications: {
+      changeRoute: false,
+      pickUp: false,
+      dropOff: false,
+      tripToDriver: false,
+      tripToDispatcher: false
+    },
     bol: '',
     dateCreated: ''
   };
