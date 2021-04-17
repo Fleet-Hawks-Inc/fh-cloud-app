@@ -227,7 +227,7 @@ export class DispatchOverviewComponent implements OnInit {
       this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
     }
     
-    this.apiService.getData('auditLogs?lastEvaluatedKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;

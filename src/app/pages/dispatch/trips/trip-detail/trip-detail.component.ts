@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
+import {from} from 'rxjs';
+import {map} from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 declare var $: any;
 import { environment } from 'src/environments/environment';
@@ -13,6 +15,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./trip-detail.component.css']
 })
 export class TripDetailComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   constructor(private apiService: ApiService, private route: ActivatedRoute,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
@@ -21,7 +24,20 @@ export class TripDetailComponent implements OnInit {
 
   tripData = {
     tripNo: '',
-    tripStatus: ''
+    tripStatus: '',
+    documents: [],
+    carrierID: '',
+    reeferTemperature:'',
+    reeferTemperatureUnit: '',
+    notifications: {
+      changeRoute: false,
+      pickUp: false,
+      dropOff: false,
+      tripToDriver: false,
+      tripToDispatcher: false
+    },
+    bol: '',
+    dateCreated: ''
   };
   tripID = '';
   allAssetName = '';
@@ -48,6 +64,11 @@ export class TripDetailComponent implements OnInit {
   documentID = [];
   allFetchedOrders = [];
   customersObjects = [];
+  orderNumbers = '-';
+  routeName = '-';
+  plannedMiles = 0;
+  uploadedDocs = [];
+  uploadedDocSrc = [];
 
   ngOnInit() {
     this.fetchCustomersByIDs();
@@ -77,11 +98,30 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
+        
+        if(result.documents == undefined) {
+          result.documents = [];
+        }
         this.tripData = result;
         let tripPlanning = result.tripPlanning;
         if(result.orderId.length > 0){
           this.fetchOrderDetails(result.orderId);
         }
+
+        if(result.routeID != '' && result.routeID != undefined) {
+          this.apiService.getData('routes/' + result.routeID).
+            subscribe((result: any) => { 
+              this.routeName = result.Items[0].routeName;
+            })
+        }
+
+        if(result.documents.length > 0) {
+          for (let k = 0; k < result.documents.length; k++) {
+            const element = result.documents[k];
+            this.uploadedDocSrc.push(`${this.Asseturl}/${result.carrierID}/${element}`);
+          }
+        }
+
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
           let obj = {
@@ -108,9 +148,6 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime
           };
 
-          // if(element.location != undefined && element.location != '') {
-          //   locations.push(element.location)
-          // }
           this.newCoords.push(`${element.lat},${element.lng}`);
 
           this.trips.push(obj);
@@ -167,14 +204,8 @@ export class TripDetailComponent implements OnInit {
    * @param data
    */
   async getCoords(data) {
-    // this.spinner.show();
-    // await Promise.all(data.map(async item => {
-    //   let result = await this.hereMap.geoCode(item);
-    //   this.newCoords.push(`${result.items[0].position.lat},${result.items[0].position.lng}`)
-    // }));
-    // console.log('this.newCoords', this.newCoords);
+    
     this.hereMap.calculateRoute(this.newCoords);
-    // this.spinner.hide();
   }
 
   fetchAssetDetail(assetID, index) {
@@ -208,15 +239,6 @@ export class TripDetailComponent implements OnInit {
       })
   }
 
-  // fetchCountryName(countryID, index) {
-  //   this.apiService.getData('countries/' + countryID)
-  //     .subscribe((result: any) => {
-  //       if (result.Items[0].countryName != undefined) {
-  //         this.trips[index].location.countryName = result.Items[0].countryName;
-  //       }
-  //     })
-  // }
-
   fetchCarrierName(carrierID, index) {
     this.apiService.getData('carriers/' + carrierID)
       .subscribe((result: any) => {
@@ -225,15 +247,6 @@ export class TripDetailComponent implements OnInit {
         }
       })
   }
-
-  // fetchStateDetail(stateID, index) {
-  //   this.apiService.getData('states/' + stateID)
-  //     .subscribe((result: any) => {
-  //       if (result.Items[0].stateName != undefined) {
-  //         this.trips[index].location.stateName = result.Items[0].stateName;
-  //       }
-  //     })
-  // }
 
   fetchCityDetail(cityID, index) {
     this.apiService.getData('cities/' + cityID)
@@ -373,15 +386,15 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
-  selectDocuments(event) {
-    this.selectedFiles = event.target.files;
-    for (let i = 0; i < this.selectedFiles.item.length; i++) {
-      const randomFileGenerate = this.selectedFiles[i].name.split('.');
-      const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
-      this.selectedFileNames.set(fileName, this.selectedFiles[i]);
-      this.documentID.push(fileName);
-    }
-  }
+  // selectDocuments(event) {
+  //   this.selectedFiles = event.target.files;
+  //   for (let i = 0; i < this.selectedFiles.item.length; i++) {
+  //     const randomFileGenerate = this.selectedFiles[i].name.split('.');
+  //     const fileName = `${uuidv4(randomFileGenerate[0])}.${randomFileGenerate[1]}`;
+  //     this.selectedFileNames.set(fileName, this.selectedFiles[i]);
+  //     this.documentID.push(fileName);
+  //   }
+  // }
 
   fetchOrderDetails(orderIds) {
     orderIds = JSON.stringify(orderIds);
@@ -391,50 +404,79 @@ export class TripDetailComponent implements OnInit {
         let totalMilesOrder = 0;
         for (let i = 0; i < result.length; i++) {
             const element = result[i];
+
+            this.orderNumbers = element.orderNumber;
+            if(i>0 && i<result.length-1) {
+              this.orderNumbers = this.orderNumbers+', ';
+            }
             calcultedBy = element.milesInfo.calculateBy;
             totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
         }
-        this.setOrdersDataFormat(result);
+
+        this.plannedMiles = totalMilesOrder;
+        // this.setOrdersDataFormat(result);
     })
   }
 
-  setOrdersDataFormat(orders) {
-    orders.map((i) => {
-      i.pickupLocations = [];
-      i.deliveryLocations = [];
-      if (i.shippersReceiversInfo) {
-          // let ind = 1;
-          // let ind2 = 1;
-          i.shippersReceiversInfo.map((j) => {
-              j.receivers.map((k) => {
-                  let dateTime = '';
-                  if (k.dateAndTime != undefined && k.dateAndTime != '') {
-                      let dmy = k.dateAndTime.split(' ');
-                      dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                  }
-                  i.deliveryLocations.push(k.dropOffLocation);
-                  // i.deliveryLocations += ind + '. ' + k.dropOffLocation + ' <br/>' + dateTime + ' <br/>';
-                  // ind++;
-              })
-          })
+   /*
+   * Selecting files before uploading
+   */
+   selectDocuments(event: any) {
+    this.uploadedDocs = [];
+    let files = [...event.target.files];
+    let totalCount = this.uploadedDocSrc.length+files.length;
 
-          i.shippersReceiversInfo.map((m) => {
-              let dateTime = '';
-              m.shippers.map((n) => {
-                  if (n.dateAndTime != undefined && n.dateAndTime != '') {
-                      let dmy = n.dateAndTime.split(' ');
-                      dateTime = dmy[0].split('-').reverse().join('-') + ' ' + dmy[1];
-                  }
-                  i.pickupLocations.push(n.pickupLocation);
-                  // i.pickupLocations += ind2 + '. ' + n.pickupLocation + ' <br/>' + dateTime + ' <br/>';
-                  // ind2++;
-              })
-          })
+    if(totalCount >= 4) {
+      $('#bolUpload').val('');
+      this.toastr.error('Only 4 documents can be uploaded');
+      return false;
+    } else {
+      // create form data instance
+      const formData = new FormData();
+
+      for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        this.uploadedDocs.push(element);
       }
-      this.allFetchedOrders.push(i);
-      return i;
-    });
 
-    console.log('this.allFetchedOrders', this.allFetchedOrders);
+      //append docs if any
+      for(let j = 0; j < this.uploadedDocs.length; j++){
+        let file = this.uploadedDocs[j];
+        formData.append(`uploadedDocs-${j}`, file);
+      }
+      
+      formData.append('data', JSON.stringify(this.tripData.documents));
+
+      this.apiService.postData('trips/update/bol/'+this.tripID,formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+                this.spinner.hide();
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.spinner.hide();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res:any) => {
+          this.uploadedDocSrc = [];
+          if(res.Attributes.documents.length > 0) {
+            for (let k = 0; k < res.Attributes.documents.length; k++) {
+              const element = res.Attributes.documents[k];
+              this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
+            }
+          }
+          this.toastr.success('BOL uploaded successfully');
+        },
+      })
+    }
   }
 }

@@ -57,17 +57,28 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-semibold labelmt text-3 text-dark">Select
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Select
                                                     Permanent Route
                                                 </label>
-                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID"
-                                                    placeholder="eg. Calgary to Edmonton">
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID" placeholder="eg. Calgary to Edmonton">
                                                     <ng-option *ngFor="let route of permanentRoutes" value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
-                                              </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label class="control-label font-weight-semibold labelmt text-3 text-dark">Create this trip using
+                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        
+                                                <div class="btn-group-toggle">
+                                                    <label class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2" (click)="changeMapRoute('order')">
+                                                        <input id="googleMiles" name="mapFrom" value="order" type="radio"> Order Number</label>
+                                                    <label class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}" (click)="changeMapRoute('route')">
+                                                        <input id="pcmiles" name="mapFrom" value="route" type="radio"> Permanent Route</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
