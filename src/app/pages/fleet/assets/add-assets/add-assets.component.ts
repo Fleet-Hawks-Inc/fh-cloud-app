@@ -83,7 +83,7 @@ export class AddAssetsComponent implements OnInit {
   manufacturers: any = [];
   models: any = [];
   groups = [];
-  
+
 
 
   response: any = '';
@@ -243,7 +243,7 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    
+
     console.log(data);
     // create form data instance
     const formData = new FormData();
@@ -516,7 +516,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
