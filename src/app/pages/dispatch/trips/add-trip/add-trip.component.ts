@@ -51,7 +51,7 @@ export class AddTripComponent implements OnInit {
     tripData = {
         tripNo: '',
         orderNo: '',
-        routeID: '',
+        routeID: null,
         bol: '',
         reeferTemperature: '',
         reeferTemperatureUnit: null,
@@ -70,7 +70,8 @@ export class AddTripComponent implements OnInit {
         driverIDs: [],
         vehicleIDs: [],
         assetIDs: [],
-        loc: ''
+        loc: '',
+        mapFrom: 'order'
     };
     ltlOrders = [];
     ftlOrders = [];
@@ -169,6 +170,8 @@ export class AddTripComponent implements OnInit {
     currentUser:any = '';
     OldOrderIDs = [];
     dateCreated = '';
+    mapOrderActive = 'active';
+    mapRouteActive = '';
 
     ngOnInit() {
 
@@ -1803,5 +1806,57 @@ export class AddTripComponent implements OnInit {
             }
 
         })
+    }
+
+    changeMapRoute(type) {
+        if(type == 'route') {
+            if(this.tripData.routeID != '' && this.tripData.routeID != null) {
+                //change route
+                this.apiService.getData('routes/' + this.tripData.routeID)
+                .subscribe(async (result: any) => {
+                    let routeData = result.Items[0];
+                    let routePath:any = [];
+                    this.newCoords = [];
+                    if(routeData.stops.length > 0) {
+                        for (let i = 0; i < routeData.stops.length; i++) {
+                            const element = routeData.stops[i];
+                            routePath.push(element.stopName); 
+                            const posResult = await this.hereMap.geoCode(element.stopName);
+                            if(posResult.items[0].position != undefined) {
+                                this.newCoords.push(`${posResult.items[0].position.lat},${posResult.items[0].position.lng}`)
+                            }
+                        }
+                        this.hereMap.calculateRoute(this.newCoords);
+                    }
+                });
+
+                this.mapOrderActive = '';
+                this.mapRouteActive = 'active';
+                this.tripData.mapFrom = 'route';
+            } else {
+                this.mapOrderActive = 'active';
+                this.mapRouteActive = '';
+                this.tripData.mapFrom = 'order';
+                this.toastr.error('Please select permanent route');
+            }
+        } else {
+            if(this.orderNo != '' && this.orderNo != undefined) {
+                this.resetMap();
+                this.mapOrderActive = 'active';
+                this.mapRouteActive = '';
+                this.tripData.mapFrom = 'order';
+            } else {
+                this.mapOrderActive = '';
+                this.mapRouteActive = 'active';
+                this.tripData.mapFrom = 'route';
+                this.toastr.error('Please select order');
+            }
+            
+        }
+        
+
+
+        // this.tripData.mapFrom = type;
+        console.log('this.tripData.mapFrom', this.tripData.mapFrom);
     }
 }
