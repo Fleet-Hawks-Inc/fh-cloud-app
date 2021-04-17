@@ -740,6 +740,7 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     this.modalService.open(targetModal);
     this.userDetailData = data;
+    console.log('userDetailData', this.userDetailData);
     this.detailTab = type;
   }
 
@@ -4039,6 +4040,8 @@ export class AddressBookComponent implements OnInit {
       if(this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
         this.filterVal.customerCompanyName = this.filterVal.customerCompanyName.toLowerCase();
         this.filterVal.customerName = this.filterVal.customerName.toLowerCase();
+        this.filterVal.customerName = this.filterVal.customerName.trim();
+        // this.filterVal.customerName = this.filterVal.customerName.replace(' ', '-');
         this.suggestedCustomers = [];
         this.suggestedCustomerCompanies = [];
         if(this.filterVal.customerID == '') {
