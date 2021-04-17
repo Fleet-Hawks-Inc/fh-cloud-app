@@ -62,7 +62,7 @@
                              <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="Enter the odometer miles at the time of service">
+                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="eg. 5000 , 10000 , 15000 ">
                                 </div>
                              </div>
                              <div class="row pt-2">
@@ -138,7 +138,7 @@
                                    <thead>
                                       <tr>
                                          <th id=""></th>
-                                         <th id="">Issue</th>
+                                         <th id="">Issue Name</th>
                                          <th id="">Assigned To</th>
                                       </tr>
                                    </thead>
@@ -302,7 +302,7 @@
                                       <tr *ngFor="let part of serviceData.allServiceParts.servicePartsList; let j = index;">
                                          <td>
                                             <strong>Name: </strong><span class="text-capitalize">{{part.partName}}</span><br>
-                                            <strong>Part Number:</strong> <span class="text-capitalize">{{part.partNumber}}</span>
+                                            <strong>Part#:</strong> <span class="text-capitalize">{{part.partNumber}}</span>
                                           </td>
                                          <th>{{inventoryQuantity[part.partNumber]}}</th>
                                          <td>{{part.description ? part.description : '-'}}</td>
@@ -486,11 +486,11 @@
                      <div class="row" id="newPartDiv" *ngIf="partType == 'new'">
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
-                           <input type="text" class="form-control" placeholder="Enter part number" [(ngModel)]="partData.partNumber" name="partNumber">
+                           <input type="text" class="form-control" placeholder="eg. ACR301 etc" [(ngModel)]="partData.partNumber" name="partNumber">
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Item Name</label>
-                           <input type="text" class="form-control" placeholder="Enter inventory part name eg. tires" [(ngModel)]="itemData.itemName" name="itemName">
+                           <input type="text" class="form-control" placeholder="eg. tires" [(ngModel)]="itemData.itemName" name="itemName">
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Category</label>
@@ -509,12 +509,12 @@
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Quantity</label>
-                           <input type="text" class="form-control" placeholder="Enter quantity" [(ngModel)]="partData.quantity" name="quantity">
+                           <input type="text" class="form-control" placeholder="eg. 1,2,3" [(ngModel)]="partData.quantity" name="quantity">
                         </div>
 
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold text-lg-right pt-2">Unit Cost (base)</label>
-                           <input type="number" class="form-control" name="cost" [(ngModel)]="itemData.cost" placeholder="Unit cost" />
+                           <input type="number" min="0" class="form-control" name="cost" [(ngModel)]="itemData.cost" placeholder="eg. 1,2,3 " />
                         </div>
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Cost Unit</label>
@@ -542,7 +542,7 @@
                         <div class="col-lg-6">
                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Part#</label>
                            <ng-select (change)="getPartDetail($event)" [(ngModel)]="partData.partNumber" name="partNumber" style="width: 100%;"
-                              placeholder="Select part number">
+                              placeholder="Select part#">
                               <ng-option *ngFor="let data of inventoryItems;" value="{{data.partNumber}}">{{data.partNumber}}</ng-option>
                            </ng-select>
                         </div>
@@ -593,7 +593,7 @@
                   <div class="form-group col-lg-12">
                      <label class="control-label font-weight-bold">Category Name</label>
                      <input type="text" class="form-control" [(ngModel)]="categoryData.name" name="name"
-                        placeholder="Enter category name" />
+                        placeholder="eg. Raw Materials" />
                   </div>
                </div>
                <div class="form-row">
