@@ -173,6 +173,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       homeTerminal: '',
       pcAllowed: false,
       ymAllowed: false,
+      hosCycleName:''
     },
     emergencyDetails: {
       name: '',
@@ -434,7 +435,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.validateTabErrors();
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
     if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
@@ -530,7 +530,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=drivers`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -540,11 +540,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .subscribe((result: any) => {
         this.countries = result.Items;
         this.countries.map(elem => {
-          if(elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
             this.addressCountries.push({countryName: elem.countryName, countryID: elem.countryID})
           }
-        })
-
+        });
       });
   }
 
@@ -718,6 +717,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hideErrors();
     // this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
+
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
 
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
@@ -1108,7 +1117,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.driverData['driverID'] = this.driverID;
 
-
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+    
     // create form data instance
     const formData = new FormData();
 

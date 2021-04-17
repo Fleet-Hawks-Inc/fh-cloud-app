@@ -1,26 +1,30 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../services/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { from, Subject, throwError } from 'rxjs';
-import { NgForm } from '@angular/forms';
-import { HereMapService } from '../../../services';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../../../services';
+import { ActivatedRoute } from '@angular/router';
+import { HereMapService } from '../../../../services';
 import { Location } from '@angular/common';
+import { from, Subject, throwError } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 @Component({
-  selector: 'app-add-account',
-  templateUrl: './add-account.component.html',
-  styleUrls: ['./add-account.component.css']
+  selector: 'app-edit-profile',
+  templateUrl: './edit-profile.component.html',
+  styleUrls: ['./edit-profile.component.css']
 })
-export class AddAccountComponent implements OnInit {
- // @ViewChild('carrierForm', null) carrierForm: NgForm;
+export class EditProfileComponent implements OnInit {
+  companyID = '';
+  carrierID = '';
+  bankID = '';
+  carriers: any = [];
+  companyForm;
   Asseturl = this.apiService.AssetUrl;
-  carrierID: string;
+  logoSrc  = '';
   CCC = '';
   DBAName = '';
-  DOT: number;
-  EIN: number;
-  MC: number;
+  DOT = '';
+  EIN = '';
+  MC = '';
   SCAC = '';
   CSA = false;
   CTPAT = false;
@@ -64,7 +68,7 @@ export class AddAccountComponent implements OnInit {
     },
     manual: false
   }];
-  bank = {
+  bank: any = {
     branchName: '',
     accountNumber: '',
     transitNumber: '',
@@ -89,30 +93,129 @@ export class AddAccountComponent implements OnInit {
   states = [];
   cities = [];
   errors = {};
-  carrierForm;
   response: any = '';
   hasError = false;
   hasSuccess = false;
   Error = '';
   Success = '';
-  // front end validation
-  errorEIN = false;
-  errorMC = false;
-  errorDOT = false;
-  errorCCC =  false;
-  errorSCAC = false;
-  constructor(private apiService: ApiService, private toaster: ToastrService,private location: Location, private HereMap: HereMapService) {
+  existingPhotos = [];
+   // front end validation
+   errorEIN = false;
+   errorMC = false;
+   errorDOT = false;
+   errorCCC =  false;
+   errorSCAC = false;
+  constructor(private apiService: ApiService,private toaster: ToastrService, private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
   ngOnInit() {
     this.fetchCountries();
     this.searchLocation(); // search location on keyup
+    this.companyID = this.route.snapshot.params[`carrierID`];
+    if(this.companyID){
+      this.fetchCarrier();
+    }
     $(document).ready(() => {
-      this.carrierForm = $('#carrierForm').validate();
+      this.companyForm = $('#companyForm').validate();
     });
   }
-  /**
+   fetchCarrier() {
+    this.apiService.getData(`carriers/${this.companyID}`)
+        .subscribe(async(result: any) => {
+          this.carriers = result.Items[0];
+          this.carrierID = this.carriers.carrierID;
+          this.CCC = this.carriers.CCC;
+          this.DBAName = this.carriers.DBAName;
+          this.DOT = this.carriers.DOT;
+          this.EIN = this.carriers.EIN;
+          this.MC = this.carriers.MC;
+          this.SCAC = this.carriers.SCAC;
+          this.CSA = this.carriers.CSA;
+          this.CTPAT = this.carriers.CTPAT;
+          this.PIP = this.carriers.PIP;
+          this.cargoInsurance = this.carriers.cargoInsurance;
+          this.email = this.carriers.email;
+          this.userName = this.carriers.userName;
+          this.carrierName = this.carriers.carrierName;
+          this.password = this.carriers.password,
+          this.confirmPassword = this.carriers.password,
+          // carrierBusinessName = '';
+          this.findingWay = this.carriers.findingWay;
+          this.firstName = this.carriers.firstName;
+          this.lastName = this.carriers.lastName;
+          this.liabilityInsurance = this.carriers.liabilityInsurance;
+          this.phone = this.carriers.phone;
+          // uploadedLogo = '';
+          this.fleets = {
+            curtainSide: this.carriers.fleets.curtainSide,
+            dryVans: this.carriers.fleets.dryVans,
+            flatbed: this.carriers.fleets.flatbed,
+            reefers: this.carriers.fleets.reefers,
+            totalFleets: this.carriers.fleets.totalFleets,
+            trailers: this.carriers.fleets.trailers,
+            trucks: this.carriers.fleets.trucks,
+          };
+          for (let i = 0; i < this.carriers.address.length; i++) {
+            await this.getStates(this.carriers.address[i].countryID);
+            await this.getCities(this.carriers.address[i].stateID);
+            if (this.carriers.address[i].manual) {
+              this.newAddress.push({
+                addressID: this.carriers.address[i].addressID,
+                addressType: this.carriers.address[i].addressType,
+                countryID: this.carriers.address[i].countryID,
+                countryName: this.carriers.address[i].countryName,
+                stateID: this.carriers.address[i].stateID,
+                stateName: this.carriers.address[i].stateName,
+                cityID: this.carriers.address[i].cityID,
+                cityName: this.carriers.address[i].cityName,
+                zipCode: this.carriers.address[i].zipCode,
+                address1: this.carriers.address[i].address1,
+                address2: this.carriers.address[i].address2,
+                geoCords: {
+                  lat: this.carriers.address[i].geoCords.lat,
+                  lng: this.carriers.address[i].geoCords.lng
+                },
+                manual: this.carriers.address[i].manual
+              })
+            } else {
+              this.newAddress.push({
+                addressID: this.carriers.address[i].addressID,
+                addressType: this.carriers.address[i].addressType,
+                countryID: this.carriers.address[i].countryID,
+                countryName: this.carriers.address[i].countryName,
+                stateID: this.carriers.address[i].stateID,
+                stateName: this.carriers.address[i].stateName,
+                cityID: this.carriers.address[i].cityID,
+                cityName: this.carriers.address[i].cityName,
+                zipCode: this.carriers.address[i].zipCode,
+                address1: this.carriers.address[i].address1,
+                address2: this.carriers.address[i].address2,
+                geoCords: {
+                  lat: this.carriers.address[i].geoCords.lat,
+                  lng: this.carriers.address[i].geoCords.lng
+                },
+                userLocation: this.carriers.address[i].userLocation
+              });
+            }
+          }
+          this.addressDetails = this.newAddress;
+          this.bank = {
+            branchName: this.carriers.bank.branchName ,
+            accountNumber: this.carriers.bank.accountNumber,
+            transitNumber: this.carriers.bank.transitNumber,
+            routingNumber: this.carriers.bank.routingNumber,
+            institutionNumber: this.carriers.bank.institutionNumber,
+          };
+          this.bankID = this.carriers.bank.bankID;
+          this.uploadedLogo = this.carriers.uploadedLogo;
+          this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+
+        });
+  }
+
+// UPDATE PART
+ /**
    * address
    */
   clearUserLocation(i) {
@@ -136,7 +239,26 @@ export class AddAccountComponent implements OnInit {
         this.states = result.Items;
       });
   }
+  fetchAllStatesIDs() {
+    this.apiService.getData('states/get/list')
+      .subscribe((result: any) => {
+        this.statesObject = result;
+      });
+  }
 
+  fetchAllCountriesIDs() {
+    this.apiService.getData('countries/get/list')
+      .subscribe((result: any) => {
+        this.countriesObject = result;
+      });
+  }
+
+  fetchAllCitiesIDs() {
+    this.apiService.getData('cities/get/list')
+      .subscribe((result: any) => {
+        this.citiesObject = result;
+      });
+  }
   async getCities(id: any, oid = null) {
     if (oid != null) {
       this.addressDetails[oid].stateName = this.statesObject[id];
@@ -221,26 +343,6 @@ export class AddAccountComponent implements OnInit {
       this.addressDetails.splice(i, 1);
     }
   }
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
   public searchLocation() {
     let target;
     this.searchTerm.pipe(
@@ -286,8 +388,7 @@ export class AddAccountComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
-  async onSubmit() {
+  async UpdateCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
@@ -299,13 +400,13 @@ export class AddAccountComponent implements OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
-          console.log('address part', result);
           element.geoCords.lat = result.position.lat;
           element.geoCords.lng = result.position.lng;
         }
       }
     }
     const data = {
+      carrierID: this.carrierID,
       entityType: 'carrier',
       CCC: this.CCC,
       DBAName: this.DBAName,
@@ -337,7 +438,16 @@ export class AddAccountComponent implements OnInit {
         trailers: this.fleets.trailers,
         trucks: this.fleets.trucks
       },
-      bank: this.bank
+      bank: {
+        branchName: this.bank.branchName ,
+        accountNumber: this.bank.accountNumber,
+        transitNumber: this.bank.transitNumber,
+        routingNumber: this.bank.routingNumber,
+        institutionNumber: this.bank.institutionNumber,
+        bankID:  this.bankID
+      },
+      uploadedLogo: this.uploadedLogo
+
     };
     // create form data instance
     const formData = new FormData();
@@ -349,10 +459,9 @@ export class AddAccountComponent implements OnInit {
     // append other fields
     formData.append('data', JSON.stringify(data));
 
-    this.apiService.postData('carriers/add', formData, true).subscribe({
+    this.apiService.putData('carriers', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
-        console.log('error', err);
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -370,7 +479,7 @@ export class AddAccountComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.toaster.success('Carrier created successfully.');
+        this.toaster.success('Carrier updated successfully.');
         this.cancel();
       },
     });
@@ -400,6 +509,13 @@ export class AddAccountComponent implements OnInit {
     let files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
+  }
+
+  deleteLogo() {
+    this.apiService.deleteData(`carriers/uploadDelete/${this.carrierID}/${this.uploadedLogo}`).subscribe((result: any) => {
+      this.toaster.success('Image Deleted Successfully');
+      this.fetchCarrier();
+    });
   }
 
   // FRONT END VALIDATION
