@@ -2,13 +2,13 @@
     <app-header></app-header>
     <div class="inner-wrapper">
       <app-sidebar></app-sidebar>
-      <section role="main" class="content-body pt-0 pl-0 pr-0">
-            <header class="page-header pr-5">
+      <section role="main" class="content-body p-3">
+            <header class="page-header pr-1">
                     <div class="row pr-4 pl-2" style="padding-top:10px;">
                        <div class="col-md-4 col-lg-4">
                           <h4 class="text-4 mt-0 mb-0 text-dark">Create Inspection Form</h4>
                        </div>
-                       <div class="col-md-8  col-lg-8 text-right pr-5">
+                       <div class="col-md-8 col-lg-8 text-right pr-1">
                           <a routerLink="/compliance/dvir/inspections" class="btn btn-sm btn-default"><i class="fas fa-list"></i>All Inspection Forms</a>
                        </div>
                     </div>
@@ -19,10 +19,8 @@
                 <section class="card">
                     <div class="card-body">
                         <form id="inspectinoForm" method="get" class="form-horizontal form-bordered" name="inspectionForm">
-                            
-                            
                             <div class="form-group row mt-3">
-                                
+                               
                                 <div class="col-lg-9 offset-lg-1">
                                 <div class="row">
                                         <div class="col-lg-6">
@@ -43,13 +41,14 @@
                                 </div>
                                 
                                 
-                                <div class="col-lg-9 offset-lg-1">
+                                <div class="col-lg-5 offset-lg-1">
                                     <div class="row mt-2">
-                                        <div class="col-lg-10">
+                                        <div class="col-lg-11">
                                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection Parameters <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            
                                             <div class="param-wrapper d-flex">
-                                        <div class="col-lg-6 d-flex" *ngFor="let param of parameters let t=index;">
-                                            <input type="text" class="form-control" name="param" [ngModelOptions]="{standalone: true}" [(ngModel)]="param.name" [disabled]="t != (parameters.length)-1||param.isDefault==true">
+                                        <div class="col-lg-12 pl-0 d-flex" *ngFor="let param of parameters let t=index;">
+                                            <input type="text" class="form-control mr-2" name="param" [ngModelOptions]="{standalone: true}" [(ngModel)]="param.name" [disabled]="t != (parameters.length)-1||param.isDefault==true">
                                         <!-- <div class="col-lg-2 mar-top-37"> -->
                                             <button type="button" class="btn btn-sm btn-success" *ngIf="t == (parameters.length)-1" (click)="addFormParam()"><i
                                                 class="fas fa-plus"></i></button>
@@ -57,7 +56,11 @@
                                                   class="fas fa-minus"></i></button>
                                          </div>
                                         </div>
+                                        
                                     </div>
+
+
+
                                     </div>
                                 </div>
                             </div>
