@@ -1,7 +1,7 @@
 describe("Add Order", function () {
   it('should allow the user to add-order', function () {
 
-    cy.visit('https://devapp.fleethawks.com/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -107,7 +107,7 @@ describe("Add Order", function () {
 
   });
   it('should list the order which was added and then verify the added order is listed ', function () {
-    cy.visit('https://devapp.fleethawks.com/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -118,7 +118,7 @@ describe("Add Order", function () {
     //cy.get(':nth-child(1) > [tabindex="0"]').contains('109');
   });
   it('should allow user to delete order', function () {
-    cy.visit('https://devapp.fleethawks.com/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -128,9 +128,10 @@ describe("Add Order", function () {
     cy.get('.ng-star-inserted > .nav > :nth-child(1) > .nav-link').click();
     cy.get('#dropdownMenuButton-0 > .fas').first().click();
     cy.get(':nth-child(1) > :nth-child(10) > .dropdown > .dropdown-menu > [href="javascript:;"]').first().click();
+    cy.wait(3000);
   });
   it('should give validation error message when required fields are not provided', function () {
-    cy.visit('https://devapp.fleethawks.com/');
+    cy.visit('/#/Login');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();

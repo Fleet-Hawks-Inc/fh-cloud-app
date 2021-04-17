@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://devapp.fleethawks.com",
+    "baseUrl": "http://localhost:4200/",
     "experimentalStudio": true,
     "viewportHeight": 1080,
     "viewportWidth": 1920,

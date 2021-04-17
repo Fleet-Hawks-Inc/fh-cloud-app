@@ -1,7 +1,7 @@
 describe("Add trip ", function () {
     it('should allow the user to add-order first then add trip later', function () {
 
-        cy.visit('https://devapp.fleethawks.com/');
+        cy.visit('/#/Login');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();
         cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
         cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -165,9 +165,7 @@ describe("Add trip ", function () {
     it('should allow user to delete trip', function () {
         cy.visit("/#/Login");
         cy.get(":nth-child(1) > .input-group > .form-control").clear();
-        cy.get(":nth-child(1) > .input-group > .form-control").type(
-            Cypress.config("testerUserName")
-        );
+        cy.get(":nth-child(1) > .input-group > .form-control").type(Cypress.config("testerUserName"));
         cy.get(":nth-child(2) > .input-group > .form-control").clear();
         cy.get(":nth-child(2) > .input-group > .form-control").type(Cypress.config("testerPassword"));
         cy.get("#btnsubmit").click();
@@ -175,7 +173,8 @@ describe("Add trip ", function () {
         cy.get(':nth-child(2) > .nav-link > span').click();
 
         cy.get('#dropdownMenuButton-0').first().click();
-        cy.get(':nth-child(12) > .dropdown > .dropdown-menu > :nth-child(2)').last().click();
+        cy.get(':nth-child(1) > :nth-child(12) > .dropdown > .dropdown-menu > :nth-child(2)').last().click();
+        cy.wait(5000);
     });
     it('should give validation error message when required fields are not provided', function () {
         cy.visit("/#/Login");
@@ -194,7 +193,7 @@ describe("Add trip ", function () {
         cy.get('#tripNo-error').contains('This Field is not allowed to be empty');
     });
     it('should allow user to delete order', function () {
-        cy.visit('https://devapp.fleethawks.com/');
+        cy.visit('/#/Login');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();
         cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
         cy.get(':nth-child(2) > .input-group > .form-control').clear();
