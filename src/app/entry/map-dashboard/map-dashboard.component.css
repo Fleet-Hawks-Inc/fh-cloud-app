@@ -1,1 +1,8 @@
-
+.notrip-oview img {
+    width: 100px;
+    height: auto;
+    display: block;
+    margin: auto;
+    margin-top: 70%;
+    opacity: 0.2;
+}

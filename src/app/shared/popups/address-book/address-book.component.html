@@ -112,12 +112,12 @@
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td *ngIf="customer.address[0]">
-                                            <span *ngIf="customer.address[0].manual == true && customer.address[0].manual != undefined">
+                                            <span *ngIf="customer.address[0].manual">
                                                 {{customer.address[0].address1}} {{customer.address[0].address2}},
                                                 {{customer.address[0].cityName}}, {{customer.address[0].stateName}},
                                                 {{customer.address[0].countryName}}, {{customer.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="customer.address[0].manual == false && customer.address[0].manual != undefined">
+                                            <span *ngIf="!customer.address[0].manual">
                                                 {{customer.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -209,12 +209,12 @@
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
                                         <td *ngIf="broker.address[0] != undefined">
-                                            <span *ngIf="broker.address[0].manual == true">
+                                            <span *ngIf="broker.address[0].manual">
                                                 {{broker.address[0].address1}} {{broker.address[0].address2}},
                                                 {{broker.address[0].cityName}}, {{broker.address[0].stateName}},
                                                 {{broker.address[0].countryName}}, {{broker.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="broker.address[0].manual == false">
+                                            <span *ngIf="!broker.address[0].manual">
                                                 {{broker.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -305,12 +305,12 @@
                                         <td>{{vendor.workEmail}}</td>
                                         <td>{{vendor.workPhone}}</td>
                                         <td *ngIf="vendor.address[0] != undefined">
-                                            <span *ngIf="vendor.address[0].manual == true">
+                                            <span *ngIf="vendor.address[0].manual">
                                                 {{vendor.address[0].address1}} {{vendor.address[0].address2}},
                                                 {{vendor.address[0].cityName}}, {{vendor.address[0].stateName}},
                                                 {{vendor.address[0].countryName}}, {{vendor.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="vendor.address[0].manual == false">
+                                            <span *ngIf="!vendor.address[0].manual">
                                                 {{vendor.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -401,12 +401,12 @@
                                         <td>{{carrier.workEmail}}</td>
                                         <td>{{carrier.workPhone}}</td>
                                         <td *ngIf="carrier.address[0] != undefined">
-                                            <span *ngIf="carrier.address[0].manual == true">
+                                            <span *ngIf="carrier.address[0].manual">
                                                 {{carrier.address[0].address1}} {{carrier.address[0].address2}},
                                                 {{carrier.address[0].cityName}}, {{carrier.address[0].stateName}},
                                                 {{carrier.address[0].countryName}}, {{carrier.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="carrier.address[0].manual == false">
+                                            <span *ngIf="!carrier.address[0].manual">
                                                 {{carrier.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -497,12 +497,12 @@
                                         <td>{{operator.workEmail}}</td>
                                         <td>{{operator.workPhone}}</td>
                                         <td *ngIf="operator.address[0] != undefined">
-                                            <span *ngIf="operator.address[0].manual == true">
+                                            <span *ngIf="operator.address[0].manual">
                                                 {{operator.address[0].address1}} {{operator.address[0].address2}},
                                                 {{operator.address[0].cityName}}, {{operator.address[0].stateName}},
                                                 {{operator.address[0].countryName}}, {{operator.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="operator.address[0].manual == false">
+                                            <span *ngIf="!operator.address[0].manual">
                                                 {{operator.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -594,12 +594,12 @@
                                         <td>{{shipper.workEmail}}</td>
                                         <td>{{shipper.workPhone}}</td>
                                         <td *ngIf="shipper.address[0] != undefined">
-                                            <span *ngIf="shipper.address[0].manual == true">
+                                            <span *ngIf="shipper.address[0].manual">
                                                 {{shipper.address[0].address1}} {{shipper.address[0].address2}},
                                                 {{shipper.address[0].cityName}}, {{shipper.address[0].stateName}},
                                                 {{shipper.address[0].countryName}}, {{shipper.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="shipper.address[0].manual == false">
+                                            <span *ngIf="!shipper.address[0].manual">
                                                 {{shipper.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -690,12 +690,12 @@
                                         <td>{{receiver.workEmail}}</td>
                                         <td>{{receiver.workPhone}}</td>
                                         <td *ngIf="receiver.address[0] != undefined">
-                                            <span *ngIf="receiver.address[0].manual == true">
+                                            <span *ngIf="receiver.address[0].manual">
                                                 {{receiver.address[0].address1}} {{receiver.address[0].address2}},
                                                 {{receiver.address[0].cityName}}, {{receiver.address[0].stateName}},
                                                 {{receiver.address[0].countryName}}, {{receiver.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="receiver.address[0].manual == false">
+                                            <span *ngIf="!receiver.address[0].manual">
                                                 {{receiver.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -792,12 +792,12 @@
                                         <td>{{staff.workEmail}}</td>
                                         <td>{{staff.workPhone}}</td>
                                         <td *ngIf="staff.address[0] != undefined">
-                                            <span *ngIf="staff.address[0].manual == true">
+                                            <span *ngIf="staff.address[0].manual">
                                                 {{staff.address[0].address1}} {{staff.address[0].address2}},
                                                 {{staff.address[0].cityName}}, {{staff.address[0].stateName}},
                                                 {{staff.address[0].countryName}}, {{staff.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="staff.address[0].manual == false">
+                                            <span *ngIf="!staff.address[0].manual">
                                                 {{staff.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -889,12 +889,12 @@
                                         <td>{{company.workEmail}}</td>
                                         <td>{{company.workPhone}}</td>
                                         <td *ngIf="company.address[0] != undefined">
-                                            <span *ngIf="company.address[0].manual == true">
+                                            <span *ngIf="company.address[0].manual">
                                                 {{company.address[0].address1}} {{company.address[0].address2}},
                                                 {{company.address[0].cityName}}, {{company.address[0].stateName}},
                                                 {{company.address[0].countryName}}, {{company.address[0].zipCode}}
                                             </span>
-                                            <span *ngIf="company.address[0].manual == false">
+                                            <span *ngIf="!company.address[0].manual">
                                                 {{company.address[0].userLocation}}
                                             </span>
                                         </td>
@@ -1431,13 +1431,13 @@
                                                             <input [(ngModel)]="item.address2"
                                                             name="address2{{i}}" type="text" class="form-control">
                                                         </div>
-                                                        <div class="col-lg-12 pt-3">
+                                                        <!-- <div class="col-lg-12 pt-3">
                                                             <div class="checkbox-custom">
                                                                 <input [(ngModel)]="item.saveAsLocation"
                                                                 name="saveAsLocation{{i}}" type="checkbox" name="terms">
                                                                 <label for="w1-terms">Also Save as Location?</label>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
 
@@ -2184,7 +2184,9 @@
                                             <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input type="text" [(ngModel)]="item.userLocation" [attr.name]="'address['+i+'].userLocation'" [ngModelOptions]="{standalone: true}" (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address">
+                                                
+                                                <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
+                                                    class="form-control" placeholder="Type Address" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
@@ -4032,7 +4034,11 @@
                                     </tr>
                                     <tr *ngIf="userDetailData.fastExpiry">
                                         <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                                        <td>{{userDetailData.fastExpiry}}</td>
+                                        <td>{{userDetailData.fastExpiry | date:'yyyy/MM/dd'}}</td>
+                                    </tr>
+                                    <tr *ngIf="userDetailData.preferedVendor">
+                                        <th width="40%" class="back-color-gray">Preferred Vendor:</th>
+                                        <td>Yes</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -4040,7 +4046,7 @@
                         <div class="col-lg-6">
                             <table class="table table-bordered m-0">
                                 <tbody>
-                                    <tr *ngIf="userDetailData.fastExpiry">
+                                    <tr *ngIf="userDetailData.accountNumber">
                                         <th width="40%" class="back-color-gray">Account#:</th>
                                         <td>{{userDetailData.accountNumber}}</td>
                                     </tr>
@@ -4153,11 +4159,11 @@
                                 <td>Yes</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.mc">
-                                <th width="40%" class="back-color-gray">MC:</th>
+                                <th width="40%" class="back-color-gray">MC#:</th>
                                 <td>{{userDetailData.paymentDetails.mc}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.dot">
-                                <th width="40%" class="back-color-gray">DOT:</th>
+                                <th width="40%" class="back-color-gray">DOT#:</th>
                                 <td>{{userDetailData.paymentDetails.dot}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.fast">
@@ -4166,7 +4172,7 @@
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.fastExpiry">
                                 <th width="40%" class="back-color-gray">FAST Expiry:</th>
-                                <td>{{userDetailData.paymentDetails.fastExpiry}}</td>
+                                <td>{{userDetailData.paymentDetails.fastExpiry | date:'yyyy/MM/dd'}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.ccc">
                                 <th width="40%" class="back-color-gray">CCC:</th>
@@ -4242,11 +4248,11 @@
 
                             <tr *ngIf="userDetailData.paymentDetails.wsibExpiry">
                                 <th width="40%" class="back-color-gray">WSIB Expiry:</th>
-                                <td>{{userDetailData.paymentDetails.wsibExpiry}}</td>
+                                <td>{{userDetailData.paymentDetails.wsibExpiry | date:'yyyy/MM/dd'}}</td>
                             </tr>
-                            <tr *ngIf="userDetailData.paymentDetails.SIN">
+                            <tr *ngIf="userDetailData.paymentDetails.sin">
                                 <th width="40%" class="back-color-gray">SIN:</th>
-                                <td>{{userDetailData.paymentDetails.SIN}}</td>
+                                <td>{{userDetailData.paymentDetails.sin}}</td>
                             </tr>
                             <tr *ngIf="userDetailData.paymentDetails.WCB">
                                 <th width="40%" class="back-color-gray">WCB#:</th>
