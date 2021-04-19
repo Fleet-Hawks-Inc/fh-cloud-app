@@ -2197,7 +2197,7 @@
                                          name="assetDetails.annualSafetyDate" [(ngModel)]="assetsData.assetDetails.annualSafetyDate"
                                         placeholder="yyyy/mm/dd" class="form-control">
                                      </div>
-                                     <div class="col-lg-6">
+                                     <div class="col-lg-6"> 
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                                           Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <ng-select [(ngModel)]="assetsData.assetDetails.currentStatus"
@@ -2254,6 +2254,14 @@
                                        <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
                                           placeholder="eg. 345678"
                                           name="assetDetails.licencePlateNumber" class="form-control" type="text">
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                          the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                                          <ng-option *ngFor="let data of inspectionFormsAsset" value="{{ data.inspectionFormID }}"> {{ data.inspectionFormName }}</ng-option>
+                                       </ng-select>
                                     </div>
                                  </div>
                               </div>

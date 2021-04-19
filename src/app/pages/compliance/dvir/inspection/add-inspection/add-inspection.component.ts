@@ -90,12 +90,15 @@ export class AddInspectionComponent implements OnInit {
   cancel(){
     this.location.back();
   }
-  addFormParam(){
-    
-    this.parameters.push({
-      name:'',
-      isDefault:false
-    })
+  addFormParam(index){
+    if(this.parameters[index].name !== '') {
+      this.parameters.push({
+        name:'',
+        isDefault:false
+      })
+    } else {
+      return false;
+    }
   }
 
   deleteFormParam(t){
