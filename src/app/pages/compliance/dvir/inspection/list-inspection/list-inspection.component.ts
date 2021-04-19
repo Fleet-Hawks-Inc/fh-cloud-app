@@ -9,13 +9,29 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./list-inspection.component.css']
 })
 export class ListInspectionComponent implements OnInit {
-public inspectionForms: any;
+public inspectionForms: any=[];
   constructor(private apiService: ApiService,
     private toastr: ToastrService,) { }
   
 
   ngOnInit() {
+    this.fetchGovForms();
     this.fetchInspectionForms();
+  }
+
+  fetchGovForms(){
+    
+    this.apiService.getData('inspectionForms/get/govDefault').subscribe({
+      complete: () => {
+      },
+      error: () => {},
+      next: (result: any) => {
+        result.Items.forEach(element => {
+          this.inspectionForms.push(element);
+          
+        });
+      },
+    });
   }
   fetchInspectionForms = () => {
     
@@ -24,8 +40,10 @@ public inspectionForms: any;
       },
       error: () => {},
       next: (result: any) => {
-        console.log(result)
-        this.inspectionForms = result.Items;
+        result.Items.forEach(element => {
+          this.inspectionForms.push(element);
+          
+        });
       },
     });
   }
