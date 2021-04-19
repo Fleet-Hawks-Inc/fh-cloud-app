@@ -1192,7 +1192,7 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">DBA
-                                                            Name 
+                                                            Name
                                                         </label>
                                                         <input [(ngModel)]="customerData.dbaName"
                                                         name="dbaName" type="text" class="form-control" placeholder="Enter DBA Name">
@@ -1360,7 +1360,7 @@
                                                         </ng-select>
                                                     </div>
                                                 </div>
-                                            </div> 
+                                            </div>
                                             <div class="col-lg-4 offset-lg-1">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span>
@@ -1599,7 +1599,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Company
                                                             Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="Enter Company Name">
+                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="eg. Carroll Group">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DBA
@@ -1611,13 +1611,13 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.firstName" name="firstName" type="text" class="form-control" placeholder="Enter Contact First Name">
+                                                        <input [(ngModel)]="brokerData.firstName" name="firstName" type="text" class="form-control" placeholder="eg. John">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             Last Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="Enter Contact Last Name">
+                                                        <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="eg. Smith">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
@@ -1633,7 +1633,7 @@
                                                           title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
                                                           in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="Enter 6 digit MC number">
+                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="6 digits , eg. 123456">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT# &nbsp;<i
@@ -1641,11 +1641,11 @@
                                                           data-placement="top"
                                                           title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="Enter US DOT number">
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="8 digits , eg.12345678">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input [(ngModel)]="brokerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="Enter Email">
+                                                        <input [(ngModel)]="brokerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="eg. example@email.com">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1665,7 +1665,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="Enter Phone">
+                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 0016780571">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1680,7 +1680,7 @@
                                                             class="control-label font-weight-bold text-lg-right pt-2">Address
                                                             Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
-                                                            placeholder="Select Address Type">
+                                                            placeholder="eg. Home">
                                                             <ng-option value="Billing Address">Billing Address</ng-option>
                                                             <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
@@ -1693,7 +1693,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Type
                                                     Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
-                                                class="form-control" placeholder="Type Address" [disabled]="item.manual">
+                                                class="form-control" placeholder="eg. 01, Business Hub Center , New York, USA" [disabled]="item.manual">
                                                 <div class="map-search__results bg-white">
                                                     <ul class="p-0 m-0 text-left">
                                                       <li *ngFor="let item of searchResults;">
@@ -1794,18 +1794,18 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="brokerData.additionalContact.firstName" name="firstName1" type="text"
-                                                            class="form-control" placeholder="Enter First Name">
+                                                            class="form-control" placeholder="eg. John">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="brokerData.additionalContact.lastName" name="lastName1" type="text"
-                                                            class="form-control" placeholder="Enter Last Name">
+                                                            class="form-control" placeholder="eg. Smith">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="brokerData.additionalContact.designation" name="designation" type="text"
-                                                            class="form-control" placeholder="Enter Designation">
+                                                            class="form-control" placeholder="eg. Software Developer">
                                                     </div>
                                                 </div>
                                             </div>
@@ -1814,16 +1814,16 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="brokerData.additionalContact.phone" name="phone" type="text"
-                                                            class="form-control" placeholder="Enter Phone">
+                                                            class="form-control" placeholder="eg. 0016780571">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <input [(ngModel)]="brokerData.additionalContact.email" name="email" type="text"
-                                                            class="form-control" placeholder="Enter Email">
+                                                            class="form-control" placeholder="eg. example@email.com">
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="Enter Fax">
+                                                        <input [(ngModel)]="brokerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367">
                                                     </div>
                                                 </div>
                                             </div>
@@ -4273,7 +4273,7 @@
                                 <th width="40%" class="back-color-gray">Designation:</th>
                                 <td>{{userDetailData.userAccount.designation}}</td>
                             </tr>
-                            
+
                             <tr *ngIf="userDetailData.userData.username">
                                 <th width="40%" class="back-color-gray">Enable Login:</th>
                                 <td>Yes</td>
