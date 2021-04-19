@@ -23,3 +23,29 @@
 .show-search__resultBank .map-search__resultsBank {
     display: block !important;
 }
+
+
+
+/* test */
+
+
+.user-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 30px;
+  display: block;
+}
+
+.user-bio {
+  font-size: 12px;
+  margin-top: 20px;
+  display: block;
+  color: rgba(0, 0, 0, 0.70);
+}
+.user-image {
+  width: 100%;
+  border-radius: 50%;
+}
+.error-message {
+  color: #FF0000;
+}

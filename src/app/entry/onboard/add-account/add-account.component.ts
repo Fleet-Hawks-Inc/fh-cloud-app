@@ -6,6 +6,8 @@ import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
+import { Validators, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import {  PasswordValidator, ParentErrorStateMatcher} from '../../validators';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -14,6 +16,10 @@ declare var $: any;
 })
 export class AddAccountComponent implements OnInit {
   // @ViewChild('carrierForm', null) carrierForm: NgForm;
+  userDetailsForm: FormGroup;
+  matching_passwords_group: FormGroup;
+  parentErrorStateMatcher = new ParentErrorStateMatcher();
+  username: string;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   CCC = '';
@@ -30,7 +36,7 @@ export class AddAccountComponent implements OnInit {
   userName = '';
   carrierName = '';
   // carrierBusinessName = '';
-  findingWay = '';
+  findingWay: string;
   firstName = '';
   lastName = '';
   liabilityInsurance = '';
@@ -39,15 +45,23 @@ export class AddAccountComponent implements OnInit {
   phone = '';
   bizCountry = null;
   uploadedLogo = '';
-  fleets = {
-    curtainSide: 0,
-    dryVans: 0,
-    flatbed: 0,
-    reefers: 0,
-    totalFleets: 0,
-    trailers: 0,
-    trucks: 0,
-  };
+  // fleets: {
+  //   curtainSide: number;
+  //   dryVans: number;
+  //   flatbed: number;
+  //   reefers: number;
+  //   totalFleets: number;
+  //   trailers: number;
+  //   trucks: number;
+  // };
+    curtainSide: number;
+    dryVans: number;
+    flatbed: number;
+    reefers: number;
+    totalFleets: number;
+    trailers: number;
+    trucks: number;
+
   addressDetails = [{
     addressType: 'yard',
     countryID: '',
@@ -65,13 +79,18 @@ export class AddAccountComponent implements OnInit {
     },
     manual: false
   }];
-  bank = {
-    branchName: '',
-    accountNumber: '',
-    transitNumber: '',
-    routingNumber: '',
-    institutionNumber: '',
-  };
+  // bank = {
+  //   branchName: '',
+  //   // accountNumber: '',
+  //   // transitNumber: '',
+  //   // routingNumber: '',
+  //   // institutionNumber: '',
+  // };
+  branchName: string;
+  accountNumber: number;
+  transitNumber: number;
+  routingNumber: number;
+  institutionNumber: number;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -106,7 +125,51 @@ export class AddAccountComponent implements OnInit {
   errorTransit = false;
   errorInstitution = false;
   errorAccount = false;
-  constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
+
+
+  validation_messages = {
+    'firstName': [
+      { type: 'required', message: 'First name is required' },
+      { type: 'pattern', message: 'First name must contain only letters' },
+    ],
+    'lastName': [
+      { type: 'required', message: 'Last name is required' },
+      { type: 'pattern', message: 'Last name must contain only letters' },
+    ],
+    'userName': [
+      { type: 'required', message: 'Username is required' },
+      { type: 'minlength', message: 'Username must be at least 8 characters long' },
+      { type: 'maxlength', message: 'Username cannot be more than 25 characters long' },
+      { type: 'pattern', message: 'Your username must contain only numbers and small letters' },
+        ],
+        'confirmPassword': [
+          { type: 'required', message: 'Confirm password is required' },
+          { type: 'areEqual', message: 'Password mismatch' }
+        ],
+        'password': [
+          { type: 'required', message: 'Password is required' },
+          { type: 'minlength', message: 'Password must be at least 5 characters long' },
+          { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number' }
+        ],
+        'email': [
+          { type: 'required', message: 'Email is required' },
+          { type: 'pattern', message: 'Enter a valid email' }
+        ],
+        'carrierName': [
+          { type: 'required', message: 'Carrier name is required' },
+          { type: 'pattern', message: 'Carrier name must contain only letters and numbers and no special characters.' },
+        ],
+        'phone': [
+          { type: 'required', message: 'Phone is required' },
+         // { type: 'validCountryPhone', message: 'Phone incorrect for the country selected' }
+        ],
+        'EIN': [
+          { type: 'pattern', message: 'EIN must be 9 characters.' },
+        ],
+  };
+  constructor(private apiService: ApiService,
+    private toaster: ToastrService, private location: Location, private HereMap: HereMapService,
+    private fb: FormBuilder) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -116,7 +179,9 @@ export class AddAccountComponent implements OnInit {
     $(document).ready(() => {
       this.carrierForm = $('#carrierForm').validate();
     });
+    this.createForms();
   }
+
   /**
    * address
    */
@@ -311,41 +376,41 @@ export class AddAccountComponent implements OnInit {
       }
     }
 
-    const data = {
-      entityType: 'carrier',
-      CCC: this.CCC,
-      DBAName: this.DBAName,
-      DOT: this.DOT,
-      EIN: this.EIN,
-      MC: this.MC,
-      SCAC: this.SCAC,
-      cargoInsurance: this.cargoInsurance,
-      email: this.email,
-      userName: this.userName,
-      CTPAT: this.CTPAT,
-      CSA: this.CSA,
-      PIP: this.PIP,
-      carrierName: this.carrierName.trim(),
-      findingWay: this.findingWay,
-      bizCountry: this.bizCountry,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      liabilityInsurance: this.liabilityInsurance,
-      password: this.password,
-      confirmPassword: this.confirmPassword,
-      addressDetails: this.addressDetails,
-      phone: this.phone,
-      fleets: {
-        curtainSide: this.fleets.curtainSide,
-        dryVans: this.fleets.dryVans,
-        flatbed: this.fleets.flatbed,
-        reefers: this.fleets.reefers,
-        totalFleets: this.fleets.totalFleets,
-        trailers: this.fleets.trailers,
-        trucks: this.fleets.trucks
-      },
-      bank: this.bank
-    };
+    // const data = {
+    //   entityType: 'carrier',
+    //   CCC: this.CCC,
+    //   DBAName: this.DBAName,
+    //   DOT: this.DOT,
+    //   EIN: this.EIN,
+    //   MC: this.MC,
+    //   SCAC: this.SCAC,
+    //   cargoInsurance: this.cargoInsurance,
+    //   email: this.email,
+    //   userName: this.userName,
+    //   CTPAT: this.CTPAT,
+    //   CSA: this.CSA,
+    //   PIP: this.PIP,
+    //   carrierName: this.carrierName.trim(),
+    //   findingWay: this.findingWay,
+    //   bizCountry: this.bizCountry,
+    //   firstName: this.firstName,
+    //   lastName: this.lastName,
+    //   liabilityInsurance: this.liabilityInsurance,
+    //   password: this.password,
+    //   confirmPassword: this.confirmPassword,
+    //   addressDetails: this.addressDetails,
+    //   phone: this.phone,
+    //   fleets: {
+    //     curtainSide: this.fleets.curtainSide,
+    //     dryVans: this.fleets.dryVans,
+    //     flatbed: this.fleets.flatbed,
+    //     reefers: this.fleets.reefers,
+    //     totalFleets: this.fleets.totalFleets,
+    //     trailers: this.fleets.trailers,
+    //     trucks: this.fleets.trucks
+    //   },
+    //   bank: this.bank
+    // };
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -353,7 +418,7 @@ export class AddAccountComponent implements OnInit {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
-    formData.append('data', JSON.stringify(data));
+   // formData.append('data', JSON.stringify(data));
     this.apiService.postData('carriers/add', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -399,7 +464,6 @@ export class AddAccountComponent implements OnInit {
   }
   selectPhoto(event) {
     let files = [...event.target.files];
-    this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
 
@@ -528,4 +592,82 @@ export class AddAccountComponent implements OnInit {
     const newString = e.target.value;
     this.userName = newString.toLowerCase();
   }
+
+  createForms() {
+     // matching passwords validation
+    //  this.matching_passwords_group = new FormGroup({
+    //   password: new FormControl('', Validators.compose([
+    //     Validators.minLength(5),
+    //     Validators.required,
+    //     Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#]+$')
+    //   ])),
+    //   confirmPassword: new FormControl('', Validators.required)
+    // }, (formGroup: FormGroup) => {
+    //   return PasswordValidator.areEqual(formGroup);
+    // });
+    // user details form validations
+    this.userDetailsForm = this.fb.group({
+    //   firstName: new FormControl('', Validators.compose([
+    //     Validators.pattern('^[a-zA-Z]+$'),
+    //     Validators.required
+    //   ])),
+    //   lastName: new FormControl('', Validators.compose([
+    //     Validators.pattern('^[a-zA-Z]+$'),
+    //     Validators.required
+    //   ])),
+    //   userName: new FormControl('', Validators.compose([
+    //     Validators.maxLength(25),
+    //     Validators.minLength(8),
+    //     Validators.pattern('^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$'),
+    //     Validators.required
+    //    ])),
+    //    matching_passwords: this.matching_passwords_group,
+    //    email: new FormControl('', Validators.compose([
+    //     Validators.required,
+    //     Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+    //   ])),
+    //  findingWay: this.findingWay,
+    //  carrierName: new FormControl('', Validators.compose([
+    //   Validators.pattern('^[a-zA-Z0-9.\\s]+$'),
+    //   Validators.required
+    // ])),
+    // phone: new FormControl('', Validators.compose([
+    //   // Validators.pattern('^[a-zA-Z]+$'),
+    //   Validators.required
+    // ])),
+    // EIN: new FormControl('', Validators.compose([
+    //   Validators.pattern('^[0-9]+$'),
+    // ])),
+  // fleets: {
+    //   totalFleets: this.totalFleets,
+    //   trucks : this.trucks,
+    //   curtainSide: this.curtainSide,
+    // dryVans: this.dryVans,
+    // flatbed: this.flatbed,
+    // reefers: this.reefers,
+    // trailers: this.trailers,
+    // DBAName: this.DBAName,
+    // bizCountry: this.bizCountry,
+    // liabilityInsurance: this.liabilityInsurance,
+    // cargoInsurance: this.cargoInsurance,
+    // CCC: this.CCC,
+    // SCAC: this.SCAC,
+    // MC: this.MC,
+    // DOT: this.DOT,
+    // CSA: this.CSA,
+    // CTPAT: this.CTPAT,
+    // PIP: this.PIP,
+    //   branchName: this.branchName,
+    //   accountNumber: this.accountNumber,
+    //   routingNumber: this.routingNumber,
+    //   transitNumber: this.transitNumber,
+    //   institutionNumber: this.institutionNumber,
+      // uploadedPhotos: this.uploadedPhotos
+      addressDetails: new FormArray([])
+    });
+  }
+  onSubmitUserDetails(value) {
+    console.log(value);
+  }
+
 }

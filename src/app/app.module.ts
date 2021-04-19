@@ -47,6 +47,15 @@ import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
+
+import {
+  MatButtonModule,
+  MatCheckboxModule,
+  MatInputModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatNativeDateModule
+ } from '@angular/material';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -90,6 +99,12 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     SlickCarouselModule,
     NgxSpinnerModule,
     NgSelectModule,
+    MatButtonModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatSelectModule
   ],
   providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
   bootstrap: [AppComponent],
