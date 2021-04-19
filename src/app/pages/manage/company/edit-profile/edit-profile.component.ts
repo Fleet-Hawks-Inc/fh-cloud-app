@@ -33,6 +33,7 @@ export class EditProfileComponent implements OnInit {
   email = '';
   userName = '';
   carrierName = '';
+  bizCountry = null;
   // carrierBusinessName = '';
   findingWay = '';
   firstName = '';
@@ -52,7 +53,7 @@ export class EditProfileComponent implements OnInit {
     trucks: 0,
   };
   addressDetails = [{
-    addressType: '',
+    addressType: 'yard',
     countryID: '',
     countryName: '',
     stateID: '',
@@ -105,6 +106,10 @@ export class EditProfileComponent implements OnInit {
    errorDOT = false;
    errorCCC =  false;
    errorSCAC = false;
+   errorRouting = false;
+   errorTransit = false;
+   errorInstitution = false;
+   errorAccount = false;
   constructor(private apiService: ApiService,private toaster: ToastrService, private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -146,6 +151,7 @@ export class EditProfileComponent implements OnInit {
           this.lastName = this.carriers.lastName;
           this.liabilityInsurance = this.carriers.liabilityInsurance;
           this.phone = this.carriers.phone;
+          this.bizCountry =  this.carriers.bizCountry;
           // uploadedLogo = '';
           this.fleets = {
             curtainSide: this.carriers.fleets.curtainSide,
@@ -420,12 +426,13 @@ export class EditProfileComponent implements OnInit {
       CTPAT: this.CTPAT,
       CSA: this.CSA,
       PIP: this.PIP,
-      carrierName: this.carrierName,
+      carrierName: this.carrierName.trim(),
       findingWay: this.findingWay,
       firstName: this.firstName,
       lastName: this.lastName,
       liabilityInsurance: this.liabilityInsurance,
       password: this.password,
+      bizCountry: this.bizCountry,
       confirmPassword: this.confirmPassword,
       addressDetails: this.addressDetails,
       phone: this.phone,
@@ -586,4 +593,56 @@ export class EditProfileComponent implements OnInit {
     }
     }
    }
+   routingValidation(e) {
+    const routing = e.target.value;
+    if (routing.length === 0) {
+      this.errorRouting = false;
+    } else {
+      if (routing.length !== 9) {
+        this.errorRouting = true;
+      }
+      else {
+        this.errorRouting = false;
+      }
+    }
+  }
+  transitValidation(e) {
+    const transit = e.target.value;
+    if (transit.length === 0) {
+      this.errorTransit = false;
+    } else {
+      if (transit.length !== 9) {
+        this.errorTransit = true;
+      }
+      else {
+        this.errorTransit = false;
+      }
+    }
+  }
+  institutionValidation(e) {
+    const instiution = e.target.value;
+    if (instiution.length === 0) {
+      this.errorInstitution = false;
+    } else {
+      if (instiution.length !== 3) {
+        this.errorInstitution = true;
+      }
+      else {
+        this.errorInstitution = false;
+      }
+    }
+  }
+  accountValidation(e) {
+    const account = e.target.value;
+    if (account.length === 0) {
+      this.errorAccount = false;
+    } else {
+      if (account.length > 12 || account.length < 7) {
+        this.errorAccount = true;
+      }
+      else {
+        this.errorAccount = false;
+      }
+    }
+  }
 }
