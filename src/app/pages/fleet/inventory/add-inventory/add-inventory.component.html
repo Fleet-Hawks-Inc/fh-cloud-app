@@ -38,7 +38,7 @@
                         name="partNumber"
                         [(ngModel)]="partNumber"
                         class="form-control"
-                        placeholder="Enter inventory part number eg. 123AZ"
+                        placeholder=" eg. 123AZ"
                       />
                     </div>
                   </div>
@@ -52,7 +52,7 @@
                         [(ngModel)]="itemName"
                         type="text"
                         class="form-control"
-                        placeholder="Enter inventory part name eg. tires"
+                        placeholder=" eg. tires"
                       />
                     </div>
                   </div>
@@ -99,6 +99,7 @@
                             type="number"
                             min="0"
                             class="form-control"
+                            placeholder="eg. 1,2,3"
                             name="cost"
                             [(ngModel)]="cost"
                             placeholder="Unit cost"
@@ -131,9 +132,10 @@
                         type="number"
                         min="0"
                         class="form-control"
+                        placeholder="eg. 10,20,30"
                         name="quantity"
                         [(ngModel)]="quantity"
-                        placeholder="Enter quantity"
+                        placeholder="eg. 1,2,3"
                       />
                     </div>
                   </div>
@@ -232,7 +234,7 @@
                             class="form-control"
                             name="aisle"
                             [(ngModel)]="aisle"
-                            placeholder="Aisle number"
+                            placeholder="eg. 1,2,3 "
                           />
                         </div>
                         <div class="col-lg-4">
@@ -241,7 +243,7 @@
                             class="form-control"
                             name="row"
                             [(ngModel)]="row"
-                            placeholder="Row number"
+                            placeholder="eg. 1,2,3 "
                           />
                         </div>
                         <div class="col-lg-4">
@@ -250,7 +252,7 @@
                             class="form-control"
                             name="bin"
                             [(ngModel)]="bin"
-                            placeholder="Bin number"
+                            placeholder="eg. 1,2,3"
                           />
                         </div>
                       </div>
@@ -299,7 +301,7 @@
                           class="form-control"
                           name="trackingQuantity"
                           [(ngModel)]="trackingQuantity"
-                          placeholder="Tracking quantity"
+                          placeholder="eg. 1,2,3 "
                         />
                       </div>
                     </div>
@@ -316,7 +318,7 @@
                           class="form-control"
                           name="reorderPoint"
                           [(ngModel)]="reorderPoint"
-                          placeholder="Reorder point"
+                          placeholder="eg. 1,2,3 "
                         />
                       </div>
                       <div class="col-lg-3 mx-4">
@@ -331,7 +333,7 @@
                           class="form-control"
                           name="reorderQuality"
                           [(ngModel)]="reorderQuality"
-                          placeholder="Reorder quantity"
+                          placeholder="eg. 1,2,3 "
                         />
                       </div>
                       <!-- <div class="col-lg-3">
@@ -352,7 +354,7 @@
                           class="form-control"
                           name="leadTime"
                           [(ngModel)]="leadTime"
-                          placeholder="Lead time"
+                          placeholder="Select Lead time"
                         />
                       </div>
                       <div class="col-lg-6 ml-4">
@@ -417,7 +419,7 @@
                             class="form-control"
                             name="days"
                             [(ngModel)]="days"
-                            placeholder="Warranty days"
+                            placeholder="eg. 1,2,3 "
                           />
                         </div>
                         <div class="col-lg-4">
@@ -434,7 +436,7 @@
                             class="form-control"
                             name="time"
                             [(ngModel)]="time"
-                            placeholder="Warranty time"
+                            placeholder="Select Warranty time"
                           />
                         </div>
                       </div>
@@ -595,7 +597,7 @@
                 class="form-control"
                 [(ngModel)]="groupName"
                 name="groupName"
-                placeholder="Enter category name"
+                placeholder="eg. Raw Materials"
               />
             </div>
           </div>
@@ -715,7 +717,7 @@
                   name="stateID"
                   [(ngModel)]="stateID"
                   (change)="getCities()"
-                  placeholder="Select state"
+                  placeholder="Select Province"
                 >
                   <optgroup label="Select State">
                     
@@ -760,7 +762,7 @@
                     >Street Address</label
                   >
                   <input type="text" class="form-control"  name="address"
-                  [(ngModel)]="address" placeholder="Enter street address"/>
+                  [(ngModel)]="address" placeholder="eg. 01, Business Hub Center "/>
                 </div>
               </div>
             </div>
