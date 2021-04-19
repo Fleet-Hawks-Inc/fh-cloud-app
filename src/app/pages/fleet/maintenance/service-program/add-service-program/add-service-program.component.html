@@ -164,7 +164,7 @@
                              <div class="col-5 offset-1">
                                <div class="row">
                                  <div class="col-10">
-                                    <a href="" class="btn btn-default mr-2" id="">Cancel</a>
+                                    <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list" class="btn btn-default mr-2" id="">Cancel</a>
                                     <a *ngIf="!programID" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</a>
                                     <a *ngIf="programID" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</a>
                                  </div>
