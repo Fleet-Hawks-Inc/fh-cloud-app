@@ -7,5 +7,6 @@
     "testerPassword": "FleetHawks@2502",
     "defaultCommandTimeout": 60000,
     "requestTimeout": 8000,
-    "pageLoadTimeout": 80000
+    "pageLoadTimeout": 80000,
+    "video":false
 }
