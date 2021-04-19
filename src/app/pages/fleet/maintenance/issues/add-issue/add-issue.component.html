@@ -64,7 +64,7 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="Enter issue name eg. brake issue">
+                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="eg. brake issue">
                                        </div>
                                     </div>
                                     <div class="row pt-2">
@@ -108,7 +108,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Assign the issue">
+                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select the contact to assign the issue">
                                               <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
                                             </ng-select>
                                         </div>
