@@ -6,6 +6,7 @@ import { from, Subject, throwError } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
+import { exit } from 'process';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -106,6 +107,7 @@ export class AddAccountComponent implements OnInit {
   errorTransit = false;
   errorInstitution = false;
   errorAccount = false;
+  yardAddress: boolean;
   constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -310,74 +312,86 @@ export class AddAccountComponent implements OnInit {
         }
       }
     }
-
-    const data = {
-      entityType: 'carrier',
-      CCC: this.CCC,
-      DBAName: this.DBAName,
-      DOT: this.DOT,
-      EIN: this.EIN,
-      MC: this.MC,
-      SCAC: this.SCAC,
-      cargoInsurance: this.cargoInsurance,
-      email: this.email,
-      userName: this.userName,
-      CTPAT: this.CTPAT,
-      CSA: this.CSA,
-      PIP: this.PIP,
-      carrierName: this.carrierName.trim(),
-      findingWay: this.findingWay,
-      bizCountry: this.bizCountry,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      liabilityInsurance: this.liabilityInsurance,
-      password: this.password,
-      confirmPassword: this.confirmPassword,
-      addressDetails: this.addressDetails,
-      phone: this.phone,
-      fleets: {
-        curtainSide: this.fleets.curtainSide,
-        dryVans: this.fleets.dryVans,
-        flatbed: this.fleets.flatbed,
-        reefers: this.fleets.reefers,
-        totalFleets: this.fleets.totalFleets,
-        trailers: this.fleets.trailers,
-        trucks: this.fleets.trucks
-      },
-      bank: this.bank
-    };
-    // create form data instance
-    const formData = new FormData();
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    for(let i=0; i < this.addressDetails.length;i++){
+      if(this.addressDetails[i].addressType === 'yard') {
+        this.yardAddress = true;
+        exit;
+      }else{
+        this.yardAddress = false;
+      }
     }
-    // append other fields
-    formData.append('data', JSON.stringify(data));
-    this.apiService.postData('carriers/add', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.toaster.success('Carrier created successfully.');
-        this.cancel();
-      },
-    });
+    if (this.yardAddress) {
+      const data = {
+        entityType: 'carrier',
+        CCC: this.CCC,
+        DBAName: this.DBAName,
+        DOT: this.DOT,
+        EIN: this.EIN,
+        MC: this.MC,
+        SCAC: this.SCAC,
+        cargoInsurance: this.cargoInsurance,
+        email: this.email,
+        userName: this.userName,
+        CTPAT: this.CTPAT,
+        CSA: this.CSA,
+        PIP: this.PIP,
+        carrierName: this.carrierName.trim(),
+        findingWay: this.findingWay,
+        bizCountry: this.bizCountry,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        liabilityInsurance: this.liabilityInsurance,
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+        addressDetails: this.addressDetails,
+        phone: this.phone,
+        fleets: {
+          curtainSide: this.fleets.curtainSide,
+          dryVans: this.fleets.dryVans,
+          flatbed: this.fleets.flatbed,
+          reefers: this.fleets.reefers,
+          totalFleets: this.fleets.totalFleets,
+          trailers: this.fleets.trailers,
+          trucks: this.fleets.trucks
+        },
+        bank: this.bank
+      };
+      // create form data instance
+      const formData = new FormData();
+      // append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      // append other fields
+      formData.append('data', JSON.stringify(data));
+      this.apiService.postData('carriers/add', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.toaster.success('Carrier created successfully.');
+          this.cancel();
+        },
+      });
+    } else{
+      this.toaster.warning('Yard address is mandatory');
+    }
+
   }
   throwErrors() {
     from(Object.keys(this.errors))
