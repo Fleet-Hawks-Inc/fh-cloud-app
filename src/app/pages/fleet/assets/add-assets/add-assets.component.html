@@ -60,7 +60,7 @@
                           class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                           data-placement="top" title="Vehicle Identification Number."></i></label>
                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                        placeholder="Enter VIN number of the asset" class="form-control">
+                        placeholder="15 digits Alphanumeric , eg. 78678678678678689" class="form-control">
                     </div>
                   </div>
                   <div class="row">
@@ -69,7 +69,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
-                        [(ngModel)]="assetsData.startDate" name="startDate" placeholder="Enter Start Date of the asset"
+                        [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
                         class="form-control">
                     </div>
                   </div>
@@ -204,7 +204,7 @@
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Axles&nbsp; <span
                           class="text-1 optional-label-color">(optional)</span></label>
-                      <ng-select [(ngModel)]="assetsData.assetDetails.axle" placeholder="Select Axles"
+                      <ng-select [(ngModel)]="assetsData.assetDetails.axle" placeholder="eg. 5,10"
                         name="assetDetails.axle">
                         <ng-option value="1">1</ng-option>
                         <ng-option value="2">2</ng-option>
@@ -227,7 +227,7 @@
                         <span class="text-1 optional-label-color">(optional)</span></label>
                       <div class="row">
                         <div class="col-lg-6">
-                          <input [(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
+                          <input  placeholder="eg. 100,200 etc"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
                             class="form-control">
                         </div>
                         <div class="col-lg-6 pl-0">
@@ -248,7 +248,7 @@
                         <span class="text-1 optional-label-color">(optional)</span></label>
                       <div class="row">
                         <div class="col-lg-6">
-                          <input [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
+                          <input  placeholder="eg. 100,200 etc" [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
                             class="form-control">
                         </div>
                         <div class="col-lg-6 pl-0">
@@ -284,7 +284,7 @@
                     <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'Owner Operator'">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
 
-                      <ng-select [(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
+                      <ng-select placeholder="Select Owner Operator"[(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
                         class="form-control populate ">
                         <ng-option *ngFor="let item of ownOperators | async" value="{{item.operatorID}}">
                           {{item.companyName}}
@@ -314,7 +314,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID"
-                        class="form-control populate" placeholder="Select state">
+                        class="form-control populate" placeholder="Select Province">
                         <ng-option *ngFor="let state of states" value="{{state.stateID}}">
                           {{state.stateName}}
                         </ng-option>
@@ -327,7 +327,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                         Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
-                        placeholder="Enter licence plate number of asset" name="assetDetails.licencePlateNumber"
+                        placeholder="eg. 345678 " name="assetDetails.licencePlateNumber"
                         class="form-control" type="text">
                     </div>
                   </div>
@@ -359,7 +359,7 @@
                           the Inspection Form</label>
                         <div class="d-flex">
                           <select [(ngModel)]="assetsData.inspectionFormID" [ngModelOptions]="{standalone: true}"
-                            class="form-control" placeHolder="Select Inspectin Form">
+                            class="form-control" placeholder="Select Inspection Form">
                             <ng-template [ngIf]="inspectionForms" [ngIfElse]="noForm">
                             <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
                               {{iForm.inspectionFormName}}</option>
@@ -398,7 +398,7 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                         Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
-                        type="text" placeholder="DD/MM/YYYY" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                        type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                         class="form-control">
                     </div>
                     <div class="col-lg-5">
@@ -425,7 +425,7 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                         Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
-                        placeholder="DD/MM/YYYY" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
+                        placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
                         class="form-control">
                     </div>
                     <div class="col-lg-5">
@@ -480,7 +480,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
-                        placeholder="Enter ACI ID of the asset" type="text" class="form-control">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control">
                     </div>
 
                   </div>
@@ -491,7 +491,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
-                        placeholder="Enter ACE ID of the asset" type="text" class="form-control">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control">
                     </div>
 
                   </div>
