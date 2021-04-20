@@ -3,11 +3,10 @@ import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
-import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
 import { Validators, FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
-import {  PasswordValidator, ParentErrorStateMatcher} from '../../validators';
+import { PasswordValidator, ParentErrorStateMatcher } from '../../validators';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -45,25 +44,26 @@ export class AddAccountComponent implements OnInit {
   phone = '';
   bizCountry = null;
   uploadedLogo = '';
-  // fleets: {
-  //   curtainSide: number;
-  //   dryVans: number;
-  //   flatbed: number;
-  //   reefers: number;
-  //   totalFleets: number;
-  //   trailers: number;
-  //   trucks: number;
-  // };
-    curtainSide: number;
-    dryVans: number;
-    flatbed: number;
-    reefers: number;
-    totalFleets: number;
-    trailers: number;
-    trucks: number;
+  fleets = new FormGroup({
+    curtainSide: new FormControl(),
+    dryVans: new FormControl(),
+    flatbed: new FormControl(),
+    reefers: new FormControl(),
+    totalFleets: new FormControl(),
+    trailers: new FormControl(),
+    trucks: new FormControl()
+  });
+  // curtainSide: number;
+  // dryVans: number;
+  // flatbed: number;
+  // reefers: number;
+  // totalFleets: number;
+  // trailers: number;
+  // trucks: number;
 
   addressDetails = [{
     addressType: 'yard',
+    userLocation: '',
     countryID: '',
     countryName: '',
     stateID: '',
@@ -79,13 +79,13 @@ export class AddAccountComponent implements OnInit {
     },
     manual: false
   }];
-  // bank = {
-  //   branchName: '',
-  //   // accountNumber: '',
-  //   // transitNumber: '',
-  //   // routingNumber: '',
-  //   // institutionNumber: '',
-  // };
+  bank = new FormGroup({
+    branchName: new FormControl(),
+    accountNumber: new FormControl(),
+    transitNumber: new FormControl(),
+    routingNumber: new FormControl(),
+    institutionNumber: new FormControl(),
+  });
   branchName: string;
   accountNumber: number;
   transitNumber: number;
@@ -94,6 +94,7 @@ export class AddAccountComponent implements OnInit {
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
+  updatedUserLoc : '';
   bankLocation: any;
   statesObject: any = {};
   countriesObject: any = {};
@@ -125,8 +126,15 @@ export class AddAccountComponent implements OnInit {
   errorTransit = false;
   errorInstitution = false;
   errorAccount = false;
-
-
+  bizCountryDiv = true;
+  bizCountryFn(e){
+    const countryCode = e;
+    if(countryCode === 'US') {
+      this.bizCountryDiv = false;
+    } else{
+      this.bizCountryDiv = true;
+    }
+  }
   validation_messages = {
     'firstName': [
       { type: 'required', message: 'First name is required' },
@@ -141,38 +149,38 @@ export class AddAccountComponent implements OnInit {
       { type: 'minlength', message: 'Username must be at least 8 characters long' },
       { type: 'maxlength', message: 'Username cannot be more than 25 characters long' },
       { type: 'pattern', message: 'Your username must contain only numbers and small letters' },
-        ],
-        'confirmPassword': [
-          { type: 'required', message: 'Confirm password is required' },
-          { type: 'areEqual', message: 'Password mismatch' }
-        ],
-        'password': [
-          { type: 'required', message: 'Password is required' },
-          { type: 'minlength', message: 'Password must be at least 5 characters long' },
-          { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number' }
-        ],
-        'email': [
-          { type: 'required', message: 'Email is required' },
-          { type: 'pattern', message: 'Enter a valid email' }
-        ],
-        'carrierName': [
-          { type: 'required', message: 'Carrier name is required' },
-          { type: 'pattern', message: 'Carrier name must contain only letters and numbers and no special characters.' },
-        ],
-        'phone': [
-          { type: 'required', message: 'Phone is required' },
-         // { type: 'validCountryPhone', message: 'Phone incorrect for the country selected' }
-        ],
-        'EIN': [
-          { type: 'pattern', message: 'EIN must be 9 characters.' },
-        ],
+    ],
+    'confirmPassword': [
+      { type: 'required', message: 'Confirm password is required' },
+      { type: 'areEqual', message: 'Password mismatch' }
+    ],
+    'password': [
+      { type: 'required', message: 'Password is required' },
+      { type: 'minlength', message: 'Password must be at least 5 characters long' },
+      { type: 'pattern', message: 'Your password must contain at least one uppercase, one lowercase, and one number' }
+    ],
+    'email': [
+      { type: 'required', message: 'Email is required' },
+      { type: 'pattern', message: 'Enter a valid email' }
+    ],
+    'carrierName': [
+      { type: 'required', message: 'Carrier name is required' },
+      { type: 'pattern', message: 'Carrier name must contain only letters and numbers and no special characters.' },
+    ],
+    'phone': [
+      { type: 'required', message: 'Phone is required' },
+      { type: 'pattern', message: 'Please enter valid phone number.eg. +12034563456' },
+      // { type: 'validCountryPhone', message: 'Phone incorrect for the country selected' }
+    ],
+    'EIN': [
+      { type: 'pattern', message: 'EIN must be 9 characters.' },
+    ],
   };
   constructor(private apiService: ApiService,
     private toaster: ToastrService, private location: Location, private HereMap: HereMapService,
     private fb: FormBuilder) {
     this.selectedFileNames = new Map<any, any>();
   }
-
   ngOnInit() {
     this.fetchCountries();
     this.searchLocation(); // search location on keyup
@@ -181,7 +189,8 @@ export class AddAccountComponent implements OnInit {
     });
     this.createForms();
   }
-
+  get f() { return this.userDetailsForm.controls; }
+  get t() { return this.f.addressDetails as FormArray; }
   /**
    * address
    */
@@ -221,28 +230,47 @@ export class AddAccountComponent implements OnInit {
     this.addressDetails[i].cityName = result;
   }
   addAddress() {
-    if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
-      this.toaster.warning('Maximum 3 addresses are allowed.');
-    }
-    else {
-      this.addressDetails.push({
-        addressType: '',
-        countryID: '',
-        countryName: '',
-        stateID: '',
-        stateName: '',
-        cityID: '',
-        cityName: '',
-        zipCode: '',
-        address1: '',
-        address2: '',
-        geoCords: {
-          lat: '',
-          lng: ''
-        },
-        manual: false
-      });
-    }
+    // if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
+    //   this.toaster.warning('Maximum 3 addresses are allowed.');
+    // }
+    // else {
+    // this.addressDetails.push({
+    //   addressType: '',
+    //   countryID: '',
+    //   countryName: '',
+    //   stateID: '',
+    //   stateName: '',
+    //   cityID: '',
+    //   cityName: '',
+    //   zipCode: '',
+    //   address1: '',
+    //   address2: '',
+    //   geoCords: {
+    //     lat: '',
+    //     lng: ''
+    //   },
+    //   manual: false
+    // });
+    this.t.push(this.fb.group({
+      addressType: [''],
+      userLocation: [''],
+      manual: [false],
+      countryID: [''],
+      countryName: [''],
+      stateID: [''],
+      stateName: [''],
+      cityID: [''],
+      cityName: [''],
+      zipCode: [''],
+      address1: [''],
+      address2: [''],
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      // email: ['', [Validators.required, Validators.email]]
+    }));
+    // }
   }
   fetchCountries() {
     this.apiService.getData('countries')
@@ -283,13 +311,9 @@ export class AddAccountComponent implements OnInit {
     }
     return '';
   }
-  remove(obj, i, addressID = null) {
-    if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID)
-      }
-      this.addressDetails.splice(i, 1);
-    }
+  remove(i) {
+
+    this.t.removeAt(i);
   }
   fetchAllStatesIDs() {
     this.apiService.getData('states/get/list')
@@ -331,20 +355,29 @@ export class AddAccountComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
+    this.userLocation = result.address.label;
+    // this.t.patchValue({
+    //   userLocation = this.updatedUserLoc
+    // });
+    this.userDetailsForm.patchValue({
+      userLocation: result.address.label
+    });
+    console.log('t value', this.t.controls);
+    this.t.controls[i].value.userLocation = result.address.label;
+    this.t.controls[i].value.geoCords.lat = result.position.lat;
+    this.t.controls[i].value.geoCords.lng = result.position.lng;
+    this.t.controls[i].value.countryName = result.address.countryName;
     $('div').removeClass('show-search__result');
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
-    this.addressDetails[i].stateID = '';
-    this.addressDetails[i].cityID = '';
-    this.addressDetails[i].zipCode = result.address.postalCode;
+    this.t.controls[i].value.stateName = result.address.state;
+    this.t.controls[i].value.cityName = result.address.city;
+    this.t.controls[i].value.countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
+    this.t.controls[i].value.stateID = '';
+    this.t.controls[i].value.cityID = '';
+    this.t.controls[i].value.zipCode = result.address.postalCode;
 
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
@@ -418,7 +451,7 @@ export class AddAccountComponent implements OnInit {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
     // append other fields
-   // formData.append('data', JSON.stringify(data));
+    // formData.append('data', JSON.stringify(data));
     this.apiService.postData('carriers/add', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -594,80 +627,109 @@ export class AddAccountComponent implements OnInit {
   }
 
   createForms() {
-     // matching passwords validation
-    //  this.matching_passwords_group = new FormGroup({
-    //   password: new FormControl('', Validators.compose([
-    //     Validators.minLength(5),
-    //     Validators.required,
-    //     Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#]+$')
-    //   ])),
-    //   confirmPassword: new FormControl('', Validators.required)
-    // }, (formGroup: FormGroup) => {
-    //   return PasswordValidator.areEqual(formGroup);
-    // });
+    // matching passwords validation
+    this.matching_passwords_group = new FormGroup({
+      password: new FormControl('', Validators.compose([
+        Validators.minLength(5),
+        Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#]+$')
+      ])),
+      confirmPassword: new FormControl('', Validators.required)
+    }, (formGroup: FormGroup) => {
+      return PasswordValidator.areEqual(formGroup);
+    });
     // user details form validations
     this.userDetailsForm = this.fb.group({
-    //   firstName: new FormControl('', Validators.compose([
-    //     Validators.pattern('^[a-zA-Z]+$'),
-    //     Validators.required
-    //   ])),
-    //   lastName: new FormControl('', Validators.compose([
-    //     Validators.pattern('^[a-zA-Z]+$'),
-    //     Validators.required
-    //   ])),
-    //   userName: new FormControl('', Validators.compose([
-    //     Validators.maxLength(25),
-    //     Validators.minLength(8),
-    //     Validators.pattern('^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$'),
-    //     Validators.required
-    //    ])),
-    //    matching_passwords: this.matching_passwords_group,
-    //    email: new FormControl('', Validators.compose([
-    //     Validators.required,
-    //     Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-    //   ])),
-    //  findingWay: this.findingWay,
-    //  carrierName: new FormControl('', Validators.compose([
-    //   Validators.pattern('^[a-zA-Z0-9.\\s]+$'),
-    //   Validators.required
-    // ])),
-    // phone: new FormControl('', Validators.compose([
-    //   // Validators.pattern('^[a-zA-Z]+$'),
-    //   Validators.required
-    // ])),
-    // EIN: new FormControl('', Validators.compose([
-    //   Validators.pattern('^[0-9]+$'),
-    // ])),
-  // fleets: {
-    //   totalFleets: this.totalFleets,
-    //   trucks : this.trucks,
-    //   curtainSide: this.curtainSide,
-    // dryVans: this.dryVans,
-    // flatbed: this.flatbed,
-    // reefers: this.reefers,
-    // trailers: this.trailers,
-    // DBAName: this.DBAName,
-    // bizCountry: this.bizCountry,
-    // liabilityInsurance: this.liabilityInsurance,
-    // cargoInsurance: this.cargoInsurance,
-    // CCC: this.CCC,
-    // SCAC: this.SCAC,
-    // MC: this.MC,
-    // DOT: this.DOT,
-    // CSA: this.CSA,
-    // CTPAT: this.CTPAT,
-    // PIP: this.PIP,
-    //   branchName: this.branchName,
-    //   accountNumber: this.accountNumber,
-    //   routingNumber: this.routingNumber,
-    //   transitNumber: this.transitNumber,
-    //   institutionNumber: this.institutionNumber,
-      // uploadedPhotos: this.uploadedPhotos
-      addressDetails: new FormArray([])
+      firstName: new FormControl('', Validators.compose([
+        Validators.pattern('^[a-zA-Z]+$'),
+        Validators.required
+      ])),
+      lastName: new FormControl('', Validators.compose([
+        Validators.pattern('^[a-zA-Z]+$'),
+        Validators.required
+      ])),
+      userName: new FormControl('', Validators.compose([
+        Validators.maxLength(25),
+        Validators.minLength(8),
+        Validators.pattern('^(?=.*[a-z])(?=.*[0-9])[a-z0-9]+$'),
+        Validators.required
+      ])),
+      matching_passwords: this.matching_passwords_group,
+    //  password: this.matching_passwords_group[`password`].value,
+    //  password: this.password,
+      confirmPassword: this.confirmPassword,
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+      findingWay: this.findingWay || '',
+      carrierName: new FormControl('', Validators.compose([
+        Validators.pattern('^[a-zA-Z0-9.\\s]+$'),
+        Validators.required
+      ])),
+      phone: new FormControl('', Validators.compose([
+        Validators.pattern('^((\\+1-?)|0)?[0-9]{10}$'),
+        Validators.required
+      ])),
+      EIN: new FormControl('', Validators.compose([
+        Validators.pattern('^[0-9]+$'),
+      ])),
+      bizCountry: new FormControl('', Validators.compose([
+        Validators.required
+      ])),
+      fleets: this.fleets,
+      DBAName: this.DBAName,
+      liabilityInsurance: this.liabilityInsurance,
+      cargoInsurance: this.cargoInsurance,
+      CCC: this.CCC,
+      SCAC: this.SCAC,
+      MC: this.MC,
+      DOT: this.DOT,
+      CSA: this.CSA,
+      CTPAT: this.CTPAT,
+      PIP: this.PIP,
+      bank: this.bank,
+      userLocation:  new FormControl(this.updatedUserLoc),
+      // uploadedPhotos: this.uploadedPhotos,
+      addressDetails: this.fb.array([])
     });
   }
   onSubmitUserDetails(value) {
-    console.log(value);
+    console.log('user input', value);
+    value[`password`] = value.matching_passwords.password;
+    console.log('value', value); return;
+    // create form data instance
+    const formData = new FormData();
+    // append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+    // append other fields
+    formData.append('data', JSON.stringify(value));
+    this.apiService.postData('carriers/add', formData, true).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.toaster.success('Carrier created successfully.');
+        this.cancel();
+      },
+    });
   }
 
 }
