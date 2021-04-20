@@ -347,6 +347,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-12">
                                                 <div class="row text-dark">
                                                     <h4>Route Stops</h4>
@@ -380,7 +381,7 @@
                                                                                 (keyup)="searchTerm.next($event);"
                                                                                 class="form-control">
 
-                                                                            <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                                            <ul class="m-0 text-left map-search__results bg-white"
                                                                                 *ngIf="searchResults">
                                                                                 <li *ngFor="let item of searchResults;">
                                                                                     <a href="javascript:;"
@@ -388,6 +389,7 @@
                                                                                         title="{{item.address.label}}">{{item.address.label}}</a>
                                                                                 </li>
                                                                             </ul>
+
                                                                         </div> 
                                                                     </td>
                                                                     <td>

@@ -122,9 +122,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop Off Location</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -149,13 +149,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -200,9 +200,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -227,13 +227,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -278,9 +278,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -305,13 +305,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -356,9 +356,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -383,13 +383,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -434,9 +434,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -461,13 +461,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -512,7 +512,6 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
                                         <th>Carrier</th>
@@ -539,13 +538,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -590,9 +589,9 @@
                                         <th>Date</th>
                                         <th>Pickup Location</th>
                                         <th>Drop OffLocation</th>
-                                        <th>Driver</th>
                                         <th>Vehicle</th>
                                         <th>Asset</th>
+                                        <th>Driver</th>
                                         <th>Carrier</th>
                                         <th>Status</th>
                                         <th>Actions</th>
@@ -617,13 +616,13 @@
                                         <td>
                                             {{ trip.dropLocation }}
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
                                             <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
                                                 <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                             </span>
                                         </td>
+                                        <td>{{ driversObject[trip.driverUsername] }}</td>
                                         <td>{{ carriersObject[trip.carrierId] }}</td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>

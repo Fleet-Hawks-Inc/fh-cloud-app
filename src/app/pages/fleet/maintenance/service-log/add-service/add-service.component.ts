@@ -53,6 +53,7 @@ export class AddServiceComponent implements OnInit {
     completionDate: '',
     vendorID: '',
     description: '',
+    taskIds:[],
     allServiceTasks: {
       serviceTaskList : [],
       subTotal: 0,
@@ -211,9 +212,18 @@ export class AddServiceComponent implements OnInit {
     
     this.hideErrors();
     this.spinner.show();
+    
     this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
       delete elem.existQuantity;
     });
+
+    let taskIds = [];
+    this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
+      taskIds.push(elem.taskID);
+    });
+
+    this.serviceData.taskIds = taskIds;
+
     // create form data instance
     const formData = new FormData();
 
@@ -499,7 +509,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   async addTasks() {
-    let remindID;
+    let remindID; 
     let newSchedule;
     
     for (let remind of this.reminders) {
@@ -778,25 +788,33 @@ export class AddServiceComponent implements OnInit {
    /*
    * Update Service Log
   */
- updateService() {
-   this.hideErrors();
-  // create form data instance
-  const formData = new FormData();
+  updateService() {
+    this.hideErrors();
 
-  //append photos if any
-  for(let i = 0; i < this.uploadedPhotos.length; i++){
-    formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-  }
+    let taskIds = [];
+    this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
+      taskIds.push(elem.taskID);
+    });
 
-  //append docs if any
-  for(let j = 0; j < this.uploadedDocs.length; j++){
-    formData.append('uploadedDocs', this.uploadedDocs[j]);
-  }
+    this.serviceData.taskIds = taskIds;
 
-  //append other fields
-  formData.append('data', JSON.stringify(this.serviceData));
-  this.apiService.putData('serviceLogs', formData, true).subscribe({
-    complete: () => { },
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(this.serviceData));
+    this.apiService.putData('serviceLogs', formData, true).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -814,14 +832,14 @@ export class AddServiceComponent implements OnInit {
             next: () => { },
           });
       },
-    next: (res) => {
-      this.response = res;
-      this.hasSuccess = true;
-      this.toastr.success('Service Updated Successfully');
-      this.router.navigateByUrl('/fleet/maintenance/service-log/list');
-    },
-  });
-}
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Service Updated Successfully');
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list');
+      },
+    });
+  }
 
   openReminders() {
     $('#serviceReminderModal').modal('show');
