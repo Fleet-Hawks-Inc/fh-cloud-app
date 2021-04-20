@@ -242,7 +242,7 @@ export class HereMapService {
     });
 
     const service = this.platform.getSearchService();
-    return service.geocode({ q: value });
+    return service.geocode({ q: value, show: 'tz'});
   }
 
   /**

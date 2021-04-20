@@ -246,7 +246,7 @@ export class EManifestsComponent implements OnInit {
         return false;
       } else {
         if(this.filterCategory == 'tripNumber'){
-          this.aceSearch = this.aceSearch.toLowerCase();
+          this.aceSearch = this.aceSearch.toUpperCase();
         }
         this.ACEList = [];
         this.dataMessage = Constants.FETCHING_DATA;
@@ -372,7 +372,7 @@ export class EManifestsComponent implements OnInit {
       } else {
 
         if(this.aciFilterCategory == 'tripNumber'){
-          this.aciSearch = this.aciSearch.toLowerCase();
+          this.aciSearch = this.aciSearch.toUpperCase();
         }
         this.ACIList = [];
         this.getACICount();
