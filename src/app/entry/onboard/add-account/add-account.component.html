@@ -25,55 +25,38 @@
                           <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
-                            name="firstName" placeholder="eg. John">
+                            name="firstName" placeholder="Example - David">
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName" placeholder="eg. Smith">
+                          <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName" placeholder="Example - Stoinis">
                         </div>
                       </div>
                       <div class=" row">
-                        <div class="col-lg-10">
+                        <div class="col-lg-5">
                           <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="johnsmith" (keyup)="userNameValidationFn($event)">
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="pd" type="password" class="form-control" [(ngModel)]="password" name="password" placeholder="eg. johnSmith@123">
+                          <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" placeholder="Example - stoinis20" (keyup)="userNameValidationFn($event)">
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
+                          <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="cnf" type="password" class="form-control" name="confirmPassword" placeholder="eg. johnSmith@123"
-                            [(ngModel)]="confirmPassword">
+                          <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email" placeholder="stoinis@companymail.com">
                         </div>
                       </div>
+
+                      
                     </div>
                     <div class="col-lg-6">
                       <div class="row">
                         <div class="col-lg-2"></div>
-                        <div class="col-lg-10">
+                        <div class="col-lg-5">
                           <label class="control-label  font-weight-bold text-lg-right pt-2">Phone<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" placeholder="eg. +19897899879">
+                          <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" placeholder="+1 403-667-6622">
                         </div>
-                      </div>
-                      <div class=" row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-10">
-                          <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email" placeholder="eg. johnsmith@testmail.com">
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-10">
+                        <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?</label>
                           <ng-select data-plugin-selecttwo="" class="form-control populate" [(ngModel)]="findingWay"
                             name="findingWay">
@@ -82,7 +65,25 @@
                             <ng-option value="Referal">Referal</ng-option>
                           </ng-select>
                         </div>
+
                       </div>
+                      
+                      <div class="row">
+                        <div class="col-lg-2"></div> 
+                        <div class="col-lg-5">
+                          <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input id="pd" type="password" class="form-control" [(ngModel)]="password" name="password" placeholder="eg. johnSmith@123">
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input id="cnf" type="password" class="form-control" name="confirmPassword" placeholder="David@1313"
+                            [(ngModel)]="confirmPassword">
+                        </div>
+                      </div>
+
+                      
                     </div>
                   </div>
 
@@ -430,8 +431,7 @@
                   </div>
                   <div class="row">
                     <div class="col-lg-12">
-                      <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
-                        Detail</label>
+                      <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank Detail</label>
                     </div>
 
                     <div class="col-lg-6">
@@ -442,8 +442,6 @@
                           <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName"
                             placeholder="eg. XYZ Bank">
                         </div>
-                      </div>
-                      <div class="row">
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></label>
@@ -453,10 +451,12 @@
 
                         </div>
                       </div>
+                     
                     </div>
                     <div class="col-lg-6">
+                     
                       <div class="row">
-                        <div class="col-lg-2"></div>
+                        <div _ngcontent-yme-c5="" class="col-lg-2"></div>
                         <div class="col-lg-10">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Routing#&nbsp;<i
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
@@ -466,10 +466,9 @@
                             placeholder="eg. 023456789" maxlength="9">
                             <div class="text-danger" *ngIf="errorRouting">Enter 9 digit routing number.</div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-10">
+
+                        <div _ngcontent-yme-c5="" class="col-lg-2"></div>
+                        <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Transit#&nbsp;<i
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="Transit Number is a 9 character code used for routing of cheques (checks) and paper instruments in the banking industry.
@@ -480,10 +479,7 @@
                             placeholder="eg. 12345-789" maxlength="9">
                             <div class="text-danger" *ngIf="errorTransit">Enter 9 digit transit number.</div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-10">
+                        <div class="col-lg-5">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Institution#&nbsp;<i
                               class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                               title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
@@ -493,9 +489,10 @@
                             <div class="text-danger" *ngIf="errorInstitution">Enter 3 digit institution number.</div>
                         </div>
                       </div>
+                     
                     </div>
                   </div>
-                  <div class="row mt-2">
+                  <div class="row mt-3">
                     <div class="col-lg-12 text-right">
                       <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                       <button type="button" (click)="onSubmit()" class="btn btn-success" >Save</button>
