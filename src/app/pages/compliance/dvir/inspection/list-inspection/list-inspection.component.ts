@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
+import {OnboardDefaultService} from '../../../../../services/onboard-default.service'
 
 
 @Component({
@@ -10,28 +11,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ListInspectionComponent implements OnInit {
 public inspectionForms: any=[];
-  constructor(private apiService: ApiService,
-    private toastr: ToastrService,) { }
+  constructor(
+    private apiService: ApiService,
+    private toastr: ToastrService,
+    private onboard:OnboardDefaultService) { }
   
 
   ngOnInit() {
-    this.fetchGovForms();
-    this.fetchInspectionForms();
-  }
-
-  fetchGovForms(){
+    this.onboard.checkInspectionForms();
     
-    this.apiService.getData('inspectionForms/get/govDefault').subscribe({
-      complete: () => {
-      },
-      error: () => {},
-      next: (result: any) => {
-        result.Items.forEach(element => {
-          this.inspectionForms.push(element);
-          
-        });
-      },
-    });
+    this.fetchInspectionForms();
   }
   fetchInspectionForms = () => {
     
