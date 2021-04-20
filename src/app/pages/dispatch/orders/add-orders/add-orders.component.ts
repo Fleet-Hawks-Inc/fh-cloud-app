@@ -72,7 +72,7 @@ export class AddOrdersComponent implements OnInit {
   orderData = {
     stateTaxID: "",
     customerID: "",
-    orderNumber: Math.floor(Math.random() * 15) + 100,
+    orderNumber: "",
     creationDate: moment().format('YYYY-MM-DD'),
     creationTime: moment().format('HH:mm'),
     customerPO: "",
@@ -380,6 +380,7 @@ export class AddOrdersComponent implements OnInit {
     this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
     this.fetchAssetTypes();
+    this.fetchLastOrderNumber();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -994,7 +995,9 @@ export class AddOrdersComponent implements OnInit {
         selectedLoc += newloc.toLowerCase() + '|';
       })
     }
+
     this.orderData['loc'] = selectedLoc;
+    this.orderData.orderNumber = this.orderData.orderNumber.toString();
     
     // create form data instance
     const formData = new FormData();
@@ -1440,6 +1443,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.orderData['uploadedDocs'] = this.existingUploadedDocs;
     this.orderData['orderID'] = this.getOrderID;
+    this.orderData.orderNumber = this.orderData.orderNumber.toString();
 
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
@@ -1687,5 +1691,11 @@ export class AddOrdersComponent implements OnInit {
       $('#receiverArea-' + i).children('i').addClass('fa-caret-right')
       $('#receiverArea-' + i).children('i').removeClass('fa-caret-down');
     }
+  }
+
+  fetchLastOrderNumber(){
+    this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
+      this.orderData.orderNumber = result.toString();
+    });
   }
 }
