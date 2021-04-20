@@ -531,6 +531,7 @@ export class OrdersListComponent implements OnInit {
       // this.pageLength = 10;
       this.orders = [];
       this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchOrders();
       this.fetchOrdersCount();
       this.initDataTable();
       this.spinner.hide();

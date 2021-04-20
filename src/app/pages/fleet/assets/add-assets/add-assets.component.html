@@ -353,26 +353,16 @@
 
                   <div class="row ">
                     <div class="col-lg-10">
-                      <div class="checkbox mt-4">
-                        <label
-                          class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
-                          the Inspection Form</label>
-                        <div class="d-flex">
-                          <select [(ngModel)]="assetsData.inspectionFormID" [ngModelOptions]="{standalone: true}"
-                            class="form-control" placeholder="Select Inspection Form">
-                            <ng-template [ngIf]="inspectionForms" [ngIfElse]="noForm">
-                            <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
-                              {{iForm.inspectionFormName}}</option>
-                        </ng-template>
-                        <ng-template #noForm>
-                          <option > No form added.</option>
-                        </ng-template>
-                      </select>
-                          <a href="/compliance/dvir/inspection-add" target="_blank"
-                            class="modal-with-form btn btn-success"><i class="fas fa-plus"></i></a>
-                        </div>
-
-                      </div>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                        the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                        <ng-option *ngFor="let data of inspectionForms" value="{{ data.inspectionFormID }}"> {{
+                          data.inspectionFormName }}</ng-option>
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37 pl-0">
+                      <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
+                          class="fas fa-plus"></i></a>
                     </div>
                   </div>
 
