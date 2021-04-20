@@ -416,6 +416,7 @@ assetsData = {
   groupID: '',
   VIN: '',
   startDate: '',
+  inspectionFormID: null,
   assetDetails: {
     assetType: '',
     currentStatus: '',
@@ -457,6 +458,7 @@ assetsData = {
   uploadedDocs: []
 };
 years = [];
+inspectionFormsAsset = [];
 
   async ngOnInit() {
     this.fetchCountries();
@@ -470,6 +472,7 @@ years = [];
     this.getYears();
 
     this.fetchInspectionForms();
+    this.fetchInspectionFormsAssets();
     this.fetchDocuments();
     this.fetchGroups();
     this.fetchCycles(); // fetch cycles
@@ -538,6 +541,14 @@ years = [];
     .getData('inspectionForms/type/Vehicle')
     .subscribe((result: any) => {
       this.inspectionForms = result.Items;
+    });
+}
+
+fetchInspectionFormsAssets() {
+  this.apiService
+    .getData('inspectionForms/type/asset')
+    .subscribe((result: any) => {
+      this.inspectionFormsAsset = result.Items;
     });
 }
 
@@ -1727,6 +1738,7 @@ fetchDrivers(){
           groupID: '',
           VIN: '',
           startDate: '',
+          inspectionFormID: null,
           assetDetails: {
             assetType: '',
             currentStatus: '',

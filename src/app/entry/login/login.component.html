@@ -46,18 +46,18 @@
           </div>
 
           <div class="row">
-
-            <p *ngIf="hasError" class="text text-danger">{{Error}}</p>
+            
+            <p *ngIf="hasError" class="text text-danger" >{{Error}}</p>
           </div>
 
           <div class="row">
 
             <div class="col-sm-12 text-center">
 
-              <button id="btnsubmit" type="submit" class="btn btn-primary btn-lg mt-2" (click)="loginAction1()">Submit</button>
+              <button id="btnsubmit" type="submit" class="btn btn-primary btn-lg mt-2" (click)="loginAction1()">Sign In</button>
             
             </div>
-            <div class="col-sm-12 mt-3 pt-1">
+            <div class="col-sm-12 mt-2 pt-1 text-center">
               <a [routerLink]="['/onboard']" class="font-weight-semibold">Does not have an account yet!&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
             </div>
           </div>

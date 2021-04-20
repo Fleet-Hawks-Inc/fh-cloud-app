@@ -73,7 +73,7 @@
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Quantity<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="number" min='0' class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty">
+                        <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty">
                       </div>
                       <div class="col-lg-2 qtumbtn px-0">
                         <ng-select class="form-control populate" name="fuelQtyUnit" [(ngModel)]="fuelQtyUnit"
@@ -84,7 +84,7 @@
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount</label>
-                        <input type="number" min='0' class="form-control" name="fuelQtyAmt"
+                        <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQtyAmt"
                           [(ngModel)]="fuelData.fuelQtyAmt" >
                       </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div class="col-lg-4">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">DEF Fuel
                         Quantity</label>
-                      <input type="number" min='0' class="form-control" name="DEFFuelQty"
+                      <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="DEFFuelQty"
                         [(ngModel)]="fuelData.DEFFuelQty" >
                     </div>
                     <div class="col-lg-2 qtumbtn px-0">
@@ -102,7 +102,7 @@
                     <div class="col-lg-4">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <input type="number" class="form-control" min='0' name="DEFFuelQtyAmt"
+                      <input type="number" placeholder="eg. 1,2" class="form-control" min='0' name="DEFFuelQtyAmt"
                         [(ngModel)]="fuelData.DEFFuelQtyAmt">
                     </div>
                   </div>
@@ -317,7 +317,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Province<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select placeholder="Select State" name="stateID" [(ngModel)]="fuelData.stateID">
+                        <ng-select placeholder="Select Province" name="stateID" [(ngModel)]="fuelData.stateID">
                           <ng-container *ngFor="let state of states | async">
                             <ng-option *ngIf="state.countryID == fuelData.countryID" value="{{state.stateID}}">
                               {{state.stateName}}</ng-option>
@@ -425,7 +425,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Reading at
                           Time of Fuelling (miles)</label>
-                        <input class="form-control" type="number" min='0' name="odometer"
+                        <input placeholder="eg. 10000,20000" class="form-control" type="number" min='0' name="odometer"
                           [(ngModel)]="fuelData.odometer">
                         <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                       </div>
