@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://localhost:4200/",
+    "baseUrl": "http://localhost:4200",
     "experimentalStudio": true,
     "viewportHeight": 1080,
     "viewportWidth": 1920,
@@ -7,5 +7,6 @@
     "testerPassword": "FleetHawks@2502",
     "defaultCommandTimeout": 60000,
     "requestTimeout": 8000,
-    "pageLoadTimeout": 80000
+    "pageLoadTimeout": 80000,
+    "video":false
 }

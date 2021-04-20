@@ -1191,11 +1191,12 @@
                                                 Terminal<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <ng-select [(ngModel)]="driverData.hosDetails.homeTerminal"
                                                 name="hosDetails.homeTerminal" class="form-control populate"
-                                                (change)="onChangeHideErrors('hosDetails.homeTerminal')"
+                                                (change)="onChangeHideErrors('hosDetails.homeTerminal');getUtc($event)"
                                                 placeholder="Select home terminal of the driver">
 
                                                 <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
-                                                   value="{{yard.addressID}}">
+                                                   value="{{yard.addressID}}"
+                                                >
                                                    <div *ngIf="yard.manual">
                                                       {{ yard.address1 }} {{ yard.address2}}, {{ yard.cityName }}, {{
                                                       yard.stateName }}, {{ yard.countryName }}
@@ -1205,6 +1206,20 @@
                                                    </div>
                                                 </ng-option>
 
+                                             </ng-select>
+                                          </div>
+                                          <div class="col-lg-10">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">Operating Zone<span
+                                                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                             <ng-select [(ngModel)]="driverData.hosDetails.optZone"
+                                                name="hosDetails.optZone"
+                                                (change)="onChangeHideErrors('hosDetails.optZone')"
+                                                class="form-control populate"
+                                                placeholder="Select the Operating Zone">
+
+                                                <ng-option class="text-capitalize" value="South (Canada)">South (Canada)</ng-option>
+                                                <ng-option class="text-capitalize" value="North (Canada)">North (Canada)</ng-option>
+                                                <ng-option class="text-capitalize" value="USA">USA</ng-option>
                                              </ng-select>
                                           </div>
                                        </div>
