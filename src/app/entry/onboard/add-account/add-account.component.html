@@ -7,7 +7,7 @@
           <section class="card" style="align-items: center;">
             <div class="card-body pr-5 pl-5" style="width: 70%;">
               <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm" [mustMatch]="['password', 'confirmPassword']"
-                 #heroForm="ngForm" novalidate>
+                 #cForm="ngForm" novalidate>
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
@@ -55,7 +55,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName"
-                          placeholder="johnsmith" #uName="ngModel" minlength="6" required pattern="^[a-z0-9//_]+$">
+                          placeholder="johnsmith" #uName="ngModel" minlength="6" required pattern="^[a-z0-9//_//.]+$">
                         <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
@@ -70,22 +70,48 @@
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="pd" type="password" class="form-control" [(ngModel)]="password" name="password" minlength="6" #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]+$"
-                          placeholder="eg. johnSmith@123">
+                            <div class="input-group">
+                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control form-control-lg"
+                                />
+                                <div class="input-group-append">
+                                  <span class="input-group-text eye">
+                                    <i class="fa" [ngClass]="{
+                                      'fa-eye-slash': !fieldTextType,
+                                      'fa-eye': fieldTextType
+                                    }"
+                                    (click)="toggleFieldTextType()"></i>
+                                  </span>
+                               </div>
+
+                            </div>
                           <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
                             <div *ngIf="pwd.errors.required">
                               Password is required.
                             </div>
                             <div *ngIf="pwd.errors.pattern">
-                              Password must be a combination of small letters,capital letters and special characters(#,@,$,&).
+                              Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                             </div>
                           </div>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="cnf" type="password" class="form-control" name="confirmPassword" minlength="6" #cpwd="ngModel" required
-                          placeholder="eg. johnSmith@123" [(ngModel)]="confirmPassword">
+                            <div class="input-group">
+                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control form-control-lg"
+                                />
+                                <div class="input-group-append">
+                                  <span class="input-group-text eye">
+                                    <i class="fa" [ngClass]="{
+                                      'fa-eye-slash': !cpwdfieldTextType,
+                                      'fa-eye': cpwdfieldTextType
+                                    }"
+                                    (click)="togglecpwdfieldTextType()"></i>
+                                  </span>
+                               </div>
+
+                            </div>
+                        <!-- <input id="cnf" type="password" class="form-control" name="confirmPassword" minlength="8" #cpwd="ngModel" required
+                          placeholder="eg. johnSmith@123" [(ngModel)]="confirmPassword"> -->
                           <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
                             <div *ngIf="cpwd.errors.required">
                               Confirm password is required.
@@ -116,7 +142,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"
-                          placeholder="eg. johnsmith@testmail.com" #em="ngModel" required pattern="^[a-z0-9_.-]+@[a-z0-9-]+.[a-z0-9-.]+$">
+                          placeholder="eg. johnsmith@testmail.com" #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                           <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
                             <div *ngIf="em.errors.required">
                               Email is required.
@@ -176,7 +202,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Number of Fleets<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets" #tFleet="ngModel" required min="0">
+                        <input type="number" class="form-control" [(ngModel)]="fleets.totalFleets" name="totalFleets" #tFleet="ngModel" required min="1">
                         <div *ngIf="tFleet.invalid && (tFleet.dirty || tFleet.touched)" class="text-danger">
                           <div *ngIf="tFleet.errors.required">
                             Number of fleet is required.
@@ -483,7 +509,7 @@
                               <label
                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
                               <input [(ngModel)]="item.address1" name="address1{{i}}" type="text" class="form-control"
-                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#]+$">
+                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
                                 <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
                                     Street address must contain small letters,capital letters or numbers and no special character except # .
@@ -626,7 +652,7 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!heroForm.form.valid">Save</button>
+                    <button type="button" class="btn btn-success" (click)="onSubmit()" [disabled]="!cForm.form.valid">Save</button>
                   </div>
                 </div>
                 <div class="row mt-2">
