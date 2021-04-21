@@ -3,6 +3,7 @@ import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -10,7 +11,7 @@ declare var $: any;
   styleUrls: ['./orders-list.component.css']
 })
 export class OrdersListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   orders = [];
   confirmOrders = [];
@@ -25,7 +26,7 @@ export class OrdersListComponent implements OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: '',
+    category: null,
     start: '',
     end: ''
   };
@@ -98,6 +99,24 @@ export class OrdersListComponent implements OnInit {
   partialPaidOrdersStartPoint = 1;
   partialPaidOrdersEndPoint = this.pageLength;
   partialPaidLastEvaluatedKey = '';
+  categoryFilter = [
+    {
+      'name': 'Order Number',
+      'value': 'orderNumber'
+    },
+    {
+      'name': 'Customer',
+      'value': 'customer'
+    },
+    {
+      'name': 'Order Type',
+      'value': 'orderType'
+    },
+    {
+      'name': 'Location',
+      'value': 'location'
+    },
+  ]
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -154,6 +173,16 @@ export class OrdersListComponent implements OnInit {
     });
   };
 
+  fetchOrdersCount() {
+    this.apiService.getData('orders/get/filter/count?searchValue='+this.orderFiltr.searchValue+"&startDate="+this.orderFiltr.start+"&endDate="+this.orderFiltr.end +"&category="+this.orderFiltr.category).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+      },
+    });
+  }
+
   /*
    * Get all customers's IDs of names from api
    */
@@ -195,6 +224,10 @@ export class OrdersListComponent implements OnInit {
           this.ordersEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.ordersEndPoint) {
+          this.ordersEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
         if (this.ordersDraw > 0) {
           this.ordersPrev = false;
@@ -229,7 +262,11 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.confirmOrdersNext = true;
           this.confirmLastEvaluatedKey = '';
-          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
+          this.confirmOrdersEndPoint = this.confirmOrdersEndPoint;
+        }
+
+        if(this.confirmOrdersEndPoint < this.ordersEndPoint) {
+          this.ordersEndPoint = this.confirmedOrdersCount;
         }
 
         // disable prev btn
@@ -270,6 +307,10 @@ export class OrdersListComponent implements OnInit {
           this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
         }
 
+        if(this.dispatchedOrdersCount < this.dispatchOrdersEndPoint) {
+          this.dispatchOrdersEndPoint = this.dispatchedOrdersCount;
+        }
+
         // disable prev btn
         if (this.dispatchOrdersDraw > 0) {
           this.dispatchOrdersPrev = false;
@@ -303,6 +344,10 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.deliverOrdersNext = true;
           this.deliverLastEvaluatedKey = '';
+          this.deliverOrdersEndPoint = this.deliveredOrdersCount;
+        }
+
+        if(this.deliveredOrdersCount < this.deliverOrdersEndPoint) {
           this.deliverOrdersEndPoint = this.deliveredOrdersCount;
         }
 
@@ -342,6 +387,10 @@ export class OrdersListComponent implements OnInit {
           this.cancelOrdersEndPoint = this.cancelledOrdersCount;
         }
 
+        if(this.cancelledOrdersCount < this.cancelOrdersEndPoint) {
+          this.cancelOrdersEndPoint = this.cancelledOrdersCount;
+        }
+
         // disable prev btn
         if (this.cancelOrdersDraw > 0) {
           this.cancelOrdersPrev = false;
@@ -375,6 +424,10 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.invoiceOrdersNext = true;
           this.invoiceLastEvaluatedKey = '';
+          this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
+        }
+
+        if(this.invoicedOrdersCount < this.invoiceOrdersEndPoint) {
           this.invoiceOrdersEndPoint = this.invoicedOrdersCount;
         }
 
@@ -414,6 +467,10 @@ export class OrdersListComponent implements OnInit {
           this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
         }
 
+        if(this.partiallyPaidOrdersCount < this.partialPaidOrdersEndPoint) {
+          this.partialPaidOrdersEndPoint = this.partiallyPaidOrdersCount;
+        }
+
         // disable prev btn
         if (this.partialPaidOrdersDraw > 0) {
           this.partialPaidOrdersPrev = false;
@@ -426,36 +483,36 @@ export class OrdersListComponent implements OnInit {
       });
   }
 
-  selectCategory(type) {
-    this.orderFiltr.category = type;
-    $("#categorySelect").text(type);
-  }
-
   filterOrders() { 
     if(this.orderFiltr.searchValue !== '' || this.orderFiltr.startDate !== '' 
-    || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== '') {
-      let sdate;
-      let edate;
-      if(this.orderFiltr.startDate !== ''){
-        sdate = this.orderFiltr.startDate.split('-');
-        if(sdate[0] < 10) {
-          sdate[0] = '0'+sdate[0]
+    || this.orderFiltr.endDate !== '' || this.orderFiltr.category !== null) {
+      if(this.orderFiltr.startDate != '' && this.orderFiltr.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.orderFiltr.startDate == '' && this.orderFiltr.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.orderFiltr.category !== null && this.orderFiltr.searchValue == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      }else {
+        if(this.orderFiltr.category == 'location') {
+          this.orderFiltr.searchValue = this.orderFiltr.searchValue.toLowerCase();
         }
-        this.orderFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
-      }
-      if(this.orderFiltr.endDate !== ''){
-        edate = this.orderFiltr.endDate.split('-');
-        if(edate[0] < 10) {
-          edate[0] = '0'+edate[0]
+        let sdate;
+        let edate;
+        if(this.orderFiltr.startDate !== ''){
+          this.orderFiltr.start = this.orderFiltr.startDate;
         }
-        this.orderFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+        if(this.orderFiltr.endDate !== ''){
+          this.orderFiltr.end = this.orderFiltr.endDate;
+        }
+        this.orders = [];
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.activeTab = 'all';
+        this.fetchOrdersCount();
+        this.initDataTable();
       }
-      this.pageLength = this.allordersCount;
-      this.totalRecords = this.allordersCount;
-      this.orderFiltr.category = 'orderNumber';
-
-      this.activeTab = 'all';
-      this.initDataTable();
     }
   }
 
@@ -466,12 +523,16 @@ export class OrdersListComponent implements OnInit {
         searchValue: '',
         startDate: '',
         endDate: '',
-        category: '',
+        category: null,
         start: '',
         end: ''
       };
       $("#categorySelect").text('Search by category');
-      this.pageLength = 10;
+      // this.pageLength = 10;
+      this.orders = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchOrders();
+      this.fetchOrdersCount();
       this.initDataTable();
       this.spinner.hide();
     } else {
@@ -675,5 +736,13 @@ export class OrdersListComponent implements OnInit {
 
   setActiveDiv(type){
     this.activeTab = type;
+  }
+
+  categoryChange(event) {
+    if(event == 'customer' || event == 'orderType') {
+      this.orderFiltr.searchValue = null;
+    } else {
+      this.orderFiltr.searchValue = '';
+    }
   }
 }

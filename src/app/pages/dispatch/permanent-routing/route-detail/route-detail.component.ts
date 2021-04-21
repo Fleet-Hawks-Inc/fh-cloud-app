@@ -13,7 +13,7 @@ declare var $: any;
 })
 export class RouteDetailComponent implements OnInit {
 
-  pageTitle = "Route detail";
+  pageTitle = "Route Detail";
   form;
 
   routeID   = '';
@@ -26,6 +26,7 @@ export class RouteDetailComponent implements OnInit {
   coDriverName = '-';
   VehicleName = '-';
   recurringType = '-';
+  miles = '-';
 
   sourceAddress = '';
   sourceCountryName = '';
@@ -56,6 +57,7 @@ export class RouteDetailComponent implements OnInit {
         this.routeNo   = result.routeNo;
         this.routeName = result.routeName;
         this.notes     = result.notes;
+        this.miles = result.miles;
 
         if(result.stops != undefined){
           this.stopInformation = result.stops;

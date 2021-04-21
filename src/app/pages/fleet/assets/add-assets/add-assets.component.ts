@@ -25,6 +25,7 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
+    inspectionFormID:'',
     assetIdentification: '',
     groupID: '',
     VIN: '',
@@ -84,6 +85,7 @@ export class AddAssetsComponent implements OnInit {
   groups = [];
 
 
+
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -100,6 +102,7 @@ export class AddAssetsComponent implements OnInit {
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
+  inspectionForms=[];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
@@ -125,6 +128,7 @@ export class AddAssetsComponent implements OnInit {
     this.fetchGroups();
     this.fetchAssets();
     this.fetchAssetTypes();
+    this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
     if (this.assetID) {
       this.pageTitle = 'Edit Asset';
@@ -175,10 +179,21 @@ export class AddAssetsComponent implements OnInit {
     });
 
   }
+
+
+  fetchInspectionForms() {
+    this.apiService
+      .getData('inspectionForms/type/asset')
+      .subscribe((result: any) => {
+        this.inspectionForms = result.Items;
+      });
+  }
+
   /*
    * Add new asset
    */
   addAsset() {
+    console.log(this.assetsData.inspectionFormID);
     this.hideErrors();
     console.log('data', this.assetsData)
     const data = {
@@ -187,6 +202,7 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
+      inspectionFormID:this.assetsData.inspectionFormID,
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
@@ -227,7 +243,8 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    
+
+    console.log(data);
     // create form data instance
     const formData = new FormData();
 
@@ -499,7 +516,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }

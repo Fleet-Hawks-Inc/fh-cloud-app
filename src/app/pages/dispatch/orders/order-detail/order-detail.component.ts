@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 
 @Component({
@@ -12,6 +13,7 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   docs = [];
   localPhotos = [];
   uploadedDocs = [];
@@ -146,7 +148,6 @@ export class OrderDetailComponent implements OnInit {
   fetchAssetTypes(){
     this.apiService.getData('assetTypes/get/list').subscribe((result) => {
       this.assetTypes = result;
-      console.log(this.assetTypes);
 
     });
   }
@@ -173,7 +174,7 @@ export class OrderDetailComponent implements OnInit {
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
           this.additionalDetails.trailerType = result.additionalDetails.trailerType;
           this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
-          this.charges.freightFee = result.charges.freightFee;
+          this.charges = result.charges;
           this.discount = result.discount;
           this.milesInfo = result.milesInfo;
           this.taxesInfo = result.taxesInfo;
@@ -188,14 +189,8 @@ export class OrderDetailComponent implements OnInit {
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
-          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.amount) ? 0 : this.charges.accessorialFeeInfo.amount;
-          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.amount) ? 0 : this.charges.accessorialDeductionInfo.amount;
-
-          console.log('freightFee', freightFee);
-          console.log('fuelSurcharge',fuelSurcharge);
-          console.log('accessorialFeeInfo', accessorialFeeInfo);
-          console.log('accessorialDeductionInfo', accessorialDeductionInfo);
-          console.log('tax', this.taxesTotal);
+          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
+          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
           this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(accessorialDeductionInfo) + parseInt(this.taxesTotal);
           this.advances = result.advance;
@@ -286,14 +281,20 @@ export class OrderDetailComponent implements OnInit {
   fetchCustomersByID() {
     this.apiService.getData(`customers/${this.customerID}`).subscribe((result: any) => {
       result = result.Items[0];
+      this.customerName = `${result.companyName}`;
 
-      this.customerName = `${result.firstName} ${result.lastName}`
-      this.customerAddress = result.address[0].address1;
+      if(result.address[0].manual) {
+        this.customerAddress = result.address[0].address1;
+      } else {
+        this.customerAddress = result.address[0].userLocation;
+      }
+      
       this.customerCityName = result.address[0].cityName;
       this.customerStateName = result.address[0].stateName;
       this.customerCountryName = result.address[0].countryName;
       this.customerPhone = result.address[0].phone;
       this.customerEmail = result.address[0].email;
+      this.customerfax = result.additionalContact.fax;
     });
   }
 

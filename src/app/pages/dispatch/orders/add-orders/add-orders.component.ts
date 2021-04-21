@@ -72,7 +72,7 @@ export class AddOrdersComponent implements OnInit {
   orderData = {
     stateTaxID: "",
     customerID: "",
-    orderNumber: Math.floor(Math.random() * 15) + 100,
+    orderNumber: "",
     creationDate: moment().format('YYYY-MM-DD'),
     creationTime: moment().format('HH:mm'),
     customerPO: "",
@@ -158,7 +158,8 @@ export class AddOrdersComponent implements OnInit {
       totalMiles: null, 
       calculateBy: 'manual'
     },
-    remarks: ''
+    remarks: '',
+    loc: ''
   };
   response: any = "";
   hasError: boolean = false;
@@ -224,7 +225,8 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
-            pu: ""
+            del:""
+            // pu: ""
           },
         ],
         minTemprature: "",
@@ -378,6 +380,7 @@ export class AddOrdersComponent implements OnInit {
     this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
     this.fetchAssetTypes();
+    this.fetchLastOrderNumber();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -513,8 +516,8 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit ||
-        !currentCommodity.pu
+        !currentCommodity.weightUnit
+        // !currentCommodity.pu
 
       ) {
         commoditiesFilled = false;
@@ -610,8 +613,9 @@ export class AddOrdersComponent implements OnInit {
         !currentCommodity.quantity ||
         !currentCommodity.quantityUnit ||
         !currentCommodity.weight ||
-        !currentCommodity.weightUnit ||
-        !currentCommodity.pu
+        !currentCommodity.weightUnit
+        // !currentCommodity.del
+        // !currentCommodity.pu
       ) {
         commoditiesFilled = false;
       }
@@ -725,7 +729,8 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
-        pu: ""
+        del:""
+        // pu: ""
       },
     ];
 
@@ -893,7 +898,8 @@ export class AddOrdersComponent implements OnInit {
         quantityUnit: "",
         weight: "",
         weightUnit: "",
-        pu : ""
+        del:""
+        // pu : ""
       });
     }
   }
@@ -975,7 +981,24 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+    //for location search in listing page
+    let selectedLoc = '';
+    for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
+      const element = this.orderData.shippersReceiversInfo[g];
+      element.receivers.map((h:any) => {
+        let newloc = h.dropOffLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
 
+      element.shippers.map((h:any) => {
+        let newloc = h.pickupLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+    }
+
+    this.orderData['loc'] = selectedLoc;
+    this.orderData.orderNumber = this.orderData.orderNumber.toString();
+    
     // create form data instance
     const formData = new FormData();
 
@@ -1287,15 +1310,15 @@ export class AddOrdersComponent implements OnInit {
         this.orderData.taxesInfo = [
           {
             name: 'GST',
-            amount: state.GST,
+            amount: (state) ? state.GST : '',
           },
           {
             name: 'HST',
-            amount: state.HST,
+            amount: (state) ? state.HST: '',
           },
           {
             name: 'PST',
-            amount: state.PST,
+            amount: (state) ? state.PST : '',
           },
         ];
 
@@ -1420,6 +1443,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.orderData['uploadedDocs'] = this.existingUploadedDocs;
     this.orderData['orderID'] = this.getOrderID;
+    this.orderData.orderNumber = this.orderData.orderNumber.toString();
 
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
@@ -1430,6 +1454,22 @@ export class AddOrdersComponent implements OnInit {
       if (shippers.length == 0) flag = false;
       if (receivers.length == 0) flag = false;
     }
+
+    //for location search in listing page
+    let selectedLoc = '';
+    for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
+      const element = this.orderData.shippersReceiversInfo[g];
+      element.receivers.map((h:any) => {
+        let newloc = h.dropOffLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+
+      element.shippers.map((h:any) => {
+        let newloc = h.pickupLocation.replace(",", "");
+        selectedLoc += newloc.toLowerCase() + '|';
+      })
+    }
+    this.orderData['loc'] = selectedLoc;
 
     if (!flag) {
       this.toastr.error(
@@ -1541,7 +1581,8 @@ export class AddOrdersComponent implements OnInit {
             quantityUnit: "",
             weight: "",
             weightUnit: "",
-            pu : ""
+            del : ""
+            // pu : ""
           },
         ],
         minTemprature: "",
@@ -1650,5 +1691,11 @@ export class AddOrdersComponent implements OnInit {
       $('#receiverArea-' + i).children('i').addClass('fa-caret-right')
       $('#receiverArea-' + i).children('i').removeClass('fa-caret-down');
     }
+  }
+
+  fetchLastOrderNumber(){
+    this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
+      this.orderData.orderNumber = result.toString();
+    });
   }
 }

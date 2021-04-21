@@ -79,6 +79,7 @@ export class FuelEntryListComponent implements OnInit {
     this.initDataTable();
     this.fetchAllAssets();
     this.fetchAllVehicles();
+    this.fetchVendorList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -93,7 +94,7 @@ export class FuelEntryListComponent implements OnInit {
 
   getSuggestions(value) {
     value = value.toLowerCase();
-    if(value != '') { 
+    if(value != '') {
       this.apiService
       .getData(`vehicles/suggestion/${value}`)
       .subscribe((result) => {
@@ -202,6 +203,9 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelList = [];
         this.fuelEntriesCount();
         this.initDataTable();
+        this.fuelDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
@@ -217,7 +221,7 @@ export class FuelEntryListComponent implements OnInit {
       this.getStartandEndVal();
 
       this.fuelList = result[`Items`];
-      if(this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
+      if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
@@ -233,6 +237,10 @@ export class FuelEntryListComponent implements OnInit {
       } else {
         this.fuelNext = true;
         this.lastEvaluatedKey = '';
+        this.fuelEndPoint = this.totalRecords;
+      }
+
+      if(this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 

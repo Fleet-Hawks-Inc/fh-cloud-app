@@ -3,9 +3,9 @@
 		<section role="main" class="content-body pl-0">
 			<header class="page-header">
 				<form class="form-horizontal" method="get" name="form" id="form_">
-					<div class="row px-2" style="padding-top:9px;"> 
+					<div class="row px-2" style="padding-top:9px;">
 						<div class="col-md-2 col-lg-2">
-							<div class="input-group input-group-sm mb-3"> 
+							<div class="input-group input-group-sm mb-3">
 								<ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
 									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
 								</ng-select>
@@ -67,8 +67,8 @@
 									<thead>
 										<tr>
 											<th style="min-width: 5% !important;">Date/Time</th>
-											<th>Card Number</th>
-											<th>Unit#</th>
+											<th>Fuel Card#</th>
+											<th>Vehicle Name</th>
 											<th>Unit Type</th>
 											<th>Driver Name</th>
 											<th>Vendor</th>
@@ -87,7 +87,7 @@
 										</tr>
 										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{
-												fuelEntry.fuelDate | date:'yyyy/MM/dd' }}, {{fuelEntry.fuelTime}}</td>
+												fuelEntry.fuelDate }}, {{fuelEntry.fuelTime}}</td>
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelCardNumber}}</td>
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
 												<span
@@ -102,15 +102,17 @@
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.odometer}}</td>
 
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
-												  <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.amount}}&nbsp;{{fuelEntry.billingCurrency}}<br></span></span></td>
+												  <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.amount}}&nbsp;{{fuelEntry.billingCurrency}}<br></span></span>
+                        <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.totalAmount}}</span></td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
-												 <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.quantity}} &nbsp;litre(s)<br></span></span> </td>
+												 <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.quantity}} &nbsp;litre(s)<br></span></span>
+                         <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.totalLitres}}</span> </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
                           <span *ngIf="!fuelEntry.lineItems">{{fuelCodeList[fuelEntry.fuelType]}}</span>
                            <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{WEXCodeList[lItems.fuelType]}}<br></span></span>
                         </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
-                          <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.costPerLitre}}</span>
+                          <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.pricePerUnit}}</span>
                           <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.pricePerUnit}}<br></span></span>
                         </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.totalAmount}}{{fuelEntry.billingCurrency}}</td>

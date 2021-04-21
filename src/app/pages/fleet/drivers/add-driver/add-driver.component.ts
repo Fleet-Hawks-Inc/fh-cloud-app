@@ -39,7 +39,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   hasPay: boolean = false;
   hasHos: boolean = false;
   hasCrossBrdr: boolean = false;
-  
+
   addressField = -1;
   currentTab = 1;
   userLocation: any;
@@ -113,7 +113,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         lng: ''
       },
       manual: false,
-      userLocation:''
+      userLocation: ''
     }],
     documentDetails: [{
       documentType: '',
@@ -167,12 +167,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     },
     hosDetails: {
       hosStatus: '',
+      utcOffset: '',
       type: '',
       hosRemarks: '',
       hosCycle: '',
       homeTerminal: '',
       pcAllowed: false,
       ymAllowed: false,
+      hosCycleName:'',
+      optZone: 'South (Canada)'
     },
     emergencyDetails: {
       name: '',
@@ -256,7 +259,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   showIcons = false;
   profileTitle = 'Add';
   addressCountries = [];
-  carrierYards = [];
+  carrierYards: any = [];
   deletedAddress = [];
   ownerOperators: any;
   abstractValid = false;
@@ -399,7 +402,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } else {
       this.hasCrossBrdr = false;
     }
-    
+
     if($('#licence .error').length > 0 && this.currentTab >= 5) {
       this.hasLic = true;
     } else {
@@ -434,7 +437,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.validateTabErrors();
     if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-
     if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
     if($('#documents .error').length > 0 && this.currentTab == 3) return;
     if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
@@ -530,7 +532,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=drivers`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -540,11 +542,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .subscribe((result: any) => {
         this.countries = result.Items;
         this.countries.map(elem => {
-          if(elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
             this.addressCountries.push({countryName: elem.countryName, countryID: elem.countryID})
           }
-        })
-
+        });
       });
   }
 
@@ -719,6 +720,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     // this.driverData.empPrefix = this.prefixOutput;
     this.driverData.currentTab = this.currentTab;
 
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
@@ -809,7 +820,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    
+
     this.driverData.address[i].userLocation = result.address.label;
     this.driverData.address[i].zipCode = result.address.postalCode;
 
@@ -917,11 +928,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        
+
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
-        
+
         this.driverData.ownerOperator = result.ownerOperator;
 
         this.driverData.driverStatus = result.driverStatus;
@@ -1078,6 +1089,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal;
         this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
         this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
+        this.driverData.hosDetails.utcOffset = result.hosDetails.utcOffset;
+        this.driverData.hosDetails.optZone = result.hosDetails.optZone;
+
         this.driverData.emergencyDetails.name = result.emergencyDetails.name;
         this.driverData.emergencyDetails.relationship = result.emergencyDetails.relationship;
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
@@ -1108,7 +1122,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.driverData['driverID'] = this.driverID;
 
-
+    if(this.driverData.hosDetails.hosCycle != '') {
+      let cycleName = '';
+      this.cycles.map((v:any)=>{
+        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+          cycleName = v.cycleName;
+        }
+      })
+      this.driverData.hosDetails.hosCycleName = cycleName;
+    }
+    
     // create form data instance
     const formData = new FormData();
 
@@ -1281,6 +1304,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
+   
     if(this.currentUser.userType == 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
       if(isCarrierID != undefined) {
@@ -1290,7 +1314,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType === 'yard') {
+        if(e.addressType == 'yard') {
           this.carrierYards.push(e);
         }
       })
@@ -1299,13 +1323,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   closeGroupModal (){
     this.groupData = {
-      groupType : 'drivers', 
+      groupType : 'drivers',
       groupName: '',
       groupMembers: '',
       description: '',
     };
-   
+
     $("#addDriverGroupModal").modal("hide");
+  }
+
+  async getUtc(yard) {
+    this.carrierYards.map(async (element: any) => {
+      if (element.addressID == yard) {
+        let result = await this.HereMap.geoCode(element.userLocation);
+        result = result.items[0];
+        this.driverData.hosDetails.utcOffset = result.timeZone.utcOffset
+      }
+    })
   }
 
 }

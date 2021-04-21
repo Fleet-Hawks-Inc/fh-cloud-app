@@ -65,6 +65,7 @@
                               <label><input type="checkbox" disabled [(ngModel)]="hideShow.currCycle"
                               name="currCycle" (change)="hideShowColumn()"> Current Cycle </label>
                            </a>
+                           
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.currVehicle"
                               name="currVehicle" (change)="hideShowColumn()"> Current Vehicle </label>
@@ -75,11 +76,11 @@
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.contact"
-                              name="contact" (change)="hideShowColumn()"> Phone Number </label>
+                              name="contact" (change)="hideShowColumn()"> Phone  </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.dl"
-                              name="dl" (change)="hideShowColumn()"> CDL Number </label>
+                              name="dl" (change)="hideShowColumn()"> CDL# </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.document"
@@ -91,7 +92,7 @@
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.groupID"
-                                 name="groupID" (change)="hideShowColumn()"> Group Id </label>
+                                 name="groupID" (change)="hideShowColumn()"> Group </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.citizenship"
@@ -107,11 +108,11 @@
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.sin"
-                                 name="sin" (change)="hideShowColumn()"> SIN Number </label>
+                                 name="sin" (change)="hideShowColumn()"> SIN </label>
                            </a>
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.fastNumber"
-                                 name="fastNumber" (change)="hideShowColumn()"> Fast Number </label>
+                                 name="fastNumber" (change)="hideShowColumn()"> Fast Card# </label>
                            </a>
                         </div>
                      </div>
@@ -453,16 +454,16 @@
                                     <th id="" class="col11 minWidth200">Current Cycle</th>
                                     <th id="" class="col12 extra">Current Vehicle</th>
                                     <th id="" class="col13 extra">Assets</th>
-                                    <th id="" class="col14 extra">Phone Number</th>
-                                    <th id="" class="col15 extra">CDL Number</th>
+                                    <th id="" class="col14 extra">Phone </th>
+                                    <th id="" class="col15 extra">CDL#</th>
                                     <th id="" class="col16 extra">Document</th>
                                     <th id="" class="col3 extra">Group</th>
                                     <th id="" class="col4 extra">Citizenship</th>
                                     <th id="" class="col5 extra">Address</th>
                                     <th id="" class="col6 extra">Payment Type</th>
-                                    <th id="" class="col7 extra">SIN Number</th>
+                                    <th id="" class="col7 extra">SIN</th>
                                     
-                                    <th id="" class="col10 extra">Fast Number</th>
+                                    <th id="" class="col10 extra">Fast Card#</th>
                                     <th id="" class="minWidth120 col17">Status</th>
                                     <th id="" class="minWidth50" style="min-width: 50px;">Actions</th>
                                  </tr>
@@ -486,7 +487,7 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.licenceDetails.CDL_Number}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
-                                          class="font-weight-bold">Issue State:
+                                          class="font-weight-bold">Issue Province:
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
                                     
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>

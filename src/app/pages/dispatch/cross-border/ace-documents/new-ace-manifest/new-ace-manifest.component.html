@@ -1,11 +1,11 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body">
-      <header class="page-header pr-5">
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
+      <header class="page-header">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{title}} </div>
-          <div class="col-md-8  col-lg-8 text-right pr-1"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
-              class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACE Manifests</a> </div>
+          <div class="col-md-8  col-lg-8 text-right"> <a [routerLink]="['/dispatch', 'cross-border','eManifests']"
+              class="btn btn-default btn-sm"><i class="fas fa-list"></i> ACE Manifests List</a> </div>
         </div>
       </header>
       <div class="row text-dark">
@@ -22,7 +22,7 @@
                   <div class="col-lg-5 offset-lg-1">
                     <div class="row">
                       <div class="col-lg-3">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Trip Number<span
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Trip#<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <!-- <ng-select name="SCAC" [(ngModel)]="SCAC" placeholder="Select SCAC">
                           <ng-option *ngFor="let carrier of carriers" [value]="carrier.SCAC">
@@ -84,7 +84,7 @@
                                           class="fas fa-plus"></i></a> -->
                       </div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Seal(Required
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Add Seal (Required
                           when security seals are being used (if no asset is attached))</label>
                         <div class="row">
                           <div class="col-lg-3" *ngFor="let seal of truck.sealNumbers; let i=index;">
@@ -109,18 +109,18 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
+                        <ng-select [(ngModel)]="mainDriver" name="mainDriver" id="mainDriver"  placeholder="Select driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of fetchedDrivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                            {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                           Co-Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers"
+                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" (click)="fixCoDrivers()"
                           placeholder="Select co-driver">
-                          <ng-option *ngFor="let driver of fetchedDrivers" [value]="driver.driverID">
-                            {{driver.firstName}}</ng-option>
+                          <ng-option *ngFor="let driver of fetchedCoDrivers" [value]="driver.driverID">
+                            {{driver.firstName}} {{driver.lastName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2  mar-top-37">
@@ -252,7 +252,7 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State<span
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
@@ -354,7 +354,7 @@
                             </div>
                             <div class="row">
                               <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="usAddressStateSelect"
                                   (change)="resetusAddressCity()"
                                   [attr.name]="'usAddress.address.stateID'" [class.error]="errorClassState"
@@ -432,7 +432,7 @@
                           </div>
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Shipment
-                              Control Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              Control#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="row">
                               <div class="col-lg-4">
                                 <!-- <ng-select [ngModelOptions]="{standalone: true}" placeholder="Select SCAC"
@@ -469,9 +469,9 @@
                           <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray
                               Date of Exit</label>
-                            <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
-                              [ngModelOptions]="{standalone: true}"
-                              [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'"
+                            <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
+                              [ngModelOptions]="{standalone: true}"  ngbDatepicker #d7="ngbDatepicker" [minDate]="getcurrentDate" (click)="d7.toggle();"
+                              [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'" placeholder="yyyy/mm/dd"
                               [(ngModel)]="shipment.goodsAstrayDateOfExit">
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'IN_BOND'">
@@ -488,7 +488,7 @@
                               </div>
                               <div class="col-lg-12">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Paper
-                                  In-Bond Number</label>
+                                  In-Bond#</label>
                                 <input type="number" placeholder="(CBP Form 7512 Number if applicable)" minlength="9"
                                   maxlength="9" [ngModelOptions]="{standalone: true}"
                                   [ngModelOptions]="{standalone: true}"
@@ -535,9 +535,11 @@
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Estimated
                                   US Departure Date</label>
-                                <input type="date" class="form-control" [ngModelOptions]="{standalone: true}"
+                                <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].inBondDetails.estimatedDepartureDate'"
-                                  [(ngModel)]="shipment.inBondDetails.estimatedDepartureDate">
+                                  [(ngModel)]="shipment.inBondDetails.estimatedDepartureDate" placeholder="yyyy/mm/dd"
+                                  ngbDatepicker #d8="ngbDatepicker" [minDate]="getcurrentDate" (click)="d8.toggle();"
+                                  >
                               </div>
                               <div class="col-lg-6">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Subject
@@ -702,7 +704,7 @@
                               </div>
                               <div class="row">
                                 <div class="col-lg-10">
-                                  <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
+                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
                                   <ng-select [ngModelOptions]="{standalone: true}" id="thirdPartyStateSelect"
                                     (change)="resetThirdPartyCity(s,p)"
                                     [attr.name]="'shipments['+s+'].thirdParties['+p+'].address.stateID'"
@@ -780,15 +782,15 @@
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                               On<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [ngModelOptions]="{standalone: true}"
+                            <ng-select [ngModelOptions]="{standalone: true}" (change)="shipmentLoadedFn(s,i)"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.type'"
                               [(ngModel)]="commodity.loadedOn.type">
-                              <ng-option value="TRUCK">TRUCK</ng-option>
-                              <ng-option value="TRAILER">TRAILER</ng-option>
+                              <ng-option value="TRUCK">Vehicle</ng-option>
+                              <ng-option value="TRAILER">Asset</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRUCK'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Truck
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
@@ -798,11 +800,11 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Trailer
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Asset
                               Number</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
-                              placeholder="Enter trailer number" [(ngModel)]="commodity.loadedOn.number">
+                              placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number">
                               <ng-option *ngFor="let asset of assets" [value]="asset.assetID">
                                 {{asset.assetIdentification}}</ng-option>
                             </ng-select>
@@ -812,8 +814,8 @@
                           *ngIf="shipment.shipmentType === 'BRASS' || shipment.shipmentType === 'BRASS_MULTIPLE'">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">C4 Line
-                              Release
-                              Number </label>
+                              Release#
+                               </label>
                             <input type="text" class="form-control" maxlength="14"
                               placeholder="Enter C4 line release number" [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].c4LineReleaseNumber'"
@@ -993,7 +995,7 @@
                         <tr>
                           <th width="15%">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
                           <th width="20%">Asset Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                          <th width="32%">Seal Numbers(Required when security seals are being used)&nbsp;
+                          <th width="32%">Seal Numbers (Required when security seals are being used)&nbsp;
                             <span class="text-1 optional-label-color">(optional)</span></th>
                           <th width="28%">Add IIT&nbsp; <span class="text-1 optional-label-color">(optional)</span></th>
                           <th width="5%">Action</th>
@@ -1056,7 +1058,7 @@
                   </div>
                   <div class="col-12 text-right">
                     <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success"
-                      (click)="addTrailer()"><i class="fas fa-plus"></i> Add Trailer</button>
+                      (click)="addTrailer()"><i class="fas fa-plus"></i> Add Asset</button>
                   </div>
                 </div>
                 <div class="form-group row mt-3">

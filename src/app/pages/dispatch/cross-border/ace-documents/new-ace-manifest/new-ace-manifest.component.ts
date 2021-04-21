@@ -198,6 +198,7 @@ export class NewAceManifestComponent implements OnInit {
       userLocation: ''
     }
   };
+  fetchedCoDrivers=[];
   borderAssetTypes = [];
   /**
    * for front end validation of US address
@@ -309,6 +310,19 @@ export class NewAceManifestComponent implements OnInit {
     $(document).ready(() => {
       this.form = $('#form_').validate();
     });
+  }
+  shipmentLoadedFn(s,i){
+    this.shipments[s].commodities[i].loadedOn.number = '';
+  }
+
+  fixCoDrivers(){
+    if(this.mainDriver){
+      let currentDriver =this.mainDriver;
+      console.log("this is main Driver", this.mainDriver)
+      this.fetchedCoDrivers=this.fetchedDrivers.filter(function(value, index, arr){ 
+        return value.driverID !=currentDriver;
+    });
+    }
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
