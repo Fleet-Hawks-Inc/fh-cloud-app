@@ -8313,7 +8313,7 @@ input[type="search"]::-webkit-input-placeholder,
 input[type="tel"]::-webkit-input-placeholder,
 input[type="color"]::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-	color: #bdbdbd;
+	color: #d7d7d7;
 }
 
 .form-control::-moz-placeholder,
