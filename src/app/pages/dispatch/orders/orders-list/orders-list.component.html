@@ -26,12 +26,12 @@
                         </div>
 
                         <div class="col-lg-3 col-md-3">
-                            <div class="input-daterange input-group" data-plugin-datepicker>
+                            <div class="input-daterange input-group">
                                 <span class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
-                                </span>
+                                </span> 
                                 <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
 
                                     placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"

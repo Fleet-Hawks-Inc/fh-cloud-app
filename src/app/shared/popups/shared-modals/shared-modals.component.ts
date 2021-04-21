@@ -416,6 +416,7 @@ assetsData = {
   groupID: '',
   VIN: '',
   startDate: '',
+  inspectionFormID: null,
   assetDetails: {
     assetType: '',
     currentStatus: '',
@@ -457,6 +458,8 @@ assetsData = {
   uploadedDocs: []
 };
 years = [];
+inspectionFormsAsset = [];
+users = [];
 
   async ngOnInit() {
     this.fetchCountries();
@@ -468,8 +471,10 @@ years = [];
     this.fetchTasks();
     this.fetchAssetTypes();
     this.getYears();
+    this.fetchUsers();
 
     this.fetchInspectionForms();
+    this.fetchInspectionFormsAssets();
     this.fetchDocuments();
     this.fetchGroups();
     this.fetchCycles(); // fetch cycles
@@ -538,6 +543,14 @@ years = [];
     .getData('inspectionForms/type/Vehicle')
     .subscribe((result: any) => {
       this.inspectionForms = result.Items;
+    });
+}
+
+fetchInspectionFormsAssets() {
+  this.apiService
+    .getData('inspectionForms/type/asset')
+    .subscribe((result: any) => {
+      this.inspectionFormsAsset = result.Items;
     });
 }
 
@@ -1627,6 +1640,7 @@ fetchDrivers(){
         },
         next: (res) => {
           this.response = res;
+          this.clearIssueData();
           this.toastr.success('Issue Added successfully');
           $('#addIssuesModal').modal('hide');
           let issueVehicleID = localStorage.getItem('issueVehicleID');
@@ -1694,7 +1708,7 @@ fetchDrivers(){
     // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       formData.append('uploadedDocs', this.uploadedDocs[j]);
-    }
+    } 
 
     // append other fields
     formData.append('data', JSON.stringify(this.assetsData));
@@ -1727,6 +1741,7 @@ fetchDrivers(){
           groupID: '',
           VIN: '',
           startDate: '',
+          inspectionFormID: null,
           assetDetails: {
             assetType: '',
             currentStatus: '',
@@ -1768,6 +1783,26 @@ fetchDrivers(){
           uploadedDocs: []
         };
       },
+    });
+  }
+
+  clearIssueData() {
+    this.issuesData = {
+      issueName: '',
+      currentStatus: 'OPEN',
+      unitID: '',
+      unitType: 'vehicle',
+      reportedDate: '',
+      description: '',
+      odometer: null,
+      reportedBy: '',
+      assignedTo: '',
+    }
+  }
+
+  fetchUsers(){
+    this.apiService.getData('users').subscribe((result: any) => {
+      this.users = result.Items;
     });
   }
 }

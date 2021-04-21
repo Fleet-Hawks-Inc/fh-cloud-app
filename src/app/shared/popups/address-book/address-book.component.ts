@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import {Auth} from 'aws-amplify';
 import  Constants  from '../../../pages/fleet/constants';
 import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 
 declare var $: any;
 @Component({
@@ -3676,26 +3677,27 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
-  getSuggestions(value, type, searchType='') {
+  getSuggestions = _.debounce(function (value, type, searchType = '') {
+    // getSuggestions(value, type, searchType='') {
     value = value.toLowerCase()
     if (type == 'customer') {
       this.filterVal.customerID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedCustomers = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedCustomerCompanies = [];
       }
       this.apiService
         .getData(`customers/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedCustomers = result.Items;
             this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3709,22 +3711,22 @@ export class AddressBookComponent implements OnInit {
 
     } else if (type == 'broker') {
       this.filterVal.brokerID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedBrokers = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedBrokerCompanies = [];
       }
       this.apiService
         .getData(`brokers/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedBrokerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedBrokers = result.Items;
             this.suggestedBrokers = this.suggestedBrokers.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3738,29 +3740,29 @@ export class AddressBookComponent implements OnInit {
 
     } else if (type == 'vendor') {
       this.filterVal.vendorID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedVendors = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedVendorCompanies = [];
       }
       this.apiService
         .getData(`vendors/nameSuggestions/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedVendorCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedVendors = result.Items;
             this.suggestedVendors = this.suggestedVendors.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
                 v.name = v.firstName;
                 v.searchVall = v.firstName;
               }
-              
+
               return v;
             })
           }
@@ -3768,22 +3770,22 @@ export class AddressBookComponent implements OnInit {
 
     } else if (type == 'carrier') {
       this.filterVal.carrierID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedCarriers = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedCarrierCompanies = [];
       }
       this.apiService
         .getData(`externalCarriers/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedCarrierCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedCarriers = result.Items;
             this.suggestedCarriers = this.suggestedCarriers.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3796,22 +3798,22 @@ export class AddressBookComponent implements OnInit {
         });
     } else if (type == 'operator') {
       this.filterVal.operatorID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedOperators = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedOperatorCompanies = [];
       }
       this.apiService
         .getData(`ownerOperators/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedOperatorCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedOperators = result.Items;
             this.suggestedOperators = this.suggestedOperators.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3824,22 +3826,22 @@ export class AddressBookComponent implements OnInit {
         });
     } else if (type == 'shipper') {
       this.filterVal.shipperID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedShipper = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedShipperCompanies = [];
       }
       this.apiService
         .getData(`shippers/suggestion/${value}?type=${searchType}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedShipperCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedShipper = result.Items;
             this.suggestedShipper = this.suggestedShipper.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3849,26 +3851,26 @@ export class AddressBookComponent implements OnInit {
               return v;
             })
           }
-          
+
         });
     } else if (type == 'consignee') {
       this.filterVal.consigneeID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedConsignees = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedConsigneeCompanies = [];
       }
       this.apiService
         .getData(`receivers/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedConsigneeCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedConsignees = result.Items;
             this.suggestedConsignees = this.suggestedConsignees.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3881,22 +3883,22 @@ export class AddressBookComponent implements OnInit {
         });
     } else if (type == 'staff') {
       this.filterVal.staffID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedStaffs = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedStaffCompanies = [];
       }
       this.apiService
         .getData(`staffs/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedStaffCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedStaffs = result.Items;
             this.suggestedStaffs = this.suggestedStaffs.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3909,22 +3911,22 @@ export class AddressBookComponent implements OnInit {
         });
     } else if (type == 'company') {
       this.filterVal.companyID = '';
-      if(searchType == 'name' && value == '') {
+      if (searchType == 'name' && value == '') {
         this.suggestedCompany = [];
       }
-      if(searchType == 'company' && value == '') {
+      if (searchType == 'company' && value == '') {
         this.suggestedFactoringCompanies = [];
       }
       this.apiService
         .getData(`factoringCompanies/suggestion/${value}?type=${searchType}`)
         .subscribe((result) => {
-          if(searchType == 'company') {
+          if (searchType == 'company') {
             this.suggestedFactoringCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
-            
+
           } else {
             this.suggestedCompany = result.Items;
             this.suggestedCompany = this.suggestedCompany.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
+              if (v.lastName != undefined && v.lastName != '') {
                 v.name = v.firstName + ' ' + v.lastName;
                 v.searchVall = v.firstName + '-' + v.lastName;
               } else {
@@ -3936,7 +3938,8 @@ export class AddressBookComponent implements OnInit {
           }
         });
     }
-  }
+    // }
+  }, 800);
 
   setSearchValues(val, searchValue, type) {
     if(type == 'customer') {
@@ -5044,15 +5047,30 @@ export class AddressBookComponent implements OnInit {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
     } 
-     
-
-    // await this.getSpecificCarrier(this.isCarrierID);
   }
 
-  // async getSpecificCarrier(id){
-  //   this.apiService.getData(`carriers/${id}`)
-  //     .subscribe((result: any) => {
-  //       this.currentUser = result.Items[0].carrierName
-  //     });
-  // }
+  checkCompanyName = _.debounce(function(value, type, searchType='') {
+    // console.log("name changed!");
+
+    this.apiService
+        .getData(`customers/suggestion/${value}?type=${searchType}`)
+        .subscribe((result) => {
+          if(searchType == 'company') {
+            this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
+            
+          } else {
+            this.suggestedCustomers = result.Items;
+            this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
+              if(v.lastName != undefined && v.lastName != '') {
+                v.name = v.firstName + ' ' + v.lastName;
+                v.searchVall = v.firstName + '-' + v.lastName;
+              } else {
+                v.name = v.firstName;
+                v.searchVall = v.firstName;
+              }
+              return v;
+            })
+          }
+        });
+  }, 400);
 }
