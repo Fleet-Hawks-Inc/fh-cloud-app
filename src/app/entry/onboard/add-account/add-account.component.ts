@@ -14,7 +14,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  // @ViewChild('carrierForm', null) carrierForm: NgForm;
+// @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   CCC = '';
@@ -418,6 +418,11 @@ export class AddAccountComponent implements OnInit {
   }
 
   // FRONT END VALIDATION
+  fNameVal(e){
+    const fName = e.target.value;
+    let res = fName.match('^[a-zA-Z]+$/g');
+    console.log('resr', res);
+  }
   EINValidation(e) {
     const EIN = e.target.value;
     if (EIN.length == 0) {
