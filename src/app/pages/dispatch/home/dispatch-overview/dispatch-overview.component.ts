@@ -233,6 +233,10 @@ export class DispatchOverviewComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
+        result.Items.map((k)=> {
+          k.eventParams.message = k.eventParams.message.replace('shippers','consigner');
+          k.eventParams.message = k.eventParams.message.replace('receivers','consignee');
+        })
         if(this.pageload){
           result.Items.map((v)=> {
             v.rest = v.eventParams.message.substring(0, v.eventParams.message.lastIndexOf(" ") + 1);
