@@ -38,8 +38,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.getCurrentuser();
     this.fetchCarrier();
-    this.getLoggedUserForCloud();
-
   }
 
   onNavSelected(nav: string) {
@@ -50,14 +48,17 @@ export class HeaderComponent implements OnInit {
 fetchCarrier(){
   this.apiService.getData('carriers/getCarrier')
       .subscribe((result: any) => {
-        this.carriers = result.Items[0];
-        this.currentCarrierID = this.carriers.carrierID;
-        this.logoSrc = 'assets/img/logo.png';
-        // console.log("this.carriers",this.carriers)
-        // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
-        //   this.logoSrc = 'assets/img/logo.png';
-        // }
+        if(result.Items.length > 0){
+          this.carriers = result.Items[0];
+          this.currentCarrierID = this.carriers.carrierID;
+          this.logoSrc = 'assets/img/logo.png';
+          // console.log("this.carriers",this.carriers)
+          // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+          // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
+          //   this.logoSrc = 'assets/img/logo.png';
+          // }
+        }
+        
       });
 }
 
@@ -85,18 +86,5 @@ fetchCarrier(){
     let outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join('');
   }
-  /**
-   * show 'login as' div for cloud admin
-   */
-  async getLoggedUserForCloud() {
-    this.isCarrierID = localStorage.getItem('carrierID');
-    if(this.isCarrierID != undefined && this.isCarrierID != null) {
-      this.carrierBusiness = localStorage.getItem('carrierBusiness');
-    }
-  }
-  switchCarrier(){
-    localStorage.removeItem('carrierID');
-    this.router.navigateByUrl('/carriers');
-    localStorage.removeItem('loggin-carrier');
-  }
+  
 }

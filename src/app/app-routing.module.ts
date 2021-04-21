@@ -78,10 +78,6 @@ const routes: Routes = [
     component: ErrorComponent
   },
   {
-    path: "carriers",
-    component: AllCarriersComponent
-  },
-  {
     path: "**",
     redirectTo: '/404'
   }
