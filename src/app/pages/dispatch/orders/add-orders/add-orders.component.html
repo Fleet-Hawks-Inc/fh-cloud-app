@@ -620,7 +620,10 @@
                                                             
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">PU#
+                                                                     for="inputDefault">PU# &nbsp;<i
+                                                                     class="fas fa-question-circle" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="Pickup Number"></i>
                                                                      <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                   </label>
    
@@ -971,7 +974,10 @@
                                                             
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">DEL#
+                                                                     for="inputDefault">DEL# &nbsp;<i
+                                                                     class="fas fa-question-circle" data-toggle="tooltip"
+                                                                     data-placement="top"
+                                                                     title="Delivery Number "></i>
 
                                                                      <!-- PU#<span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
 
@@ -1652,11 +1658,13 @@
                                  </div>
                               </div>
                               
+                              <!--
                               <div class="row mt-3">
                                  <div class="col-lg-5">
                                     <input type="number" min="0"  name="advance" [(ngModel)]="orderData.advance" class="form-control" (blur)="calculateAmount()">
                                  </div>
                               </div>
+                           -->
                               <div class="row mt-4">
                                  <div class="col-lg-10 offset-lg-2">
                                     <span>&nbsp;</span>
@@ -1672,14 +1680,16 @@
                                  </div>
                               </div>
                              
-                              <div class="row">
+                              <div class="row mt-4">
                                  <div class="col-lg-9 bordtop pt-1">
-                                    <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
+                                    <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
                                  </div>
                                  <div class="col-lg-3 bordtop pt-1">
                                     <p class="text-right"><span [innerHTML]="totalAmount"> </span></p>
                                  </div>
                               </div>
+
+                              <!--
                               <div class="row">
                                  <div class="col-lg-9 bordtop pt-1">
                                     <h5 class="text-right font-weight-bold text-4 text-dark">Advance Paid</h5>
@@ -1688,6 +1698,8 @@
                                     <p class="text-right" [innerHTML]="orderData.advance"></p>
                                  </div>
                               </div>
+                           
+
                               <div class="row">
                                  <div class="col-lg-9 bordtop pt-1">
                                     <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
@@ -1696,6 +1708,8 @@
                                     <p class="text-right" [innerHTML]="orderData.finalAmount"></p>
                                  </div>
                               </div>
+
+                           -->
                            </div>
                         </div>
 
