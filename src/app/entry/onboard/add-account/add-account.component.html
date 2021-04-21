@@ -603,7 +603,7 @@
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
-                        #route="ngModel" pattern="^(0)[0-9]{8}$" placeholder="eg. 023456789">
+                        #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
                           <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
                               Routing number must be of 9 digits.
