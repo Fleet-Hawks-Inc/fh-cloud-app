@@ -2060,18 +2060,17 @@
                                  <label
                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="issuesData.reportedBy" name="reportedBy" placeholder="Select Contact">
-                                       <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">{{driver.firstName}} {{driver.lastName}}</ng-option>
+                                       <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
                                  </ng-select>
                            </div>
-                        </div>
+                        </div> 
                         <div class="row pt-2">
                            <div class="col-lg-12">
-                                 <label
-                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue">
-                                       <ng-option value="Operator">Operator</ng-option>
-                                       <ng-option value="Technician">Technician</ng-option>
-                                 </ng-select>
+                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="issuesData.assignedTo" name="assignedTo" placeholder="Assign the issue">
+                                 <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
+                              </ng-select>
                            </div>
                         </div>
                      </div>

@@ -30,6 +30,8 @@ export class HeaderComponent implements OnInit {
         val = activeTab;
       }
       this.navSelected = val;
+
+      console.log('this.navSelected',this.navSelected);
     });
   }
 
