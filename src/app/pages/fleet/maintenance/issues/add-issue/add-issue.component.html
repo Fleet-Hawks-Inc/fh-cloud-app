@@ -52,8 +52,7 @@
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID">
 
                                                 <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
@@ -91,14 +90,14 @@
                                     <div class="row pt-4" *ngIf="unitType === 'vehicle'">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-3 mt-2">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="odometer" name="odometer" min="0" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-3 mt-4">Reported By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="reportedBy" name="reportedBy" placeholder="Select Contact">
                                                     <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
                                             </ng-select>
