@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -135,7 +136,9 @@ export class OrderDetailComponent implements OnInit {
   balance = 0;
 
   assetTypes = {};
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
+  milesArr = [];
+  allPhotos = [];
+  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
@@ -163,7 +166,7 @@ export class OrderDetailComponent implements OnInit {
           result = result.Items[0];
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
-          this.reference = '';
+          this.reference = result.reference;
           this.creation = `${result.creationDate } ${result.creationTime }`;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
@@ -187,14 +190,39 @@ export class OrderDetailComponent implements OnInit {
             }
           }
 
+          this.milesArr = [];
+          console.log('result.shippersReceiversInfo', result.shippersReceiversInfo);
+
+          // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
+          //   const element = result.shippersReceiversInfo[p];
+            
+          // }
+
+          result.shippersReceiversInfo.map((v) => {
+            let newArr = [];
+            newArr['receivers'] = [];
+            newArr['shippers'] = [];
+            v.receivers.map((rec) =>{
+              newArr['receivers'].push(rec);
+            })
+
+            v.shippers.map((ship) =>{
+              newArr['shippers'].push(ship);
+            })
+
+            this.milesArr.push(newArr);
+          })
+          console.log('this.milesArr', this.milesArr);
+
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
           let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
           let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(accessorialDeductionInfo) + parseInt(this.taxesTotal);
-          this.advances = result.advance;
-          this.balance = this.totalCharges - this.advances;
+          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          // this.advances = result.advance;
+          // this.balance = this.totalCharges - this.advances;
+          this.balance = this.totalCharges;
 
           if (
             result.uploadedDocs != undefined &&
@@ -203,6 +231,7 @@ export class OrderDetailComponent implements OnInit {
             this.docs = result.uploadedDocs.map(
               (x) => `${this.Asseturl}/${result.carrierID}/${x}`
             );
+            this.allPhotos = result.uploadedDocs;
           }
           // this.orderData = result['Items'];
           
@@ -346,12 +375,18 @@ export class OrderDetailComponent implements OnInit {
    */
   selectDocuments(event) {
     let files = [...event.target.files];
-    
-    for (let i = 0; i < files.length; i++) {
-      this.uploadedDocs.push(files[i])
-    }
- 
+    let totalCount = this.allPhotos.length+files.length;
 
+    if(totalCount >= 4) {
+      this.uploadedDocs = [];
+      $('#bolUpload').val('');
+      this.toastr.error('Only 4 documents can be uploaded');
+      return false;
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
+      }
+  
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
@@ -359,20 +394,20 @@ export class OrderDetailComponent implements OnInit {
         }
         reader.readAsDataURL(files[i]);
       }
-
-    // create form data instance
-    const formData = new FormData();
-
-    //append photos if any
-    for(let i = 0; i < this.uploadedDocs.length; i++){
-      formData.append('uploadedDocs', this.uploadedDocs[i]);
-    }
-
-    this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
-
-    })
-  }
   
+      // create form data instance
+      const formData = new FormData();
+  
+      //append photos if any
+      for (let i = 0; i < this.uploadedDocs.length; i++) {
+        formData.append('uploadedDocs', this.uploadedDocs[i]);
+      }
+  
+      this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+      })
+    }
+    
+  }
 
   setSrcValue(){}
 

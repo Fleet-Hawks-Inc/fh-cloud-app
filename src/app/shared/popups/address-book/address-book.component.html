@@ -1575,9 +1575,28 @@
                                                     <div class="col-lg-12 pt-2">
                                                         <div class="row">
                                                             <div class="col-lg-4">
-                                                                <label class="control-label font-weight-bold text-lg-right">Broker
-                                                                    Type:</label>
+                                                                <label class="control-label font-weight-bold text-lg-right">Broker Type:</label>
                                                             </div>
+
+                                                            <div class="col-lg-8">
+                                                                <div class="btn-group-toggle" data-toggle="buttons">
+                                                                    <label class="btn btn-outline btn-fleet mr-2"
+                                                                       [class.active]="brokerData.brokerType === 'company'"
+                                                                       style="width:110px;" (click)="brokerType('company')">
+                                                                       <input type="radio" [(ngModel)]="brokerData.brokerType"
+                                                                          name="brokerType" checked value="company"> Company
+                                                                    </label>
+
+                                                                    <label class="btn btn-outline btn-fleet mr-2 "
+                                                                       [class.active]="brokerData.brokerType === 'individual'"
+                                                                       style="width:110px;" (click)="brokerType('individual')">
+                                                                       <input type="radio" [(ngModel)]="brokerData.brokerType"
+                                                                          name="brokerType" value="individual"> Individual
+                                                                    </label>
+                                                                 </div>
+                                                            </div>
+
+                                                            <!--
                                                             <div class="col-lg-3 px-0">
                                                                 <div class="radio">
                                                                     <label>
@@ -1594,6 +1613,9 @@
                                                                         Individual </label>
                                                                 </div>
                                                             </div>
+                                                        -->
+
+
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -2892,8 +2914,7 @@
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address
-                                                    Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Address Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
                                                     placeholder="Select Address Type">
                                                     <ng-option value="Billing Address">Billing Address</ng-option>
@@ -2905,8 +2926,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type
-                                            Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                         <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                             (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address" [disabled]="item.manual">
                                         <div class="map-search__results bg-white">
@@ -2924,7 +2944,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-2 mar-top-37">
-                                        <a href="javascript:;" class="btn btn-dark mr-3" (click)="clearAddress(i, 'shipper')">Clear</a>
+                                        <a href="javascript:;" class="btn btn-dark mr-3 mb-2" (click)="clearAddress(i, 'shipper')">Clear</a>
                                         <a *ngIf="i == 0;" (click)="addAddress(shipperData);" class="btn btn-success"
                                             href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
                                         <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'shipper')" class="btn btn-danger"
@@ -3447,9 +3467,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-4">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type
-                                                    Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Type Your Location &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
                                                     (keyup)="searchTerm.next($event);" class="form-control"
                                                     placeholder="Type Address" [disabled]="item.manual">
@@ -3468,7 +3488,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 mar-top-37">
-                                                <a href="javascript:;" class="btn btn-dark" (click)="clearAddress(i, 'company')">Clear</a>
+                                                <a href="javascript:;" class="btn btn-dark mr-2 mb-2" (click)="clearAddress(i, 'company')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(fcCompanyData);" class="btn btn-success"
                                                     href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
                                                 <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'company')" class="btn btn-danger"
@@ -3738,12 +3758,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2 mar-top-37">
-                                                <a href="javascript:;" class="btn btn-dark" (click)="clearAddress(i, 'staff')">Clear</a>
+                                                <a href="javascript:;" class="btn btn-dark mr-2 mt-2" (click)="clearAddress(i, 'staff')">Clear</a>
                                                 <a *ngIf="i == 0;" (click)="addAddress(staffData);" class="btn btn-success" href="javascript:;"><i
                                                         class="fa fa-plus fa-fw"></i></a>
                                                 <a *ngIf="i != 0;" (click)="removeAddress(i, item.addressID,'staff')" class="btn btn-danger" href="javascript:;"><i
                                                         class="fa fa-minus fa-fw"></i></a>
                                             </div>
+                                            
                                             <div *ngIf="item.manual" class="row mx-0">
                                                 <div class="col-lg-6 pt-4">
                                                     <div class="row">
