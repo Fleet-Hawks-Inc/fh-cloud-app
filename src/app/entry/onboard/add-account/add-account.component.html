@@ -7,7 +7,7 @@
           <section class="card" style="align-items: center;">
             <div class="card-body pr-5 pl-5" style="width: 70%;">
               <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm" [mustMatch]="['password', 'confirmPassword']"
-                 #cForm="ngForm" novalidate>
+                 #cForm="ngForm" novalidate="novalidate">
                 <div class="row text-center">
                   <div class="col-lg-12">
                     <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
@@ -24,14 +24,14 @@
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName" minlength="3"
-                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]+$">
+                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
+                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                         <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                           <div *ngIf="fName.errors.required">
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must contain letters only.
+                            First name must be between 2 to 30 characters and must contain letters only.
                           </div>
                         </div>
                       </div>
@@ -39,13 +39,13 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName"
-                          minlength="3" placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]+$">
+                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                         <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                           <div *ngIf="lName.errors.required">
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must contain letters only.
+                            Last name must be between 2 to 30 characters and must contain letters only.
                           </div>
                         </div>
                       </div>
@@ -61,7 +61,7 @@
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username must contain small letters and numbers only.
+                            Username must contain small letters,numbers and special characters(underscore(_),period(.)) only .
                           </div>
                         </div>
                       </div>
@@ -130,6 +130,9 @@
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
                           placeholder="eg. +19897899879" #ph="ngModel" required pattern="^(\+1)[0-9]{10}$">
                           <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                            <div *ngIf="ph.errors.required">
+                            Phone number is required.
+                            </div>
                             <div *ngIf="ph.errors.pattern">
                               Enter valid phone number eg. +12032342345.
                             </div>
@@ -472,7 +475,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                State</label>
+                                Province</label>
                               <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID" name="stateID{{i}}"
                                 placeholder="Select state">
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
@@ -530,13 +533,12 @@
                           <div class="row">
                             <div class="col-lg-2"></div>
                             <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Zip
-                                Code</label>
+                              <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Postal Code</label>
                               <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
                                 placeholder="Enter zipode eg. 7V2 3R4"  #zip="ngModel" pattern="^[A-Z0-9]{6}$">
                                 <div *ngIf="zip.invalid && (zip.dirty || zip.touched)" class="text-danger">
                                   <div *ngIf="zip.errors.pattern">
-                                    Street address must contain capital letters or numbers and no special character.
+                                    Zip code can contain capital letters or numbers and no special characters.
                                   </div>
                                 </div>
                             </div>
@@ -556,8 +558,8 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12 text-right">
-                    <button (click)="addAddress();" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Add Another
-                      Address</button>
+                    <a href="javascript:;" (click)="addAddress()" class="btn btn-success"><i class="fa fa-plus fa-fw"></i> Add Another
+                      Address</a>
                   </div>
                 </div>
                 <div class="row">
@@ -565,17 +567,16 @@
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
                       Detail</label>
                   </div>
-
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]+$"
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
                           placeholder="eg. XYZ Bank">
                           <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
-                              Branch name must not contain special characters.
+                              Branch name must be between 2 to 30 characters and must not contain special characters.
                             </div>
                           </div>
                       </div>
