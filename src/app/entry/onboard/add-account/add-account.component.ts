@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
 import { exit } from 'process';
+import { Auth } from 'aws-amplify';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -14,7 +15,7 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  // @ViewChild('carrierForm', null) carrierForm: NgForm;
+// @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   CCC = '';
@@ -45,7 +46,7 @@ export class AddAccountComponent implements OnInit {
     dryVans: 0,
     flatbed: 0,
     reefers: 0,
-    totalFleets: 0,
+    totalFleets: 1,
     trailers: 0,
     trucks: 0,
   };
@@ -97,17 +98,9 @@ export class AddAccountComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-  // front end validation
-  errorEIN = false;
-  errorMC = false;
-  errorDOT = false;
-  errorCCC = false;
-  errorSCAC = false;
-  errorRouting = false;
-  errorTransit = false;
-  errorInstitution = false;
-  errorAccount = false;
   yardAddress: boolean;
+  fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
   constructor(private apiService: ApiService, private toaster: ToastrService, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -118,6 +111,13 @@ export class AddAccountComponent implements OnInit {
     $(document).ready(() => {
       this.carrierForm = $('#carrierForm').validate();
     });
+  }
+  // Show password
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  togglecpwdfieldTextType() {
+    this.cpwdfieldTextType = !this.cpwdfieldTextType;
   }
   /**
    * address
@@ -356,6 +356,7 @@ export class AddAccountComponent implements OnInit {
         },
         bank: this.bank
       };
+      console.log('data', data);
       // create form data instance
       const formData = new FormData();
       // append photos if any
@@ -370,7 +371,7 @@ export class AddAccountComponent implements OnInit {
           from(err.error)
             .pipe(
               map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
+                // val.message = val.message.replace(/".*"/, 'This Field');
                 this.errors[val.context.key] = val.message;
               })
             )
@@ -418,128 +419,6 @@ export class AddAccountComponent implements OnInit {
   }
 
   // FRONT END VALIDATION
-  EINValidation(e) {
-    const EIN = e.target.value;
-    if (EIN.length == 0) {
-      this.errorEIN = false;
-    } else {
-      if (EIN.length != 9) {
-        this.errorEIN = true;
-      }
-      else {
-        this.errorEIN = false;
-      }
-    }
 
-  }
-  MCValidation(e) {
-    const MC = e.target.value;
-    if (MC.length == 0) {
-      this.errorMC = false;
-    } else {
-      if (MC.length != 6) {
-        this.errorMC = true;
-      }
-      else {
-        this.errorMC = false;
-      }
-    }
-  }
-  DOTValidation(e) {
-    const DOT = e.target.value;
-    if (DOT.length === 0) {
-      this.errorDOT = false;
-    } else {
-      if (DOT.length !== 8) {
-        this.errorDOT = true;
-      }
-      else {
-        this.errorDOT = false;
-      }
-    }
-  }
 
-  CCCValidation(e) {
-    const CCC = e.target.value;
-    if (CCC.length === 0) {
-      this.errorCCC = false;
-    } else {
-      if (CCC.length !== 4) {
-        this.errorCCC = true;
-      }
-      else {
-        this.errorCCC = false;
-      }
-    }
-  }
-  SCACValidation(e) {
-    const SCAC = e.target.value;
-    if (SCAC.length === 0) {
-      this.errorSCAC = false;
-    } else {
-      if (SCAC.length !== 4) {
-        this.errorSCAC = true;
-      }
-      else {
-        this.errorSCAC = false;
-      }
-    }
-  }
-
-  routingValidation(e) {
-    const routing = e.target.value;
-    if (routing.length === 0) {
-      this.errorRouting = false;
-    } else {
-      if (routing.length !== 9) {
-        this.errorRouting = true;
-      }
-      else {
-        this.errorRouting = false;
-      }
-    }
-  }
-  transitValidation(e) {
-    const transit = e.target.value;
-    if (transit.length === 0) {
-      this.errorTransit = false;
-    } else {
-      if (transit.length !== 9) {
-        this.errorTransit = true;
-      }
-      else {
-        this.errorTransit = false;
-      }
-    }
-  }
-  institutionValidation(e) {
-    const instiution = e.target.value;
-    if (instiution.length === 0) {
-      this.errorInstitution = false;
-    } else {
-      if (instiution.length !== 3) {
-        this.errorInstitution = true;
-      }
-      else {
-        this.errorInstitution = false;
-      }
-    }
-  }
-  accountValidation(e) {
-    const account = e.target.value;
-    if (account.length === 0) {
-      this.errorAccount = false;
-    } else {
-      if (account.length > 12 || account.length < 7) {
-        this.errorAccount = true;
-      }
-      else {
-        this.errorAccount = false;
-      }
-    }
-  }
-  userNameValidationFn(e) {
-    const newString = e.target.value;
-    this.userName = newString.toLowerCase();
-  }
 }

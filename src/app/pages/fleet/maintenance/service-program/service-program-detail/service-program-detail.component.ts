@@ -14,7 +14,7 @@ declare var $: any;
 })
 export class ServiceProgramDetailComponent implements OnInit {
   Title = 'Add';
-  allVehicles = [];
+  allVehicles = []; 
   programs = [];
   vehicles = [];
   programID;
@@ -172,7 +172,7 @@ export class ServiceProgramDetailComponent implements OnInit {
   fetchAllVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
-        this.allVehicles = [];
+        this.allVehicles = result.Items;
         if(this.vehicles) {
           this.updateVehicles(result.Items, this.programs[0].vehicles);
         }

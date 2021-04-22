@@ -48,7 +48,7 @@ export class EditProfileComponent implements OnInit {
     dryVans: 0,
     flatbed: 0,
     reefers: 0,
-    totalFleets: 0,
+    totalFleets: 1,
     trailers: 0,
     trucks: 0,
   };

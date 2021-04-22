@@ -105,8 +105,8 @@
                   
                   <div class="form-row">
                      <div class="form-group col-md-12">
-                        <label class="font-weight-bold control-label">Select Service Task</label>
-                        <ng-select [(ngModel)]="programData.serviceTask" name="serviceTask" style="width: 100%;">
+                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Select Service Task</label>
+                        <ng-select placeholder="Select Service Task" [(ngModel)]="programData.serviceTask" name="serviceTask" style="width: 100%;">
                            <ng-option *ngFor="let item of allTasks;" value="{{item.taskID}}">{{item.taskName}}</ng-option>
                         </ng-select>
                      </div>
@@ -116,10 +116,10 @@
                      <div class="col-lg-12">
                         <div class="row">
                            <div class="col-lg-6">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time</label>
+                              <label class="control-label font-weight-bold labelmt text-3 text-dark">Repeat By Time</label>
                               <div class="row">
                                  <div class="col-lg-6">
-                                    <input [(ngModel)]="programData.repeatByTime" name="repeatByTime" type="text" class="form-control">
+                                    <input placeholder="eg. 1,2" [(ngModel)]="programData.repeatByTime" name="repeatByTime" type="text" class="form-control">
                                  </div>
                                  <div class="col-lg-6 pl-0">
                                     <select [(ngModel)]="programData.repeatByTimeUnit" name="repeatByTimeUnit" class="form-control populate" tabindex="-1" aria-hidden="true">
@@ -133,8 +133,8 @@
                               </div>
                            </div>
                            <div class="col-lg-6">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer miles</label>
-                              <input [(ngModel)]="programData.repeatByOdometer" name="repeatByOdometer" type="text" class="form-control" value="">
+                              <label class="control-label font-weight-bold labelmt text-3 text-dark">Repeat By Odometer miles</label>
+                              <input placeholder="eg. 4500" [(ngModel)]="programData.repeatByOdometer" name="repeatByOdometer" type="text" class="form-control" value="">
                            </div>
                         </div>
                      </div>
@@ -164,8 +164,8 @@
                <form class="form-horizontal form-bordered" id="vehicleForm" method="get">
                   <div class="form-row">
                      <div class="form-group col-md-12">
-                        <label class="font-weight-bold control-label">Select Vehicle</label>
-                        <ng-select [(ngModel)]="vehicleData" name="vehicleData" [multiple]="true" class="form-control populate">
+                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Select Vehicle</label>
+                        <ng-select placeholder="Select Vehicle" [(ngModel)]="vehicleData" name="vehicleData" [multiple]="true" class="form-control populate">
                            <ng-option *ngFor="let vehicle of allVehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                         </ng-select>
                      </div>
