@@ -570,6 +570,7 @@ export class AddTripComponent implements OnInit {
             this.allFetchedOrders.map(function (v) {
                
                 if (element == v.orderID) {
+                    current.tripData.orderType = v.orderMode;
                     calculateBy = v.milesInfo.calculateBy;
                     totalMilesOrder += parseFloat(v.milesInfo.totalMiles);
                     
@@ -1197,7 +1198,7 @@ export class AddTripComponent implements OnInit {
     }
 
     changeOrderTab(tabType) {
-        this.tripData.orderType = tabType;
+        // this.tripData.orderType = tabType;
     }
 
     fetchOrders() {

@@ -145,11 +145,10 @@
                                     <tr>
 
                                        <th>Trip#</th>
-                                       <!-- <th>SCAC Code</th>                                           -->
-
                                        <th>Shipment#</th>
-                                       <th>Shipment Type</th>
-                                       <th  width="8%">Est. Date/Time</th>
+                                       <th>Shipment type</th>
+                                       <th  width="8%">Est. date/time</th>
+                                       <th>Port of entry</th>
                                        <th>Driver</th>
                                        <th>Vehicle</th>
                                        <th>Asset</th>
@@ -161,7 +160,7 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngIf="ACEList.length == 0" class="text-center">
-                                       <td colspan="11">{{ dataMessage }}</td>
+                                       <td colspan="12">{{ dataMessage }}</td>
                                     </tr>
                                     <tr *ngFor = "let aceManifest of ACEList;">
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
@@ -170,6 +169,7 @@
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{ aceManifest.usPortOfArrival }}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.entryID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
@@ -210,9 +210,10 @@
                                  <thead>
                                     <tr>
                                        <th>Trip#</th>
-                                       <th>Cargo Control#</th>
-                                       <th>Shipment Type</th>
-                                       <th  width="8%">Est. Date/Time</th>
+                                       <th>Cargo control#</th>
+                                       <th>Shipment type</th>
+                                       <th  width="8%">Est. date/time</th>
+                                       <th>Port of entry</th>
                                        <th>Driver</th>
                                        <th>Vehicle</th>
                                        <th>Asset</th>
@@ -224,13 +225,14 @@
                                  </thead>
                                  <tbody>
                                     <tr *ngIf="ACIList.length == 0" class="text-center">
-                                       <td colspan="11">{{ dataMessageACI }}</td>
+                                       <td colspan="12">{{ dataMessageACI }}</td>
                                     </tr>
                                     <tr *ngFor = "let aciManifest of ACIList;">
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{ aciManifest.portOfEntry }}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span>{{driversList[aciManifest.mainDriver]}}</span><span *ngIf="aciManifest.coDrivers.length>0"><span *ngFor = "let driver of aciManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
