@@ -146,12 +146,13 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchSelectedIssues(issueIDs) {
-    issueIDs = JSON.stringify(issueIDs);
-    this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
+    if(issueIDs.length > 0) {
+      issueIDs = JSON.stringify(issueIDs);
+      this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
       .subscribe((result: any) => {
-        console.log('selectedIssues', result);
         this.issuesObject = result;
       });
+    }
   }
 
   fetchUsers(){
