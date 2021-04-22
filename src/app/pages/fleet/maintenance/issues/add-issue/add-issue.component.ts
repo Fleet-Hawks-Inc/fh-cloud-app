@@ -9,6 +9,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 declare var $: any;
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-add-issue',
   templateUrl: './add-issue.component.html',
@@ -27,12 +29,14 @@ export class AddIssueComponent implements OnInit {
   unitID = '';
   unitType = 'vehicle';
   currentStatus = 'OPEN';
-  reportedDate: NgbDateStruct;
+  reportedDate = moment().format('YYYY-MM-DD');
   description = '';
   odometer: number;
   reportedBy = '';
   assignedTo = '';
   carrierID;
+  fetchedUnitID;
+  fetchedUnitType;
   vehicles = [];
   assets = [];
   contacts = [];
@@ -116,8 +120,17 @@ export class AddIssueComponent implements OnInit {
       return new Date().toISOString().split('T')[0];
     }
     onChangeUnitType(value: any) {
-      this.unitType = value;
-      if(this.issueID){
+      if (this.issueID) {
+        if(value != this.fetchedUnitType){
+          this.unitID = '';
+          this.unitType = value;
+        }
+        else{
+          this.unitID = this.fetchedUnitID;
+          this.unitType = this.fetchedUnitType;
+        }
+      } else {
+        this.unitType = value;
         this.unitID = '';
       }
 
@@ -137,6 +150,7 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
+    console.log('data', data);
     // create form data instance
     const formData = new FormData();
 
@@ -232,6 +246,8 @@ hideErrors() {
       this.issueID = this.issueID;
       this.issueName = result.issueName;
       this.unitID = result.unitID;
+      this.fetchedUnitID = result.unitID;
+      this.fetchedUnitType = result.unitType;
       this.unitType = result.unitType;
       this.currentStatus = result.currentStatus;
       this.reportedDate = result.reportedDate;
@@ -241,7 +257,6 @@ hideErrors() {
       this.assignedTo = result.assignedTo;
       this.existingPhotos = result.uploadedPhotos;
       this.existingDocs = result.uploadedDocs;
-
       if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
         this.issueImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
@@ -275,7 +290,7 @@ setSrcValue(){
     this.hasSuccess = false;
     const data = {
       issueID: this.issueID,
-      issueName: this.issueName,
+      issueName: this.issueName.trim(),
       unitID: this.unitID,
       unitType: this.unitType,
       currentStatus: this.currentStatus,

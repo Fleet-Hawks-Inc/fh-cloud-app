@@ -27,7 +27,7 @@
                   <div class="row">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset
-                        Name/Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification"
                         class="form-control" placeholder="eg. XYZ,123 etc.">
                     </div>
@@ -57,9 +57,10 @@
                   <div class="row">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                          data-placement="top" title="Vehicle Identification Number."></i></label>
                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                        placeholder="Enter VIN number of the asset" class="form-control">
+                        placeholder="15 digits Alphanumeric , eg. 78678678678678689" class="form-control">
                     </div>
                   </div>
                   <div class="row">
@@ -68,7 +69,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Start Date<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input type="text" (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
-                        [(ngModel)]="assetsData.startDate" name="startDate" placeholder="Enter Start Date of the asset"
+                        [(ngModel)]="assetsData.startDate" name="startDate" placeholder="yyyy/mm/dd"
                         class="form-control">
                     </div>
                   </div>
@@ -120,7 +121,7 @@
                       </ng-select>
                     </div>
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Asset
+                      <label class="control-label font-weight-bold text-lg-right pt-2">
                         Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <ng-select [(ngModel)]="assetsData.assetDetails.currentStatus" name="assetDetails.currentStatus"
                         placeholder="Select asset status">
@@ -172,10 +173,10 @@
 						  <div class="col-lg-6 pl-0">
 							<ng-select [(ngModel)]="assetsData.assetDetails.heightUnit" name="assetDetails.heightUnit"
 							  placeholder="Select unit">
-  
+
 							  <ng-option value="Feet">Feet</ng-option>
-							  <ng-option value="Meters">Meters</ng-option>
-  
+							  <ng-option value="Meter">Meter</ng-option>
+
 							</ng-select>
 						  </div>
 						</div>
@@ -199,11 +200,11 @@
                         </div>
                       </div>
                     </div>
-					
+
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Axles&nbsp; <span
                           class="text-1 optional-label-color">(optional)</span></label>
-                      <ng-select [(ngModel)]="assetsData.assetDetails.axle" placeholder="Select Axles"
+                      <ng-select [(ngModel)]="assetsData.assetDetails.axle" placeholder="eg. 5,10"
                         name="assetDetails.axle">
                         <ng-option value="1">1</ng-option>
                         <ng-option value="2">2</ng-option>
@@ -220,13 +221,13 @@
                   </div>
                   <div class="row mt-2">
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR<i
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">GVWR <i
                           class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                           title="The Gross Vehicle Weight Rating is basically the maximum total safe weight of your vehicle"></i>&nbsp;
                         <span class="text-1 optional-label-color">(optional)</span></label>
                       <div class="row">
                         <div class="col-lg-6">
-                          <input [(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
+                          <input  placeholder="eg. 100,200 etc"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
                             class="form-control">
                         </div>
                         <div class="col-lg-6 pl-0">
@@ -241,13 +242,13 @@
                     </div>
 
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR<i
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">GAWR <i
                           class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                           title="The Gross Axle Weight Rating is a unit that is applied to all kinds of vehicles esp vehicles that have multiple axles"></i>&nbsp;
                         <span class="text-1 optional-label-color">(optional)</span></label>
                       <div class="row">
                         <div class="col-lg-6">
-                          <input [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
+                          <input  placeholder="eg. 100,200 etc" [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
                             class="form-control">
                         </div>
                         <div class="col-lg-6 pl-0">
@@ -283,7 +284,7 @@
                     <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'Owner Operator'">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
 
-                      <ng-select [(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
+                      <ng-select placeholder="Select Owner Operator"[(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
                         class="form-control populate ">
                         <ng-option *ngFor="let item of ownOperators | async" value="{{item.operatorID}}">
                           {{item.companyName}}
@@ -313,7 +314,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <ng-select [(ngModel)]="assetsData.assetDetails.licenceStateID" name="assetDetails.licenceStateID"
-                        class="form-control populate" placeholder="Select state">
+                        class="form-control populate" placeholder="Select Province">
                         <ng-option *ngFor="let state of states" value="{{state.stateID}}">
                           {{state.stateName}}
                         </ng-option>
@@ -326,7 +327,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                         Plate Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber"
-                        placeholder="Enter licence plate number of asset" name="assetDetails.licencePlateNumber"
+                        placeholder="eg. 345678 " name="assetDetails.licencePlateNumber"
                         class="form-control" type="text">
                     </div>
                   </div>
@@ -352,20 +353,16 @@
 
                   <div class="row ">
                     <div class="col-lg-10">
-                      <div class="checkbox mt-4">
-                        <label
-                          class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
-                          the Inspection Form</label>
-                        <div class="d-flex">
-                          <select [(ngModel)]="inspectionFormID" [ngModelOptions]="{standalone: true}"
-                            class="form-control" placeHolder="Select Inspectin Form">
-                            <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
-                              {{iForm.inspectionFormName}}</option>
-                          </select>
-                          <a href="/compliance/dvir/inspection-add" target="_blank"
-                            class="modal-with-form btn btn-success"><i class="fas fa-plus"></i></a>
-                        </div>
-                      </div>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                        the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                        <ng-option *ngFor="let data of inspectionForms" value="{{ data.inspectionFormID }}"> {{
+                          data.inspectionFormName }}</ng-option>
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-2  mar-top-37 pl-0">
+                      <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
+                          class="fas fa-plus"></i></a>
                     </div>
                   </div>
 
@@ -391,7 +388,7 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                         Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
-                        type="text" placeholder="DD/MM/YYYY" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                        type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
                         class="form-control">
                     </div>
                     <div class="col-lg-5">
@@ -418,7 +415,7 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Date of
                         Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
-                        placeholder="DD/MM/YYYY" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
+                        placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
                         class="form-control">
                     </div>
                     <div class="col-lg-5">
@@ -473,7 +470,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
-                        placeholder="Enter ACI ID of the asset" type="text" class="form-control">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control">
                     </div>
 
                   </div>
@@ -484,7 +481,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
-                        placeholder="Enter ACE ID of the asset" type="text" class="form-control">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control">
                     </div>
 
                   </div>
@@ -581,11 +578,11 @@
           </div>
         </div>
       </div>
-     
+
     </section>
   </div>
 </section>
-
+<!-- GROUP MODAL -->
 <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
@@ -600,12 +597,15 @@
         <div class="card-body p-0">
           <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
             <div class="form-row">
-              <div class="form-group border-0 col-lg-12 mb-0">
+              <div class="col-lg-12">
                 <label class="control-label font-weight-bold">Group Name</label>
                 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" placeholder="Enter group name"
                   class="form-control">
               </div>
-              <div class="form-group col-lg-12">
+
+            </div>
+            <div class="form-row mt-2">
+              <div class="col-lg-12">
                 <label class="control-label font-weight-bold">Group Members&nbsp;<span
                     class="text-1 optional-label-color">(optional)</span></label>
                 <ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers"
@@ -615,24 +615,20 @@
                 </ng-select>
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group col-lg-12">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
-                    <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
-                      id="comment" placeholder="Enter group description"></textarea>
-                  </div>
-                </div>
+            <div class="form-row mt-2">
+              <div class="col-lg-12">
+                <label class="control-label font-weight-bold text-lg-right">Description&nbsp; <span
+                    class="text-1 optional-label-color">(optional)</span></label>
+                <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
+                  id="comment" placeholder="Enter group description"></textarea>
               </div>
             </div>
           </form>
         </div>
       </div>
       <div class="modal-footer text-right">
-        <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
         <a class="btn btn-default" data-dismiss="modal">Cancel</a>
+        <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
       </div>
     </div>
   </div>

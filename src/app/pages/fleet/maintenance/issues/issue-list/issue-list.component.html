@@ -6,7 +6,7 @@
             <header class="page-header">
                 <div class="row px-2" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2 pr-0 pl-0">
-                        <div class="input-group input-group-sm mb-3"> 
+                        <div class="input-group input-group-sm mb-3">
                             <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
                                 <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
                             </ng-select>
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2 text-right pr-2 page-buttons">
-                        <div class="btn-group flex-wrap" *ngIf="!environment">
+                        <!-- <div class="btn-group flex-wrap" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">
                                 Actions<span class="caret"></span>
@@ -61,7 +61,7 @@
                                 <a class="dropdown-item text-1" href="">Import</a>
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
-                        </div>
+                        </div> -->
                         <a [routerLink]="['/fleet', 'maintenance', 'issues', 'add']" class="btn btn-success btn-sm ml-2"
                             style="color: white"><i class="fas fa-plus"></i> Add Issue</a>
                     </div>
@@ -75,14 +75,14 @@
                                 <table class="row-border hover table table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Unit Name</th>
+                                            <th>Unit Type</th>
                                             <th>Vehicle/Asset</th>
-                                            <th>Issue</th>
+                                            <th>Issue Name</th>
                                             <th>Reported On</th>
                                             <th>Reported By</th>
                                             <th>Assigned To</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $: any;
 })
 
 export class RouteListComponent implements OnInit {
-  
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   title = "Permanent Routes";
   routes = [];
@@ -64,6 +65,8 @@ export class RouteListComponent implements OnInit {
         complete: () => {},
         error: () => {},
         next: (result: any) => {
+          this.routes = [];
+          this.dataMessage = Constants.FETCHING_DATA;
           this.routeDraw = 0;
           this.lastEvaluatedKey = '';
           this.fetchRoutes();
@@ -103,6 +106,10 @@ export class RouteListComponent implements OnInit {
         } else {
           this.routeNext = true;
           this.lastEvaluatedKey = '';
+          this.routeEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.routeEndPoint) {
           this.routeEndPoint = this.totalRecords;
         }
 

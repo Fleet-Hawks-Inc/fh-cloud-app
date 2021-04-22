@@ -5,27 +5,23 @@
 </style>
 <section class="body">
    <div class="inner-wrapper">
-      <section role="main" class="content-body pagebody">
-         <header class="page-header pr-5">
-
-            <div class="row pr-1 mr-1" style="padding-top:10px;">
+       <section role="main" class="content-body pagebody">
+         <header class="page-header">
+         
+            <div class="row" style="padding-top:10px;">
                <div class="col-md-3 col-lg-3">
                   <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Routing &amp; Dispatch Overview</h4>
                </div>
-               <div class="col-md-9 col-lg-9 text-right pr-1">
-                  <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                     routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
+         
+               <div class="col-md-9 col-lg-9 text-right">
                   <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
                      routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
                   <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
                      routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                  <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"
-                     routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
+                  <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;" routerLink="/dispatch/routes/add"><i
+                        class="fas fa-plus"></i> Permanent Route</a>
                </div>
             </div>
-
-
-
          </header>
          <div class="routing-overview__wrapper m-3">
             <div class="row">
@@ -129,20 +125,20 @@
                         </div>
                      </div>
                   </div>
-                  <div class="row mt-3">
+                  <div class="row mt-3 boxes">
                      <div class="col-12 pl-2">
                         <div class="bg-white p-2">
                            <p class="mb-2 text-4 font-weight-bold text-dark">Total Manifest Count</p>
 
                            <div class="row my-4">
-                              <div class="col-6 pr-1">
+                              <div class="col-6 pr-1" routerLink="/dispatch/cross-border/eManifests">
                                  <div
                                     class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                     <h4 class="m-0 font-weight-bold">ACE</h4>
                                     <h4 class="m-0">{{ aceManifestCount }}</h4>
                                  </div>
                               </div>
-                              <div class="col-6 pl-1">
+                              <div class="col-6 pl-1" routerLink="/dispatch/cross-border/eManifests">
                                  <div
                                     class="grey-bg py-2 p-3 d-flex justify-content-between align-items-center text-dark">
                                     <h4 class="m-0  font-weight-bold">ACI</h4>
@@ -183,8 +179,16 @@
                <div class="col-4 pl-1">
                   <div class="bg-white p-3 ">
                      <p class="mb-2 text-4 font-weight-bold text-dark">Activity Timelines</p>
+                     <div class="noactivity-dh align-items-center" *ngIf="totalRecords == 0">
+                        <img src="assets/img/noat.png">
+                        <div class="d-flex align-items-center justify-content-center">
+                           <p class="font-weight-bold">
+                              No activities found
+                           </p>
+                        </div>
+                     </div>
                      <div class="timeline dispatch-timeline timeline-simple changelog pb-3 mb-4"
-                        style="max-height: 709px;overflow-x: auto;">
+                        style="max-height: 709px;overflow-x: auto;" *ngIf="totalRecords > 0">
                         <div class="tm-body text-dark py-0">
                            <ol class="tm-items" *ngIf="activities.length > 0">
                               <li *ngFor="let data of activities">

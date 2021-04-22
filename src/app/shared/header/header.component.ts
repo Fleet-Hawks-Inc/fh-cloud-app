@@ -13,10 +13,11 @@ export class HeaderComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';
-  currentUser:any = '';
+  currentUser: any = '';
   carrierName: any;
   isCarrierID: any;
-  userRole:any = '';
+  currentCarrierID = '';
+  userRole: any = '';
   carriers: any = [];
   smallName: string;
   carrierBusiness;
@@ -29,31 +30,35 @@ export class HeaderComponent implements OnInit {
         val = activeTab;
       }
       this.navSelected = val;
+
+      console.log('this.navSelected',this.navSelected);
     });
   }
 
   ngOnInit() {
     this.getCurrentuser();
     this.fetchCarrier();
-    this.getLoggedUserForCloud();
-    
   }
 
   onNavSelected(nav: string) {
-    localStorage.setItem('active-header', nav); 
+    localStorage.setItem('active-header', nav);
     this.navClicked.emit(nav);
     this.sharedService.activeParentNav.next(nav);
   }
 fetchCarrier(){
   this.apiService.getData('carriers/getCarrier')
       .subscribe((result: any) => {
-        this.carriers = result.Items[0];
-        this.logoSrc = 'assets/img/logo.png';
-        // console.log("this.carriers",this.carriers)
-        // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
-        //   this.logoSrc = 'assets/img/logo.png';
-        // }
+        if(result.Items.length > 0){
+          this.carriers = result.Items[0];
+          this.currentCarrierID = this.carriers.carrierID;
+          this.logoSrc = 'assets/img/logo.png';
+          // console.log("this.carriers",this.carriers)
+          // this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+          // if(this.logoSrc === undefined || this.logoSrc === null || this.logoSrc === '' || this.logoSrc === 'undefined') {
+          //   this.logoSrc = 'assets/img/logo.png';
+          // }
+        }
+        
       });
 }
 
@@ -68,10 +73,10 @@ fetchCarrier(){
     localStorage.removeItem('issueVehicleID');
     localStorage.removeItem('carrierID')
     localStorage.removeItem('active-header');
-    
+
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
-     
+
   }
 
   getCurrentuser = async () => {
@@ -81,21 +86,5 @@ fetchCarrier(){
     let outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join('');
   }
-  /**
-   * show 'login as' div for cloud admin
-   */
-  async getLoggedUserForCloud() {
-    this.isCarrierID = localStorage.getItem('carrierID');
-    if(this.isCarrierID != undefined && this.isCarrierID != null) {
-      this.carrierBusiness = localStorage.getItem('carrierBusiness');
-    }
-    
-  }
-
-  switchCarrier(){
-    localStorage.removeItem('carrierID');
-    this.router.navigateByUrl('/carriers');
-    localStorage.removeItem('loggin-carrier');
-  }
-
+  
 }

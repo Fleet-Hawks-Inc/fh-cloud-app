@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
+import { environment } from 'src/environments/environment';
+import { ToastrService } from 'ngx-toastr';
 declare var $: any;
 
 @Component({
@@ -12,6 +14,7 @@ declare var $: any;
   styleUrls: ['./order-detail.component.css']
 })
 export class OrderDetailComponent implements OnInit {
+  environment = environment.isFeatureEnabled;
   docs = [];
   localPhotos = [];
   uploadedDocs = [];
@@ -133,7 +136,9 @@ export class OrderDetailComponent implements OnInit {
   balance = 0;
 
   assetTypes = {};
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
+  milesArr = [];
+  allPhotos = [];
+  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
@@ -146,7 +151,6 @@ export class OrderDetailComponent implements OnInit {
   fetchAssetTypes(){
     this.apiService.getData('assetTypes/get/list').subscribe((result) => {
       this.assetTypes = result;
-      console.log(this.assetTypes);
 
     });
   }
@@ -162,7 +166,7 @@ export class OrderDetailComponent implements OnInit {
           result = result.Items[0];
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
-          this.reference = '';
+          this.reference = result.reference;
           this.creation = `${result.creationDate } ${result.creationTime }`;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
@@ -173,7 +177,7 @@ export class OrderDetailComponent implements OnInit {
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
           this.additionalDetails.trailerType = result.additionalDetails.trailerType;
           this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
-          this.charges.freightFee = result.charges.freightFee;
+          this.charges = result.charges;
           this.discount = result.discount;
           this.milesInfo = result.milesInfo;
           this.taxesInfo = result.taxesInfo;
@@ -186,20 +190,39 @@ export class OrderDetailComponent implements OnInit {
             }
           }
 
+          this.milesArr = [];
+          console.log('result.shippersReceiversInfo', result.shippersReceiversInfo);
+
+          // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
+          //   const element = result.shippersReceiversInfo[p];
+            
+          // }
+
+          result.shippersReceiversInfo.map((v) => {
+            let newArr = [];
+            newArr['receivers'] = [];
+            newArr['shippers'] = [];
+            v.receivers.map((rec) =>{
+              newArr['receivers'].push(rec);
+            })
+
+            v.shippers.map((ship) =>{
+              newArr['shippers'].push(ship);
+            })
+
+            this.milesArr.push(newArr);
+          })
+          console.log('this.milesArr', this.milesArr);
+
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
-          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.amount) ? 0 : this.charges.accessorialFeeInfo.amount;
-          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.amount) ? 0 : this.charges.accessorialDeductionInfo.amount;
+          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
+          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-          console.log('freightFee', freightFee);
-          console.log('fuelSurcharge',fuelSurcharge);
-          console.log('accessorialFeeInfo', accessorialFeeInfo);
-          console.log('accessorialDeductionInfo', accessorialDeductionInfo);
-          console.log('tax', this.taxesTotal);
-
-          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(accessorialDeductionInfo) + parseInt(this.taxesTotal);
-          this.advances = result.advance;
-          this.balance = this.totalCharges - this.advances;
+          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          // this.advances = result.advance;
+          // this.balance = this.totalCharges - this.advances;
+          this.balance = this.totalCharges;
 
           if (
             result.uploadedDocs != undefined &&
@@ -208,6 +231,7 @@ export class OrderDetailComponent implements OnInit {
             this.docs = result.uploadedDocs.map(
               (x) => `${this.Asseturl}/${result.carrierID}/${x}`
             );
+            this.allPhotos = result.uploadedDocs;
           }
           // this.orderData = result['Items'];
           
@@ -286,14 +310,20 @@ export class OrderDetailComponent implements OnInit {
   fetchCustomersByID() {
     this.apiService.getData(`customers/${this.customerID}`).subscribe((result: any) => {
       result = result.Items[0];
+      this.customerName = `${result.companyName}`;
 
-      this.customerName = `${result.firstName} ${result.lastName}`
-      this.customerAddress = result.address[0].address1;
+      if(result.address[0].manual) {
+        this.customerAddress = result.address[0].address1;
+      } else {
+        this.customerAddress = result.address[0].userLocation;
+      }
+      
       this.customerCityName = result.address[0].cityName;
       this.customerStateName = result.address[0].stateName;
       this.customerCountryName = result.address[0].countryName;
       this.customerPhone = result.address[0].phone;
       this.customerEmail = result.address[0].email;
+      this.customerfax = result.additionalContact.fax;
     });
   }
 
@@ -345,12 +375,18 @@ export class OrderDetailComponent implements OnInit {
    */
   selectDocuments(event) {
     let files = [...event.target.files];
-    
-    for (let i = 0; i < files.length; i++) {
-      this.uploadedDocs.push(files[i])
-    }
- 
+    let totalCount = this.allPhotos.length+files.length;
 
+    if(totalCount >= 4) {
+      this.uploadedDocs = [];
+      $('#bolUpload').val('');
+      this.toastr.error('Only 4 documents can be uploaded');
+      return false;
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        this.uploadedDocs.push(files[i])
+      }
+  
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
@@ -358,20 +394,20 @@ export class OrderDetailComponent implements OnInit {
         }
         reader.readAsDataURL(files[i]);
       }
-
-    // create form data instance
-    const formData = new FormData();
-
-    //append photos if any
-    for(let i = 0; i < this.uploadedDocs.length; i++){
-      formData.append('uploadedDocs', this.uploadedDocs[i]);
-    }
-
-    this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
-
-    })
-  }
   
+      // create form data instance
+      const formData = new FormData();
+  
+      //append photos if any
+      for (let i = 0; i < this.uploadedDocs.length; i++) {
+        formData.append('uploadedDocs', this.uploadedDocs[i]);
+      }
+  
+      this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+      })
+    }
+    
+  }
 
   setSrcValue(){}
 

@@ -104,7 +104,7 @@ export class DispatchOverviewComponent implements OnInit {
   aciGraphData = [];
   allActivities = [];
 
-  totalRecords = 10;
+  totalRecords = 0;
   pageLength = 10;
   lastEvaluatedKey:any = '';
   dispatchLength = 0;
@@ -227,12 +227,16 @@ export class DispatchOverviewComponent implements OnInit {
       this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
     }
     
-    this.apiService.getData('auditLogs?lastEvaluatedKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
+        result.Items.map((k)=> {
+          k.eventParams.message = k.eventParams.message.replace('shippers','consigner');
+          k.eventParams.message = k.eventParams.message.replace('receivers','consignee');
+        })
         if(this.pageload){
           result.Items.map((v)=> {
             v.rest = v.eventParams.message.substring(0, v.eventParams.message.lastIndexOf(" ") + 1);

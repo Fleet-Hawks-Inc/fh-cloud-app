@@ -170,13 +170,15 @@ export class GeofenceListComponent implements OnInit {
     this.suggestedGeofences = [];
   }
 
-
   deactivateGeofence(value, geofenceID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
       .getData(`geofences/isDeleted/${geofenceID}/${value}`)
       .subscribe((result: any) => {
         this.geofences = [];
+        this.geoDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.toastr.success('Geofence deleted successfully!');
         this.fetchLogsCount();
         this.initDataTable();
@@ -238,6 +240,10 @@ export class GeofenceListComponent implements OnInit {
         } else {
           this.geoNext = true;
           this.lastEvaluatedKey = '';
+          this.geoEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.geoEndPoint) {
           this.geoEndPoint = this.totalRecords;
         }
 

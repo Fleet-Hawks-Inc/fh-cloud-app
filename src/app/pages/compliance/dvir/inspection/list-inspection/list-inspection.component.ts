@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-list-inspection',
   templateUrl: './list-inspection.component.html',
@@ -10,13 +11,14 @@ import { ToastrService } from 'ngx-toastr';
 export class ListInspectionComponent implements OnInit {
 public inspectionForms: any;
   constructor(private apiService: ApiService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,) { }
   
 
   ngOnInit() {
     this.fetchInspectionForms();
   }
   fetchInspectionForms = () => {
+    
     this.apiService.getData('inspectionForms').subscribe({
       complete: () => {
       },

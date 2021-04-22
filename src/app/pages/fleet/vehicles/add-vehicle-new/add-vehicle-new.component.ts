@@ -5,10 +5,9 @@ import {map} from 'rxjs/operators';
 import {from} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
-import  Constants  from '../../constants'
+import constants from '../../constants';
 import { ListService } from '../../../../services';
 
 declare var $: any;
@@ -19,7 +18,7 @@ declare var $: any;
   styleUrls: ['./add-vehicle-new.component.css'],
 })
 export class AddVehicleNewComponent implements OnInit {
-  showDriverModal = false
+  showDriverModal = false;
   title = 'Add Vehicle';
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
@@ -36,9 +35,9 @@ export class AddVehicleNewComponent implements OnInit {
  *Group Properties
 */
 groupData = {
-  groupType : Constants.GROUP_VEHICLES,
+  groupType : 'vehicles',
   groupName: '',
-  groupMembers: '',
+  groupMembers: [],
   description: '',
 };
 vehicles= [];
@@ -277,7 +276,7 @@ vehicles= [];
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
 
-    this.vehicleID = this.route.snapshot.params['vehicleID'];
+    this.vehicleID = this.route.snapshot.params[`vehicleID`];
     if (this.vehicleID) {
       this.title = 'Edit Vehicle';
       this.fetchVehicleByID();
@@ -338,12 +337,12 @@ vehicles= [];
       this.fuelTypes = result.Items;
     });
   }
-  gotoVehiclePage() {    
+  gotoVehiclePage() {
     $('#addDriverModelVehicle').modal('show');
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -1830,7 +1829,7 @@ vehicles= [];
             this.fetchGroups();
             this.toastr.success('Group added successfully');
             $('#addGroupModal').modal('hide');
-      this.fetchGroups();
+            this.fetchGroups();
 
           },
         });

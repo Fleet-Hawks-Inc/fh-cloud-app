@@ -38,13 +38,13 @@
                   <form class="form-horizontal form-bordered" method="get">
                      <div class=" row">
                         <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
-                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>                 
-                          
-                              
+                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
+
+
                               <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
                                  </span>{{description}}</div>
-                          
-                        
+
+
                         <div class="col-lg-6">
                            <div class="row">
                               <div class="col-lg-12">
@@ -61,15 +61,15 @@
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reported Date</td>
-                                          <td>{{reportedDate}}</td>
+                                          <td>{{reportedDate | date: 'yyyy-MM-dd'}}</td>
                                        </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Odometer</td>
+                                       <tr *ngIf= "unitType === 'vehicle'">
+                                          <td class="back-color-gray font-weight-bold">Odometer(miles) </td>
                                           <td>{{odometer}}</td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Assigned To</td>
-                                          <td>{{assignedTo}}</td>
+                                          <td>{{usersList[assignedTo]}}</td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -87,7 +87,7 @@
                                     </div>
                                     <hr class="solid mt-2">
                                     <div class="row" *ngFor="let doc of issueDocs;let d= index">
-                                       <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div> 
+                                       <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div>
                                        <div class="col-lg-3 text-right">
                                           <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
                                           <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name)"></i>
@@ -95,7 +95,7 @@
                                     </div>
                                  </div>
                               </div>
-                           </div> 
+                           </div>
                         </div>
                         <div class="col-lg-6">
                            <div class="row">
@@ -109,10 +109,10 @@
                                     <div class="row">
                                        <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
                                           <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
-                                             {{driverList[reportedBy]}}
+                                             {{usersList[reportedBy]}}
                                           </span></div>
                                        <div class="col-lg-3 text-right">
-                                          {{reportedDate}}
+
                                        </div>
                                     </div>
                                  </div>
@@ -128,7 +128,7 @@
                                           <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
                                        </div>
                                     </div>
-                                    <hr class="solid mt-3"> 
+                                    <hr class="solid mt-3">
                                     <div class="row">
                                        <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
                                           <div class="vehicle-photo-box">
@@ -150,7 +150,7 @@
 
                         </div>
                      </div>
-                  </form>               
+                  </form>
                   <!-- VIEW DOCUMENT MODAL -->
                   <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
@@ -161,7 +161,7 @@
                              <span aria-hidden="true">&times;</span>
                            </button>
                          </div>
-                         <div class="modal-body">                          
+                         <div class="modal-body">
                               <div class="form-row">
                                  <div class="form-group col-md-12">
                                     <div>
@@ -169,7 +169,7 @@
                                     </div>
                                  </div>
                               </div>
-                          
+
                          </div>
                          <div class="modal-footer">
                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -177,7 +177,7 @@
                        </div>
                      </div>
                    </div>
-                  <!-- Issue close MODAL -->                 
+                  <!-- Issue close MODAL -->
                   <div class="modal fade" id="issueCloseModal" tabindex="-1" role="dialog" aria-labelledby="issueCloseModalLabel" aria-hidden="true">
                      <div class="modal-dialog" role="document">
                        <div class="modal-content">

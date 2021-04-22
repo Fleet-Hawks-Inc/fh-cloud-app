@@ -47,6 +47,7 @@ import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
+import { MustMatchDirective } from './entry/onboard/must-match.directive';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -68,7 +69,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ConfirmEqualValidatorDirective,
     ErrorComponent,
     UnsavedChangesComponent,
-    AddAccountComponent
+    AddAccountComponent,
+    MustMatchDirective
   ],
   imports: [
     AmplifyAngularModule,

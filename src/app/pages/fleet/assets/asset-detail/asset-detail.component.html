@@ -25,7 +25,7 @@
                                <table class="table table-bordered table-responsive-lg">
                                       <tbody>
                                          <tr>
-                                            <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
+                                            <td width="40%" class="back-color-gray font-weight-bold">Asset Name</td>
                                             <td width="60%" class="text-capitalize">{{assetIdentification}}</td>
                                          </tr>
                                          <tr>
@@ -41,7 +41,7 @@
                                              <td class="text-capitalize">{{startDate}}</td>
                                           </tr>
                                           <tr>
-                                             <td class="back-color-gray font-weight-bold">Asset status</td>
+                                             <td class="back-color-gray font-weight-bold"> Status</td>
                                              <td class="text-capitalize">{{status}}</td>
                                           </tr>
                                            
@@ -90,6 +90,14 @@
                                             <td class="back-color-gray font-weight-bold">Ownership</td>
                                             <td class="text-capitalize">{{ownerShip ? ownerShip : '-'}}</td>
                                          </tr>
+                                         <tr *ngIf="ownerOperatorName != ''">
+                                          <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
+                                             <td class="text-capitalize">{{ownerOperatorName}}</td>
+                                          </tr>
+                                          <tr *ngIf="inspectionFormName != ''">
+                                             <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
+                                                <td class="text-capitalize">{{inspectionFormName ? inspectionFormName : '-'}}</td>
+                                             </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">
                                                Notes
@@ -244,7 +252,7 @@
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
-                                     <td class="text-capitalize">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
+                                     <td class="text-small">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
                                   </tr>
  
                                   <tr>

@@ -1,15 +1,15 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     
                     <div class="col-md-4 col-lg-4">
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                     </div>
                     
-                    <div class="col-md-8  col-lg-8 text-right pr-1">
-                        <a href="javascript:;" routerLink="/dispatch/routes/list" class="btn btn-default"><i class="fas fa-list"></i> All Routes</a>
+                    <div class="col-md-8  col-lg-8 text-right">
+                        <a href="javascript:;" routerLink="/dispatch/routes/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Routes</a>
                     </div>
                 </div>
             </header>
@@ -24,13 +24,13 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeNo"
-                                                    [(ngModel)]="routeData.routeNo" placeholder="Enter route#"> </div>
+                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
-                                                    [(ngModel)]="routeData.routeName" placeholder="Enter route name"> </div>
+                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"> </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
@@ -112,7 +112,7 @@
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter source address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 01,Business Hub Center,New York,USA">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -128,27 +128,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCountry"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCountry"
-                                                    class="form-control" autocomplete="nope"  placeholder="Enter source country">
+                                                    class="form-control" autocomplete="nope"  placeholder="eg. Canada,USA">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceState"
                                                     [(ngModel)]="routeData.sourceInformation.sourceState"
-                                                    class="form-control" placeholder="Enter source state" autocomplete="nope">
+                                                    class="form-control" placeholder="eg. Ontario" autocomplete="nope">
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceCity"
                                                     [(ngModel)]="routeData.sourceInformation.sourceCity"
-                                                    class="form-control" placeholder="Enter source city" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="sourceInformation.sourceZipCode"
-                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="nope" placeholder="Enter source zip code">
+                                                    [(ngModel)]="routeData.sourceInformation.sourceZipCode" autocomplete="nope" placeholder="eg. 66777">
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +165,7 @@
                                                     class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="Enter destination address">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada">
 
                                                 <ul class="p-0 m-0 text-left map-search__results bg-white"
                                                     *ngIf="searchResults">
@@ -181,27 +181,27 @@
                                                     Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCountry"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCountry"
-                                                    class="form-control" placeholder="Enter destination country" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Canada" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                    State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    Province<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationState"
                                                     [(ngModel)]="routeData.destinationInformation.destinationState"
-                                                    class="form-control" placeholder="Enter destination state" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Alberta" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
                                                     City<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationCity"
                                                     [(ngModel)]="routeData.destinationInformation.destinationCity"
-                                                    class="form-control" placeholder="Enter destination city" autocomplete="nope" >
+                                                    class="form-control" placeholder="eg. Calgary" autocomplete="nope" >
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                     Code<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="destinationInformation.destinationZipCode"
-                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="Enter destination zip code" autocomplete="nope" >
+                                                    [(ngModel)]="routeData.destinationInformation.destinationZipCode" placeholder="eg. 66777" autocomplete="nope" >
                                             </div>
                                         </div>
                                     </div>
@@ -220,7 +220,8 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-10" id="recurringRadioDiv" style="display: none;">
+
+                                            <div class="col-lg-10 mt-2" id="recurringRadioDiv" style="display: none;">
                                                 <div class="row mt-2">
                                                     <div class="col-lg-4">
                                                         <div class="radio">
@@ -258,19 +259,19 @@
                                             </div>
 
                                             <div class="col-lg-10" id="recurringDate" style="display: none;" >
-                                                <div class="row mt-2" *ngIf='isDaily'>
+                                                <div class="row" *ngIf='isDaily'>
                                                     <div class="col-lg-10">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-1">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
-                                                            placeholder="Enter start date" (click)="d.toggle()" ngbDatepicker
+                                                            placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
                                                             #d="ngbDatepicker" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
@@ -278,12 +279,13 @@
                                                     <input type="checkbox" name="destinationStop" checked
                                                     [(ngModel)]="destinationStop" (change)="eventCheck($event)" value="yes">
                                                     <label class="control-label font-weight-bold"
-                                                        for="routeCheckBtn">Add Stop(s)</label>
+                                                        for="routeCheckBtn">Add Stop (s)</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row mt-4" *ngIf="mapVisible">
                                     <div class="col-lg-6">
                                         <div class="mapclass vehiclemain" id="map_view">
@@ -292,9 +294,8 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">
-                                            <div class="col-lg-12 pr-0">
-                                                <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information
-                                                </h3>
+                                            <div class="col-lg-12">
+                                                <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information</h3>
                                                 <div class="row">
                                                     <div class="col-lg-4 text-center">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source
@@ -347,6 +348,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-12">
                                                 <div class="row text-dark">
                                                     <h4>Route Stops</h4>
@@ -358,9 +360,7 @@
                                                                 <tr>
                                                                     <td width="5%"></td>
                                                                     <td>
-                                                                        <label
-                                                                            class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
-                                                                            Location</label>
+                                                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop Location</label>
                                                                     </td>
                                                                     <td>
                                                                         <label
@@ -374,13 +374,13 @@
                                                                             class="badge badge-dark mt-2">{{i + 1}}</span>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="row mt-1">
+                                                                        <div class="mt-1">
                                                                             <input name="stopName_{{i}}"
                                                                                 [(ngModel)]="routeData.stops[i].stopName"
                                                                                 (keyup)="searchTerm.next($event);"
                                                                                 class="form-control">
 
-                                                                            <ul class="p-0 m-0 text-left map-search__results bg-white"
+                                                                            <ul class="m-0 text-left map-search__results bg-white"
                                                                                 *ngIf="searchResults">
                                                                                 <li *ngFor="let item of searchResults;">
                                                                                     <a href="javascript:;"
@@ -388,6 +388,7 @@
                                                                                         title="{{item.address.label}}">{{item.address.label}}</a>
                                                                                 </li>
                                                                             </ul>
+
                                                                         </div> 
                                                                     </td>
                                                                     <td>
@@ -413,8 +414,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row text-right">
-                                    <div class="col-lg-12 pr-4">
+                                <div class="row text-right mt-3">
+                                    <div class="col-lg-12 pr-3">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
                                             routerLink="/dispatch/routes/list">Cancel</a>
                                         <button type="button" *ngIf="!routeID" (click)="addRoute()" [disabled]="routeBtnStatus" class="btn btn-success mt-1">Create Route</button>

@@ -22,38 +22,38 @@
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Issue Details</label>
                                 </div>
-                                <div class="col-lg-5 offset-lg-1">
+
+                                <div class="col-lg-12">
                                     <div class="row">
-                                        <div class="col-lg-12">
-                                           <div class="row">
-                                              <div class="col-lg-3">
-                                                 <label class="control-label font-weight-bold text-lg-right"
-                                                    >Unit Type:</label>
-                                              </div>
-                                              <div class="col-lg-6">
-                                                <div class="btn-group-toggle" data-toggle="buttons">
-                                                  <label class="btn btn-outline btn-fleet mr-2" [class.active]="unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
-                                                    <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                                       checked hidden value="vehicle" > Vehicle </label>
-                                                  <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="unitType === 'asset'" (click) = "onChangeUnitType('asset')">
-                                                    <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                                         hidden value="asset" > Asset </label>
-                                                </div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
+                                       <div class="col-lg-3">
+                                          <label class="control-label font-weight-bold text-lg-right"
+                                             >Unit Type:</label>
+                                       </div>
+                                       <div class="col-lg-6">
+                                         <div class="btn-group-toggle" data-toggle="buttons">
+                                           <label class="btn btn-outline btn-fleet mr-2" [class.active]="unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
+                                             <input type="radio" name="unitType" [(ngModel)]="unitType"
+                                                checked hidden value="vehicle" > Vehicle </label>
+                                           <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="unitType === 'asset'" (click) = "onChangeUnitType('asset')">
+                                             <input type="radio" name="unitType" [(ngModel)]="unitType"
+                                                  hidden value="asset" > Asset </label>
+                                         </div>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                <div class="col-lg-5 offset-lg-1">
+                                   
                                      <div class="row pt-2">
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">
                                                 <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                             </ng-select>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID">
 
                                                 <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
@@ -64,7 +64,7 @@
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="Enter issue name eg. brake issue">
+                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="eg. brake issue">
                                        </div>
                                     </div>
                                     <div class="row pt-2">
@@ -88,10 +88,10 @@
 
                                 </div>
                                 <div class="col-lg-5 offset-lg-1">
-                                    <div class="row pt-4" *ngIf="unitType === 'vehicle'">
+                                    <div class="row pt-3" *ngIf="unitType === 'vehicle'">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                class="control-label font-weight-bold font-bold text-lg-right">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="odometer" name="odometer" min="0" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Assign the issue">
+                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select the contact to assign the issue">
                                               <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
                                             </ng-select>
                                         </div>

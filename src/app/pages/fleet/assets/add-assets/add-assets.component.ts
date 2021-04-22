@@ -25,6 +25,7 @@ export class AddAssetsComponent implements OnInit {
   form;
   quantumSelected = '';
   assetsData = {
+    inspectionFormID:'',
     assetIdentification: '',
     groupID: '',
     VIN: '',
@@ -82,7 +83,7 @@ export class AddAssetsComponent implements OnInit {
   manufacturers: any = [];
   models: any = [];
   groups = [];
-  inspectionFormID:string='';
+
 
 
   response: any = '';
@@ -193,14 +194,13 @@ export class AddAssetsComponent implements OnInit {
    */
   addAsset() {
     this.hideErrors();
-    console.log('data', this.assetsData)
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.inspectionFormID,
+      inspectionFormID:this.assetsData.inspectionFormID,
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
@@ -241,8 +241,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    
-    console.log(data);
     // create form data instance
     const formData = new FormData();
 
@@ -319,6 +317,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
         this.assetsData.groupID = result.groupID;
+        this.assetsData.inspectionFormID = result.inspectionFormID;
         this.assetsData.VIN = result.VIN;
         this.assetsData.startDate = result.startDate;
         this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
@@ -514,7 +513,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=assets`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }

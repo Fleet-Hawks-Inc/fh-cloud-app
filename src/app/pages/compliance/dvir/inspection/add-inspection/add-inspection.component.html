@@ -1,87 +1,104 @@
 <section class="body">
-    <app-header></app-header>
     <div class="inner-wrapper">
-      <app-sidebar></app-sidebar>
-      <section role="main" class="content-body pt-0 pl-0 pr-0">
-            <header class="page-header pr-5">
-                    <div class="row pr-4 pl-2" style="padding-top:10px;">
-                       <div class="col-md-4 col-lg-4">
-                          <h4 class="text-4 mt-0 mb-0 text-dark">Create Inspection Form</h4>
-                       </div>
-                       <div class="col-md-8  col-lg-8 text-right pr-5">
-                          <a routerLink="/compliance/dvir/inspections" class="btn btn-sm btn-default"><i class="fas fa-list"></i>All Inspection Forms</a>
-                       </div>
+        <section role="main" class="content-body p-3">
+            <header class="page-header pr-1">
+                <div class="row pr-4 pl-2" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 text-dark">Create Inspection Form</h4>
                     </div>
-                 
-        </header>
-        <div class="row">
-            <div class="col pr-0">
-                <section class="card">
-                    <div class="card-body">
-                        <form id="inspectinoForm" method="get" class="form-horizontal form-bordered" name="inspectionForm">
-                            
-                            
-                            <div class="form-group row mt-3">
-                                
-                                <div class="col-lg-9 offset-lg-1">
-                                <div class="row">
-                                        <div class="col-lg-6">
-                                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Form Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <input type="text" class="form-control"[(ngModel)]="inspectionFormName" name="formName">
-                                        </div>
-                                        
-                                        <div class="col-lg-6">
-                                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <select class="form-control" [(ngModel)]="inspectionType" name="inspectionType">
-                                                    <option value="vehicle" >Vehicle</option>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/compliance/dvir/inspections" class="btn btn-sm btn-default"><i
+                                class="fas fa-list"></i>All Inspection Forms</a>
+                    </div>
+                </div>
+
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                        <div class="card-body">
+                            <form id="inspectinoForm" method="get" class="form-horizontal form-bordered"
+                                name="inspectionForm">
+                                <div class="form-group row mt-3">
+
+                                    <div class="col-lg-9 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <label
+                                                    class="control-label font-weight-bold labelmt text-3 text-dark">Form
+                                                    Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input type="text" class="form-control" [(ngModel)]="inspectionFormName"
+                                                    name="formName">
+                                            </div>
+
+                                            <div class="col-lg-6">
+                                                <label
+                                                    class="control-label font-weight-bold labelmt text-3 text-dark">Inspection
+                                                    Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <select class="form-control" [(ngModel)]="inspectionType"
+                                                    name="inspectionType">
+                                                    <option value="vehicle">Vehicle</option>
                                                     <option value="asset">Asset</option>
-                                            </select>
+                                                </select>
+                                            </div>
+
                                         </div>
-                                        
+
+                                    </div>
+
+
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row mt-2">
+                                            <div class="col-lg-12">
+                                                <label
+                                                    class="control-label font-weight-bold labelmt text-3 text-dark">Inspection
+                                                    Parameters <span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
+                                                <div class="col-lg-12 pl-0 d-flex mt-2"
+                                                    *ngFor="let param of parameters let t=index;">
+                                                    <input type="text" class="form-control mr-2" name="param"
+                                                        [ngModelOptions]="{standalone: true}"
+                                                        [(ngModel)]="param.name"
+                                                        [disabled]="t != (parameters.length)-1||param.isDefault==true">
+                                                    <!-- <div class="col-lg-2 mar-top-37"> -->
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                        *ngIf="t == (parameters.length)-1"
+                                                        (click)="addFormParam(t)"><i
+                                                            class="fas fa-plus"></i></button>
+                                                    <button type="button" (click)="deleteFormParam(t)"
+                                                        *ngIf="(t != (parameters.length)-1) && (param.isDefault==false)"
+                                                        class="btn btn-sm btn-danger"> <i
+                                                            class="fas fa-minus"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     
+                                    
                                 </div>
-                                
-                                
-                                <div class="col-lg-9 offset-lg-1">
-                                    <div class="row mt-2">
-                                        <div class="col-lg-10">
-                                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Inspection Parameters <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <div class="param-wrapper d-flex">
-                                        <div class="col-lg-6 d-flex" *ngFor="let param of parameters let t=index;">
-                                            <input type="text" class="form-control" name="param" [ngModelOptions]="{standalone: true}" [(ngModel)]="param.name" [disabled]="t != (parameters.length)-1||param.isDefault==true">
-                                        <!-- <div class="col-lg-2 mar-top-37"> -->
-                                            <button type="button" class="btn btn-sm btn-success" *ngIf="t == (parameters.length)-1" (click)="addFormParam()"><i
-                                                class="fas fa-plus"></i></button>
-                                                <button type="button" (click)="deleteFormParam(t)" *ngIf="(t != (parameters.length)-1) && (param.isDefault==false)" class="btn btn-sm btn-danger"> <i
-                                                  class="fas fa-minus"></i></button>
-                                         </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                           
-                            
-                            <div class="form-group row">
-                                <div class="col-lg-11 text-right"> 
+                                <div class="row">
+                                    <div class="col-lg-11">
                                         <ng-template [ngIf]="defaultParameterCount < 1">
-                                    <input type="checkbox" class="" name="defaultCheckbox" id="defaultCheckbox" (change)="defaultCheckbox($event)"> Make this form as default
-                                </ng-template>
-                                    <button (click)="cancel()" class="mb-1 mt-1 mr-2 btn btn-default">Cancel</button>
-                                    <button (click)="addInspectionForm()"class="btn btn-success mt-1 modal-confirm">Save</button>
+                                            <input type="checkbox" class="" name="defaultCheckbox" id="defaultCheckbox"
+                                                (change)="defaultCheckbox($event)"> Make this form as default
+                                        </ng-template>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
+
+                                <div class="form-group row">
+                                    <div class="col-lg-11 text-right">
+                                        <button (click)="cancel()"
+                                            class="mb-1 mt-1 mr-2 btn btn-default">Cancel</button>
+                                        <button (click)="addInspectionForm()"
+                                            class="btn btn-success mt-1 modal-confirm">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
             </div>
-        </div>
         </section>
-
-
-        
-        </div>
-        </section>
+    </div>
+</section>

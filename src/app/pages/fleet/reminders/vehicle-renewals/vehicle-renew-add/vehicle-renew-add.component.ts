@@ -44,7 +44,7 @@ export class VehicleRenewAddComponent implements OnInit {
     groupMembers: []
   };
   time = 1;
-  timeType = 'Day(s)';
+  timeType = 'day';
   finalSubscribers = [];
   vehicles = [];
   users = [];
@@ -100,7 +100,7 @@ export class VehicleRenewAddComponent implements OnInit {
     });
   }
   fetchGroups() {
-    this.apiService.getData(`groups?groupType=${this.groupData.groupType}`).subscribe((result: any) => {
+    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
     });
   }
@@ -127,15 +127,15 @@ export class VehicleRenewAddComponent implements OnInit {
   addRenewal() {
     this.hideErrors();
     switch (this.timeType) {
-      case 'Day(s)': {
+      case 'day': {
         this.numberOfDays = this.time * 1;
         break;
       }
-      case 'Month(s)': {
+      case 'month': {
         this.numberOfDays = this.time * 30;
         break;
       }
-      case 'Week(s)': {
+      case 'week': {
         this.numberOfDays = this.time * 7;
         break;
       }
@@ -196,7 +196,7 @@ export class VehicleRenewAddComponent implements OnInit {
         this.reminderData.reminderTasks.dueDate = result.reminderTasks.dueDate;
         this.reminderData.reminderTasks.task = result.reminderTasks.task;
         this.time = result.reminderTasks.remindByDays;
-        this.timeType = 'Day(s)';
+        this.timeType = 'day';
         this.reminderData.sendEmail = result.sendEmail;
         this.reminderData.reminderIdentification = result.reminderIdentification;
         this.reminderData.subscribers = this.test;
@@ -207,7 +207,6 @@ export class VehicleRenewAddComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   throwErrors() {
-    // console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')

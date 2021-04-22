@@ -17,7 +17,7 @@
                </div>
 
                <div class="col-md-8  col-lg-8 text-right">
-                  <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Contact Renewals</a>
+                  <a routerLink="/fleet/reminders/contact-renewals/list" class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Contact Renewals Reminders List</a>
                </div>
             </div>
          </header>
@@ -104,9 +104,9 @@
                                     </div>
                                     <div class="col-lg-8 pl-0">
                                        <ng-select [(ngModel)]="timeType" name="timeType">
-                                          <ng-option value="Day(s)">Day(s)</ng-option>
-                                          <ng-option value="Week(s)">Week(s)</ng-option>
-                                          <ng-option value="Month(s)">Month(s)</ng-option>
+                                          <ng-option value="day">Day(s)</ng-option>
+                                          <ng-option value="week">Week(s)</ng-option>
+                                          <ng-option value="month">Month(s)</ng-option>
 
                                        </ng-select>
                                     </div>
@@ -174,7 +174,7 @@
            </form>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-success" (click)="addServiceTask()">Save</button>
          </div>
       </div>
@@ -186,7 +186,7 @@
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
      <div class="modal-header">
-        <h5 class="modal-title">Add Users Group</h5>
+        <h5 class="modal-title">Add Users/Groups</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
             </button>
@@ -195,13 +195,13 @@
             <div class="card-body p-0">
            <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
               <div class="form-row">
-                <div class="form-group col-lg-12">
+                <div class="col-lg-12">
                   <label class="control-label font-weight-bold">Group Name</label>
                   <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name">
                 </div>
               </div>
-              <div class="form-row">
-                 <div class="form-group col-lg-12">
+              <div class="form-row mt-2">
+                 <div class="col-lg-12">
                    <label class="control-label font-weight-bold">Group Members&nbsp;<span
                     class="text-1 optional-label-color">(optional)</span></label>
                    <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members, other users"
@@ -211,23 +211,19 @@
                 </ng-select>
                  </div>
                </div>
-              <div class="form-row">
-                <div class="form-group col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-12">
-                       <label class="control-label font-weight-bold text-lg-right pt-2">Description&nbsp;<span
-                          class="text-1 optional-label-color">(optional)</span></label>
-                       <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
-                    </div>
-                  </div>
-                </div>
+              <div class="form-row mt-2">
+                <div class="col-lg-12">
+                  <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
+                     class="text-1 optional-label-color">(optional)</span></label>
+                  <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
+               </div>
               </div>
            </form>
          </div>
      </div>
      <div class="modal-footer text-right">
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
      </div>
   </div>

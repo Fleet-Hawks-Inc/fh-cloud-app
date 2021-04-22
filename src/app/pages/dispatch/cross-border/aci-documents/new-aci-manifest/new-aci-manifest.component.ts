@@ -76,6 +76,7 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
+  fetchedCoDrivers=[];
   truck = {
     truckID: '',
     sealNumbers: [
@@ -303,6 +304,16 @@ export class NewAciManifestComponent implements OnInit {
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+
+
+  fixCoDrivers(){
+    if(this.mainDriver){
+      let currentDriver = this.mainDriver;
+      this.fetchedCoDrivers = this.drivers.filter(value => {
+        return value.driverID !== currentDriver;
+    });
+    }
   }
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {

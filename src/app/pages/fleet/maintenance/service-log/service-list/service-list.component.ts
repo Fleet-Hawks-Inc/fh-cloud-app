@@ -140,7 +140,7 @@ export class ServiceListComponent implements OnInit {
 
   gotoIssue(issue){
     localStorage.setItem('issueID', issue);
-    this.router.navigateByUrl('/fleet/maintenance/issues/detail/')
+    this.router.navigateByUrl('/fleet/maintenance/issues/detail/'+issue);
   }
 
   openComponent(vendorID) {
@@ -183,6 +183,10 @@ export class ServiceListComponent implements OnInit {
         } else {
           this.serviceLogNext = true;
           this.lastEvaluatedKey = '';
+          this.serviceLogEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.serviceLogEndPoint) {
           this.serviceLogEndPoint = this.totalRecords;
         }
 
@@ -231,6 +235,9 @@ export class ServiceListComponent implements OnInit {
       .getData(`serviceLogs/isDeleted/${entryID}/`+1)
       .subscribe((result: any) => {
         this.logs = [];
+        this.serviceLogDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchLogsCount();
         this.initDataTable();
         this.toastr.success('Service Log Deleted Successfully!');

@@ -31,7 +31,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Program Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="serviceData.programName" name="programName"
-                                    type="text" class="form-control">
+                                    type="text" class="form-control" placeholder="eg. Heavy vehicle ">
                               </div>
                            </div>
                           
@@ -43,7 +43,7 @@
                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <textarea [(ngModel)]="serviceData.description" name="description"
-                                    class="form-control h-auto" rows="3"></textarea>
+                                    class="form-control h-auto" placeholder="eg. Brakes are not working " rows="3"></textarea>
                               </div>
                            </div>
                         </div>
@@ -60,7 +60,7 @@
                                     <div class="col-lg-10">
 
                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                       <ng-select [(ngModel)]="task.serviceTask"
+                                       <ng-select placeholder="Select service task "[(ngModel)]="task.serviceTask"
                                           [attr.name]="'serviceScheduleDetails['+i+'].serviceTask'" [ngModelOptions]="{standalone: true}"  style="width: 100%;"
                                           >
                                           <ng-container *ngFor="let task of tasks | async;">
@@ -88,11 +88,11 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Time<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <div class="row">
                                                 <div class="col-lg-5 pr-0">
-                                                   <input [(ngModel)]="task.repeatByTime"
+                                                   <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime"
                                                    [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
                                                 </div>
                                                 <div class="col-lg-7 pr-0">
-                                                   <ng-select [(ngModel)]="task.repeatByTimeUnit"
+                                                   <ng-select placeholder="eg. days" [(ngModel)]="task.repeatByTimeUnit"
                                                    [attr.name]="'serviceScheduleDetails['+i+'].repeatByTimeUnit'" [ngModelOptions]="{standalone: true}" data-plugin-selectTwo
                                                       class="form-control populate">
                                                    
@@ -108,7 +108,7 @@
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <input [(ngModel)]="task.repeatByOdometer"
-                                             [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="text" class="form-control">
+                                             [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" placeholder="eg. 1000,2000">
                                           </div>
                                           
                                        </div>
@@ -140,7 +140,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                     Vehicle for Service Program<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select [multiple]="true" [(ngModel)]="serviceData.vehicles"
+                                 <ng-select placeholder="Select vehicle for service program"[multiple]="true" [(ngModel)] ="serviceData.vehicles"
                                     name="vehicles" style="width: 100%;">
                                     <ng-option *ngFor="let vehicle of vehicles | async" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                  </ng-select>
@@ -164,7 +164,7 @@
                              <div class="col-5 offset-1">
                                <div class="row">
                                  <div class="col-10">
-                                    <a href="" class="btn btn-default mr-2" id="">Cancel</a>
+                                    <a href="javascript:;" routerLink="/fleet/maintenance/service-program/list" class="btn btn-default mr-2" id="">Cancel</a>
                                     <a *ngIf="!programID" (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn">Save</a>
                                     <a *ngIf="programID" (click)="updateServiceProgram()" class="btn btn-success text-light">Update</a>
                                  </div>
