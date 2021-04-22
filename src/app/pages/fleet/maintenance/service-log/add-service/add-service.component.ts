@@ -24,7 +24,7 @@ export class AddServiceComponent implements OnInit {
   tasks: any;
   newTaskResp;
   reminders = [];
-  issues: any;
+  issues: any = [];
   inventory = [];
   selectedTasks = [];
   selectedParts = [];
@@ -777,6 +777,7 @@ export class AddServiceComponent implements OnInit {
 
   onChangeUnitType(value: any) {
     this.serviceData['unitType'] = value;
+    this.issues = [];
     if (value === 'asset') {
       delete this.serviceData.vehicleID;
       delete this.serviceData.odometer;
@@ -797,6 +798,9 @@ export class AddServiceComponent implements OnInit {
     });
 
     this.serviceData.taskIds = taskIds;
+    if(this.serviceData.vehicleID == '' || this.serviceData.vehicleID == null) {
+      delete this.serviceData.vehicleID;
+    }
 
     // create form data instance
     const formData = new FormData();

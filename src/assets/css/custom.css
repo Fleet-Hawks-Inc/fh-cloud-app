@@ -593,7 +593,7 @@ float:  left;
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:515px; 
+  right:454px; 
   top: 350px;
   }
 
@@ -1928,17 +1928,17 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* placeholder classes */
 ::-webkit-input-placeholder { /* Edge */
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 
 ::placeholder {
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 /* Optional label color */
@@ -2010,3 +2010,8 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* height */
 .heighta{height:auto !important;}
+
+/* padding left sign in button page */
+.pl-signin{padding-left: 46px;}
+
+

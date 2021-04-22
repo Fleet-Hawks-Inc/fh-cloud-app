@@ -167,13 +167,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     },
     hosDetails: {
       hosStatus: '',
+      utcOffset: '',
       type: '',
       hosRemarks: '',
       hosCycle: '',
       homeTerminal: '',
       pcAllowed: false,
       ymAllowed: false,
-      hosCycleName:''
+      hosCycleName:'',
+      optZone: 'South (Canada)'
     },
     emergencyDetails: {
       name: '',
@@ -257,7 +259,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   showIcons = false;
   profileTitle = 'Add';
   addressCountries = [];
-  carrierYards = [];
+  carrierYards: any = [];
   deletedAddress = [];
   ownerOperators: any;
   abstractValid = false;
@@ -487,17 +489,22 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
   }
 
-  onChangeUnitType(value: any) {
-    if (value === 'employee') {
-      delete this.driverData.ownerOperator;
-      delete this.driverData.contractStart;
-      delete this.driverData.contractEnd;
+  onChangeUnitType(str, value: any) {
+    if(str == 'driver_type') {
+      if (value === 'employee') {
+        delete this.driverData.ownerOperator;
+        delete this.driverData.contractStart;
+        delete this.driverData.contractEnd;
+      } else {
+        // delete this.driverData.employeeId;
+        delete this.driverData.startDate;
+        delete this.driverData.terminationDate;
+      }
+      this.driverData.driverType = value;
     } else {
-      // delete this.driverData.employeeId;
-      delete this.driverData.startDate;
-      delete this.driverData.terminationDate;
+      this.driverData.gender = value;
     }
-    this.driverData.driverType = value;
+    console.log('data', this.driverData)
   }
 
   addAddress() {
@@ -614,8 +621,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
-
-
    /*
    * Selecting files before uploading
    */
@@ -1087,6 +1092,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal;
         this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
         this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
+        this.driverData.hosDetails.utcOffset = result.hosDetails.utcOffset;
+        this.driverData.hosDetails.optZone = result.hosDetails.optZone;
+
         this.driverData.emergencyDetails.name = result.emergencyDetails.name;
         this.driverData.emergencyDetails.relationship = result.emergencyDetails.relationship;
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
@@ -1299,16 +1307,17 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
+   
     if(this.currentUser.userType == 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
       if(isCarrierID != undefined) {
         this.currentUserCarrier = isCarrierID;
       }
     }
-
+    
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType === 'yard') {
+        if(e.addressType == 'yard') {
           this.carrierYards.push(e);
         }
       })
@@ -1324,6 +1333,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     };
 
     $("#addDriverGroupModal").modal("hide");
+  }
+
+  async getUtc(yard) {
+    this.carrierYards.map(async (element: any) => {
+      if (element.addressID == yard) {
+        let result = await this.HereMap.geoCode(element.userLocation);
+        result = result.items[0];
+        this.driverData.hosDetails.utcOffset = result.timeZone.utcOffset
+      }
+    })
   }
 
 }
