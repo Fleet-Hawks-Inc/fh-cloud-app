@@ -75,13 +75,13 @@
                                                 <div class="btn-group-toggle" data-toggle="buttons">
                                                    <label class="btn btn-outline btn-fleet mr-2"
                                                       [class.active]="driverData.driverType === 'employee'"
-                                                      style="width:110px;" (click)="onChangeUnitType('employee')">
+                                                      style="width:110px;" (click)="onChangeUnitType('driver_type', 'employee')">
                                                       <input type="radio" [(ngModel)]="driverData.driverType"
                                                          name="driverType" checked hidden value="employee"> Employee
                                                    </label>
                                                    <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
                                                       [class.active]="driverData.driverType === 'contractor'"
-                                                      (click)="onChangeUnitType('contractor')">
+                                                      (click)="onChangeUnitType('driver_type', 'contractor')">
                                                       <input type="radio" [(ngModel)]="driverData.driverType"
                                                          name="driverType" hidden value="contractor"> Contractor
                                                    </label>
@@ -344,7 +344,24 @@
                                                 <label
                                                    class="control-label font-weight-bold text-lg-right">Gender:</label>
                                              </div>
-                                             <div class="col-lg-2 px-0">
+                                             <div>
+                                                <div class="btn-group-toggle" data-toggle="buttons">
+                                                   <label class="btn btn-outline btn-fleet mr-2"
+                                                      [class.active]="driverData.gender === 'M'"
+                                                      style="width:110px;" (click)="onChangeUnitType('birth_date', 'M')">
+                                                      <input type="radio" [(ngModel)]="driverData.gender"
+                                                         name="gender" checked hidden value="M"> Male
+                                                   </label>
+                                                   <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                                      [class.active]="driverData.gender === 'F'"
+                                                      (click)="onChangeUnitType('birth_date', 'F')">
+                                                      <input type="radio" [(ngModel)]="driverData.gender"
+                                                         name="gender" hidden value="F"> Female
+                                                   </label>
+                                                </div>
+                                             </div>
+                                             <!-- <div class="col-lg-2 px-0">
+                                                
                                                 <div class="radio">
                                                    <label>
                                                       <input [(ngModel)]="driverData.gender" name="gender" type="radio"
@@ -361,7 +378,7 @@
                                                       Female
                                                    </label>
                                                 </div>
-                                             </div>
+                                             </div> -->
                                           </div>
                                        </div>
                                        <div class="col-lg-10">
@@ -369,7 +386,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Birth
                                              Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker
-                                             #d6="ngbDatepicker" [maxDate]="getcurrentDate"
+                                             #d6="ngbDatepicker" [maxDate]="birthDateMaxLimit"
                                              [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB" name="DOB"
                                              type="text" data-plugin-datepicker="" class="form-control"
                                              placeholder="yyyy/mm/dd">

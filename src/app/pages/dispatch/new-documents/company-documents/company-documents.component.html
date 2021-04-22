@@ -57,7 +57,7 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
+                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'; openDocumentModal()" href="javascript:;"
                                 class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
                         </div>
@@ -88,7 +88,7 @@
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{tripsObjects[document.tripID]}}</td>
-                                        <td>{{document.docType}}</td>
+                                        <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?  document.docType+'#'  : document.docType }}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedBy}}</td>
                                         <td>Created: {{document.timeCreated | date: 'yyyy/MM/dd'}} <br>

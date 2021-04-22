@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
-import { HereMapService } from "../../../../../services/here-map.service";
 import { DomSanitizer } from '@angular/platform-browser';
-
+import Constants from '../../../constants';
 
 @Component({
   selector: 'app-service-detail',
@@ -13,12 +12,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ServiceDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
-
+  noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
   programs;
-  logsData: any;
-  allServiceTasks: any;
-  allServiceParts: any;
+  logsData: any = {
+    unitType: '-'
+  };
+  allServiceTasks: any = [];
+  allServiceParts: any = [];
   vehicle: any;
   assetID: any;
   completionDate: any;
@@ -29,7 +30,7 @@ export class ServiceDetailComponent implements OnInit {
   description: any;
   vehiclesObject: any = {};
   vendorsObject: any = {};
-  issuesObject: any = {};
+  issuesObject: any = [];
   assetsObject: any = {};
 
   taskSubTotal: number;
@@ -50,6 +51,7 @@ export class ServiceDetailComponent implements OnInit {
   currency: any;
   photos: any = [];
   docs: any = [];
+  users: any = [];
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -57,7 +59,6 @@ export class ServiceDetailComponent implements OnInit {
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
       private route: ActivatedRoute,
-      private hereMap: HereMapService,
       private domSanitizer: DomSanitizer,
   ) { }
 
@@ -66,9 +67,9 @@ export class ServiceDetailComponent implements OnInit {
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
-    this.fetchAllIssuesIDs();
+    // this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
-    this.hereMap.mapInit();
+    this.fetchUsers();
   }
 
   fetchProgramByID() {
@@ -78,6 +79,9 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
+        console.log('this.logsData', this.logsData);
+
+        this.fetchSelectedIssues(this.logsData.selectedIssues);
        
         result = result.Items[0];
         this.vehicle = result.vehicleID;
@@ -141,11 +145,21 @@ export class ServiceDetailComponent implements OnInit {
       });
   }
 
-  fetchAllIssuesIDs() {
-    this.apiService.getData('issues/get/list')
+  fetchSelectedIssues(issueIDs) {
+    if(issueIDs.length > 0) {
+      issueIDs = JSON.stringify(issueIDs);
+      this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
       .subscribe((result: any) => {
         this.issuesObject = result;
       });
+    }
+  }
+
+  fetchUsers(){
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.users = result;
+      console.log('this.users', this.users)
+    });
   }
 
   fetchAllAssetsIDs() {
