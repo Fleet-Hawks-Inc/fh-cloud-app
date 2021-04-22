@@ -106,7 +106,7 @@ export class AddIssueComponent implements OnInit {
         this.assets = result.Items;
       });
     }
-    fetchUsers(){
+    fetchUsers() {
       this.apiService.getData('users').subscribe((result: any) => {
         this.users = result.Items;
       });
@@ -150,7 +150,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-    console.log('data', data);
     // create form data instance
     const formData = new FormData();
 

@@ -58,7 +58,7 @@ fetchCarrier(){
           //   this.logoSrc = 'assets/img/logo.png';
           // }
         }
-        
+
       });
 }
 
@@ -71,7 +71,7 @@ fetchCarrier(){
     localStorage.removeItem('carrierID');
     localStorage.removeItem('loggin-carrier');
     localStorage.removeItem('issueVehicleID');
-    localStorage.removeItem('carrierID')
+    localStorage.removeItem('carrierID');
     localStorage.removeItem('active-header');
 
     // localStorage.removeItem('jwt');
@@ -86,5 +86,5 @@ fetchCarrier(){
     let outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join('');
   }
-  
+
 }
