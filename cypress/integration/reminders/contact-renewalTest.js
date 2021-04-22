@@ -67,9 +67,9 @@ describe(" reminders tests", () => {
     cy.get('.wtopnav > .nav > :nth-child(3) > .nav-link').click();
     cy.get(':nth-child(3) > :nth-child(6) > .btn-group > .btn > .fas').click();
     cy.get(':nth-child(3) > :nth-child(6) > .btn-group > .dropdown-menu > :nth-child(3)').click();
-   
+
   });
-  /* === Test Created with Cypress Studio === */
+  
   it('validation error message', function () {
     /* ==== Generated with Cypress Studio ==== */
     cy.visit('http://localhost:4200/');

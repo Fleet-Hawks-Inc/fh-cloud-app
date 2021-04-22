@@ -75,7 +75,7 @@ describe(" reminders tests", () => {
     cy.get(':nth-child(7) > .nav-link > .fas').click();
     cy.get('.content-body > .page-header > .row > .text-right > .btn').click();
     cy.get('.col-10 > .btn-success').click();
-    /* ==== End Cypress Studio ==== */
+    
   });
 
 

@@ -84,7 +84,7 @@ it.only('validation error message', function() {
   cy.get('.col-md-4 > .btn').click();
   cy.get('.col-10 > .btn-success').click()
 
-  /* ==== End Cypress Studio ==== */
+  
 });
 
 
