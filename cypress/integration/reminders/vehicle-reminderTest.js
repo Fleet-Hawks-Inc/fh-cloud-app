@@ -2,7 +2,7 @@ describe(" reminders tests", () => {
 
 
   /* === Test Created with Cypress Studio === */
-  it.only('Add vehicle renewal reminder', function () {
+  it('Add vehicle renewal reminder', function () {
 
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(2) > .input-group > .form-control').clear();
@@ -21,7 +21,7 @@ describe(" reminders tests", () => {
 
     cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
     cy.wait(1000);
-    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('pick up{enter}');
+    cy.get(':nth-child(3) > :nth-child(1) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('pi{enter}');
     cy.get(':nth-child(3) > :nth-child(2) > :nth-child(1) > .form-control').click();
     cy.get('[aria-label="Select month"]').select('5');
     cy.get('[tabindex="0"] > .btn-light').click();
@@ -56,7 +56,7 @@ describe(" reminders tests", () => {
   });
   /* === Test Created with Cypress Studio === */
   it('delete the reminder', function () {
-    
+
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -71,7 +71,7 @@ describe(" reminders tests", () => {
     /* ==== End Cypress Studio ==== */
   });
   /* === Test Created with Cypress Studio === */
-it('validation error message', function() {
+it.only('validation error message', function() {
 
   cy.visit('http://localhost:4200/');
   cy.get(':nth-child(1) > .input-group > .form-control').clear();
@@ -80,8 +80,10 @@ it('validation error message', function() {
   cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
   cy.get('#btnsubmit').click();
   cy.get(':nth-child(6) > .nav-link > .fas').click();
-  cy.get('.col-md-4 > .btn').click();
   cy.wait(2000);
+  cy.get('.col-md-4 > .btn').click();
+  cy.get('.col-10 > .btn-success').click()
+
   /* ==== End Cypress Studio ==== */
 });
 

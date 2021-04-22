@@ -51,7 +51,7 @@ it('search-reset the reminder', function() {
   //cy.get('#a83fb1241580-0 > .ng-option-label').click({force: true});
   cy.get(':nth-child(4) > .mr-2').click();
   cy.get('.row > :nth-child(4) > [type="button"]').click();
-  /* ==== End Cypress Studio ==== */
+ 
 });
 
 

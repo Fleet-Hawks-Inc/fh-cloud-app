@@ -3,7 +3,7 @@ describe(" reminders tests", () => {
 
   /* === Test Created with Cypress Studio === */
   it('Add issue', function () {
-   
+
     cy.visit('http://localhost:4200/');
     cy.get(':nth-child(1) > .input-group > .form-control').clear();
     cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -21,10 +21,10 @@ describe(" reminders tests", () => {
     cy.get('[aria-label="Thursday, April 1, 2021"] > .btn-light').click();
     cy.get('.pt-4 > .col-lg-10 > .form-control').clear();
     cy.get('.pt-4 > .col-lg-10 > .form-control').type('10000');
-    cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
-    cy.get('.ng-option-label').click();
-    cy.get(':nth-child(3) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').click();
-    cy.get('.ng-option-label').click();
+    cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+    cy.get(':nth-child(3) > :nth-child(2) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ele{enter}');
+    cy.get(':nth-child(3) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').clear();
+    cy.get(':nth-child(3) > .col-lg-10 > .ng-select > .ng-select-container > .ng-value-container > .ng-input > input').type('ele{enter}');
     cy.get('.col-10 > .btn-success').click();
     /* ==== End Cypress Studio ==== */
   });
