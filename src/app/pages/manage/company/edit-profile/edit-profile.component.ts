@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { from, Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { InvokeHeaderFnService } from 'src/app/invoke-header-fn.service';
 declare var $: any;
 @Component({
   selector: 'app-edit-profile',
@@ -110,7 +111,9 @@ export class EditProfileComponent implements OnInit {
    errorTransit = false;
    errorInstitution = false;
    errorAccount = false;
-  constructor(private apiService: ApiService,private toaster: ToastrService, private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
+  constructor(private apiService: ApiService,private toaster: ToastrService,
+              private headerFnService: InvokeHeaderFnService,
+              private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -124,6 +127,9 @@ export class EditProfileComponent implements OnInit {
     $(document).ready(() => {
       this.companyForm = $('#companyForm').validate();
     });
+  }
+  headerComponentFunction(){
+    this.headerFnService.callHeaderFn();
   }
    fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
@@ -216,11 +222,9 @@ export class EditProfileComponent implements OnInit {
           this.bankID = this.carriers.bank.bankID;
           this.uploadedLogo = this.carriers.uploadedLogo;
           this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-
         });
   }
-
-// UPDATE PART
+  // UPDATE PART
  /**
    * address
    */
@@ -488,6 +492,7 @@ export class EditProfileComponent implements OnInit {
         this.response = res;
         this.toaster.success('Carrier updated successfully.');
         this.cancel();
+        this.headerComponentFunction();
       },
     });
 
