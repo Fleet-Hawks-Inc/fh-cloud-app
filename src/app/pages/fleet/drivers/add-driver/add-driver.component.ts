@@ -244,6 +244,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   visibleIndex = 0;
   getcurrentDate: any;
   birthDateMinLimit: any;
+  birthDateMaxLimit: any;
   futureDatesLimit: any;
   uploadedPhotos = [];
 
@@ -305,6 +306,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     const date = new Date();
     this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
     this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+    this.birthDateMaxLimit = {year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate()};
     this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
 
     }
