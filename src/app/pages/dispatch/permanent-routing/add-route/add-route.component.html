@@ -220,7 +220,8 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-10" id="recurringRadioDiv" style="display: none;">
+
+                                            <div class="col-lg-10 mt-2" id="recurringRadioDiv" style="display: none;">
                                                 <div class="row mt-2">
                                                     <div class="col-lg-4">
                                                         <div class="radio">
@@ -258,10 +259,9 @@
                                             </div>
 
                                             <div class="col-lg-10" id="recurringDate" style="display: none;" >
-                                                <div class="row mt-2" *ngIf='isDaily'>
+                                                <div class="row" *ngIf='isDaily'>
                                                     <div class="col-lg-10">
-                                                        <label
-                                                            class="control-label font-weight-bold text-lg-right pt-2">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <label class="control-label font-weight-bold text-lg-right pt-1">Start Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="routeData.recurring.recurringDate"
                                                             name="recurring.recurringDate" type="text"
                                                             placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
@@ -271,6 +271,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
@@ -278,12 +279,13 @@
                                                     <input type="checkbox" name="destinationStop" checked
                                                     [(ngModel)]="destinationStop" (change)="eventCheck($event)" value="yes">
                                                     <label class="control-label font-weight-bold"
-                                                        for="routeCheckBtn">Add Stop(s)</label>
+                                                        for="routeCheckBtn">Add Stop (s)</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row mt-4" *ngIf="mapVisible">
                                     <div class="col-lg-6">
                                         <div class="mapclass vehiclemain" id="map_view">
@@ -292,9 +294,8 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row">
-                                            <div class="col-lg-12 pr-0">
-                                                <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information
-                                                </h3>
+                                            <div class="col-lg-12">
+                                                <h3 class="mb-0 text-6 font-weight-bold text-dark">Route Information</h3>
                                                 <div class="row">
                                                     <div class="col-lg-4 text-center">
                                                         <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Source
@@ -359,9 +360,7 @@
                                                                 <tr>
                                                                     <td width="5%"></td>
                                                                     <td>
-                                                                        <label
-                                                                            class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
-                                                                            Location</label>
+                                                                        <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop Location</label>
                                                                     </td>
                                                                     <td>
                                                                         <label
@@ -375,7 +374,7 @@
                                                                             class="badge badge-dark mt-2">{{i + 1}}</span>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="row mt-1">
+                                                                        <div class="mt-1">
                                                                             <input name="stopName_{{i}}"
                                                                                 [(ngModel)]="routeData.stops[i].stopName"
                                                                                 (keyup)="searchTerm.next($event);"
@@ -415,8 +414,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row text-right">
-                                    <div class="col-lg-12 pr-4">
+                                <div class="row text-right mt-3">
+                                    <div class="col-lg-12 pr-3">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
                                             routerLink="/dispatch/routes/list">Cancel</a>
                                         <button type="button" *ngIf="!routeID" (click)="addRoute()" [disabled]="routeBtnStatus" class="btn btn-success mt-1">Create Route</button>
