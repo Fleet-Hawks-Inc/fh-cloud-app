@@ -489,17 +489,22 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
   }
 
-  onChangeUnitType(value: any) {
-    if (value === 'employee') {
-      delete this.driverData.ownerOperator;
-      delete this.driverData.contractStart;
-      delete this.driverData.contractEnd;
+  onChangeUnitType(str, value: any) {
+    if(str == 'driver_type') {
+      if (value === 'employee') {
+        delete this.driverData.ownerOperator;
+        delete this.driverData.contractStart;
+        delete this.driverData.contractEnd;
+      } else {
+        // delete this.driverData.employeeId;
+        delete this.driverData.startDate;
+        delete this.driverData.terminationDate;
+      }
+      this.driverData.driverType = value;
     } else {
-      // delete this.driverData.employeeId;
-      delete this.driverData.startDate;
-      delete this.driverData.terminationDate;
+      this.driverData.gender = value;
     }
-    this.driverData.driverType = value;
+    console.log('data', this.driverData)
   }
 
   addAddress() {
@@ -616,8 +621,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   getToday(): string {
     return new Date().toISOString().split('T')[0];
   }
-
-
    /*
    * Selecting files before uploading
    */

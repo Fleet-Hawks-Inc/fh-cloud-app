@@ -4993,6 +4993,10 @@ export class AddressBookComponent implements OnInit {
       });
   }
 
+  brokerType(value: any) {
+    this.brokerData.brokerType = value;
+  }
+
   resetCountResult(type) {
     if(type == 'customer') {
       this.custtStartPoint = 1;

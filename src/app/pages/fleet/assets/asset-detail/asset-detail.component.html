@@ -90,6 +90,14 @@
                                             <td class="back-color-gray font-weight-bold">Ownership</td>
                                             <td class="text-capitalize">{{ownerShip ? ownerShip : '-'}}</td>
                                          </tr>
+                                         <tr *ngIf="ownerOperatorName != ''">
+                                          <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
+                                             <td class="text-capitalize">{{ownerOperatorName}}</td>
+                                          </tr>
+                                          <tr *ngIf="inspectionFormName != ''">
+                                             <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
+                                                <td class="text-capitalize">{{inspectionFormName ? inspectionFormName : '-'}}</td>
+                                             </tr>
                                          <tr>
                                             <td class="back-color-gray font-weight-bold">
                                                Notes
