@@ -2,7 +2,7 @@
 <header class="header">
     <div class="logo-container">
         <a href="#" class="logo">
-            <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" />
+            <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" class="img-fluid"/>
         </a>
         <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
             <i class="fas fa-bars" aria-label="Toggle sidebar"></i>
@@ -104,9 +104,9 @@
                     <li>
                        <a role="menuitem" tabindex="-1" routerLink="/manage/company/detail/{{currentCarrierID}}" class="modal-with-form"><i class="fas fa-building"></i> Company Profile</a>
                     </li>
-                    <li>
+                    <!-- <li>
                        <a role="menuitem" tabindex="-1" href="javascript:;"><i class="fas fa-user"></i> Account Setting</a>
-                    </li>
+                    </li> -->
                     <li>
                        <a id="lnkLogout" role="menuitem" tabindex="-1" routerLink="" (click)="Logout()"><i class="fas fa-power-off"></i> Logout</a>
                     </li>

@@ -140,7 +140,7 @@ export class ServiceListComponent implements OnInit {
 
   gotoIssue(issue){
     localStorage.setItem('issueID', issue);
-    this.router.navigateByUrl('/fleet/maintenance/issues/detail/')
+    this.router.navigateByUrl('/fleet/maintenance/issues/detail/'+issue);
   }
 
   openComponent(vendorID) {

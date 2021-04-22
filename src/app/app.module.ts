@@ -47,6 +47,8 @@ import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
+import { MustMatchDirective } from './entry/onboard/must-match.directive';
+import { InvokeHeaderFnService } from './invoke-header-fn.service';
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -68,7 +70,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     ConfirmEqualValidatorDirective,
     ErrorComponent,
     UnsavedChangesComponent,
-    AddAccountComponent
+    AddAccountComponent,
+    MustMatchDirective
   ],
   imports: [
     AmplifyAngularModule,
@@ -91,7 +94,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelectModule,
   ],
-  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
+  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy,InvokeHeaderFnService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
