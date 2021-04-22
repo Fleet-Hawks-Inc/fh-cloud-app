@@ -1,5 +1,3 @@
-const { type } = require("jquery");
-
 describe("Fuel Test", function () {
     it('should allow user to add Fuel Entry', function () {
         cy.visit('http://localhost:4200/');
@@ -57,9 +55,9 @@ describe("Fuel Test", function () {
         cy.get('div:nth-of-type(5) input[name="odometer"]').clear();
         cy.get('div:nth-of-type(5) input[name="odometer"]').type('4500');//odometer
         cy.get('.col-10 > .btn-success').click();//save button
-
+        cy.wait(5000);
     });
-    it.only('should allow user to search the added fuel entry in list', function () {
+    it('should allow user to search the added fuel entry in list', function () {
         cy.visit('http://localhost:4200/');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();
         cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -72,13 +70,13 @@ describe("Fuel Test", function () {
         cy.get('input[name="fromDate"]').first().click();
         cy.get('div:nth-of-type(5) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();//from date
         cy.get('input[name="toDate"]').first().click();
-        cy.get('div:nth-of-type(5) > .bg-primary.btn-light.ng-star-inserted.text-white').last().click();//todate
+        cy.get('div:nth-of-type(6) > div:nth-of-type(4) > .btn-light.ng-star-inserted').last().click();//todate
         cy.get('.btn.btn-sm.btn-success.mr-2').click();//search
         cy.get('[class="col-md-2 col-lg- pl-2"] [type="button"]').click();//reset
-       
+
     });
 
-    it.only('should allow user to delete the listed entry of fuel', function () {
+    it('should allow user to delete the listed entry of fuel', function () {
         cy.visit('http://localhost:4200/');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();
         cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
@@ -88,5 +86,29 @@ describe("Fuel Test", function () {
         cy.get('.ng-star-inserted > .nav > :nth-child(5) > .nav-link').click();
         cy.get(':nth-child(2) > :nth-child(13) > .btn-group > .mb-1').first().click();
         cy.get(':nth-child(2) > :nth-child(13) > .btn-group > .dropdown-menu > button.dropdown-item').last().click();
-    })
+    });
+    it('should give validation error message when required fields are not provided', function () {
+        cy.visit('http://localhost:4200/');
+        cy.get(':nth-child(1) > .input-group > .form-control').clear();
+        cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+        cy.get(':nth-child(2) > .input-group > .form-control').clear();
+        cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+        cy.get('#btnsubmit').click();
+        cy.get('.ng-star-inserted > .nav > :nth-child(5) > .nav-link').click();
+        cy.get('#form_ > .row > .text-right > .btn').click();
+        cy.get('.col-10 > .btn-success').click();//save button
+        cy.get('.col-lg-10 > #unitID-error').contains('This Field is not allowed to be empty');
+        cy.get('#fuelDate-error').contains('This Field is not allowed to be empty');
+        cy.get('#fuelType-error').contains('This Field is not allowed to be empty');
+        cy.get('#paidBy-error').contains('This Field is not allowed to be empty');
+        cy.get('#paymentMode-error').contains('This Field is not allowed to be empty');
+        cy.get('#reference-error').contains('This Field is not allowed to be empty');
+        cy.get('.col-lg-10 > #countryID-error').contains('This Field is not allowed to be empty');
+        cy.get('#cityID-error').contains('This Field is not allowed to be empty');
+        cy.get('.col-lg-10 > #stateID-error').contains('This Field is not allowed to be empty');
+        cy.get('#vendorID-error').contains('This Field is not allowed to be empty');
+        cy.get('.col-lg-10 > #odometer-error').contains('This Field must be larger than or equal to 1');
+
+    });
+
 });

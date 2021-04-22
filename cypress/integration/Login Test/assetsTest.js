@@ -57,6 +57,7 @@ describe("Assets Test", function () {
         const file2 = "load1.pdf";
         cy.get('[name="uploadedDocs"]').attachFile(file2);
         cy.get('.col-10 > #nextBtn').click(); //save
+        cy.wait(5000);
     });
 
 
@@ -82,7 +83,7 @@ describe("Assets Test", function () {
         cy.get('[class] [class="col-md-2 col-lg-2"]:nth-of-type(1) .form-control')
             .last()
             .type("xyz1456");
-        cy.get(".result-suggestions > ul > :nth-child(2)").click({ force: true }); //search driver
+        cy.get(".result-suggestions > ul > :nth-child(2)").click(); //search driver
         cy.get('[class="row px-2"] [role="combobox"]').first().click();
         cy.get("div:nth-of-type(3) > .ng-option-label.ng-star-inserted")
             .last()
