@@ -59,7 +59,26 @@ describe("Fuel Test", function () {
         cy.get('.col-10 > .btn-success').click();//save button
 
     });
-    it.only('should allow user to delete the listed vehicle', function () {
+    it.only('should allow user to search the added fuel entry in list', function () {
+        cy.visit('http://localhost:4200/');
+        cy.get(':nth-child(1) > .input-group > .form-control').clear();
+        cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
+        cy.get(':nth-child(2) > .input-group > .form-control').clear();
+        cy.get(':nth-child(2) > .input-group > .form-control').type('FleetHawks@2502');
+        cy.get('#btnsubmit').click();
+        cy.get('.ng-star-inserted > .nav > :nth-child(5) > .nav-link').click();
+        cy.get('[class="col-md-2 col-lg-2"] [role="combobox"]').first().click();
+        cy.get('div:nth-of-type(3) > .ng-option-label.ng-star-inserted').last().click();
+        cy.get('input[name="fromDate"]').first().click();
+        cy.get('div:nth-of-type(5) > div:nth-of-type(3) > .btn-light.ng-star-inserted').last().click();//from date
+        cy.get('input[name="toDate"]').first().click();
+        cy.get('div:nth-of-type(5) > .bg-primary.btn-light.ng-star-inserted.text-white').last().click();//todate
+        cy.get('.btn.btn-sm.btn-success.mr-2').click();//search
+        cy.get('[class="col-md-2 col-lg- pl-2"] [type="button"]').click();//reset
+       
+    });
+
+    it.only('should allow user to delete the listed entry of fuel', function () {
         cy.visit('http://localhost:4200/');
         cy.get(':nth-child(1) > .input-group > .form-control').clear();
         cy.get(':nth-child(1) > .input-group > .form-control').type('e2etestcarrier');
