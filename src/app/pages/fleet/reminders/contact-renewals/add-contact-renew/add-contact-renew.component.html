@@ -36,12 +36,18 @@
                             <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderIdentification" placeholder="Select contact">
+                                    name="reminderIdentification" placeholder="Select contact" #cnt="ngModel" required>
 
                                     <ng-option *ngFor="let user of users" value="{{user.userName}}">
                                        {{user.firstName}} {{user.lastName}}</ng-option>
 
                                  </ng-select>
+                                 <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
+                                    <div *ngIf="cnt.errors.required">
+                                     Select Contact is required.
+                                       </div>
+                                       
+                                    </div>
                               </div>
                            </div>
 
@@ -77,12 +83,18 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;" placeholder="Select renewal type eg. Licence Renewal">
+                                    name="task" style="width: 100%;" placeholder="Select renewal type eg. Licence Renewal" #rtSlt="ngModel" required>
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                        </ng-option>
                                     </optgroup>
                                  </ng-select>
+                                 <div *ngIf="rtSlt.invalid && (rtSlt.dirty || rtSlt.touched)" class="text-danger">
+                                    <div *ngIf="rtSlt.errors.required">
+                                     Select Renewal Type is required.
+                                       </div>
+                                       
+                                    </div>
                               </div>
                               <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
                                  <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
@@ -93,8 +105,14 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
-                                    [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker
+                                    [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker #exp="ngModel" required
                                     #d="ngbDatepicker" />
+                                    <div *ngIf="exp.invalid && (exp.dirty || exp.touched)" class="text-danger">
+                                       <div *ngIf="exp.errors.required">
+                                        Expiration Date is required.
+                                          </div>
+                                          
+                                       </div>
                               </div>
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
