@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { NgbCalendar, NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { ListService } from '../../../../services';
@@ -32,7 +31,7 @@ export class AddFuelEntryComponent implements OnInit {
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
     totalAmount: 0,
-    discType: '',
+    discType: null,
     discAmount: 0,
     amountPaid: 0,
     pricePerUnit: 0,
@@ -49,7 +48,7 @@ export class AddFuelEntryComponent implements OnInit {
     paidBy: '',
     taxes : [
       {
-      taxType: '',
+      taxType: null,
       taxAmount: 0
       }
     ],
@@ -108,7 +107,6 @@ export class AddFuelEntryComponent implements OnInit {
 
 
   constructor(private apiService: ApiService,
-              private router: Router,
               private route: ActivatedRoute,
               private location: Location, private toaster: ToastrService,
               private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService) {
@@ -169,7 +167,7 @@ export class AddFuelEntryComponent implements OnInit {
   }
   addFuelTaxRow() {
     this.fuelData.taxes.push({
-        taxType: '',
+        taxType: null,
         taxAmount: 0
     });
   }
@@ -243,26 +241,22 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.billingCurrency = val;
   }
   calculate() {
-    this.fuelData.totalAmount = 0;
-    this.fuelData.pricePerUnit = 0;
-    this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
-    const units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
-    this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discAmount;
-    this.fuelData.pricePerUnit = (this.fuelData.amountPaid / units);
+    // this.fuelData.totalAmount = 0;
+    // this.fuelData.pricePerUnit = 0;
+    // this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
+    // const units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
+    // this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discAmount;
+    // this.fuelData.pricePerUnit = (this.fuelData.amountPaid / units);
 
   }
   addFuelEntry() {
     this.hideErrors();
     if (this.fuelQtyUnit === 'litre') {
-      this.fuelData.fuelQty = this.fuelData.fuelQty;
-      this.fuelData.DEFFuelQty = this.fuelData.DEFFuelQty;
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
       // create form data instance
     const formData = new FormData();
@@ -390,14 +384,12 @@ export class AddFuelEntryComponent implements OnInit {
   updateFuelEntry() {
 
     this.hideErrors();
-    if (this.fuelQtyUnit === 'gallon') {
-      this.fuelData.fuelQty = this.fuelData.fuelQty;
-      this.fuelData.DEFFuelQty = this.fuelData.DEFFuelQty;
+    if (this.fuelQtyUnit === 'litre') {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = this.fuelData.amountPaid / this.fuelData.totalLitres;
+      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     } else {
-      this.fuelData.fuelQty = +((this.fuelData.fuelQty / 3.785).toFixed(2));
-      this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty / 3.785).toFixed(2));
+      this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
+      this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
       this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
