@@ -306,7 +306,6 @@ export class AddAccountComponent implements OnInit {
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
-          console.log('address part', result);
           element.geoCords.lat = result.position.lat;
           element.geoCords.lng = result.position.lng;
         }
@@ -356,7 +355,6 @@ export class AddAccountComponent implements OnInit {
         },
         bank: this.bank
       };
-      console.log('data', data);
       // create form data instance
       const formData = new FormData();
       // append photos if any
