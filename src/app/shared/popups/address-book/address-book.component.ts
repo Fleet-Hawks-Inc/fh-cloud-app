@@ -688,6 +688,7 @@ export class AddressBookComponent implements OnInit {
   { }
 
   ngOnInit() {
+    this.fetchNewBrokers();
     this.getCurrentuser();
     this.fetchCountries();
     this.fetchCustomersCount();
@@ -1058,7 +1059,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.brokerData));
 
     this.lastEvaluatedKeyBroker = '';
-    this.apiService.postData('brokers', formData, true).
+    this.apiService.postData('brokers/add/new/schema', formData, true).
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -2427,6 +2428,17 @@ export class AddressBookComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecordsBroker = result.Count;
+      },
+    });
+  }
+
+  fetchNewBrokers() {
+    this.apiService.getData('brokers/get/list/new').subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        console.log('new list', result);
+        // this.totalRecordsBroker = result.Count;
       },
     });
   }
