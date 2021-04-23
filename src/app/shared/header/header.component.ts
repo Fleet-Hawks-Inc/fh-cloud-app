@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   carrierBusiness;
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
-              public router: Router, private headerFnService: InvokeHeaderFnService,) {
+              public router: Router, private headerFnService: InvokeHeaderFnService) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem('active-header');
       if(activeTab != undefined && activeTab != ''){
