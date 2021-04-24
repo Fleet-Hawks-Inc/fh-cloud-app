@@ -387,6 +387,7 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
+      inspectionFormID:this.assetsData.inspectionFormID,
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
