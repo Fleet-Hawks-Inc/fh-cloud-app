@@ -184,7 +184,7 @@
 
 
                                           <ng-select class="form-control populate" name="countryID"
-                                             [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
+                                             [(ngModel)]="countryID" placeholder="Select Country" (change)="resetState()">
                                              <optgroup label="">
                                                 <ng-container *ngFor="let country of countries | async">
                                                    <ng-option
@@ -339,7 +339,9 @@
                                              Date (Set Reminder)<span
                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="annualSafetyDate"
-                                             placeholder="yyyy-mm-dd" class="form-control">
+
+                                            placeholder="yyyy/mm/dd" class="form-control">
+
                                        </div>
                                        <div class="col-lg-10">
                                           <div class="checkbox mt-1">
@@ -619,7 +621,9 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Start
                                              Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" placeholder="yyyy-mm-dd" class="form-control" name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+
+                                          <input type="text" placeholder="yyyy/mm/dd" class="form-control" name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+
                                              [(ngModel)]="lifeCycle.startDate">
                                        </div>
                                     </div>
@@ -726,7 +730,9 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" class="form-control" name="lifeCycle.outOfServiceDate"
-                                             [(ngModel)]="lifeCycle.outOfServiceDate" placeholder="yyyy-mm-dd">
+
+                                             [(ngModel)]="lifeCycle.outOfServiceDate" placeholder="yyyy/mm/dd">
+
                                        </div>
                                     </div>
                                  </div>
