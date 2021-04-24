@@ -6,7 +6,8 @@ import { Location } from '@angular/common';
 import { from, Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { InvokeHeaderFnService } from 'src/app/invoke-header-fn.service';
+import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
+
 declare var $: any;
 @Component({
   selector: 'app-edit-profile',
@@ -111,7 +112,7 @@ export class EditProfileComponent implements OnInit {
    errorTransit = false;
    errorInstitution = false;
    errorAccount = false;
-  constructor(private apiService: ApiService,private toaster: ToastrService,
+  constructor(private apiService: ApiService, private toaster: ToastrService,
               private headerFnService: InvokeHeaderFnService,
               private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();

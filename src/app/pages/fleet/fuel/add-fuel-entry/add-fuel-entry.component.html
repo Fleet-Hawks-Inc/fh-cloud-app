@@ -83,7 +83,8 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-4">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount</label>
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQtyAmt"
                           [(ngModel)]="fuelData.fuelQtyAmt" >
                       </div>
@@ -99,8 +100,7 @@
                       <label class="control-label pl-2 text-lg-right">{{DEFFuelQtyUnit}}</label>
                     </div>
                     <div class="col-lg-4">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span
-                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount</label>
                       <input type="number" placeholder="eg. 1,2" class="form-control" min='0' name="DEFFuelQtyAmt"
                         [(ngModel)]="fuelData.DEFFuelQtyAmt">
                     </div>
@@ -173,7 +173,7 @@
                           {{fuelQtyUnit}}:<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="row">
-                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="fuelData.pricePerUnit" [(ngModel)]="fuelData.pricePerUnit"></div>
+                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="pricePerUnit" type="number" [(ngModel)]="fuelData.pricePerUnit"></div>
                           <div class="col-lg-6">
                             <ng-select placeholder="Select Currency" name="fuelData.billingCurrency"
                             [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)">
@@ -193,7 +193,7 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount Paid:<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="row">
-                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="fuelData.amountPaid" [(ngModel)]="fuelData.amountPaid"></div>
+                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="amountPaid" type="number" [(ngModel)]="fuelData.amountPaid"></div>
                           <div class="col-lg-6">
                             <ng-select placeholder="Select Currency" name="fuelData.billingCurrency"
                             [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)">

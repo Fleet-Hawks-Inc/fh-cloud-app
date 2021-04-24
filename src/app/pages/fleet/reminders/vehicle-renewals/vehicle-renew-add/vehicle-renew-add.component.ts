@@ -232,20 +232,20 @@ export class VehicleRenewAddComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-      switch (this.timeType) {
-        case 'Day(s)': {
-          this.numberOfDays = this.time * 1;
-          break;
-        }
-        case 'Month(s)': {
-          this.numberOfDays = this.time * 30;
-          break;
-        }
-        case 'Week(s)': {
-          this.numberOfDays = this.time * 7;
-          break;
-        }
+    switch (this.timeType) {
+      case 'day': {
+        this.numberOfDays = this.time * 1;
+        break;
       }
+      case 'month': {
+        this.numberOfDays = this.time * 30;
+        break;
+      }
+      case 'week': {
+        this.numberOfDays = this.time * 7;
+        break;
+      }
+    }
       this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
       this.reminderData.subscribers = this.getSubscribersObject(this.reminderData.subscribers);
       this.apiService.putData('reminders', this.reminderData).subscribe({

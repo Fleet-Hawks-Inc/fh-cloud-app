@@ -49,6 +49,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     totalGallons: 0,
     countryID: '',
     stateID: '',
+    taxes: [],
     lineItems : [{
         fuelType: '',
         quantity: '',
@@ -101,6 +102,11 @@ export class FuelEntryDetailsComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  countryList: any = {};
+  stateList: any  = {};
+  cityList; any  = {};
+  taxTypeList: any = {};
+  discountList: any = {};
   Error = '';
   Success = '';
   constructor(
@@ -112,6 +118,8 @@ export class FuelEntryDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.entryID = this.route.snapshot.params[`entryID`];
+    this.fetchCitiesList();
+    this.fetchFuelEntry();
     this.fetchAssetList();
     this.fetchTripList();
     this.fetchVendorList();
@@ -124,7 +132,10 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchVehicleList();
     this.HereMap.mapSetAPI();
     this.map = this.HereMap.mapInit();
-    this.fetchFuelEntry();
+    this.fetchCountriesList();
+    this.fetchStatesList();
+    this.fetchTaxTypeFromID();
+    this.fetchDiscFromID();
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -136,9 +147,34 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.vendorList = result;
     });
   }
+  fetchCountriesList() {
+    this.apiService.getData('countries/get/list').subscribe((result: any) => {
+      this.countryList = result;
+    });
+  }
+  fetchStatesList() {
+    this.apiService.getData('states/get/list').subscribe((result: any) => {
+      this.stateList = result;
+    });
+  }
+  fetchCitiesList() {
+    this.apiService.getData('cities/get/list').subscribe((result: any) => {
+      this.cityList = result;
+    });
+  }
   fetchTaxWEXCode() {
     this.apiService.getData('fuelTaxes/get/WEXCode').subscribe((result: any) => {
     this.WEXTaxCodeList = result;
+    });
+  }
+  fetchTaxTypeFromID() {
+    this.apiService.getData('fuelTaxes/get/list').subscribe((result: any) => {
+    this.taxTypeList = result;
+    });
+  }
+  fetchDiscFromID() {
+    this.apiService.getData('fuelDiscounts/get/list').subscribe((result: any) => {
+    this.discountList = result;
     });
   }
   fetchWEXDiscountCode() {
@@ -171,80 +207,6 @@ export class FuelEntryDetailsComponent implements OnInit {
       this.tripList = result;
     });
   }
-  // fetchAllVehicles(ID) {
-  //   let sortedArray: any = [];
-  //   let totalCalculatedGallons = 0;
-  //   let sumCostPerGallon = 0;
-  //   this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
-  //     this.vehicleData = result.Items;
-  //   });
-  //   setTimeout(() => {
-  //     sortedArray = _.orderBy(this.vehicleData, ['odometer'], ['desc']);
-
-  //     if (sortedArray.length < 2) {
-  //       this.MPG = 0;
-  //       this.costPerMile = 0;
-  //     }
-  //     else {
-  //       for (let i = 1; i < sortedArray.length; i++) {
-
-  //         totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
-  //         sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
-  //       }
-  //       let avgCostPerGallon = +((sumCostPerGallon / (sortedArray.length - 1)).toFixed(2));
-
-  //       const firstEntry = sortedArray.pop(); // First entry means when vehicle got fuel for first time
-
-  //       const latestEntry = sortedArray.shift(); // Latest entry means the last ododmter reading
-
-  //       const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
-
-  //       this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-
-  //       this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
-
-  //     }
-
-  //   }, 4500);
-  // }
-  /**
-   * Reefer MPG Calculations
-   */
-  // fetchAllReefers(ID) {
-  //   let sortedArray: any = [];
-  //   let totalCalculatedGallons = 0;
-  //   let sumCostPerGallon = 0;
-  //   this.apiService.getData(`fuelEntries/unit/` + ID).subscribe((result: any) => {
-  //     this.ReeferData = result.Items;
-  //   });
-  //   setTimeout(() => {
-  //     sortedArray = _.orderBy(this.ReeferData, ['odometer'], ['desc']);
-
-  //     if (sortedArray.length < 2) {
-  //       this.MPG = 0;
-  //       this.costPerMile = 0;
-  //     }
-  //     else {
-  //       for (let i = 1; i < sortedArray.length; i++) {
-  //         totalCalculatedGallons = totalCalculatedGallons + sortedArray[i].totalGallons;
-  //         sumCostPerGallon = sumCostPerGallon + sortedArray[i].costPerGallon;
-  //       }
-  //       let avgCostPerGallon = +((sumCostPerGallon / (sortedArray.length - 1)).toFixed(2));
-
-  //       const firstEntry = sortedArray.pop(); // First entry means when vehicle got fuel for first time
-
-  //       const latestEntry = sortedArray.shift(); // Latest entry means the last ododmter reading
-
-  //       const miles = latestEntry.additionalDetails.odometer - firstEntry.additionalDetails.odometer;
-
-  //       this.MPG = +((miles / totalCalculatedGallons).toFixed(2));
-
-  //       this.costPerMile = +((avgCostPerGallon / this.MPG).toFixed(2));
-
-  //     }
-
-  //   }, 4500);
-  // }
   fetchVendorData(vendorID) {
     this.apiService.getData('vendors/' + vendorID).subscribe((result: any) => {
       // this.vendorAddress = result.Items[0].address;
@@ -276,7 +238,6 @@ export class FuelEntryDetailsComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
         this.fuelData.billingCurrency = result.billingCurrency,
@@ -312,15 +273,10 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.uploadedPhotos = result.uploadedPhotos;
         this.existingPhotos = result.uploadedPhotos;
         this.fuelData.lineItems = result.lineItems;
+        this.fuelData.taxes = result.taxes;
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
-        // if (result.unitType === Constants.VEHICLE) {
-        //   this.fetchAllVehicles(result.unitID);
-        // }
-        // else if (result.unitType === Constants.REEFER) {
-        //   this.fetchAllReefers(result.unitID);
-        // }
         this.fetchVendorData(result.vendorID);
       });
 
