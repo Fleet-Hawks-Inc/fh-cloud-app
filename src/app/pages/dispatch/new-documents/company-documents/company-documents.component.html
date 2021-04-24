@@ -57,7 +57,7 @@
                                     <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
                                 </div>
                             </div>
-                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
+                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'; openDocumentModal()" href="javascript:;"
                                 class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
                                     class="fas fa-plus"></i> Add Document</a>
                         </div>
@@ -88,7 +88,7 @@
                                     <tr *ngFor="let document of documents;let i = index;">
                                         <td>{{document.documentNumber}}</td>
                                         <td>{{tripsObjects[document.tripID]}}</td>
-                                        <td>{{document.docType}}</td>
+                                        <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?  document.docType+'#'  : document.docType }}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedBy}}</td>
                                         <td>Created: {{document.timeCreated | date: 'yyyy/MM/dd'}} <br>
@@ -226,11 +226,10 @@
                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
+                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control choosefileLH" observeFiles>
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
-                                tiff).
-                                The maximum file size can be 15MB.</span>
+                                tiff). The maximum file size can be 15MB.</span>
                             <div *ngIf="newDoc" class="border my-2 p-2">
                                 <h4 class="mt-0">Uploaded Document</h4>
                                 <a href="{{newDoc}}" target="_blank">Document</a>
@@ -240,7 +239,7 @@
                     <div class="form-group">
                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Description&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
-                        <textarea [(ngModel)]="documentData.description" name="description" placeholder="Enter Description" class="form-control"
+                        <textarea [(ngModel)]="documentData.description" name="description" placeholder="Enter Description" class="form-control heighta"
                             rows="3" id="textareaDefault"></textarea>
                     </div>
                 </form>

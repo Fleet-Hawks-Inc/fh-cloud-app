@@ -9,6 +9,7 @@ import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ListService } from '../../../../../services/list.service'
+import { isTemplateHead } from 'typescript';
 declare var $: any;
 
 @Component({
@@ -24,10 +25,10 @@ export class AddServiceComponent implements OnInit {
   tasks: any;
   newTaskResp;
   reminders = [];
-  issues: any = [];
+  issues: any;
   inventory = [];
   selectedTasks = [];
-  selectedParts = [];
+  selectedParts = []; 
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -598,25 +599,23 @@ export class AddServiceComponent implements OnInit {
           this.serviceData.allServiceTasks.taxPercent = 0;
           this.serviceData.allServiceTasks.total = 0;
         }
-    });
-  
-    
+    });    
   }
 
   removeParts(item: any) {
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      if (s.partID === item.value) {
+      if (s.partNumber === item.value.partNumber) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
         // this.totalLabors -= s.laborCost; 
         this.calculateParts();
       }
-      if(this.totalLabors === 0) {
+      if (this.totalLabors === 0) {
         this.serviceData.allServiceParts.discountPercent = 0;
         this.serviceData.allServiceParts.taxPercent = 0;
         this.serviceData.allServiceParts.total = 0;
       }
-  });
+    });
   }
 
   

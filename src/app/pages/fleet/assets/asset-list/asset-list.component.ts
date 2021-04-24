@@ -6,6 +6,7 @@ import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
+import {OnboardDefaultService}from '../../../../services/onboard-default.service'
 declare var $: any;
 
 @Component({
@@ -98,9 +99,11 @@ export class AssetListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
-    private hereMap: HereMapService) {}
+    private hereMap: HereMapService,
+    private onboard: OnboardDefaultService) {}
 
   ngOnInit(): void {
+    this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
       this.fetchAllAssetTypes();
       this.fetchGroups();

@@ -427,12 +427,13 @@ html.fixed .content-body {
     height: 260px !important;
 }
 .header .logo img {
-    max-width: 230px;
+    /* max-width: 230px; */ max-height: 38px;
 }
 .header .logo {
     /* width: 240px; */
     display: inline-block;
 }
+
 #sidebar-left #menu ul.nav-main > li.nav-active > a {
     -webkit-box-shadow: 2px 0 0 #000 inset;
     box-shadow: 2px 0 0 #000 inset;

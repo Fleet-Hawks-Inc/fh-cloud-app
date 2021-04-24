@@ -117,7 +117,7 @@ export class CompanyDocumentsComponent implements OnInit {
 
   fetchDocuments = () => {
     this.totalRecords = 0;
-    this.apiService.getData('documents?categoryType=company').subscribe({
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -455,5 +455,20 @@ export class CompanyDocumentsComponent implements OnInit {
     this.docStartPoint = 1;
     this.docEndPoint = this.pageLength;
     this.docDraw = 0;
+  }
+
+  openDocumentModal() {
+    this.documentData = {
+      categoryType: 'company',
+      tripID: '',
+      documentNumber: '',
+      docType: '',
+      documentName: '',
+      description: '',
+      uploadedDocs: []
+    };
+    this.newDoc = '';
+
+    $("#addDocumentModal").modal('show');
   }
 }

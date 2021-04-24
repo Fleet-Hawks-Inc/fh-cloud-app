@@ -57,7 +57,18 @@
                              <label class="control-label font-weight-bold text-lg-right pt-2"
                                 >Geofence Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                              <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName" placeholder=" eg. parking yard "
-                             name="geofenceName">
+                             name="geofenceName" #gName = "ngModel" required pattern="^[A-Za-z0-9\s\.\#]+$">
+                             <div *ngIf="gName.invalid && (gName.dirty || gName.touched)" class="text-danger">
+                                <div *ngIf="gName.errors.required">
+                                 Geofence Name  is required.
+
+                                </div>
+                                <div *ngIf="gName.errors.pattern"> 
+                                 Geofence name must contain letters , numbers and except (.) or # only.  
+
+                                </div>
+                             </div>
+
                           </div>
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right pt-2">Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -93,7 +104,13 @@
                                 >Description&nbsp; <span
                                 class="text-1 optional-label-color">(optional)</span></label>
                              <textarea class="form-control h-auto" placeholder="Enter Description" [(ngModel)]="geofenceData.description"
-                             name="description" rows="3"></textarea>
+                             name="description" rows="3" #dName= "ngModel" required pattern ="^[A-Za-z]+$"></textarea>
+                             <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
+                                <div *ngIf="dName.errors.pattern">
+                                 Description must contain letters , numbers no special character .
+                                </div>
+
+                             </div>
                           </div>
                        </div>
                     </div>
