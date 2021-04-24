@@ -2676,11 +2676,10 @@
                                                     href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                                             </div>
                                             <div *ngIf="item.manual" class="row mx-0">
-                                                <div class="col-lg-5 pt-4">
+                                                <div class="col-lg-6 pt-4">
                                                     <div class="row">
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Country</label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
                                                             <ng-select (change)= "getStates($event, 'operator', i)" [(ngModel)]="item.countryID"
                                                             [attr.name]="'address['+i+'].countryID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
@@ -2688,8 +2687,7 @@
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
-                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                Province</label>
+                                                            <label class="control-label font-weight-bold text-lg-right pt-2">Select Province</label>
                                                             <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateID"
                                                             [attr.name]="'address['+i+'].stateID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
@@ -2698,8 +2696,7 @@
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label
-                                                                class="control-label font-weight-bold text-lg-right pt-2">Select
-                                                                City</label>
+                                                                class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
                                                             <ng-select [(ngModel)]="item.cityID"
                                                             [attr.name]="'address['+i+'].cityID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
                                                                 placeholder="Select City" (change)="getCityName($event, 'operator', i)">

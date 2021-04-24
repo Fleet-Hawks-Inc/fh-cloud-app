@@ -74,6 +74,7 @@ export class TripDetailComponent implements OnInit {
   carriersObject: any = {};
   driversObject: any = {};
   lastDelivery = '';
+  stops = 0;
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -162,6 +163,10 @@ export class TripDetailComponent implements OnInit {
 
           if(element.type == 'Delivery') {
             this.lastDelivery = element.dropTime;
+          }
+
+          if(element.type == 'Stop'){
+            this.stops += 1;
           }
 
           this.plannedMiles += element.miles; 
@@ -329,9 +334,9 @@ export class TripDetailComponent implements OnInit {
   selectDocuments(event: any) {
     this.uploadedDocs = [];
     let files = [...event.target.files];
-    let totalCount = this.uploadedDocSrc.length+files.length;
+    let totalCount = this.tripData.documents.length+files.length;
 
-    if(totalCount >= 4) {
+    if(totalCount > 4) {
       $('#bolUpload').val('');
       this.toastr.error('Only 4 documents can be uploaded');
       return false;
@@ -372,10 +377,12 @@ export class TripDetailComponent implements OnInit {
             });
         },
         next: (res:any) => {
+          this.tripData.documents = res;
+          console.log('res', res);
           this.uploadedDocSrc = [];
-          if(res.Attributes.documents.length > 0) {
-            for (let k = 0; k < res.Attributes.documents.length; k++) {
-              const element = res.Attributes.documents[k];
+          if(res.length > 0) {
+            for (let k = 0; k < res.length; k++) {
+              const element = res[k];
               this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
             }
           }

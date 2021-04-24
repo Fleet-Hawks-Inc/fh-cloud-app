@@ -84,6 +84,7 @@ export class DriverListComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
+  
     
     // this.hideShowColumn();
     this.fetchAllDocumentsTypes();

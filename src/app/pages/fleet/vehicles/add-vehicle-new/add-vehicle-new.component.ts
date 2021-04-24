@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import constants from '../../constants';
 import { ListService } from '../../../../services';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare var $: any;
 
@@ -23,6 +24,7 @@ export class AddVehicleNewComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
   modalImage = '';
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   /**
    * Quantum prop
@@ -210,7 +212,7 @@ vehicles= [];
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: 'imperial',
+    measurmentUnit: 'imperial', 
   };
 
   ownerOperators: any = []
@@ -242,6 +244,7 @@ vehicles= [];
   Success: string = '';
 
   slides = [];
+  documentSlides = [];
   localPhotos = [];
   slideConfig = {
     slidesToShow: 1,
@@ -254,7 +257,8 @@ vehicles= [];
 
   vendorModalStatus = false;
 
-  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService) {
+  constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
+    private domSanitizer: DomSanitizer) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       this.vehicleForm = $('#vehicleForm').validate();
@@ -521,7 +525,6 @@ vehicles= [];
       },
       activeTab: this.activeTab
     };
-    console.log(data);
     // create form data instance
     const formData = new FormData();
 
@@ -808,7 +811,7 @@ vehicles= [];
         this.annualSafetyReminder = result.annualSafetyReminder,
         this.currentStatus = result.currentStatus;
         this.ownership = result.ownership;
-        this.ownerOperatorID = this.ownerOperatorID;
+        this.ownerOperatorID = result.ownerOperatorID;
         this.groupID = result.groupID;
         this.aceID = result.aceID;
         this.aciID = result.aciID;
@@ -955,6 +958,16 @@ vehicles= [];
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
         }
 
+        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
+          result.uploadedDocs.map((x)=>{
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.documentSlides.push(obj);
+          })
+          // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+        }
         this.timeCreated = result.timeCreated;
 
         $('#hardBreakingParametersValue').html(
@@ -1228,7 +1241,6 @@ vehicles= [];
   }
 
   async next(){
-    console.log(this.annualSafetyReminder);
     const data = {
       vehicleIdentification: this.vehicleIdentification,
       vehicleType: this.vehicleType,
@@ -1582,7 +1594,6 @@ vehicles= [];
 
   validateTabErrors(){
     if($('#details .error').length > 0 && this.activeTab >= 1) {
-      console.log('details', $('#details .error').length)
     this.hasBasic = true;
     } else {
     this.hasBasic = false;
@@ -1861,4 +1872,21 @@ vehicles= [];
         $('#team_driver').val('');
       }
     }
+
+    setPDFSrc(val) {
+      let pieces = val.split(/[\s.]+/);
+      let ext = pieces[pieces.length-1];
+      this.pdfSrc = '';
+      if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+        this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+      } else {
+        this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+      }
+    }
+
+    deleteDocument(name: string, index: string) {
+    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
+      this.documentSlides.splice(parseInt(index), 1);
+    });
+  }
 }
