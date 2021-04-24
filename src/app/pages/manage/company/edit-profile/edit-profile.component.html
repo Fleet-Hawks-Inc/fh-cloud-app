@@ -24,14 +24,14 @@
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName" minlength="3"
-                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]+$">
+                        <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
+                          name="firstName" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                         <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
                           <div *ngIf="fName.errors.required">
                             First name is required.
                           </div>
                           <div *ngIf="fName.errors.pattern">
-                            First name must contain letters only.
+                            First name must be between 2 to 30 characters and must contain letters only.
                           </div>
                         </div>
                       </div>
@@ -39,13 +39,13 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName" name="lastName"
-                          minlength="3" placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]+$">
+                          placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                         <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
                           <div *ngIf="lName.errors.required">
                             Last name is required.
                           </div>
                           <div *ngIf="lName.errors.pattern">
-                            Last name must contain letters only.
+                            Last name must be between 2 to 30 characters and must contain letters only.
                           </div>
                         </div>
                       </div>
@@ -55,44 +55,8 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Username</label>
                         <input id="un" type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]=true
                           placeholder="johnsmith" #uName="ngModel" minlength="6" pattern="^[a-z0-9//_//.]+$">
-                        <div *ngIf="uName.invalid && (uName.dirty || uName.touched)" class="text-danger">
-                          <div *ngIf="uName.errors.required">
-                            Username is required.
-                          </div>
-                          <div *ngIf="uName.errors.pattern">
-                            Username must contain small letters and numbers only.
-                          </div>
-                        </div>
                       </div>
                     </div>
-                    <!-- <div class="row">
-                      <div class="col-lg-5">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="pd" type="password" class="form-control" [(ngModel)]="password" name="password" minlength="8" #pwd="ngModel" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]+$"
-                          placeholder="eg. johnSmith@123">
-                          <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
-                            <div *ngIf="pwd.errors.required">
-                              Password is required.
-                            </div>
-                            <div *ngIf="pwd.errors.pattern">
-                              Password must be a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
-                            </div>
-                          </div>
-                      </div>
-                      <div class="col-lg-5">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input id="cnf" type="password" class="form-control" name="confirmPassword" minlength="8" #cpwd="ngModel"
-                          placeholder="eg. johnSmith@123" [(ngModel)]="confirmPassword">
-                          <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
-                            <div *ngIf="cpwd.errors.required">
-                              Confirm password is required.
-                            </div>
-                            <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
-                          </div>
-                      </div>
-                    </div> -->
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -100,12 +64,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
                         <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"  [disabled]=true
-                          placeholder="eg. +19897899879" #ph="ngModel" pattern="^(\+1)[0-9]{10}$">
-                          <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
-                            <div *ngIf="ph.errors.pattern">
-                              Enter valid phone number eg. +12032342345.
-                            </div>
-                          </div>
+                          placeholder="eg. +19897899879"  >
                       </div>
                     </div>
                     <div class=" row">
@@ -113,15 +72,7 @@
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Email</label>
                         <input id="mail" type="text" class="form-control" [(ngModel)]="email" name="email"  [disabled]=true
-                          placeholder="eg. johnsmith@testmail.com" #em="ngModel"  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-                          <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
-                            <div *ngIf="em.errors.required">
-                              Email is required.
-                            </div>
-                            <div *ngIf="em.errors.pattern">
-                              Enter valid email eg. johnsmith@test.com.
-                            </div>
-                          </div>
+                          placeholder="eg. johnsmith@testmail.com">
                       </div>
                     </div>
                     <div class="row">
@@ -219,10 +170,24 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Attach Logo</label>
-                        <input (change)="selectPhoto($event)" name="uploadedLogo" [(ngModel)]="uploadedLogo" type="file"
+                        <input (change)="selectPhoto($event)"  type="file"
                           class="form-control p-0">
                       </div>
                     </div>
+                    <div class="row mt-2" *ngIf = "uploadedLogo !== ''">
+                      <div class="col-lg-5">
+                         <div class="vehicle-photo-box">
+                            <img src="{{logoSrc}}" width="100%" class="img-fluid"
+                               style="height: 180px; object-fit: cover;">
+                            <hr class="m-3">
+                            <div class="row">
+                               <div class="col-lg-8">Company Logo</div>
+                               <div class="col-lg-4 text-right">
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -440,7 +405,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
-                                State</label>
+                                Province</label>
                               <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
                                 name="stateID{{i}}" placeholder="Select state">
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
@@ -541,11 +506,11 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]+$"
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
                           placeholder="eg. XYZ Bank">
                           <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
-                              Branch name must not contain special characters.
+                              Branch name must be between 2 to 30 characters and must not contain special characters.
                             </div>
                           </div>
                       </div>
