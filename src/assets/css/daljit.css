@@ -433,6 +433,7 @@ html.fixed .content-body {
     /* width: 240px; */
     display: inline-block;
 }
+
 #sidebar-left #menu ul.nav-main > li.nav-active > a {
     -webkit-box-shadow: 2px 0 0 #000 inset;
     box-shadow: 2px 0 0 #000 inset;

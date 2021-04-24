@@ -2014,4 +2014,6 @@ table.dataTable thead th, table.dataTable thead td {
 /* padding left sign in button page */
 .pl-signin{padding-left: 46px;}
 
-
+/* choose file line height class start*/
+.choosefileLH{line-height: 16px !important;}
+/* choose file line height class end*/
