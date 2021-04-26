@@ -60,16 +60,32 @@
                                                 data-placement="top" title="Name or Number for Vehicle."></i>
                                           </label>
                                           <input type="text" class="form-control" name="vehicleIdentification"
-                                             [(ngModel)]="vehicleIdentification" placeholder="eg. Recycling Truck">
+                                             [(ngModel)]="vehicleIdentification" placeholder="eg. Recycling Truck" #vName="ngModel" required pattern="^[a-zA-Z0-9\-]+$" maxlength="10">
+                                             <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
+                                                <div *ngIf="vName.errors.required">
+                                                   Vehicle name is required.    
+                                                </div>
+                                                <div *ngIf="vName.errors.pattern">
+                                                   Vehicle name must be between 1 to 10 characters and must not contain any special characters.
+                                                </div>
+
+                                             </div>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
                                              Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control" name="vehicleType" [(ngModel)]="vehicleType"
-                                             placeholder="Select vehicle type">
-                                             <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code">
+                                             placeholder="Select vehicle type" #vSlt="ngModel" required>
+                                             <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code" >
                                                 {{vehicle.name}}</ng-option>
                                           </ng-select>
+                                          <div *ngIf="vSlt.invalid && (vSlt.dirty || vSlt.touched)" class="text-danger">
+                                             <div *ngIf="vSlt.errors.required">
+                                                Select Vehicle is required.    
+                                             </div>
+                                            
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-10">
 
@@ -77,7 +93,16 @@
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                 data-placement="top" title="Vehicle Identification Number."></i></label>
                                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
-                                             placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705">
+                                             placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705" maxlength="17" #vin="ngModel" required pattern="^[a-zA-Z0-9\-]+$">
+                                             <div *ngIf="vin.invalid && (vin.dirty || vin.touched)" class="text-danger">
+                                                <div *ngIf="vin.errors.required">
+                                                   VIN is required.    
+                                                </div>
+                                                <div *ngIf="vin.errors.pattern">
+                                                   Vehicle name must be between 1 to 10 characters and must not contain any special characters.
+                                                </div>
+
+                                             </div>
                                        </div>
                                        <!-- <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
