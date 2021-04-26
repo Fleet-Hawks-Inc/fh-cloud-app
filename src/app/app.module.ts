@@ -48,6 +48,8 @@ import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.compo
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
 import { MustMatchDirective } from './entry/onboard/must-match.directive';
+import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
+
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
   port: environment.PORT,
@@ -93,7 +95,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelectModule,
   ],
-  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy],
+  providers: [AmplifyService, HttpInterceptorProviders, PreLoadStrategy,InvokeHeaderFnService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

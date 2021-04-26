@@ -189,7 +189,9 @@ export class VehicleDetailComponent implements OnInit {
 
   issues = [];
   reminders = [];
-  inspectionForms = [];
+  inspectionForms = {
+    inspectionFormName : ''
+  };
   fuelEntries = [];
   documents = [];
   servicePrograms = [];
@@ -207,6 +209,7 @@ export class VehicleDetailComponent implements OnInit {
   };
 
   vehicleTypeObects: any = {};
+  ownerOperatorName = '';
 
   constructor(
     private apiService: ApiService,
@@ -298,13 +301,13 @@ export class VehicleDetailComponent implements OnInit {
       });
   }
 
-  fetchInspectionForms() {
-    this.apiService
-      .getData(`inspectionForms/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.inspectionForms = result.Items;
-      });
-  }
+  // fetchInspectionForms() {
+  //   this.apiService
+  //     .getData(`inspectionForms/vehicle/${this.vehicleID}`)
+  //     .subscribe((result) => {
+  //       this.inspectionForms = result.Items;
+  //     });
+  // }
 
   fetchFuel() {
     this.apiService
@@ -335,7 +338,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.issues = result.Items;
-        console.log('this.issues', this.issues);
       });
   }
 
@@ -350,6 +352,20 @@ export class VehicleDetailComponent implements OnInit {
       .getData("vehicles/" + this.vehicleID)
       .subscribe((result: any) => {
         result = result.Items[0];
+
+        if(result.ownerOperatorID != '' && result.ownerOperatorID != undefined) {
+          this.apiService.getData(`ownerOperators/${result.ownerOperatorID}`).subscribe((result2: any) => {
+            let data = result2.Items[0];
+            this.ownerOperatorName = data.firstName+' '+data.lastName;
+          });
+        }
+
+        if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
+          this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
+            this.inspectionForms = result1.Items[0];
+          });
+        }
+
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;
         this.VIN = result.VIN;

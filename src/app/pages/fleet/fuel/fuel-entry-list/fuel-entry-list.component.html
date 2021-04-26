@@ -103,10 +103,12 @@
 
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
 												  <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.amount}}&nbsp;{{fuelEntry.billingCurrency}}<br></span></span>
-                        <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.totalAmount}}</span></td>
+                        <span *ngIf="!fuelEntry.lineItems"><span *ngIf="fuelEntry.fuelQtyAmt">Fuel - {{fuelEntry.fuelQtyAmt}}</span><br>
+                        <span *ngIf="fuelEntry.DEFFuelQtyAmt">DEF - {{fuelEntry.DEFFuelQtyAmt}}</span></span></td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
 												 <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.quantity}} &nbsp;litre(s)<br></span></span>
-                         <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.totalLitres}}</span> </td>
+                         <span *ngIf="!fuelEntry.lineItems"><span *ngIf="fuelEntry.fuelQtyAmt">Fuel - {{fuelEntry.fuelQty}}</span><br>
+                         <span *ngIf="fuelEntry.DEFFuelQtyAmt">DEF - {{fuelEntry.DEFFuelQty}}</span></span> </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
                           <span *ngIf="!fuelEntry.lineItems">{{fuelCodeList[fuelEntry.fuelType]}}</span>
                            <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{WEXCodeList[lItems.fuelType]}}<br></span></span>
