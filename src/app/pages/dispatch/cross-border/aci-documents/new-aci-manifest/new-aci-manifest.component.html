@@ -254,7 +254,8 @@
                               title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                             <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
                               placeholder="14 digits,beginning with 4270 and ending with 00 or 01 or 02 (42700012345601)"
-                              class="form-control">
+                              class="form-control" [ngModelOptions]="{standalone: true}"
+                              [attr.name]="'passengers['+i+'].fastCardNumber'" [(ngModel)]="passenger.fastCardNumber" >
                               <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
                           </div>
                         </div>
@@ -1057,7 +1058,7 @@
                                   <div class="col-lg-7">
                                     <select data-plugin-selectTwo class="form-control populate"
                                       [ngModelOptions]="{standalone: true}"
-                                      [attr.name]="'shipments['+s+'].commodities['+i+'].weightUnit'" 
+                                      [attr.name]="'shipments['+s+'].commodities['+i+'].weightUnit'"
                                       [(ngModel)]="commodity.weightUnit">
                                       <optgroup label="">
                                         <option value="LB">Pounds</option>

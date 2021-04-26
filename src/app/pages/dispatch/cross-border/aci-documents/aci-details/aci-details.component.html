@@ -59,7 +59,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray"> Canadian Port of Entry:</th>
-                                                    <td>{{canadianPortsObjects[portOfEntry]}}</td>
+                                                    <td>{{portOfEntry}} - {{canadianPortsObjects[portOfEntry]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Estimated Arrival Date/Time/ETA time zone :</th>
@@ -73,7 +73,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Sub Location/Warehouse:</th>
-                                                    <td>{{subLocationObjects[subLocation]}}</td>
+                                                    <td>{{subLocation}} - {{subLocationObjects[subLocation]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Current Status:
@@ -238,9 +238,9 @@
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>
-                                                {{shipment.shipper.address.addressLine}}
-                                                {{shipment.shipper.address.city}}
-                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}}
+                                                {{shipment.shipper.address.addressLine}},
+                                                {{shipment.shipper.address.city}},
+                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}},
                                                 {{shipment.shipper.address.postalCode}}
 
                                             </td>
@@ -248,9 +248,9 @@
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>
-                                                {{shipment.consignee.address.addressLine}}
-                                                {{shipment.consignee.address.city}}
-                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}}
+                                                {{shipment.consignee.address.addressLine}},
+                                                {{shipment.consignee.address.city}},
+                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}},
                                                 {{shipment.consignee.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
@@ -260,7 +260,8 @@
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
-                                                (click)="showShipmentDetails(shipment.shipmentID)">Demo User
+                                                (click)="showShipmentDetails(shipment.shipmentID)">{{timeModified}} <span *ngIf="modifiedBy != ''">By
+                                                  {{modifiedBy}}</span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
@@ -286,7 +287,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Drivers,Team Drivers and Passengers</h4>
+                                <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
                                 <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Co-Driver</a>
@@ -617,7 +618,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray"> Vehicle Type:</th>
-                                        <td>{{truck.type}}</td>
+                                        <td>{{vehicleTypeObjects[truck.type]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">VIN/SN:</th>
@@ -704,7 +705,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Release Office:</th>
-                                        <td>{{releaseOfficeObjects[shipmentData.releaseOffice]}}</td>
+                                        <td>{{shipmentData.releaseOffice}} - {{releaseOfficeObjects[shipmentData.releaseOffice]}}</td>
                                     </tr>
 
                                 </tbody>

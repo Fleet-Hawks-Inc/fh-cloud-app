@@ -76,7 +76,9 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
-  fetchedCoDrivers=[];
+  fetchedCoDrivers = [];
+  modifiedBy  = '';
+  createdBy = '';
   truck = {
     truckID: '',
     sealNumbers: [
@@ -842,6 +844,8 @@ export class NewAciManifestComponent implements OnInit {
         this.passengers = result.passengers;
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
+        this.createdBy = result.createdBy;
+        this.modifiedBy = result.modifiedBy;
         setTimeout(() => {
           this.fetchUSStates();
         }, 2000);
@@ -867,6 +871,8 @@ export class NewAciManifestComponent implements OnInit {
       shipments: this.shipments,
       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated,
+      createdBy: this.createdBy,
+      modifiedBy: this.modifiedBy
     };
     this.apiService
       .putData(
