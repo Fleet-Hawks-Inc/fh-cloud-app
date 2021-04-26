@@ -9,75 +9,139 @@
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
-                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Issues List</a>
+                        <a routerLink="/fleet/maintenance/issues/list" class="btn btn-default btn-sm"><i
+                                class="fas fa-list"></i> Issues List</a>
                     </div>
                 </div>
             </header>
             <div class="row">
                 <div class="col pr-0">
                     <div class="card-body text-dark">
-                        <form id="issueForm" class="form-horizontal form-bordered" method="get" name="issueForm" >
+                        <form id="issueForm" class="form-horizontal form-bordered" method="get" name="issueForm">
                             <div class=" row">
                                 <div class="col-lg-12">
                                     <div class="row">
-                                       <div class="col-lg-2">
-                                          <label class="control-label font-weight-bold text-lg-right"
-                                             >Unit Type:</label>
-                                       </div>
-                                       <div class="col-lg-6">
-                                         <div class="btn-group-toggle" data-toggle="buttons">
-                                           <label class="btn btn-outline btn-fleet mr-2" [class.active]="unitType === 'vehicle'" style="width:110px;" (click) = "onChangeUnitType('vehicle')">
-                                             <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                                checked hidden value="vehicle" > Vehicle </label>
-                                           <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;" [class.active]="unitType === 'asset'" (click) = "onChangeUnitType('asset')">
-                                             <input type="radio" name="unitType" [(ngModel)]="unitType"
-                                                  hidden value="asset" > Asset </label>
-                                         </div>
-                                       </div>
+                                        <div class="col-lg-2">
+                                            <label class="control-label font-weight-bold text-lg-right">Unit
+                                                Type:</label>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="btn-group-toggle" data-toggle="buttons">
+                                                <label class="btn btn-outline btn-fleet mr-2"
+                                                    [class.active]="unitType === 'vehicle'" style="width:110px;"
+                                                    (click)="onChangeUnitType('vehicle')">
+                                                    <input type="radio" name="unitType" [(ngModel)]="unitType" checked
+                                                        hidden value="vehicle"> Vehicle </label>
+                                                <label class="btn btn-outline btn-fleet mr-2 " style="width:110px;"
+                                                    [class.active]="unitType === 'asset'"
+                                                    (click)="onChangeUnitType('asset')">
+                                                    <input type="radio" name="unitType" [(ngModel)]="unitType" hidden
+                                                        value="asset"> Asset </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
+                                </div>
 
                                 <div class="col-lg-5 offset-lg-1">
 
-                                     <div class="row pt-2">
+                                    <div class="row pt-2">
                                         <div class="col-lg-10" *ngIf="unitType ==='vehicle'">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID">
-                                                <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                                Select Vehicle<span
+                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <ng-select placeholder="Select Vehicle" name="unitID" [(ngModel)]="unitID"
+                                                #vSlt="ngModel" required>
+                                                <ng-option *ngFor="let vehicle of vehicles"
+                                                    value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}
+                                                </ng-option>
                                             </ng-select>
+                                            <div *ngIf="vSlt.invalid && (vSlt.dirty || vSlt.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="vSlt.errors.required">
+                                                    Select Vehicle is required.
+
+                                                </div>
+
+
+
+                                            </div>
                                         </div>
                                         <div class="col-lg-10" *ngIf="unitType ==='asset'">
-                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Select Asset<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID">
+                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                                Select Asset<span
+                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <ng-select placeholder="Select Asset" name="unitID" [(ngModel)]="unitID"
+                                                #aSlt="ngModel" required>
 
-                                                <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
+                                                <ng-option *ngFor="let asset of assets" value="{{asset.assetID}}">
+                                                    {{asset.assetIdentification}}</ng-option>
 
                                             </ng-select>
-                                        </div>
-                                    </div>
-                                    <div class="row pt-2">
-                                        <div class="col-lg-10">
-                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                         <input type="text"  class="form-control" id="issueName" name="issueName" [(ngModel)]="issueName" placeholder="eg. brake issue">
-                                       </div>
-                                    </div>
-                                    <div class="row pt-2">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <div *ngIf="aSlt.invalid && (aSlt.dirty || aSlt.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="aSlt.errors.required">
+                                                    Select Asset is required.
 
-                                                <input class="form-control"  placeholder="yyyy-mm-dd"
-                                                 [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker">
+                                                </div>
 
+
+
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp; <span
-												class="text-1 optional-label-color">(optional)</span></label>
-                                            <textarea [(ngModel)]="description" name="description" class="form-control h-auto" rows="3" placeholder="Enter description of the issue"></textarea>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Issue
+                                                Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <input type="text" class="form-control" id="issueName" name="issueName"
+                                                [(ngModel)]="issueName" placeholder="eg. brake issue" #iName="ngModel"
+                                                required pattern="^[a-zA-Z0-9\s\.\-\_]{2,30}$" maxlength="30">
+                                            <div *ngIf="iName.invalid && (iName.dirty || iName.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="iName.errors.required">
+                                                    Issue name is required.
+
+                                                </div>
+                                                <div *ngIf="iName.errors.pattern">
+                                                    Issue name must contain uppercase,lowercase ,alphanumeric and
+                                                    special characters(period(.,-,\,space)) only .
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-lg-10">
+                                            <label
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
+                                                Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
+                                            <input class="form-control" placeholder="yyyy-mm-dd"
+                                                [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()"
+                                                ngbDatepicker #d="ngbDatepicker" #dateReport="ngModel" required>
+                                                <div *ngIf="dateReport.invalid && (dateReport.dirty || dateReport.touched)" class="text-danger">
+                                                    <div *ngIf="dateReport.errors.required">
+                                                       Select Reported Date is required.
+                                                         
+                                                    </div>
+                                              
+                                                    
+                          
+                                                 </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-lg-10">
+                                            <label
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
+                                                <span class="text-1 optional-label-color">(optional)</span></label>
+                                            <textarea [(ngModel)]="description" name="description"
+                                                class="form-control h-auto" rows="3"
+                                                placeholder="Enter description of the issue"></textarea>
                                         </div>
                                     </div>
 
@@ -86,112 +150,163 @@
                                     <div class="row pt-3" *ngIf="unitType === 'vehicle'">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right">Odometer(miles)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <input [(ngModel)]="odometer" name="odometer" min="0" type="number" class="form-control" placeholder="Enter odometer miles at which issue is reported. eg. 10000">
+                                                class="control-label font-weight-bold font-bold text-lg-right">Odometer(miles)<span
+                                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <input [(ngModel)]="odometer" name="odometer" min="0" type="number"
+                                                class="form-control"
+                                                placeholder="Enter odometer miles at which issue is reported. eg. 10000" #odoMiles="ngModel" required>
+                                                <div *ngIf="odoMiles.invalid && (odoMiles.dirty || odoMiles.touched)" class="text-danger">
+                                                    <div *ngIf="odoMiles.errors.required">
+                                                      Odometer Miles is required and must contain numbers only. 
+                                                         
+                                                    </div>
+                                              
+                                                    
+                          
+                                                 </div>
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="reportedBy" name="reportedBy" placeholder="Select Contact">
-                                                    <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
+                                                By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <ng-select [(ngModel)]="reportedBy" name="reportedBy"
+                                                placeholder="Select Contact" #rName="ngModel" required>
+                                                <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                                                    {{user.firstName}} {{user.lastName}}</ng-option>
                                             </ng-select>
-                                        </div>
-                                    </div>
-                                    <div class="row pt-2">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="assignedTo" name="assignedTo" placeholder="Select the contact to assign the issue">
-                                              <ng-option *ngFor="let user of users" value="{{user.userName}}">{{user.firstName}} {{user.lastName}}</ng-option>
-                                            </ng-select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
-                                </div>
-                                <div class="col-lg-5 offset-lg-1">
-                                    <div class="row">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right">Attach Photo</label>
-                                                <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file" multiple class="form-control p-0">
-                                            </div>
-                                        <div class="col-lg-2  mar-top-37">
-                                       </div>
-                                    </div>
-                                    <div class="row mt-2" *ngIf = 'issueImages?.length'>
-                                        <div class="col-lg-5" *ngFor="let photo of issueImages;let i= index">
-                                           <div class="vehicle-photo-box">
-                                              <img src="{{photo.path}}" width="100%" class="img-fluid"
-                                                 style="height: 180px; object-fit: cover;">
-                                              <hr class="m-3">
-                                              <div class="row">
-                                                 <div class="col-lg-8">Image {{i+1}}</div>
-                                                 <div class="col-lg-4 text-right">
-                                                    <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
+                                            <div *ngIf="rName.invalid && (rName.dirty || rName.touched)"
+                                                class="text-danger">
+                                                <div *ngIf="rName.errors.required">
+                                                    Select Issue Reported By is required.
 
+                                                </div>
+
+
+
+                                            </div>
+                                        </div>
+</div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned
+                                                    To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <ng-select [(ngModel)]="assignedTo" name="assignedTo"
+                                                    placeholder="Select the contact to assign the issue" #aIssue="ngModel" required>
+                                                    <ng-option *ngFor="let user of users" value="{{user.userName}}">
+                                                        {{user.firstName}} {{user.lastName}}</ng-option>
+                                                </ng-select>
+                                                <div *ngIf="aIssue.invalid && (aIssue.dirty || aIssue.touched)" class="text-danger">
+                                                    <div *ngIf="aIssue.errors.required">
+                                                       Select Issue Assigned To is required.
+                                                         
+                                                    </div>
+                                              
+                                                    
+                          
                                                  </div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
-                                </div>
-                                <div class="col-lg-5 offset-lg-1">
-                                    <div class="row">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right">Attach Document</label>
-                                                <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple class="form-control p-0">
-                                        </div>
-                                        <div class="col-lg-2  mar-top-37">
-                                            <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-2" *ngIf="issueDocs?.length">
-                                        <div class="col-lg-10">
-                                           <div class="vehicle-common-box p-3">
-                                              <div class="row">
-                                                 <div class="col-lg-6"><label
-                                                       class="control-label font-weight-bold text-3">Document(s)</label></div>
-                                                 <div class="col-lg-6 text-right">
-                                                 </div>
-                                              </div>
-                                              <hr class="solid mt-2">
-                                              <div class="row mb-1" *ngFor="let doc of issueDocs;let d= index">
-                                                 <div class="col-lg-9" ><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a> </div>
-                                                 <div class="col-lg-3 text-right">
-                                                     <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                                    <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
-                                                          class="fas fa-times text-danger"></i></a>
-                                                 </div>
-                                              </div>
-                                           </div>
-                                        </div>
-                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-12 text-right">
-                                    <div class="row">
-                                       <div class="col-5 offset-1"></div>
-                                       <div class="col-5 offset-1">
-                                          <div class="row">
-                                             <div class="col-10">
-                                                <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>
-                                                <button type="button" *ngIf="!issueID" (click)="addIssue()" class="btn btn-success">Save</button>
-                                                <button type="button" *ngIf="issueID" (click)="updateIssue()" class="btn btn-success">Update</button>
-                                             </div>
-                                          </div>
-                                       </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
+                                            Details</label>
                                     </div>
-                                 </div>
-                            </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold font-bold text-lg-right">Attach
+                                                    Photo</label>
+                                                <input (change)="selectDocuments($event, 'uploadedPhotos')"
+                                                    name="uploadedPhotos" type="file" multiple class="form-control p-0">
+                                            </div>
+                                            <div class="col-lg-2  mar-top-37">
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2" *ngIf='issueImages?.length'>
+                                            <div class="col-lg-5" *ngFor="let photo of issueImages;let i= index">
+                                                <div class="vehicle-photo-box">
+                                                    <img src="{{photo.path}}" width="100%" class="img-fluid"
+                                                        style="height: 180px; object-fit: cover;">
+                                                    <hr class="m-3">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">Image {{i+1}}</div>
+                                                        <div class="col-lg-4 text-right">
+                                                            <i class="fas fa-times text-danger"
+                                                                (click)="delete('image',photo.name)"></i>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5 offset-lg-1">
+                                        <div class="row">
+                                            <div class="col-lg-10">
+                                                <label
+                                                    class="control-label font-weight-bold font-bold text-lg-right">Attach
+                                                    Document</label>
+                                                <input (change)="selectDocuments($event, 'uploadedDocs')"
+                                                    name="uploadedDocs" type="file" multiple class="form-control p-0">
+                                            </div>
+                                            <div class="col-lg-2  mar-top-37">
+                                                <!-- <a href="" class="btn btn-sm btn-success"><i class="fas fa-plus"></i></a> -->
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2" *ngIf="issueDocs?.length">
+                                            <div class="col-lg-10">
+                                                <div class="vehicle-common-box p-3">
+                                                    <div class="row">
+                                                        <div class="col-lg-6"><label
+                                                                class="control-label font-weight-bold text-3">Document(s)</label>
+                                                        </div>
+                                                        <div class="col-lg-6 text-right">
+                                                        </div>
+                                                    </div>
+                                                    <hr class="solid mt-2">
+                                                    <div class="row mb-1" *ngFor="let doc of issueDocs;let d= index">
+                                                        <div class="col-lg-9"><a href="{{doc.path}}"
+                                                                target="_blank">Document {{d+1}}</a> </div>
+                                                        <div class="col-lg-3 text-right">
+                                                            <i class="far fa-file text-dak mr-1"
+                                                                (click)="setPDFSrc(doc.path)" data-toggle="modal"
+                                                                data-target="#viewDocModal"></i>
+                                                            <a href="javascript:;" (click)="delete('doc',doc.name)"
+                                                                class="modal-with-form"><i
+                                                                    class="fas fa-times text-danger"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12 text-right">
+                                        <div class="row">
+                                            <div class="col-5 offset-1"></div>
+                                            <div class="col-5 offset-1">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <a type="button" (click)="cancel()"
+                                                            class="btn btn-default btnPrevious mr-2">Cancel</a>
+                                                        <button type="button" *ngIf="!issueID" (click)="addIssue()"
+                                                            class="btn btn-success">Save</button>
+                                                        <button type="button" *ngIf="issueID" (click)="updateIssue()"
+                                                            class="btn btn-success">Update</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </form>
                     </div>
                 </div>
@@ -200,30 +315,32 @@
         </section>
     </div>
 </section>
-  <!-- VIEW DOCUMENT MODAL -->
-  <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-          <button type="button" (click)="setSrcValue()" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-             <div class="form-row">
-                <div class="form-group col-md-12">
-                   <div>
-                      <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+                <button type="button" (click)="setSrcValue()" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <div>
+                            <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
 
-                   </div>
+                        </div>
+                    </div>
                 </div>
-             </div>
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="setSrcValue()"
+                    data-dismiss="modal">Cancel</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="setSrcValue()" data-dismiss="modal">Cancel</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
