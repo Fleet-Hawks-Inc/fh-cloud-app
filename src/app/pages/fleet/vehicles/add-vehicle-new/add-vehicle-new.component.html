@@ -573,9 +573,8 @@
                                  <div class="row ">
                                     <div class="col-lg-10">
                                        <div class="checkbox mt-4">
-                                          <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
-                                             the Inspection Form <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                          </label>
+                                          <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                             the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <div class="d-flex">
                                              <ng-select class="form-control populate mr-2" name="inspectionFormID" [(ngModel)]="inspectionFormID"
                                                 placeHolder="Select Inspection Form">
@@ -2174,12 +2173,12 @@
                         (click)="cancel()">Cancel</button>
                         <button *ngIf="activeTab != 1" type="button" (click)="previous()"
                            class="btn btn-default mr-2 mt-4">Prev</button>
-                        <a *ngIf="activeTab != 9" [routerLink]="" (click)="next()" class="btn btn-success mt-4">Save &
-                           Next</a>
-                        <a *ngIf="activeTab == 9 && !vehicleID" [routerLink]="" (click)="addVehicle()"
-                           class="btn btn-success mt-4">Save</a>
-                        <a *ngIf="activeTab == 9 && vehicleID" [routerLink]="" (click)="updateVehicle()"
-                           class="btn btn-success mt-4">Update</a>
+                        <button *ngIf="activeTab != 9" [routerLink]="" (click)="next()" [disabled]="submitDisabled" class="btn btn-success mt-4">Save &
+                           Next</button>
+                        <button *ngIf="activeTab == 9 && !vehicleID" [routerLink]="" [disabled]="submitDisabled" (click)="addVehicle()"
+                           class="btn btn-success mt-4">Save</button>
+                        <button *ngIf="activeTab == 9 && vehicleID" [routerLink]="" [disabled]="submitDisabled" (click)="updateVehicle()"
+                           class="btn btn-success mt-4">Update</button>
                      </div>
                   </div>
                </form>
@@ -2264,7 +2263,7 @@
          </div>
          <div class="modal-footer text-right">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+            <button type="button" class="btn btn-success" [disabled]="groupSubmitDisabled" (click)="addGroup()">Save</button>
          </div>
       </div>
    </div>
