@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import {OnboardDefaultService} from '../../../../services/onboard-default.service'
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
@@ -67,9 +68,10 @@ export class VehicleListComponent implements OnInit {
   vehicleTypeObects: any = {};
   fuelTypesObjects: any = {};
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService, private onboard:OnboardDefaultService) {}
 
   ngOnInit() {
+    this.onboard.checkInspectionForms();
     this.fetchGroups();
     this.fetchVehiclesCount();
     this.fetchVehicleModelList();

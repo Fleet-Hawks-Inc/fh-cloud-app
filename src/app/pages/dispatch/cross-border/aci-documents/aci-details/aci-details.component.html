@@ -58,11 +58,11 @@
                                         <table class="table table-bordered m-0">
                                             <tbody>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Port of Entry:</th>
-                                                    <td>{{canadianPortsObjects[portOfEntry]}}</td>
+                                                    <th width="40%" class="back-color-gray"> Canadian Port of Entry:</th>
+                                                    <td>{{portOfEntry}} - {{canadianPortsObjects[portOfEntry]}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Estimated Arrival Date:</th>
+                                                    <th width="40%" class="back-color-gray">Estimated Arrival Date/Time/ETA time zone :</th>
                                                     <td>{{estimatedArrivalDateTime}}
                                                       &nbsp;
                                                       <span *ngIf="estimatedArrivalTimeZone == 'PST'">Pacific Standard Time</span>
@@ -73,7 +73,7 @@
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Sub Location/Warehouse:</th>
-                                                    <td>{{subLocationObjects[subLocation]}}</td>
+                                                    <td>{{subLocation}} - {{subLocationObjects[subLocation]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Current Status:
@@ -218,7 +218,7 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Cargo Control Number</th>
+                                            <th>Cargo Control#</th>
                                             <th>Consignor</th>
                                             <th>Consignee</th>
                                             <th>Quantity</th>
@@ -238,9 +238,9 @@
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.shipper.name}}<br>
-                                                {{shipment.shipper.address.addressLine}}
-                                                {{shipment.shipper.address.city}}
-                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}}
+                                                {{shipment.shipper.address.addressLine}},
+                                                {{shipment.shipper.address.city}},
+                                                {{stateCodeToName[shipment.shipper.address.stateProvince]}},
                                                 {{shipment.shipper.address.postalCode}}
 
                                             </td>
@@ -248,25 +248,26 @@
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
                                                 {{shipment.consignee.name}}<br>
-                                                {{shipment.consignee.address.addressLine}}
-                                                {{shipment.consignee.address.city}}
-                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}}
+                                                {{shipment.consignee.address.addressLine}},
+                                                {{shipment.consignee.address.city}},
+                                                {{stateCodeToName[shipment.consignee.address.stateProvince]}},
                                                 {{shipment.consignee.address.postalCode}}
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{packagingUnitsObjects[commodity.packagingUnit]}},</span>
+                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}} {{packagingUnitsObjects[commodity.packagingUnit]}},</span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
-                                                (click)="showShipmentDetails(shipment.shipmentID)">Demo User
+                                                (click)="showShipmentDetails(shipment.shipmentID)">{{timeModified}} <span *ngIf="modifiedBy != ''">By
+                                                  {{modifiedBy}}</span>
                                             </td>
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
-                                                <span *ngIf="shipment.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                                <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset</span>[{{shipment.loadedOn.number}}]</td>
+                                                <span *ngIf="shipment.loadedOn.type == 'TRUCK'">Vehicle </span>
+                                                <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset </span>[{{shipment.loadedOn.number}}]</td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -286,7 +287,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Drivers,Team Drivers and Passengers</h4>
+                                <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
                                 <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Co-Driver</a>
@@ -300,19 +301,39 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Type</th>
-                                            <th>Driver Number</th>
+                                            <th>Driver#</th>
                                             <th>Documents</th>
                                             <th  width="10%">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                      <tr>
+                                        <td data-toggle="modal" data-target="#showDriverDetails"
+                                        class="modal-with-form cursor-pointer"
+                                        (click)="showMainDriverDetails()">{{mainDriver.firstName}} {{mainDriver.lastName}}</td>
+                                        <td data-toggle="modal" data-target="#showDriverDetails"
+                                        class="modal-with-form cursor-pointer"
+                                        (click)="showMainDriverDetails()">Main Driver</td>
+                                        <td data-toggle="modal" data-target="#showDriverDetails"
+                                        class="modal-with-form cursor-pointer"
+                                        (click)="showMainDriverDetails()">{{mainDriver.driverNumber}}</td>
+                                        <td data-toggle="modal" data-target="#showDriverDetails"
+                                        class="modal-with-form cursor-pointer"
+                                        (click)="showMainDriverDetails()"><span
+                                                *ngFor="let document of mainDriver.travelDocuments">{{document.number}}</span>
+                                        </td>
+                                        <td class="actions">
+                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                                    class="fas fa-pencil-alt black_color"></i> Edit</a>
+                                        </td>
+                                    </tr>
                                         <tr *ngFor="let driver of drivers">
                                             <td data-toggle="modal" data-target="#showDriverDetails"
                                             class="modal-with-form cursor-pointer"
                                             (click)="showDriverDetails(driver.driverID)">{{driver.firstName}} {{driver.lastName}}</td>
                                             <td data-toggle="modal" data-target="#showDriverDetails"
                                             class="modal-with-form cursor-pointer"
-                                            (click)="showDriverDetails(driver.driverID)">Driver</td>
+                                            (click)="showDriverDetails(driver.driverID)">Co-Driver</td>
                                             <td data-toggle="modal" data-target="#showDriverDetails"
                                             class="modal-with-form cursor-pointer"
                                             (click)="showDriverDetails(driver.driverID)">{{driver.driverNumber}}</td>
@@ -373,7 +394,7 @@
                                             <th width="15%">Vehicle Name</th>
                                             <th width="15%">Vehicle Type</th>
                                             <th width="10%">Licence Plate Number</th>
-                                            <th width="10%">Licence State/Province</th>
+                                            <th width="10%">Licence Province</th>
                                             <th width="10%">Licence Country</th>
                                             <th width="15%">IIT/Cargo Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
@@ -388,7 +409,7 @@
                                             <td>{{truck.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[truck.licensePlate.stateProvince]}}</td>
                                             <td>{{countryCodeName[truck.licensePlate.country]}}</td>
-                                            <td><span *ngFor="let cargo of truck.cargoExemptions">{{cargo}}&nbsp;</span></td>
+                                            <td><span *ngFor="let cargo of truck.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},&nbsp;</span></td>
                                             <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
@@ -422,9 +443,9 @@
                                     <thead>
                                         <tr>
                                             <th width="15%">Asset Name</th>
-                                            <th width="15%">Type</th>
+                                            <th width="15%">Asset Type</th>
                                             <th width="15%">Licence Plate Number</th>
-                                            <th width="15%">Licence State/Province</th>
+                                            <th width="15%">Licence Province</th>
                                             <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
@@ -440,7 +461,7 @@
                                             <td>{{trailer.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[trailer.licensePlate.stateProvince]}}</td>
                                             <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}}&nbsp;</span></td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}} </span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -483,10 +504,10 @@
                                     <tbody>
                                         <tr *ngFor="let container of containers">
                                             <td>{{container.number}}</td>
-                                            <td><span *ngIf="container.loadedOn.type === 'TRAILER'">Asset</span>
-                                                <span *ngIf="container.loadedOn.type === 'TRUCK'">Vehicle</span>[{{container.loadedOn.number}}]</td>
+                                            <td><span *ngIf="container.loadedOn.type === 'TRAILER'">Asset </span>
+                                                <span *ngIf="container.loadedOn.type === 'TRUCK'">Vehicle </span>[{{container.loadedOn.number}}]</td>
                                             <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}}</td>
-                                            <td><span *ngFor="let seal of container.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let seal of container.sealNumbers;">{{seal}} </span></td>
                                             <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -612,15 +633,15 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Vehicle#:</th>
+                                        <th width="40%" class="back-color-gray">Vehicle Name:</th>
                                         <td>{{truck.number}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Type:</th>
-                                        <td>{{truck.type}}</td>
+                                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
+                                        <td>{{vehicleTypeObjects[truck.type]}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">VIN#:</th>
+                                        <th width="40%" class="back-color-gray">VIN/SN:</th>
                                         <td>{{truck.vinNumber}}</td>
                                     </tr>
                                     <tr>
@@ -629,7 +650,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Cargo Exemptions:</th>
-                                        <td><span *ngFor="let exemption of truck.cargoExemptions">{{exemption}},</span>
+                                        <td><span *ngFor="let exemption of truck.cargoExemptions">{{cargoExemptionTypeObjects[exemption]}},</span>
                                         </td>
                                     </tr>
 
@@ -641,11 +662,11 @@
                             <table class="table table-bordered m-0">
                                 <tbody>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Seal#:</th>
-                                        <td><span *ngFor="let seal of truck.sealNumbers">{{seal}},</span></td>
+                                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
+                                        <td><span *ngFor="let seal of truck.sealNumbers">{{seal}} </span></td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Insurance CompanyName:</th>
+                                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
                                         <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
                                     </tr>
                                     <tr>
@@ -653,11 +674,11 @@
                                         <td>{{truck.insurancePolicy.issuedDate}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Policy#:</th>
+                                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
                                         <td>{{truck.insurancePolicy.policyNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Policy Amount:</th>
+                                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
                                         <td>{{truck.insurancePolicy.policyAmount}}</td>
                                     </tr>
                                 </tbody>
@@ -695,18 +716,34 @@
                                         <td>{{shipmentTypeObjects[shipmentData.shipmentType]}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Cargo Control Number:</th>
+                                        <th width="40%" class="back-color-gray">Cargo Control#:</th>
                                         <td>{{shipmentData.cargoControlNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Canadian Port Of Entry:</th>
-                                        <td>{{canadianPortsObjects[shipmentData.portOfEntry]}}</td>
+                                        <th width="40%" class="back-color-gray"> First Canadian Port Of Entry:</th>
+                                        <td>{{shipmentData.portOfEntry}} - {{canadianPortsObjects[shipmentData.portOfEntry]}}</td>
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Release Office:</th>
-                                        <td>{{releaseOfficeObjects[shipmentData.releaseOffice]}}</td>
+                                        <td>{{shipmentData.releaseOffice}} - {{releaseOfficeObjects[shipmentData.releaseOffice]}}</td>
                                     </tr>
+                                    <tr>
+                                      <th width="40%" class="back-color-gray">Sub Location:</th>
+                                      <td>{{shipmentData.subLocation}} - {{subLocationObjects[shipmentData.subLocation]}}</td>
 
+                                  </tr>
+                                  <tr  *ngIf="shipmentData.shipmentType == 'CSA'">
+                                    <th width="40%" class="back-color-gray">Importer CSA Business#:</th>
+                                    <td>{{shipmentData.importerCsaBusinessNumber}}</td>
+                                </tr>
+                                <tr *ngIf="shipmentData.shipmentType == 'CSA'">
+                                  <th width="40%" class="back-color-gray"> Unique Consignment Reference#:</th>
+                                  <td>{{shipmentData.uniqueConsignmentReferenceNumber}}</td>
+                              </tr>
+                                  <tr>
+                                    <th width="40%" class="back-color-gray">Special Instructions :</th>
+                                    <td>{{shipmentData.specialInstructions}}</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -741,6 +778,7 @@
                                         <th width="40%" class="back-color-gray">Consignee:</th>
                                         <td>{{shipmentData.consignee}}</td>
                                     </tr>
+
                                 </tbody>
                             </table>
                         </div>
@@ -827,17 +865,17 @@
                                             <span *ngIf="commodity.weightUnit == 'LB'">Pounds</span>
                                             <span *ngIf="commodity.weightUnit == 'KG'">Kilograms</span>
                                         </td>
-                                        <td><span class="font-weight-semibold">UN
+                                        <td><span class="font-weight-semibold">Hazmat
                                                 Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.unCode}}</span><br>
                                             <span class="font-weight-semibold">Emergency Contact
                                                 Name:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.emergencyContactName}}</span>
                                             <br><span class="font-weight-semibold">Contact
-                                                Phone:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
+                                                Number:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.contactPhone}}</span><br>
                                             <span class="font-weight-semibold">Handling
                                                 Instructions:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined">{{commodity.hazmatDetails.handlingInstructions}}</span>
                                         </td>
                                         <td>
-                                            <span class="font-weight-semibold">Marks and Numbers:</span>{{commodity.marksAndNumbers}}
+                                            <span class="font-weight-semibold">Marks and Numbers: </span>{{commodity.marksAndNumbers}}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -918,7 +956,7 @@
                                         <th>Document#</th>
                                         <th>Document Type</th>
                                         <th>Issuing Country</th>
-                                        <th>Issuing State/Province</th>
+                                        <th>Issuing Province</th>
 
                                     </tr>
                                 </thead>
@@ -1003,7 +1041,7 @@
                                       <th>Document# </th>
                                       <th>Document Type</th>
                                       <th>Issuing Country</th>
-                                      <th>Issuing State</th>
+                                      <th>Issuing Province</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -10,15 +10,6 @@
               </div>
               <div class="col-md-8 col-lg-8 text-right">
                  <a routerLink="/fleet/fuel/list" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Fuel Entries List</a>
-                 <!-- <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
-                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                    <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="modal-with-form dropdown-item text-1" href="#fuelCardTransaction">View Fuel Card Transaction Data</a>
-                       <a class="dropdown-item text-1"  routerLink="/fleet/fuel/edit/{{entryID }}">Edit</a>
-                       <a class="modal-with-form dropdown-item text-1" href="javascript:;" (click)="deleteFuelEntry(entryID)">Delete</a>
-                    </div>
-                 </div> -->
-                 <!-- <a routerLink="/fleet/fuel/add"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
               </div>
            </div>
         </header>
@@ -76,9 +67,16 @@
                                          <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                       <tr>
+                                        <td class="back-color-gray font-weight-bold">Discount</td>
+                                        <td><span *ngFor="let tax of fuelData.taxes">{{discountList[fuelData.discType]}} - {{fuelData.discAmount}}</span></td>
+                                     </tr>
+                                      <tr>
+                                        <td class="back-color-gray font-weight-bold">Taxes</td>
+                                        <td><span *ngFor="let tax of fuelData.taxes">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}}</span></td>
+                                     </tr>
+                                      <tr>
                                          <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
-                                         <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}  &nbsp;&nbsp; <span *ngIf="fuelData.discType === ''">(Discount)- {{WEXDiscountCodeList[fuelData.discType]}} &nbsp; {{fuelData.discAmount}} {{fuelData.billingCurrency}}</span></td>
-                                      </tr>
+                                         <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
                                       <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">Fuel Type</td>
                                          <td>{{fuelTypeListCode[fuelData.fuelType]}}</td>
@@ -91,18 +89,11 @@
                                          <td class="back-color-gray font-weight-bold">Reference</td>
                                          <td>{{fuelData.reference}}</td>
                                       </tr>
-                                      <!-- <tr>
-                                         <td class="back-color-gray font-weight-bold">Miles</td>
-                                         <td>{{miles}} <span class="font-size-12">since previous fuel entry</span></td>
-                                      </tr> -->
-                                      <!-- <tr *ngIf ="MPG != 0">
-                                         <td class="back-color-gray font-weight-bold">MPG (US)</td>
-                                         <td>{{MPG}}</td>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Location</td>
+                                         <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
                                       </tr>
-                                      <tr *ngIf ="costPerMile != 0">
-                                         <td class="back-color-gray font-weight-bold">Cost/Mile</td>
-                                         <td> {{costPerMile}} {{fuelData.billingCurrency}}</td>
-                                      </tr> -->
+
                                    </tbody>
                                 </table>
                              </div>
@@ -132,7 +123,6 @@
                                  <div class="row">
                                     <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
                                     <div class="col-lg-6 text-right">
-                                       <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
                                     </div>
                                  </div>
                                  <hr class="solid mt-3">
