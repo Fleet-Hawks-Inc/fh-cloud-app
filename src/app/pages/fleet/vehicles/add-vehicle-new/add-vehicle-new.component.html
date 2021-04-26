@@ -184,7 +184,7 @@
 
 
                                           <ng-select class="form-control populate" name="countryID"
-                                             [(ngModel)]="countryID" placeholder="Select state" (change)="resetState()">
+                                             [(ngModel)]="countryID" placeholder="Select Country" (change)="resetState()">
                                              <optgroup label="">
                                                 <ng-container *ngFor="let country of countries | async">
                                                    <ng-option
@@ -339,7 +339,9 @@
                                              Date (Set Reminder)<span
                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="annualSafetyDate"
-                                             placeholder="yyyy-mm-dd" class="form-control">
+
+                                            placeholder="yyyy/mm/dd" class="form-control">
+
                                        </div>
                                        <div class="col-lg-10">
                                           <div class="checkbox mt-1">
@@ -518,8 +520,32 @@
                                           <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs"
                                              type="file" multiple class="form-control border-0 p-0">
 
+                                       </div> 
+
+                                       <div class="col-lg-10 mt-2" *ngIf="documentSlides.length > 0">
+                                          <div class="vehicle-common-box p-3">
+                                             <div class="row">
+                                                <div class="col-lg-6"><label class="control-label font-weight-bold text-3">
+                                                      Document(s)</label></div>
+                                                <div class="col-lg-6 text-right">
+                                                </div>
+                                             </div>
+                                             <hr class="solid mt-2">
+                                             <div class="row mb-1" *ngFor="let item of documentSlides;let d= index">
+                                                <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                                                      (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
+                                                <div class="col-lg-3 text-right">
+                                                   <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                                      data-target="#viewDocModal"></i>
+                                                   <a href="javascript:;" (click)="deleteDocument(item.name, d)" class="modal-with-form"><i
+                                                         class="fas fa-times text-danger"></i></a>
+                                                </div>
+                                             </div>
+                                          </div>
                                        </div>
                                     </div>
+
+                                    
                                  </div>
                                  <div class="col-lg-5 offset-lg-1">
                                     <!-- <div class="row">
@@ -548,22 +574,23 @@
                                  </div> -->
                                  <div class="row ">
                                     <div class="col-lg-10">
-                                      <div class="checkbox mt-4">
-                                        <label
-                                          class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
-                                          the Inspection Form</label>
-                                        <div class="d-flex">
-                                          <select [(ngModel)]="inspectionFormID" [ngModelOptions]="{standalone: true}"
-                                            class="form-control" placeHolder="Select Inspectin Form">
-                                            <option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
-                                              {{iForm.inspectionFormName}}</option>
-                                          </select>
-                                          <a href="/compliance/dvir/inspection-add" target="_blank"
-                                            class="modal-with-form btn btn-success"><i class="fas fa-plus"></i></a>
-                                        </div>
-                                      </div>
+                                       <div class="checkbox mt-4">
+                                          <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Select
+                                             the Inspection Form <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                          </label>
+                                          <div class="d-flex">
+                                             <ng-select class="form-control populate mr-2" name="inspectionFormID" [(ngModel)]="inspectionFormID"
+                                                placeHolder="Select Inspection Form">
+                                                <ng-option *ngFor="let iForm of inspectionForms" value="{{iForm.inspectionFormID}}">
+                                                   {{iForm.inspectionFormName}}
+                                                </ng-option>
+                                             </ng-select>
+                                    
+                                             <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
+                                                   class="fas fa-plus"></i></a>
+                                          </div>
+                                       </div>
                                     </div>
-
                                   </div>
                                  </div>
                               </div>
@@ -594,7 +621,9 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Start
                                              Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <input type="text" placeholder="yyyy-mm-dd" class="form-control" name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+
+                                          <input type="text" placeholder="yyyy/mm/dd" class="form-control" name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+
                                              [(ngModel)]="lifeCycle.startDate">
                                        </div>
                                     </div>
@@ -701,7 +730,9 @@
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
                                           <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" class="form-control" name="lifeCycle.outOfServiceDate"
-                                             [(ngModel)]="lifeCycle.outOfServiceDate" placeholder="yyyy-mm-dd">
+
+                                             [(ngModel)]="lifeCycle.outOfServiceDate" placeholder="yyyy/mm/dd">
+
                                        </div>
                                     </div>
                                  </div>
@@ -2269,5 +2300,34 @@
          </div>
       </div>
       <!--/.Content-->
+   </div>
+</div>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+   aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div class="form-row">
+               <div class="form-group col-md-12">
+                  <div>
+                     <iframe [src]='pdfSrc' title="" width="100%" height="400px"> </iframe>
+
+                  </div>
+               </div>
+            </div>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         </div>
+      </div>
    </div>
 </div>

@@ -1,9 +1,9 @@
-import { InvokeHeaderFnService } from 'src/app/invoke-header-fn.service';
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SharedServiceService} from '../../services/shared-service.service';
 import {Auth} from 'aws-amplify';
 import {Router} from '@angular/router';
 import { ApiService } from 'src/app/services';
+import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
   carrierBusiness;
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
-              public router: Router, private headerFnService: InvokeHeaderFnService,) {
+              public router: Router, private headerFnService: InvokeHeaderFnService) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem('active-header');
       if(activeTab != undefined && activeTab != ''){
@@ -32,17 +32,17 @@ export class HeaderComponent implements OnInit {
       }
       this.navSelected = val;
 
-      console.log('this.navSelected',this.navSelected);
+      console.log('this.navSelected', this.navSelected);
     });
   }
 
   ngOnInit() {
     this.getCurrentuser();
     this.fetchCarrier();
-    if (this.headerFnService.subsVar==undefined) {
+    if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar = this.headerFnService.
-      invokeHeaderComponentFunction.subscribe((name:string) => {
-        this.fetchCarrier();
+      invokeHeaderComponentFunction.subscribe((name: string) => {
+        this.getCurrentuser();
       });
     }
   }
@@ -58,11 +58,12 @@ fetchCarrier() {
         if(result.Items.length > 0){
           this.carriers = result.Items[0];
           this.currentCarrierID = this.carriers.carrierID;
-          if (this.carriers.uploadedLogo !== '') {
-            this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-          } else {
-            this.logoSrc = 'assets/img/logo.png';
-          }
+          this.logoSrc = 'assets/img/logo.png';
+          // if (this.carriers.uploadedLogo !== '') {
+          //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+          // } else {
+          //   this.logoSrc = 'assets/img/logo.png';
+          // }
         }
       });
 }

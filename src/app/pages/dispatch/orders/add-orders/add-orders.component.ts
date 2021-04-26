@@ -1099,7 +1099,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData.charges.accessorialDeductionInfo.accessorialDeduction = this.accessorialDeductionInfo.accessDeductions;
 
     sum +=
-      (parseFloat(this.freightFee) || 0) +
+      (parseFloat(this.freightFee) || 0) + 
       (parseFloat(this.fuelSurcharge) || 0);
 
     this.subTotal = sum;
@@ -1324,6 +1324,9 @@ export class AddOrdersComponent implements OnInit {
 
 
         this.orderData["customerID"] = result.customerID;
+        this.selectedCustomer(result.customerID);
+
+
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["creationDate"] = result.creationDate;
         this.orderData["creationTime"] = result.creationTime;

@@ -315,8 +315,12 @@ export class AddServiceComponent implements OnInit {
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-      
+      if(result != null){
+        console.log('groups result', result);
+        this.groups = result.Items;  
+      } else {
+        this.groups = [];
+      }
     });
   }
 

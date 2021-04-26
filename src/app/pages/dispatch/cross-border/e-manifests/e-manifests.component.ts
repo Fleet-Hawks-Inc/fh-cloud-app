@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import  Constants  from '../../../fleet/constants';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { HttpClient } from '@angular/common/http';
 
 declare var $: any;
 @Component({
@@ -53,7 +54,8 @@ export class EManifestsComponent implements OnInit {
   aciToDate = '';
   fromDate = '';
   toDate = '';
-
+  canadianPortsObjects: any = {};
+  USPortsObjects: any = {};
   aceNext = false;
   acePrev = true;
   aceDraw = 0;
@@ -92,7 +94,8 @@ export class EManifestsComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {
@@ -108,6 +111,8 @@ export class EManifestsComponent implements OnInit {
     this.getACECount();
     this.getACICount();
     this.initDataTableACI();
+    this.fetchCanadianPorts();
+    this.fetchUSPorts();
   }
   getSuggestions(value) {
     this.apiService
@@ -118,6 +123,14 @@ export class EManifestsComponent implements OnInit {
           this.vehicleID = '';
         }
       });
+  }
+  fetchUSPorts() {
+    this.httpClient.get('assets/USports.json').subscribe((data: any) => {
+            this.USPortsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+      }, {});
+    });
+
   }
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
@@ -181,7 +194,13 @@ export class EManifestsComponent implements OnInit {
       },
     });
   }
-
+  fetchCanadianPorts() {
+    this.httpClient.get('assets/canadianPorts.json').subscribe((data: any) => {
+      this.canadianPortsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`number`]] = b[`name`], a;
+      }, {});
+    });
+  }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('ACEeManifest/fetch/records?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
@@ -433,6 +452,7 @@ export class EManifestsComponent implements OnInit {
       $('#aci-emanifest').show();
     }
   }
+
 
   getACECount() {
     this.apiService.getData('ACEeManifest/get/count?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory).subscribe({

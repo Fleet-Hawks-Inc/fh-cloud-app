@@ -28,7 +28,7 @@ export class CompanyProfileComponent implements OnInit {
     this.companyID = this.route.snapshot.params[`companyID`];
     this.fetchCarrier();
     this.fetchCountriesList();
-    this. fetchCitiesList();
+    this.fetchCitiesList();
     this.fetchStatesList();
   }
   fetchCarrier() {
