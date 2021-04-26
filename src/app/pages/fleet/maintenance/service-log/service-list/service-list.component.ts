@@ -240,7 +240,7 @@ export class ServiceListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchLogsCount();
         this.initDataTable();
-        this.toastr.success('Service Log Deleted Successfully!');
+        this.toastr.success('Service log deleted successfully!');
       });
     }
   }
