@@ -9,6 +9,7 @@ import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ListService } from '../../../../../services/list.service'
+import { isTemplateHead } from 'typescript';
 declare var $: any;
 
 @Component({
@@ -27,7 +28,7 @@ export class AddServiceComponent implements OnInit {
   issues: any;
   inventory = [];
   selectedTasks = [];
-  selectedParts = [];
+  selectedParts = []; 
   selectedIssues = [];
   // private allServiceTasks = [];
   removeTask = false;
@@ -314,8 +315,12 @@ export class AddServiceComponent implements OnInit {
   }
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-      
+      if(result != null){
+        console.log('groups result', result);
+        this.groups = result.Items;  
+      } else {
+        this.groups = [];
+      }
     });
   }
 
@@ -598,25 +603,23 @@ export class AddServiceComponent implements OnInit {
           this.serviceData.allServiceTasks.taxPercent = 0;
           this.serviceData.allServiceTasks.total = 0;
         }
-    });
-  
-    
+    });    
   }
 
   removeParts(item: any) {
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      if (s.partID === item.value) {
+      if (s.partNumber === item.value.partNumber) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
         // this.totalLabors -= s.laborCost; 
         this.calculateParts();
       }
-      if(this.totalLabors === 0) {
+      if (this.totalLabors === 0) {
         this.serviceData.allServiceParts.discountPercent = 0;
         this.serviceData.allServiceParts.taxPercent = 0;
         this.serviceData.allServiceParts.total = 0;
       }
-  });
+    });
   }
 
   
@@ -777,6 +780,7 @@ export class AddServiceComponent implements OnInit {
 
   onChangeUnitType(value: any) {
     this.serviceData['unitType'] = value;
+    this.issues = [];
     if (value === 'asset') {
       delete this.serviceData.vehicleID;
       delete this.serviceData.odometer;
@@ -797,6 +801,9 @@ export class AddServiceComponent implements OnInit {
     });
 
     this.serviceData.taskIds = taskIds;
+    if(this.serviceData.vehicleID == '' || this.serviceData.vehicleID == null) {
+      delete this.serviceData.vehicleID;
+    }
 
     // create form data instance
     const formData = new FormData();

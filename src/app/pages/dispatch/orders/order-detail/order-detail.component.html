@@ -181,7 +181,7 @@
                       >
                         Reference:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">HG2525</div>
+                      <div class="col-lg-8 p-2 border-box">{{ reference }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -525,21 +525,30 @@
                         </div>
 
                         <div class="widgetlinfo">
-                          <table
-                            class="table table-responsive-lg table-bordered table-striped table-sm mb-0"
-                          >
+                          <table class="table table-responsive-lg table-bordered table-striped table-sm mb-0">
                             <thead>
                               <tr class="bgcol2">
                                 <th>From</th>
                                 <th>To</th>
-                                <th class="">Distance</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>Regina, SK</td>
-                                <td>Winnipeg, MB</td>
-                                <td>578 KM</td>
+                              <tr *ngIf="milesArr?.length == 0">
+                                <td>No data found</td>
+                              </tr>
+                              <tr *ngFor="let data of milesArr">
+                                <td>
+                                  <span *ngFor="let shipp of data.shippers; let s=index">
+                                    {{s+1}}. {{ shipp.pickupLocation }}
+                                    <br>
+                                  </span>
+                                </td>
+                                <td>
+                                  <span *ngFor="let rec of data.receivers; let r=index">
+                                    {{r+1}}. {{ rec.dropOffLocation }}
+                                    <br>
+                                  </span>
+                                </td>
                               </tr>
                             </tbody>
                           </table>
@@ -553,7 +562,7 @@
                     </div>
                   </div>
 
-                  <div class="col-xl-12 col-12 mb-3">
+                  <!-- <div class="col-xl-12 col-12 mb-3">
                     <div class="boxshadow1 maindisbox w100 pull-left">
                       <div class="widgetload">
                         <div class="widgettbload">
@@ -577,7 +586,6 @@
                                 <th class="">Payment Mode</th>
                                 <th class="">Reference</th>
                                 <th class="">Amount</th>
-                                <!-- <th class="">Action</th> -->
                               </tr>
                             </thead>
                             <tbody>
@@ -595,7 +603,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -645,10 +653,6 @@
                               Accessorial Deduction Amount
                               <span class="pull-right">${{charges.accessorialDeductionInfo.total}}</span>
                             </p>
-                            <!-- <p class="mb-0 text-dark">
-                              Discount Amount
-                              <span class="pull-right">${{discount.amount}}</span>
-                            </p> -->
                             <p class="mb-0 text-dark">
                               Tax Amount <span class="pull-right">${{taxesTotal}}</span>
                             </p>
@@ -658,10 +662,10 @@
                                 totalCharges
                               }}</span>
                             </p>
-                            <p class="mb-0 text-dark bordtopdas">
+                            <!-- <p class="mb-0 text-dark bordtopdas">
                               <strong>Advance Received</strong>
                               <span class="pull-right">${{advances}}</span>
-                            </p>
+                            </p> -->
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Balance</strong>
                               <span class="pull-right">${{ balance }}</span>
@@ -691,6 +695,7 @@
                                   (change)="selectDocuments($event)"
                                   multiple
                                   class="p-0 form-control mb-2"
+                                  id="bolUpload"
                                 />
                               </div>
                             </div>
@@ -703,23 +708,18 @@
                           </h2>
                         </div>
 
-                        <div class="widgetlinfo">
-                          <ul class="d-flex p-0 m-0 order-attachment__preview">
-                            <li *ngFor="let doc of docs">
-                              <img
-                                src="{{doc}}"
-                                class="img-fluid"
-                                height="150"
-                              />
-                            </li>
-                            <li *ngFor="let localPhoto of localPhotos">
-                              <img
-                                src="{{localPhoto}}"
-                                class="img-fluid"
-                                height="150"
-                              />
-                            </li>
-                          </ul>
+                        <div class="row">
+                          <div class="col-md-3 mb-3 mt-3" *ngFor="let doc of docs">
+                            <a class="image-popup-no-margins" href="{{doc}}" target="_blank">
+                              <img class="img-fluid" src="{{doc}}" width="75">
+                            </a>
+                          </div>
+  
+                          <div class="col-md-3 mb-3" *ngFor="let localPhoto of localPhotos">
+                            <a class="image-popup-no-margins" href="{{localPhoto}}" target="_blank">
+                              <img class="img-fluid" src="{{localPhoto}}" width="75">
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>

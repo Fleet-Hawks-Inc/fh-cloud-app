@@ -344,6 +344,17 @@
                               {{ ownership }}
                             </div>
                           </div>
+
+                          <div class="row m-0" *ngIf="ownership == 'Owner Operator'">
+                            <div
+                              class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
+                            >
+                              Owner Operator Name:
+                            </div>
+                            <div class="col-lg-8 p-2 border-box">
+                              {{ ownerOperatorName }}
+                            </div>
+                          </div>
                           <!-- <div class="row m-0">
                             <div
                               class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
@@ -704,7 +715,8 @@
                             <tbody>
                               <tr *ngFor="let document of docs; let i = index">
                                 <td width="85%">
-                                  Document {{i + 1}}
+                                  <a class="btn btn-deafault btn-xs" href="{{document}}" target="_blank">
+                                  Document {{i + 1}} </a>
                                   <!-- <span class="font-size-12"
                                     ><br /><span
                                       class="text-info font-weight-bold"
@@ -723,7 +735,7 @@
                           </table>
                         </div>
                         <!-- Inspection Section -->
-                        <div class="vehicle-common-box mt-4">
+                        <div class="vehicle-common-box mt-4" *ngIf="inspectionForms.inspectionFormName != ''"> 
                           <div class="row m-0 pt-1 pb-1 back-color-gray">
                             <div class="col-lg-3 font-weight-bold text-4">
                               Inspection Forms
@@ -732,21 +744,21 @@
                               <!-- <a href="#" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Start Inspection</a> -->
                             </div>
                             <div class="col-lg-4 text-right">
-                              <a [routerLink]="" class="text-info">View Submissions</a>
+                              <a routerLink="/fleet/reminders/vehicle-renewals/list" href="javascript:;" class="text-info">View Submissions</a>
                             </div>
                           </div>
                           <table class="table table-responsive-lg mt-3">
                             <thead>
                               <tr>
                                 <th width="45%">Title</th>
-                                <th width="45%">Schedule</th>
-                                <th width="10%"></th>
+                                <!-- <th width="45%">Schedule</th>
+                                <th width="10%"></th> -->
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let inspection of inspectionForms">
-                                <td>Driver Vehicle Inspection Report</td>
-                                <td>
+                              <tr>
+                                <td>{{ inspectionForms.inspectionFormName }}</td>
+                                <!-- <td>
                                   off <br />
                                   Last Inspected: Jun 5
                                 </td>
@@ -783,7 +795,7 @@
                                       >
                                     </div>
                                   </div>
-                                </td>
+                                </td> -->
                               </tr>
                             </tbody>
                           </table>
@@ -1424,7 +1436,7 @@
                           Tare  Weight:
                           </div>
                           <div class="col-lg-7 p-2 border-box">
-                            {{ specifications.tareWeight }}
+                            {{ (specifications.tareWeight) ? specifications.tareWeight+' kg' : '' }} 
                           </div>
                         </div>
                         <!-- <div class="row m-0">
@@ -1444,7 +1456,7 @@
                             Gross Vehicle Weight Rating:
                           </div>
                           <div class="col-lg-7 p-2 border-box">
-                            {{ specifications.grossVehicleWeightRating }}
+                            {{ (specifications.grossVehicleWeightRating)?  specifications.grossVehicleWeightRating+' kg' : '' }} 
                           </div>
                         </div>
                         <!-- <div class="row m-0">

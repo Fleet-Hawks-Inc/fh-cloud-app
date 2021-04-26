@@ -1,286 +1,187 @@
 <section class="body">
-   
    <div class="inner-wrapper">
-      
-       <section role="main" class="content-body pl-0 pr-0 pt-0">
-           <header class="page-header">
-              <div class="row pr-5 " style="padding-top:10px;">
-                 <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                    
-                 </div>
-                 <div class="col-md-8  col-lg-8 text-right pr-4">
-                    <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Service Logs List</a>  
-                    <!-- <div class="btn-group flex-wrap">
-                       <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
-                       <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                          <a class="dropdown-item text-1" href="edit-service-entry.php">Edit</a>
-                          <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                       </div>
-                    </div>
-                    <a   class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Service Entry</a> -->
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+         <header class="page-header">
+            <div class="row pr-5 " style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  Service Log Details
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <a routerLink="/fleet/maintenance/service-log/list" class="btn btn-sm btn-default"><i
+                        class="fas fa-list"></i> Service Logs List</a>
+               </div>
+            </div>
+         </header>
+         <div class="row">
+            <div class="col pr-2">
+               <div class="card-body bg-transparent text-dark">
+                  <div class="row cmaindiv">
+                     <div class="col-md-2 col-lg-2">
+                        <div class="text-center p-4 cerbor">
+                           <p class="mb-0">UNIT TYPE</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">{{ logsData.unitType }}</p>
+                        </div>
+                     </div>
 
-                 </div>
-              </div>
-           </header>
-           <div class="row">
-              <div class="col pr-0">
-                 <div class="card-body text-dark">
-                    <form class="form-horizontal form-bordered" method="get">
-                       <div class=" row">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service Details</label>
-                          </div>
-                          <div class="col-lg-6">
-                             <div class="row">
-                                <div class="col-lg-12">
-                                   <table class="table table-bordered table-responsive-lg">
-                                      <tbody>
-                                         <tr *ngIf="vehicle">
-                                            <td width="30%" class="back-color-gray font-weight-bold">Vehicle</td>
-                                            <td  width="70%"><a href="javascript:;">{{vehiclesObject[vehicle]}}</a></td>
-                                         </tr>
-                                         <tr *ngIf="!vehicle">
-                                             <td width="30%" class="back-color-gray font-weight-bold">Asset</td>
-                                             <td  width="70%"><a href="javascript:;">{{assetsObject[assetID]}}</a></td>
-                                          </tr>
-                                         <tr>
-                                            <td class="back-color-gray font-weight-bold">Start Date</td>
+                     <div class="col-md-2 col-lg-2">
+                        <div class="text-center p-4 cerbor" *ngIf="vehicle">
+                           <p class="mb-0">VEHICLE</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{vehiclesObject[vehicle]}}</p>
+                        </div>
 
-                                            <td>{{startDate ? (startDate | date:'dd-MM-yyyy') : '-'}}</td>
+                        <div class="text-center p-4 cerbor" *ngIf="!vehicle">
+                           <p class="mb-0">ASSET</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{assetsObject[assetID]}}</p>
+                        </div>
+                     </div>
 
-                                         </tr>
-                                         <tr>
-                                            <td class="back-color-gray font-weight-bold">Completion Date</td>
-                                            <td>{{completionDate ? (completionDate | date:'dd-MM-yyyy') : '-'}}</td>
-                                         </tr>
-                                         <tr *ngIf="vehicle">
-                                            <td class="back-color-gray font-weight-bold">Odometer</td>
-                                            <td>{{odometer ? odometer : '-'}} miles</td>
-                                         </tr>
+                     <div class="col-md-2 col-lg-2" *ngIf="vehicle">
+                        <div class="text-center p-4 cerbor">
+                           <p class="mb-0">ODOMETER</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{odometer ? odometer : '-'}}</p>
+                        </div>
+                     </div>
 
-                                         <tr *ngIf="logsData?.selectedIssues?.length > 0 && logsData?.selectedIssues !== undefined">
-                                            <td class="back-color-gray font-weight-bold">Resolved Issues</td>
-                                            <td>
-                                               <a *ngFor="let item of logsData.selectedIssues" 
-                                                routerLink="/fleet/maintenance/issues/add">{{item ? issuesObject[item] : '-'}}</a>
+                     <div class="col-md-2 col-lg-2">
+                        <div class="text-center p-4 cerbor">
+                           <p class="mb-0">COMPLETION DATE</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{startDate ? (startDate |
+                              date:'yyyy/MM/dd') : '-'}}</p>
+                        </div>
+                     </div>
 
-                                             </td>
-                                         </tr>
-                                         <tr>
-                                            <td class="back-color-gray font-weight-bold">Vendor</td>
-                                            <td>{{vendorID ? vendorsObject[vendorID] : '-'}}</td>
-                                         </tr>
-                                         <tr>
-                                            <td class="back-color-gray font-weight-bold">Bill#</td>
-                                            <td>{{reference ? reference : '-'}}</td>
-                                         </tr>
-                                         <tr>
-                                            <td class="back-color-gray font-weight-bold">Notes</td>
-                                            <td>{{description ? description : '-'}}</td>
-                                         </tr>
-                                      </tbody>
-                                   </table>
-                                </div>
-                             </div>
-                             <div class="row mt-2">
-                                <div class="col-lg-12">
-                                   <table class="table table-bordered table-striped table-responsive-lg" *ngIf="allServiceTasks?.length > 0">
-                                      <thead>
-                                         <tr>
-                                            <th>Task</th>
-                                            <th></th>
-                                            <th>Labor</th>
-                                         </tr>
-                                      </thead>
-                                      <tbody>
-                                         <tr *ngFor="let item of allServiceTasks;">
-                                            <td width="60%"><i class="fas fa-wrench"></i> {{item.taskName}}</td>
-                                            <td></td>
-                                            <td>&nbsp;{{currency}} {{item.laborCost}}</td>
-                                          </tr>
-                                          <tr>
-                                             <td width="60%"></td>
-                                             <th>Subtotal</th>
-                                             <td>&nbsp;{{currency}} {{taskSubTotal}}</td>
-                                          </tr>
-                                          <tr>
-                                             <td width="60%"></td>
-                                             <th>Discount</th>
-                                              <td>- {{currency}} {{taskDiscountAmount}}<br>(<span class="font-size-12">{{taskDiscountPercent}}%</span>)</td>
-                                          </tr>
-                                          <tr>
-                                             <td width="60%"></td>
-                                             <th>Tax</th>
-                                             <td>+ {{currency}} {{taskTaxAmount}}<br>(<span class="font-size-12">{{taskTaxPercent}}%</span>)</td>
-                                          </tr>
-                                          <tr>
-                                             <td width="60%"></td>
-                                             <th class="font-weight-bold">Total</th>
-                                             <td class="font-weight-bold" *ngIf="taskTotal">&nbsp;{{currency}} {{taskTotal.toFixed(2)}}</td>
-                                          </tr>
-                                      </tbody>
-                                   </table>
+                     <div class="col-md-2 col-lg-2">
+                        <div class="text-center p-4 cerbor">
+                           <p class="mb-0">BILL#</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{reference ? reference : '-'}}</p>
+                        </div>
+                     </div>
 
-                                   <table class="table table-bordered table-striped table-responsive-lg mt-3" *ngIf="allServiceParts?.length > 0">
-                                    <thead>
-                                       <tr>
-                                          <th width="60%">Part Number</th>
-                                          <th width="10%">Description</th>
-                                          <th width="10%">Quantity</th>
-                                          <th width="10%">Amount</th>
-                                          <th width="10%">Subtotal</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr *ngFor="let item of allServiceParts;">
-                                          <td width="60%"><i class="fas fa-wrench"></i> {{item.partNumber}}</td>
-                                          <td>{{item.description}}</td>
-                                          <td>{{item.quantity}}</td>
-                                          <td>{{currency}} {{item.rate}}</td>
-                                          <td>{{currency}} {{item.partCost}}</td>
-                                        </tr>
-                                        <tr>
-                                          <td width="60%"></td>
-                                          <th>Total Quantity</th>
-                                          <td>250</td>
-                                          <td></td>
-                                          <td></td>
-                                       </tr>
-                                        <tr>
-                                           <td width="60%"></td>
-                                           <td></td>
-                                           <td></td>
-                                           <th>Subtotal</th>
-                                           <td>{{currency}} {{partsSubTotal}}</td>
-                                        </tr>
-                                        <tr>
-                                           <td width="60%"></td>
-                                           <td></td>
-                                           <td></td>
-                                           <th>Discount</th>
-                                            <td>- {{currency}} {{partsDiscountAmount}}<br>(<span class="font-size-12">{{partsDiscountPercent}}%</span>)</td>
-                                        </tr>
-                                        <tr>
-                                           <td width="60%"></td>
-                                           <td></td>
-                                           <td></td>
-                                           <th>Tax</th>
-                                           <td>+ {{currency}} {{partsTaxAmount}}<br>(<span class="font-size-12">{{partsTaxPercent}}%</span>)</td>
-                                        </tr>
-                                        <tr>
-                                           <td width="60%"></td>
-                                           <td></td>
-                                           <td></td>
-                                           <th class="font-weight-bold">Total</th>
-                                           <td class="font-weight-bold" *ngIf="partsTotal">{{currency}} {{partsTotal.toFixed(2)}}</td>
-                                        </tr>
-                                    </tbody>
-                                 </table>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-6">
-                             <div class="row mb-2" *ngIf="photos?.length > 0">
-                                <div class="col-lg-12">
-                                   <div class="vehicle-common-box p-3">
-                                      <div class="row">
-                                         <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                                      </div>
-                                      <hr class="solid mt-3">
-                                      <div class="row">
+                     <div class="col-md-2 col-lg-2">
+                        <div class="text-center p-4">
+                           <p class="mb-0">VENDOR</p>
+                           <p class="mb-0 text-5 font-weight-bold text-dark">{{vendorID ? vendorsObject[vendorID] :
+                              '-'}}</p>
+                        </div>
+                     </div>
+                  </div>
 
-                                         <div class="col-lg-6" *ngFor="let photo of photos;  let i = index;">
-                                          <div class="vehicle-photo-box"> 
-                                             <img [src]="photo.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                                             <hr class="m-3">
-                                             <div class="row">
-                                                <div class="col-lg-8"> Image {{i+1}}</div>
-                                                <div class="col-lg-4 text-right">
-                                                   <a href="javascript:;" (click)="delete('image',photo.name)" class="modal-with-form">
-                                                      <i class="fas fa-times text-danger"></i>
-                                                   </a>
-                                                </div>
-                                             </div>
-                                          </div>
+                  <div class="row mt-3 bg-light">
+                     <div class="col-lg-12">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Issue
+                           Details</label>
+                     </div>
+                     <div class="col-lg-12">
 
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                             <!-- DOCUMENTS -->
-                             <div class="row mt-2" *ngIf="logsData?.uploadedDocs?.length > 0">
-                                <div class="col-lg-12">
-                                   <div class="vehicle-common-box p-3">
-                                      <div class="row">
-                                         <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Documents(s)</label></div>
-                                      </div>
-                                      <hr class="solid mt-3">
-                                      <div class="row mb-1" *ngFor="let doc of docs;let d= index">
-                                          <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                                (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
-                                          <div class="col-lg-3 text-right">
-                                             <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                                data-target="#viewDocModal"></i>
-                                             <a href="javascript:;" (click)="delete('doc',doc.name)" class="modal-with-form"><i
-                                                   class="fas fa-times text-danger"></i></a>
-                                          </div>
-                                       </div>
-                                   </div>
-                                </div>
-                             </div>
-                             <!-- MAP -->
-                             <div class="row">
-                                <div class="col-lg-12">
-                                   <div class="vehicle-common-box p-3">
-                                      <div class="row">
-                                         <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Vendor Location</label></div>
-                                      </div>
-                                      <hr class="solid mt-3">
-                                      <div class="row">
-                                         <div class="col-lg-12">
-                                            <div id="map" style="height: 255px;"></div>
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </form>
-                 </div>
-              </div>
-           </div>
-        </section>
-       
-   </div>
- </section>
- <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-   <div class="modal-content">
-      <div class="modal-header">
-         <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-         <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-         </button>
-      </div>
-      <div class="modal-body">
-         <div class="form-row">
-            <div class="form-group col-md-12">
-               <div>
-                  <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+                        <div class="row mt-2">
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-striped table-responsive-lg">
+                                 <thead>
+                                    <tr>
+                                       <th width="80%">Issue</th>
+                                       <th width="20%">Assigned To</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngIf="issuesObject.length == 0">
+                                       <td colspan="2">{{noRecordMessage}}</td>
+                                    </tr>
+                                    <tr *ngFor="let data of issuesObject">
+                                       <td>{{ data.issueName }}</td>
+                                       <td>{{ users[data.assignedTo] }}</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
 
+                  <div class="row mt-3 bg-light">
+                     <div class="col-lg-12">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                           Tasks</label>
+                     </div>
+                     <div class="col-lg-12">
+
+                        <div class="row mt-2">
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-striped table-responsive-lg">
+                                 <thead>
+                                    <tr>
+                                       <th width="80%">Task</th>
+                                       <th width="20%">Labor</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngIf="allServiceTasks?.length == 0">
+                                       <td colspan="2">{{noRecordMessage}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of allServiceTasks;">
+                                       <td>{{item.taskName}}</td>
+                                       <td>{{currency}} {{item.laborCost}}</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row mt-3 bg-light">
+                     <div class="col-lg-12">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Service
+                           Parts</label>
+                     </div>
+                     <div class="col-lg-12">
+
+                        <div class="row mt-2">
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-striped table-responsive-lg">
+                                 <thead>
+                                    <tr>
+                                       <th width="20%">Items</th>
+                                       <th width="50%">Description</th>
+                                       <th width="10%">Quantity</th>
+                                       <th width="10%">Rate</th>
+                                       <th width="10%">Amount</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngIf="allServiceParts?.length == 0">
+                                       <td colspan="5">{{noRecordMessage}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of allServiceParts;">
+                                       <td>{{item.partNumber}}</td>
+                                       <td>{{item.description}}</td>
+                                       <td>{{item.quantity}}</td>
+                                       <td>{{currency}} {{item.rate}}</td>
+                                       <td>{{currency}} {{item.partCost}}</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="row mt-3 bg-light">
+                     <div class="col-lg-12">
+                        <label
+                           class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Description</label>
+                     </div>
+                     <div class="col-lg-12">
+                        <p>
+                           {{description ? description : '-'}}
+                        </p>
+                     </div>
+                  </div>
                </div>
             </div>
          </div>
-
-      </div>
-      <div class="modal-footer">
-         <button type="button" class="btn btn-default"
-            data-dismiss="modal">Cancel</button>
-      </div>
+      </section>
    </div>
-</div>
-</div>
+</section>

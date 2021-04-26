@@ -193,9 +193,7 @@ export class AddAssetsComponent implements OnInit {
    * Add new asset
    */
   addAsset() {
-    console.log(this.assetsData.inspectionFormID);
     this.hideErrors();
-    console.log('data', this.assetsData)
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
@@ -243,8 +241,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
-
-    console.log(data);
     // create form data instance
     const formData = new FormData();
 
@@ -321,6 +317,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
         this.assetsData.groupID = result.groupID;
+        this.assetsData.inspectionFormID = result.inspectionFormID;
         this.assetsData.VIN = result.VIN;
         this.assetsData.startDate = result.startDate;
         this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
@@ -390,6 +387,7 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
+      inspectionFormID:this.assetsData.inspectionFormID,
       assetDetails: {
         assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
