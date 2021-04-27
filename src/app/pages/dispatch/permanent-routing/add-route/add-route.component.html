@@ -24,13 +24,34 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeNo"
-                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02"> </div>
+                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02" #rName="ngModel" required pattern ="^[0-9\-\s\.]{2,20}$" maxlength="20"> 
+                                                    <div *ngIf="rName.invalid && (rName.dirty || rName.touched)" class="text-danger">
+                                                        <div *ngIf="rName.errors.required">
+                                                           Route number is required.
+                                                        </div>
+                                                      <div *ngIf="rName.errors.pattern">
+                                                        Route number must be numbers special characters(period(.,-)) only
+
+                                                      </div>
+                                                    </div>
+                                                    </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
-                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name"> </div>
+                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name" #route="ngModel" required pattern="^[a-zA-Z-0-9/s/./-/_]+$">
+                                                    <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
+                                                        <div *ngIf="route.errors.required">
+                                                           Route name  is required.
+                                                        </div>
+                                                      <div *ngIf="route.errors.pattern">
+                                                        Route name must be numbers special characters(period(.,-,_)) only
+
+                                                      </div>
+                                                    </div>
+
+                                                 </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
