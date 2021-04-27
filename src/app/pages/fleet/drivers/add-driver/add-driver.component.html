@@ -210,7 +210,16 @@
                                                    Name&nbsp; <span
                                                       class="text-1 optional-label-color">(optional)</span></label>
                                                 <input [(ngModel)]="driverData.middleName" name="middleName" type="text"
-                                                   class="form-control" placeholder="eg. matthews"  >
+                                                   class="form-control" placeholder="eg. matthews" #mName="ngModel" required pattern="^[a-zA-Z]+$" >
+                                                   
+                                                      
+                                                       <div *ngIf="mName.errors.pattern" class="text-danger">
+                                                         Middle Name must not contain any special characters or numbers.
+                                                          </div>
+                                                         
+                                                      
+                                                  
+                                                   
                                              </div>
                                              <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
@@ -258,7 +267,10 @@
                                                 <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                                                    [(ngModel)]="driverData.terminationDate" name="terminationDate"
                                                    type="text" data-plugin-datepicker="" class="form-control"
-                                                   placeholder="yyyy/mm/dd">
+                                                   placeholder="yyyy/mm/dd" #tDate="ngModel" required>
+                                                   <div *ngIf="tDate.errors.pattern" class="text-danger">
+                                                      Middle Name must not contain any special characters or numbers.
+                                                       </div>
                                              </div>
                                           </div>
 
@@ -275,7 +287,7 @@
                                                    placeholder="yyyy/mm/dd" #dSlt="ngModel" required>
                                                    <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger" >
                                                       <div *ngIf="dSlt.errors.required">
-                                                        Start Date is required.
+                                                        Start Date is required and must contain yyyy/mm/dd format.
                                                        </div>
                                                        </div>
                                                    
