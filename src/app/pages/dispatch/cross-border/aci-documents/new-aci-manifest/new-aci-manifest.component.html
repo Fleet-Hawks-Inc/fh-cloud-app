@@ -143,19 +143,9 @@
 
                     </div>
                     <div class="row">
-                      <!-- <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Assign Driver<span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [multiple]="true" [(ngModel)]="driverArray" name="driverArray"
-                                       placeholder="Select the driver and co-driver">
-                                       <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
-                                          {{driver.firstName}} {{driver.lastName}}</ng-option>
-                                    </ng-select>
-                                 </div> -->
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign Main Driver<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-
                         <ng-select [(ngModel)]="mainDriver" name="mainDriver" placeholder="Select Driver" (change)="onChangeHideErrors('mainDriver')">
                           <ng-option *ngFor="let driver of drivers" [value]="driver.driverID">
                             {{driver.firstName}} {{driver.lastName}}</ng-option>
@@ -164,10 +154,11 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Assign
                           Co-Driver&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" (click)="fixCoDrivers()"
-                          placeholder="Select Co-Driver">
-                          <ng-option *ngFor="let driver of fetchedCoDrivers" [value]="driver.driverID">
-                            {{driver.firstName}} {{driver.lastName}}</ng-option>
+                        <ng-select [multiple]="true" [(ngModel)]="coDrivers" name="coDrivers" placeholder="Select Co-Driver">
+                            <ng-container *ngFor="let driver of drivers">
+                              <ng-option *ngIf="driver.driverID != mainDriver" [value]="driver.driverID">
+                                {{driver.firstName}} {{driver.lastName}}</ng-option>
+                            </ng-container>
                         </ng-select>
                       </div>
                       <div class="col-lg-2  mar-top-37">
@@ -254,7 +245,8 @@
                               title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                             <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
                               placeholder="14 digits,beginning with 4270 and ending with 00 or 01 or 02 (42700012345601)"
-                              class="form-control">
+                              class="form-control" [ngModelOptions]="{standalone: true}"
+                              [attr.name]="'passengers['+i+'].fastCardNumber'" [(ngModel)]="passenger.fastCardNumber" >
                               <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
                           </div>
                         </div>
@@ -639,9 +631,8 @@
                                   of Loading<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select placeholder="Select State of Loading" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.stateProvince'"
-                                  [(ngModel)]="shipment.cityOfLoading.stateProvince" (change)="getLoadingCities(s)">
-                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} -
-                                    {{state.stateName}}</ng-option>
+                                  [(ngModel)]="shipment.cityOfLoading.stateProvince">
+                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -650,8 +641,12 @@
                                 <ng-select placeholder="Select City of Loading " [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.cityName'"
                                   [(ngModel)]="shipment.cityOfLoading.cityName">
-                                  <ng-option *ngFor="let city of loadingCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option>
+                                  <!-- <ng-option *ngFor="let city of loadingCities" [value]="city.cityID">
+                                    {{city.cityName}}</ng-option> -->
+                                    <ng-container *ngFor="let city of loadingCities">
+                                      <ng-option *ngIf="city.stateID == shipment.cityOfLoading.stateProvince" value="{{city.cityName}}">
+                                        {{city.cityName}}</ng-option>
+                                    </ng-container>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -676,8 +671,12 @@
                                 <ng-select placeholder="Select City of Acceptance" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfAcceptance.cityName'"
                                   [(ngModel)]="shipment.cityOfAcceptance.cityName">
-                                  <ng-option *ngFor="let city of acceptanceCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option>
+                                  <!-- <ng-option *ngFor="let city of acceptanceCities" [value]="city.cityID">
+                                    {{city.cityName}}</ng-option> -->
+                                    <ng-container *ngFor="let city of loadingCities">
+                                      <ng-option *ngIf="city.stateID == shipment.cityOfAcceptance.stateProvince" value="{{city.cityName}}">
+                                        {{city.cityName}}</ng-option>
+                                    </ng-container>
                                 </ng-select>
                               </div>
                               <div class="col-lg-10">
@@ -925,7 +924,6 @@
                                           [attr.name]="'shipments['+s+'].notifyParties['+p+'].address.addressLine'"
                                           [(ngModel)]="notifyParty.address.addressLine">
                                       </div>
-
                                     </div>
                                     <div class="row">
                                       <div class="col-lg-10">
@@ -953,8 +951,8 @@
                                     </ng-select>
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                   </div>
@@ -972,8 +970,8 @@
                                       </ng-select>
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                     <div class="row">
