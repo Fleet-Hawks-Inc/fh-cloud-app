@@ -114,7 +114,7 @@
                            <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{WEXCodeList[lItems.fuelType]}}<br></span></span>
                         </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
-                          <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.pricePerUnit}}</span>
+                          <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.pricePerUnit}}{{fuelEntry.billingCurrency}}</span>
                           <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.pricePerUnit}}<br></span></span>
                         </td>
 												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.totalAmount}}{{fuelEntry.billingCurrency}}</td>

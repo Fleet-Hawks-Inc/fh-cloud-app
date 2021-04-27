@@ -283,7 +283,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               private modalServiceOwn: ModalService,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router,
-              private listService: ListService
+              private listService: ListService,
               ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -1136,7 +1136,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       })
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -1201,7 +1201,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } catch (error) {
 
 }}
-
 
   changePaymentModeForm(value) {
     if (value === 'Pay Per Mile') {
@@ -1309,14 +1308,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
-   
+
     if(this.currentUser.userType == 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
       if(isCarrierID != undefined) {
         this.currentUserCarrier = isCarrierID;
       }
     }
-    
+
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType == 'yard') {
