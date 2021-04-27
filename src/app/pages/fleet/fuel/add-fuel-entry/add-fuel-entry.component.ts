@@ -397,12 +397,10 @@ export class AddFuelEntryComponent implements OnInit {
     this.hideErrors();
     if (this.fuelQtyUnit === 'litre') {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
     this.fuelData.uploadedPhotos = this.existingPhotos;
 
