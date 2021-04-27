@@ -81,9 +81,10 @@
 
                                 <div class="row">
                                     <div class="col-lg-11">
-                                        <ng-template [ngIf]="defaultParameterCount < 1">
+                                        <ng-template>
                                             <input type="checkbox" class="" name="defaultCheckbox" id="defaultCheckbox"
-                                                [(ngModel)]="isDefaultInspectionType"> Make this form as default
+                                                [(ngModel)]="isDefaultInspectionType" 
+                                                (change)="defaultCheckbox($event)"> Make this form as default
                                         </ng-template>
                                     </div>
                                 </div>
