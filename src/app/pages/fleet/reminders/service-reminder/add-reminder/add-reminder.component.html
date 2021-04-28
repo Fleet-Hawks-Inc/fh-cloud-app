@@ -36,12 +36,17 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderIdentification" placeholder="Select vehicle to add reminder">
+                                    name="reminderIdentification" placeholder="Select vehicle to add reminder" #vec="ngModel" required>
 
                                        <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
                                           {{item.vehicleIdentification}}</ng-option>
 
                                  </ng-select>
+                                 <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
+                                    <div *ngIf="vec.errors.required">
+                                     Select Vehicle Type is required.
+                                       </div>
+                                    </div>
                               </div>
                            </div>
 
@@ -79,12 +84,17 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Service Tasks<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"  placeholder="Select service task to perform on vehicle"
-                                    name="reminderTasks.task" style="width: 100%;">
+                                    name="reminderTasks.task" style="width: 100%;" #sst="ngModel" required>
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                        </ng-option>
                                     </optgroup>
                                  </ng-select>
+                                 <div *ngIf="sst.invalid && (sst.dirty || sst.touched)" class="text-danger">
+                                    <div *ngIf="sst.errors.required">
+                                     Select Service Tasks is required.
+                                       </div>
+                                    </div>
                               </div>
                               <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
                                  <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
@@ -116,11 +126,17 @@
                                        <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="reminderData.reminderTasks.odometer" placeholder="Miles to repeat service task"
-                                          name="reminderTasks.odometer" type="number" class="form-control" min='0'>
+                                          name="reminderTasks.odometer" type="number" class="form-control" min='0' #odo="ngModel" required >
+                                          <div *ngIf="odo.invalid && (odo.dirty || odo.touched)" class="text-danger">
+                                             <div *ngIf="odo.errors.required">
+                                              Odometer Miles is required and must contain number only.
+                                                </div>
+                                                
+                                             </div>
                                     </div>
                                  </div>
                               </div>
-                              <!-- <div class="col-lg-2 mar-top-37"><button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i></button></div> -->
+                              <!---- <div class="col-lg-2 mar-top-37"><button type="button" class="btn btn-success btn-sm"><i class="fas fa-plus"></i></button></div> --->
                            </div>
                         </div>
                      </div>
