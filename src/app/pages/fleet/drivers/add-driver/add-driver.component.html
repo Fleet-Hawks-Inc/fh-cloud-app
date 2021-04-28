@@ -1307,11 +1307,11 @@
                            <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
                            <button type="button" *ngIf="currentTab > 1" (click)="prevStep()"
                               class="btn btn-default btnPrevious cus-btn-padd mr-2">Prev</button>
-                           <a href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 8"
-                              class="btn btn-success cus-btn-padd btnNext">Save & Next</a>
-                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="cus-btn-padd btn btn-success">Save</button>
-                           <a href="javascript:;" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()"
-                              class="btn cus-btn-padd btn-success">Update</a>
+                           <button type="submit"  (click)="nextStep()" *ngIf="currentTab != 8"
+                              class="btn btn-success cus-btn-padd btnNext" [disabled]="submitDisabled">Save & Next</button>
+                           <button type="submit" *ngIf="currentTab == 8 && !driverID" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">Save</button>
+                           <button type="submit" *ngIf="currentTab == 8 && driverID" (click)="updateDriver()"
+                              class="btn cus-btn-padd btn-success" [disabled]="submitDisabled">Update</button>
 
                         </div>
                      </div>

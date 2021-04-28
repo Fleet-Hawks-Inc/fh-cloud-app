@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import constants from '../../../constants';
 declare var $: any;
+import * as moment from 'moment';
 @Component({
   selector: 'app-add-reminder',
   templateUrl: './add-reminder.component.html',
@@ -24,6 +25,7 @@ export class AddReminderComponent implements OnInit {
       remindByDays: 1,
       odometer: 0,
     },
+    reminderStatus:'',
     lastCompletionDate: [],
     lastCompletedOdometer: [],
     subscribers: [],
@@ -56,6 +58,9 @@ export class AddReminderComponent implements OnInit {
   hasError = false;
   hasSuccess = false;
   test = [];
+  submitDisabled = false;
+  currentDate = moment().format('YYYY-MM-DD');
+
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
     private location: Location) { }
 
@@ -152,6 +157,7 @@ export class AddReminderComponent implements OnInit {
   }
   addReminder() {
     this.hideErrors();
+    this.submitDisabled = true;
     switch (this.timeType) {
       case 'day': {
         this.numberOfDays = this.time * 1;
@@ -176,6 +182,26 @@ export class AddReminderComponent implements OnInit {
         }
     }
     this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+
+    // let reminderStatus = '';
+    // let serviceOdometer = 0;
+    // let lastCompletionDate = moment().format('YYYY-MM-DD');
+    // const testDate = this.reminderData.lastCompletionDate.sort().reverse();
+    // let someDateString = moment(testDate[0]).format('YYYY-MM-DD');
+    // let  lastCompleted  = moment(someDateString, 'YYYY-MM-DD');
+    // const convertedDate = moment(this.currentDate, `YYYY-MM-DD`).add(this.reminderData.reminderTasks.remindByDays, 'days');
+    // let remainingDays = convertedDate.diff(this.currentDate, 'days');
+    let remainingDays = this.numberOfDays;
+    if (remainingDays < 0) {
+      this.reminderData.reminderStatus = 'overdue';
+    }
+    else if (remainingDays <= 7 && remainingDays >= 0) {
+      this.reminderData.reminderStatus = 'dueSoon';
+    }
+    // let remainingMiles = this.reminderData.reminderTasks.odometer;
+    // remainingMiles = (this.reminderData.reminderTasks.odometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
+
+    // this.reminderData.reminderStatus = reminderStatus;
     this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
@@ -189,17 +215,22 @@ export class AddReminderComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Service Reminder Added Successfully!');
         this.cancel();
         this.reminderData = {
+          reminderStatus: '',
           reminderIdentification: '',
           reminderType: constants.REMINDER_SERVICE,
           reminderTasks: {
@@ -239,22 +270,24 @@ export class AddReminderComponent implements OnInit {
   }
 
   // UPDATING REMINDER
-  updateReminder() {
+  async updateReminder() {
     this.hideErrors();
+    this.submitDisabled = true;
+    console.log('this.timeType', this.timeType);
     switch (this.timeType) {
-      case 'Day(s)': {
+      case 'day': {
         this.numberOfDays = this.time * 1;
         break;
       }
-      case 'Month(s)': {
+      case 'month': {
         this.numberOfDays = this.time * 30;
         break;
       }
-      case 'Week(s)': {
+      case 'week': {
         this.numberOfDays = this.time * 7;
         break;
       }
-      case 'Year(s)': {
+      case 'year': {
         this.numberOfDays = this.time * 365;
         break;
       }
@@ -265,8 +298,26 @@ export class AddReminderComponent implements OnInit {
         }
     }
 
-    // this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    let remainingDays = this.numberOfDays;
+
+    // check if last service is done then check the date of the same
+    let lastCompletionDate = '';
+    if(lastCompletionDate != '') {
+      // trip remaining days will be calculated from the last service day of the asset/vehicle
+      const convertedDate = moment(lastCompletionDate, `YYYY-MM-DD`).add(this.reminderData.reminderTasks.remindByDays, 'days');
+      remainingDays = convertedDate.diff(this.currentDate, 'days');
+    }
+    
+    if (remainingDays < 0) {
+      this.reminderData.reminderStatus = 'overdue';
+    }
+    else if (remainingDays <= 7 && remainingDays >= 0) {
+      this.reminderData.reminderStatus = 'dueSoon';
+    }
+    
+    this.reminderData.subscribers = await this.getSubscribers(this.reminderData.subscribers);
+    console.log('this.reminderData.subscribers', this.reminderData);
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -279,19 +330,24 @@ export class AddReminderComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
+        this.submitDisabled = false;
         this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();
         this.reminderData = {
           reminderIdentification: '',
+          reminderStatus: '',
           reminderType: constants.REMINDER_SERVICE,
           reminderTasks: {
             task: '',

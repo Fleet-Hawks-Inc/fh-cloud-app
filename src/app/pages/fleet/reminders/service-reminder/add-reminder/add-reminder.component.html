@@ -132,10 +132,10 @@
                                  <div class="row">
                                     <div class="col-10">
                                        <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2">Cancel</a>
-                                       <a href="javascript:;" *ngIf="!reminderID" (click)="addReminder()"
-                                          class="btn btn-success">Save</a>
-                                       <a href="javascript:;" *ngIf="reminderID" (click)="updateReminder()"
-                                          class="btn btn-success">Update</a>
+                                       <button *ngIf="!reminderID" (click)="addReminder()"
+                                          class="btn btn-success" [disabled]="submitDisabled">Save</button>
+                                       <button *ngIf="reminderID" (click)="updateReminder()"
+                                          class="btn btn-success" [disabled]="submitDisabled">Update</button>
                                     </div>
                                  </div>
                               </div>

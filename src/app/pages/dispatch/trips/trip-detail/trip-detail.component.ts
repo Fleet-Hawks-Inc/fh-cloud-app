@@ -128,7 +128,25 @@ export class TripDetailComponent implements OnInit {
         if(result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
-            this.uploadedDocSrc.push(`${this.Asseturl}/${result.carrierID}/${element}`);
+
+            let name = element.split('.');
+            let ext = name[name.length - 1];
+            let obj = {
+              imgPath: '',
+              docPath: ''
+            }
+            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+              obj = {
+                imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+              }
+            } else {
+              obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+              }
+            }
+            this.uploadedDocSrc.push(obj);
           }
         }
 
@@ -341,6 +359,18 @@ export class TripDetailComponent implements OnInit {
       this.toastr.error('Only 4 documents can be uploaded');
       return false;
     } else {
+      for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        let name = element.name.split('.');
+        let ext = name[name.length - 1];
+
+        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
+          $('#bolUpload').val('');
+          this.toastr.error('Only image and pdf files are allowed');
+          return false;
+        }
+      }
+
       // create form data instance
       const formData = new FormData();
 
@@ -377,13 +407,32 @@ export class TripDetailComponent implements OnInit {
             });
         },
         next: (res:any) => {
-          this.tripData.documents = res;
+          this.tripData.documents = res; 
           console.log('res', res);
           this.uploadedDocSrc = [];
-          if(res.length > 0) {
+          if (res.length > 0) {
             for (let k = 0; k < res.length; k++) {
               const element = res[k];
-              this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
+              // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
+
+              let name = element.split('.');
+              let ext = name[name.length - 1];
+              let obj = {
+                imgPath: '',
+                docPath: ''
+              }
+              if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                obj = {
+                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`,
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                }
+              } else {
+                obj = {
+                  imgPath: 'assets/img/icon-pdf.png',
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                }
+              }
+              this.uploadedDocSrc.push(obj);
             }
           }
           this.toastr.success('BOL uploaded successfully');
