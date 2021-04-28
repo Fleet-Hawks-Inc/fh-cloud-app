@@ -60,16 +60,32 @@
                                                 data-placement="top" title="Name or Number for Vehicle."></i>
                                           </label>
                                           <input type="text" class="form-control" name="vehicleIdentification"
-                                             [(ngModel)]="vehicleIdentification" placeholder="eg. Recycling Truck">
+                                             [(ngModel)]="vehicleIdentification" placeholder="eg. Recycling Truck" #vName="ngModel" required pattern="^[a-zA-Z0-9\-]+$" maxlength="10">
+                                             <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
+                                                <div *ngIf="vName.errors.required">
+                                                   Vehicle name is required.    
+                                                </div>
+                                                <div *ngIf="vName.errors.pattern">
+                                                   Vehicle name must be between 1 to 10 characters and must not contain any special characters.
+                                                </div>
+
+                                             </div>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
                                              Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control" name="vehicleType" [(ngModel)]="vehicleType"
-                                             placeholder="Select vehicle type">
-                                             <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code">
+                                             placeholder="Select vehicle type" #vSlt="ngModel" required>
+                                             <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code" >
                                                 {{vehicle.name}}</ng-option>
                                           </ng-select>
+                                          <div *ngIf="vSlt.invalid && (vSlt.dirty || vSlt.touched)" class="text-danger">
+                                             <div *ngIf="vSlt.errors.required">
+                                                Select Vehicle is required.    
+                                             </div>
+                                            
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-10">
 
@@ -77,7 +93,16 @@
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                                                 data-placement="top" title="Vehicle Identification Number."></i></label>
                                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
-                                             placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705">
+                                             placeholder="VIN or Serial Number eg. 5YJSA1DG9DFP14705" maxlength="18" #vin="ngModel" required pattern="^[a-zA-Z0-9\-]+$">
+                                             <div *ngIf="vin.invalid && (vin.dirty || vin.touched)" class="text-danger">
+                                                <div *ngIf="vin.errors.required">
+                                                   VIN is required.    
+                                                </div>
+                                                <div *ngIf="vin.errors.pattern">
+                                                   VIN must be between 17-18 characters and must not contain any special characters eg. 5YJSA1DG9DFP14705.
+                                                </div>
+
+                                             </div>
                                        </div>
                                        <!-- <div class="col-lg-5">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
@@ -87,7 +112,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Year<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control" name="year" [(ngModel)]="year"
-                                             placeholder="Select model year">
+                                             placeholder="Select model year" #ySlt="ngModel" required>
                                              <optgroup label="">
                                                 <ng-option value="1980">1980</ng-option>
                                                 <ng-option value="1981">1981</ng-option>
@@ -133,25 +158,50 @@
                                                 <ng-option value="2021">2021</ng-option>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="ySlt.invalid && (ySlt.dirty || ySlt.touched)" class="text-danger">
+                                             <div *ngIf="ySlt.errors.required">
+                                               Select Year is required.    
+                                             </div>
+                                          
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-5">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Plate
                                              Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input type="text" class="form-control" name="plateNumber"
-                                             [(ngModel)]="plateNumber" placeholder="eg. ADG456">
+                                             [(ngModel)]="plateNumber" placeholder="eg. ADG456" #pNum="ngModel" required pattern="^[a-zA-Z0-9\s]{1,8}$" >
+                                             <div *ngIf="pNum.invalid && (pNum.dirty || pNum.touched)" class="text-danger">
+                                                <div *ngIf="pNum.errors.required">
+                                                   Plate Number is required.    
+                                                </div>
+                                                <div *ngIf="pNum.errors.pattern">
+                                                   Plate Number must be between 7-8 characters and must not contain any special characters.
+                                                </div>
+                                                
+
+                                             </div>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Make<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control populate" name="manufacturerID"
                                              [(ngModel)]="manufacturerID" placeholder="Select vehicle make"
-                                             (change)="resetModel()">
-                                             <optgroup label="">
+                                             (change)="resetModel()" required #make="ngModel" required>
+                                             <optgroup label="" >
                                                 <ng-option *ngFor="let manufacturer of manufacturers | async"
                                                    value="{{manufacturer.manufacturerID}}">
                                                    {{manufacturer.manufacturerName}}</ng-option>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="make.invalid && (make.dirty || make.touched)" class="text-danger">
+                                             <div *ngIf="make.errors.required">
+                                                Select Make is required.    
+                                             </div>
+                                             
+                                             
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
@@ -162,7 +212,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Model<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID"
-                                             placeholder="Select vehicle model" id="vehicleSelect">
+                                             placeholder="Select vehicle model" id="vehicleSelect" #model="ngModel" required>
                                              <optgroup label="">
                                                 <ng-container *ngFor="let model of models | async">
                                                    <ng-option *ngIf="model.manufacturerID == manufacturerID"
@@ -170,6 +220,13 @@
                                                 </ng-container>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="model.invalid && (model.dirty || model.touched)" class="text-danger">
+                                             <div *ngIf="model.errors.required">
+                                                Select Model is required.    
+                                             </div>
+                                             
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelModal"
@@ -184,21 +241,29 @@
 
 
                                           <ng-select class="form-control populate" name="countryID"
-                                             [(ngModel)]="countryID" placeholder="Select Country" (change)="resetState()">
+                                             [(ngModel)]="countryID" placeholder="Select Country" (change)="resetState()" #country="ngModel" required>
                                              <optgroup label="">
-                                                <ng-container *ngFor="let country of countries | async">
+                                                <ng-container *ngFor="let country of countries | async" >
                                                    <ng-option
                                                       *ngIf="country.countryID == '8e8a0700-8979-11ea-94e8-ddabdd2e57f0' || country.countryID == '73cba1a0-8977-11ea-b61f-0996be58fec9'"
                                                       value="{{country.countryID}}">{{country.countryName}}</ng-option>
                                                 </ng-container>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
+                                             <div *ngIf="country.errors.required">
+                                                Select Country is required.    
+                                             </div>
+                                            
+                                             
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Province<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID"
-                                             placeholder="Select Province" id="stateSelect">
+                                             placeholder="Select Province" id="stateSelect" #province="ngModel" required>
                                              <optgroup label="">
                                                 <ng-container *ngFor="let state of states | async">
                                                    <ng-option *ngIf="state.countryID == countryID"
@@ -206,6 +271,14 @@
                                                 </ng-container>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
+                                             <div *ngIf="province.errors.required">
+                                                Select Province is required.    
+                                             </div>
+                                             
+                                             
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-2  mar-top-37 px-0">
                                           <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
@@ -340,7 +413,15 @@
                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <input type="text" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" name="annualSafetyDate" [(ngModel)]="annualSafetyDate"
 
-                                            placeholder="yyyy/mm/dd" class="form-control">
+                                            placeholder="yyyy/mm/dd" class="form-control" #annualSlt="ngModel" required>
+                                            <div *ngIf="annualSlt.invalid && (annualSlt.dirty || annualSlt.touched)" class="text-danger">
+                                             <div *ngIf="annualSlt.errors.required">
+                                                Select Annual Safety Date is required.    
+                                             </div>
+                                             
+                                             
+
+                                          </div>
 
                                        </div>
                                        <div class="col-lg-10">
@@ -395,7 +476,7 @@
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Status<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                           <ng-select class="form-control populate" name="currentStatus"
-                                             [(ngModel)]="currentStatus" placeholder="Select status of the vehicle">
+                                             [(ngModel)]="currentStatus" placeholder="Select status of the vehicle" #status="ngModel" required>
                                              <optgroup label="">
                                                 <ng-option value="active">Active</ng-option>
                                                 <ng-option value="in-active">Inactive</ng-option>
@@ -403,6 +484,13 @@
                                                 <ng-option value="sold">Sold</ng-option>
                                              </optgroup>
                                           </ng-select>
+                                          <div *ngIf="status.invalid && (status.dirty || status.touched)" class="text-danger">
+                                             <div *ngIf="status.errors.required">
+                                                Select Status is required.    
+                                             </div>
+                                             
+
+                                          </div>
                                        </div>
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Group&nbsp;
@@ -623,7 +711,15 @@
 
                                           <input type="text" placeholder="yyyy/mm/dd" class="form-control" name="lifeCycle.startDate" (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
 
-                                             [(ngModel)]="lifeCycle.startDate">
+                                             [(ngModel)]="lifeCycle.startDate" #date="ngModel" required>
+                                             <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                                                <div *ngIf="date.errors.required">
+                                                Start Date is required.    
+                                                </div>
+                                                
+                                                
+
+                                             </div>
                                        </div>
                                     </div>
                                  </div>
@@ -638,7 +734,18 @@
                                                 title="Odometer reading on in-service date."></i></label>
 
                                           <input type="number" class="form-control" name="lifeCycle.inServiceOdometer"
-                                             min="0" [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000">
+                                             min="0" [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000" #odometer="ngModel" required pattern="^[0-9]+$">
+                                             <div *ngIf="odometer.invalid && (odometer.dirty || odometer.touched)" class="text-danger">
+                                                <div *ngIf="odometer.errors.required">
+                                                   In-Service Odometer is required.  
+                                                     
+                                                </div>
+                                                <div *ngIf="odometer.errors.pattern">
+                                                   In-Service Odometer must  contain numbers only.
+                                                </div>
+                                                
+
+                                             </div>
                                        </div>
                                     </div>
                                  </div>
@@ -775,17 +882,35 @@
 
                                                 <input type="number" min="0" placeholder="eg. 5,10" class="form-control"
 
-                                                   name="specifications.height" [(ngModel)]="specifications.height">
+                                                   name="specifications.height" [(ngModel)]="specifications.height" #height="ngModel" required pattern="^[0-9]+$">
+                                                   <div *ngIf="height.invalid && (height.dirty || height.touched)" class="text-danger">
+                                                      <div *ngIf="height.errors.required">
+                                                         Height is required and must contain numbers only. 
+                                                           
+                                                      </div>
+                                                      
+                                                      
+      
+                                                   </div>
                                              </div>
                                              <div class="col-lg-6 pl-0">
                                                 <ng-select class="form-control populate"
                                                    name="specifications.heightUnit"
-                                                   [(ngModel)]="specifications.heightUnit">
+                                                   [(ngModel)]="specifications.heightUnit" #hType="ngModel" required>
                                                    <ng-option value="Feet">Feet</ng-option>
                                                    <!-- <ng-option value="Centimeters">Centimeters</ng-option>
                                                    <ng-option value="Inches">Inches</ng-option> -->
                                                    <ng-option value="Meter">Meter</ng-option>
                                                 </ng-select>
+                                                <div *ngIf="hType.invalid && (hType.dirty || hType.touched)" class="text-danger">
+                                                   <div *ngIf="hType.errors.required">
+                                                     Select Height Type is required.  
+                                                        
+                                                   </div>
+                                                   
+                                                   
+   
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
@@ -1223,9 +1348,18 @@
                                        <div class="col-lg-10">
                                           <label class="control-label font-weight-bold text-lg-right pt-2">Fuel
                                              Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                          <ng-select class="form-control populate" placeholder="Select Fuel Type" name="fluid.fuelType" [(ngModel)]="fluid.fuelType">
+                                          <ng-select class="form-control populate" placeholder="Select Fuel Type" name="fluid.fuelType" [(ngModel)]="fluid.fuelType" #fuel="ngModel" required>
                                             <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">{{fuelType.fuelTypeName}}</ng-option>
                                       </ng-select>
+                                      <div *ngIf="fuel.invalid && (fuel.dirty || fuel.touched)" class="text-danger">
+                                       <div *ngIf="fuel.errors.required">
+                                          Fuel Type is required. 
+                                            
+                                       </div>
+                                       
+                                       
+
+                                    </div>
                                        </div>
                                        <!-- <div class="col-lg-10">
                                      <label class="control-label font-weight-bold text-lg-right pt-2">Fuel Quality</label>
@@ -1257,17 +1391,35 @@
                                                    name="fluid.fuelTankOneCapacity"
                                                    min="0"
                                                    [(ngModel)]="fluid.fuelTankOneCapacity"
-                                                   placeholder="eg. 100,200">
+                                                   placeholder="eg. 100,200" #fuelTank="ngModel" required pattern="^[0-9]+$">
+                                                   <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)" class="text-danger">
+                                                      <div *ngIf="fuelTank.errors.required">
+                                                         Fuel Tank is required and must contain numbers only. 
+                                                           
+                                                      </div>
+                                                
+                                                      
+      
+                                                   </div>
                                              </div>
                                              <div class="col-lg-6 pl-0">
                                                 <ng-select class="form-control populate" name="fluid.fuelTankOneType"
                                                    min="1" [(ngModel)]="fluid.fuelTankOneType"
-                                                   placeholder="Select fuel type">
+                                                   placeholder="Select fuel type" #tankType="ngModel" required>
                                                    <optgroup label="">
                                                       <ng-option value="Gallons">Gallons</ng-option>
                                                       <ng-option value="Litres">Litres</ng-option>
                                                    </optgroup>
                                                 </ng-select>
+                                                <div *ngIf="tankType.invalid && (tankType.dirty || tankType.touched)" class="text-danger">
+                                                   <div *ngIf="tankType.errors.required">
+                                                      Select Type Tank is required. 
+                                                        
+                                                   </div>
+                                             
+                                                   
+   
+                                                </div>
                                              </div>
                                           </div>
 
@@ -1310,8 +1462,18 @@
                                           <div class="row">
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control" name="fluid.oilCapacity" min="0"
-                                                   [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200">
+                                                   [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #oil="ngModel" required>
+                                                   <div *ngIf="oil.invalid && (oil.dirty || oil.touched)" class="text-danger">
+                                                      <div *ngIf="oil.errors.required">
+                                                         Oil Capacity is required and must contain numbers only. 
+                                                           
+                                                      </div>
+                                                
+                                                      
+      
+                                                   </div>
                                              </div>
+
                                              <div class="col-lg-6 pl-0">
                                                 <ng-select class="form-control populate" name="fluid.oilCapacityType"
                                                    min="1" [(ngModel)]="fluid.oilCapacityType"
@@ -1335,16 +1497,34 @@
                                           <div class="row">
                                              <div class="col-lg-6">
                                                 <input type="number" class="form-control" name="fluid.def" min="0"
-                                                   [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc.">
+                                                   [(ngModel)]="fluid.def" placeholder="eg. 100,200 etc." #def="ngModel" required>
+                                                   <div *ngIf="def.invalid && (def.dirty || def.touched)" class="text-danger">
+                                                      <div *ngIf="def.errors.required">
+                                                        DEF is required and must contain numbers only. 
+                                                           
+                                                      </div>
+                                                
+                                                      
+      
+                                                   </div>
                                              </div>
                                              <div class="col-lg-6 pl-0">
                                                 <ng-select class="form-control populate" name="fluid.defType"
-                                                   [(ngModel)]="fluid.defType" placeholder="Select fuel type">
+                                                   [(ngModel)]="fluid.defType" placeholder="Select fuel type" #defType="ngModel" required>
                                                    <optgroup label="">
                                                       <ng-option value="Gallons">Gallons</ng-option>
                                                       <ng-option value="Litres">Litres</ng-option>
                                                    </optgroup>
                                                 </ng-select>
+                                                <div *ngIf="defType.invalid && (defType.dirty || defType.touched)" class="text-danger">
+                                                   <div *ngIf="defType.errors.required">
+                                                    Def Tank Type is required. 
+                                                        
+                                                   </div>
+                                             
+                                                   
+   
+                                                </div>
                                              </div>
                                           </div>
                                        </div>
@@ -1354,7 +1534,7 @@
                               <!-- </form> -->
                            </div>
                         </div>
-                        <!-- wheel -->
+                        <!-- wheel --->
                         <div class="tab-pane fade" [ngClass]="{'show active': activeTab == 6}" id="wheels"
                            role="tabpanel" aria-labelledby="wheels-tab">
                            <div>
