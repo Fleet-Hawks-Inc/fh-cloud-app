@@ -135,15 +135,15 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.trucks" name="trucks">
+                            <input type="number" class="form-control" min="0" [(ngModel)]="fleets.trucks" name="trucks">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Asset(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.trailers" name="trailers">
+                            <input type="number" class="form-control" min= "0" [(ngModel)]="fleets.trailers" name="trailers">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Reefer(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.reefers" name="reefers">
+                            <input type="number" class="form-control" min="0" [(ngModel)]="fleets.reefers" name="reefers">
                           </div>
                         </div>
                       </div>
@@ -153,15 +153,15 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Dry Van(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.dryVans" name="dryVans">
+                            <input type="number" class="form-control" min="0" [(ngModel)]="fleets.dryVans" name="dryVans">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Flatbed(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.flatbed" name="flatbed">
+                            <input type="number" class="form-control" min="0" [(ngModel)]="fleets.flatbed" name="flatbed">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">CurtainSide(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.curtainSide"
+                            <input type="number" class="form-control" min="0" [(ngModel)]="fleets.curtainSide"
                               name="curtainSide">
                           </div>
                         </div>

@@ -49,7 +49,7 @@
                                             <tbody>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Port of Arrival:</th>
-                                                    <td>{{usPortOfArrival}}</td>
+                                                    <td>{{usPortOfArrival}}-{{USportsListObjects[usPortOfArrival]}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th width="40%" class="back-color-gray">Estimated Arrival Date/Time:</th>
@@ -165,7 +165,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let shipment of shipments">
+                                        <tr *ngFor="let shipment of shipments"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="Click to view the details of shipment.">
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer "
                                                 (click)="showShipmentDetails(shipment.shipmentID)">
@@ -221,7 +223,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Driver, Passengers and Team Drivers</h4>
+                                <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
                                 <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add

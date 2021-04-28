@@ -387,7 +387,7 @@ export class AddAccountComponent implements OnInit {
           this.cancel();
         },
       });
-    } else{
+    } else {
       this.toaster.warning('Yard address is mandatory');
     }
 
