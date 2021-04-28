@@ -548,7 +548,7 @@
                                                                </label>
 
                                                                <input placeholder="eg. John Shaw" [(ngModel)]="item.shippers.contactPerson"
-                                                                  name="contactPerson" type="text" class="form-control"
+                                                                  name="shippers.contactPerson" type="text" class="form-control"
                                                                   id="inputDefault">
                                                                <span class="text-danger"
                                                                   *ngIf="isShipperSubmit && shippersReceivers[i].shippers.contactPerson == ''"
@@ -566,7 +566,7 @@
                                                                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                                </label>
 
-                                                               <input placeholder="eg. 0016780571" [(ngModel)]="item.shippers.phone" name="phone"
+                                                               <input placeholder="eg. 0016780571" [(ngModel)]="item.shippers.phone" name="shippers.phone"
                                                                   type="text" class="form-control" id="inputDefault">
                                                                <span class="text-danger"
                                                                   *ngIf="isShipperSubmit && shippersReceivers[i].shippers.phone == ''"
@@ -738,7 +738,7 @@
 
                                                             <div class="col-lg-3 col-sm-12 col-xs-12 col-12 text-right">
                                                                <p class="mb-1"><a *ngIf="!showShipperUpdate" href="javascript:;" (click)="saveShipper(i)"
-                                                                  class="btn btnw90px btn-md btn-dark">Save</a></p>
+                                                                  class="btn btnw90px btn-md btn-dark">Save</a></p> 
                                                                <p><a *ngIf="showShipperUpdate" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
                                                                   class="btn btnw90px btn-md btn-dark">Update</a></p>
                                                             </div>
@@ -1662,7 +1662,7 @@
                                     <input type="number" min="0"  name="advance" [(ngModel)]="orderData.advance" class="form-control" (blur)="calculateAmount()">
                                  </div>
                               </div>
-                           -->
+                          
                               <div class="row mt-4">
                                  <div class="col-lg-10 offset-lg-2">
                                     <span>&nbsp;</span>
@@ -1694,14 +1694,14 @@
                                     <p class="text-right" [innerHTML]="orderData.advance"></p>
                                  </div>
                               </div> -->
-                              <div class="row">
+                              <!-- <div class="row">
                                  <div class="col-lg-9 bordtop pt-1">
                                     <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount to be Paid</h5>
                                  </div>
                                  <div class="col-lg-3 bordtop pt-1">
                                     <p class="text-right" [innerHTML]="orderData.finalAmount"></p>
                                  </div>
-                              </div>
+                              </div> -->
                            </div>
                         </div>
 
