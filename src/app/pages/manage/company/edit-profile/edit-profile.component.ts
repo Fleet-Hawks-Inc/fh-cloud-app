@@ -493,12 +493,18 @@ export class EditProfileComponent implements OnInit {
         this.response = res;
         this.toaster.success('Carrier updated successfully.');
         this.cancel();
-        this.headerComponentFunction();
+
+        this.updateUser();
       },
     });
-
-
-
+  }
+  updateUser() {
+    let currentUser = `${this.firstName} ${this.lastName}`;
+    const outputName = currentUser.match(/\b(\w)/g);
+    let smallName = outputName.join('');
+    localStorage.setItem('currentUserName', currentUser);
+    localStorage.setItem('nickName', smallName);
+    this.headerComponentFunction();
   }
   throwErrors() {
     from(Object.keys(this.errors))

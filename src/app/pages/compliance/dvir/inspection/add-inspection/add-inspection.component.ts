@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+
 declare var $: any;
 
 @Component({
@@ -13,7 +15,9 @@ declare var $: any;
 })
 export class AddInspectionComponent implements OnInit {
 
-  constructor(private apiService: ApiService,
+  constructor(
+    private apiService: ApiService,
+    private route:ActivatedRoute,
     private location: Location,
     private toaster: ToastrService,) { }
 
@@ -24,16 +28,20 @@ export class AddInspectionComponent implements OnInit {
     name:'',
     isDefault:false
   }]
-
+  formID:any;
   response:any='';
   errors={};
   defaultParameterCount:number=0; 
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
 
 
   ngOnInit() {
+    this.formID=this.route.snapshot.params['formID']
     this.apiService.getData('inspectionForms/get/defaultInspecitonForm').subscribe((res)=>{
       if(res.Items[0])
-      
        this.parameters=res.Items[0].parameters
        this.defaultParameterCount=this.parameters.length;
     })
@@ -51,7 +59,6 @@ export class AddInspectionComponent implements OnInit {
       isDefaultInspectionType: this.isDefaultInspectionType,
       parameters:this.parameters
     }
-    console.log(data)
     
     this.apiService.postData('inspectionForms',data).subscribe({
       complete: () => { },
@@ -109,4 +116,54 @@ export class AddInspectionComponent implements OnInit {
   this.isDefaultInspectionType =event.target.checked? 1: 0
 
   }
+
+  // updateInspectionForm(){
+  //   this.hasError=false;
+  //   this.hasSuccess=false;
+  //   this.hideErrors();
+  
+  //     const data={
+  //       inspectionFormName: this.inspectionFormName,
+  //       inspectionType: this.inspectionType,
+  //       isDefaultInspectionType: this.isDefaultInspectionType,
+  //       parameters:this.parameters
+  //     }
+      
+  //     this.apiService.putData('inspectionForms',data).subscribe({
+  //       complete: () => { },
+  //       error: (err: any) => {
+  //         from(err.error)
+  //           .pipe(
+  //             map((val: any) => {
+  //               val.message = val.message.replace(/".*"/, 'This Field');
+  //               this.errors[val.context.key] = val.message;
+  //             })
+  //           )
+  //           .subscribe({
+  //             complete: () => {
+  //               this.throwErrors();
+  //             },
+  //             error: () => { },
+  //             next: () => { },
+  //           });
+  //       },
+  //       next: (res) => {
+  //         this.response = res;
+  //         this.toaster.success('Form Updated successfully');
+  //         this.cancel();
+  //       }
+  //     });
+  //   }
+    
+
+
+  // hideErrors() {
+  //   from(Object.keys(this.errors)).subscribe((v) => {
+  //     $('[name="' + v + '"]')
+  //       .removeClass('error')
+  //       .next()
+  //       .remove('label');
+  //   });
+  //   this.errors = {};
+  // }
 }
