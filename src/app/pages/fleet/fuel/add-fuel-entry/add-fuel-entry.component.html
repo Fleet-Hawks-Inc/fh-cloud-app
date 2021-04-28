@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col-lg-5 offset-lg-1 col-md-5 offset-md-1">
-                 
+
                   <div class="row pt-3" id="fuelVehicle" *ngIf="fuelData.unitType ==='vehicle'">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle<span
@@ -544,9 +544,9 @@
                           <div class="col-10">
                             <button type="button" class="btn cus-btn-padd btn-default mr-2" (click)="cancel()">Cancel</button>
                             <button type="button" *ngIf="!entryID" (click)="addFuelEntry()"
-                              class="btn btn-success cus-btn-padd">Save</button>
+                              class="btn btn-success cus-btn-padd" [disabled]="submitDisabled">Save</button>
                             <button type="button" *ngIf="entryID" (click)="updateFuelEntry()"
-                              class="btn btn-success cus-btn-padd">Update</button>
+                              class="btn btn-success cus-btn-padd" [disabled]="submitDisabled">Update</button>
                           </div>
                         </div>
                       </div>

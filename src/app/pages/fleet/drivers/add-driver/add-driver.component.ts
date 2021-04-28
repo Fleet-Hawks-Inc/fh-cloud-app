@@ -78,7 +78,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     gender: 'M',
     DOB: '',
     ownerOperator: '',
-    driverStatus: '',
+    driverStatus: '', 
     userName: '',
     firstName: '',
     middleName: '',
@@ -269,6 +269,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   currentUser: any;
   modelID = '';
   empPrefix: any;
+  submitDisabled = false;
 
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
@@ -283,7 +284,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
               private modalServiceOwn: ModalService,
               private dateAdapter: NgbDateAdapter<string>,
               private router: Router,
-              private listService: ListService
+              private listService: ListService,
               ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -773,7 +774,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     //append other fields
     formData.append('data', JSON.stringify(this.driverData));
 
-
+    this.submitDisabled = true;
     try {
       return await new Promise((resolve, reject) => {this.apiService.postData('drivers',formData, true).subscribe({
       complete: () => { },
@@ -790,19 +791,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             complete: () => {
               this.throwErrors();
               this.hasError = true;
+              this.submitDisabled = false;
 
               if(err) return reject(err);
               this.spinner.hide();
 
               //this.toastr.error('Please see the errors');
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
         // this.response = res;
         // this.hasSuccess = true;
+        this.submitDisabled = false;
         this.toastr.success('Driver added successfully');
         this.isSubmitted = true;
         this.modalServiceOwn.triggerRedirect.next(true);
@@ -815,6 +820,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       },
     })})
   } catch (error) {
+    this.submitDisabled = false;
     return 'error found';
   }}
 
@@ -1110,42 +1116,43 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
+    this.submitDisabled = true;
     this.driverData.currentTab = this.currentTab;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
-      if(element.countryID != '' || element.stateID != '' || element.cityID != '') {
+      if (element.countryID != '' || element.stateID != '' || element.cityID != '') {
         let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
         ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        if(result != undefined) {
-            element.geoCords.lat = result.position.lat;
-            element.geoCords.lng = result.position.lng;
+        if (result != undefined) {
+          element.geoCords.lat = result.position.lat;
+          element.geoCords.lng = result.position.lng;
         }
       }
     }
     this.driverData['driverID'] = this.driverID;
 
-    if(this.driverData.hosDetails.hosCycle != '') {
+    if (this.driverData.hosDetails.hosCycle != '') {
       let cycleName = '';
-      this.cycles.map((v:any)=>{
-        if(this.driverData.hosDetails.hosCycle == v.cycleID) {
+      this.cycles.map((v: any) => {
+        if (this.driverData.hosDetails.hosCycle == v.cycleID) {
           cycleName = v.cycleName;
         }
       })
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
-    
+
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
-    for(let j = 0; j < this.uploadedDocs.length; j++){
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
       for (let k = 0; k < this.uploadedDocs[j].length; k++) {
         let file = this.uploadedDocs[j][k];
         formData.append(`uploadedDocs-${j}`, file);
@@ -1154,7 +1161,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
 
     //append abstact history docs if any
-    for(let k = 0; k < this.abstractDocs.length; k++){
+    for (let k = 0; k < this.abstractDocs.length; k++) {
       formData.append('abstractDocs', this.abstractDocs[k]);
     }
 
@@ -1162,46 +1169,52 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     formData.append('data', JSON.stringify(this.driverData));
 
     try {
-      return await new Promise((resolve, reject) => {this.apiService.putData('drivers', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = false;
-              if(err) return reject(err);
-              // this.toastr.error('Please see the errors');
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.isSubmitted = true;
-        for (let i = 0; i < this.deletedAddress.length; i++) {
-          const element = this.deletedAddress[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+      return await new Promise((resolve, reject) => {
+        this.apiService.putData('drivers', formData, true).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.hasError = false;
+                  this.submitDisabled = false;
+                  if (err) return reject(err);
+                  // this.toastr.error('Please see the errors');
+                },
+                error: () => { },
+                next: () => {
+                  this.submitDisabled = false;
+                },
+              });
+          },
+          next: (res) => {
+            this.response = res;
+            this.hasSuccess = true;
+            this.isSubmitted = true;
+            this.submitDisabled = false;
+            for (let i = 0; i < this.deletedAddress.length; i++) {
+              const element = this.deletedAddress[i];
+              this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
 
-        }
-        this.toastr.success('Driver updated successfully');
-        // this.router.navigateByUrl('/fleet/drivers/list');
-        this.cancel();
+            }
+            this.toastr.success('Driver updated successfully');
+            // this.router.navigateByUrl('/fleet/drivers/list');
+            this.cancel();
 
-      },
-    })})
+          },
+        })
+      })
     } catch (error) {
-
-}}
-
+      this.submitDisabled = false;
+    }
+  }
 
   changePaymentModeForm(value) {
     if (value === 'Pay Per Mile') {
@@ -1309,14 +1322,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUserCarrier = this.currentUser.carrierID;
     this.carrierID = this.currentUser.carrierID;
-   
+
     if(this.currentUser.userType == 'Cloud Admin') {
       let isCarrierID = localStorage.getItem('carrierID');
       if(isCarrierID != undefined) {
         this.currentUserCarrier = isCarrierID;
       }
     }
-    
+
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         if(e.addressType == 'yard') {

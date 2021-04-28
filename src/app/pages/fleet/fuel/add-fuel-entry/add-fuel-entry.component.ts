@@ -104,7 +104,7 @@ export class AddFuelEntryComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
-
+  submitDisabled = false;
 
 
   constructor(private apiService: ApiService,
@@ -260,6 +260,7 @@ export class AddFuelEntryComponent implements OnInit {
   }
   addFuelEntry() {
     this.hideErrors();
+    this.submitDisabled = true;
     if (this.fuelQtyUnit === 'litre') {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     } else {
@@ -287,13 +288,17 @@ export class AddFuelEntryComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Fuel Entry Added Successfully.');
         this.location.back();
@@ -393,16 +398,14 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelEntryImages.splice(i, 1);
   }
   updateFuelEntry() {
-
+    this.submitDisabled = true;
     this.hideErrors();
     if (this.fuelQtyUnit === 'litre') {
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     } else {
       this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
       this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
       this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-      this.fuelData.pricePerUnit = +((this.fuelData.amountPaid / this.fuelData.totalLitres).toFixed(2));
     }
     this.fuelData.uploadedPhotos = this.existingPhotos;
 
@@ -428,13 +431,17 @@ export class AddFuelEntryComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Fuel Entry Updated successfully');
         this.cancel();
