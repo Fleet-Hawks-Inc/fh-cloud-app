@@ -107,6 +107,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   cityList; any  = {};
   taxTypeList: any = {};
   discountList: any = {};
+  driverList: any  = {};
   Error = '';
   Success = '';
   constructor(
@@ -136,6 +137,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchStatesList();
     this.fetchTaxTypeFromID();
     this.fetchDiscFromID();
+    this.fetchDriverList();
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -145,6 +147,11 @@ export class FuelEntryDetailsComponent implements OnInit {
   fetchVendorList() {
     this.apiService.getData('vendors/get/list').subscribe((result: any) => {
       this.vendorList = result;
+    });
+  }
+  fetchDriverList() {
+    this.apiService.getData('drivers/get/list').subscribe((result: any) => {
+      this.driverList = result;
     });
   }
   fetchCountriesList() {
@@ -238,6 +245,7 @@ export class FuelEntryDetailsComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
+        console.log('result', result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
         this.fuelData.billingCurrency = result.billingCurrency,
