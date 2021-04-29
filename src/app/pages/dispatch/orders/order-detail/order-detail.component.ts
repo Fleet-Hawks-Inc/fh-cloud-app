@@ -140,6 +140,7 @@ export class OrderDetailComponent implements OnInit {
   milesArr = [];
   allPhotos = [];
   carrierID = '';
+  stateCode = '';
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -166,6 +167,14 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
+
+          if(result.stateTaxID != '') {
+            this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
+              this.stateCode = result.Items[0].stateCode;
+        
+            });
+          }
+
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
