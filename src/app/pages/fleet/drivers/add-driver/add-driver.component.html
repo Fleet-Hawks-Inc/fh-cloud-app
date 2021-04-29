@@ -1530,7 +1530,8 @@
                                              (change)="onChangeHideErrors('hosDetails.homeTerminal');getUtc($event)"
                                              placeholder="Select home terminal of the driver" #home="ngModel" required>
 
-                                             <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
+                                             <ng-container *ngFor="let yard of carrierYards">
+                                                <ng-option class="text-capitalize" *ngIf="yard.addressType == 'yard'"
                                                 value="{{yard.addressID}}">
                                                 <div *ngIf="yard.manual">
                                                    {{ yard.address1 }} {{ yard.address2}}, {{ yard.cityName }}, {{
@@ -1540,6 +1541,8 @@
                                                    {{ yard.userLocation }}
                                                 </div>
                                              </ng-option>
+                                             </ng-container>
+                                             
 
                                           </ng-select>
                                           <div *ngIf="home.invalid && (home.dirty || home.touched)" class="text-danger">
