@@ -61,8 +61,8 @@
                     <div class="col-3 pl-2 mb-4">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                            <div>
-                              <h4 class="m-0">Notes</h4>
-                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 500" data-toggle="modal" data-target="#routeNotes" class="modal-with-form">See All</a></p>
+                              <h4 class="m-0">Notes</h4> 
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 100" data-toggle="modal" data-target="#routeNotes" class="modal-with-form">See All</a></p>
                               <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes == ''"> - </p>
                            </div>
                            <div class="grey-bg p-4" style="color: #979797;">

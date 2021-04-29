@@ -310,7 +310,8 @@ calculateActualMiles(miles){
         this.routeData.sourceInformation['sourceZipCode'] = `${labelResult.address.postalCode}`;
       }
       
-      this.routeData.stops.splice(1, 0, item);
+      // this.routeData.stops.splice(1, 0, item);
+      this.routeData.stops[0] = item;
     } else if(elem === 'destination') {
       this.routeData.destinationInformation['destinationAddress'] = '';
       this.routeData.destinationInformation['destinationCountry'] = '';
@@ -336,8 +337,16 @@ calculateActualMiles(miles){
         this.routeData.destinationInformation['destinationZipCode'] = `${labelResult.address.postalCode}`;
       }
       
-      this.routeData.stops.splice(1, 1);
-      this.routeData.stops.splice(1, 0, item);
+      let stopLen = this.routeData.stops.length; 
+      if(stopLen == 1 || stopLen == 2) {
+        this.routeData.stops[1] = item;
+      } else if(stopLen > 2) {
+        this.routeData.stops[stopLen-1] = item;
+      }
+      
+
+      // this.routeData.stops.splice(1, 1);
+      // this.routeData.stops.splice(1, 0, item);
     } else {
       
       this.routeData.stops[index]['stopName'] = label;

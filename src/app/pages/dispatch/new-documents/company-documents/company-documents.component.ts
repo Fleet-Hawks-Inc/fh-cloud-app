@@ -75,6 +75,7 @@ export class CompanyDocumentsComponent implements OnInit {
   docPrevEvauatedKeys = [''];
   docStartPoint = 1;
   docEndPoint = this.pageLength;
+  descriptionData = '';
 
   constructor(
     private apiService: ApiService,
@@ -470,5 +471,10 @@ export class CompanyDocumentsComponent implements OnInit {
     this.newDoc = '';
 
     $("#addDocumentModal").modal('show');
+  }
+
+  showDescModal(description) {
+    this.descriptionData = description;
+    $("#routeNotes").modal('show');
   }
 }

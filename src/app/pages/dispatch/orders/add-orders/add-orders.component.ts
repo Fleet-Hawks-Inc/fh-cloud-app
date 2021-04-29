@@ -848,17 +848,17 @@ export class AddOrdersComponent implements OnInit {
       });
 
       if (value === "google") {
-        this.mergedArray.forEach((element) => {
-          this.googleCords.push({
-            lat: element.position.lat,
-            lng: element.position.lng,
-          });
-        });
-        this.origin = this.googleCords[0];
-        this.googleCords.shift();
-        this.destination = this.googleCords;
-        // console.log('google this.googleCords', this.googleCords);
-        this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
+        // this.mergedArray.forEach((element) => {
+        //   this.googleCords.push({
+        //     lat: element.position.lat,
+        //     lng: element.position.lng,
+        //   });
+        // });
+        // this.origin = this.googleCords[0];
+        // this.googleCords.shift();
+        // this.destination = this.googleCords;
+        // // console.log('google this.googleCords', this.googleCords);
+        // this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
         // console.log('this.orderData.milesInfo.totalMiles', this.orderData.milesInfo.totalMiles);
       } else if (value === "pcmiles") {
         // console.log('this.getAllCords', this.getAllCords);
@@ -1150,7 +1150,6 @@ export class AddOrdersComponent implements OnInit {
 
   editList(elem, parentIndex, i) {
     let j = parentIndex;
-
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1196,6 +1195,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
       this.stateShipperIndex = i;
     }
+    console.log('this.shippersReceivers', this.shippersReceivers);
     // this.visibleIndex = i;
     this.showReceiverUpdate = true;
   }
@@ -1370,6 +1370,7 @@ export class AddOrdersComponent implements OnInit {
         let length = result.shippersReceiversInfo.length;
         let emptyArr = [];
         let newArray: any = this.shippersReceivers.slice();
+        console.log('newArray', newArray);
 
         for (let i = 0; i < length; i++) {
           emptyArr.push(newArray[0]);
