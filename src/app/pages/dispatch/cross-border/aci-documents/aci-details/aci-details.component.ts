@@ -96,7 +96,7 @@ export class AciDetailsComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     citizenshipCountry: '',
-    fastCardNumber:'',
+    fastCardNumber: '',
     travelDocuments: [],
   };
   passengerData = {
@@ -119,6 +119,7 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
+
   sendBorderConnectOption = false;
   packagingUnitsObjects: any = {};
   vehicleTypeObjects: any = {};
@@ -168,6 +169,7 @@ export class AciDetailsComponent implements OnInit {
     }, {});
     });
   }
+
   fetchCargoExemptionType() {
     this.httpClient.get('assets/ACIcargoExemption.json').subscribe((data: any) => {
       this.cargoExemptionTypeObjects =  data.reduce( (a: any, b: any) => {
