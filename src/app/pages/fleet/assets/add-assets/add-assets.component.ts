@@ -31,7 +31,7 @@ export class AddAssetsComponent implements OnInit {
     VIN: '',
     startDate: '',
     assetDetails: {
-      assetType: '',
+      assetType: null,
       currentStatus: '',
       year: '',
       manufacturer: '',

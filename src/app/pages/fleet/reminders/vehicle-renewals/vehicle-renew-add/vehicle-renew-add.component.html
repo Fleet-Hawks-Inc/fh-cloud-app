@@ -32,11 +32,18 @@
                               <div class="row pt-2">
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  placeholder="Select vehicle">
+                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  placeholder="Select vehicle" #vec="ngModel" required>
 
                                           <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</ng-option>
 
                                     </ng-select>
+                                    
+                                    <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
+                                       <div *ngIf="vec.errors.required">
+                                        Select Vehicle is required.
+                                          </div>
+                                          
+                                       </div>
                                  </div>
                                  <div class="col-lg-2  mar-top-37 pl-0">
                                     <!-- <a href="#addVehicleModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
@@ -72,12 +79,19 @@
                                  <div class="col-lg-10">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;" placeholder="Select renewal type">
+                                    name="task" style="width: 100%;" placeholder="Select renewal type" #rt="ngModel" required>
+
                                     <optgroup label="Select Service Task">
                                        <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                                        </ng-option>
                                     </optgroup>
                                  </ng-select>
+                                 <div *ngIf="rt.invalid && (rt.dirty || rt.touched)" class="text-danger">
+                                    <div *ngIf="rt.errors.required">
+                                     Select Renewal Type is required.
+                                       </div>
+                                       
+                                    </div>
                                  </div>
                                  <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
                                     <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
@@ -90,8 +104,14 @@
                                     <input
                                     class="form-control"
                                     placeholder="yyyy/mm/dd"
-                                    name="dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                                    name="dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker" #date="ngModel" required
                                   />
+                                  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                                    <div *ngIf="date.errors.required">
+                                     Due Date is required.
+                                       </div>
+                                       
+                                    </div>
                                  </div>
                                  <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -135,7 +155,7 @@
          </section>
     </div>
 </section>
-<!-- ADD TASK MODAL -->
+<!---- ADD TASK MODAL --->
 <div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;"  role="document">
