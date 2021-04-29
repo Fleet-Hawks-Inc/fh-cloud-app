@@ -145,18 +145,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'yyyy/MM/dd' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -223,18 +235,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -301,18 +325,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -379,18 +415,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -457,18 +505,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -534,18 +594,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
@@ -612,18 +684,30 @@
                                             </span>
                                         </td>
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                        <td>{{ trip.pickupLocation }}</td>
+                                        <td>
+                                            {{ trip.pickupLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                        </td>
                                         <td>
                                             {{ trip.dropLocation }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
-                                        <td>{{ vehiclesObject[trip.vehicleId] }}</td>
                                         <td>
-                                            <span *ngFor="let asst of trip.assetId; let j=index; let $last = last">
-                                                <span *ngIf="assetsObject[asst] != '' && assetsObject[asst] != null "> {{ assetsObject[asst] }} <span *ngIf="!$last" class="list-format">, </span> </span>
-                                            </span>
+                                            {{ vehiclesObject[trip.vehicleId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
-                                        <td>{{ driversObject[trip.driverUsername] }}</td>
-                                        <td>{{ carriersObject[trip.carrierId] }}</td>
+                                        <td>
+                                            {{ assetsObject[trip.assetId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ driversIDSObject[trip.driverId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                        </td>
+                                        <td>
+                                            {{ carriersObject[trip.planCarrierId] }}
+                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                        </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
                                             <div class="dropdown dropright">
