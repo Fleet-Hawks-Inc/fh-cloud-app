@@ -369,6 +369,12 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
+  shipmentLoadedFn(s){
+    this.shipments[s].loadedOn.number = '';
+  }
+  containerLoadedFn(i) {
+    this.containers[i].loadedOn.number = '';
+  }
   /***
     * fetch asset types from mapped table
     */
@@ -382,6 +388,11 @@ export class NewAciManifestComponent implements OnInit {
       let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
       this.borderAssetTypes = fetchedBorderAssets.Items;
     }
+  }
+  fetchBorderAssetType() {
+    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
+      this.borderAssetTypes = result.Items;
+    });
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
@@ -838,7 +849,8 @@ export class NewAciManifestComponent implements OnInit {
         this.modifiedBy = result.modifiedBy;
         setTimeout(() => {
           this.fetchUSStates();
-        }, 2000);
+          this.fetchBorderAssetType();
+        }, 1000);
       });
   }
   updateACIManifest() {

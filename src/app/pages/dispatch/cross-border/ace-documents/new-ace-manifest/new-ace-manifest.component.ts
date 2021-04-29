@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { Auth } from 'aws-amplify';
 import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
+import { updateFunctionDeclaration } from 'typescript';
 declare var $: any;
 
 @Component({
@@ -54,6 +55,8 @@ export class NewAceManifestComponent implements OnInit {
       { sealNumber: '' },
       { sealNumber: '' },
     ],
+    IIT:  'IMPORTER'
+
   };
   trailers = [
     {
@@ -65,6 +68,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
+      IIT: 'IMPORTER'
     },
   ];
   addTrailerSealBtn = true;
@@ -333,6 +337,11 @@ export class NewAceManifestComponent implements OnInit {
       this.borderAssetTypes = fetchedBorderAssets.Items;
     }
   }
+  fetchBorderAssetType() {
+    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
+      this.borderAssetTypes = result.Items;
+    });
+  }
   getStates() {
     this.apiService
       .getData('states/getCanadianStates')
@@ -402,6 +411,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
+     IIT: 'IMPORTER'
     });
     this.addTrailerBtn = true;
 
@@ -653,7 +663,6 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
   async userAddress(s, p, item, callType) {
-    console.log('s and p', s, p);
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
     if (callType === 'thirdParty') {
@@ -814,7 +823,7 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-      this.addFunction(data);
+     this.addFunction(data);
     }
   }
   throwErrors() {
@@ -862,7 +871,8 @@ export class NewAceManifestComponent implements OnInit {
         this.usAddress = result.usAddress;
         setTimeout(() => {
           this.getStates();
-        }, 2000);
+          this.fetchBorderAssetType();
+        }, 1000);
       });
   }
 
@@ -917,7 +927,6 @@ export class NewAceManifestComponent implements OnInit {
         }
       }
       if (this.address === true) {
-        this.coDrivers.unshift(this.mainDriver);
         const data = {
           entryID: this.entryID,
           SCAC: this.SCAC,
@@ -934,33 +943,7 @@ export class NewAceManifestComponent implements OnInit {
           shipments: this.shipments,
           currentStatus: 'Draft',
         };
-        this.apiService
-          .putData(`ACEeManifest/${this.amendManifest}`, data)
-          .subscribe({
-            complete: () => { },
-            error: (err: any) => {
-              from(err.error)
-                .pipe(
-                  map((val: any) => {
-                    val.message = val.message.replace(/".*"/, 'This Field');
-                    this.errors[val.context.label] = val.message;
-                  })
-                )
-                .subscribe({
-                  complete: () => {
-                    this.throwErrors();
-                  },
-                  error: () => { },
-                  next: () => { },
-                });
-            },
-            next: (res) => {
-              this.response = res;
-              this.hasSuccess = true;
-              this.toastr.success('Manifest updated successfully.');
-              this.location.back(); // <-- go back to previous location
-            },
-          });
+        this.updateFunction(data);
       }
     } else {
       this.usAddress = {
@@ -1000,34 +983,38 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-      this.apiService
-        .putData(`ACEeManifest/${this.amendManifest}`, data)
-        .subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                },
-                error: () => { },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            this.response = res;
-            this.hasSuccess = true;
-            this.toastr.success('Manifest updated successfully.');
-            this.location.back(); // <-- go back to previous location
-          },
-        });
+      this.updateFunction(data);
     }
+  }
+  // update function
+  updateFunction(data){
+    this.apiService
+    .putData(`ACEeManifest/${this.amendManifest}`, data)
+    .subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.toastr.success('Manifest updated successfully.');
+        this.location.back(); // <-- go back to previous location
+      },
+    });
   }
   // add Function
   addFunction(data) {
