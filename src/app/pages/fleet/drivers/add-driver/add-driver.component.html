@@ -209,7 +209,7 @@
                                                 <input [(ngModel)]="driverData.firstName"
                                                    (change)="onChangeHideErrors('firstName')" name="firstName"
                                                    type="text" class="form-control" placeholder="eg. John"
-                                                   #fName="ngModel" required pattern="^[a-zA-Z0-9]+$" min="2"
+                                                   #fName="ngModel" required pattern="^[a-zA-Z]+$" min="2"
                                                    maxlength="30">
                                                 <div *ngIf="fName.invalid && (fName.dirty || fName.touched)"
                                                    class="text-danger">
@@ -231,16 +231,19 @@
                                                 <input [(ngModel)]="driverData.middleName" name="middleName" type="text"
                                                    class="form-control" placeholder="eg. matthews" #mName="ngModel"
                                                    required pattern="^[a-zA-Z]+$">
+                                                   <div *ngIf="mName.invalid && (mName.dirty || mName.touched)"
+                                                   class="text-danger">
+                                                   <div *ngIf="mName.errors.required">
+                                                      Enter Middle Name.
+                                                   </div>
+                                                   <div *ngIf="mName.errors.pattern">
+                                                      Middle Name must not contain any special character.
+                                                   </div>
 
 
-                                                <div *ngIf="mName.errors.pattern" class="text-danger">
-                                                   Middle Name must not contain any special characters or numbers.
                                                 </div>
-
-
-
-
-                                             </div>
+                                                   
+                                                </div>
                                              <div class="col-lg-4">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                    Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -345,19 +348,9 @@
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="driverData.password" name="password" type="text"
                                                    class="form-control" (change)="onChangeHideErrors('password')"
-                                                   placeholder="eg.  $John@01" #pwd="ngModel" required
-                                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$">
-                                                <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)"
-                                                   class="text-danger">
-                                                   <div *ngIf="pwd.errors.required">
-                                                      Password is required.
-                                                   </div>
-                                                   <div *ngIf="pwd.errors.pattern">
-                                                      Password must be 8 digits long and a combination of small
-                                                      letters,capital letters and atleast one special
-                                                      characters(#,@,$,&).
-                                                   </div>
-                                                </div>
+                                                   placeholder="eg.  $John@01"
+                                                  >
+                                                
                                              </div>
                                              <div class="col-lg-6">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Confirm
@@ -365,15 +358,8 @@
                                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="driverData.confirmPassword" name="confirm password"
                                                    type="text" (change)="onChangeHideErrors('confirmPassword')"
-                                                   class="form-control" placeholder="eg.  $John@01" #cpwd="ngModel"
-                                                   required>
-                                                <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)"
-                                                   class="text-danger">
-                                                   <div *ngIf="cpwd.errors.required">
-                                                      Confirm password is required.
-                                                   </div>
-                                                   <!-- <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div> --->
-                                                </div>
+                                                   class="form-control" placeholder="eg.  $John@01" >
+                                                
                                              </div>
                                           </div>
                                        </div>
@@ -556,13 +542,13 @@
                                           <input [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
                                              class="form-control" (change)="onChangeHideErrors('workPhone')"
                                              placeholder="eg. 0016780571" #mob="ngModel" required
-                                             pattern="^(\+1)[0-9]{10}$">
+                                             pattern="^[0-9]{2,10}$">
                                           <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                                              <div *ngIf="mob.errors.required">
                                                 Phone is required.
                                              </div>
                                              <div *ngIf="mob.errors.pattern">
-                                                Enter valid phone number eg. +12032342345.
+                                                Enter valid phone number eg. 1234567894.
                                              </div>
                                           </div>
                                        </div>
@@ -1042,10 +1028,10 @@
                                           maxlength="9" pattern="^[0-9\-]{2,9}$">
                                        <div *ngIf="cdl.invalid && (cdl.dirty || cdl.touched)" class="text-danger">
                                           <div *ngIf="cdl.errors.required">
-                                             Cdl# is required.
+                                             CDL# is required.
                                           </div>
                                           <div *ngIf="cdl.errors.pattern">
-                                             Cdl# must contain numbers only and special characters(period(-)) only.
+                                             CDL# must contain numbers only and special characters(period(-)) only.
                                           </div>
 
 
@@ -1212,7 +1198,7 @@
                                              [(ngModel)]="driverData.paymentDetails.SIN_Number"
                                              name="paymentDetails.SIN_Number" type="text" class="form-control"
                                              placeholder="9 digits , eg.123456789" #sin="ngModel" required
-                                             pattern="^(0-9)+$" maxlength="9">
+                                             pattern="^[0-9]+$" maxlength="9">
                                           <div *ngIf="sin.invalid && (sin.dirty || sin.touched)" class="text-danger">
                                              <div *ngIf="sin.errors.required">
                                                 Sin is required.
