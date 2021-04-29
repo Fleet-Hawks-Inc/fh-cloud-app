@@ -96,7 +96,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Add IIT&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select placeholder="Select IIT">
+                        <ng-select placeholder="Select IIT" [(ngModel)]="truck.IIT" name="truck.IIT">
                           <ng-option value="CARRIER">Trip contains IIt's covered under 10.41(a) with
                             carriers bond.</ng-option>
                           <ng-option value="IMPORTER">Trip contains IIt's covered under 10.41(a) with
@@ -205,7 +205,8 @@
                               title="FAST - Free and Secure Trade,14 digits number,beginning with 4270 or 4110 and ending with 00 or 01 or 02"></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                             <input type="text" maxlength="14" (keyup)="fastValidation($event)" [class.error]="errorFastCard"
                               placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
-                              class="form-control">
+                              class="form-control"  [ngModelOptions]="{standalone: true}" [attr.name]="'passengers['+i+'].fastCardNumber'"
+                              [(ngModel)]="passenger.fastCardNumber">
                               <div class="text-danger" *ngIf="errorFastCard">Enter valid FAST Card number.</div>
                           </div>
                         </div>
@@ -252,8 +253,7 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province</label>
                             <ng-select [ngModelOptions]="{standalone: true}" id="passengerDocStateSelect"
                               [attr.name]="'passengers['+i+'].travelDocuments['+j+'].stateProvince'"
                               [(ngModel)]="document.stateProvince">
@@ -346,15 +346,17 @@
                                 <ng-select [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'usAddress.address.countryID'" [class.error]="errorClassCountry"
                                   [(ngModel)]="usAddress.address.countryID" (change)="resetusAddressState()">
-                                  <ng-option *ngFor="let country of countries" [value]="country.countryID">
-                                    {{country.countryName}}</ng-option>
-                                </ng-select>
+                                <ng-container *ngFor="let country of countries">
+                                  <ng-option *ngIf="country.countryCode == 'US'"
+                                    [value]="country.countryID"> {{country.countryName}}</ng-option>
+                                </ng-container>
+                              </ng-select>
                                 <div class="text-danger" *ngIf="errorClassCountry">This field is required.</div>
                               </div>
                             </div>
                             <div class="row">
                               <div class="col-lg-10">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Province</label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">State</label>
                                 <ng-select [ngModelOptions]="{standalone: true}" id="usAddressStateSelect"
                                   (change)="resetusAddressCity()"
                                   [attr.name]="'usAddress.address.stateID'" [class.error]="errorClassState"
@@ -467,8 +469,7 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray
-                              Date of Exit</label>
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Goods Astray Date of Exit</label>
                             <input type="text" class="form-control" [ngModelOptions]="{standalone: true}"
                               [ngModelOptions]="{standalone: true}"  ngbDatepicker #d7="ngbDatepicker" [minDate]="getcurrentDate" (click)="d7.toggle();"
                               [attr.name]="'shipments['+s+'].goodsAstrayDateOfExit'" placeholder="yyyy/mm/dd"
@@ -524,8 +525,7 @@
                                   [(ngModel)]="shipment.inBondDetails.onwardCarrierScac">
                               </div>
                               <div class="col-lg-12">
-                                <label class="control-label font-weight-bold text-lg-right pt-2">Bonded
-                                  Carrier ID</label>
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Bonded Carrier ID</label>
                                 <input type="text"
                                   placeholder="The IRS Number, CBP Assigned Number, or Social Security Number of the Bonded Carrier."
                                   class="form-control" [ngModelOptions]="{standalone: true}"
@@ -795,8 +795,10 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
                               [(ngModel)]="commodity.loadedOn.number">
-                              <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
-                                {{vehicle.vehicleIdentification}}</ng-option>
+                                <ng-container *ngFor="let vehicle of vehicles">
+                                  <ng-option *ngIf="vehicle.vehicleID == truck.truckID" [value]="vehicle.vehicleID">
+                                    {{vehicle.vehicleIdentification}}</ng-option>
+                                </ng-container>
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
@@ -811,7 +813,7 @@
                           </div>
                         </div>
                         <div class="row"
-                          *ngIf="shipment.shipmentType === 'BRASS' || shipment.shipmentType === 'BRASS_MULTIPLE'">
+                          *ngIf="shipment.type == 'BRASS' || shipment.type == 'BRASS_MULTIPLE'">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">C4 Line
                               Release#
@@ -823,7 +825,7 @@
                           </div>
                         </div>
                         <div class="row"
-                          *ngIf="shipment.shipmentType === 'IN_BOND' || shipment.shipmentType === 'SECTION_321' || shipment.shipmentType === 'SECTION_321_FDA'">
+                          *ngIf="shipment.type === 'IN_BOND' || shipment.type === 'SECTION_321' || shipment.type === 'SECTION_321_FDA'">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Commodity
                               Value in USD</label>
@@ -832,7 +834,7 @@
                               [(ngModel)]="commodity.value">
                           </div>
                         </div>
-                        <div class="row" *ngIf="shipment.type === 'IN_BOND'">
+                        <div class="row" *ngIf="shipment.type === 'IN_BOND' && shipment.inBondDetails.type === '62'">
                           <div class="col-lg-10">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Harmonized
                               Code
@@ -1041,7 +1043,9 @@
                             </div>
                           </td>
                           <td>
-                            <ng-select placeholder="Select IIT if any">
+                            <ng-select placeholder="Select IIT if any" [ngModelOptions]="{standalone: true}"
+                            [attr.name]="'trailers['+t+'].IIT'"
+                            [(ngModel)]='trailer.IIT'>
                               <ng-option value="CARRIER">Trip contains IIt's covered under 10.41(a) with
                                 carriers bond.</ng-option>
                               <ng-option value="IMPORTER">Trip contains IIt's covered under 10.41(a) with
