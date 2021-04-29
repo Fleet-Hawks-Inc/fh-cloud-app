@@ -155,8 +155,8 @@
 
                                                     <div class="row">
                                                         <div class="col-md-3 mb-3" *ngFor="let docs of uploadedDocSrc">
-                                                            <a class="image-popup-no-margins" href="{{docs}}" target="_blank">
-                                                                <img class="img-fluid" src="{{docs}}"
+                                                            <a class="image-popup-no-margins" href="{{docs.docPath}}" target="_blank">
+                                                                <img class="img-fluid" src="{{docs.imgPath}}"
                                                                     width="75">
                                                             </a>
                                                         </div>
@@ -215,7 +215,7 @@
                                                         <td>
                                                             <span class="badge badge-dark p-1 text-uppercase" title=""
                                                                 data-original-title="Empty Miles"
-                                                                *ngIf="!trip.mileType">{{
+                                                                *ngIf="trip.mileType != ''">{{
                                                                 trip.mileType }}</span>
                                                         </td>
                                                         <td>{{ trip.miles }}</td>
@@ -228,7 +228,7 @@
                                                         </td>
                                                         <td>{{ driversObject[trip.driverID] }}</td>
                                                         <td>{{ driversObject[trip.coDriverID] }}</td>
-                                                        <td>{{ carriersObject[trip.carrierName] }}</td>
+                                                        <td>{{ carriersObject[trip.carrierID] }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -452,7 +452,7 @@
                                                 <tr>
                                                     <td>
                                                         <span class="line-height-xl text-4 font-weight-bold"><i
-                                                                class="fa fa-route"></i> {{plannedMiles}} miles
+                                                                class="fa fa-route"></i> {{plannedMiles | number: '1.0-3'}} miles
                                                         </span>
                                                     </td>
                                                     <td>
