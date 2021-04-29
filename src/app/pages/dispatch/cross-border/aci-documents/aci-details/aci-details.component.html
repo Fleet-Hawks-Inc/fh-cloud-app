@@ -50,7 +50,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header border back-color-gray p-2">
-                                <h4 class="m-0">Trip Number<b> {{tripNumber}}</b></h4>
+                                <h4 class="m-0">Trip#<b> {{tripNumber}}</b></h4>
                             </div>
                             <div class="card-body border">
                                 <div class="row">
@@ -302,8 +302,8 @@
                                             <th>Name</th>
                                             <th>Type</th>
                                             <th>Driver#</th>
-                                            <th>Documents</th>
-                                            <th  width="10%">Action</th>
+                                            <th>Document#</th>
+                                            <th  width="10%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -396,7 +396,7 @@
                                             <th width="10%">Licence Plate Number</th>
                                             <th width="10%">Licence Province</th>
                                             <th width="10%">Licence Country</th>
-                                            <th width="15%">IIT/Cargo Exemption(s)</th>
+                                            <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
                                         </tr>
@@ -409,8 +409,8 @@
                                             <td>{{truck.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[truck.licensePlate.stateProvince]}}</td>
                                             <td>{{countryCodeName[truck.licensePlate.country]}}</td>
-                                            <td><span *ngFor="let cargo of truck.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},&nbsp;</span></td>
-                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let cargo of truck.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}}&nbsp;</span></td>
+                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}}</span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -496,7 +496,7 @@
                                         <tr>
                                             <th>Container#</th>
                                             <th>Loaded On</th>
-                                            <th width="15%">Exemptions</th>
+                                            <th width="15%">Cargo Exemptions</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
                                         </tr>
@@ -650,7 +650,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Cargo Exemptions:</th>
-                                        <td><span *ngFor="let exemption of truck.cargoExemptions">{{cargoExemptionTypeObjects[exemption]}},</span>
+                                        <td><span *ngFor="let exemption of truck.cargoExemptions">{{cargoExemptionTypeObjects[exemption]}}</span>
                                         </td>
                                     </tr>
 

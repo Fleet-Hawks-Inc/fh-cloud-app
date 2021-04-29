@@ -52,7 +52,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Estimated Arrival
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="text" class="form-control" name="estimatedArrivalDate" placeholder="Enter date"
+                        <input type="text" class="form-control" name="estimatedArrivalDate" placeholder="yyyy/mm/dd"
                           ngbDatepicker #d6="ngbDatepicker" [minDate]="getcurrentDate" (click)="d6.toggle();onChangeHideErrors('estimatedArrivalDate')"
                           [(ngModel)]="estimatedArrivalDate" />
 
@@ -791,7 +791,7 @@
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRUCK'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle
-                              Number</label>
+                              Name</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
                               [(ngModel)]="commodity.loadedOn.number">
@@ -801,7 +801,7 @@
                           </div>
                           <div class="col-lg-10" *ngIf="commodity.loadedOn.type == 'TRAILER'">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Asset
-                              Number</label>
+                              Name</label>
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].commodities['+i+'].loadedOn.number'"
                               placeholder="Select asset" [(ngModel)]="commodity.loadedOn.number">

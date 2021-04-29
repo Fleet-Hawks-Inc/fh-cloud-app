@@ -1016,7 +1016,8 @@
                                      </div> -->
                                      <div class="row  m-0">
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:</div>
-                                         <div class="col-lg-6 p-2 bor_half">{{liceMedicalCardRenewal ? liceMedicalCardRenewal : '-'}}</div>
+                                         <div class="col-lg-6 p-2 bor_half" *ngIf="liceMedicalCardRenewal != ''" >{{ liceMedicalCardRenewal | date:'yyyy/MM/dd'}}</div>
+                                         <div class="col-lg-6 p-2 bor_half" *ngIf="liceMedicalCardRenewal == ''" >-</div>
                                      </div>
                                  </div>
                              </div>

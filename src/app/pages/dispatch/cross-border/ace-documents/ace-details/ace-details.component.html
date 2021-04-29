@@ -48,7 +48,7 @@
                                         <table class="table table-bordered m-0">
                                             <tbody>
                                                 <tr>
-                                                    <th width="40%" class="back-color-gray">Port of Arrival:</th>
+                                                    <th width="40%" class="back-color-gray">US Port of Arrival:</th>
                                                     <td>{{usPortOfArrival}}</td>
                                                 </tr>
                                                 <tr>
@@ -154,7 +154,7 @@
                                 <table class="table  table-responsive-md table-bordered table-striped mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Shipment#</th>
+                                            <th>Shipment Control#</th>
                                             <!-- <th>Entry Status</th> -->
                                             <th>Type</th>
                                             <th>Consignor</th>
@@ -199,7 +199,7 @@
                                             <td data-toggle="modal" data-target="#showShipmentDetails"
                                                 class="modal-with-form cursor-pointer"
                                                 (click)="showShipmentDetails(shipment.shipmentID)"><span
-                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{commodity.packagingUnit}},</span>
+                                                    *ngFor="let commodity of shipment.commodities">{{commodity.quantity}} {{commodity.packagingUnit}}</span>
                                             </td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
@@ -260,7 +260,7 @@
                                             class="modal-with-form cursor-pointer"
                                             (click)="showDriverDetails(driver.driverID)">{{driver.fastCardNumber}}</td>
                                             <td><span
-                                                    *ngFor="let document of driver.travelDocuments">{{document.number}},</span>
+                                                    *ngFor="let document of driver.travelDocuments">{{document.number}} </span>
                                             </td>
 
                                             <!-- <td>Address</td> -->
@@ -304,7 +304,7 @@
                         <div class="card">
                             <div
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
-                                <h4 class="m-0 ">Vehicle on<b>{{tripNumber}}</b></h4>
+                                <h4 class="m-0 ">Vehicle on <b>{{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <!-- <button class="btn btn-success btn-sm"> Set IIT Status</button> -->
                                 </div>
@@ -334,7 +334,7 @@
                                                 *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td>IIT Status</td>
-                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let seal of truck.sealNumbers;">{{seal}} </span></td>
                                             <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
@@ -357,7 +357,7 @@
                                     <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
                                         class="btn btn-success btn-sm mr-1"> Set IIT Status</a> -->
                                     <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
-                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Trailer</a>
+                                        class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -387,7 +387,7 @@
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
                                         </td>
                                             <td>IIT Status</td>
-                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
+                                            <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}} </span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
@@ -467,8 +467,8 @@
                                     <tr>
                                         <th>Insurance CompanyName</th>
                                         <th>Issued Date</th>
-                                        <th>Policy Number</th>
-                                        <th>Policy Amount</th>
+                                        <th>Policy#</th>
+                                        <th>Insurance Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -512,7 +512,7 @@
                                         <td>{{shipmentTypeObects[shipmentData.type]}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Shipment Control Number:</th>
+                                        <th width="40%" class="back-color-gray">Shipment Control#:</th>
                                         <td>{{shipmentData.shipmentControlNumber}}</td>
                                     </tr>
                                     <tr>
@@ -556,7 +556,7 @@
                                           <td>{{inBondTypeObects[shipmentData.inBondDetails.type]}}</td>
                                       </tr>
                                       <tr>
-                                          <th width="40%" class="back-color-gray">Paper In Bond Number:</th>
+                                          <th width="40%" class="back-color-gray">Paper In Bond#:</th>
                                           <td>{{shipmentData.inBondDetails.paperInBondNumber}}</td>
                                       </tr>
                                       <tr>
@@ -649,7 +649,7 @@
                                             <span
                                                 class="font-weight-semibold">
                                                 <span *ngIf="commodity.loadedOn.type == 'TRUCK'">Vehicle</span>
-                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span> &nbsp;Name/Number:</span>{{commodity.loadedOn.number}}
+                                                <span *ngIf="commodity.loadedOn.type == 'TRAILER'">Asset</span> &nbsp;Name: </span>{{commodity.loadedOn.number}}
                                         </td>
                                         <td><span class="font-weight-semibold">Hazmat
                                                 Code:&nbsp;</span><span *ngIf="commodity.hazmatDetails != undefined"> {{commodity.hazmatDetails.unCode}}<br></span>
@@ -665,7 +665,7 @@
                                             <span class="font-weight-semibold">Harmonized
                                                 Code:&nbsp;</span>{{commodity.harmonizedCode}}<br>
                                             <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span
-                                                *ngFor="let marks of commodity.marksAndNumbers">{{marks}},</span>
+                                                *ngFor="let marks of commodity.marksAndNumbers">{{marks}} </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -699,7 +699,7 @@
                                 <tbody>
                                     <tr>
                                         <th width="40%" class="back-color-gray">
-                                            Driver Number:</th>
+                                            Driver#:</th>
                                         <td>{{driverData.driverNumber}}</td>
                                     </tr>
                                     <tr>
