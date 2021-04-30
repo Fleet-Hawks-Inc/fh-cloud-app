@@ -382,15 +382,15 @@
                                                                                 (keyup)="searchTerm.next($event);"
                                                                                 class="form-control">
 
-                                                                            <ul class="m-0 text-left map-search__results bg-white"
-                                                                                *ngIf="searchResults">
-                                                                                <li *ngFor="let item of searchResults;">
-                                                                                    <a href="javascript:;"
-                                                                                        (click)="assignLocation('stops', item.address.label, i)"
-                                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                                </li>
-                                                                            </ul>
-
+                                                                            <div class="map-search__results bg-white row mt-1 ml-0 mt-5" style="width: 46%">
+                                                                                <ul class="m-0 text-left" *ngIf="searchResults">
+                                                                                    <li *ngFor="let item of searchResults;">
+                                                                                        <a href="javascript:;"
+                                                                                            (click)="assignLocation('stops', item.address.label, i)"
+                                                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
                                                                         </div> 
                                                                     </td>
                                                                     <td>

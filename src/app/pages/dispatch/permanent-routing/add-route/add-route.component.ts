@@ -338,7 +338,13 @@ calculateActualMiles(miles){
       }
       
       let stopLen = this.routeData.stops.length; 
-      if(stopLen == 1 || stopLen == 2) {
+      if(stopLen == 0) {
+        this.routeData.stops[0] = {
+          stopName: '',
+          stopNotes: ''
+        };
+        this.routeData.stops[1] = item;
+      } else if(stopLen == 1 || stopLen == 2) {
         this.routeData.stops[1] = item;
       } else if(stopLen > 2) {
         this.routeData.stops[stopLen-1] = item;
