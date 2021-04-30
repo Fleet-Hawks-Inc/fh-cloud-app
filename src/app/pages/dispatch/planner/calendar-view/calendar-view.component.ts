@@ -251,7 +251,7 @@ export class CalendarViewComponent implements OnInit {
       this.tempTextFieldValues.trailerName = trailerNames;
     }
   }
-
+ 
   async saveAssetModalData() {
     let selectedDriverids = [];
     if(this.tempTextFieldValues.coDriverUsername != '' || this.tempTextFieldValues.driverUsername != '' || 
@@ -326,6 +326,9 @@ export class CalendarViewComponent implements OnInit {
         result = result.Items[0];
         // delete result.timeCreated;
         delete result.timeModified;
+        if(result.documents == undefined) {
+          result.documents = [];
+        }
         this.tripData = result;
         this.OrderIDs = this.tripData['orderId'];
 
@@ -428,7 +431,8 @@ export class CalendarViewComponent implements OnInit {
           time: '-',
           tripPlan: element.tripPlanning,
           orders: element.orderId,
-          customersArr: []
+          customersArr: [],
+          documents: element.documents
         }
 
         for (let k = 0; k < element.orderId.length; k++) {

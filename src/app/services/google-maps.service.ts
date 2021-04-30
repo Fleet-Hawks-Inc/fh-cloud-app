@@ -8,7 +8,7 @@ import {} from "googlemaps";
   providedIn: 'root'
 })
 export class GoogleMapsService {
-  private readonly apiKey = environment.googleConfig.apiKey;
+  // private readonly apiKey = environment.googleConfig.apiKey;
   public pcMiles = new BehaviorSubject(false);
   // public pcMiles$ = this.pcMiles.asObservable();
   
@@ -17,22 +17,22 @@ export class GoogleMapsService {
 
 
 
-googleDistance(origin, destination) {
-  const matrix = new google.maps.DistanceMatrixService();
+// googleDistance(origin, destination) {
+//   const matrix = new google.maps.DistanceMatrixService();
  
-  return new Promise((resolve, reject) => {matrix.getDistanceMatrix({
-    origins: origin,
-    destinations: destination,
-    travelMode: google.maps.TravelMode.DRIVING,
-  }, function(response, status) {
-    let totalMeters = 0;
-    response.rows[0].elements.forEach(item => {
-      totalMeters += item.distance.value;
-    })
-    let totalMiles = totalMeters * 0.000621371192;
-    resolve(totalMiles.toFixed(2));
-  })});
-}
+//   return new Promise((resolve, reject) => {matrix.getDistanceMatrix({
+//     origins: origin,
+//     destinations: destination,
+//     travelMode: google.maps.TravelMode.DRIVING,
+//   }, function(response, status) {
+//     let totalMeters = 0;
+//     response.rows[0].elements.forEach(item => {
+//       totalMeters += item.distance.value;
+//     })
+//     let totalMiles = totalMeters * 0.000621371192;
+//     resolve(totalMiles.toFixed(2));
+//   })});
+// }
 
 
   pcMilesDistance(stops){
