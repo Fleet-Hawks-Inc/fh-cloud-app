@@ -436,7 +436,7 @@ export class TripDetailComponent implements OnInit {
               this.uploadedDocSrc.push(obj);
             }
           }
-          this.toastr.success('BOL uploaded successfully');
+          this.toastr.success('BOL/POD uploaded successfully');
         },
       })
     }

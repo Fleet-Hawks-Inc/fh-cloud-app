@@ -234,10 +234,9 @@
                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control choosefileLH" observeFiles>
+                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" id="uploadedDocs" type="file" class="form-control choosefileLH" observeFiles>
                             <span>
-                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
-                                tiff). The maximum file size can be 15MB.</span>
+                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, png). The maximum file size can be 15MB.</span>
                             <div *ngIf="newDoc" class="border my-2 p-2">
                                 <h4 class="mt-0">Uploaded Document</h4>
                                 <a href="{{newDoc}}" target="_blank">Document</a>
