@@ -57,7 +57,7 @@
                       </ng-select>
                       <div *ngIf="vecSlt.invalid && (vecSlt.dirty || vecSlt.touched)" class="text-danger">
                         <div *ngIf="vecSlt.errors.required">
-                           Select Vehicle is required. 
+                          Select valid vehicle from the list. 
                              
                         </div>
                   
@@ -70,10 +70,19 @@
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Reefer<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <ng-select name="unitID" [(ngModel)]="fuelData.unitID" placeholder="Select Reefer">
+                      <ng-select name="unitID" [(ngModel)]="fuelData.unitID" placeholder="Select Reefer" #reefer="ngModel" required>
                         <ng-option *ngFor="let reefer of reeferArray" value="{{reefer.assetID}}">
                           {{reefer.assetIdentification}}</ng-option>
                       </ng-select>
+                      <div *ngIf="reefer.invalid && (reefer.dirty || reefer.touched)" class="text-danger">
+                        <div *ngIf="reefer.errors.required">
+                         Select valid asset type from the list.
+                             
+                        </div>
+                  
+                        
+
+                     </div>
                     </div>
 
                   </div>
@@ -83,20 +92,48 @@
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Fuel Quantity<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty">
+                        <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQty" [(ngModel)]="fuelData.fuelQty" #fuelQuantity="ngModel" required>
+                        <div *ngIf="fuelQuantity.invalid && (fuelQuantity.dirty || fuelQuantity.touched)" class="text-danger">
+                          <div *ngIf="fuelQuantity.errors.required">
+                             Fuel Quantity contains numbers only. 
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                       </div>
                       <div class="col-lg-2 qtumbtn px-0">
                         <ng-select class="form-control populate" name="fuelQtyUnit" [(ngModel)]="fuelQtyUnit"
-                          (change)="changeFuelUnit()">
+                          (change)="changeFuelUnit()" #ftype="ngModel" required>
                           <ng-option value="gallon">gallon</ng-option>
                           <ng-option value="litre">litre</ng-option>
                         </ng-select>
+                        <div *ngIf="ftype.invalid && (ftype.dirty || ftype.touched)" class="text-danger">
+                          <div *ngIf="ftype.errors.required">
+                           Select valid fuel type from the list. 
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="fuelQtyAmt"
-                          [(ngModel)]="fuelData.fuelQtyAmt" >
+                          [(ngModel)]="fuelData.fuelQtyAmt" #amount="ngModel" required>
+                          <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
+                            <div *ngIf="amount.errors.required">
+                               Amount Must contains numbers only.
+
+                                 
+                            </div>
+                      
+                            
+    
+                         </div>
                       </div>
                     </div>
                   </div>
@@ -104,7 +141,16 @@
                     <div class="col-lg-4">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">DEF Fuel Quantity</label>
                       <input type="number" min='0' placeholder="eg. 1,2" class="form-control" name="DEFFuelQty"
-                        [(ngModel)]="fuelData.DEFFuelQty" >
+                        [(ngModel)]="fuelData.DEFFuelQty" #defFuel="ngModel" required >
+                        <div *ngIf="defFuel.invalid && (defFuel.dirty || defFuel.touched)" class="text-danger">
+                          <div *ngIf="defFuel.errors.required">
+                             DEF Fuel Quantity must contains numbers only.
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                     </div>
                     <div class="col-lg-2 qtumbtn px-0">
                       <label class="control-label pl-2 text-lg-right">{{DEFFuelQtyUnit}}</label>
@@ -112,7 +158,17 @@
                     <div class="col-lg-4">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount</label>
                       <input type="number" placeholder="eg. 1,2" class="form-control" min='0' name="DEFFuelQtyAmt"
-                        [(ngModel)]="fuelData.DEFFuelQtyAmt">
+                        [(ngModel)]="fuelData.DEFFuelQtyAmt" #amountDef="ngModel" required>
+                        <div *ngIf="amountDef.invalid && (amountDef.dirty || amountDef.touched)" class="text-danger">
+                          <div *ngIf="amountDef.errors.required">
+                            Amount must contains numbers only.
+
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                     </div>
                   </div>
                   <div class="row">
@@ -124,13 +180,35 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subtotal<span
                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                       <div class="row">
-                        <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="fuelData.totalAmount" [(ngModel)]="fuelData.totalAmount"></div>
+                        <div class="col-lg-6 text-right mt-1">
+                          <input class="form-control" name="fuelData.totalAmount" [(ngModel)]="fuelData.totalAmount" #subTotal="ngModel" required>
+                          <div *ngIf="subTotal.invalid && (subTotal.dirty || subTotal.touched)" class="text-danger">
+                            <div *ngIf="subTotal.errors.required">
+                            Subtotal must contains numbers only.
+  
+                                 
+                            </div>
+                      
+                            
+    
+                         </div>
+                        </div>
                         <div class="col-lg-6">
                           <ng-select placeholder="Select Currency" name="billingCurrency"
-                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)">
+                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)" #sltCurrency="ngModel" required>
                             <ng-option value="USD">USD</ng-option>
                             <ng-option value="CAD">CAD</ng-option>
                           </ng-select>
+                          <div *ngIf="sltCurrency.invalid && (sltCurrency.dirty || sltCurrency.touched)" class="text-danger">
+                            <div *ngIf="sltCurrency.errors.required">
+                              Select valid currency from the list.
+  
+                                 
+                            </div>
+                      
+                            
+    
+                         </div>
                         </div>
                       </div>
                     </div>
@@ -139,32 +217,71 @@
                     <div class="col-lg-6">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Discount
                         Type</label>
-                      <ng-select placeholder="Select Discount Type" name="discType" [(ngModel)]="fuelData.discType">
+                      <ng-select placeholder="Select Discount Type" name="discType" [(ngModel)]="fuelData.discType" #discount="ngModel" required>
                         <ng-option *ngFor="let discType of fuelDiscounts" value="{{discType.fuelDiscountID}}">
                           {{discType.fuelDiscountName}}</ng-option>
                       </ng-select>
+                      <div *ngIf="discount.invalid && (discount.dirty || discount.touched)" class="text-danger">
+                        <div *ngIf="discount.errors.required">
+                       Select valid discount type from the list.
+                             
+                        </div>
+                  
+                        
+
+                     </div>
                     </div>
                     <div class="col-lg-4">
                       <label
                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Discount({{fuelData.billingCurrency}})</label>
                       <input type="number" class="form-control" min='0' name="discAmount"
-                        [(ngModel)]="fuelData.discAmount" >
+                        [(ngModel)]="fuelData.discAmount" #discountTxt="ngModel" required>
+                         <div *ngIf="discountTxt.invalid && (discountTxt.dirty || discountTxt.touched)" class="text-danger">
+                          <div *ngIf="discountTxt.errors.required">
+                           Discount must contains numbers only.
+
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                     </div>
                   </div>
                     <div class="row" *ngFor="let tax of fuelData.taxes; let t = index;">
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Tax
                           Type</label>
-                        <ng-select placeholder="Select Tax Type" [ngModelOptions]="{standalone: true}" [attr.name]="'tax['+t+'].taxType'" [(ngModel)]="tax.taxType">
+                        <ng-select placeholder="Select Tax Type" [ngModelOptions]="{standalone: true}" [attr.name]="'tax['+t+'].taxType'" [(ngModel)]="tax.taxType" #taxType="ngModel" required>
                           <ng-option *ngFor="let tax of fuelTaxes" value="{{tax.fuelTaxID}}">{{tax.fuelTaxName}}
                           </ng-option>
                         </ng-select>
+                        <div *ngIf="taxType.invalid && (taxType.dirty || taxType.touched)" class="text-danger">
+                          <div *ngIf="taxType.errors.required">
+                           Select valid tax type from the list.
+
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Tax
                           Amount({{fuelData.billingCurrency}})</label>
                         <input type="number" class="form-control" min='0' [attr.name]="'tax['+t+'].taxAmount'" [ngModelOptions]="{standalone: true}"
-                          [(ngModel)]="tax.taxAmount" >
+                          [(ngModel)]="tax.taxAmount" #taxAmount="ngModel" required>
+                           <div *ngIf="taxAmount.invalid && (taxAmount.dirty || taxAmount.touched)" class="text-danger">
+                          <div *ngIf="taxAmount.errors.required">
+                            Tax Amount must contains numbers only.
+
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                       </div>
                       <div class="col-lg-2  mar-top-37 px-0">
                         <button type="button" class="btn cus-btn-padd btn-success" *ngIf="t === (fuelData.taxes.length)-1" (click)="addFuelTaxRow()"><i
@@ -183,13 +300,35 @@
                           {{fuelQtyUnit}}:<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="row">
-                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="pricePerUnit" type="number" [(ngModel)]="fuelData.pricePerUnit"></div>
+                          <div class="col-lg-6 text-right mt-1"> 
+                            <input class="form-control" name="pricePerUnit" type="number" [(ngModel)]="fuelData.pricePerUnit" #cost="ngModel" required>
+                            <div *ngIf="cost.invalid && (cost.dirty || cost.touched)" class="text-danger">
+                              <div *ngIf="cost.errors.required">
+                               Cost Per must contains numbers only.
+    
+                                   
+                              </div>
+                        
+                              
+      
+                           </div>
+                          </div>
                           <div class="col-lg-6">
                             <ng-select placeholder="Select Currency" name="fuelData.billingCurrency"
-                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)">
+                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)"  #money="ngModel" required>
                             <ng-option value="USD">USD</ng-option>
                             <ng-option value="CAD">CAD</ng-option>
                           </ng-select>
+                          <div *ngIf="money.invalid && (money.dirty || money.touched)" class="text-danger">
+                            <div *ngIf="money.errors.required">
+                              Select valid currency type.
+  
+                                 
+                            </div>
+                      
+                            
+    
+                         </div>
                           </div>
                         </div>
                       </div>
@@ -203,13 +342,34 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount Paid:<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="row">
-                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="amountPaid" type="number" [(ngModel)]="fuelData.amountPaid"></div>
+                          <div class="col-lg-6 text-right mt-1"> <input class="form-control" name="amountPaid" type="number" [(ngModel)]="fuelData.amountPaid" #amountPaid="ngModel" required>
+                            <div *ngIf="amountPaid.invalid && (amountPaid.dirty || amountPaid.touched)" class="text-danger">
+                              <div *ngIf="amountPaid.errors.required">
+                                Amount Paid must contains numbers only.
+    
+                                   
+                              </div>
+                        
+                              
+      
+                           </div>
+                          </div>
                           <div class="col-lg-6">
                             <ng-select placeholder="Select Currency" name="fuelData.billingCurrency"
-                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)">
+                            [(ngModel)]="fuelData.billingCurrency" (change)="changeCurrency($event)" #moneytype="ngModel" required>
                             <ng-option value="USD">USD</ng-option>
                             <ng-option value="CAD">CAD</ng-option>
                           </ng-select>
+                          <div *ngIf="moneytype.invalid && (moneytype.dirty || moneytype.touched)" class="text-danger">
+                            <div *ngIf="moneytype.errors.required">
+                              Select valid currency type.
+  
+                                 
+                            </div>
+                      
+                            
+    
+                         </div>
                           </div>
                         </div>
                       </div>
@@ -248,7 +408,7 @@
                         </ng-select>
                         <div *ngIf="fType.invalid && (fType.dirty || fType.touched)" class="text-danger">
                           <div *ngIf="fType.errors.required">
-                           Fuel Type is required. 
+                           Select valid Fuel Type from the list is required. 
                                
                           </div>
                     
@@ -298,7 +458,7 @@
                         </ng-select>
                         <div *ngIf="payment.invalid && (payment.dirty || payment.touched)" class="text-danger">
                           <div *ngIf="payment.errors.required">
-                            Payment Mode is required.
+                            Select valid payment mode from the list is required.
                                
                           </div>
                     
@@ -322,7 +482,17 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference&nbsp; <span
                             class="text-1 optional-label-color">(optional when Fuel Card is used)</span></label>
                         <input type="text" class="form-control" name="reference" [(ngModel)]="fuelData.reference"
-                          placeholder="Eg. FP1234">
+                          placeholder="Eg. FP1234" #reference="ngModel" required pattern="^[a-zA-Z0-9]+$">
+                          <div *ngIf="reference.invalid && (reference.dirty || reference.touched)" class="text-danger">
+                            <div *ngIf="reference.errors.pattern">
+                              Reference must contains uppercase,lowercase and numbers only.
+  
+                                 
+                            </div>
+                            
+                            
+    
+                         </div>
                       </div>
                     </div>
                     <div class="row mt-2">
@@ -358,7 +528,7 @@
                         </ng-select>
                         <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                           <div *ngIf="country.errors.required">
-                            Select Country is required. 
+                            Select valid Country from the list is required. 
                                
                           </div>
                     
@@ -379,7 +549,7 @@
                         </ng-select>
                         <div *ngIf="province.invalid && (province.dirty || province.touched)" class="text-danger">
                           <div *ngIf="province.errors.required">
-                             Select province is required. 
+                             Select valid province from the list is required. 
                                
                           </div>
                     
@@ -407,7 +577,7 @@
                         </ng-select>
                         <div *ngIf="city.invalid && (city.dirty || city.touched)" class="text-danger">
                           <div *ngIf="city.errors.required">
-                             Select City name is required.
+                             Select valid city name from the list is required.
                                
                           </div>
                     
@@ -430,7 +600,7 @@
                         </ng-select>
                         <div *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)" class="text-danger">
                           <div *ngIf="vendor.errors.required">
-                             Select Vendor is required. 
+                             Select valid vendor from the list is required. 
                                
                           </div>
                     
@@ -457,11 +627,20 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip &nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <ng-select placeholder="Select Trip" name="tripID" [(ngModel)]="fuelData.tripID">
+                        <ng-select placeholder="Select Trip" name="tripID" [(ngModel)]="fuelData.tripID" #tripId="ngModel" required>
 
                           <ng-option *ngFor="let trip of trips" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
 
                         </ng-select>
+                        <div *ngIf="tripId.invalid && (tripId.dirty || tripId.touched)" class="text-danger">
+                          <div *ngIf="tripId.errors.required">
+                            Select valid trip id from the list.
+                               
+                          </div>
+                    
+                          
+  
+                       </div>
                       </div>
                     </div>
                   </div>
@@ -528,7 +707,7 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
                         <textarea class="form-control h-auto" rows="3" name="description" [(ngModel)]="fuelData.description"
-                          placeholder="Add description "></textarea>
+                          placeholder="Add description"></textarea>
                       </div>
                     </div>
                   </div>
