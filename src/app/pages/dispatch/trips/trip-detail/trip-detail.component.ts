@@ -152,6 +152,7 @@ export class TripDetailComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
+          console.log('detail element', element);
           let obj = {
             assetID: element.assetID,
             carrierID: element.carrierID,
@@ -164,7 +165,7 @@ export class TripDetailComponent implements OnInit {
             coDriverID: element.coDriverID,
             driverUsername: element.driverUsername,
             locationName: element.location,
-            mileType: element.mileType,
+            mileType: element.mileType, 
             miles: element.miles,
             name: element.name,
             trailer: '',
@@ -187,7 +188,7 @@ export class TripDetailComponent implements OnInit {
             this.stops += 1;
           }
 
-          this.plannedMiles += element.miles; 
+          this.plannedMiles += parseFloat(element.miles); 
           this.newCoords.push(`${element.lat},${element.lng}`);
           this.trips.push(obj);     
         }
@@ -435,7 +436,7 @@ export class TripDetailComponent implements OnInit {
               this.uploadedDocSrc.push(obj);
             }
           }
-          this.toastr.success('BOL uploaded successfully');
+          this.toastr.success('BOL/POD uploaded successfully');
         },
       })
     }

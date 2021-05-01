@@ -1107,6 +1107,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.email = result.emergencyDetails.email;
         this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
         this.driverData['timeCreated'] = result.timeCreated;
+
+        console.log('this.driverData', this.driverData);
       });
   }
 

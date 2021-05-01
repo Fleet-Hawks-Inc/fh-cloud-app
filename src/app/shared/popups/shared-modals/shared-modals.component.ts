@@ -74,7 +74,7 @@ assets: any = [];
 
 fuelTypes = [];
 // Vehicles variables start
-vehicleID: string;
+  vehicleID: string;
   vehicleTypeList: any = [];
   vehicleIdentification = '';
   vehicleType = '';
@@ -747,6 +747,7 @@ fetchDrivers(){
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
           this.listService.fetchModels();
+          
         }
       });
   }
@@ -1293,6 +1294,7 @@ fetchDrivers(){
           }
           localStorage.setItem('vehicle', JSON.stringify(vehicle));
           this.toastr.success('Vehicle Added Successfully');
+          this.clearVehicleData();
           $('#addVehicleModelDriver').modal('hide');
           this.listService.fetchVehicles();
         },
@@ -1458,6 +1460,7 @@ fetchDrivers(){
       next: (res) => {
         $('#addDriverModelVehicle').modal('hide');
         this.toastr.success('Driver added successfully');
+        this.clearDriverData();
         this.listService.fetchDrivers();
         this.isSubmitted = true;
         this.spinner.hide();
@@ -1822,5 +1825,258 @@ fetchDrivers(){
     this.apiService.getData('users').subscribe((result: any) => {
       this.users = result.Items;
     });
+  }
+
+  clearVehicleData() {
+    // this.vehicleID = '';
+    // vehicleTypeList: any = [];
+    this.vehicleIdentification = '';
+    this.vehicleType = '';
+    this.VIN = '';
+    this.DOT = '';
+    this.year = '';
+    this.manufacturerID = '';
+    this.modelID = '';
+    this.plateNumber = '';
+    this.countryID = '';
+    this.stateID = '';
+    this.driverID = '';
+    this.teamDriverID = '';
+    this.servicePrograms = [];
+    this.repeatByTime = '';
+    this.repeatByTimeUnit = '';
+    this.reapeatbyOdometerMiles = '';
+    this.annualSafetyDate = '';
+    this.annualSafetyReminder = true;
+    this.currentStatus = '';
+    this.ownership = '';
+    this.ownerOperatorID = '';
+    this.groupID = '';
+    this.aceID = '';
+    this.aciID = '';
+    this.iftaReporting = false;
+    this.vehicleColor = '';
+    this.bodyType = '';
+    this.bodySubType = '';
+    this.msrp = '';
+    this.inspectionFormID = '';
+    this.lifeCycle = {
+      inServiceDate: '',
+      startDate: '',
+      inServiceOdometer: '',
+      estimatedServiceYears: '',
+      estimatedServiceMonths: '',
+      estimatedServiceMiles: '',
+      estimatedResaleValue: '',
+      outOfServiceDate: '',
+      outOfServiceOdometer: '',
+    };
+    this.specifications = {
+      height: '',
+      heightUnit: '',
+      length: '',
+      lengthUnit: '',
+      width: '',
+      widthUnit: '',
+      interiorVolume: '',
+      passangerVolume: '',
+      groundClearnce: '',
+      groundClearnceUnit: '',
+      bedLength: '',
+      bedLengthUnit: '',
+      cargoVolume: '',
+      tareWeight: '',
+      grossVehicleWeightRating: '',
+      towingCapacity: '',
+      maxPayload: '',
+      EPACity: '',
+      EPACombined: '',
+      EPAHighway: '',
+    };
+    this.insurance = {
+      dateOfIssue: '',
+      premiumAmount: '',
+      premiumCurrency: '',
+      vendorID: '',
+      dateOfExpiry: '',
+      reminder: '',
+      remiderEvery: '',
+      policyNumber: '',
+      amount: 0,
+      amountCurrency: ''
+    };
+    this.fluid = {
+      fuelType: '',
+      fuelTankOneCapacity: '',
+      fuelTankOneType: '',
+      fuelQuality: '',
+      fuelTankTwoCapacity: '',
+      fuelTankTwoType: '',
+      oilCapacity: '',
+      oilCapacityType: '',
+      def: '',
+      defType: ''
+    };
+    this.wheelsAndTyres = {
+      numberOfTyres: '',
+      driveType: '',
+      brakeSystem: '',
+      wheelbase: '',
+      rearAxle: '',
+      frontTyreType: '',
+      rearTyreType: '',
+      frontTrackWidth: '',
+      rearTrackWidth: '',
+      frontWheelDiameter: '',
+      rearWheelDiameter: '',
+      frontTyrePSI: '',
+      rearTyrePSI: '',
+    };
+    this.engine = {
+      engineSummary: '',
+      engineBrand: '',
+      aspiration: '',
+      blockType: '',
+      bore: '',
+      camType: '',
+      stroke: '',
+      valves: '',
+      compression: '',
+      cylinders: '',
+      displacement: '',
+      fuelIndication: '',
+      fuelQuality: '',
+      maxHP: '',
+      maxTorque: 0,
+      readlineRPM: '',
+      transmissionSummary: '',
+      transmissionType: '',
+      transmissonBrand: '',
+      transmissionGears: '',
+    };
+    this.purchase = {
+      purchaseVendorID: '',
+      warrantyExpirationDate: '',
+      warrantyExpirationDateReminder: false,
+      purchasePrice: '',
+      purchasePriceCurrency: '',
+      warrantyExpirationMeter: '',
+      purchaseDate: '',
+      purchaseComments: '',
+      purchaseOdometer: '',
+    };
+
+    this.loan = {
+      loanVendorID: '',
+      amountOfLoan: '',
+      amountOfLoanCurrency: '',
+      aspiration: '',
+      annualPercentageRate: '',
+      downPayment: '',
+      downPaymentCurrency: '',
+      dateOfLoan: '',
+      monthlyPayment: '',
+      monthlyPaymentCurrency: '',
+      firstPaymentDate: '',
+      numberOfPayments: '',
+      loadEndDate: '',
+      accountNumber: '',
+      generateExpenses: '',
+      notes: '',
+    };
+  }
+
+  clearDriverData (){
+    this.driverData = {
+      userName: '',
+      middleName: '',
+      lastName: '',
+      workPhone: '',
+      email: '',
+      firstName: '',
+      password: '',
+      confirmPassword: '',
+      citizenship: '',
+      driverStatus: '',
+      ownerOperator: '',
+      startDate: '',
+      terminationDate: '',
+      contractStart: '',
+      contractEnd: '',
+      employeeContractorId: '',
+      driverType: 'employee',
+      entityType: 'driver',
+      gender: 'M',
+      DOB: '',
+      address: [{
+        addressType: '',
+        countryID: '',
+        countryName: '',
+        stateID: '',
+        stateName: '',
+        cityID: '',
+        cityName: '',
+        zipCode: '',
+        address1: '',
+        address2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        manual: false
+      }],
+      documentDetails: [{
+        documentType: '',
+        document: '',
+        issuingAuthority: '',
+        issuingCountry: '',
+        issuingState: '',
+        issueDate: '',
+        expiryDate: '',
+        uploadedDocs: []
+      }],
+      crossBorderDetails: {},
+      paymentDetails: {
+        rate: '',
+        rateUnit: '',
+        waitingPay: '',
+        waitingPayUnit: '',
+        waitingHourAfter: '',
+        deliveryRate: '',
+        deliveryRateUnit: '',
+        loadPayPercentage: '',
+        loadPayPercentageOf: '',
+        loadedMiles: '',
+        loadedMilesUnit: '',
+        emptyMiles: '',
+        emptyMilesUnit: '',
+        loadedMilesTeam: '',
+        loadedMilesTeamUnit: '',
+        emptyMilesTeam: '',
+        emptyMilesTeamUnit: '',
+        paymentType: '',
+        SIN_Number: '',
+        payPeriod: '',
+      },
+      licenceDetails: {
+        CDL_Number: '',
+        licenceExpiry: '',
+        licenceNotification: true,
+        issuedCountry: '',
+        issuedState: '',
+        vehicleType: '',
+    
+      },
+      hosDetails: {
+        pcAllowed: false,
+        ymAllowed: false,
+        hosCycle: '',
+        hosStatus: '',
+        hosRemarks: '',
+        type: '',
+        homeTerminal: ''
+      },
+      emergencyDetails: {},
+    };
   }
 }

@@ -262,6 +262,8 @@
   </div>
 </div>
 
+
+
 <!-- add vehicle make modal -->
 <div class="modal fade" id="addVehicleMakeModal" tabindex="-1" role="dialog" aria-labelledby="addVehicleMakeModal"
   aria-hidden="true">
@@ -1503,7 +1505,6 @@
                                           [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
                                           <ng-option class="text-capitalize" *ngFor="let state of states"
                                               value="{{state.stateID}}">{{state.stateName}}</ng-option>
-
                                         </ng-select>
                                     </div>
                                   </div>
@@ -1986,6 +1987,7 @@
               </form>
         </div>
       </div>
+    </div>
   </div>
 </div>
 
@@ -2118,8 +2120,10 @@
   </div>
 </div>
 
+
+
 <!-- add asset modal -->
-<div class="modal fade" id="addAsset" tabindex="-1" role="dialog" aria-labelledby="addAsset" aria-hidden="true">
+<div class="modal fade" id="addAsset" tabindex="-1" role="dialog" aria-labelledby="addAsset" aria-hidden="true"> 
   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -2279,6 +2283,16 @@
                           <input [(ngModel)]="assetsData.assetDetails.licencePlateNumber" placeholder="eg. 345678"
                             name="assetDetails.licencePlateNumber" class="form-control" type="text">
                         </div>
+
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            the Inspection Form<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="assetsData.inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                            <ng-option *ngFor="let data of inspectionFormsAsset" value="{{ data.inspectionFormID }}"> {{
+                              data.inspectionFormName }}</ng-option>
+                          </ng-select>
+                        
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2305,4 +2319,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> 

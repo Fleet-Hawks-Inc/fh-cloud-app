@@ -48,7 +48,8 @@ export class CompanyDocumentsComponent implements OnInit {
     docType: '',
     documentName: '',
     description: '',
-    uploadedDocs: []
+    uploadedDocs: [],
+    timeCreated: 0
   };
   totalRecords = 20;
   pageLength = 10;
@@ -75,6 +76,7 @@ export class CompanyDocumentsComponent implements OnInit {
   docPrevEvauatedKeys = [''];
   docStartPoint = 1;
   docEndPoint = this.pageLength;
+  descriptionData = '';
 
   constructor(
     private apiService: ApiService,
@@ -109,10 +111,28 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   selectDoc(event) {
-    console.log('edd', event);
     let files = [...event.target.files];
-    this.uploadeddoc = [];
-    this.uploadeddoc.push(files[0])
+    let condition = true;
+
+    for (let i = 0; i < files.length; i++) {
+      const element = files[i];
+      let name = element.name.split('.');
+      let ext = name[name.length - 1];
+      console.log('ext', ext);
+
+      if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
+      && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+        $('#uploadedDocs').val('');
+        condition = false;
+        this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
+        return false;
+      }
+    }
+
+    if(condition) {
+      this.uploadeddoc = []; 
+      this.uploadeddoc.push(files[0])
+    }
   }
 
   fetchDocuments = () => {
@@ -242,6 +262,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
+        this.documentData.timeCreated = result.timeCreated;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
@@ -465,10 +486,16 @@ export class CompanyDocumentsComponent implements OnInit {
       docType: '',
       documentName: '',
       description: '',
-      uploadedDocs: []
+      uploadedDocs: [],
+      timeCreated: 0
     };
     this.newDoc = '';
 
     $("#addDocumentModal").modal('show');
+  }
+
+  showDescModal(description) {
+    this.descriptionData = description;
+    $("#routeNotes").modal('show');
   }
 }

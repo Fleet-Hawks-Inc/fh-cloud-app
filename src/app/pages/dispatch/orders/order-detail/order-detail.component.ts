@@ -140,6 +140,8 @@ export class OrderDetailComponent implements OnInit {
   milesArr = [];
   allPhotos = [];
   carrierID = '';
+  stateCode = '';
+  zeroRated = false;
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -166,6 +168,15 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
+
+          if(result.stateTaxID != '') {
+            this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
+              this.stateCode = result.Items[0].stateCode;
+        
+            });
+          }
+
+          this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
@@ -222,7 +233,12 @@ export class OrderDetailComponent implements OnInit {
           let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
           let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          if(!this.zeroRated){
+            this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          } else {
+            this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
+          }
+          
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
@@ -457,7 +473,7 @@ export class OrderDetailComponent implements OnInit {
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
           }
         }
-        this.toastr.success('BOL uploaded successfully');
+        this.toastr.success('BOL/POD uploaded successfully');
       })
     }
   }

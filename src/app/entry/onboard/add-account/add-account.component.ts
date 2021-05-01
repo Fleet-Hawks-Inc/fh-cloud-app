@@ -1,13 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
-import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
-import { exit } from 'process';
-import { Auth } from 'aws-amplify';
+
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -15,7 +13,6 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-// @ViewChild('carrierForm', null) carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
   CCC = '';
@@ -31,7 +28,6 @@ export class AddAccountComponent implements OnInit {
   email = '';
   userName = '';
   carrierName = '';
-  // carrierBusinessName = '';
   findingWay = '';
   firstName = '';
   lastName = '';
@@ -314,7 +310,8 @@ export class AddAccountComponent implements OnInit {
     for(let i=0; i < this.addressDetails.length;i++){
       if(this.addressDetails[i].addressType === 'yard') {
         this.yardAddress = true;
-        exit;
+        console.log('this.addressDetails[i].addressType', this.addressDetails[i].addressType);
+        break;
       }else{
         this.yardAddress = false;
       }
