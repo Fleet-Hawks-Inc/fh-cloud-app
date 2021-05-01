@@ -2074,7 +2074,9 @@ fetchDrivers(){
         hosStatus: '',
         hosRemarks: '',
         type: '',
-        homeTerminal: ''
+        homeTerminal: '',
+        utcOffset: '',
+        optZone: 'South (Canada)'
       },
       emergencyDetails: {},
     };
