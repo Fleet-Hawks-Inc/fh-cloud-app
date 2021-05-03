@@ -194,8 +194,7 @@
                                                 UserName is required.
                                              </div>
                                              <div *ngIf="uName.errors.pattern">
-                                                Username must contain small letters,numbers and special
-                                                characters(period(.)) only.
+                                                Username must contain small letters,numbers only.
                                              </div>
 
 
@@ -1582,10 +1581,10 @@
                                              <span class="text-1 optional-label-color">(optional)</span></label>
                                           <input [(ngModel)]="driverData.emergencyDetails.phone"
                                              name="emergencyDetails.phone" type="text" class="form-control"
-                                             placeholder="eg. 0016780571" #phone="ngModel" pattern="^[+1]{2}[0-9]{9}$" maxlength="11">
+                                             placeholder="eg. 0016780571" #phone="ngModel" pattern="^[0-9]{10}$" maxlength="11">
                                              <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                                                 <div *ngIf="phone.errors.pattern">
-                                                phone must contain 10 numbers only starting with +1 eg.+18123456789.
+                                                phone must contain 10 numbers only eg.8123456789.
                                                 </div>
                                              </div>
                                        </div>
