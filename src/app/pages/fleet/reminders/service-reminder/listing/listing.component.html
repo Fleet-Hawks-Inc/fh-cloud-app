@@ -84,10 +84,10 @@
 										</tr>
                                         <tr *ngFor="let item of remindersData" style="cursor: pointer;">
                                             <td>{{vehicleList[item.reminderIdentification]}}</td>
-                                            <td><span class="text-warning font-weight-bold font-size-12"
-                                                    *ngIf="item.reminderTasks.reminderStatus === 'DUE SOON'">{{item.reminderTasks.reminderStatus}}<br></span>
-                                                <span class="text-danger font-weight-bold font-size-12"
-                                                    *ngIf="item.reminderTasks.reminderStatus === 'OVERDUE'">{{item.reminderTasks.reminderStatus}}<br></span>
+                                            <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                                    *ngIf="item.reminderStatus === 'dueSoon'">{{item.reminderStatus}}<br></span>
+                                                <span class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                                    *ngIf="item.reminderStatus === 'overdue'">{{item.reminderStatus}}<br></span>
                                                 <span class="font-weight-bold"
                                                     title="Service Task">{{tasksList[item.reminderTasks.task]}}</span>
                                                 <br><span class="font-size-12">Every {{item.reminderTasks.remindByDays}}
@@ -99,14 +99,15 @@
                                                 <br>
                                                 {{item.reminderTasks.remainingMiles}} miles from now
                                             </td>
-                                            <td>{{item.lastCompleted | date:'yyyy-MM-dd'}}</td>
-                                            <td><span *ngFor="let s of item.subscribers">
+                                            <td>{{item.lastCompleted | date:'yyyy/MM/dd'}}</td>
+                                            <td><span *ngFor="let s of item.subscribers; let g=index">
                                                     <span *ngIf="s.subscriberType === 'user'">
-                                                        {{s.subscriberIdentification}},
+                                                        {{s.subscriberIdentification}}
                                                     </span>
                                                     <span *ngIf="s.subscriberType === 'group'">
-                                                        {{groups[s.subscriberIdentification]}},
+                                                        {{groups[s.subscriberIdentification]}}
                                                     </span>
+                                                    <span *ngIf="g>0 && g<item.subscribers.length-1">,</span>
                                                 </span></td>
                                             <td>
                                                 <div class="btn-group flex-wrap">

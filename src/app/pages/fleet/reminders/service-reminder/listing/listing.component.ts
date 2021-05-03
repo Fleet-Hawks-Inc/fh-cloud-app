@@ -232,8 +232,16 @@ export class ListingComponent implements OnInit {
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
-        this.allRemindersData = result[`Items`];
-        this.fetchReminders();
+        // this.allRemindersData = result[`Items`];
+        result[`Items`].map((v:any)=>{
+          // static for now. discussion with kunal
+          v.reminderTasks.remainingDays = 10;
+          v.reminderTasks.remainingMiles = 50;
+          v.lastCompleted = moment().format('YYYY-MM-DD');
+        })
+        this.remindersData = result[`Items`];
+        console.log('this.remindersData', this.remindersData);
+        // this.fetchReminders();
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.serviceStartPoint = 1;
           this.serviceEndPoint = this.totalRecords;

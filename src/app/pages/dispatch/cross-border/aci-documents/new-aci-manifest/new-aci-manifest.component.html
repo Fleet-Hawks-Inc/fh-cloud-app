@@ -364,7 +364,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Loaded On<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <ng-select placeholder="Select Loaded type" [ngModelOptions]="{standalone: true}" [attr.name]="'containers['+i+'].loadedOn.type'"
+                        <ng-select placeholder="Select Loaded type" [ngModelOptions]="{standalone: true}" (change)="containerLoadedFn(i)"  [attr.name]="'containers['+i+'].loadedOn.type'"
                           [(ngModel)]="container.loadedOn.type">
                           <ng-option value="TRUCK">VEHICLE</ng-option>
                           <ng-option value="TRAILER">ASSET</ng-option>
@@ -374,8 +374,10 @@
                           class="col-form-label font-weight-bold">Select Vehicle Name </label>
                         <ng-select placeholder="Select Vehicle Name"[ngModelOptions]="{standalone: true}"
                           [attr.name]="'containers['+i+'].loadedOn.number'" [(ngModel)]="container.loadedOn.number">
-                          <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
-                            {{vehicle.vehicleIdentification}}</ng-option>
+                            <ng-container *ngFor="let vehicle of vehicles">
+                              <ng-option *ngIf="vehicle.vehicleID == truck.truckID" [value]="vehicle.vehicleID">
+                                {{vehicle.vehicleIdentification}}</ng-option>
+                            </ng-container>
                         </ng-select>
                       </div>
                       <div class="col-lg-10" *ngIf="container.loadedOn.type ==='TRAILER'"> <label
@@ -445,7 +447,7 @@
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                                   On<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                 <ng-select placeholder="Select Loaded type" [ngModelOptions]="{standalone: true}"
-                                  [attr.name]="'shipments['+s+'].loadedOn.type'" [(ngModel)]="shipment.loadedOn.type">
+                                  [attr.name]="'shipments['+s+'].loadedOn.type'" [(ngModel)]="shipment.loadedOn.type" (change)="shipmentLoadedFn(s)">
                                   <ng-option value="TRUCK">VEHICLE</ng-option>
                                   <ng-option value="TRAILER">ASSET</ng-option>
                                   <ng-option value="CONTAINER">CONTAINER</ng-option>
@@ -456,8 +458,10 @@
                                 <ng-select placeholder="Select Vehicle Name" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].loadedOn.number'"
                                   [(ngModel)]="shipment.loadedOn.number">
-                                  <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
-                                    {{vehicle.vehicleIdentification}}</ng-option>
+                                    <ng-container *ngFor="let vehicle of vehicles">
+                                      <ng-option *ngIf="vehicle.vehicleID == truck.truckID" [value]="vehicle.vehicleID">
+                                        {{vehicle.vehicleIdentification}}</ng-option>
+                                    </ng-container>
                                 </ng-select>
                               </div>
                               <div class="col-lg-10" *ngIf="shipment.loadedOn.type === 'TRAILER'">
@@ -471,9 +475,15 @@
                               </div>
                               <div class="col-lg-10" *ngIf="shipment.loadedOn.type === 'CONTAINER'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Container#</label>
-                                <input type="text" class="form-control" placeholder="Enter Container#" [ngModelOptions]="{standalone: true}"
+                                <!-- <input type="text" class="form-control" placeholder="Enter Container#" [ngModelOptions]="{standalone: true}"
+                                  [attr.name]="'shipments['+s+'].loadedOn.number'"
+                                  [(ngModel)]="shipment.loadedOn.number"> -->
+                                  <ng-select placeholder="Enter Container#" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].loadedOn.number'"
                                   [(ngModel)]="shipment.loadedOn.number">
+                                  <ng-option *ngFor="let container of containers" [value]="container.number">
+                                    {{container.number}}</ng-option>
+                                </ng-select>
                               </div>
                               <div class="col-lg-10">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Shipment
@@ -1053,15 +1063,14 @@
                                       [(ngModel)]="commodity.weight">
                                   </div>
                                   <div class="col-lg-7">
-                                    <select data-plugin-selectTwo class="form-control populate"
+                                    <ng-select class="form-control populate"
                                       [ngModelOptions]="{standalone: true}"
                                       [attr.name]="'shipments['+s+'].commodities['+i+'].weightUnit'"
                                       [(ngModel)]="commodity.weightUnit">
-                                      <optgroup label="">
-                                        <option value="LB">Pounds</option>
-                                        <option value="KG">Kilograms</option>
-                                      </optgroup>
-                                    </select>
+                                        <ng-option value="LB">Pounds</ng-option>
+                                        <ng-option value="KG">Kilograms</ng-option>
+
+                                    </ng-select>
                                   </div>
                                 </div>
                               </div>
@@ -1220,7 +1229,7 @@
                   </div>
                   <div class="col-12 text-right">
                     <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success"
-                      (click)="addTrailer()">Add Trailer</button>
+                      (click)="addTrailer()">Add Asset</button>
                   </div>
                 </div>
                 <!-- Reason of amending -->

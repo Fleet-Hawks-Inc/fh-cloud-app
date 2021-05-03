@@ -204,7 +204,6 @@ export class TripListComponent implements OnInit {
     this.fetchAllCountriesIDs();
     this.fetchAllAssetIDs();
     this.fetchAllCarrierIDs();
-    this.fetchAllDriverIDs();
     this.fetchAllOrderIDs();
     this.fetchAllDrivers();
 
@@ -217,50 +216,77 @@ export class TripListComponent implements OnInit {
   }
 
   async fetchTrips(result, type=null) {
-    // this.trips = [];
     for (let i = 0; i < result.Items.length; i++) {
         result.Items[i].pickupLocation = '';
-        result.Items[i].pickupTime = '';
+        result.Items[i].pickupLocationCount = 0;
         result.Items[i].dropLocation = '';
-        result.Items[i].dropTime = '';
-        result.Items[i].dropLocation = '';
-        result.Items[i].driverUsername = '';
+        result.Items[i].dropLocationCount = 0;
+        result.Items[i].driverId = '';
+        result.Items[i].driverCount = 0;
         result.Items[i].vehicleId = '';
-        result.Items[i].assetId = [];
-        result.Items[i].carrierId = '';
+        result.Items[i].vehicleCount = 0;
+        result.Items[i].assetId = '';
+        result.Items[i].assetCount = 0;
+        result.Items[i].planCarrierId = '';
+        result.Items[i].carrierIdCount = 0;
 
         const element = result.Items[i];
-        let drop;
-        let planData;
 
-        planData = result.Items[i].tripPlanning[0];
-        result.Items[i].pickupLocation = planData.location;
-        result.Items[i].pickupTime = planData.pickupTime;
+        for (let j = 0; j < result.Items[i].tripPlanning.length; j++) {
+          const element2 = result.Items[i].tripPlanning[j];
+          if(element2.type == 'Pickup') {
+            result.Items[i].pickupLocationCount += 1;
 
-        let lastloc = result.Items[i].tripPlanning.length - 1
-        drop = result.Items[i].tripPlanning[lastloc].location;
-        result.Items[i].dropLocation = drop;
-        result.Items[i].dropTime =result.Items[i].tripPlanning[lastloc].dropTime;
+            if(result.Items[i].pickupLocation == '') {
+              result.Items[i].pickupLocation = element2.location;
+            }
+          } else if(element2.type == 'Delivery') {
+            result.Items[i].dropLocationCount += 1;
 
-        if (planData.assetID !== '' && planData.assetID !== undefined) {
-          for (let j = 0; j < planData.assetID.length; j++) {
-            const astId = planData.assetID[j];
-            result.Items[i].assetId.push(astId)
+            if(result.Items[i].dropLocation == '') {
+              result.Items[i].dropLocation = element2.location;
+            }
+          }
+
+          if (element2.carrierID !== '' && element2.carrierID !== undefined) {
+            if(result.Items[i].planCarrierId == '') {
+              result.Items[i].planCarrierId = element2.carrierID;
+            }
+          }
+
+          if (element2.driverID !== '' && element2.driverID !== undefined) {
+            if(result.Items[i].driverId == '') {
+              result.Items[i].driverId = element2.driverID;
+            }
+            
+            result.Items[i].driverCount = element.driverIDs.length;
+          }
+
+          if (element2.coDriverID !== '' && element2.coDriverID !== undefined) {
+            if(result.Items[i].driverId == '') {
+              result.Items[i].driverId = element2.coDriverID;
+            }
+          }
+
+          if (element2.vehicleID !== '' && element2.vehicleID !== undefined) {
+            if(result.Items[i].vehicleId == '') {
+              result.Items[i].vehicleId = element2.vehicleID;
+            }
+            result.Items[i].vehicleCount = element.vehicleIDs.length;
+          }
+
+          for (let l = 0; l < element2.assetID.length; l++) {
+            const element3 = element2.assetID[l];
+            
+            if (element3 !== '' && element3 !== undefined) {
+              if(result.Items[i].assetId == '') {
+                result.Items[i].assetId = element3;
+              }
+              result.Items[i].assetCount = element.assetIDs.length;
+            }
           }
         }
-
-        if (planData.driverUsername !== '' && planData.driverUsername !== undefined) {
-          result.Items[i].driverUsername = planData.driverUsername;
-        }
-
-        if (planData.vehicleID !== '' && planData.vehicleID !== undefined) {
-          result.Items[i].vehicleId = planData.vehicleID;
-        }
-
-        if (planData.carrierID !== '' && planData.carrierID !== undefined) {
-          result.Items[i].carrierId = planData.carrierID;
-        }
-
+        
         if(type == 'confirmed') {
           this.confirmedTrips.push(result.Items[i]);
         } else if(type == 'dispatched') {
@@ -275,7 +301,7 @@ export class TripListComponent implements OnInit {
           this.deliveredTrips.push(result.Items[i]);
         } else {
           this.trips.push(result.Items[i]);
-        }
+        }   
     }
   }
 
@@ -857,13 +883,6 @@ export class TripListComponent implements OnInit {
     this.apiService.getData('externalCarriers/get/list')
       .subscribe((result: any) => {
         this.carriersObject = result;
-      });
-  }
-
-  fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/username-list')
-      .subscribe((result: any) => {
-        this.driversObject = result;
       });
   }
 

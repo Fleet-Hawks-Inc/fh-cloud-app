@@ -256,6 +256,8 @@ vehicles= [];
   };
 
   vendorModalStatus = false;
+  submitDisabled = false;
+  groupSubmitDisabled = false;
 
   constructor(private apiService: ApiService,private route: ActivatedRoute,  private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {
@@ -362,6 +364,7 @@ vehicles= [];
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
+    this.submitDisabled = true;
 
     this.hideErrors();
     const data = {
@@ -555,15 +558,19 @@ vehicles= [];
               complete: () => {
                 this.throwErrors();
                 this.hasError = true;
+                this.submitDisabled = false;
                 if(err) return reject(err);
               },
-              error: () => {},
+              error: () => {
+                this.submitDisabled = false;
+              },
               next: () => { },
             });
         },
         next: (res) => {
           this.response = res;
           this.Success = '';
+          this.submitDisabled = false;
           // this.uploadFiles(); // upload selected files to bucket
           let vehicle = {
             vehicleIdentification: '',
@@ -735,6 +742,7 @@ vehicles= [];
         },
       })});
     } catch (error) {
+      this.submitDisabled = false;
       return 'error found';
     }
 
@@ -986,7 +994,7 @@ vehicles= [];
     this.hasError = false;
     this.hasSuccess = false;
     this.Error = '';
-
+    this.submitDisabled = true;
     this.hideErrors();
     const data = {
       vehicleID : this.vehicleID,
@@ -1185,12 +1193,16 @@ vehicles= [];
               complete: () => {
                 this.throwErrors();
                 if(err) return reject(err);
+                this.submitDisabled = false;
               },
-              error: () => { },
+              error: () => {
+                this.submitDisabled = false;
+               },
               next: () => { },
             });
         },
         next: (res) => {
+          this.submitDisabled = false;
           this.response = res;
           this.Success = '';
           this.toastr.success('Vehicle Updated successfully');
@@ -1198,7 +1210,7 @@ vehicles= [];
         }
       })});
      } catch (error) {
-
+      this.submitDisabled = false;
      }
 
   }
@@ -1816,6 +1828,7 @@ vehicles= [];
   }
        // GROUP MODAL
        addGroup() {
+         this.groupSubmitDisabled = true;
         this.apiService.postData('groups', this.groupData).subscribe({
           complete: () => { },
           error: (err: any) => {
@@ -1828,13 +1841,17 @@ vehicles= [];
               )
               .subscribe({
                 complete: () => {
+                  this.groupSubmitDisabled = false;
                   this.throwErrors();
                 },
-                error: () => { },
+                error: () => {
+                  this.groupSubmitDisabled = false;
+                 },
                 next: () => { },
               });
           },
           next: (res) => {
+            this.groupSubmitDisabled = false;
             this.response = res;
             this.hasSuccess = true;
             this.fetchGroups();

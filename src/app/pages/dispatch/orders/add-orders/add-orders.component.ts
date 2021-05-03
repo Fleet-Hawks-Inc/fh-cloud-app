@@ -79,7 +79,7 @@ export class AddOrdersComponent implements OnInit {
     reference: "",
     phone: "",
     email: "",
-
+    zeroRated: false,
     TotalAgreedAmount: "",
     ShipperDetails: "",
     ConsigneeDetails: "",
@@ -307,7 +307,7 @@ export class AddOrdersComponent implements OnInit {
     this.pdfService.dataSubscribe$
       .pipe(
         tap((v) => {
-          console.log("pdf service" + v);
+          // console.log("pdf service" + v);
           if (v.toString() !== "" && v !== "undefined" && v !== undefined) {
             const d = JSON.parse(v);
 
@@ -380,7 +380,6 @@ export class AddOrdersComponent implements OnInit {
     this.fetchCountriesByIDs();
     this.listService.fetchCustomers();
     this.fetchAssetTypes();
-    this.fetchLastOrderNumber();
 
     $(document).ready(() => {
       this.form = $("#form_").validate();
@@ -393,6 +392,7 @@ export class AddOrdersComponent implements OnInit {
       this.pageTitle = "Edit Order";
       this.fetchOrderByID();
     } else {
+      this.fetchLastOrderNumber();
       this.pageTitle = "Add Order";
     }
 
@@ -479,12 +479,12 @@ export class AddOrdersComponent implements OnInit {
     const service = platform.getSearchService();
     if (location !== "") {
       let result = await service.geocode({ q: location });
-      console.log('result', result);
+      // console.log('result', result);
       result.items.forEach((res) => {
-        console.log('res', res);
+        // console.log('res', res);
         geoCodeResponse = res;
       });
-      console.log('geoCodeResponse', geoCodeResponse);
+      // console.log('geoCodeResponse', geoCodeResponse);
     }
 
     //check if all required fields are filled
@@ -492,9 +492,9 @@ export class AddOrdersComponent implements OnInit {
       !this.shippersReceivers[i].shippers.shipperID ||
       !this.shippersReceivers[i].shippers.pickupLocation ||
       !this.shippersReceivers[i].shippers.pickupDate ||
-      !this.shippersReceivers[i].shippers.pickupTime ||
-      !this.shippersReceivers[i].shippers.contactPerson ||
-      !this.shippersReceivers[i].shippers.phone
+      !this.shippersReceivers[i].shippers.pickupTime 
+      // !this.shippersReceivers[i].shippers.contactPerson ||
+      // !this.shippersReceivers[i].shippers.phone
     ) {
       this.toastr.error("Please fill required fields.");
       return false;
@@ -502,27 +502,27 @@ export class AddOrdersComponent implements OnInit {
 
     let commoditiesFilled = true;
     //check if selected commodities are filled
-    for (
-      let j = 0;
-      j < this.shippersReceivers[i].shippers.commodity.length;
-      j++
-    ) {
-      let currentCommodity: any = this.shippersReceivers[i].shippers.commodity[
-        j
-      ];
+    // for (
+    //   let j = 0;
+    //   j < this.shippersReceivers[i].shippers.commodity.length;
+    //   j++
+    // ) {
+    //   let currentCommodity: any = this.shippersReceivers[i].shippers.commodity[
+    //     j
+    //   ];
 
-      if (
-        !currentCommodity.name ||
-        !currentCommodity.quantity ||
-        !currentCommodity.quantityUnit ||
-        !currentCommodity.weight ||
-        !currentCommodity.weightUnit
-        // !currentCommodity.pu
+    //   if (
+    //     !currentCommodity.name ||
+    //     !currentCommodity.quantity ||
+    //     !currentCommodity.quantityUnit ||
+    //     !currentCommodity.weight ||
+    //     !currentCommodity.weightUnit
+    //     // !currentCommodity.pu
 
-      ) {
-        commoditiesFilled = false;
-      }
-    }
+    //   ) {
+    //     commoditiesFilled = false;
+    //   }
+    // }
 
     if (!commoditiesFilled) {
       this.toastr.error("Please fill required fields.");
@@ -589,9 +589,9 @@ export class AddOrdersComponent implements OnInit {
       !this.shippersReceivers[i].receivers.receiverID ||
       !this.shippersReceivers[i].receivers.dropOffLocation ||
       !this.shippersReceivers[i].receivers.dropOffDate ||
-      !this.shippersReceivers[i].receivers.dropOffTime ||
-      !this.shippersReceivers[i].receivers.contactPerson ||
-      !this.shippersReceivers[i].receivers.phone
+      !this.shippersReceivers[i].receivers.dropOffTime
+      // !this.shippersReceivers[i].receivers.contactPerson ||
+      // !this.shippersReceivers[i].receivers.phone
     ) {
       this.toastr.error("Please fill required fields.");
       return false;
@@ -599,27 +599,27 @@ export class AddOrdersComponent implements OnInit {
 
     let commoditiesFilled = true;
     //check if selected commodities are filled
-    for (
-      let j = 0;
-      j < this.shippersReceivers[i].receivers.commodity.length;
-      j++
-    ) {
-      let currentCommodity: any = this.shippersReceivers[i].receivers.commodity[
-        j
-      ];
+    // for (
+    //   let j = 0;
+    //   j < this.shippersReceivers[i].receivers.commodity.length;
+    //   j++
+    // ) {
+    //   let currentCommodity: any = this.shippersReceivers[i].receivers.commodity[
+    //     j
+    //   ];
 
-      if (
-        !currentCommodity.name ||
-        !currentCommodity.quantity ||
-        !currentCommodity.quantityUnit ||
-        !currentCommodity.weight ||
-        !currentCommodity.weightUnit
-        // !currentCommodity.del
-        // !currentCommodity.pu
-      ) {
-        commoditiesFilled = false;
-      }
-    }
+    //   if (
+    //     !currentCommodity.name ||
+    //     !currentCommodity.quantity ||
+    //     !currentCommodity.quantityUnit ||
+    //     !currentCommodity.weight ||
+    //     !currentCommodity.weightUnit
+    //     // !currentCommodity.del
+    //     // !currentCommodity.pu
+    //   ) {
+    //     commoditiesFilled = false;
+    //   }
+    // }
 
     if (!commoditiesFilled) {
       this.toastr.error("Please fill required fields.");
@@ -794,12 +794,12 @@ export class AddOrdersComponent implements OnInit {
    * Selecting files before uploading
    */
   selectDocuments(event) {
-    console.log("evebt", event.target.files);
+    // console.log("evebt", event.target.files);
     let files = [...event.target.files];
 
     this.uploadedDocs = files;
 
-    console.log("uploadedDocs", this.uploadedDocs);
+    // console.log("uploadedDocs", this.uploadedDocs);
   }
 
   getTimeFormat(date) {
@@ -814,13 +814,14 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async getMiles(value) {
+    this.getAllCords = [];
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
       let shippers = this.finalShippersReceivers[k].shippers;
       let receivers = this.finalShippersReceivers[k].receivers;
 
-      if (shippers.length == 0) flag = false;
+      if (shippers.length == 0) flag = false; 
       if (receivers.length == 0) flag = false;
     }
 
@@ -847,19 +848,20 @@ export class AddOrdersComponent implements OnInit {
       });
 
       if (value === "google") {
-        this.mergedArray.forEach((element) => {
-          this.googleCords.push({
-            lat: element.position.lat,
-            lng: element.position.lng,
-          });
-        });
-        this.origin = this.googleCords[0];
-        this.googleCords.shift();
-        this.destination = this.googleCords;
-
-        this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
-       
+        // this.mergedArray.forEach((element) => {
+        //   this.googleCords.push({
+        //     lat: element.position.lat,
+        //     lng: element.position.lng,
+        //   });
+        // });
+        // this.origin = this.googleCords[0];
+        // this.googleCords.shift();
+        // this.destination = this.googleCords;
+        // // console.log('google this.googleCords', this.googleCords);
+        // this.orderData.milesInfo.totalMiles = await this.google.googleDistance([this.origin], this.destination);
+        // console.log('this.orderData.milesInfo.totalMiles', this.orderData.milesInfo.totalMiles);
       } else if (value === "pcmiles") {
+        // console.log('this.getAllCords', this.getAllCords);
         this.google.pcMiles.next(true);
         this.google
           .pcMilesDistance(this.getAllCords.join(";"))
@@ -951,11 +953,11 @@ export class AddOrdersComponent implements OnInit {
       !this.orderData.milesInfo.calculateBy
 
     ) {
-      console.log("inside false");
+      // console.log("inside false");
       return false;
     }
 
-    console.log("inside true");
+    // console.log("inside true");
     return true;
   }
 
@@ -1024,7 +1026,7 @@ export class AddOrdersComponent implements OnInit {
               if(key == 'order'){
                 this.toastr.error("This Order already exists.");
               }
-              console.log(this.errors[key]);
+              // console.log(this.errors[key]);
             })
           )
           .subscribe({
@@ -1113,15 +1115,20 @@ export class AddOrdersComponent implements OnInit {
     }
     
     this.totalAmount = (this.subTotal).toFixed(2);
-    let gst =this.orderData.taxesInfo[0].amount ? this.orderData.taxesInfo[0].amount : 0;
-    let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
-    let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
-    let advance:any = this.orderData.advance;
+    this.orderData["totalAmount"] = this.totalAmount;
+    this.orderData.finalAmount = this.totalAmount;
+    if(!this.orderData.zeroRated){
+      let gst =this.orderData.taxesInfo[0].amount ? this.orderData.taxesInfo[0].amount : 0;
+      let pst = this.orderData.taxesInfo[1].amount ? this.orderData.taxesInfo[1].amount : 0;
+      let hst = this.orderData.taxesInfo[2].amount ? this.orderData.taxesInfo[2].amount : 0;
+      let advance:any = this.orderData.advance;
 
-    let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
-    this.orderData["totalAmount"] = final;
-    this.totalAmount = final;
-    this.orderData.finalAmount = final - parseInt(advance);
+      let final =  parseInt(this.totalAmount) + parseInt(gst)  + parseInt(pst) + parseInt(hst);
+      this.orderData["totalAmount"] = final;
+      this.totalAmount = final;
+      this.orderData.finalAmount = final - parseInt(advance);
+    }
+    
   }
 
   removeList(elem, parentIndex, i) {
@@ -1143,7 +1150,6 @@ export class AddOrdersComponent implements OnInit {
 
   editList(elem, parentIndex, i) {
     let j = parentIndex;
-
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1189,6 +1195,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.driverUnload = data.driverUnload;
       this.stateShipperIndex = i;
     }
+    console.log('this.shippersReceivers', this.shippersReceivers);
     // this.visibleIndex = i;
     this.showReceiverUpdate = true;
   }
@@ -1326,7 +1333,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
 
-
+        this.orderData["orderStatus"] = result.orderStatus;
+        this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["creationDate"] = result.creationDate;
         this.orderData["creationTime"] = result.creationTime;
@@ -1362,6 +1370,7 @@ export class AddOrdersComponent implements OnInit {
         let length = result.shippersReceiversInfo.length;
         let emptyArr = [];
         let newArray: any = this.shippersReceivers.slice();
+        console.log('newArray', newArray);
 
         for (let i = 0; i < length; i++) {
           emptyArr.push(newArray[0]);
@@ -1370,6 +1379,7 @@ export class AddOrdersComponent implements OnInit {
         this.shippersReceivers = emptyArr;
 
         this.finalShippersReceivers = result.shippersReceiversInfo;
+        this.shipperReceiverMerge();
 
         let newLoadTypes = [];
         if (
@@ -1668,7 +1678,7 @@ export class AddOrdersComponent implements OnInit {
               amount: selected.PST,
             },
           ];
-          console.log(selected);
+          // console.log(selected);
         this.tax =   (parseInt(selected.GST) ? selected.GST : 0)  + (parseInt(selected.HST) ? selected.HST : 0) + (parseInt(selected.PST) ? selected.PST : 0);
         this.calculateAmount();
 
@@ -1700,5 +1710,16 @@ export class AddOrdersComponent implements OnInit {
     this.apiService.getData('orders/get/last/orderNo').subscribe((result) => {
       this.orderData.orderNumber = result.toString();
     });
+  }
+
+  assignReceiverValue(type, fieldName, fieldVaue, shipperInd, commIndex) {
+    if(type == 'commodity') {
+      if(fieldName == 'weightUnit' || fieldName == 'quantityUnit') {
+        this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue;
+      } else {
+        this.shippersReceivers[shipperInd].receivers.commodity[commIndex][fieldName] = fieldVaue.target.value;
+      }
+      
+    }
   }
 }

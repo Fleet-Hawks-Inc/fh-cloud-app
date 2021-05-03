@@ -22,6 +22,8 @@ export class HeaderComponent implements OnInit {
   carriers: any = [];
   smallName: string;
   carrierBusiness;
+  currentUserName = '';
+  nickName = '';
   logoSrc: any = 'assets/img/logo.png';
   constructor(private sharedService: SharedServiceService, private apiService: ApiService,
               public router: Router, private headerFnService: InvokeHeaderFnService) {
@@ -42,7 +44,7 @@ export class HeaderComponent implements OnInit {
     if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar = this.headerFnService.
       invokeHeaderComponentFunction.subscribe((name: string) => {
-        this.getCurrentuser();
+        this.upateCurrentUser();
       });
     }
   }
@@ -79,18 +81,26 @@ fetchCarrier() {
     localStorage.removeItem('issueVehicleID');
     localStorage.removeItem('carrierID');
     localStorage.removeItem('active-header');
-
+    localStorage.removeItem('currentUserName');
+    localStorage.removeItem('nickName');
     // localStorage.removeItem('jwt');
     this.router.navigate(['/Login']);
-
   }
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.userRole = this.currentUser.userType;
+    localStorage.setItem('currentUsername', this.currentUser.username);
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
-    let outputName = this.currentUser.match(/\b(\w)/g);
+    const outputName = this.currentUser.match(/\b(\w)/g);
     this.smallName = outputName.join('');
+    localStorage.setItem('currentUserName', this.currentUser);
+    localStorage.setItem('nickName', this.smallName);
+    this.currentUserName = localStorage.getItem('currentUserName');
+    this.nickName = localStorage.getItem('nickName');
   }
-
+upateCurrentUser() {
+  this.currentUserName = localStorage.getItem('currentUserName');
+  this.nickName = localStorage.getItem('nickName');
+}
 }
