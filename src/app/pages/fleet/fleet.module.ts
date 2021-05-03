@@ -20,6 +20,7 @@ import {
   DashboardDriverComponent,
 
 } from './index';
+import {DeviceModule} from './devices/devices.module'
 const COMPONENTS = [
   DashboardDriverComponent,
 ];
@@ -91,10 +92,12 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
+    DeviceModule
   ],
   exports: [...COMPONENTS],
   declarations: [
     ...COMPONENTS,
+
   ],
   providers: [NgSelectConfig, ɵs,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

@@ -1,0 +1,130 @@
+<section class="body">
+
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header">
+        <form class="form-horizontal" method="get">
+          <div class="row pr-5" style="padding-top:10px;">
+
+            <div class="col-md-7  col-lg-7 text-right pr-4">
+              <div class="btn-group flex-wrap">
+              </div>
+              <a routerLink='/fleet/devices/add' class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                Device</a>
+
+            </div>
+          </div>
+        </form>
+      </header>
+      <section class="card">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="wtopnav">
+              <ul>
+                <li><a href="devices-tracker.php" class="active">Devices</a></li>
+                <li><a href="sensors-temp.php">Sensors </a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-4 pt-1 text-right">
+          </div>
+        </div>
+      </section>
+      <section class="card mt-1">
+        <div class="wtopnav">
+          <ul>
+            <li><a href="devices-tracker.php" class="active">Tracker </a></li>
+            <li><a href="devices-gateway.php">Gateway</a></li>
+            <li><a href="disconnects.php">Disconnects</a></li>
+
+          </ul>
+        </div>
+      </section>
+
+      <div class="row text-dark">
+        <div class="col pr-0">
+          <section class="card">
+            <div class="card-body">
+              <div id="simple-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div class="dataTables_length" id="simple-table_length"><label>Show <select
+                          name="simple-table_length" aria-controls="simple-table"
+                          class="custom-select custom-select-sm form-control form-control-sm">
+                          <option value="10">10</option>
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select> entries</label></div>
+                  </div>
+                  <div class="col-lg-6"></div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-responsive-lg table-striped mb-0 dataTable no-footer"
+                    id="simple-table" role="grid">
+                    <thead>
+                      <tr role="row">
+                        <th width="5%" class="sorting_asc" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="0" aria-sort="ascending"
+                          aria-label=": activate to sort column descending" style="width: 58px;"><input type="checkbox">
+                        </th>
+                        <th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="1" aria-label="Status: activate to sort column ascending"
+                          style="width: 136px;">Status</th>
+                        <th width="25%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="2" aria-label="Device Name: activate to sort column ascending"
+                          style="width: 371px;">Device Name</th>
+                        <th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="3" aria-label="ID: activate to sort column ascending"
+                          style="width: 135px;">ID</th>
+                        <th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="4" aria-label="Model: activate to sort column ascending"
+                          style="width: 135px;">Model</th>
+                        <th width="15%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="5" aria-label="Vehicle: activate to sort column ascending"
+                          style="width: 213px;">Vehicle</th>
+                        <th width="10%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="6" aria-label="Battery: activate to sort column ascending"
+                          style="width: 135px;">Battery</th>
+                        <th width="15%" class="sorting" tabindex="0" aria-controls="simple-table" rowspan="1"
+                          colspan="1" data-column-index="7" aria-label="ON/OFF: activate to sort column ascending"
+                          style="width: 213px;">ON/OFF</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+
+
+
+                      <tr role="row" class="odd">
+                        <td class="sorting_1"><input type="checkbox"></td>
+                        <td onclick="window.location='sensor-details.php'"><span
+                            class="badge badge-success text-3">Active</span></td>
+                        <td onclick="window.location='sensor-details.php'">Device Name</td>
+                        <td onclick="window.location='sensor-details.php'">FH-345</td>
+                        <td onclick="window.location='sensor-details.php'">Device Model</td>
+                        <td onclick="window.location='sensor-details.php'">Attached Vehicle</td>
+                        <td onclick="window.location='sensor-details.php'">30%</td>
+                        <td onclick="window.location='sensor-details.php'">Online - since 09/02/2020</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="dataTables_paginate paging_simple_numbers" id="simple-table_paginate">
+                  <ul class="pagination">
+                    <li class="paginate_button page-item previous disabled" id="simple-table_previous"><a href="#"
+                        aria-controls="simple-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+                    <li class="paginate_button page-item active"><a href="#" aria-controls="simple-table"
+                        data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                    <li class="paginate_button page-item next disabled" id="simple-table_next"><a href="#"
+                        aria-controls="simple-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
