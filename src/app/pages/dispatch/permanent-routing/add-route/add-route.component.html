@@ -112,16 +112,17 @@
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 01,Business Hub Center,New York,USA">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="eg. 01,Business Hub Center,New York,USA">
 
-                                                <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                    *ngIf="searchResults">
-                                                    <li *ngFor="let item of searchResults;">
-                                                        <a href="javascript:;"
-                                                            (click)="assignLocation('source', item.address.label)"
-                                                            title="{{item.address.label}}">{{item.address.label}}</a>
-                                                    </li>
-                                                </ul>
+                                                <div class="map-search__results bg-white row mt-1 ml-0" style="width: 93%">
+                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults"> 
+                                                        <li *ngFor="let item of searchResults;">
+                                                            <a href="javascript:;"
+                                                                (click)="assignLocation('source', item.address.label)"
+                                                                title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
@@ -167,14 +168,15 @@
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
                                                     (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada">
 
-                                                <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                    *ngIf="searchResults">
-                                                    <li *ngFor="let item of searchResults;">
-                                                        <a href="javascript:;"
-                                                            (click)="assignLocation('destination', item.address.label)"
-                                                            title="{{item.address.label}}">{{item.address.label}}</a>
-                                                    </li>
-                                                </ul>
+                                                <div class="map-search__results bg-white row mt-1 ml-0" style="width: 93%">
+                                                    <ul class="p-0 m-0 text-left" *ngIf="searchResults">
+                                                        <li *ngFor="let item of searchResults;">
+                                                            <a href="javascript:;"
+                                                                (click)="assignLocation('destination', item.address.label)"
+                                                                title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">
@@ -380,15 +382,15 @@
                                                                                 (keyup)="searchTerm.next($event);"
                                                                                 class="form-control">
 
-                                                                            <ul class="m-0 text-left map-search__results bg-white"
-                                                                                *ngIf="searchResults">
-                                                                                <li *ngFor="let item of searchResults;">
-                                                                                    <a href="javascript:;"
-                                                                                        (click)="assignLocation('stops', item.address.label, i)"
-                                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
-                                                                                </li>
-                                                                            </ul>
-
+                                                                            <div class="map-search__results bg-white row mt-1 ml-0 mt-5" style="width: 46%">
+                                                                                <ul class="m-0 text-left" *ngIf="searchResults">
+                                                                                    <li *ngFor="let item of searchResults;">
+                                                                                        <a href="javascript:;"
+                                                                                            (click)="assignLocation('stops', item.address.label, i)"
+                                                                                            title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
                                                                         </div> 
                                                                     </td>
                                                                     <td>

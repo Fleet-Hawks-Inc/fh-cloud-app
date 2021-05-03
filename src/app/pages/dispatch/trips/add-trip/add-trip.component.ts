@@ -188,6 +188,7 @@ export class AddTripComponent implements OnInit {
         this.fetchRoutes();
         this.mapShow();
         this.fetchVehicles();
+        this.fetchAssetsByIDs();
         this.fetchAssets();
         this.fetchDrivers();
         // this.fetchCountries();
@@ -195,7 +196,6 @@ export class AddTripComponent implements OnInit {
         this.fetchReceiversByIDs();
         this.searchLocation();
         this.fetchDriversByIDs();
-        this.fetchAssetsByIDs();
         this.fetchVehiclesByIDs();
         this.getCurrentuser();
         this.fetchAllCarrierIDs();
