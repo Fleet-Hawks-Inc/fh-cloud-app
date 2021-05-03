@@ -44,7 +44,7 @@
                                  </ng-select>
                                  <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
                                     <div *ngIf="vec.errors.required">
-                                     Select Vehicle Type is required.
+                                     Select valid vehicle type is required from the list.
                                        </div>
                                     </div>
                               </div>
@@ -55,7 +55,7 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers"  placeholder="Select user(s)/group(s) to send Email"
-                                    name="reminderData.subscribers" style="width: 100%;">
+                                    name="reminderData.subscribers" style="width: 100%;" #sltGroup="ngModel" required>
                                     <optgroup label="Select User">
                                        <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
                                        </ng-option>
@@ -65,6 +65,11 @@
                                           {{group.groupName}}</ng-option>
                                     <optgroup>
                                  </ng-select>
+                                 <div *ngIf="sltGroup.invalid && (sltGroup.dirty || sltGroup.touched)" class="text-danger">
+                                    <div *ngIf="sltGroup.errors.required">
+                                     Select valid user/group from list.
+                                       </div>
+                                    </div>
                                  <div class="checkbox-custom mt-2">
                                     <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail"
                                        type="checkbox" [checked]="reminderData.sendEmail">
@@ -92,7 +97,7 @@
                                  </ng-select>
                                  <div *ngIf="sst.invalid && (sst.dirty || sst.touched)" class="text-danger">
                                     <div *ngIf="sst.errors.required">
-                                     Select Service Tasks is required.
+                                     Select valid service tasks is required from the list.
                                        </div>
                                     </div>
                               </div>
@@ -110,10 +115,15 @@
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input [(ngModel)]="time" name="time" type="number" min='1'
-                                                class="form-control">
+                                                class="form-control" #txtTime="ngModel" required>
+                                                <div *ngIf="txtTime.invalid && (txtTime.dirty || txtTime.touched)" class="text-danger">
+                                                   <div *ngIf="txtTime.errors.required">
+                                                    Time must contains numbers only.
+                                                      </div>
+                                                   </div>
                                           </div>
                                           <div class="col-lg-6 pl-0">
-                                             <ng-select [(ngModel)]="timeType" name="timeType">
+                                             <ng-select [(ngModel)]="timeType" name="timeType" >
                                                    <ng-option value="day">Day(s)</ng-option>
                                                    <ng-option value="week">Week(s)</ng-option>
                                                    <ng-option value="month">Month(s)</ng-option>
