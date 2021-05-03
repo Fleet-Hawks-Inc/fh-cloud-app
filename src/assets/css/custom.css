@@ -10,7 +10,7 @@
  ::-webkit-scrollbar {
   width: 2px;
 }
- 
+
 ::-webkit-scrollbar:horizontal {
   width: 2px;
 }
@@ -18,21 +18,21 @@
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #fff; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #dedede ; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5c5c5c; 
+    background: #fff;
   }
 
-  
-  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #dedede ;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c;
+  }
+
+
+
   /* chat classes start from here*/
 .chat-menu{float: left;}
 .chat-icon {
@@ -43,7 +43,7 @@
 }
 
 .chat-icon img {
-  border-radius: 50px !important ;  
+  border-radius: 50px !important ;
   width: 44px;
   height: 44px;
 }
@@ -66,7 +66,7 @@
 }
 
 .chat-hdicon img {
-border-radius: 50px !important ;  
+border-radius: 50px !important ;
 width: 44px;
 height: 44px;
 }
@@ -143,7 +143,7 @@ float:  left;
 	left: 0;
 	position: absolute;
 	right: 0;
-    
+
 }
 
 
@@ -262,7 +262,7 @@ float:  left;
   border-radius: 0;
   font-size: 15px; color: #fff;
   background: #212529b8;
- 
+
 }
 
 .profile-img .file input {
@@ -279,13 +279,13 @@ float:  left;
     height: 100%;
     margin: 0;
     padding: 0;
-  
+
 }
 
-.mapclass .mapclassmain{ 
+.mapclass .mapclassmain{
     height:100%;
     width:100%;
-    position: fixed !important; 
+    position: fixed !important;
 
 }
 
@@ -333,7 +333,7 @@ float:  left;
   color: #fff;;
   margin-right: 5px;
 
-  
+
 }
 
 
@@ -574,7 +574,7 @@ float:  left;
   position: absolute; width: 454px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
   position: fixed;  z-index: 999;
-  right:0px; top: 110px; 
+  right:0px; top: 110px;
 }
 
 .driverdetail{float: left; background: #fff; width: 100%; padding:10px 10px;border-top: 2px solid white;border-left: 2px solid white;border-right: 2px solid white;
@@ -593,7 +593,7 @@ float:  left;
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:454px; 
+  right:454px;
   top: 350px;
   }
 
@@ -601,18 +601,18 @@ float:  left;
   .iconR a{background: #ebebeb;}
 
   .iconL{position: absolute;
-    right:0px; 
+    right:0px;
     top: 370px;
     }
-  
+
     .iconL a{background: #fff; padding: 10px;}
     .iconL a{background: #ebebeb;}
 
-    
+
     /*dashboard drive detail classes*/
     .driverdetail2{float: left; background: #f5f5f5; width: 100%;
       border-bottom: 1px solid #bec8d1; padding:10px 10px;}
- 
+
       .vinfo{background:#fff; border:solid 1px #dcdcdc;
         min-height:200px; border-radius:6px; margin-top:20px;
         margin-bottom:20px;}
@@ -647,10 +647,10 @@ float:  left;
   position: absolute; width: 300px;
   background: #f5f5f5; height: 100%;
   position: fixed;
-  right:48px; top: 110px; 
+  right:48px; top: 110px;
 }
 .iconRmini{position: absolute;
-  right:293px; 
+  right:293px;
   top: 370px;
   }
 
@@ -658,10 +658,10 @@ float:  left;
   .iconRmini a{background: #ebebeb;}
 
   .iconLmini{position: absolute;
-    right:-5px; 
+    right:-5px;
     top: 370px;
     }
-  
+
     .iconLmini a{background: #fff; padding: 10px;}
     .iconLmini a{background: #ebebeb;}
 .driverdetailMap{float: left; background: #f5f5f5; width: 100%;
@@ -697,7 +697,7 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
 .tripbar2{width:100px; height: 3px; background: #000000;
     position: absolute; left: 100px; top: 60px; z-index: 400;}
-  
+
 .tripbarfinish2{width:100px; height: 3px; background: #0fd50a;
       position: absolute; left: 100px; top: 60px; z-index: 500;
 }
@@ -714,7 +714,7 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
     .tripbar3{width:100px; height: 3px; border: dashed 1px #000000;
       position: absolute; left: 200px; top: 60px; z-index: 400;}
-    
+
   .tripbarfinish3{width:100px; height: 3px; background: #0fd50a;
         position: absolute; left: 100px; top: 60px; z-index: 500;
       }
@@ -806,7 +806,7 @@ background: #646464; color: #fff; text-decoration: none; text-align: center;}
 
 .trip2{z-index:999; width: 100%;  position: absolute; left: 0; top: 70px;}
 .trip2 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
-  
+
 
 
 
@@ -833,7 +833,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 .driverbar{float: left; width: 100%;}
 .ditotald{font-size: 50px; float: left; color: #000;
   padding-top: 10px; font-weight: 600;}
-  
+
 
 
 
@@ -865,7 +865,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 
 
 /* ********************* dashboard chat main box classes start here ********************** */
-  
+
   .dchatmb{
     width: 280px; height: 460px;
     position: absolute; background: #fff; border-radius:7px 7px 0 0;
@@ -884,7 +884,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 /* The popup chat - hidden by default */
 .chat-popup {
   display: none; bottom: 0; right: 15px;
-  
+
 }
 
 .dchathead{
@@ -898,7 +898,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
     margin-left: 17%;
     border-radius: 60px;}
 
- 
+
 
 
 /* chat box 1*/
@@ -973,22 +973,22 @@ right: 20px; top: 10px;
 /* Safety Parameters */
 
     .slidecontainer {width: 100%;}
-    
+
     .slider {
       -webkit-appearance: none;
       width: 100%; height: 10px; background: #d3d3d3;
       outline: none;  opacity: 1;
       -webkit-transition: .2s; transition: opacity .2s;
     }
-    
+
     .slider:hover { opacity: 1;}
-    
+
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;  width: 20px; height: 20px;
       background: #000; cursor: pointer;
     }
-    
+
     .slider::-moz-range-thumb {
       width: 20px; height: 20px; background: #333;  cursor: pointer;
     }
@@ -1000,16 +1000,16 @@ right: 20px; top: 10px;
     .positionsta{position: static !important;}
 
 
-    
+
   /* make borde red for validation */
   .redBorder {
     border: solid 1px #C10000;
   }
-  
- 
-  
+
+
+
   /* Mapbox CSS */
-  
+
         #map {
           /* height:100vh;
           top: 10;
@@ -1032,7 +1032,7 @@ right: 20px; top: 10px;
           width: 100%;
           height: 100%;
         }
-  
+
         .filter-group {
           font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
           font-weight: 600;
@@ -1044,20 +1044,20 @@ right: 20px; top: 10px;
           width: 120px;
           color: #fff;
         }
-  
+
         .filter-group input[type="checkbox"]:first-child + label {
           border-radius: 3px 3px 0 0;
         }
-  
+
         .filter-group label:last-child {
           border-radius: 0 0 3px 3px;
           border: none;
         }
-  
+
         .filter-group input[type="checkbox"] {
           display: none;
         }
-  
+
         .filter-group input[type="checkbox"] + label {
           background-color: #3386c0;
           display: block;
@@ -1065,22 +1065,22 @@ right: 20px; top: 10px;
           padding: 10px;
           border-bottom: 1px solid rgba(0, 0, 0, 0.25);
         }
-  
+
         .filter-group input[type="checkbox"] + label {
           background-color: #3386c0;
           text-transform: capitalize;
         }
-  
+
         .filter-group input[type="checkbox"] + label:hover,
         .filter-group input[type="checkbox"]:checked + label {
           background-color: #4ea0da;
         }
-  
+
         .filter-group input[type="checkbox"]:checked + label:before {
           content: "âœ”";
           margin-right: 5px;
-        }    
-    
+        }
+
 .mapboxgl-ctrl-geocoder--icon{display: none !important;}
 
 
@@ -1114,7 +1114,7 @@ right: 20px; top: 10px;
   width: 100%;
   background:#fff;
   background-size: cover;
-  
+
 }
 
 
@@ -1287,7 +1287,7 @@ color: black;
 }
 .mar-top-37
 {
-     margin-top: 37px;
+     margin-top: 37px !important;
 }
 
 
@@ -1512,7 +1512,7 @@ text-decoration: underline;
   position: absolute; width:1082px;
   background: #f5f5f5; padding-bottom: 10px;
   position: fixed;  z-index: 9;
-  bottom:0px; left: 270px; 
+  bottom:0px; left: 270px;
 }
 #hawk-btn
 {
@@ -1525,7 +1525,7 @@ text-decoration: underline;
 }
 #cam-btn{
   position: absolute;
-  bottom:0px; left: 44%; 
+  bottom:0px; left: 44%;
   position: fixed;  z-index: 99999;
   background-color: white;
   color: #000;
@@ -1533,14 +1533,14 @@ text-decoration: underline;
 }
 #cam-close-btn,#cam-close-btn2{
   position: relative;
-  bottom:28px; left: 50%; 
+  bottom:28px; left: 50%;
    z-index: 99999;
   background-color: white;
   color: #000;
   padding: 10px;
 }
 .iconT{position: absolute;
-  bottom:118px; 
+  bottom:118px;
   left: 1100px;
   }
 
@@ -1548,10 +1548,10 @@ text-decoration: underline;
   .iconT a{background: #ebebeb;}
 
   .iconB{position: absolute;
-    bottom:320px; 
+    bottom:320px;
     left: 570px;
     }
-  
+
 .iconB a{background: #fff; padding: 10px;}
 .iconB a{background: #ebebeb;}
 
@@ -1625,7 +1625,7 @@ text-decoration: underline;
 /*  Driver profile Page  */
 .summary_box
 {
- 
+
   padding: 20px;
 }
 
@@ -1668,7 +1668,7 @@ text-decoration: underline;
     margin: 0;
     background: transparent;
 }
-.incident-tabs.nav-tabs .nav-link.active, 
+.incident-tabs.nav-tabs .nav-link.active,
 .incident-tabs.nav-tabs .nav-link:hover,
 .incident-tabs.nav-tabs .nav-link.active:hover,
 .incident-tabs.nav-tabs .nav-link.active:focus {
@@ -1735,7 +1735,7 @@ text-decoration: underline;
 }
 .alert-container {
     border: 2px solid #dcdcdc;
-    padding: 30px;  
+    padding: 30px;
 }
 .lh-normal {
     line-height: normal;
@@ -1771,7 +1771,7 @@ text-decoration: underline;
     padding: 10px 15px;
     float: left;
     margin-left: -2px;
-    border-radius: 0; 
+    border-radius: 0;
     position: relative;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
@@ -1788,15 +1788,15 @@ text-decoration: underline;
     position: absolute;
     top: 10px;
     right: 10px;
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: 900; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f054";
 } */
 .reports-sidebar ul li:last-child a{
     border-bottom: none;
 }
 .active{
-    text-decoration: none !important; 
+    text-decoration: none !important;
 }
 
 html.fixed .reports-wrapper {
@@ -1822,8 +1822,8 @@ html.fixed .reports-wrapper {
     position: absolute;
     top: 25px;
     right: 25px;
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: 900; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f054";
     color: #d2d2d2;
 } */
@@ -2006,7 +2006,7 @@ table.dataTable thead th, table.dataTable thead td {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
- 
+
 
 /* height */
 .heighta{height:auto !important;}
@@ -2017,3 +2017,6 @@ table.dataTable thead th, table.dataTable thead td {
 /* choose file line height class start*/
 .choosefileLH{line-height: 16px !important;}
 /* choose file line height class end*/
+.adddriverpl {
+  padding-left: 73px;
+}
