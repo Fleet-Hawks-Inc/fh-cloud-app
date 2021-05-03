@@ -40,7 +40,7 @@
                                     
                                     <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
                                        <div *ngIf="vec.errors.required">
-                                        Select Vehicle is required.
+                                        Select valid vehicle is required from the list.
                                           </div>
                                           
                                        </div>
@@ -56,11 +56,16 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
                                        class="text-1 optional-label-color">(optional)</span></label>
 
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;" placeholder="Select user(s)/group(s) to send email">
+                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;" placeholder="Select user(s)/group(s) to send email" #sltGroups="ngModel" required>
                                        <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}</ng-option>
                                        <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
 
                                    </ng-select>
+                                   <div *ngIf="sltGroups.invalid && (sltGroups.dirty || sltGroups.touched)" class="text-danger">
+                                    <div *ngIf="sltGroups.errors.required">
+                                     Select users/groups from the list.
+                                       </div>
+                                    </div>
                                     <div class="checkbox-custom mt-2">
                                     <input [(ngModel)]="reminderData.sendEmail" name="sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
                                     <label class="control-label font-weight-bold">Send Email Notification</label>
@@ -88,7 +93,7 @@
                                  </ng-select>
                                  <div *ngIf="rt.invalid && (rt.dirty || rt.touched)" class="text-danger">
                                     <div *ngIf="rt.errors.required">
-                                     Select Renewal Type is required.
+                                     Select valid renewal type is required from the list.
                                        </div>
                                        
                                     </div>
@@ -117,13 +122,18 @@
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                     <div class="row">
                                         <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control" min="1"></div>
-                                        <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" >
+                                        <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" #timeReminder="ngModel" required>
 
                                           <ng-option value="day">Day(s)</ng-option>
                                           <ng-option value="week">Week(s)</ng-option>
                                           <ng-option value="month">Month(s)</ng-option>
 
                                     </ng-select>
+                                    <div *ngIf="timeReminder.invalid && (timeReminder.dirty || timeReminder.touched)" class="text-danger">
+                                       <div *ngIf="timeReminder.errors.required">
+                                        Select valid time reminder from the list.
+                                          </div>
+                                       </div>
                                  </div>
                                     </div>
 
