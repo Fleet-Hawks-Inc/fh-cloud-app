@@ -507,7 +507,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     } else {
       this.driverData.gender = value;
     }
-    console.log('data', this.driverData)
   }
 
   addAddress() {
@@ -530,7 +529,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       manual: false,
       userLocation: ''
     });
-    console.log('driverData.address', this.driverData.address);
   }
 
   fetchCycles() {
@@ -1334,9 +1332,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType == 'yard') {
-          this.carrierYards.push(e);
-        }
+        this.carrierYards.push(e);
       })
     });
   }
