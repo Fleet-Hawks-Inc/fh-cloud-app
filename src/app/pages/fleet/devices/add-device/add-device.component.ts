@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 import { from } from 'rxjs';
 import {  map } from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router'
 
 
 @Component({
@@ -15,20 +16,59 @@ export class AddDeviceComponent implements OnInit {
 
   constructor(private apiService: ApiService, 
     private toastr: ToastrService,
-    private location: Location) { }
+    private location: Location,
+    private route: ActivatedRoute) { }
+
   public device: any = {
     deviceName: '',
     deviceSerialNo: '',
     deviceStatus: '',
-    vehicleID: '',
+    vehicle: {
+      vehicleID:'',
+      vehicleIdentification:''
+    },
     description: '',
     deviceType: '',
     
-  }
+  };
+
+ public deviceID='';
+  
 
   public vehicles:any;
   ngOnInit() {
+    let deviceType = this.route.snapshot.params['deviceType'];
+    let deviceSerialNo=this.route.snapshot.params['deviceSerialNo']
+    if(deviceType&&deviceSerialNo){
+    this.deviceID=`${deviceType}#${deviceSerialNo}`;
+    this.deviceID=encodeURIComponent(this.deviceID);
+    this.fetchDevices();
+    }
     this.fetchVehicles();
+  }
+
+  private fetchDevices(){
+    try{
+      this.apiService.getData(`devices/${this.deviceID}`).subscribe((result)=>{
+        if(result.Count>0){
+        this.device={
+          deviceName:result.Items[0].deviceName,
+          deviceStatus:result.Items[0].deviceStatus,
+          deviceSerialNo:result.Items[0].deviceSerialNo,
+          description:result.Items[0].description,
+          deviceType:result.Items[0].deviceType,
+          vehicle:{
+            vehicleID:result.Items[0].vehicle.vehicleID,
+            vehicleIdentification:result.Items[0].vehicle.vehicleIdentification
+          }
+        }
+      }
+      })
+    }
+    catch(error){
+      console.error(error)
+      throw new Error(error)
+    }
   }
   private fetchVehicles() {
     try{
@@ -55,8 +95,18 @@ export class AddDeviceComponent implements OnInit {
   }
   public submit(){
     if(this.device){
+      if(this.device.vehicle.vehicleID){
+      this.vehicles.forEach(element => {
+        if(element.vehicleID==this.device.vehicle.vehicleID){
+          
+          this.device.vehicle.vehicleIdentification=element.vehicleIdentification
+        }
+        
+      });
+      
+    }
       try{
-        this.apiService.postData('eldDevices/',this.device).subscribe({
+        this.apiService.postData('devices',this.device).subscribe({
           complete: () => { },
           error: (err: any) => {
             from(err.error)
@@ -89,6 +139,49 @@ export class AddDeviceComponent implements OnInit {
 
   }
  public  updateAndSubmit(){
+  if(this.device){
+    if(this.device.vehicle.vehicleID){
+    this.vehicles.forEach(element => {
+      if(element.vehicleID==this.device.vehicle.vehicleID){
+        
+        this.device.vehicle.vehicleIdentification=element.vehicleIdentification
+      }
+      
+    });
+    
+  }
+    try{
+      this.apiService.putData('devices',this.device).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                
+              })
+            )
+            .subscribe({
+              complete: () => {
+                
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.toastr.success('Device Updated successfully');
+          this.location.back();
+        }
+      });
+    
+    }
+    catch(error){
+      console.error(error)
+      throw new Error(error)
+    }
+  }
+
 
   }
 

@@ -16,7 +16,7 @@ const routes:Routes=[
         component:AddDeviceComponent
     },
     {
-        path: 'edit/:deviceID', 
+        path: 'edit/:deviceType/:deviceSerialNo', 
         component:AddDeviceComponent
     },
     {
@@ -24,7 +24,7 @@ const routes:Routes=[
         component:DeviceListComponent
     },
     {
-        path: 'detail',
+        path: 'detail/:deviceType/:deviceSerialNo',
         component:DeviceDetailComponent
     }
 ]
