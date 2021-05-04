@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { AuthService } from './services/';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import { LeftBarComponent } from './entry/left-bar/left-bar.component';
 import { HealthcheckComponent } from './entry/healthcheck/healthcheck.component';
@@ -85,11 +85,13 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     {
-      preloadingStrategy: PreLoadStrategy
+      preloadingStrategy: PreLoadStrategy,
+      useHash: true
     }
   ), CommonModule, ChartsModule],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
+  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
+
   entryComponents: [
     UnsavedChangesComponent,
   ]
