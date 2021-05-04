@@ -44,7 +44,7 @@
                                  </ng-select>
                                  <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                     <div *ngIf="cnt.errors.required">
-                                     Select Contact is required.
+                                     Select valid contact is required from the list.
                                        </div>
                                        
                                     </div>
@@ -57,12 +57,14 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
-                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
+                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email" #groupSlt="ngModel" required>
+
                                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
                                     </ng-option>
                                     <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
                                     </ng-option>
                                  </ng-select>
+
                               </div>
                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
                               <button type="button" data-toggle="modal" data-target="#addGroupModal"
@@ -84,7 +86,8 @@
                                  </ng-select>
                                  <div *ngIf="rtSlt.invalid && (rtSlt.dirty || rtSlt.touched)" class="text-danger">
                                     <div *ngIf="rtSlt.errors.required">
-                                       Select Renewal Type is required.
+                                     Select valid renewal type is required from the list.
+                                       </div>
                                     </div>
                               
                                  </div>
@@ -120,6 +123,11 @@
                                           <ng-option value="month">Month(s)</ng-option>
 
                                        </ng-select>
+                                       <div *ngIf="reminderTime.invalid && (reminderTime.dirty || reminderTime.touched)" class="text-danger">
+                                          <div *ngIf="reminderTime.errors.required">
+                                           Select valid time reminder from the list.
+                                             </div>
+                                          </div>
                                     </div>
                                  </div>
 
