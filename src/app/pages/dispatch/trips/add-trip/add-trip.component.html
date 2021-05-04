@@ -551,10 +551,10 @@
                                     <div class="col-lg-12 pr-4">
                                         <a class="mt-1 mr-2 btn btn-default" href="javascript:;"
                                             routerLink="/dispatch/trips/trip-list">Cancel</a>
-                                        <a href="javascript:;" (click)="createTrip()" *ngIf="!tripID"
-                                            class="btn btn-success mt-1">Create Trip</a>
-                                        <a href="javascript:;" (click)="updateTrip()" *ngIf="tripID"
-                                            class="btn btn-success mt-1">Update Trip</a>
+                                        <button (click)="createTrip()" *ngIf="!tripID"
+                                            class="btn btn-success mt-1" [disabled]="submitDisabled">Create Trip</button>
+                                        <button (click)="updateTrip()" *ngIf="tripID"
+                                            class="btn btn-success mt-1" [disabled]="submitDisabled">Update Trip</button>
                                     </div>
                                 </div>
                             </form>
