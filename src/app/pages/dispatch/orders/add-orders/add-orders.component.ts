@@ -23,6 +23,7 @@ import { ToastrService } from "ngx-toastr";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
+import { DomSanitizer} from '@angular/platform-browser';
 
 declare var $: any;
 declare var H: any;
@@ -32,6 +33,7 @@ declare var H: any;
   styleUrls: ["./add-orders.component.css"],
 })
 export class AddOrdersComponent implements OnInit {
+  Asseturl = this.apiService.AssetUrl;
   public getOrderID;
   orderForm: NgForm;
   pageTitle = "Add Order";
@@ -282,6 +284,9 @@ export class AddOrdersComponent implements OnInit {
   isSubmit = false;
   isShipperSubmit = false;
   isReceiverSubmit = false;
+  orderAttachments = [];
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -294,7 +299,8 @@ export class AddOrdersComponent implements OnInit {
     private config: NgbDatepickerConfig,
     private pdfService: PdfAutomationService,
     private httpClient: HttpClient,
-    private listService: ListService
+    private listService: ListService,
+    private domSanitizer: DomSanitizer
   ) {
     const current = new Date();
     config.minDate = {
@@ -1149,7 +1155,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   editList(elem, parentIndex, i) {
-    let j = parentIndex;
+    let j = parentIndex; 
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
       let itemDateAndTime = data.dateAndTime.split(" ");
@@ -1329,10 +1335,13 @@ export class AddOrdersComponent implements OnInit {
           },
         ];
 
-
         this.orderData["customerID"] = result.customerID;
         this.selectedCustomer(result.customerID);
 
+        if(result.attachments !== undefined && result.attachments.length > 0){
+          this.orderAttachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        }
+        this.orderData["attachments"] = result.attachments;
         this.orderData["orderStatus"] = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
@@ -1473,12 +1482,12 @@ export class AddOrdersComponent implements OnInit {
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
-        let newloc = h.dropOffLocation.replace(",", "");
+        let newloc = h.dropOffLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
 
       element.shippers.map((h:any) => {
-        let newloc = h.pickupLocation.replace(",", "");
+        let newloc = h.pickupLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
     }
@@ -1721,5 +1730,24 @@ export class AddOrdersComponent implements OnInit {
       }
       
     }
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents
+  delete(type: string, name: string, index) {
+    this.apiService.deleteData(`orders/uploadDelete/${this.getOrderID}/${type}/${name}`).subscribe((result: any) => {
+      // this.fetchAssetByID();
+      this.orderAttachments.splice(index, 1);
+    });
   }
 }

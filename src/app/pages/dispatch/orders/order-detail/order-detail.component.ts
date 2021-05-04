@@ -79,7 +79,9 @@ export class OrderDetailComponent implements OnInit {
   customerfax = '';
   customerPo = '';
   reference = '';
-  creation = '';
+  // creation = '';
+  creationDate = '';
+  creationTime = '';
   additionalContactName = '';
   additionalPhone  = '';
   additionalEmail = '';
@@ -181,7 +183,8 @@ export class OrderDetailComponent implements OnInit {
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
           this.reference = result.reference;
-          this.creation = `${result.creationDate } ${result.creationTime }`;
+          this.creationDate = `${result.creationDate }`;
+          this.creationTime = `${result.creationTime }`;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
