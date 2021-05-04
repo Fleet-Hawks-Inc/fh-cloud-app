@@ -1061,6 +1061,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.email = result.emergencyDetails.email;
         this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
         this.driverData['timeCreated'] = result.timeCreated;
+
+        console.log('this.driverData', this.driverData);
       });
   }
 
@@ -1287,9 +1289,7 @@ togglecpwdfieldTextType() {
 
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType == 'yard') {
-          this.carrierYards.push(e);
-        }
+        this.carrierYards.push(e);
       })
     });
   }
