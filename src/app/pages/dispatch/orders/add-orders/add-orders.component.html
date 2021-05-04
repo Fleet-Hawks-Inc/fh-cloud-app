@@ -739,7 +739,7 @@
                                                             
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">PU# &nbsp;<i
+                                                                     >PU# &nbsp;<i
                                                                      class="fas fa-question-circle" data-toggle="tooltip"
                                                                      data-placement="top"
                                                                      title="Pickup Number"></i>
@@ -748,7 +748,7 @@
    
                                                                   <input placeholder="eg. 1348,0096" [(ngModel)]="commodity.pu"
                                                                      name="pu{{z}}" type="text" class="form-control"
-                                                                     id="inputDefault" #pu="ngModel" pattern="^[0-9]+$">
+                                                                      #pu="ngModel" pattern="^[0-9]+$">
                                                                      <div *ngIf="pu.invalid && (pu.dirty || pu.touched)" class="text-danger">
                                                                      
                                                                                  
@@ -1207,7 +1207,7 @@
                                                             
                                                                <div class="col-lg-12 col-md-12">
                                                                   <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                     for="inputDefault">DEL# &nbsp;<i
+                                                                     >DEL# &nbsp;<i
                                                                      class="fas fa-question-circle" data-toggle="tooltip"
                                                                      data-placement="top"
                                                                      title="Delivery Number "></i>
@@ -1218,7 +1218,7 @@
    
                                                                   <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{z}}"
 
-                                                                     type="text" class="form-control" id="inputDefault" #delNum="ngModel"  pattern="^[0-9]+$">
+                                                                     type="text" class="form-control" #delNum="ngModel"  pattern="^[0-9]+$">
                                                                      <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
                                    
                                                                         <div *ngIf="delNum.errors.pattern">
