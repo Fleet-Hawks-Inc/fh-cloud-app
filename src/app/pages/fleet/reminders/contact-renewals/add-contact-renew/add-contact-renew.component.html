@@ -35,8 +35,8 @@
                            <div class="row pt-2">
                             <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select [(ngModel)]="reminderData.reminderIdentification"
-                                    name="reminderIdentification" placeholder="Select contact" #cnt="ngModel" required>
+                                 <ng-select [(ngModel)]="entityID"
+                                    name="entityID" placeholder="Select contact" #cnt="ngModel" required>
 
                                     <ng-option *ngFor="let user of users" value="{{user.userName}}">
                                        {{user.firstName}} {{user.lastName}}</ng-option>
@@ -44,7 +44,7 @@
                                  </ng-select>
                                  <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                     <div *ngIf="cnt.errors.required">
-                                     Select valid contact is required from the list.
+                                     Select Contact is required.
                                        </div>
                                        
                                     </div>
@@ -57,29 +57,17 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
                                     class="text-1 optional-label-color">(optional)</span></label>
                                  <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
-                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email" #groupSlt="ngModel" required>
-
+                                    style="width: 100%;" placeholder="Select user(s)/ group(s) to send email">
                                     <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
                                     </ng-option>
                                     <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
                                     </ng-option>
                                  </ng-select>
-                                 <div *ngIf="groupSlt.invalid && (groupSlt.dirty || groupSlt.touched)" class="text-danger">
-                                    <div *ngIf="groupSlt.errors.required">
-                                     Select valid users/groups from the list.
-                                       </div>
-                                    </div>
-                                 <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="reminderData.sendEmail"
-                                       type="checkbox" [checked]="reminderData.sendEmail">
-                                    <label class="control-label font-weight-bold">Send Email Notification</label>
-                                 </div>
-
                               </div>
                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
                               <button type="button" data-toggle="modal" data-target="#addGroupModal"
                               class="modal-with-form btn cus-btn-padd btn-success text-light"><i
-                                 class="fas fa-plus"></i> Group</button>
+                                 class="fas fa-plus"></i> </button>
                               </div>
 
                            </div>
@@ -87,20 +75,19 @@
                         <div class="col-lg-5 offset-lg-1">
                            <div class="row pt-2">
                               <div class="col-lg-10">
-                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;" placeholder="Select renewal type eg. Licence Renewal" #rtSlt="ngModel" required>
-                                    <optgroup label="Select Service Task">
-                                       <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
-                                       </ng-option>
-                                    </optgroup>
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span
+                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select [(ngModel)]="taskID" name="taskID" style="width: 100%;"
+                                    placeholder="Select renewal type eg. Licence Renewal" #rtSlt="ngModel" required>
+                                    <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                                    </ng-option>
                                  </ng-select>
                                  <div *ngIf="rtSlt.invalid && (rtSlt.dirty || rtSlt.touched)" class="text-danger">
                                     <div *ngIf="rtSlt.errors.required">
-                                     Select valid renewal type is required from the list.
-                                       </div>
-                                       
+                                       Select Renewal Type is required.
                                     </div>
+                              
+                                 </div>
                               </div>
                               <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
                                  <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
@@ -111,7 +98,7 @@
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Expiration Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
-                                    [(ngModel)]="reminderData.reminderTasks.dueDate" (click)="d.toggle()" ngbDatepicker #exp="ngModel" required
+                                    [(ngModel)]="reminderData.tasks.dueDate" (click)="d.toggle()" ngbDatepicker #exp="ngModel" required
                                     #d="ngbDatepicker" />
                                     <div *ngIf="exp.invalid && (exp.dirty || exp.touched)" class="text-danger">
                                        <div *ngIf="exp.errors.required">
@@ -124,20 +111,15 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
                                     <div class="col-lg-4">
-                                       <input type="number" min='1' class="form-control" [(ngModel)]="time" name="time" placeholder="eg. 2,3,4..">
+                                       <input type="number" min='1' class="form-control" [(ngModel)]="reminderData.tasks.time" name="reminderData.tasks.time" placeholder="eg. 2,3,4..">
                                     </div>
                                     <div class="col-lg-8 pl-0">
-                                       <ng-select [(ngModel)]="timeType" name="timeType" #reminderTime="ngModel" required>
+                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="reminderData.tasks.timeUnit">
                                           <ng-option value="day">Day(s)</ng-option>
                                           <ng-option value="week">Week(s)</ng-option>
                                           <ng-option value="month">Month(s)</ng-option>
 
                                        </ng-select>
-                                       <div *ngIf="reminderTime.invalid && (reminderTime.dirty || reminderTime.touched)" class="text-danger">
-                                          <div *ngIf="reminderTime.errors.required">
-                                           Select valid time reminder from the list.
-                                             </div>
-                                          </div>
                                     </div>
                                  </div>
 

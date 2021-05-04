@@ -35,7 +35,7 @@ export class VehicleRenewListComponent implements OnInit {
   unitName = '';
   searchServiceTask = null;
   serviceTasks = [];
-  filterStatus: string;
+  filterStatus=null;
 
   totalRecords = 20;
   pageLength = 10;
@@ -48,6 +48,7 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleRenewStartPoint = 1;
   vehicleRenewEndPoint = this.pageLength;
   allVehicles = [];
+  users = [];
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -60,6 +61,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.fetchVehicleList();
     this.fetchTasksList();
     this.initDataTable();
+    this.fetchUsers();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -82,6 +84,13 @@ export class VehicleRenewListComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
     });
   }
+
+  fetchUsers() {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.users = result;
+    });
+  }
+
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => {
       this.tasksList = result;
@@ -101,56 +110,60 @@ export class VehicleRenewListComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  fetchRenewals = async () => {
-    this.remindersData = [];
-    for (let j = 0; j < this.allRemindersData.length; j++) {
-      let reminderStatus: string;
-      let someDateString = moment(this.allRemindersData[j].reminderTasks.dueDate).format('YYYY-MM-DD');
-      let newDueDate = moment(someDateString, 'YYYY-MM-DD');
-      const remainingDays = newDueDate.diff(this.currentDate, 'days');
-      if (remainingDays < 0) {
-        reminderStatus = 'OVERDUE';
-      }
-      else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
-        reminderStatus = 'DUE SOON';
-      }
-      const data = {
-        reminderID: this.allRemindersData[j].reminderID,
-        reminderIdentification: this.allRemindersData[j].reminderIdentification,
-        reminderTasks: {
-          task: this.allRemindersData[j].reminderTasks.task,
-          remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
-          reminderStatus: reminderStatus,
-          remainingDays: remainingDays,
-          dueDate: this.allRemindersData[j].reminderTasks.dueDate,
-        },
-        subscribers: this.allRemindersData[j].subscribers,
-      };
-      this.remindersData.push(data);
-    }
-    if (this.filterStatus === Constants.OVERDUE) {
-      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-    }
-    else if (this.filterStatus === Constants.DUE_SOON) {
-      this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
-    }
-    else if (this.filterStatus === Constants.ALL) {
-      this.remindersData = this.remindersData;
-    }
-  }
+  // fetchRenewals = async () => {
+  //   this.remindersData = [];
+  //   for (let j = 0; j < this.allRemindersData.length; j++) {
+  //     let reminderStatus: string;
+  //     let someDateString = moment(this.allRemindersData[j].reminderTasks.dueDate).format('YYYY-MM-DD');
+  //     let newDueDate = moment(someDateString, 'YYYY-MM-DD');
+  //     const remainingDays = newDueDate.diff(this.currentDate, 'days');
+  //     if (remainingDays < 0) {
+  //       reminderStatus = 'OVERDUE';
+  //     }
+  //     else if (remainingDays <= this.allRemindersData[j].reminderTasks.remindByDays && remainingDays >= 0) {
+  //       reminderStatus = 'DUE SOON';
+  //     }
+  //     const data = {
+  //       reminderID: this.allRemindersData[j].reminderID,
+  //       reminderIdentification: this.allRemindersData[j].reminderIdentification,
+  //       reminderTasks: {
+  //         task: this.allRemindersData[j].reminderTasks.task,
+  //         remindByDays: this.allRemindersData[j].reminderTasks.remindByDays,
+  //         reminderStatus: reminderStatus,
+  //         remainingDays: remainingDays,
+  //         dueDate: this.allRemindersData[j].reminderTasks.dueDate,
+  //       },
+  //       subscribers: this.allRemindersData[j].subscribers,
+  //     };
+  //     this.remindersData.push(data);
+  //   }
+  //   if (this.filterStatus === Constants.OVERDUE) {
+  //     this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+  //   }
+  //   else if (this.filterStatus === Constants.DUE_SOON) {
+  //     this.remindersData = this.remindersData.filter((s: any) => s.reminderTasks.reminderStatus === this.filterStatus);
+  //   }
+  //   else if (this.filterStatus === Constants.ALL) {
+  //     this.remindersData = this.remindersData;
+  //   }
+  // }
 
-  deleteRenewal(entryID) {
+  deleteRenewal(eventData) { 
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`reminders/isDeleted/${entryID}/` + 1)
-        .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.reminderID,
+        type: eventData.type
+      }
+      this.apiService.postData('reminders/delete', record).subscribe((result: any) => {
           this.remindersData = [];
           this.vehicleRenewDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;
           this.lastEvaluatedKey = '';
           this.getRemindersCount();
           this.initDataTable();
-          this.toastr.success('Vehicle Renewal Reminder Deleted Successfully!');
+          this.toastr.success('Vehicle Renewal Deleted Successfully!');
         });
     }
   }
@@ -170,7 +183,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle').subscribe({
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -185,27 +198,28 @@ export class VehicleRenewListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
-        this.allRemindersData = result['Items'];
-        this.fetchRenewals();
+        this.remindersData = result['Items'];
+        // this.fetchRenewals();
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewStartPoint = 1;
           this.vehicleRenewEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g,'--');
           this.vehicleRenewNext = false;
           // for prev button
-          if (!this.vehicleRenewPrevEvauatedKeys.includes(result['LastEvaluatedKey'].reminderID)) {
-            this.vehicleRenewPrevEvauatedKeys.push(result['LastEvaluatedKey'].reminderID);
+          if (!this.vehicleRenewPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.vehicleRenewPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].reminderID;
+          this.lastEvaluatedKey = lastEvalKey;
 
         } else {
           this.vehicleRenewNext = true;
