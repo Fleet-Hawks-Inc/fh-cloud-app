@@ -248,7 +248,6 @@ hasHos: boolean = false;
 
 driverData = {
   userName: '',
-  middleName: '',
   lastName: '',
   phone: '',
   email: '',
@@ -1989,7 +1988,6 @@ fetchDrivers(){
   clearDriverData (){
     this.driverData = {
       userName: '',
-      middleName: '',
       lastName: '',
       phone: '',
       email: '',

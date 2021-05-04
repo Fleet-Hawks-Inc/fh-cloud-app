@@ -81,7 +81,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     driverStatus: '',
     userName: '',
     firstName: '',
-    middleName: '',
     lastName: '',
     startDate: '',
     terminationDate: '',
@@ -181,8 +180,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       name: '',
       relationship: '',
       phone: '',
-      email: '',
-      emergencyAddress: '',
     },
   };
   public searchTerm = new Subject<string>();
@@ -901,7 +898,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.driverStatus = result.driverStatus;
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
-        this.driverData.middleName = result.middleName;
         this.driverData.lastName = result.lastName;
         this.driverData.password = result.password;
         this.driverData.confirmPassword = result.confirmPassword;
@@ -1058,11 +1054,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.emergencyDetails.name = result.emergencyDetails.name;
         this.driverData.emergencyDetails.relationship = result.emergencyDetails.relationship;
         this.driverData.emergencyDetails.phone = result.emergencyDetails.phone;
-        this.driverData.emergencyDetails.email = result.emergencyDetails.email;
-        this.driverData.emergencyDetails.emergencyAddress = result.emergencyDetails.emergencyAddress;
         this.driverData['timeCreated'] = result.timeCreated;
-
-        console.log('this.driverData', this.driverData);
       });
   }
 

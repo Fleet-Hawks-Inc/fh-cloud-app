@@ -1153,7 +1153,7 @@
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic"
                         role="tabpanel" aria-labelledby="addDriverBasic-tab">
 
-                        <div>
+
                             <div class="form-group row text-dark">
                               <div class="col-lg-10">
                                   <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic
@@ -1242,13 +1242,13 @@
                                               <input [(ngModel)]="driverData.firstName" name="firstName" type="text"
                                                 class="form-control" (change)="onChangeHideErrors('firstName')" placeholder="eg. John">
                                           </div>
-                                          <div class="col-lg-4">
+                                          <!-- <div class="col-lg-4">
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Middle
                                                 Name&nbsp; <span
                                                     class="text-1 optional-label-color">(optional)</span></label>
                                               <input [(ngModel)]="driverData.middleName" name="middleName" type="text"
                                                 class="form-control" placeholder="eg. matthews">
-                                          </div>
+                                          </div> -->
                                           <div class="col-lg-4">
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                 Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1425,7 +1425,7 @@
                                   </div>
                               </div>
                             </div>
-                        </div>
+
                       </div>
 
                       <!-- documents -->
@@ -1637,10 +1637,10 @@
                             </div>
 
 
-<<<<<<< HEAD
+
                             </div>
                           </div>
-                        </div>
+
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Birth
                             Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1679,8 +1679,7 @@
                                 placeholder="Enter Confirm Password">
                             </div>
                           </div>
-=======
->>>>>>> f975972e4650f93255db2a6c75d412c0fca4e866
+
 
                             <div class="col-lg-12">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle
@@ -1696,7 +1695,7 @@
                           </div>
                         </div>
                       </div>
-                      </div>
+
                       <!-- Payment -->
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" id="payment" role="tabpanel"
                         aria-labelledby="payment-tab">

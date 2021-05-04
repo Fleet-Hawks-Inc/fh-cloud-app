@@ -20,7 +20,7 @@
                         <ul>
                            <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
                            (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
-                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.middleName}} {{ suggestedDriver.lastName }}</li>
+                           >{{ suggestedDriver.firstName }}  {{ suggestedDriver.lastName }}</li>
                         </ul>
                      </div>
                   </div>
@@ -475,7 +475,7 @@
                                  <tr *ngFor="let driver of drivers;let i = index;">
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
                                        <span class="font-weight-bold line-height-lg text-capitalize">
-                                          {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</span>
+                                          {{driver.firstName}} {{driver.lastName}}</span>
                                     </td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
 
