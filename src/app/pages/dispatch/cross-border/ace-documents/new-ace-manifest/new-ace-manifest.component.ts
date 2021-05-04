@@ -216,6 +216,7 @@ export class NewAceManifestComponent implements OnInit {
   errorFastCard = false;
   address = false;
   amendManifest = false;
+  testBorderAsset: any = [];
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -268,6 +269,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchCarrier();
     this.getCurrentuser();
     this.searchLocation();
+    this.testFn();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.passengerDocStates = this.listService.stateList;
@@ -291,6 +293,7 @@ export class NewAceManifestComponent implements OnInit {
     this.httpClient.get('assets/ACEBrokersList.json').subscribe((data) => {
       this.brokersList = data;
     });
+
     this.httpClient
       .get('assets/jsonFiles/ACEinbond-types.json')
       .subscribe((data) => {
@@ -319,23 +322,33 @@ export class NewAceManifestComponent implements OnInit {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
+    this.apiService.getData('assets/manifest').subscribe((result: any) => {
       this.assets = result.Items;
+      console.log('this.assets', this.assets);
     });
   }
   /***
    * fetch asset types from mapped table
    */
+   testFn() {
+    this.httpClient.get('assets/jsonFiles/assetTypesBorder.json').subscribe((data) => {
+      this.testBorderAsset = data;
+      console.log('this.testBorderAsset', this.testBorderAsset);
+    });
+   }
   async getBorderAssetTypes(e) {
     const assetID = e;
+    console.log('event data', e);
     let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border asset types are fetched whose parent is asset type of selected asset
-    if (resultData.Items.length > 0) {// if parent asset type exists
-      this.borderAssetTypes = resultData.Items;
-    } else {
-      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
-      this.borderAssetTypes = fetchedBorderAssets.Items;
-    }
+    this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
+    console.log('this.borderAssetTypes', this.borderAssetTypes);
+    // let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border asset types are fetched whose parent is asset type of selected asset
+    // if (resultData.Items.length > 0) {// if parent asset type exists
+    //   this.borderAssetTypes = resultData.Items;
+    // } else {
+    //   let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
+    //   this.borderAssetTypes = fetchedBorderAssets.Items;
+    // }
   }
   fetchBorderAssetType() {
     this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
@@ -785,7 +798,8 @@ export class NewAceManifestComponent implements OnInit {
           shipments: this.shipments,
           currentStatus: 'Draft',
         };
-        this.addFunction(data);
+        console.log('data', data);
+      //  this.addFunction(data);
       }
     } else {
       this.usAddress = {
@@ -823,7 +837,8 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-     this.addFunction(data);
+    // this.addFunction(data);
+    console.log('data', data);
     }
   }
   throwErrors() {

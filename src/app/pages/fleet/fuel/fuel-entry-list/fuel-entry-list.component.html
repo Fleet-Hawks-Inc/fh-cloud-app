@@ -117,7 +117,7 @@
                           <span *ngIf="!fuelEntry.lineItems">{{fuelEntry.pricePerUnit}}{{fuelEntry.billingCurrency}}</span>
                           <span *ngIf="fuelEntry.lineItems"><span *ngFor="let lItems of fuelEntry.lineItems">{{lItems.pricePerUnit}}<br></span></span>
                         </td>
-												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.totalAmount}}{{fuelEntry.billingCurrency}}</td>
+												<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.amountPaid}}{{fuelEntry.billingCurrency}}</td>
 											<td>
 												<div class="btn-group flex-wrap">
 													<button type="button" class="mb-1 mt-1 mr-1 btn"
