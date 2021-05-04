@@ -12,7 +12,7 @@
                      </div>
 
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3" *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle'">
+                        <div class="input-group input-group mb-3" *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle' && filterCategory !='entryPort'">
                            <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control" placeholder="Search" />
                         </div>
 
@@ -24,6 +24,11 @@
                         <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Vehicle"
                            *ngIf="filterCategory == 'vehicle'">
                            <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
+
+                        <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Port Entry"
+                           *ngIf="filterCategory == 'entryPort'">
+                           <ng-option *ngFor="let data of USPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
                      </div>
                      <div class="col-lg-3 col-md-3">
@@ -71,7 +76,7 @@
                      </div>
 
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle'">
+                        <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle' &&  aciFilterCategory != 'entryPort'">
                            <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control" placeholder="Search" />
                         </div>
 
@@ -83,6 +88,11 @@
                         <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Vehicle"
                            *ngIf="aciFilterCategory == 'vehicle'">
                            <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }} </ng-option>
+                        </ng-select>
+
+                        <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Port Entry"
+                           *ngIf="aciFilterCategory == 'entryPort'">
+                           <ng-option *ngFor="let data of canadianPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
                      </div>
 

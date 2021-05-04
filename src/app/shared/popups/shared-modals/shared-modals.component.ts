@@ -540,7 +540,7 @@ users = [];
 
  fetchInspectionForms() {
   this.apiService
-    .getData('inspectionForms/type/Vehicle')
+    .getData('inspectionForms/type/vehicle')
     .subscribe((result: any) => {
       this.inspectionForms = result.Items;
     });
