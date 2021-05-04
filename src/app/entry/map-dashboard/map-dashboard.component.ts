@@ -140,7 +140,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
         icon: customIcon,
       }
       );
-      this.map.addObject(markers);
+      // this.map.addObject(markers);
       // const defaultLayers = this.platform.createDefaultLayers();
       // const ui = H.ui.UI.createDefault(this.map, defaultLayers);
       markers.setData(`<h5>${driver.driverName}</h5>

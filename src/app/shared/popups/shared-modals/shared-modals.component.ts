@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ListService } from '../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import constants from '../../../../app/pages/fleet/constants';
+import { HereMapService } from '../../../services';
 import { Auth } from 'aws-amplify';
 
 declare var $: any;
@@ -35,7 +36,7 @@ export class SharedModalsComponent implements OnInit {
   deletedAddress = [];
   allAssetTypes: any;
 
-  constructor(private apiService: ApiService,private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
+  constructor(private apiService: ApiService, private HereMap: HereMapService, private toastr: ToastrService, private httpClient: HttpClient, private listService: ListService,     private spinner: NgxSpinnerService
     ) {
       const date = new Date();
       this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
@@ -247,9 +248,8 @@ hasHos: boolean = false;
 
 driverData = {
   userName: '',
-  middleName: '',
   lastName: '',
-  workPhone: '',
+  phone: '',
   email: '',
   firstName: '',
   password: '',
@@ -332,7 +332,9 @@ driverData = {
     hosStatus: '',
     hosRemarks: '',
     type: '',
-    homeTerminal: ''
+    homeTerminal: '',
+    utcOffset: '',
+    optZone: 'South (Canada)'
   },
   emergencyDetails: {},
 };
@@ -744,7 +746,7 @@ fetchDrivers(){
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
           this.listService.fetchModels();
-          
+
         }
       });
   }
@@ -1388,6 +1390,16 @@ fetchDrivers(){
     }
   }
 
+  async getUtc(yard) {
+    this.carrierYards.map(async (element: any) => {
+      if (element.addressID == yard) {
+        let result = await this.HereMap.geoCode(element.userLocation);
+        result = result.items[0];
+        this.driverData.hosDetails.utcOffset = result.timeZone.utcOffset
+      }
+    })
+  }
+
   // for driver submittion
   async onSubmit() {
     this.hasError = false;
@@ -1490,18 +1502,23 @@ fetchDrivers(){
       .remove('label');
   }
 
-  onChangeUnitType(value: any) {
-    if (value === 'employee') {
-      delete this.driverData['ownerOperator'];
-      delete this.driverData['contractStart'];
-      delete this.driverData['contractEnd'];
-      delete this.driverData['contractorId'];
+  onChangeUnitType(str, value: any) {
+    if(str == 'driver_type') {
+      if (value === 'employee') {
+        delete this.driverData.ownerOperator;
+        delete this.driverData.contractStart;
+        delete this.driverData.contractEnd;
+      } else {
+        // delete this.driverData.employeeId;
+        delete this.driverData.startDate;
+        delete this.driverData.terminationDate;
+      }
+      this.driverData.driverType = value;
     } else {
-      delete this.driverData['startDate'];
-      delete this.driverData['terminationDate'];
+      this.driverData.gender = value;
     }
-    this.driverData['driverType'] = value;
   }
+
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
@@ -1711,7 +1728,7 @@ fetchDrivers(){
     // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       formData.append('uploadedDocs', this.uploadedDocs[j]);
-    } 
+    }
 
     // append other fields
     formData.append('data', JSON.stringify(this.assetsData));
@@ -1971,9 +1988,8 @@ fetchDrivers(){
   clearDriverData (){
     this.driverData = {
       userName: '',
-      middleName: '',
       lastName: '',
-      workPhone: '',
+      phone: '',
       email: '',
       firstName: '',
       password: '',
@@ -2047,7 +2063,7 @@ fetchDrivers(){
         issuedCountry: '',
         issuedState: '',
         vehicleType: '',
-    
+
       },
       hosDetails: {
         pcAllowed: false,
@@ -2056,7 +2072,9 @@ fetchDrivers(){
         hosStatus: '',
         hosRemarks: '',
         type: '',
-        homeTerminal: ''
+        homeTerminal: '',
+        utcOffset: '',
+        optZone: 'South (Canada)'
       },
       emergencyDetails: {},
     };
