@@ -84,8 +84,8 @@ export class DriverListComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-  
-    
+
+
     // this.hideShowColumn();
     this.fetchAllDocumentsTypes();
     this.fetchDriversCount();
@@ -145,9 +145,6 @@ export class DriverListComponent implements OnInit {
       .getData(`drivers/get/suggestions/${value}`)
       .subscribe((result) => {
         result.Items.map((v)=>{
-          if(v.middleName == undefined) {
-            v.middleName = '';
-          }
           if(v.lastName == undefined) {
             v.lastName = '';
           }
@@ -158,7 +155,7 @@ export class DriverListComponent implements OnInit {
     } else {
       this.suggestedDrivers = [];
     }
-    
+
   }
 
   setDriver(driverID, firstName, lastName) {
@@ -225,7 +222,7 @@ export class DriverListComponent implements OnInit {
     .subscribe((result: any) => {
       this.cyclesObject = result;
     });
-    
+
   }
 
 
@@ -276,7 +273,7 @@ export class DriverListComponent implements OnInit {
           this.initDataTable();
           this.toastr.success('Driver is deactivated!');
         }, err => {
-         
+
         });
     }
   }
@@ -304,7 +301,7 @@ export class DriverListComponent implements OnInit {
             this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
-          
+
         } else {
           this.driverNext = true;
           this.lastEvaluatedKey = '';
@@ -434,7 +431,7 @@ export class DriverListComponent implements OnInit {
     //extra columns
     if(this.hideShow.groupID == false) {
       $('.col3').css('display','none');
-    } else { 
+    } else {
       $('.col3').removeClass('extra');
       $('.col3').css('display','');
       $('.col3').css('min-width','200px');
@@ -442,7 +439,7 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.citizenship == false) {
       $('.col4').css('display','none');
-    } else { 
+    } else {
       $('.col4').removeClass('extra');
       $('.col4').css('display','');
       $('.col4').css('min-width','200px');
@@ -450,15 +447,15 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.address == false) {
       $('.col5').css('display','none');
-    } else { 
+    } else {
       $('.col5').removeClass('extra');
       $('.col5').css('display','');
       $('.col5').css('min-width','200px');
     }
-    
+
     if(this.hideShow.paymentType == false) {
       $('.col6').css('display','none');
-    } else { 
+    } else {
       $('.col6').removeClass('extra');
       $('.col6').css('display','');
       $('.col6').css('min-width','200px');
@@ -466,7 +463,7 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.sin == false) {
       $('.col7').css('display','none');
-    } else { 
+    } else {
       $('.col7').removeClass('extra');
       $('.col7').css('display','');
       $('.col7').css('min-width','200px');
@@ -474,7 +471,7 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.contractStart == false) {
       $('.col8').css('display','none');
-    } else { 
+    } else {
       $('.col8').removeClass('extra');
       $('.col8').css('display','');
       $('.col8').css('min-width','200px');
@@ -482,7 +479,7 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.homeTerminal == false) {
       $('.col9').css('display','none');
-    } else { 
+    } else {
       $('.col9').removeClass('extra');
       $('.col9').css('display','');
       $('.col9').css('min-width','200px');
@@ -490,12 +487,12 @@ export class DriverListComponent implements OnInit {
 
     if(this.hideShow.fastNumber == false) {
       $('.col10').css('display','none');
-    } else { 
+    } else {
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
       $('.col10').css('min-width','200px');
     }
-    
+
 
   }
 

@@ -17,19 +17,24 @@ import * as moment from 'moment';
 export class AddReminderComponent implements OnInit {
   reminderID;
   pageTitle;
+  entityID = null;
+  taskID = null;
   reminderData = {
-    reminderIdentification: '',
-    reminderType: constants.REMINDER_SERVICE,
-    reminderTasks: {
-      task: '',
+    entityID: '',
+    type: constants.REMINDER_SERVICE,
+    tasks: {
+      taskID: '',
       remindByDays: 1,
       odometer: 0,
+      time: '',
+      timeUnit: ''
     },
-    reminderStatus:'',
-    lastCompletionDate: [],
-    lastCompletedOdometer: [],
+    status:'',
     subscribers: [],
-    sendEmail: false
+    lastServiceDate: '',
+    lastServiceOdometer: 0,
+    createdDate: '',
+    createdTime: '',
   };
   numberOfDays: number;
   time = 1;
@@ -60,6 +65,7 @@ export class AddReminderComponent implements OnInit {
   test = [];
   submitDisabled = false;
   currentDate = moment().format('YYYY-MM-DD');
+  subscribers = [];
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
     private location: Location) { }
@@ -112,23 +118,26 @@ export class AddReminderComponent implements OnInit {
  */
   fetchReminderByID() {
     this.apiService
-      .getData('reminders/' + this.reminderID)
+      .getData('reminders/detail/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
         for (let i = 0; i < result.subscribers.length; i++) {
-          this.test.push(result.subscribers[i].subscriberIdentification);
+          this.test.push(result.subscribers[i].id);
         }
         this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData.reminderType = result.reminderType;
-        this.reminderData.reminderIdentification = result.reminderIdentification;
-        this.reminderData.reminderTasks.task = result.reminderTasks.task;
-        this.reminderData.reminderTasks.odometer = result.reminderTasks.odometer;
-        this.reminderData.reminderTasks.remindByDays = result.reminderTasks.remindByDays;
-        this.reminderData.lastCompletedOdometer = result.lastCompletedOdometer;
-        this.reminderData.lastCompletionDate = result.lastCompletionDate;
-        this.timeType = 'day';
-        this.reminderData.sendEmail = result.sendEmail;
-        this.reminderData.subscribers = this.test;
+        this.reminderData[`createdDate`] = result.createdDate; 
+        this.reminderData[`createdTime`] = result.createdTime; 
+        this.reminderData[`timeCreated`] = result.timeCreated;
+        this.reminderData[`status`] = result.status;
+        this.reminderData.type = result.type;
+        this.entityID = result.entityID;
+        this.taskID = result.tasks.taskID;
+        this.reminderData.tasks.odometer = result.tasks.odometer;
+        this.reminderData.tasks.time = result.tasks.time;
+        this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
+        this.reminderData.lastServiceDate = result.lastServiceDate;
+        this.reminderData.lastServiceOdometer = result.lastServiceOdometer;
+        this.subscribers = this.test;
       });
 
   }
@@ -142,14 +151,14 @@ export class AddReminderComponent implements OnInit {
       test = this.groups.filter((g: any) => g.groupID === arr[i]);
       if (test.length > 0) {
         this.finalSubscribers.push({
-          subscriberType: 'group',
-          subscriberIdentification: arr[i]
+          type: 'group',
+          id: arr[i]
         });
       }
       else {
         this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: arr[i]
+          type: 'user',
+          id: arr[i]
         });
       }
     }
@@ -181,28 +190,19 @@ export class AddReminderComponent implements OnInit {
           break;
         }
     }
-    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+    this.reminderData.tasks.remindByDays = this.numberOfDays;
 
-    // let reminderStatus = '';
-    // let serviceOdometer = 0;
-    // let lastCompletionDate = moment().format('YYYY-MM-DD');
-    // const testDate = this.reminderData.lastCompletionDate.sort().reverse();
-    // let someDateString = moment(testDate[0]).format('YYYY-MM-DD');
-    // let  lastCompleted  = moment(someDateString, 'YYYY-MM-DD');
-    // const convertedDate = moment(this.currentDate, `YYYY-MM-DD`).add(this.reminderData.reminderTasks.remindByDays, 'days');
-    // let remainingDays = convertedDate.diff(this.currentDate, 'days');
-    let remainingDays = this.numberOfDays;
+    const convertedDate = moment(this.reminderData.lastServiceDate).add(this.reminderData.tasks.remindByDays, 'days');
+    let remainingDays = convertedDate.diff(this.currentDate, 'days');
     if (remainingDays < 0) {
-      this.reminderData.reminderStatus = 'overdue';
+      this.reminderData.status = 'overdue';
+    } else if (remainingDays <= 7 && remainingDays >= 0) {
+      this.reminderData.status = 'dueSoon';
     }
-    else if (remainingDays <= 7 && remainingDays >= 0) {
-      this.reminderData.reminderStatus = 'dueSoon';
-    }
-    // let remainingMiles = this.reminderData.reminderTasks.odometer;
-    // remainingMiles = (this.reminderData.reminderTasks.odometer + (this.allRemindersData[j].reminderTasks.odometer)) - this.currentOdometer;
 
-    // this.reminderData.reminderStatus = reminderStatus;
-    this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.subscribers = this.getSubscribers(this.subscribers);
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -230,18 +230,21 @@ export class AddReminderComponent implements OnInit {
         this.toastr.success('Service Reminder Added Successfully!');
         this.cancel();
         this.reminderData = {
-          reminderStatus: '',
-          reminderIdentification: '',
-          reminderType: constants.REMINDER_SERVICE,
-          reminderTasks: {
-            task: '',
-            remindByDays: 0,
+          status: '',
+          entityID: '',
+          type: constants.REMINDER_SERVICE,
+          tasks: {
+            taskID: '',
+            remindByDays: 1,
             odometer: 0,
+            time: '',
+            timeUnit: ''
           },
-          lastCompletionDate: [],
-          lastCompletedOdometer: [],
           subscribers: [],
-          sendEmail: false
+          lastServiceDate: '',
+          lastServiceOdometer: 0,
+          createdDate: '',
+          createdTime: '',
         };
       },
     });
@@ -273,7 +276,6 @@ export class AddReminderComponent implements OnInit {
   async updateReminder() {
     this.hideErrors();
     this.submitDisabled = true;
-    console.log('this.timeType', this.timeType);
     switch (this.timeType) {
       case 'day': {
         this.numberOfDays = this.time * 1;
@@ -298,26 +300,11 @@ export class AddReminderComponent implements OnInit {
         }
     }
 
-    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
-    let remainingDays = this.numberOfDays;
-
-    // check if last service is done then check the date of the same
-    let lastCompletionDate = '';
-    if(lastCompletionDate != '') {
-      // trip remaining days will be calculated from the last service day of the asset/vehicle
-      const convertedDate = moment(lastCompletionDate, `YYYY-MM-DD`).add(this.reminderData.reminderTasks.remindByDays, 'days');
-      remainingDays = convertedDate.diff(this.currentDate, 'days');
-    }
-    
-    if (remainingDays < 0) {
-      this.reminderData.reminderStatus = 'overdue';
-    }
-    else if (remainingDays <= 7 && remainingDays >= 0) {
-      this.reminderData.reminderStatus = 'dueSoon';
-    }
-    
-    this.reminderData.subscribers = await this.getSubscribers(this.reminderData.subscribers);
-    console.log('this.reminderData.subscribers', this.reminderData);
+    this.reminderData.tasks.remindByDays = this.numberOfDays;
+    // let remainingDays = this.numberOfDays;
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.subscribers = await this.getSubscribers(this.subscribers);
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -345,23 +332,8 @@ export class AddReminderComponent implements OnInit {
         this.toastr.success('Service reminder updated successfully!');
         this.Success = '';
         this.cancel();
-        this.reminderData = {
-          reminderIdentification: '',
-          reminderStatus: '',
-          reminderType: constants.REMINDER_SERVICE,
-          reminderTasks: {
-            task: '',
-            remindByDays: 0,
-            odometer: 0,
-          },
-          lastCompletionDate: [],
-          lastCompletedOdometer: [],
-          subscribers: [],
-          sendEmail: false
-        };
       },
     });
-
   }
 
 

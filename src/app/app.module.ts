@@ -42,12 +42,11 @@ import { SharedModalComponent } from './shared/shared-modal/shared-modal.compone
 import { DynamicModalDirective } from './directives/dynamic-modal.directive';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import { ErrorComponent } from './error/error.component';
 import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.component';
 
 import { AddAccountComponent } from './entry/onboard/add-account/add-account.component';
-import { MustMatchDirective } from './entry/onboard/must-match.directive';
+
 import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -68,11 +67,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NavOpenedDirective,
     SharedModalComponent,
     DynamicModalDirective,
-    ConfirmEqualValidatorDirective,
     ErrorComponent,
     UnsavedChangesComponent,
     AddAccountComponent,
-    MustMatchDirective
+
   ],
   imports: [
     AmplifyAngularModule,

@@ -18,7 +18,7 @@ export class DriverDetailComponent implements OnInit {
   profile: string;
   driverName: string;
   CDL: string;
-  workPhone: string;
+  phone: string;
   email: string;
   homeTerminal: string;
   cycle: string;
@@ -153,14 +153,11 @@ export class DriverDetailComponent implements OnInit {
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.email = this.driverData.email;
-          this.workPhone = this.driverData.workPhone;
+          this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
-          if(this.driverData.middleName == undefined) {
             this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
-          } else {
-            this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
-          }
+
 
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
