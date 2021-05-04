@@ -133,7 +133,7 @@ export class AceDetailsComponent implements OnInit {
   packagingList: any = {};
   thirdPartyTypesList: any  = {};
   thirdPartyTypesObects: any  = {};
-  vehicleTypeObects: any = {};
+  vehicleTypeObjects: any = {};
   shipmentTypeObjects: any = {};
   inBondTypeObects: any = {};
   foreignDestinationListObjects: any = {};
@@ -178,6 +178,7 @@ export class AceDetailsComponent implements OnInit {
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
     this.countryCodeName = result;
+    console.log('this.countryCodeName', this.countryCodeName);
     });
   }
   fetchAssetsCodeName() {
@@ -225,7 +226,7 @@ export class AceDetailsComponent implements OnInit {
   }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+      this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
     }, {});
     });
@@ -250,6 +251,7 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('ACEeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;

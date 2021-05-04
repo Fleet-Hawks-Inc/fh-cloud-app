@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, PathLocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
@@ -91,7 +91,6 @@ const routes: Routes = [
   ), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
-
   entryComponents: [
     UnsavedChangesComponent,
   ]

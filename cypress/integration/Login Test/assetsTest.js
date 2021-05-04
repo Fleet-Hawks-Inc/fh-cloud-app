@@ -12,7 +12,7 @@ describe("Assets Test", function () {
 
         cy.get(".col-md-6 > .btn-success").first().click();
 
-        cy.get('form#form_ > .row input[name="assetIdentification"]').type("Xyz1456"); //asset name
+        cy.get('input[name="assetIdentification "]').type("Xyz1456"); //asset name
         cy.get('.inner-wrapper [name="VIN"]').type("9988273734"); //vin number
         cy.get('form#form_ > .row input[name="startDate"]').click();
         cy.get('[role] [role="row"]:nth-of-type(3) [role="gridcell"]:nth-of-type(3) .ng-star-inserted').click(); //date
@@ -102,7 +102,7 @@ describe("Assets Test", function () {
     it("should allow user to delete asset", function () {
         cy.visit("/#/Login");
         cy.get(":nth-child(1) > .input-group > .form-control").clear();
-        cy.get(":nth-child(1) > .input-group > .form-control").type(
+        cy.get(":nth-child(1) > .input-group > .form-control").type(    
             Cypress.config("testerUserName")
         );
         cy.get(":nth-child(2) > .input-group > .form-control").clear();
@@ -116,7 +116,7 @@ describe("Assets Test", function () {
             .click();
 
         cy.get("#dropdownMenuButton-0").first().click();
-        cy.get(':nth-child(8) > .dropdown > .dropdown-menu > [href="javascript:;"]')
+        cy.get(':nth-child(1) > :nth-child(8) > .dropdown > .dropdown-menu > [href="javascript:;"]')
             .last()
             .click();
     });

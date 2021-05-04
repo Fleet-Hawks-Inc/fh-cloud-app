@@ -413,7 +413,6 @@ export class AddAccountComponent implements OnInit {
     this.uploadedPhotos.push(files[0]);
   }
 
-  // FRONT END VALIDATION
 
 
 }
