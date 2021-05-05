@@ -36,7 +36,7 @@
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2"
                         for="inputDefault">Type</label>
-                      <ng-select class="form-control populate" name="deviceType"
+                      <ng-select class="form-control populate" name="deviceType" [disabled]="deviceID!=''"
                         [(ngModel)]="device.deviceType">
                         <ng-option value="Gateway">Gateway</ng-option>
                         <ng-option value="Tracker">Tracker</ng-option>
@@ -56,7 +56,7 @@
 
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Serial Number</label>
-                      <input type="text" class="form-control" name="deviceSerialNo" [(ngModel)]=device.deviceSerialNo>
+                      <input type="text" class="form-control" name="deviceSerialNo" [disabled]="deviceID!=''" [(ngModel)]=device.deviceSerialNo>
                     </div>
                   </div>
                 </div>

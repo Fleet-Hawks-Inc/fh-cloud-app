@@ -22,6 +22,7 @@ export class AddDeviceComponent implements OnInit {
   public device: any = {
     deviceName: '',
     deviceSerialNo: '',
+    devicesSK:'',
     deviceStatus: '',
     vehicle: {
       vehicleID:'',
@@ -55,6 +56,7 @@ export class AddDeviceComponent implements OnInit {
           deviceName:result.Items[0].deviceName,
           deviceStatus:result.Items[0].deviceStatus,
           deviceSerialNo:result.Items[0].deviceSerialNo,
+          devicesSK:result.Items[0].devicesSK,
           description:result.Items[0].description,
           deviceType:result.Items[0].deviceType,
           vehicle:{
@@ -63,7 +65,7 @@ export class AddDeviceComponent implements OnInit {
           }
         }
       }
-      })
+        })
     }
     catch(error){
       console.error(error)
@@ -95,6 +97,15 @@ export class AddDeviceComponent implements OnInit {
   }
   public submit(){
     if(this.device){
+      const today=new Date()
+      const dd=today.getDate()
+      const mm= today.getMonth()+1;
+      const yyyy=today.getFullYear();
+
+      const HH=today.getHours();
+      const MM =today.getMinutes();
+      const SS=today.getSeconds();
+      this.device.devicesSK=`${this.device.deviceType}#${this.device.deviceSerialNo}#${yyyy}-${mm}-${dd}#${HH}:${MM}:${SS}`
       if(this.device.vehicle.vehicleID){
       this.vehicles.forEach(element => {
         if(element.vehicleID==this.device.vehicle.vehicleID){

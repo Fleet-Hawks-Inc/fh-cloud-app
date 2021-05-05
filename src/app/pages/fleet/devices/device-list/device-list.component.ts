@@ -31,6 +31,7 @@ export class DeviceListComponent implements OnInit {
               deviceStatus: '',
               description: '',
               deviceSerialNo: '',
+              devicesSK:'',
               deviceType: '',
               vehicle: {
                 vehicleID: '',
@@ -42,6 +43,7 @@ export class DeviceListComponent implements OnInit {
                 device.deviceSerialNo=item.deviceSerialNo,
                 device.description=item.description,
                 device.deviceType=item.deviceType,
+                device.devicesSK=item.devicesSK,
                 device.vehicle.vehicleID=item.vehicle.vehicleID,
                 device.vehicle.vehicleIdentification=item.vehicle.vehicleIdentification
                 
@@ -56,12 +58,11 @@ export class DeviceListComponent implements OnInit {
     }
   }
 
-  public deleteDevice(deviceType:any,deviceSerialNo:any){
+  public deleteDevice(devicesSK:any){
     if(confirm('Are you sure you want to delete')){
       try{
-        let deviceSK=`${deviceType}#${deviceSerialNo}`
-        deviceSK=encodeURIComponent(deviceSK);
-        this.apiService.deleteData(`devices/${deviceSK}`).subscribe((result)=>{
+        devicesSK=encodeURIComponent(devicesSK);
+        this.apiService.deleteData(`devices/${devicesSK}`).subscribe((result)=>{
           if(result){
             this.fetchDevices();
             this.toastr.success("Device Deleted Successfully")
