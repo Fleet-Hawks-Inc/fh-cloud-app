@@ -30,9 +30,11 @@ export class AddAssetsComponent implements OnInit {
     groupID: '',
     VIN: '',
     startDate: '',
+    assetType: null,
+    status: '',
+    createdDate: '',
+    createdTime: '',
     assetDetails: {
-      assetType: null,
-      currentStatus: '',
       year: '',
       manufacturer: '',
       model: '',
@@ -201,9 +203,10 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.assetsData.inspectionFormID,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      status: this.assetsData.status,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
         model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
@@ -218,7 +221,6 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
@@ -321,11 +323,13 @@ export class AddAssetsComponent implements OnInit {
 
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
+        this.assetsData.createdTime = result.createdTime;
+        this.assetsData.createdDate = result.createdDate;
         this.assetsData.groupID = result.groupID;
         this.assetsData.inspectionFormID = result.inspectionFormID;
         this.assetsData.VIN = result.VIN;
         this.assetsData.startDate = result.startDate;
-        this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
+        this.assetsData.assetType = result.assetType;
         this.assetsData.assetDetails.year = result.assetDetails.year;
         this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
         // this.getModels(result.assetDetails.manufacturer);
@@ -343,7 +347,7 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'Owner Operator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
-        this.assetsData.assetDetails.currentStatus = result.assetDetails.currentStatus;
+        this.assetsData.status = result.status;
         this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
         this.getStates(result.assetDetails.licenceCountryID);
         this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
@@ -393,9 +397,12 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.assetsData.inspectionFormID,
+      createdTime: this.assetsData.createdTime,
+      createdDate: this.assetsData.createdDate,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      status: this.assetsData.status,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer,
         model: this.assetsData.assetDetails.model,
@@ -410,7 +417,6 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,

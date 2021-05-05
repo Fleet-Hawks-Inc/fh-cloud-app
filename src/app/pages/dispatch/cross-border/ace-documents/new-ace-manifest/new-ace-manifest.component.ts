@@ -323,7 +323,7 @@ export class NewAceManifestComponent implements OnInit {
   }
   fetchAssets() {
     this.apiService.getData('assets/manifest').subscribe((result: any) => {
-      this.assets = result.Items;
+     // this.assets = result.Items;
       console.log('this.assets', this.assets);
     });
   }
