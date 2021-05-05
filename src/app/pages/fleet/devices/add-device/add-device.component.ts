@@ -72,7 +72,7 @@ export class AddDeviceComponent implements OnInit {
   }
   private fetchVehicles() {
     try{
-    this.apiService.getData('vehicles/').subscribe((result)=>{
+    this.apiService.getData('vehicles').subscribe((result)=>{
       if(result){
         this.vehicles=result.Items.map((item)=>{
           let obj={
