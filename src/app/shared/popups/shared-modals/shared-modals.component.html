@@ -908,12 +908,26 @@
                             </optgroup>
                           </ng-select>
                         </div>
+                      </div>
+                    </div>
 
-                        <!-- <div class="col-lg-2 mar-top-37">
-								<button type="button" data-toggle="modal" data-target="#addGroupModal"
-								class="modal-with-form btn btn-sm btn-success text-light"><i
-								   class="fas fa-plus"></i></button>
-								   </div> -->
+                  </div>
+
+                  <div class="row pt-3">
+                    <div class="col-lg-12">
+                      <label
+                        class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Additional Details</label>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Select the Inspection Form<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="inspectionFormID" name="inspectionFormID" placeholder="Select inspection form">
+                                <ng-option *ngFor="let data of inspectionForms" value="{{ data.inspectionFormID }}"> {{
+                                  data.inspectionFormName }}</ng-option>
+                              </ng-select>
+                        </div>
                       </div>
                     </div>
 
@@ -1109,6 +1123,7 @@
 <div class="modal fade" id="addDriverModelVehicle" tabindex="-1" role="dialog" aria-labelledby="addDriverModelVehicle"
   aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
+
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Add Driver</h5>
@@ -1130,7 +1145,7 @@
                         <a class="nav-link" [ngClass]="{'active': currentTab == 2, 'tab-error': hasDocs}" (click)="tabChange(2)"
                             [routerLink]="">Documents Details</a>
                       </li>
-                      
+
                       <li class="nav-item">
                         <a class="nav-link" [ngClass]="{'active': currentTab == 3, 'tab-error': hasLic}" (click)="tabChange(3)"
                             [routerLink]="">Licence Details</a>
@@ -1151,8 +1166,8 @@
                       <!-- basic -->
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 1}" id="addDriverBasic"
                         role="tabpanel" aria-labelledby="addDriverBasic-tab">
-                    
-                        <div>
+
+
                             <div class="form-group row text-dark">
                               <div class="col-lg-10">
                                   <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic
@@ -1181,8 +1196,10 @@
                                                       name="driverType" hidden value="contractor"> Contractor
                                                 </label>
                                               </div>
+
                                           </div>
                                         </div>
+
                                     </div>
 
                                     <div class="col-lg-12" id="employeeIDDiv"
@@ -1214,7 +1231,7 @@
                                               value="{{item.operatorID}}">{{item.companyName}}</ng-option>
                                         </ng-select>
                                     </div>
-                                    
+
                                     <div class="col-lg-12">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">Status<span
                                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1239,19 +1256,20 @@
                                               <input [(ngModel)]="driverData.firstName" name="firstName" type="text"
                                                 class="form-control" (change)="onChangeHideErrors('firstName')" placeholder="eg. John">
                                           </div>
-                                          <div class="col-lg-4">
+                                          <!-- <div class="col-lg-4">
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Middle
                                                 Name&nbsp; <span
                                                     class="text-1 optional-label-color">(optional)</span></label>
                                               <input [(ngModel)]="driverData.middleName" name="middleName" type="text"
                                                 class="form-control" placeholder="eg. matthews">
-                                          </div>
+                                          </div> -->
                                           <div class="col-lg-4">
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                 Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                               <input [(ngModel)]="driverData.lastName" name="lastName" type="text"
                                                 class="form-control" (change)="onChangeHideErrors('lastName')" placeholder="eg. Smith">
                                           </div>
+
                                         </div>
 
                                     </div>
@@ -1277,6 +1295,7 @@
                                           </div>
                                         </div>
 
+
                                     </div>
                                     <div class="col-lg-12" *ngIf="driverData.driverType === 'contractor'">
                                         <div class="row">
@@ -1300,7 +1319,7 @@
                                           </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-lg-12">
                                         <label
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
@@ -1314,7 +1333,8 @@
                                           This Field is required
                                         </label>
                                     </div>
-                                    
+
+
                                   </div>
                               </div>
                               <div class="col-lg-5">
@@ -1373,7 +1393,7 @@
                                     <div class="col-lg-12">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input (change)="onChangeHideErrors('workPhone')" [(ngModel)]="driverData.workPhone" name="workPhone" type="text"
+                                        <input (change)="onChangeHideErrors('phone')" [(ngModel)]="driverData.phone" name="phone" type="text"
                                           class="form-control"
                                           placeholder="eg. 0016780571">
                                     </div>
@@ -1385,6 +1405,7 @@
                                           placeholder="eg. example@email.com">
                                     </div>
                                     <div class="col-lg-12">
+
                                         <div class="row">
                                             <div class="col-lg-6">
                                               <label
@@ -1418,9 +1439,9 @@
                                   </div>
                               </div>
                             </div>
-                        </div>
+
                       </div>
-                      
+
                       <!-- documents -->
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 2}" id="documents"
                         role="tabpanel" aria-labelledby="documents-tab">
@@ -1454,6 +1475,7 @@
                                   <div>
                                     <div class="row">
                                         <div class="col-lg-6">
+
                                           <label
                                               class="control-label font-weight-bold text-lg-right pt-2">Document#<span
                                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1477,6 +1499,7 @@
                               </div>
                               <div class="col-lg-6">
                                   <div class="row">
+
                                     <div class="col-lg-6">
                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                           Issuing Country<span
@@ -1545,7 +1568,7 @@
                                         <input class="form-control p-0" name="document.uploadedDocs{{i}}"
                                           (change)="selectDocuments($event, null)" type="file" multiple>
                                     </div>
-                                    
+
                                   </div>
                               </div>
                               <div class="col-lg-6 align-self-end">
@@ -1565,7 +1588,7 @@
                             </div>
                         </div>
                       </div>
-                    
+
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 3}" id="licence" role="tabpanel"
                       aria-labelledby="payment-tab">
                       <div class="form-group row">
@@ -1629,6 +1652,49 @@
 
 
 
+                            </div>
+                          </div>
+
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">Birth
+                            Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker"
+                            [maxDate]="getcurrentDate" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB"
+                            name="DOB" type="text" data-plugin-datepicker="" class="form-control"
+                            placeholder="Select Date">
+                        </div>
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">
+                            Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input (change)="onChangeHideErrors('phone')" [(ngModel)]="driverData.phone"
+                            name="phone" type="text" class="form-control"
+                            placeholder="Enter the official phone number of the driver">
+                        </div>
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-lg-right pt-2">
+                            Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input (change)="onChangeHideErrors('email')" [(ngModel)]="driverData.email" name="email"
+                            type="text" class="form-control"
+                            placeholder="Enter the official email address of the driver">
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Password<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input [(ngModel)]="driverData.password" name="password" type="text" class="form-control"
+                                (change)="onChangeHideErrors('password')" placeholder="Enter Password">
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Confirm
+                                Password<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input [(ngModel)]="driverData.confirmPassword" name="confirmPassword" type="text"
+                                (change)="onChangeHideErrors('confirmPassword')" class="form-control"
+                                placeholder="Enter Confirm Password">
+                            </div>
+                          </div>
+
+
                             <div class="col-lg-12">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle
                                 Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -1643,7 +1709,7 @@
                           </div>
                         </div>
                       </div>
-                      </div>
+
                       <!-- Payment -->
                       <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" id="payment" role="tabpanel"
                         aria-labelledby="payment-tab">
@@ -1979,10 +2045,10 @@
                           <a href="javascript:;" (click)="nextStep()" *ngIf="currentTab != 5" class="btn btn-success btnNext">Save &
                             Next</a>
                           <button type="submit" *ngIf="currentTab == 5" class="btn btn-success">Save</button>
-            
+
                         </div>
-                      </div> 
-                  </div>  
+                      </div>
+                  </div>
                 </div>
               </form>
         </div>
@@ -2122,7 +2188,7 @@
 
 
 <!-- add asset modal -->
-<div class="modal fade" id="addAsset" tabindex="-1" role="dialog" aria-labelledby="addAsset" aria-hidden="true"> 
+<div class="modal fade" id="addAsset" tabindex="-1" role="dialog" aria-labelledby="addAsset" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px;" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -2290,7 +2356,7 @@
                             <ng-option *ngFor="let data of inspectionFormsAsset" value="{{ data.inspectionFormID }}"> {{
                               data.inspectionFormName }}</ng-option>
                           </ng-select>
-                        
+
                         </div>
                       </div>
                     </div>
@@ -2318,4 +2384,4 @@
       </div>
     </div>
   </div>
-</div> 
+</div>

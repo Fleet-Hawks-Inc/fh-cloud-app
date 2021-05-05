@@ -7,8 +7,13 @@ export const environment = {
   isFeatureEnabled: true,
 
 
+<<<<<<< HEAD
  // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
  BaseUrl: 'http://localhost:3000/api/v1/',
+=======
+   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+  // BaseUrl: 'http://localhost:3000/api/v1/',
+>>>>>>> 5167d9d072437e0cdfbe0c7219eea6419d294cf1
 
 
 

@@ -525,7 +525,7 @@ export class EManifestsComponent implements OnInit {
   }
 
   categoryChange(event,type) {
-    if(event == 'driver' || event == 'vehicle') {
+    if(event == 'driver' || event == 'vehicle' || event == 'entryPort') {
       if(type == 'ace') {
         this.aceSearch = null;
       } else {

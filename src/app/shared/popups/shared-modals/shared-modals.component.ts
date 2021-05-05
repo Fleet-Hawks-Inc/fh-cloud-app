@@ -248,9 +248,8 @@ hasHos: boolean = false;
 
 driverData = {
   userName: '',
-  middleName: '',
   lastName: '',
-  workPhone: '',
+  phone: '',
   email: '',
   firstName: '',
   password: '',
@@ -543,7 +542,7 @@ users = [];
 
  fetchInspectionForms() {
   this.apiService
-    .getData('inspectionForms/type/Vehicle')
+    .getData('inspectionForms/type/vehicle')
     .subscribe((result: any) => {
       this.inspectionForms = result.Items;
     });
@@ -747,7 +746,7 @@ fetchDrivers(){
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
           this.listService.fetchModels();
-          
+
         }
       });
   }
@@ -1519,7 +1518,7 @@ fetchDrivers(){
       this.driverData.gender = value;
     }
   }
-  
+
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
@@ -1729,7 +1728,7 @@ fetchDrivers(){
     // append docs if any
     for(let j = 0; j < this.uploadedDocs.length; j++){
       formData.append('uploadedDocs', this.uploadedDocs[j]);
-    } 
+    }
 
     // append other fields
     formData.append('data', JSON.stringify(this.assetsData));
@@ -1989,9 +1988,8 @@ fetchDrivers(){
   clearDriverData (){
     this.driverData = {
       userName: '',
-      middleName: '',
       lastName: '',
-      workPhone: '',
+      phone: '',
       email: '',
       firstName: '',
       password: '',
@@ -2065,7 +2063,7 @@ fetchDrivers(){
         issuedCountry: '',
         issuedState: '',
         vehicleType: '',
-    
+
       },
       hosDetails: {
         pcAllowed: false,

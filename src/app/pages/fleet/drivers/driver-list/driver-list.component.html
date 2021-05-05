@@ -4,9 +4,9 @@
    }
 </style>
 <section class="body">
-   
+
    <div class="inner-wrapper">
-      
+
       <section role="main" class="content-body pl-0 pr-0 pt-0">
          <header class="page-header">
             <form class="form-horizontal" method="get">
@@ -20,23 +20,23 @@
                         <ul>
                            <li *ngFor="let suggestedDriver of suggestedDrivers" style="cursor: pointer;"
                            (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
-                           >{{ suggestedDriver.firstName }} {{ suggestedDriver.middleName}} {{ suggestedDriver.lastName }}</li>
+                           >{{ suggestedDriver.firstName }}  {{ suggestedDriver.lastName }}</li>
                         </ul>
                      </div>
                   </div>
                   <div class="col-md-2 col-lg-2 pr-1">
                      <ng-select
-                        [(ngModel)]="currentStatus" 
+                        [(ngModel)]="currentStatus"
                         name="currentStatus"
                         placeholder="Select type"
                         class="form-control form-control-sm populate">
-                       
+
                         <ng-option value="All">All</ng-option>
                         <ng-option value="On Duty">On Duty</ng-option>
                         <ng-option value="Off Duty">Off Duty</ng-option>
                         <ng-option value="Sleeper">Sleeper</ng-option>
                         <ng-option value="Driving">Driving</ng-option>
-                        
+
                   </ng-select>
                   </div>
 
@@ -65,7 +65,7 @@
                               <label><input type="checkbox" disabled [(ngModel)]="hideShow.currCycle"
                               name="currCycle" (change)="hideShowColumn()"> Current Cycle </label>
                            </a>
-                           
+
                            <a class="dropdown-item text-1" href="javascript:;">
                               <label><input type="checkbox" [(ngModel)]="hideShow.currVehicle"
                               name="currVehicle" (change)="hideShowColumn()"> Current Vehicle </label>
@@ -462,7 +462,7 @@
                                     <th id="" class="col5 extra">Address</th>
                                     <th id="" class="col6 extra">Payment Type</th>
                                     <th id="" class="col7 extra">SIN</th>
-                                    
+
                                     <th id="" class="col10 extra">Fast Card#</th>
                                     <th id="" class="minWidth120 col17">Status</th>
                                     <th id="" class="minWidth50" style="min-width: 50px;">Actions</th>
@@ -475,7 +475,7 @@
                                  <tr *ngFor="let driver of drivers;let i = index;">
                                     <td *ngIf="hideShow.name" routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;">
                                        <span class="font-weight-bold line-height-lg text-capitalize">
-                                          {{driver.firstName}} {{driver.middleName}} {{driver.lastName}}</span>
+                                          {{driver.firstName}} {{driver.lastName}}</span>
                                     </td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
 
@@ -483,13 +483,13 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.assets">Live Status</td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.contact">{{driver.workPhone}} </td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.contact">{{driver.phone}} </td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.licenceDetails.CDL_Number}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
                                           class="font-weight-bold">Issue Province:
                                        </span>{{statesObject[driver.documentDetails[0].issuingState]}}</td>
-                                    
+
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.citizenship">{{ countriesObject[driver.citizenship] }}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.address">
