@@ -588,13 +588,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   selectDocuments(event: any, i: number) {
     let files = [...event.target.files];
     if (i != null) {
-      if(this.uploadedDocs[i] == undefined) {
+      // if(this.uploadedDocs[i] == undefined) {
+        this.uploadedDocs[i] = [];
         this.uploadedDocs[i] = files;
-      }
+      // }
     } else {
       this.abstractDocs = [];
       this.abstractDocs = files;
     }
+    
   }
 
   selectPhoto(event) {
@@ -706,6 +708,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
+    
     // create form data instance
     const formData = new FormData();
 

@@ -89,7 +89,7 @@ const routes: Routes = [
     }
   ), CommonModule, ChartsModule],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
   entryComponents: [
     UnsavedChangesComponent,
   ]
