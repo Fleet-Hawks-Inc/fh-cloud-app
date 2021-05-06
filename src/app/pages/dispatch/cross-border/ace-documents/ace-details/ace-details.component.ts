@@ -96,7 +96,7 @@ export class AceDetailsComponent implements OnInit {
         onwardCarrierScac: '',
         irsNumber: '',
         estimatedDepartureDate: '',
-        fda: '',
+        fda: false,
 
     }
   };
@@ -251,7 +251,6 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('ACEeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
-        console.log('result', result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
@@ -322,7 +321,7 @@ export class AceDetailsComponent implements OnInit {
         onwardCarrierScac: '',
         irsNumber: '',
         estimatedDepartureDate: '',
-        fda: '',
+        fda: false,
       };
     }
   }
