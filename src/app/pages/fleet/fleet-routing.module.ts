@@ -40,6 +40,10 @@ const routes: Routes = [
     loadChildren: () => import('./geofence/geofence.module').then((m) => m.GeofenceModule) ,
   },
   {
+    path: 'devices',
+    loadChildren: () => import('./devices/devices.module').then((m) => m.DeviceModule) ,
+  },
+  {
     path: 'live-driver',
     component: DashboardDriverComponent,
   },
