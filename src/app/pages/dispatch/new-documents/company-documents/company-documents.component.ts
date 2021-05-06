@@ -49,7 +49,6 @@ export class CompanyDocumentsComponent implements OnInit {
     documentName: '',
     description: '',
     uploadedDocs: [],
-    timeCreated: 0,
     dateCreated: moment().format('YYYY-MM-DD')
   };
   totalRecords = 20;
@@ -263,7 +262,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
-        this.documentData.timeCreated = result.timeCreated;
+        this.documentData['timeCreated'] = result.timeCreated;
         this.documentData.dateCreated = result.dateCreated;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
@@ -495,7 +494,6 @@ export class CompanyDocumentsComponent implements OnInit {
       documentName: '',
       description: '',
       uploadedDocs: [],
-      timeCreated: 0,
       dateCreated: moment().format('YYYY-MM-DD')
     };
     this.newDoc = '';
