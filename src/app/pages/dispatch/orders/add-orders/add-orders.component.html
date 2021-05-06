@@ -39,7 +39,7 @@
          </header>
          <div class="card">
             <div class="card-body">
-               <form #orderForm="ngForm" class="form-horizontal form-bordered" (ngSubmit)="onSubmit()" novalidate>
+               <form #orderForm="ngForm" class="form-horizontal form-bordered" (ngSubmit)="onSubmit()" novalidate #aOrder="ngForm">
                   <div class="form-group row">
                      <div class="col-lg-12 text-right">
                         <!-- <p class="mb-0"><a href="#" class="blue1 font-weight-bold"><i class="fas fa-tools"></i> Load Setting</a></p> -->
@@ -242,7 +242,7 @@
                                     <div>
                                         
                                       <div *ngIf="orderNum.errors.required">
-                                       Customer Po is required.
+                                       Customer PO is required.
                                        </div> 
                                        <div *ngIf="orderNum.errors.pattern">
                                          Customer PO must contains numbers only.
@@ -325,7 +325,7 @@
                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal
                                  Contact Name</label>
                               <input placeholder="eg. John Shaw" [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text"
-                                 class="form-control" #contact="ngModel"  pattern="^[a-zA-Z]+$">
+                                 class="form-control" #contact="ngModel"  pattern="^[a-zA-Z\s]+$">
                                  <div *ngIf="contact.invalid && (contact.dirty || contact.touched)" class="text-danger">
                                    
                                     <div *ngIf="contact.errors.pattern">
@@ -535,7 +535,7 @@
                                                                   name="pickupLocation" (keyup)="searchTerm.next($event);"
                                                                   class="form-control " #pickupLocation="ngModel" required
                                                                   pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                                  #location="ngModel" required pattern="^[a-zA-Z\s\,]+$">
+                                                                  #location="ngModel" required pattern="^[a-zA-Z0-9\s\,-]+$">
                                                                   <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
                                                                      <div *ngIf="location.errors.required">
                                                                       PickUp Location is required.
@@ -1013,7 +1013,7 @@
                                                                   name="dropOffLocation" #dropOffLocation="ngModel"
                                                                   required dropOffLocation
                                                                   (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
-                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required pattern="^[a-zA-Z\,\s]+$">
+                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required pattern="^^[a-zA-Z0-9\s\,-]+$">
                                                                   <div *ngIf="drop.invalid && (drop.dirty || drop.touched)" class="text-danger">
                                    
                                                                      <div *ngIf="drop.errors.required">
@@ -2134,8 +2134,8 @@
                      <div class="col-lg-12 text-right">
                         <a href="javascript:;" routerLink="dispatch/orders"
                            class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                        <button *ngIf="!getOrderID" type="submit" class="btn btn-success">Save</button>
-                        <a *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success text-white">Update</a>
+                        <button *ngIf="!getOrderID" type="submit" class="btn btn-success" [disabled]="aOrder.form.invalid">Save</button>
+                        <button *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success text-white" [disabled]="aOrder.form.invalid">Update</button>
                      </div>
                   </div>
                </form>
