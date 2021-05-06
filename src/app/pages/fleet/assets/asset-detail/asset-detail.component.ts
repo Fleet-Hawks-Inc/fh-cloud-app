@@ -60,7 +60,7 @@ export class AssetDetailComponent implements OnInit {
   reminderBefore: string;
   reminderBeforeUnit: string;
   vendor: string;
-  
+
   devices: any;
   allDevices = [];
 
@@ -78,7 +78,7 @@ export class AssetDetailComponent implements OnInit {
   uploadedPhotos = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
-  messageStatus: boolean = true;
+  messageStatus = true;
   ownerOperatorName = '';
   inspectionFormName = '';
   // Charts
@@ -141,7 +141,7 @@ export class AssetDetailComponent implements OnInit {
   ngOnInit() {
     this.hereMap.mapSetAPI();
     this.hereMap.mapInit(); // Initialize map
-    this.assetID = this.route.snapshot.params['assetID']; // get asset Id from URL
+    this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
     this.fetchAllStatesIDs();
@@ -184,11 +184,11 @@ export class AssetDetailComponent implements OnInit {
           // if (!result.hasOwnProperty('devices')) {
           //   result['devices'] = [];
           // }
-          
+
           if(result.assetDetails.ownerShip == 'Owner Operator'){
             this.apiService.getData('ownerOperators/'+result.assetDetails.ownerOperator).subscribe((result: any) => {
               let res = result.Items[0];
-              this.ownerOperatorName = res.firstName+' ' +res.lastName;
+              this.ownerOperatorName = res.firstName + ' ' + res.lastName;
             });
           }
 
@@ -202,10 +202,10 @@ export class AssetDetailComponent implements OnInit {
           // this.fetchDevicesByID();
           this.assetIdentification = result.assetIdentification;
           this.VIN = result.VIN;
-          this.assetType =  result.assetDetails.assetType;
+          this.assetType =  result.assetType;
           this.groupID =  result.groupID;
           this.startDate =  result.startDate;
-          this.status =  result.assetDetails.currentStatus;
+          this.status =  result.status;
           this.annualSafetyDate =  result.assetDetails.annualSafetyDate;
           this.licencePlateNumber =  result.assetDetails.licencePlateNumber;
           this.licenceCountryID = result.assetDetails.licenceCountryID;
@@ -213,14 +213,13 @@ export class AssetDetailComponent implements OnInit {
           this.year =  result.assetDetails.year;
           this.manufacturer =  result.assetDetails.manufacturer;
           this.model =  result.assetDetails.model;
-          
           this.length = result.assetDetails.length + ' ' + result.assetDetails.lengthUnit;
           this.height = result.assetDetails.height + ' ' + result.assetDetails.heightUnit;
           this.axle = result.assetDetails.axle;
           this.GAWR = result.assetDetails.GAWR;
           this.GAWR_Unit = result.assetDetails.GAWR_Unit;
-          this.GVWR = result.assetDetails.GVWR
-          this.GVWR_Unit = result.assetDetails.GVWR_Unit
+          this.GVWR = result.assetDetails.GVWR;
+          this.GVWR_Unit = result.assetDetails.GVWR_Unit;
           this.ownerShip = result.assetDetails.ownerShip;
           this.remarks = result.assetDetails.remarks;
           this.dateOfIssue = result.insuranceDetails.dateOfIssue;
@@ -233,14 +232,14 @@ export class AssetDetailComponent implements OnInit {
 
           this.ACEID = result.crossBorderDetails.ACE_ID;
           this.ACIID = result.crossBorderDetails.ACI_ID;
-  
+
           if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
             this.assetsImages = result.uploadedPhotos.map(x => ({
-              path: `${this.Asseturl}/${result.carrierID}/${x}`, 
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
               name: x,
             }));
           }
-          
+
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
             this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
@@ -254,7 +253,7 @@ export class AssetDetailComponent implements OnInit {
       .getData('devices')
       .subscribe((result: any) => {
         if (result) {
-          this.deviceData = result['Items'];
+          this.deviceData = result[`Items`];
         }
       }, (err) => {});
   }
@@ -305,13 +304,13 @@ export class AssetDetailComponent implements OnInit {
       this.addDevice();
       // this.fetchAsset();
     }
-    
+
   }
   addDevicesIDs() {
     if (!this.assetData.devices.includes(this.devices)) {
       this.assetData.devices.push(this.devices);
     } else {
-      this.toastr.error("Device already selected");
+      this.toastr.error(`Device already selected`);
     }
     this.fetchDevicesByID();
   }
@@ -370,7 +369,7 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
-  // delete uploaded images and documents 
+  // delete uploaded images and documents
   delete(type: string,name: string){
     this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
       this.fetchAsset();
@@ -379,10 +378,10 @@ export class AssetDetailComponent implements OnInit {
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = this.domSanitizer.bypassSecurityTrustUrl('');
     if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
