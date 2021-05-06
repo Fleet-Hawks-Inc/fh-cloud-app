@@ -91,7 +91,7 @@
                                         <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?  document.docType+'#'  : document.docType }}</td>
                                         <td>{{document.documentName}}</td>
                                         <td>{{document.uploadedBy}}</td>
-                                        <td>Created: {{document.timeCreated | date: 'yyyy/MM/dd'}} <br>
+                                        <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
                                             Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
                                         </td>
                                         <td>
