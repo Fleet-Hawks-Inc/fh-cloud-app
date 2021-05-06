@@ -121,7 +121,7 @@
                                     </tr>
                                     <tr *ngFor="let item of allServiceTasks;">
                                        <td>{{item.taskName}}</td>
-                                       <td>{{currency}} {{item.laborCost}}</td>
+                                       <td> {{item.laborCost}} {{currency}}</td>
                                     </tr>
                                  </tbody>
                               </table>
@@ -158,8 +158,8 @@
                                        <td>{{item.partNumber}}</td>
                                        <td>{{item.description}}</td>
                                        <td>{{item.quantity}}</td>
-                                       <td>{{currency}} {{item.rate}}</td>
-                                       <td>{{currency}} {{item.partCost}}</td>
+                                       <td> {{item.rate}} {{currency}}</td>
+                                       <td>{{item.partCost}} {{currency}}</td>
                                     </tr>
                                  </tbody>
                               </table>
