@@ -1008,7 +1008,8 @@
                           <td>
                             <div class="row">
                               <div class="col-lg-12">
-                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}" (change)="getBorderAssetTypes($event)"
+                                <ng-select [(ngModel)]="trailer.assetID" [ngModelOptions]="{standalone: true}"
+                                (change)="getBorderAssetTypes($event)"
                                   [attr.name]="'trailers['+t+'].assetID'">
                                   <ng-option *ngFor="let asset of assets" value="{{asset.assetID}},{{asset.assetDetails.assetType}}">
                                     {{asset.assetIdentification}}</ng-option>
@@ -1023,9 +1024,9 @@
                                   [attr.name]="'trailers['+t+'].assetTypeCode'">
                                     <!-- <ng-option *ngFor="let assetType of borderAssetTypes" [value]="assetType.borderAssetTypeCode" >
                                       {{assetType.borderAssetTypeName}}</ng-option> -->
-                                      <ng-option *ngFor="let assetType of borderAssetTypes" [value]="assetType.code" >
+                                      <ng-option *ngFor="let assetType of testBorderAsset" [value]="assetType.code" >
                                         {{assetType.description}}</ng-option>
-                                      <ng-option  value="OE">Other</ng-option>
+                                      <!-- <ng-option  value="OE">Other</ng-option> -->
 
                                 </ng-select>
                               </div>

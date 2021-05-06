@@ -322,7 +322,7 @@ export class NewAceManifestComponent implements OnInit {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
-    this.apiService.getData('assets/manifest').subscribe((result: any) => {
+    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
      // this.assets = result.Items;
       console.log('this.assets', this.assets);
     });
@@ -331,24 +331,18 @@ export class NewAceManifestComponent implements OnInit {
    * fetch asset types from mapped table
    */
    testFn() {
-    this.httpClient.get('assets/jsonFiles/assetTypesBorder.json').subscribe((data) => {
+    // this.httpClient.get('assets/jsonFiles/assetTypesBorder.json').subscribe((data) => {
+       this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
       this.testBorderAsset = data;
-      console.log('this.testBorderAsset', this.testBorderAsset);
     });
    }
   async getBorderAssetTypes(e) {
-    const assetID = e;
-    console.log('event data', e);
-    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
-    console.log('this.borderAssetTypes', this.borderAssetTypes);
-    // let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border asset types are fetched whose parent is asset type of selected asset
-    // if (resultData.Items.length > 0) {// if parent asset type exists
-    //   this.borderAssetTypes = resultData.Items;
-    // } else {
-    //   let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
-    //   this.borderAssetTypes = fetchedBorderAssets.Items;
-    // }
+    // const assetID = e;
+    // console.log('event data', e);
+    // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
+    // console.log('this.borderAssetTypes', this.borderAssetTypes);
+
   }
   fetchBorderAssetType() {
     this.apiService.getData('borderAssetTypes').subscribe((result: any) => {

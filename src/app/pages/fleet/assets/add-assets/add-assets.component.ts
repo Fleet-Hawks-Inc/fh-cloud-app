@@ -8,7 +8,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { DomSanitizer} from '@angular/platform-browser';
-import { ListService } from '../../../../services/list.service'
+import { ListService } from '../../../../services/list.service';
+import * as moment from 'moment';
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -27,30 +28,30 @@ export class AddAssetsComponent implements OnInit {
   assetsData = {
     inspectionFormID:'',
     assetIdentification: '',
-    groupID: '',
+    groupID: null,
     VIN: '',
-    startDate: '',
+    startDate:  moment().format('YYYY-MM-DD'),
     assetType: null,
-    status: '',
+    status: null,
     createdDate: '',
     createdTime: '',
     assetDetails: {
-      year: '',
-      manufacturer: '',
-      model: '',
+      year: null,
+      manufacturer: null,
+      model: null,
       length: 0,
-      lengthUnit: '',
+      lengthUnit: null,
       height: 0,
-      heightUnit: '',
+      heightUnit: null,
       axle: '',
       GVWR: '',
-      GVWR_Unit: '',
+      GVWR_Unit: null,
       GAWR: '',
-      GAWR_Unit: '',
-      ownerShip: '',
-      ownerOperator: '',
-      licenceCountryID: '',
-      licenceStateID: '',
+      GAWR_Unit: null,
+      ownerShip: null,
+      ownerOperator: null,
+      licenceCountryID: null,
+      licenceStateID: null,
       licencePlateNumber: '',
       annualSafetyDate: '',
       annualSafetyReminder: true,
@@ -59,11 +60,11 @@ export class AddAssetsComponent implements OnInit {
     insuranceDetails: {
       dateOfIssue: '',
       premiumAmount: '',
-      premiumCurrency: '',
+      premiumCurrency: null,
       dateOfExpiry: '',
       reminderBefore: '',
       reminderBeforeUnit: '',
-      vendor: ''
+      vendor: null
     },
     crossBorderDetails: {
       ACI_ID: '',
@@ -524,7 +525,11 @@ export class AddAssetsComponent implements OnInit {
   fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
-        this.countries = result.Items;
+        result.Items.map(elem => {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+            this.countries.push({countryName: elem.countryName, countryID: elem.countryID})
+          }
+        });
       });
   }
 

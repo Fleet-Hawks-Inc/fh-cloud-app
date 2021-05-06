@@ -66,7 +66,7 @@
                                             <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
                                             <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model"> &amp;</span> {{modelsObjects[model]}}</td>
                                          </tr>
-                                         <tr>
+                                         <tr *ngIf="lengthUnit != null">
                                             <td class="back-color-gray font-weight-bold">Length</td>
                                             <td class="text-capitalize">{{length ? length : '-'}}</td>
                                          </tr>
