@@ -263,7 +263,7 @@ export class AddServiceComponent implements OnInit {
       },
       next: (res) => {
         this.response = res;
-        this.toastr.success('Log added successfully');
+        this.toastr.success('Service log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
         this.spinner.hide();
       },
@@ -842,7 +842,7 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Service Updated Successfully');
+        this.toastr.success('Service log Updated Successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
       },
     });

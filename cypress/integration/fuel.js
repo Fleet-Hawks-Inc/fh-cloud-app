@@ -28,10 +28,10 @@ describe("Fuel Test", function () {
         cy.get('div:nth-of-type(3) > .ng-option-label.ng-star-inserted').last().click();//Tax Type
         cy.get('input[name="tax[0].taxAmount"]').clear();
         cy.get('input[name="tax[0].taxAmount"]').type('10');//Tax Amount
-        cy.get('input[name="fuelData.pricePerUnit"]').clear();
-        cy.get('input[name="fuelData.pricePerUnit"]').type('5');//Cost Per litre
-        cy.get('input[name="fuelData.amountPaid"]').clear();
-        cy.get('input[name="fuelData.amountPaid"]').type('12');//Amount paid
+        cy.get('input[name="pricePerUnit"]').clear();
+        cy.get('input[name="pricePerUnit"]').type('5');//Cost Per litre
+        cy.get('input[name="amountPaid"]').clear();
+        cy.get('input[name="amountPaid"]').type('12');//Amount paid
         cy.get('input[name="fuelDate"]').first().click();
         cy.get('div:nth-of-type(3) > div:nth-of-type(4) > .btn-light.ng-star-inserted').last().click();//Fuel Date
         cy.get('input[name="fuelTime"]').type('10:30');//fuel time
@@ -46,8 +46,8 @@ describe("Fuel Test", function () {
         cy.get('div:nth-of-type(36) > .ng-option-label.ng-star-inserted').last().click();//Country
         cy.get('div:nth-of-type(3) > div:nth-of-type(2) > div:nth-of-type(2) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
         cy.get('div:nth-of-type(2) > .ng-option-label.ng-star-inserted').last().click();//province
-        cy.get('div:nth-of-type(3) > div:nth-of-type(1) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
-        cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(1)').last().click();//city
+        cy.get('div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(1) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
+        cy.get('div:nth-of-type(2) [role="option"]:nth-of-type(3)').last().click();//city
         cy.get('div:nth-of-type(3) > div:nth-of-type(3) > div:nth-of-type(2) > .col-lg-10 > ng-select[role="listbox"] input[role="combobox"]').first().click();
         cy.get('div[role="option"] > .ng-option-label.ng-star-inserted').last().click();//vendor
         const photo = 'download.jpg'

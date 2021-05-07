@@ -20,6 +20,8 @@ import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
 import { AllCarriersComponent } from './all-carriers/all-carriers.component';
+import { MustMatchDirective } from '../directives/must-match.directive';
+
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -82,7 +84,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     RouterModule,
     NgSelectModule,
     NgbModule,
-    SlickCarouselModule
+    SlickCarouselModule,
   ],
   declarations: [
     SidebarComponent,
@@ -95,6 +97,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddVehicleNewComponent,
     SharedModalsComponent,
     AllCarriersComponent,
+    MustMatchDirective
+
   ],
   exports: [
     CommonModule,
@@ -106,7 +110,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MultiSidebarComponents,
     HeaderComponent,
     SidebarComponent,
-    FixedRightSidebarComponent
+    FixedRightSidebarComponent,
+    MustMatchDirective
+
   ],
   providers: [NgSelectConfig, ɵs,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

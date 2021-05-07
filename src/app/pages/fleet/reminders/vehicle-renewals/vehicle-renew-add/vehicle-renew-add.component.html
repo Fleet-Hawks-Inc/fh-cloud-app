@@ -1,170 +1,188 @@
 <section class="body">
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body pt-0 pl-0">
-            <header class="page-header">
-               <div class="row" style="padding-top:10px;">
-                  <div class="col-md-4 col-lg-4">
-                     <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
-                  </div>
-
-                  <div class="col-md-8  col-lg-8 text-right">
-                     <a routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Vehicle Renewals Reminders List</a>
-                  </div>
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pt-0 pl-0">
+         <header class="page-header">
+            <div class="row" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4">
+                  <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
                </div>
-            </header>
-            <div class="row">
-               <div class="col">
-                  <div class="card-body text-dark">
-                     <form class="form-horizontal form-bordered" method="get" id="vehicleRenewalForm" name="vehicleRenewalForm">
-                        <div class="row pt-2">
-                           <div class="col-lg-12">
-                              <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Vehicle Renewal Service Reminder Details</label>
-                           </div>
-                           <div class="col-lg-5 offset-lg-1">
-                              <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [(ngModel)]="reminderData.reminderIdentification" name="reminderIdentification"  placeholder="Select vehicle">
 
-                                          <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">{{item.vehicleIdentification}}</ng-option>
+               <div class="col-md-8  col-lg-8 text-right">
+                  <a routerLink="/fleet/reminders/vehicle-renewals/list" class="btn btn-default btn-sm"
+                     style="color:black;"><i class="fas fa-list"></i> Vehicle Renewals Reminders List</a>
+               </div>
+            </div>
+         </header>
+         <div class="row">
+            <div class="col">
+               <div class="card-body text-dark">
+                  <form class="form-horizontal form-bordered" method="get" id="vehicleRenewalForm"
+                     name="vehicleRenewalForm">
+                     <div class="row pt-2">
+                        <div class="col-lg-12">
+                           <label
+                              class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Vehicle
+                              Renewal Service Reminder Details</label>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select [(ngModel)]="entityID" name="entityID"
+                                    placeholder="Select vehicle" #vec="ngModel" required>
 
-                                    </ng-select>
-                                 </div>
-                                 <div class="col-lg-2  mar-top-37 pl-0">
-                                    <!-- <a href="#addVehicleModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
-                                 </div>
-                              </div>
+                                    <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
+                                       {{item.vehicleIdentification}}</ng-option>
 
+                                 </ng-select>
 
-                              <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed Users/Groups&nbsp;<span
-                                       class="text-1 optional-label-color">(optional)</span></label>
-
-                                    <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers" style="width: 100%;" placeholder="Select user(s)/group(s) to send email">
-                                       <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}</ng-option>
-                                       <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}</ng-option>
-
-                                   </ng-select>
-                                    <div class="checkbox-custom mt-2">
-                                    <input [(ngModel)]="reminderData.sendEmail" name="sendEmail" type="checkbox" [checked]="reminderData.sendEmail">
-                                    <label class="control-label font-weight-bold">Send Email Notification</label>
-                                 </div>
-                                 </div>
-                                 <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
-                                    <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                    class="modal-with-form btn cus-btn-padd btn-success text-light"><i
-                                       class="fas fa-plus"></i> Group</button>
+                                 <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
+                                    <div *ngIf="vec.errors.required">
+                                       Select Vehicle is required.
                                     </div>
 
+                                 </div>
+                              </div>
+                              <div class="col-lg-2  mar-top-37 pl-0">
+                                 <!-- <a href="#addVehicleModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                               </div>
                            </div>
-                           <div class="col-lg-5 offset-lg-1">
+
+
                            <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [(ngModel)]="reminderData.reminderTasks.task"
-                                    name="task" style="width: 100%;" placeholder="Select renewal type">
-                                    <optgroup label="Select Service Task">
-                                       <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
-                                       </ng-option>
-                                    </optgroup>
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
+                                    Users/Groups&nbsp;<span
+                                       class="text-1 optional-label-color">(optional)</span></label>
+
+                                 <ng-select [multiple]="true" [(ngModel)]="reminderData.subscribers" name="subscribers"
+                                    style="width: 100%;" placeholder="Select user(s)/group(s) to send email">
+                                    <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}}
+                                       {{user.lastName}}</ng-option>
+                                    <ng-option *ngFor="let group of groups" [value]="group.groupID">{{group.groupName}}
+                                    </ng-option>
                                  </ng-select>
-                                 </div>
-                                 <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
-                                    <button type="button" data-toggle="modal" data-target="#addServiceTasks" class="modal-with-form btn cus-btn-padd btn-success"><i
-                                          class="fas fa-plus"></i></button>
+                              </div>
+                              <div class="col-lg-2 pl-0" style="margin-top: 39px !important">
+                                 <button type="button" data-toggle="modal" data-target="#addGroupModal"
+                                    class="modal-with-form btn cus-btn-padd btn-success text-light"><i
+                                       class="fas fa-plus"></i> </button>
+                              </div>
+
+                           </div>
+                        </div>
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row pt-2">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                    Renewal Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <ng-select [(ngModel)]="taskID" name="taskID"
+                                    style="width: 100%;" placeholder="Select renewal type" #rt="ngModel" required>
+                                    <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                                    </ng-option>
+                                 </ng-select>
+                                 <div *ngIf="rt.invalid && (rt.dirty || rt.touched)" class="text-danger">
+                                    <div *ngIf="rt.errors.required">
+                                       Select Renewal Type is required.
+                                    </div>
+
                                  </div>
                               </div>
-                              <div class="row pt-2">
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <input
-                                    class="form-control"
-                                    placeholder="yyyy/mm/dd"
-                                    name="dueDate" [(ngModel)]="reminderData.reminderTasks.dueDate"  (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                                  />
-                                 </div>
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <div class="row">
-                                        <div class="col-lg-4"><input [(ngModel)]="time" name="time" type="number" class="form-control" min="1"></div>
-                                        <div class="col-lg-8 pl-0"> <ng-select [(ngModel)]="timeType" name="timeType" >
+                              <div class="col-lg-1 pl-0" style="margin-top: 38px !important;">
+                                 <button type="button" data-toggle="modal" data-target="#addServiceTasks"
+                                    class="modal-with-form btn cus-btn-padd btn-success"><i
+                                       class="fas fa-plus"></i></button>
+                              </div>
+                           </div>
+                           <div class="row pt-2">
+                              <div class="col-lg-5">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due
+                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input class="form-control" placeholder="yyyy/mm/dd" name="dueDate"
+                                    [(ngModel)]="reminderData.tasks.dueDate" (click)="d.toggle()" ngbDatepicker
+                                    #d="ngbDatepicker" #date="ngModel" required />
+                                 <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                                    <div *ngIf="date.errors.required">
+                                       Due Date is required.
+                                    </div>
 
+                                 </div>
+                              </div>
+                              <div class="col-lg-5">
+                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time
+                                    (Reminder of Due Soon)<span
+                                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <div class="row">
+                                    <div class="col-lg-4"><input [(ngModel)]="reminderData.tasks.time" name="time" type="number"
+                                          class="form-control" min="1"></div>
+                                    <div class="col-lg-8 pl-0">
+                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="timeUnit">
                                           <ng-option value="day">Day(s)</ng-option>
                                           <ng-option value="week">Week(s)</ng-option>
                                           <ng-option value="month">Month(s)</ng-option>
-
-                                    </ng-select>
-                                 </div>
-                                    </div>
-
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="form-group row pt-2">
-                           <div class="col-lg-12 text-right">
-                              <div class="row">
-                                 <div class="col-5 offset-1"></div>
-                                 <div class="col-5 offset-1">
-                                    <div class="row">
-                                       <div class="col-10">
-                                          <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2" >Cancel</a>
-                                          <a href="javascript:;" *ngIf="!reminderID" (click)="addRenewal()" class="btn btn-success" >Save</a>
-                                          <a href="javascript:;" *ngIf="reminderID" (click)="updateRenewal()" class="btn btn-success">Update</a>
-                                       </div>
+                                       </ng-select>
                                     </div>
                                  </div>
                               </div>
                            </div>
                         </div>
-                     </form>
-                  </div>
+                     </div>
+
+                     <div class="form-group row pt-2">
+                        <div class="col-lg-12 text-right">
+                           <div class="row">
+                              <div class="col-5 offset-1"></div>
+                              <div class="col-5 offset-1">
+                                 <div class="row">
+                                    <div class="col-10">
+                                       <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2">Cancel</a>
+                                       <button *ngIf="!reminderID" (click)="addRenewal()"
+                                          class="btn btn-success" [disabled]="submitDisabled">Save</button>
+                                       <button *ngIf="reminderID" (click)="updateRenewal()"
+                                          class="btn btn-success" [disabled]="submitDisabled">Update</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
                </div>
             </div>
-         </section>
-    </div>
+         </div>
+      </section>
+   </div>
 </section>
-<!-- ADD TASK MODAL -->
+<!---- ADD TASK MODAL --->
 <div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
    aria-hidden="true">
-   <div class="modal-dialog" style="max-width: 600px;"  role="document">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="serviceTaskModalTitle">Add Renewal Type</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-           </button>
+            </button>
          </div>
          <div class="modal-body text-dark">
-           <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
-             <div class="row">
-                <div class="col-lg-12">
-                  <label
-                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
-               <input [(ngModel)]="serviceTask.taskName"
-                  name="taskName" type="text" class="form-control" placeholder="Enter renewal type name">
-                </div>
-             </div>
-             <div class="row mt-2">
-               <div class="col-lg-12">
-                 <label
-                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type Description&nbsp;<span
-                 class="text-1 optional-label-color">(optional)</span></label>
-                 <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description" placeholder="Enter description of the renewal type"></textarea>
+            <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
+               <div class="row">
+                  <div class="col-lg-12">
+                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
+                     <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
+                        placeholder="Enter renewal type name">
+                  </div>
                </div>
-            </div>
-           </form>
+               <div class="row mt-2">
+                  <div class="col-lg-12">
+                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Type
+                        Description&nbsp;<span class="text-1 optional-label-color">(optional)</span></label>
+                     <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"
+                        placeholder="Enter description of the renewal type"></textarea>
+                  </div>
+               </div>
+            </form>
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -174,50 +192,54 @@
    </div>
 </div>
 <!-- GROUP MODAL -->
-<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
-  <div class="modal-dialog" style="max-width: 600px;" role="document">
-    <div class="modal-content">
-     <div class="modal-header">
-        <h5 class="modal-title">Add Users/Groups</h5>
+<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal"
+   aria-hidden="true">
+   <div class="modal-dialog" style="max-width: 600px;" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title">Add Users/Groups</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
             </button>
-     </div>
-     <div class="modal-body text-dark">
-            <div class="card-body p-0">
-           <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
-              <div class="form-row">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold">Group Name</label>
-                  <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name">
-                </div>
-              </div>
-              <div class="form-row mt-2">
-                 <div class="col-lg-12">
-                   <label class="control-label font-weight-bold">Group Members&nbsp;<span
-                    class="text-1 optional-label-color">(optional)</span></label>
-                   <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers" placeholder="Select group members, other users"
-                   style="width: 100%;">
-                   <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}} {{user.lastName}}
-                   </ng-option>
-                </ng-select>
-                 </div>
-               </div>
-              <div class="form-row mt-2">
-                <div class="col-lg-12">
-                  <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
-                     class="text-1 optional-label-color">(optional)</span></label>
-                  <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
-               </div>
-              </div>
-           </form>
          </div>
-     </div>
-     <div class="modal-footer text-right">
+         <div class="modal-body text-dark">
+            <div class="card-body p-0">
+               <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+                  <div class="form-row">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold">Group Name</label>
+                        <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
+                           placeholder="Enter users group name">
+                     </div>
+                  </div>
+                  <div class="form-row mt-2">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold">Group Members&nbsp;<span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                        <ng-select [multiple]="true" [(ngModel)]="groupData.groupMembers" name="groupMembers"
+                           placeholder="Select group members, other users" style="width: 100%;">
+                           <ng-option *ngFor="let user of users" [value]="user.userName">{{user.firstName}}
+                              {{user.lastName}}
+                           </ng-option>
+                        </ng-select>
+                     </div>
+                  </div>
+                  <div class="form-row mt-2">
+                     <div class="col-lg-12">
+                        <label class="control-label font-weight-bold text-lg-right">Description&nbsp;<span
+                              class="text-1 optional-label-color">(optional)</span></label>
+                        <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4"
+                           id="comment" placeholder="Enter user group description"></textarea>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <div class="modal-footer text-right">
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
-     </div>
-  </div>
-</div>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+         </div>
+      </div>
+   </div>
 </div>

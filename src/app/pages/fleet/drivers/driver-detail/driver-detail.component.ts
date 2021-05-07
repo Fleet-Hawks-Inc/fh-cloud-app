@@ -18,7 +18,7 @@ export class DriverDetailComponent implements OnInit {
   profile: string;
   driverName: string;
   CDL: string;
-  workPhone: string;
+  phone: string;
   email: string;
   homeTerminal: string;
   cycle: string;
@@ -55,7 +55,7 @@ export class DriverDetailComponent implements OnInit {
   liceIssueCountry: any;
   liceWCB: any;
   liceHealthCare: any;
-  liceVehicleType: any
+  liceVehicleType: any;
   licenceExpiry: any;
   liceMedicalCardRenewal: any;
   liceContractStart: any;
@@ -65,12 +65,12 @@ export class DriverDetailComponent implements OnInit {
   paymentType: any;
   loadedMiles: any;
   emptyMiles: any;
-  loadedMilesUnit:string;
-  loadedMilesTeam:string;
-  loadedMilesTeamUnit:string;
-  emptyMilesUnit:string;
-  emptyMilesTeam:string;
-  emptyMilesTeamUnit:string;
+  loadedMilesUnit: string;
+  loadedMilesTeam: string;
+  loadedMilesTeamUnit: string;
+  emptyMilesUnit: string;
+  emptyMilesTeam: string;
+  emptyMilesTeamUnit: string;
   calculateMiles: any;
 
   rate: string;
@@ -98,7 +98,7 @@ export class DriverDetailComponent implements OnInit {
   hosYmAllowed: any;
   hosType: any;
   hosCycle: any;
-
+  timezone: any;
   cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
@@ -113,7 +113,7 @@ export class DriverDetailComponent implements OnInit {
   documentTypeList: any = [];
   documentsTypesObects: any = {};
 
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(
         private hereMap: HereMapService,
         private apiService: ApiService,
@@ -129,7 +129,7 @@ export class DriverDetailComponent implements OnInit {
   ngOnInit() {
     this.hereMap.mapSetAPI();
     this.hereMap.mapInit();
-    this.driverID = this.route.snapshot.params['driverID']; // get asset Id from URL
+    this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
     this.fetchAllCountriesIDs();
@@ -149,38 +149,29 @@ export class DriverDetailComponent implements OnInit {
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         if (result) {
-          this.driverData = await result['Items'][0];
+          this.driverData = await result[`Items`][0];
           this.cycle = this.driverData.hosDetails.hosCycle;
           this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.email = this.driverData.email;
-          this.workPhone = this.driverData.workPhone;
+          this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.licenceDetails.CDL_Number;
-          if(this.driverData.middleName == undefined) {
-            this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
-          } else {
-            this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
-          }
-
+          this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;
           this.contractEnd = this.driverData.contractEnd;
-
-
-          if(this.driverData.driverImage != '' && this.driverData.driverImage != undefined) {
+          if (this.driverData.driverImage != '' && this.driverData.driverImage != undefined) {
             this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
           } else {
             this.profile = 'assets/img/driver/driver.png';
           }
-          if(this.driverData.abstractDocs != undefined && this.driverData.abstractDocs.length > 0) {
+          if (this.driverData.abstractDocs != undefined && this.driverData.abstractDocs.length > 0) {
             this.absDocs = this.driverData.abstractDocs.map(x => ({path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x}));
           }
-
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeContractorId;
           this.ownerOperator = this.driverData.ownerOperator;
-
           this.companyId = this.driverData.companyId;
           this.companyName = this.driverData.companyName;
           this.driverStatus = this.driverData.driverStatus;
@@ -201,7 +192,6 @@ export class DriverDetailComponent implements OnInit {
             if(this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0){
               docmnt = this.driverData.documentDetails[i].uploadedDocs;
             }
-
             newDocuments.push({
               documentType: this.driverData.documentDetails[i].documentType,
               document: this.driverData.documentDetails[i].document,
@@ -212,13 +202,11 @@ export class DriverDetailComponent implements OnInit {
               expiryDate: this.driverData.documentDetails[i].expiryDate,
               uploadedDocs: docmnt
             });
-            if(this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0){
+            if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
               this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x}));
             }
           }
-
           this.documents = newDocuments;
-
           this.liceIssueSate = this.driverData.licenceDetails.issuedState;
           this.liceIssueCountry = this.driverData.licenceDetails.issuedCountry;
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
@@ -254,6 +242,7 @@ export class DriverDetailComponent implements OnInit {
           this.hosYmAllowed = this.driverData.hosDetails.ymAllowed;
           this.hosType = this.driverData.hosDetails.type;
           this.hosCycle = this.driverData.hosDetails.hosCycle;
+          this.timezone = this.driverData.hosDetails.timezone;
 
           this.emerName = this.driverData.emergencyDetails.name;
           this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
@@ -271,11 +260,11 @@ export class DriverDetailComponent implements OnInit {
 
 
   fetchDocuments() {
-    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
       this.documentTypeList = data;
 
       this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
-        return a[b['code']] = b['description'], a;
+        return a[b[`code`]] = b[`description`], a;
       }, {});
 
     })
@@ -333,14 +322,14 @@ export class DriverDetailComponent implements OnInit {
     let ext = pieces[pieces.length-1];
     this.pdfSrc = '';
     if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
 
   // delete uploaded images and documents
-  delete(type: string,name: string, index:string){
+  delete(type: string, name: string, index: string){
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
       this.fetchDriver();
     });

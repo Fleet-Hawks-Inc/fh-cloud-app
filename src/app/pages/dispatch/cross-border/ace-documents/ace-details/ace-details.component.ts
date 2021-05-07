@@ -36,8 +36,10 @@ export class AceDetailsComponent implements OnInit {
         stateProvince: ''
       }
     ],
-    sealNumbers: []
-  };
+    sealNumbers: [],
+    IIT: ''
+    };
+  mainDriver : any  = {};
   drivers = [];
   trailers = [];
   shipments = [];
@@ -52,7 +54,9 @@ export class AceDetailsComponent implements OnInit {
     type: '',
     shipperName: '',
     consigneeName: '',
+    broker: {filerCode: '', portLocation: ''},
     provinceOfLoading: '',
+    goodsAstrayDateOfExit: '',
     commodities: [
       {
         loadedOn: {
@@ -92,7 +96,7 @@ export class AceDetailsComponent implements OnInit {
         onwardCarrierScac: '',
         irsNumber: '',
         estimatedDepartureDate: '',
-        fda: '',
+        fda: false,
 
     }
   };
@@ -120,7 +124,7 @@ export class AceDetailsComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     citizenshipCountry: '',
-    fastCardNumber:'',
+    fastCardNumber: '',
     travelDocuments: [],
   };
   documentTypeList: any = [];
@@ -129,11 +133,12 @@ export class AceDetailsComponent implements OnInit {
   packagingList: any = {};
   thirdPartyTypesList: any  = {};
   thirdPartyTypesObects: any  = {};
-  vehicleTypeObects: any = {};
-  shipmentTypeObects: any = {};
+  vehicleTypeObjects: any = {};
+  shipmentTypeObjects: any = {};
   inBondTypeObects: any = {};
   foreignDestinationListObjects: any = {};
   USportsListObjects: any = {};
+  brokerCodeObject: any  = {};
   sendBorderConnectOption = false;
   constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService,
               private httpClient: HttpClient, private toastr: ToastrService, private router: Router) { }
@@ -152,6 +157,7 @@ export class AceDetailsComponent implements OnInit {
     this.fetchInBondType();
     this.fetchforeignDestinationList();
     this.fetchUSportsList();
+    this.fetchBrokerList();
   }
   fetchforeignDestinationList(){
     this.httpClient.get('assets/jsonFiles/ACEforeignPorts.json').subscribe((data: any) => {
@@ -168,9 +174,11 @@ export class AceDetailsComponent implements OnInit {
     }, {});
     });
   }
+
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
     this.countryCodeName = result;
+    console.log('this.countryCodeName', this.countryCodeName);
     });
   }
   fetchAssetsCodeName() {
@@ -199,9 +207,15 @@ export class AceDetailsComponent implements OnInit {
   fetchPackagingUnits() {
     this.httpClient.get('assets/packagingUnit.json').subscribe(data =>{
       this.packagingList = data;
-
       this.packagingUnitsObects = this.packagingList.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
+      }, {});
+    });
+  }
+  fetchBrokerList() {
+    this.httpClient.get('assets/ACEBrokersList.json').subscribe((data: any) => {
+      this.brokerCodeObject = data.reduce((a: any, b: any) => {
+        return a[b[`filerCode`]] = b[`brokerName`], a;
       }, {});
     });
   }
@@ -212,7 +226,7 @@ export class AceDetailsComponent implements OnInit {
   }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+      this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
     }, {});
     });
@@ -227,7 +241,7 @@ export class AceDetailsComponent implements OnInit {
   }
   fetchShipmentType() {
     this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
-      this.shipmentTypeObects =  data.reduce( (a: any, b: any) => {
+      this.shipmentTypeObjects =  data.reduce( (a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
     }, {});
     });
@@ -243,6 +257,7 @@ export class AceDetailsComponent implements OnInit {
         this.currentStatus = result.currentStatus;
         this.truck = result.truck;
         this.trailers = result.trailers;
+        this.mainDriver = result.mainDriver;
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.shipments = result.shipments;
@@ -279,8 +294,10 @@ export class AceDetailsComponent implements OnInit {
       shipmentControlNumber: shipmentDataFetched[0].shipmentControlNumber,
       type: shipmentDataFetched[0].type,
       provinceOfLoading: shipmentDataFetched[0].provinceOfLoading,
+      goodsAstrayDateOfExit: shipmentDataFetched[0].goodsAstrayDateOfExit,
       shipperName: shipmentDataFetched[0].shipper.name,
       consigneeName: shipmentDataFetched[0].consignee.name,
+      broker: shipmentDataFetched[0].broker,
       commodities: shipmentDataFetched[0].commodities,
       thirdParties: shipmentDataFetched[0].thirdParties,
       inBondDetails: shipmentDataFetched[0].inBondDetails
@@ -304,9 +321,23 @@ export class AceDetailsComponent implements OnInit {
         onwardCarrierScac: '',
         irsNumber: '',
         estimatedDepartureDate: '',
-        fda: '',
+        fda: false,
       };
     }
+  }
+  showMainDriverDetails() {
+    this.driverData = {
+      driverID: this.mainDriver.driverID,
+      driverNumber: this.mainDriver.driverNumber,
+      firstName: this.mainDriver.firstName,
+      gender: this.mainDriver.gender,
+      lastName: this.mainDriver.lastName,
+      dateOfBirth: this.mainDriver.dateOfBirth,
+      citizenshipCountry: this.mainDriver.citizenshipCountry,
+      fastCardNumber: this.mainDriver.fastCardNumber,
+      travelDocuments: this.mainDriver.travelDocuments,
+      usAddress: this.mainDriver.usAddress
+    };
   }
   showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
@@ -331,7 +362,7 @@ export class AceDetailsComponent implements OnInit {
       firstName: passengerDataFetched[0].firstName,
       gender: passengerDataFetched[0].gender,
       lastName: passengerDataFetched[0].lastName,
-      dateOfBirth: passengerDataFetched[0].dateOfBirth,
+      dateOfBirth:  passengerDataFetched[0].dateOfBirth,
       citizenshipCountry: passengerDataFetched[0].citizenshipCountry,
       fastCardNumber: passengerDataFetched[0].fastCardNumber,
       travelDocuments: passengerDataFetched[0].travelDocuments

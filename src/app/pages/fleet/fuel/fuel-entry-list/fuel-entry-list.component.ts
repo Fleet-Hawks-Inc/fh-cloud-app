@@ -328,7 +328,11 @@ export class FuelEntryListComponent implements OnInit {
 
   fetchAllAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
-      this.allAssets = result.Items;
+      for (let i = 0; i < result.Items.length; i++) {
+        if (result.Items[i].assetDetails.assetType === 'f3927440-7b25-11eb-8229-0588f994a55e') {
+          this.allAssets.push(result.Items[i]);
+        }
+      }
     });
   }
 }

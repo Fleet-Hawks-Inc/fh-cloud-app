@@ -224,7 +224,7 @@ export class OrdersListComponent implements OnInit {
           this.ordersEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.ordersEndPoint) {
+        if(this.totalRecords > this.ordersEndPoint) {
           this.ordersEndPoint = this.totalRecords;
         }
 
@@ -249,7 +249,7 @@ export class OrdersListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal('confirmed');
-        console.log('confirmed result',result);
+        // console.log('confirmed result',result);
         this.confirmOrders = result['Items'];
        
         if (result['LastEvaluatedKey'] !== undefined) {
@@ -262,11 +262,11 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.confirmOrdersNext = true;
           this.confirmLastEvaluatedKey = '';
-          this.confirmOrdersEndPoint = this.confirmOrdersEndPoint;
+          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
         }
 
-        if(this.confirmOrdersEndPoint < this.ordersEndPoint) {
-          this.ordersEndPoint = this.confirmedOrdersCount;
+        if(this.confirmedOrdersCount > this.confirmOrdersEndPoint) {
+          this.confirmOrdersEndPoint = this.confirmedOrdersCount;
         }
 
         // disable prev btn

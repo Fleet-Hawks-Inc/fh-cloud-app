@@ -35,6 +35,7 @@ export class AciDetailsComponent implements OnInit {
       policyNumber: '',
       issuedDate: '',
       policyAmount: '',
+      amountCurrency: ''
     },
     licensePlate: {
       number: '',
@@ -42,6 +43,7 @@ export class AciDetailsComponent implements OnInit {
     },
     sealNumbers: []
   };
+  mainDriver : any  = {};
   drivers = [];
   shipmentType: string;
   tripNumber: string;
@@ -95,7 +97,7 @@ export class AciDetailsComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     citizenshipCountry: '',
-    fastCardNumber:'',
+    fastCardNumber: '',
     travelDocuments: [],
   };
   passengerData = {
@@ -118,6 +120,7 @@ export class AciDetailsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
+
   sendBorderConnectOption = false;
   packagingUnitsObjects: any = {};
   vehicleTypeObjects: any = {};
@@ -167,6 +170,7 @@ export class AciDetailsComponent implements OnInit {
     }, {});
     });
   }
+
   fetchCargoExemptionType() {
     this.httpClient.get('assets/ACIcargoExemption.json').subscribe((data: any) => {
       this.cargoExemptionTypeObjects =  data.reduce( (a: any, b: any) => {
@@ -181,6 +185,7 @@ export class AciDetailsComponent implements OnInit {
     }, {});
     });
   }
+
   fetchShipmentType() {
     this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
       this.shipmentTypeObjects =  data.reduce( (a: any, b: any) => {
@@ -221,6 +226,7 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.entryID = this.entryID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -231,8 +237,9 @@ export class AciDetailsComponent implements OnInit {
         this.portOfEntry = result.portOfEntry;
         this.subLocation = result.subLocation;
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
-        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone,
+        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
         this.truck = result.truck;
+        this.mainDriver = result.mainDriver;
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.trailers = result.trailers;
@@ -244,7 +251,6 @@ export class AciDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
-        console.log('fetched data', result);
       });
   }
 
@@ -314,7 +320,20 @@ export class AciDetailsComponent implements OnInit {
       citizenshipCountry: fetchedDriverData[0].citizenshipCountry,
       fastCardNumber: fetchedDriverData[0].fastCardNumber,
       travelDocuments: fetchedDriverData[0].travelDocuments
-    }
+    };
+  }
+  showMainDriverDetails() {
+    this.driverData = {
+      driverID: this.mainDriver.driverID,
+      driverNumber: this.mainDriver.driverNumber,
+      firstName: this.mainDriver.firstName,
+      gender: this.mainDriver.gender,
+      lastName: this.mainDriver.lastName,
+      dateOfBirth: this.mainDriver.dateOfBirth,
+      citizenshipCountry: this.mainDriver.citizenshipCountry,
+      fastCardNumber: this.mainDriver.fastCardNumber,
+      travelDocuments: this.mainDriver.travelDocuments
+    };
   }
   showPassengerDetails(passengerID) {
     const fetchedPassengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
