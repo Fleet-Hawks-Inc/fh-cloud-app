@@ -278,14 +278,24 @@
       <div class="modal-body text-dark">
         <section class="card form-wizard">
           <div class="card-body card-body-nopadding">
-            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleMakeForm">
+            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="vehicleMakeForm" #mForm="ngForm">
               <div class="row">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Make/Manufacturer
-                    Name</label>
+                    Name <span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                  </label>
                   <input [(ngModel)]="vehicleMakeData.manufacturerName" name="manufacturerName" type="text"
 
-                    class="form-control" placeholder="eg. Honda ">
+                    class="form-control" placeholder="eg. Honda " #nMake="ngModel" required pattern="^[a-zA-Z\s]+$">
+                    <div *ngIf="nMake.invalid && (nMake.dirty || nMake.touched)" class="text-danger">
+                      <div *ngIf="nMake.errors.required">
+                        Vehicle make/manufacturer is required.
+                      </div>     
+                      <div *ngIf="nMake.errors.pattern">
+                             Vehicle make/manufacturer must contains uppercase, lowercase and special characters for period(space) only.
+                      </div>
+                    </div>
 
                 </div>
               </div>
@@ -295,7 +305,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <a type="button" class="btn btn-success" href="javascript:;" (click)="addVehicleMake()">Save</a>
+        <a type="button" class="btn btn-success" href="javascript:;" (click)="addVehicleMake()" [disabled]="!mForm.form.valid" >Save</a>
       </div>
     </div>
   </div>
@@ -695,7 +705,15 @@
                               title="Name or Number for Vehicle."></i>
                           </label>
                           <input type="text" class="form-control" name="vehicleIdentification"
-                            [(ngModel)]="vehicleIdentification" placeholder="eg. 7600,XYZ ">
+                            [(ngModel)]="vehicleIdentification" placeholder="eg. 7600,XYZ " #mVehicle="ngModel" required pattern="^[a-zA-Z0-9\s\-\_]+$">
+                            <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
+                              <div *ngIf="mVehicle.errors.required">
+                                Vehicle Name is required.
+                              </div>     
+                              <div *ngIf="mVehicle.errors.pattern">
+                                     Vehcle Name must contains uppercase, lowercase, numbers and special characters for period(space,-,_) only.
+                              </div>
+                            </div>
                         </div>
 
                         <div class="col-lg-12">
@@ -705,7 +723,16 @@
                               data-toggle="tooltip" data-placement="top"
                               title="Vehicle Identification Number."></i></label>
                           <input type="text" class="form-control" name="VIN" [(ngModel)]="VIN"
-                            placeholder=" eg. 5YJSA1DG9DFP14705">
+                            placeholder=" eg. 5YJSA1DG9DFP14705" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9\-]{17,18}$">
+                            <div *ngIf="mVin.invalid && (mVin.dirty || mVin.touched)" class="text-danger">
+                              <div *ngIf="mVin.errors.required">
+                                 VIN is required.    
+                              </div>
+                              <div *ngIf="mVin.errors.pattern">
+                                 VIN must be between 17-18 characters and must not contain any special characters eg. 5YJSA1DG9DFP14705.
+                              </div>
+
+                           </div>
                         </div>
                         <!-- <div class="col-lg-5">
 								<label class="control-label font-weight-bold text-lg-right pt-2">DOT#</label>
@@ -716,12 +743,19 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Make<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="manufacturerID" [(ngModel)]="manufacturerID"
-                            placeholder="Select vehicle make" (change)="resetModel()">
+                            placeholder="Select vehicle make" (change)="resetModel()" #mMake="ngModel" required>
                             <optgroup label="">
                               <ng-option *ngFor="let manufacturer of manufacturers | async"
                                 value="{{manufacturer.manufacturerID}}">{{manufacturer.manufacturerName}}</ng-option>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mMake.invalid && (mMake.dirty || mMake.touched)" class="text-danger">
+                            <div *ngIf="mMake.errors.required">
+                               Select valid make from the list is required.   
+                            </div>
+                            
+
+                         </div>
                         </div>
                         <!-- <div class="col-lg-2  mar-top-37">
 							   <a href="javascript:;" data-toggle="modal" data-target="#addVehicleMakeModal"
@@ -743,7 +777,7 @@
 
 
                           <ng-select class="form-control populate" (change)="getStates($event)" name="countryID"
-                            [(ngModel)]="countryID" placeholder="Select state">
+                            [(ngModel)]="countryID" placeholder="Select state" #mCountry="ngModel" required >
 
                             <optgroup label="">
                               <ng-container *ngFor="let country of countries ">
@@ -753,6 +787,13 @@
                               </ng-container>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
+                            <div *ngIf="mCountry.errors.required">
+                               Select valid country from the list is reuired.    
+                            </div>
+                            
+
+                         </div>
                         </div>
 
                         <!-- <div class="col-lg-2  mar-top-37">
@@ -768,16 +809,23 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle Type<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control" name="vehicleType" [(ngModel)]="vehicleType"
-                            placeholder="Select vehicle type">
+                            placeholder="Select vehicle type" #mVehicleType="ngModel" required>
                             <ng-option *ngFor="let vehicle of vehicleTypeList" [value]="vehicle.code">{{vehicle.name}}
                             </ng-option>
                           </ng-select>
+                          <div *ngIf="mVehicleType.invalid && (mVehicleType.dirty || mVehicleType.touched)" class="text-danger">
+                            <div *ngIf="mVehicleType.errors.required">
+                              Select valid vehicle type from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Year<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control" name="year" [(ngModel)]="year"
-                            placeholder="Select model year">
+                            placeholder="Select model year" #mYear="ngModel" required>
                             <optgroup label="">
                               <ng-option value="1980">1980</ng-option>
                               <ng-option value="1981">1981</ng-option>
@@ -823,18 +871,34 @@
                               <ng-option value="2021">2021</ng-option>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mYear.invalid && (mYear.dirty || mYear.touched)" class="text-danger">
+                            <div *ngIf="mYear.errors.required">
+                             Select valid year from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
                         <div class="col-lg-6">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Plate Number<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" name="plateNumber" [(ngModel)]="plateNumber"
-                            placeholder="Enter plate number eg. XYZ12">
+                            placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
+                            <div *ngIf="mPlate.invalid && (mPlate.dirty || mPlate.touched)" class="text-danger">
+                              <div *ngIf="mPlate.errors.required">
+                                 Plate Number is required.    
+                              </div>
+                              <div *ngIf="mPlate.errors.pattern">
+                                Plate number must contains uppercase.lowercase,numbers and special characters for period(space,-)only.    
+                             </div>
+  
+                           </div>
                         </div>
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Model<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="modelID" [(ngModel)]="modelID"
-                            placeholder="Select vehicle model" id="vehicleSelect">
+                            placeholder="Select vehicle model" id="vehicleSelect" #mModal="ngModel" required>
                             <optgroup label="">
                               <ng-container *ngFor="let model of models | async">
                                 <ng-option *ngIf="model.manufacturerID == manufacturerID" value="{{model.modelID}}">
@@ -842,12 +906,19 @@
                               </ng-container>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mModal.invalid && (mModal.dirty || mModal.touched)" class="text-danger">
+                            <div *ngIf="mModal.errors.required">
+                             Select valid Model from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
                         <div class="col-lg-12">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Province<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID"
-                            placeholder="Select Province" id="stateSelect">
+                            placeholder="Select Province" id="stateSelect" #mProvince="ngModel" required>
                             <optgroup label="">
                               <ng-container *ngFor="let state of states">
                                 <ng-option *ngIf="state.countryID == countryID" value="{{state.stateID}}">
@@ -855,6 +926,13 @@
                               </ng-container>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mProvince.invalid && (mProvince.dirty || mProvince.touched)" class="text-danger">
+                            <div *ngIf="mProvince.errors.required">
+                             Select valid Province from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
                       </div>
 
@@ -874,7 +952,14 @@
 
                           <input type="text" ngbDatepicker #d111="ngbDatepicker"
                             (click)="onChangeHideErrors('annualSafetyDate');d111.toggle()" name="annualSafetyDate"
-                            [(ngModel)]="annualSafetyDate" class="form-control">
+                            [(ngModel)]="annualSafetyDate" class="form-control" #mAnnual="ngModel" required>
+                            <div *ngIf="mAnnual.invalid && (mAnnual.dirty || mAnnual.touched)" class="text-danger">
+                              <div *ngIf="mAnnual.errors.required">
+                               Select valid annual safety date from the list is required.    
+                              </div>
+                             
+  
+                           </div>
 
                         </div>
                         <div class="col-lg-12">
@@ -899,7 +984,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Status<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus"
-                            placeholder="Select status of the vehicle">
+                            placeholder="Select status of the vehicle" #mStatus="ngModel" required>
                             <optgroup label="">
                               <ng-option value="active">Active</ng-option>
                               <ng-option value="inActive">Inactive</ng-option>
@@ -907,6 +992,13 @@
                               <ng-option value="sold">Sold</ng-option>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
+                            <div *ngIf="mStatus.errors.required">
+                             Select valid status from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
                       </div>
                     </div>
@@ -946,7 +1038,14 @@
 
                           <input type="text" ngbDatepicker #d112="ngbDatepicker"
                             (click)="onChangeHideErrors('lifeCycle.startDate');d112.toggle()" class="form-control"
-                            name="lifeCycle.startDate" [(ngModel)]="lifeCycle.startDate">
+                            name="lifeCycle.startDate" [(ngModel)]="lifeCycle.startDate" #mDate="ngModel" required>
+                            <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
+                              <div *ngIf="mDate.errors.required">
+                               Select valid date from the list is required.    
+                              </div>
+                             
+  
+                           </div>
 
                         </div>
                       </div>
@@ -961,7 +1060,14 @@
                               title="Odometer reading on in-service date."></i></label>
 
                           <input type="number" class="form-control" name="lifeCycle.inServiceOdometer" min="1"
-                            [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500">
+                            [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500" #mOdometer="ngModel" required >
+                            <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
+                              <div *ngIf="mStatus.errors.required">
+                               In Service Odometer must contains numbers only.    
+                              </div>
+                             
+  
+                           </div>
                         </div>
                       </div>
                     </div>
@@ -980,16 +1086,30 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input type="number" min="0" placeholder="eg. 5,10" class="form-control" name="specifications.height"
-                                [(ngModel)]="specifications.height">
+                                [(ngModel)]="specifications.height" #mHeight="ngModel" required>
+                                <div *ngIf="mHeight.invalid && (mHeight.dirty || mHeight.touched)" class="text-danger">
+                                  <div *ngIf="mHeight.errors.required">
+                                   Height must contains numbers only.    
+                                  </div>
+                                 
+      
+                               </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select placeholder="Select unit"class="form-control populate" name="specifications.heightUnit"
-                                [(ngModel)]="specifications.heightUnit">
+                                [(ngModel)]="specifications.heightUnit" #mhType="ngModel" required>
                                 <ng-option value="Feet">Feet</ng-option>
                                 <!-- <ng-option value="Centimeters">Centimeters</ng-option>
                                 <ng-option value="Inches">Inches</ng-option> -->
                                 <ng-option value="Meter">Meter</ng-option>
                               </ng-select>
+                              <div *ngIf="mhType.invalid && (mhType.dirty || mhType.touched)" class="text-danger">
+                                <div *ngIf="mhType.errors.required">
+                                 Select valid height from the list is required.    
+                                </div>
+                               
+    
+                             </div>
                             </div>
                           </div>
                         </div>
@@ -1009,10 +1129,17 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Fuel
                             Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" name="fluid.fuelType" [(ngModel)]="fluid.fuelType"
-                            placeholder="Select fuel type">
+                            placeholder="Select fuel type" #mFuel="ngModel" required>
                             <ng-option *ngFor="let fuelType of fuelTypes" value="{{fuelType.fuelTypeID}}">
                               {{fuelType.fuelTypeName}}</ng-option>
                           </ng-select>
+                          <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
+                            <div *ngIf="mFuel.errors.required">
+                             Select valid status from the list is required.    
+                            </div>
+                           
+
+                         </div>
                         </div>
 
                       </div>
@@ -1025,16 +1152,30 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input type="number" min="0" class="form-control" name="fluid.fuelTankOneCapacity"
-                                [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 ">
+                                [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 " #mTank1="ngModel" required>
+                                <div *ngIf="mTank1.invalid && (mTank1.dirty || mTank1.touched)" class="text-danger">
+                                  <div *ngIf="mTank1.errors.required">
+                                   TFuel Tank 1 must contains numbers only.    
+                                  </div>
+                                 
+      
+                               </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select class="form-control populate" name="fluid.fuelTankOneType" min="1"
-                                [(ngModel)]="fluid.fuelTankOneType" placeholder="Select fuel unit">
+                                [(ngModel)]="fluid.fuelTankOneType" placeholder="Select fuel unit" #fuelType1="ngModel" required>
                                 <optgroup label="">
                                   <ng-option value="Gallons">Gallons</ng-option>
                                   <ng-option value="Litres">Litres</ng-option>
                                 </optgroup>
                               </ng-select>
+                              <div *ngIf="fuelType1.invalid && (fuelType1.dirty || fuelType1.touched)" class="text-danger">
+                                <div *ngIf="fuelType1.errors.required">
+                                Select valid fuel type from the list is required.  
+                                </div>
+                               
+    
+                             </div>
                             </div>
                           </div>
 
@@ -1056,16 +1197,30 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input type="number" min="0" class="form-control" name="fluid.oilCapacity"
-                                [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200">
+                                [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #mOil="ngModel" required>
+                                <div *ngIf="mOil.invalid && (mOil.dirty || mOil.touched)" class="text-danger">
+                                  <div *ngIf="mOil.errors.required">
+                                  Oil Capacity must contains numbers only.  
+                                  </div>
+                                 
+      
+                               </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select class="form-control populate" name="fluid.oilCapacityType" min="1"
-                                [(ngModel)]="fluid.oilCapacityType" placeholder="Select fuel unit">
+                                [(ngModel)]="fluid.oilCapacityType" placeholder="Select fuel unit" #fuelType2="ngModel" required>
                                 <optgroup label="">
                                   <ng-option value="Gallons">Gallons</ng-option>
                                   <ng-option value="Litres">Litres</ng-option>
                                 </optgroup>
                               </ng-select>
+                              <div *ngIf="fuelType2.invalid && (fuelType2.dirty || fuelType2.touched)" class="text-danger">
+                                <div *ngIf="fuelType2.errors.required">
+                                 Select valid fuel type from the list is required.    
+                                </div>
+                               
+    
+                             </div>
                             </div>
                           </div>
                         </div>
@@ -1079,16 +1234,30 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input type="number" class="form-control" name="fluid.def" min="0" [(ngModel)]="fluid.def"
-                                placeholder="eg. 100,200 ">
+                                placeholder="eg. 100,200 " #mDef="ngModel" required>
+                                <div *ngIf="mDef.invalid && (mDef.dirty || mDef.touched)" class="text-danger">
+                                  <div *ngIf="mDef.errors.required">
+                                   DEF must contains numbers only.
+                                  </div>
+                                 
+      
+                               </div>
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select class="form-control populate" name="fluid.defType" [(ngModel)]="fluid.defType"
-                                placeholder="Select fuel unit">
+                                placeholder="Select fuel unit" #mDefType="ngModel" required>
                                 <optgroup label="">
                                   <ng-option value="Gallons">Gallons</ng-option>
                                   <ng-option value="Litres">Litres</ng-option>
                                 </optgroup>
                               </ng-select>
+                              <div *ngIf="mDefType.invalid && (mDefType.dirty || mDefType.touched)" class="text-danger">
+                                <div *ngIf="mDefType.errors.required">
+                                 Select valid def type from the list is required.    
+                                </div>
+                               
+    
+                             </div>
                             </div>
                           </div>
                         </div>
