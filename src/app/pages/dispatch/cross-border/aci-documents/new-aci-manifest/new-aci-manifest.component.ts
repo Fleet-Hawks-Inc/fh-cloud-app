@@ -251,7 +251,6 @@ export class NewAciManifestComponent implements OnInit {
     }
     this.searchLocation();
     this.listService.fetchStates();
-    this.listService.fetchCities();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.shippers = this.listService.shipperList;
@@ -327,14 +326,6 @@ export class NewAciManifestComponent implements OnInit {
   }
   saveContainers() {
     this.addedContainers = this.containers;
-  }
-  getLoadingCities(s) {
-    const stateID = this.shipments[s].cityOfLoading.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.loadingCities = result.Items;
-      });
   }
   getAcceptanceCities(s) {
     const stateID = this.shipments[s].cityOfAcceptance.stateProvince;
