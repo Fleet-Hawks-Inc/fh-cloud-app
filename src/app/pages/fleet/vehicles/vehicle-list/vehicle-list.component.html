@@ -26,16 +26,13 @@
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <select data-plugin-selectTwo [(ngModel)]="currentStatus" name="currentStatus" placeholder="Select Type"
-                                class="form-control populate">
-                                <optgroup label="Select Status">
-                                    <option value="">All</option>
-                                    <option value="active">Active</option>
-                                    <option value="inActive">Inactive</option>
-                                    <option value="sold">Sold</option>
-                                    <option value="outOfService">Out of Service</option>
-                                </optgroup>
-                            </select>
+                            <ng-select class="form-control populate" name="currentStatus" [(ngModel)]="currentStatus"
+                                placeholder="Select status">
+                                <ng-option value="active">Active</ng-option>
+                                <ng-option value="inActive">Inactive</ng-option>
+                                <ng-option value="outOfService">Out of Service</ng-option>
+                                <ng-option value="sold">Sold</ng-option>
+                            </ng-select>
                         </div>
 
                         <div class="col-md-2 col-lg-2 pl-2">
@@ -276,7 +273,7 @@
                                                             attr.aria-labelledby="dropdownMenuButton-{{ i }}">
                                                             <a class="dropdown-item" routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}">Edit</a>
                                                             <a class="dropdown-item" href="javascript:;"
-                                                                (click)="deleteVehicle(vehicle.vehicleID)">Delete</a>
+                                                                (click)="deleteVehicle(vehicle)">Delete</a>
                                                         </div>
                                                     </div>
                                                 </td>
