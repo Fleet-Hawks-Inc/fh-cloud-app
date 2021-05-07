@@ -147,7 +147,7 @@ export class AssetDetailComponent implements OnInit {
     this.fetchAllStatesIDs();
     this.fetchManufacturesByIDs();
     this.fetchModalsByIDs();
-    this.fetchAssetsTypes();
+   // this.fetchAssetsTypes();
     this.fetchVendorsByIDs();
     this.fetchGroups();
     this.fetchAllCountriesIDs();
@@ -186,7 +186,7 @@ export class AssetDetailComponent implements OnInit {
           // }
 
           if(result.assetDetails.ownerShip == 'Owner Operator'){
-            this.apiService.getData('ownerOperators/'+result.assetDetails.ownerOperator).subscribe((result: any) => {
+            this.apiService.getData('ownerOperators/'+ result.assetDetails.ownerOperator).subscribe((result: any) => {
               let res = result.Items[0];
               this.ownerOperatorName = res.firstName + ' ' + res.lastName;
             });
@@ -271,14 +271,6 @@ export class AssetDetailComponent implements OnInit {
         this.countriesObject = result;
       });
   }
-
-  fetchAssetsTypes() {
-    this.apiService.getData('assetTypes/get/list')
-      .subscribe((result: any) => {
-        this.assetObjects = result;
-      });
-  }
-
   fetchGroups() {
     this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {

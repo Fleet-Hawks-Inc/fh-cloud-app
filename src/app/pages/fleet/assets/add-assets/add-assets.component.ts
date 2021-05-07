@@ -105,7 +105,7 @@ export class AddAssetsComponent implements OnInit {
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
-  inspectionForms=[];
+  inspectionForms = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
@@ -130,7 +130,6 @@ export class AddAssetsComponent implements OnInit {
     this.fetchCountries(); // fetch countries
     this.fetchGroups();
     this.fetchAssets();
-    this.fetchAssetTypes();
     this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
     if (this.assetID) {
@@ -158,31 +157,11 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
-
-  // fetchAllAssetTypes() {
-  //   this.httpClient.get('assets/trailers.json').subscribe(data =>{
-  //     this.allAssetTypes = data;
-  //   });
-  // }
-
 
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
   }
-  /**
-   * fetch asset types from database
-   */
-  fetchAssetTypes() {
-    this.apiService.getData('assetTypes').subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-
-  }
-
 
   fetchInspectionForms() {
     this.apiService

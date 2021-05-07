@@ -203,7 +203,7 @@ export class NewAceManifestComponent implements OnInit {
     }
   };
   fetchedCoDrivers = [];
-  borderAssetTypes = [];
+  borderAssetTypes: any = [];
   /**
    * for front end validation of US address
    */
@@ -216,7 +216,6 @@ export class NewAceManifestComponent implements OnInit {
   errorFastCard = false;
   address = false;
   amendManifest = false;
-  testBorderAsset: any = [];
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -269,7 +268,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchCarrier();
     this.getCurrentuser();
     this.searchLocation();
-    this.testFn();
+    this.fetchAssetType();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.passengerDocStates = this.listService.stateList;
@@ -323,17 +322,16 @@ export class NewAceManifestComponent implements OnInit {
   }
   fetchAssets() {
     this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-     // this.assets = result.Items;
-      console.log('this.assets', this.assets);
+    this.assets = result.Items;
+    console.log('this.assets', this.assets);
     });
   }
   /***
-   * fetch asset types from mapped table
+   * fetch asset types from json file
    */
-   testFn() {
-    // this.httpClient.get('assets/jsonFiles/assetTypesBorder.json').subscribe((data) => {
+   fetchAssetType() {
        this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
-      this.testBorderAsset = data;
+      this.borderAssetTypes = data;
     });
    }
   async getBorderAssetTypes(e) {
@@ -343,11 +341,6 @@ export class NewAceManifestComponent implements OnInit {
     // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
     // console.log('this.borderAssetTypes', this.borderAssetTypes);
 
-  }
-  fetchBorderAssetType() {
-    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
-      this.borderAssetTypes = result.Items;
-    });
   }
   getStates() {
     this.apiService
@@ -880,7 +873,7 @@ export class NewAceManifestComponent implements OnInit {
         this.usAddress = result.usAddress;
         setTimeout(() => {
           this.getStates();
-          this.fetchBorderAssetType();
+          this.fetchAssetType();
         }, 1000);
       });
   }

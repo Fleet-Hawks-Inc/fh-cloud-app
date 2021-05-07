@@ -1185,10 +1185,12 @@
                               <div class="col-lg-12">
                                 <ng-select placeholder="Select Asset Type" [(ngModel)]="trailer.assetTypeCode" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'trailers['+t+'].assetTypeCode'">
-                                  <ng-option *ngFor="let assetType of borderAssetTypes"
+                                  <!-- <ng-option *ngFor="let assetType of borderAssetTypes"
                                     [value]="assetType.borderAssetTypeCode">
                                     {{assetType.borderAssetTypeName}}</ng-option>
-                                  <ng-option value="OE">Other</ng-option>
+                                  <ng-option value="OE">Other</ng-option> -->
+                                  <ng-option *ngFor="let assetType of borderAssetTypes" [value]="assetType.code" >
+                                    {{assetType.description}}</ng-option>
 
                                 </ng-select>
                               </div>

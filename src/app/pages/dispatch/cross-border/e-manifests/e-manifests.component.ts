@@ -161,6 +161,7 @@ export class EManifestsComponent implements OnInit {
   fetchAssetsList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetsList = result;
+      console.log('this.assetsList', this.assetsList);
     });
   }
   fetchDriversList() {
@@ -191,6 +192,7 @@ export class EManifestsComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
         this.spinner.hide(); // loader hide
+        console.log('ace records', result.Items);
       },
     });
   }
