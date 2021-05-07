@@ -616,8 +616,8 @@
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 2 Capacity:
                     </div>
-                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity == ''">-</div>
-                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity != ''">{{ fluid.fuelTankTwoCapacity }} {{fluid.fuelTankTwoType}}</div>
+                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity == 0">-</div>
+                    <div class="col-lg-8 p-2 border-box" *ngIf="fluid.fuelTankTwoCapacity != 0">{{ fluid.fuelTankTwoCapacity }} {{fluid.fuelTankTwoType}}</div>
                   </div>
                 </div>
                 <!-- WEIGHT DIV -->
