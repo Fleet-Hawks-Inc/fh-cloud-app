@@ -60,7 +60,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelStartPoint = 1;
   fuelEndPoint = this.pageLength;
   allVehicles = [];
-  allAssets = [];
+  allAssets: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -327,8 +327,16 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.allAssets = result.Items;
+    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
+      result.forEach((e: any) => {
+        if(e.assetType == 'reefer') {
+          let obj = {
+            assetID: e.assetID,
+            assetIdentification: e.assetIdentification
+          };
+          this.allAssets.push(obj);
+        }
+      });
     });
   }
 }

@@ -167,7 +167,6 @@ export class AssetListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-        console.log('count', this.totalRecords);
         if (this.assetID !== '' || this.assetType != null) {
           this.assetEndPoint = this.totalRecords;
         }
@@ -208,7 +207,6 @@ export class AssetListComponent implements OnInit {
           status: eventData.status
         }
         this.apiService.postData('assets/delete', record).subscribe((result: any) => {
-          console.log('delete result', result);
             this.allData = [];
             this.assetDraw = 0;
             this.dataMessage = Constants.FETCHING_DATA;
@@ -243,7 +241,6 @@ export class AssetListComponent implements OnInit {
         this.getStartandEndVal();
 
         this.allData = result[`Items`];
-        console.log('all data', this.allData);
 
         if(this.assetID != '' || this.assetType != null) {
           this.assetStartPoint = 1;

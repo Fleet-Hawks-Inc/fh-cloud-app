@@ -55,7 +55,7 @@ export class NewAceManifestComponent implements OnInit {
       { sealNumber: '' },
       { sealNumber: '' },
     ],
-    IIT:  'IMPORTER'
+    IIT: 'IMPORTER'
 
   };
   trailers = [
@@ -204,6 +204,7 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchedCoDrivers = [];
   borderAssetTypes: any = [];
+  borderAssetType: any = [];
   /**
    * for front end validation of US address
    */
@@ -317,23 +318,22 @@ export class NewAceManifestComponent implements OnInit {
       this.form = $('#form_').validate();
     });
   }
-  shipmentLoadedFn(s,i){
+  shipmentLoadedFn(s, i) {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
     this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-    this.assets = result.Items;
-    console.log('this.assets', this.assets);
+      this.assets = result;
     });
   }
   /***
    * fetch asset types from json file
    */
-   fetchAssetType() {
-       this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
-      this.borderAssetTypes = data;
+  fetchAssetType() {
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
+      this.borderAssetType = data;
     });
-   }
+  }
   async getBorderAssetTypes(e) {
     // const assetID = e;
     // console.log('event data', e);
@@ -411,7 +411,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
-     IIT: 'IMPORTER'
+      IIT: 'IMPORTER'
     });
     this.addTrailerBtn = true;
 
@@ -786,7 +786,7 @@ export class NewAceManifestComponent implements OnInit {
           currentStatus: 'Draft',
         };
         console.log('data', data);
-      //  this.addFunction(data);
+        //  this.addFunction(data);
       }
     } else {
       this.usAddress = {
@@ -824,8 +824,8 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-    // this.addFunction(data);
-    console.log('data', data);
+      // this.addFunction(data);
+      console.log('data', data);
     }
   }
   throwErrors() {
@@ -968,7 +968,7 @@ export class NewAceManifestComponent implements OnInit {
           userLocation: ''
         }
       };
-     // this.coDrivers.unshift(this.mainDriver);
+      // this.coDrivers.unshift(this.mainDriver);
       const data = {
         entryID: this.entryID,
         SCAC: this.SCAC,
@@ -989,34 +989,34 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
   // update function
-  updateFunction(data){
+  updateFunction(data) {
     this.apiService
-    .putData(`ACEeManifest/${this.amendManifest}`, data)
-    .subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.toastr.success('Manifest updated successfully.');
-        this.location.back(); // <-- go back to previous location
-      },
-    });
+      .putData(`ACEeManifest/${this.amendManifest}`, data)
+      .subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          this.toastr.success('Manifest updated successfully.');
+          this.location.back(); // <-- go back to previous location
+        },
+      });
   }
   // add Function
   addFunction(data) {
@@ -1055,7 +1055,7 @@ export class NewAceManifestComponent implements OnInit {
       if (newString.length != 14) {
         this.errorFastCard = true;
       }
-       else {
+      else {
         const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
         const fastEnd = newString[12].concat(newString[13]);
         if (fastStart != '4270' && fastStart != '4110') {
@@ -1068,5 +1068,5 @@ export class NewAceManifestComponent implements OnInit {
         }
       }
     }
-   }
+  }
 }

@@ -26,7 +26,6 @@ export class FuelEntryDetailsComponent implements OnInit {
     unitType: '',
     entryID: '',
     billingCurrency: '',
-    DEFFuelQtyUnit: '',
     fuelTime: '',
     fuelDate: '',
     fuelType: '',
@@ -254,7 +253,6 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
         this.fuelData.discType = result.discType;
         this.fuelData.discAmount = result.discAmount;

@@ -151,8 +151,10 @@ export class AciDetailsComponent implements OnInit {
     });
   }
   fetchAssetsCodeName() {
-    this.apiService.getData('borderAssetTypes/get/list').subscribe((result: any) => {
-    this.assetTypeCode = result;
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
+      this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
     });
   }
   fetchVehicleType() {

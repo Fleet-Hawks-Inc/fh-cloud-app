@@ -125,19 +125,19 @@ export class NewAciManifestComponent implements OnInit {
       uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
-      estimatedArrivalTimeZone: '',
+      estimatedArrivalTimeZone: null,
       cityOfLoading: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
       },
       cityOfAcceptance: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
       },
       consolidatedFreight: false,
       specialInstructions: '',
-      shipperID: '',
-      consigneeID: '',
+      shipperID: null,
+      consigneeID: null,
       deliveryDestinations: [{
         name: '',
         contactNumber: '',
@@ -188,9 +188,9 @@ export class NewAciManifestComponent implements OnInit {
         {
           description: '',
           quantity: '',
-          packagingUnit: '',
+          packagingUnit: null,
           weight: '',
-          weightUnit: '',
+          weightUnit: null,
           marksAndNumbers: '',
           hazmatDetails: {
             unCode: '',
@@ -202,7 +202,7 @@ export class NewAciManifestComponent implements OnInit {
       ],
     },
   ];
-  borderAssetTypes: any = [];
+  borderAssetType: any = [];
   packagingUnitsList: any = [];
   loadedType = 'TRAILER';
   containerLoaded = 'TRAILER';
@@ -367,7 +367,7 @@ export class NewAciManifestComponent implements OnInit {
   }
   fetchAssets() {
     this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      this.assets = result.Items;
+      this.assets = result;
     });
   }
   shipmentLoadedFn(s){
@@ -392,7 +392,7 @@ export class NewAciManifestComponent implements OnInit {
   }
   fetchAssetType() {
     this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
-   this.borderAssetTypes = data;
+   this.borderAssetType = data;
  });
 }
   fetchDrivers() {
