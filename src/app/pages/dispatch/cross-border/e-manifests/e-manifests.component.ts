@@ -62,7 +62,8 @@ export class EManifestsComponent implements OnInit {
   acePrevEvauatedKeys = [''];
   aceStartPoint = 1;
   aceEndPoint = this.pageLength;
-
+  aceShipmentTypeObjects: any = {};
+  aciShipmentTypeObjects: any = {};
   aciNext = false;
   aciPrev = true;
   aciDraw = 0;
@@ -113,6 +114,22 @@ export class EManifestsComponent implements OnInit {
     this.initDataTableACI();
     this.fetchCanadianPorts();
     this.fetchUSPorts();
+    this.fetchaceShipmentType();
+    this.fetchaciShipmentType();
+  }
+  fetchaceShipmentType() {
+    this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
+      this.aceShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
+    });
+  }
+  fetchaciShipmentType() {
+    this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
+      this.aciShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
+    });
   }
   getSuggestions(value) {
     this.apiService
@@ -135,7 +152,6 @@ export class EManifestsComponent implements OnInit {
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleID;
-
     this.suggestedVehicles = [];
   }
   getSuggestionsACI(value) {
@@ -213,7 +229,6 @@ export class EManifestsComponent implements OnInit {
           this.aceStartPoint = 1;
           this.aceEndPoint = this.totalRecords;
         }
-
         if (result[`LastEvaluatedKey`] !== undefined) {
           this.aceNext = false;
           // for prev button
@@ -221,17 +236,14 @@ export class EManifestsComponent implements OnInit {
             this.acePrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
           }
           this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
-
         } else {
           this.aceNext = true;
           this.lastEvaluatedKey = '';
           this.aceEndPoint = this.totalRecords;
         }
-
-        if(this.totalRecords < this.aceEndPoint) {
+        if (this.totalRecords < this.aceEndPoint) {
           this.aceEndPoint = this.totalRecords;
         }
-
         // disable prev btn
         if (this.aceDraw > 0) {
           this.acePrev = false;
@@ -264,7 +276,7 @@ export class EManifestsComponent implements OnInit {
         this.toastr.error('Please select search value.');
         return false;
       } else {
-        if(this.filterCategory == 'tripNumber'){
+        if (this.filterCategory == 'tripNumber'){
           this.aceSearch = this.aceSearch.toUpperCase();
         }
         this.ACEList = [];
