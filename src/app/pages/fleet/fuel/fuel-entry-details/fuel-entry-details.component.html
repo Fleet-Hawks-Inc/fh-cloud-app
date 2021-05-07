@@ -44,7 +44,7 @@
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>{{fuelData.odometer}} mi</td>
+                                         <td>{{fuelData.odometer}} miles</td>
                                       </tr>
                                       <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
@@ -56,27 +56,32 @@
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelQtyUnit | titlecase}}</td>
+                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelQtyUnit | titlecase}} litre(s)</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
                                        <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
                                     </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Price/Gallon</td>
+                                         <td class="back-color-gray font-weight-bold">Price Per Unit</td>
                                          <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                       <tr>
+                                        <td class="back-color-gray font-weight-bold">Sub Total</td>
+                                        <td>{{fuelData.totalAmount}} {{fuelData.billingCurrency}}</td>
+                                     </tr>
+                                      <tr>
                                         <td class="back-color-gray font-weight-bold">Discount</td>
-                                        <td><span *ngFor="let tax of fuelData.taxes">{{discountList[fuelData.discType]}} - {{fuelData.discAmount}}</span></td>
+                                        <td><span *ngFor="let tax of fuelData.taxes">{{discountList[fuelData.discType]}} - {{fuelData.discAmount}} {{fuelData.billingCurrency}}</span></td>
                                      </tr>
                                       <tr>
                                         <td class="back-color-gray font-weight-bold">Taxes</td>
-                                        <td><span *ngFor="let tax of fuelData.taxes">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}}</span></td>
+                                        <td><span *ngFor="let tax of fuelData.taxes">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></td>
                                      </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
                                          <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
+                                      </tr>
                                       <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">Fuel Type</td>
                                          <td>{{fuelTypeListCode[fuelData.fuelType]}}</td>
@@ -86,14 +91,29 @@
                                          <td>{{vendorList[fuelData.vendorID]}}</td>
                                       </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Reference</td>
-                                         <td>{{fuelData.reference}}</td>
-                                      </tr>
-                                      <tr>
                                          <td class="back-color-gray font-weight-bold">Location</td>
                                          <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
                                       </tr>
-
+                                      <tr>
+                                        <td class="back-color-gray font-weight-bold">Paid By</td>
+                                        <td>{{driverList[fuelData.paidBy]}}, Reimburse to driver - <span *ngIf="fuelData.reimburseToDriver === true">YES</span>
+                                                                                                   <span *ngIf="fuelData.reimburseToDriver === false">NO</span>,
+                                                                             Deduct from pay - <span *ngIf="fuelData.deductFromPay === true">YES</span>
+                                                                                                 <span *ngIf="fuelData.deductFromPay === false">NO</span>
+                                        </td>
+                                     </tr>
+                                     <tr>
+                                      <td class="back-color-gray font-weight-bold">Payment Mode</td>
+                                      <td>{{fuelData.paymentMode}}</td>
+                                   </tr>
+                                   <tr>
+                                    <td class="back-color-gray font-weight-bold">Reference</td>
+                                    <td>{{fuelData.reference}}</td>
+                                   </tr>
+                                   <tr>
+                                    <td class="back-color-gray font-weight-bold">Description</td>
+                                    <td>{{fuelData.description}}</td>
+                                   </tr>
                                    </tbody>
                                 </table>
                              </div>

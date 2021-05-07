@@ -1,7 +1,7 @@
 <section class="body">
-    
+
     <div class="inner-wrapper">
-      
+
       <section role="main" class="content-body pr-0 pl-0 pt-0">
         <header class="page-header">
            <div class="row" style="padding-top:10px;">
@@ -48,7 +48,7 @@
                              <div class="row  m-0">
                                 <div class="col-lg-5 p-2 font-weight-bold text-3 text-left back-color-gray"> Phone:</div>
 
-                                <div class="col-lg-7 p-2 bor_half">{{workPhone}}</div>
+                                <div class="col-lg-7 p-2 bor_half">{{phone}}</div>
                              </div>
                              <div class="row  m-0">
                                 <div class="col-lg-5 p-2 font-weight-bold text-4 text-left back-color-gray"> Email:</div>
@@ -772,7 +772,7 @@
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Company Name:</div>
                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{companyName}}</div>
                                    </div> -->
-                                    
+
                                     <div class="row  m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
                                         <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>
@@ -823,7 +823,7 @@
                                           </div>
                                           <hr class="solid mt-2">
                                           <div class="row mb-1" *ngFor="let item of absDocs;let d= index">
-                                             <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div> 
+                                             <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document {{d+1}}</a> </div>
                                              <div class="col-lg-3 text-right">
                                                 <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal" data-target="#viewDocModal"></i>
                                                 <a href="javascript:;" (click)="delete('abs',item.name, d)" class="modal-with-form">
@@ -833,7 +833,7 @@
                                        </div>
                                     </div>
                                    </div>
-                                    
+
                                 </div>
                                 <div class="col-6">
                                     <div class="row  m-0">
@@ -854,7 +854,7 @@
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Phone:</div>
-                                        <div class="col-lg-6 p-2 bor_half">{{workPhone}}</div>
+                                        <div class="col-lg-6 p-2 bor_half">{{phone}}</div>
                                     </div>
                                     <div class="row m-0">
                                         <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Email:</div>
@@ -910,7 +910,7 @@
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
                                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.countryName ? item.countryName : '-'}}</div>
                                 </div>
-                                
+
                             </div>
                         </div>
                         <!-- Document -->
@@ -920,7 +920,7 @@
                           </div>
                             <div class="row m-0">
                               <div [style.width]="documents.length > 1 ? '50%' : '100%'" *ngFor="let item of documents;let i = index;">
-                                        
+
                                         <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Document Type:</div>
                                             <div class="col-lg-6 p-2 bor_half text-capitalize">{{documentsTypesObects[item.documentType]}}</div>
@@ -960,7 +960,7 @@
                                                 </div>
                                                 <hr class="solid mt-2">
                                                 <div class="row mb-1" *ngFor="let doc of assetsDocs[i];let d= index">
-                                                   <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-dismiss="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div> 
+                                                   <div class="col-lg-9" ><a href="javascript:;" data-toggle="modal" data-dismiss="modal" data-target="#viewDocModal" (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
                                                    <div class="col-lg-3 text-right">
                                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-dismiss="modal" data-toggle="modal" data-target="#viewDocModal"></i>
                                                       <a href="javascript:;" (click)="delete('doc',doc.name, i)" class="modal-with-form"><i
@@ -971,7 +971,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                
+
                             </div>
                         </div>
                         <div class="tab-pane fade" id="licenceDriverDetails" role="tabpanel" aria-labelledby="licenceDriverDetails-tab">
@@ -989,7 +989,7 @@
                                          <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Country:</div>
                                          <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[liceIssueCountry]}}</div>
                                      </div>
-                                     
+
                                      <div class="row  m-0">
                                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">WCB#:</div>
                                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceWCB ? liceWCB : '-'}}</div>
@@ -1022,7 +1022,7 @@
                              </div>
                            </div>
                         </div>
-                        
+
                         <!-- Payment -->
                         <div class="tab-pane fade" id="paymentDriverDetails" role="tabpanel" aria-labelledby="paymentDriverDetails-tab">
                             <div class="row">
@@ -1075,7 +1075,7 @@
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Delivery Rate:</div>
                                           <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}</div>
                                        </div>
-                                       
+
                                         <div class="row  m-0">
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN:</div>
                                           <div class="col-lg-6 p-2 bor_half">{{sinNumber}}</div>
@@ -1092,9 +1092,9 @@
                                           <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Pay Period:</div>
                                           <div class="col-lg-6 p-2 bor_half text-capitalize">{{payPeriod}}</div>
                                        </div>
-                                       
-                                       
-                                       
+
+
+
                                         <!-- <div class="row  m-0">
                                             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Calculate Empty Miles for a Dispatch After:</div>
                                             <div class="col-lg-6 p-2 bor_half">{{calculateMiles}}</div>
@@ -1128,7 +1128,7 @@
                                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
                                     <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosType}}</div>
                                 </div>
-                                
+
                              <div class="row  m-0">
                               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
                               <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosCycle ? cycleObjects[hosCycle] : '-'}}</div>
@@ -1137,9 +1137,13 @@
                            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
                            <div class="col-lg-6 p-2 bor_half text-capitalize">{{homeTerminal}}</div>
                        </div>
-                                
-                                
-                                
+                       <div class="row  m-0">
+                        <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal Timezone:</div>
+                        <div class="col-lg-6 p-2 bor_half text-capitalize">{{timezone}}</div>
+                    </div>
+
+
+
                             </div>
                         </div>
                         <div class="tab-pane fade" id="emergencyDriverDetails" role="tabpanel" aria-labelledby="emergencyDriverDetails-tab">
@@ -1173,7 +1177,7 @@
                 </form>
             </div>
         </div>
-        
+
     </div>
 </div>
 

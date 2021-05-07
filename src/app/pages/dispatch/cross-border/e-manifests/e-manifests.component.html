@@ -10,20 +10,25 @@
                            <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
                         </ng-select>
                      </div>
-                     
+
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3" *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle'">
+                        <div class="input-group input-group mb-3" *ngIf="filterCategory != 'driver' && filterCategory != 'vehicle' && filterCategory !='entryPort'">
                            <input type="text" name="aceSearch" [(ngModel)]="aceSearch" class="form-control" placeholder="Search" />
                         </div>
-                     
+
                         <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Driver"
                            *ngIf="filterCategory == 'driver'">
                            <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
-                     
+
                         <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Vehicle"
                            *ngIf="filterCategory == 'vehicle'">
                            <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
+
+                        <ng-select [(ngModel)]="aceSearch" name="aceSearch" placeholder="Search By Port Entry"
+                           *ngIf="filterCategory == 'entryPort'">
+                           <ng-option *ngFor="let data of USPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
                      </div>
                      <div class="col-lg-3 col-md-3">
@@ -69,23 +74,28 @@
                            <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
                         </ng-select>
                      </div>
-            
+
                      <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle'">
+                        <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle' &&  aciFilterCategory != 'entryPort'">
                            <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control" placeholder="Search" />
                         </div>
-            
+
                         <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Driver"
                            *ngIf="aciFilterCategory == 'driver'">
                            <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
-            
+
                         <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Vehicle"
                            *ngIf="aciFilterCategory == 'vehicle'">
                            <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }} </ng-option>
                         </ng-select>
+
+                        <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Port Entry"
+                           *ngIf="aciFilterCategory == 'entryPort'">
+                           <ng-option *ngFor="let data of canadianPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                        </ng-select>
                      </div>
-            
+
                      <div class="col-lg-3 col-md-3">
                         <div class="input-daterange input-group">
                            <span class="input-group-prepend">
@@ -107,20 +117,20 @@
                         <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
                      </div>
                      <div class="col-md-3 col-lg-3 text-right">
-            
+
                         <div class="btn-group flex-wrap" *ngIf="!environment">
                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                               aria-expanded="false">Actions<span class="caret"></span></button>
                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                               style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-            
+
                               <a class="dropdown-item text-1" href="">Import</a>
                               <a class="dropdown-item text-1" href="">Export</a>
                            </div>
                         </div>
                         <a [routerLink]="['/dispatch','cross-border','ACI-new-eManifest']" class="btn btn-success btn-sm mx-2"
                            style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
-            
+
                      </div>
                   </div>
                </form>
@@ -167,9 +177,9 @@
                                        <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>-->
 
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.type}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{aceShipmentTypeObjects[shipment.type]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
-                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{ aceManifest.usPortOfArrival }}</td>
+                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{USPortsObjects[aceManifest.usPortOfArrival]}}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.entryID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
                                        <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
@@ -230,14 +240,14 @@
                                     <tr *ngFor = "let aciManifest of ACIList;">
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.shipmentType}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{aciShipmentTypeObjects[shipment.shipmentType]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{ aciManifest.portOfEntry }}</td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{ canadianPortsObjects[aciManifest.portOfEntry]}}</td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span>{{driversList[aciManifest.mainDriver]}}</span><span *ngIf="aciManifest.coDrivers.length>0"><span *ngFor = "let driver of aciManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers">{{assetsList[trailer.assetID]}},</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shippersList[shipment.shipperID]}}</span></td>
-                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{consigneesList[shipment.consigneeID]}}</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shippersList[shipment.shipperID]}},</span></td>
+                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{consigneesList[shipment.consigneeID]}},</span></td>
                                        <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="statusBtn"
                                         [ngClass]="[(aciManifest.currentStatus =='Cancelled Manifest') ? 'ACIcancelBtn' :
                                         (aciManifest.currentStatus =='Transmitted to CBSA') ? 'ACItransmittedBtn' :

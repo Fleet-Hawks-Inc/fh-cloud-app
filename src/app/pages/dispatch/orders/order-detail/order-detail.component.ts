@@ -6,6 +6,7 @@ import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { isObject } from 'util';
 declare var $: any;
 
 @Component({
@@ -78,7 +79,9 @@ export class OrderDetailComponent implements OnInit {
   customerfax = '';
   customerPo = '';
   reference = '';
-  creation = '';
+  // creation = '';
+  creationDate = '';
+  creationTime = '';
   additionalContactName = '';
   additionalPhone  = '';
   additionalEmail = '';
@@ -138,6 +141,9 @@ export class OrderDetailComponent implements OnInit {
   assetTypes = {};
   milesArr = [];
   allPhotos = [];
+  carrierID = '';
+  stateCode = '';
+  zeroRated = false;
   constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -164,10 +170,21 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
+
+          if(result.stateTaxID != '') {
+            this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
+              this.stateCode = result.Items[0].stateCode;
+        
+            });
+          }
+
+          this.zeroRated = result.zeroRated;
+          this.carrierID = result.carrierID;
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
           this.reference = result.reference;
-          this.creation = `${result.creationDate } ${result.creationTime }`;
+          this.creationDate = `${result.creationDate }`;
+          this.creationTime = `${result.creationTime }`;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
@@ -219,7 +236,12 @@ export class OrderDetailComponent implements OnInit {
           let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
           let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-          this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          if(!this.zeroRated){
+            this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) + parseInt(this.taxesTotal) - parseInt(accessorialDeductionInfo);
+          } else {
+            this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
+          }
+          
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
@@ -228,9 +250,29 @@ export class OrderDetailComponent implements OnInit {
             result.uploadedDocs != undefined &&
             result.uploadedDocs.length > 0
           ) {
-            this.docs = result.uploadedDocs.map(
-              (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-            );
+            // this.docs = result.uploadedDocs.map(
+            //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+            // );
+            result.uploadedDocs.map((x) => {
+              let name = x.split('.');
+              let ext = name[name.length-1];
+              let obj = {
+                imgPath: '',
+                docPath:''
+              }
+              if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                obj = {
+                  imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+                  docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+                }
+              } else {
+                obj = {
+                  imgPath: 'assets/img/icon-pdf.png',
+                  docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+                }
+              }
+              this.docs.push(obj);
+            });
             this.allPhotos = result.uploadedDocs;
           }
           // this.orderData = result['Items'];
@@ -373,26 +415,31 @@ export class OrderDetailComponent implements OnInit {
    /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
+  selectDocuments(event) { 
     let files = [...event.target.files];
-    let totalCount = this.allPhotos.length+files.length;
+    let totalCount = this.docs.length+files.length;
 
-    if(totalCount >= 4) {
+    if(totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
       this.toastr.error('Only 4 documents can be uploaded');
       return false;
     } else {
+
+      for (let i = 0; i < files.length; i++) {
+        const element = files[i];
+        let name = element.name.split('.');
+        let ext = name[name.length - 1];
+
+        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
+          $('#bolUpload').val('');
+          this.toastr.error('Only image and pdf files are allowed');
+          return false;
+        }
+      }
+      
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
-      }
-  
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.localPhotos.push(e.target.result);
-        }
-        reader.readAsDataURL(files[i]);
       }
   
       // create form data instance
@@ -403,10 +450,35 @@ export class OrderDetailComponent implements OnInit {
         formData.append('uploadedDocs', this.uploadedDocs[i]);
       }
   
-      this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result) => {
+      this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
+        this.docs = [];
+        if (result.length > 0) {
+          for (let k = 0; k < result.length; k++) {
+            const element = result[k];
+            let name = element.split('.');
+            let ext = name[name.length - 1];
+            let obj = {
+              imgPath: '',
+              docPath: ''
+            }
+            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+              obj = {
+                imgPath: `${this.Asseturl}/${this.carrierID}/${element}`,
+                docPath: `${this.Asseturl}/${this.carrierID}/${element}`
+              }
+            } else {
+              obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${this.Asseturl}/${this.carrierID}/${element}`
+              }
+            }
+            this.docs.push(obj);
+            // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
+          }
+        }
+        this.toastr.success('BOL/POD uploaded successfully');
       })
     }
-    
   }
 
   setSrcValue(){}

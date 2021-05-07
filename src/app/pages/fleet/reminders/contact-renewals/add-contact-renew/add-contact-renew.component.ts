@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import constants from '../../../constants';
+import * as moment from 'moment';
 declare var $: any;
 @Component({
   selector: 'app-add-contact-renew',
@@ -16,16 +17,20 @@ declare var $: any;
 export class AddContactRenewComponent implements OnInit {
   reminderID;
   pageTitle;
+  entityID = null;
+  taskID = null;
   reminderData = {
-    reminderIdentification: '',
-    reminderType: constants.REMINDER_CONTACT,
-    reminderTasks: {
-      task: '',
+    entityID: '',
+    type: constants.REMINDER_CONTACT,
+    tasks: {
+      taskID: '',
       remindByDays: 0,
-      dueDate: ''
+      dueDate: '',
+      time: 0,
+      timeUnit: ''
     },
+    status: '',
     subscribers: [],
-    sendEmail: false
   };
   serviceTask = {
     taskName: '',
@@ -57,6 +62,8 @@ export class AddContactRenewComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  currentDate = moment().format('YYYY-MM-DD');
+
   constructor(private apiService: ApiService,
     private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
     private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
@@ -115,14 +122,14 @@ export class AddContactRenewComponent implements OnInit {
       test = this.groups.filter((g: any) => g.groupID === arr[i]);
       if (test.length > 0) {
         this.finalSubscribers.push({
-          subscriberType: 'group',
-          subscriberIdentification: arr[i]
+          type: 'group',
+          id: arr[i]
         });
       }
       else {
         this.finalSubscribers.push({
-          subscriberType: 'user',
-          subscriberIdentification: arr[i]
+          type: 'user',
+          id: arr[i]
         });
       }
     }
@@ -133,27 +140,34 @@ export class AddContactRenewComponent implements OnInit {
   }
   addRenewal() {
     this.hideErrors();
-    switch (this.timeType) {
+    switch (this.reminderData.tasks.timeUnit) {
       case 'day': {
-        this.numberOfDays = this.time * 1;
+        this.numberOfDays = this.reminderData.tasks.time * 1;
         break;
       }
       case 'month': {
-        this.numberOfDays = this.time * 30;
+        this.numberOfDays = this.reminderData.tasks.time * 30;
         break;
       }
       case 'week': {
-        this.numberOfDays = this.time * 7;
+        this.numberOfDays = this.reminderData.tasks.time * 7;
         break;
       }
-      default:
-        {
-          this.numberOfDays = this.time * 0;
-          break;
-        }
     }
-    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+
+    let remainingDays = moment(this.reminderData.tasks.dueDate,'YYYY-MM-DD').diff(this.currentDate, 'days');
+    if (remainingDays < 0) {
+      this.reminderData.status = 'overdue';
+    } else if (remainingDays <= 7 && remainingDays >= 0) {
+      this.reminderData.status = 'dueSoon';
+    } else {
+      this.reminderData.status = '';
+    }
+
+    this.reminderData.tasks.remindByDays = this.numberOfDays;
     this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -177,15 +191,17 @@ export class AddContactRenewComponent implements OnInit {
         this.toastr.success('Contact Renewal Reminder Added Successfully!');
         this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
         this.reminderData = {
-          reminderIdentification: '',
-          reminderType: constants.REMINDER_CONTACT,
-          reminderTasks: {
-            task: '',
+          entityID: '',
+          type: constants.REMINDER_CONTACT,
+          tasks: {
+            taskID: '',
             remindByDays: 0,
-            dueDate: ''
+            dueDate: '',
+            time: 0,
+            timeUnit: ''
           },
+          status: '',
           subscribers: [],
-          sendEmail: false
         };
       },
     });
@@ -216,20 +232,22 @@ export class AddContactRenewComponent implements OnInit {
 */
   fetchReminderByID() {
     this.apiService
-      .getData('reminders/' + this.reminderID)
+      .getData('reminders/detail/' + this.reminderID)
       .subscribe((result: any) => {
         result = result.Items[0];
         for (let i = 0; i < result.subscribers.length; i++) {
-          this.test.push(result.subscribers[i].subscriberIdentification);
+          this.test.push(result.subscribers[i].id);
         }
+        this.reminderData[`createdDate`] = result.createdDate; 
+        this.reminderData[`createdTime`] = result.createdTime; 
+        this.reminderData[`timeCreated`] = result.timeCreated;
         this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData.reminderTasks.dueDate = result.reminderTasks.dueDate;
-        this.reminderData.reminderTasks.task = result.reminderTasks.task;
-        this.time = result.reminderTasks.remindByDays;
-        this.timeType = `Day(s)`;
-        this.reminderData.sendEmail = result.sendEmail;
+        this.reminderData.tasks.dueDate = result.tasks.dueDate;
+        this.taskID = result.tasks.taskID;
+        this.reminderData.tasks.time = result.tasks.time;
+        this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
+        this.entityID = result.entityID;
         this.reminderData.subscribers = this.test;
-        this.reminderData.reminderIdentification = result.reminderIdentification;
       });
   }
   // UPDATING REMINDER
@@ -237,27 +255,34 @@ export class AddContactRenewComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    switch (this.timeType) {
-      case 'Day(s)': {
-        this.numberOfDays = this.time * 1;
+    switch (this.reminderData.tasks.timeUnit) {
+      case 'day': {
+        this.numberOfDays = this.reminderData.tasks.time * 1;
         break;
       }
-      case 'Month(s)': {
-        this.numberOfDays = this.time * 30;
+      case 'month': {
+        this.numberOfDays = this.reminderData.tasks.time * 30;
         break;
       }
-      case 'Week(s)': {
-        this.numberOfDays = this.time * 7;
+      case 'week': {
+        this.numberOfDays = this.reminderData.tasks.time * 7;
         break;
       }
-      default:
-        {
-          this.numberOfDays = this.time * 0;
-          break;
-        }
     }
-    this.reminderData.reminderTasks.remindByDays = this.numberOfDays;
+
+    let remainingDays = moment(this.reminderData.tasks.dueDate,'YYYY-MM-DD').diff(this.currentDate, 'days');
+    if (remainingDays < 0) {
+      this.reminderData.status = 'overdue';
+    } else if (remainingDays <= 7 && remainingDays >= 0) {
+      this.reminderData.status = 'dueSoon';
+    } else {
+      this.reminderData.status = '';
+    }
+
+    this.reminderData.tasks.remindByDays = this.numberOfDays;
     this.reminderData.subscribers = this.getSubscribers(this.reminderData.subscribers);
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
 
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
@@ -280,15 +305,17 @@ export class AddContactRenewComponent implements OnInit {
         this.router.navigateByUrl('/fleet/reminders/contact-renewals/list');
         this.Success = '';
         this.reminderData = {
-          reminderIdentification: '',
-          reminderType: constants.REMINDER_CONTACT,
-          reminderTasks: {
-            task: '',
+          entityID: '',
+          type: constants.REMINDER_CONTACT,
+          tasks: {
+            taskID: '',
             remindByDays: 0,
-            dueDate: ''
+            dueDate: '',
+            time: 0,
+            timeUnit: ''
           },
+          status: '',
           subscribers: [],
-          sendEmail: false
         };
       },
     });

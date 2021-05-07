@@ -189,7 +189,7 @@
                       >
                         Order Creation Date/Time:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ creation }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ creationDate | date:"yyyy/MM/dd" }} {{ creationTime }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -639,28 +639,33 @@
                           <div class="col-lg-10 pull-left">
                             <p class="mb-0 text-dark">
                               Freight Fee
-                              <span class="pull-right">${{charges.freightFee.amount}}</span>
+                              <span class="pull-right">{{charges.freightFee.amount}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Fuel Surcharge
-                              <span class="pull-right">${{charges.fuelSurcharge.amount}}</span>
+                              <span class="pull-right">{{charges.fuelSurcharge.amount}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Amount
-                              <span class="pull-right">${{charges.accessorialFeeInfo.total}}</span>
+                              <span class="pull-right">{{charges.accessorialFeeInfo.total}} {{charges.freightFee.currency}}</span>
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Deduction Amount
-                              <span class="pull-right">${{charges.accessorialDeductionInfo.total}}</span>
+                              <span class="pull-right">{{charges.accessorialDeductionInfo.total}} {{charges.freightFee.currency}}</span>
                             </p>
-                            <p class="mb-0 text-dark">
-                              Tax Amount <span class="pull-right">${{taxesTotal}}</span>
+
+                            <!-- <p class="mb-0 text-dark" *ngIf="stateCode == ''"> Tax Amount <span class="pull-right">${{taxesTotal}}</span> </p> -->
+                            <p class="mb-0 text-dark" *ngIf="!zeroRated">
+                              Tax Amount 
+                              <span *ngIf="stateCode != ''">
+                                ( <span class="font-weight-semibold">{{ stateCode }}</span> )
+                              </span>
+                              <span class="pull-right">{{taxesTotal}} {{charges.freightFee.currency}}</span>
                             </p>
+
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Total Charges</strong>
-                              <span class="pull-right">$ {{ 
-                                totalCharges
-                              }}</span>
+                              <span class="pull-right">{{totalCharges}} {{charges.freightFee.currency}}</span>
                             </p>
                             <!-- <p class="mb-0 text-dark bordtopdas">
                               <strong>Advance Received</strong>
@@ -668,7 +673,7 @@
                             </p> -->
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Balance</strong>
-                              <span class="pull-right">${{ balance }}</span>
+                              <span class="pull-right">{{ balance }} {{charges.freightFee.currency}}</span>
                             </p>
                           </div>
                         </div>
@@ -710,8 +715,8 @@
 
                         <div class="row">
                           <div class="col-md-3 mb-3 mt-3" *ngFor="let doc of docs">
-                            <a class="image-popup-no-margins" href="{{doc}}" target="_blank">
-                              <img class="img-fluid" src="{{doc}}" width="75">
+                            <a class="image-popup-no-margins" href="{{doc.docPath}}" target="_blank">
+                              <img class="img-fluid" src="{{doc.imgPath}}" width="75">
                             </a>
                           </div>
   

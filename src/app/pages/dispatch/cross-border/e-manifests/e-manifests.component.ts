@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
 import  Constants  from '../../../fleet/constants';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { HttpClient } from '@angular/common/http';
 
 declare var $: any;
 @Component({
@@ -53,14 +54,16 @@ export class EManifestsComponent implements OnInit {
   aciToDate = '';
   fromDate = '';
   toDate = '';
-
+  canadianPortsObjects: any = {};
+  USPortsObjects: any = {};
   aceNext = false;
   acePrev = true;
   aceDraw = 0;
   acePrevEvauatedKeys = [''];
   aceStartPoint = 1;
   aceEndPoint = this.pageLength;
-
+  aceShipmentTypeObjects: any = {};
+  aciShipmentTypeObjects: any = {};
   aciNext = false;
   aciPrev = true;
   aciDraw = 0;
@@ -92,7 +95,8 @@ export class EManifestsComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private httpClient: HttpClient
   ) {}
 
   ngOnInit() {
@@ -108,6 +112,24 @@ export class EManifestsComponent implements OnInit {
     this.getACECount();
     this.getACICount();
     this.initDataTableACI();
+    this.fetchCanadianPorts();
+    this.fetchUSPorts();
+    this.fetchaceShipmentType();
+    this.fetchaciShipmentType();
+  }
+  fetchaceShipmentType() {
+    this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
+      this.aceShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
+    });
+  }
+  fetchaciShipmentType() {
+    this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
+      this.aciShipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
+    });
   }
   getSuggestions(value) {
     this.apiService
@@ -119,10 +141,17 @@ export class EManifestsComponent implements OnInit {
         }
       });
   }
+  fetchUSPorts() {
+    this.httpClient.get('assets/USports.json').subscribe((data: any) => {
+            this.USPortsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`code`]] = b[`portOfEntry`], a;
+      }, {});
+    });
+
+  }
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleID;
-
     this.suggestedVehicles = [];
   }
   getSuggestionsACI(value) {
@@ -181,7 +210,13 @@ export class EManifestsComponent implements OnInit {
       },
     });
   }
-
+  fetchCanadianPorts() {
+    this.httpClient.get('assets/canadianPorts.json').subscribe((data: any) => {
+      this.canadianPortsObjects = data.reduce((a: any, b: any) => {
+        return a[b[`number`]] = b[`name`], a;
+      }, {});
+    });
+  }
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('ACEeManifest/fetch/records?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory + '&lastKey=' + this.lastEvaluatedKey)
@@ -194,7 +229,6 @@ export class EManifestsComponent implements OnInit {
           this.aceStartPoint = 1;
           this.aceEndPoint = this.totalRecords;
         }
-
         if (result[`LastEvaluatedKey`] !== undefined) {
           this.aceNext = false;
           // for prev button
@@ -202,17 +236,14 @@ export class EManifestsComponent implements OnInit {
             this.acePrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
           }
           this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
-
         } else {
           this.aceNext = true;
           this.lastEvaluatedKey = '';
           this.aceEndPoint = this.totalRecords;
         }
-
-        if(this.totalRecords < this.aceEndPoint) {
+        if (this.totalRecords < this.aceEndPoint) {
           this.aceEndPoint = this.totalRecords;
         }
-
         // disable prev btn
         if (this.aceDraw > 0) {
           this.acePrev = false;
@@ -245,7 +276,7 @@ export class EManifestsComponent implements OnInit {
         this.toastr.error('Please select search value.');
         return false;
       } else {
-        if(this.filterCategory == 'tripNumber'){
+        if (this.filterCategory == 'tripNumber'){
           this.aceSearch = this.aceSearch.toUpperCase();
         }
         this.ACEList = [];
@@ -434,6 +465,7 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
+
   getACECount() {
     this.apiService.getData('ACEeManifest/get/count?aceSearch=' + this.aceSearch + '&fromDate='+this.fromDate +'&toDate='+this.toDate +'&category='+this.filterCategory).subscribe({
       complete: () => {},
@@ -505,7 +537,7 @@ export class EManifestsComponent implements OnInit {
   }
 
   categoryChange(event,type) {
-    if(event == 'driver' || event == 'vehicle') {
+    if(event == 'driver' || event == 'vehicle' || event == 'entryPort') {
       if(type == 'ace') {
         this.aceSearch = null;
       } else {

@@ -107,4 +107,11 @@ this.spinner.hide();
   deleteFormParam(t){
     this.parameters.splice(t,1)
   }
+  defaultCheckbox(event){
+    this.isDefaultInspectionType =event.target.checked? 1: 0
+
+    if(this.isDefaultInspectionType==1){
+
+    }
+    }
 }

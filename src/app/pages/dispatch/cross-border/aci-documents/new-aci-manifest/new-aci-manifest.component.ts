@@ -76,7 +76,9 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
-  fetchedCoDrivers=[];
+  fetchedCoDrivers = [];
+  modifiedBy  = '';
+  createdBy = '';
   truck = {
     truckID: '',
     sealNumbers: [
@@ -249,7 +251,6 @@ export class NewAciManifestComponent implements OnInit {
     }
     this.searchLocation();
     this.listService.fetchStates();
-    this.listService.fetchCities();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.shippers = this.listService.shipperList;
@@ -261,8 +262,8 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchDrivers();
     this.fetchCountries();
     this.fetchUSStates();
-    // this.fetchCities();
     this.fetchCarrier();
+    this.fetchCities();
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
       this.CANPorts = data;
     });
@@ -305,16 +306,6 @@ export class NewAciManifestComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-
-
-  fixCoDrivers(){
-    if(this.mainDriver){
-      let currentDriver = this.mainDriver;
-      this.fetchedCoDrivers = this.drivers.filter(value => {
-        return value.driverID !== currentDriver;
-    });
-    }
-  }
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
@@ -335,14 +326,6 @@ export class NewAciManifestComponent implements OnInit {
   }
   saveContainers() {
     this.addedContainers = this.containers;
-  }
-  getLoadingCities(s) {
-    const stateID = this.shipments[s].cityOfLoading.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.loadingCities = result.Items;
-      });
   }
   getAcceptanceCities(s) {
     const stateID = this.shipments[s].cityOfAcceptance.stateProvince;
@@ -377,6 +360,12 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
+  shipmentLoadedFn(s){
+    this.shipments[s].loadedOn.number = '';
+  }
+  containerLoadedFn(i) {
+    this.containers[i].loadedOn.number = '';
+  }
   /***
     * fetch asset types from mapped table
     */
@@ -390,6 +379,11 @@ export class NewAciManifestComponent implements OnInit {
       let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
       this.borderAssetTypes = fetchedBorderAssets.Items;
     }
+  }
+  fetchBorderAssetType() {
+    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
+      this.borderAssetTypes = result.Items;
+    });
   }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
@@ -842,9 +836,12 @@ export class NewAciManifestComponent implements OnInit {
         this.passengers = result.passengers;
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
+        this.createdBy = result.createdBy;
+        this.modifiedBy = result.modifiedBy;
         setTimeout(() => {
           this.fetchUSStates();
-        }, 2000);
+          this.fetchBorderAssetType();
+        }, 1000);
       });
   }
   updateACIManifest() {
@@ -867,6 +864,8 @@ export class NewAciManifestComponent implements OnInit {
       shipments: this.shipments,
       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated,
+      createdBy: this.createdBy,
+      modifiedBy: this.modifiedBy
     };
     this.apiService
       .putData(

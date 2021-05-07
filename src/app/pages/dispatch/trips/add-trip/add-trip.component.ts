@@ -172,6 +172,7 @@ export class AddTripComponent implements OnInit {
     dateCreated = '';
     mapOrderActive = 'active';
     mapRouteActive = '';
+    submitDisabled = false;
 
     ngOnInit() {
 
@@ -188,6 +189,7 @@ export class AddTripComponent implements OnInit {
         this.fetchRoutes();
         this.mapShow();
         this.fetchVehicles();
+        this.fetchAssetsByIDs();
         this.fetchAssets();
         this.fetchDrivers();
         // this.fetchCountries();
@@ -195,7 +197,6 @@ export class AddTripComponent implements OnInit {
         this.fetchReceiversByIDs();
         this.searchLocation();
         this.fetchDriversByIDs();
-        this.fetchAssetsByIDs();
         this.fetchVehiclesByIDs();
         this.getCurrentuser();
         this.fetchAllCarrierIDs();
@@ -1017,15 +1018,9 @@ export class AddTripComponent implements OnInit {
 
     async createTrip() {
         this.hideErrors();
-        // if (this.tripData.reeferTemperature != '') {
-        //     this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
-        // } else {
-        //     this.tripData.reeferTemperature = '';
-        // }
-        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
-        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
+        this.submitDisabled = true;
+        
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
-        // this.tripData.dateCreated =  this.dateCreated;
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = []; 
         let planData = this.trips
@@ -1156,16 +1151,19 @@ export class AddTripComponent implements OnInit {
                     )
                     .subscribe({
                         complete: () => {
+                            this.submitDisabled = false;
                             this.spinner.hide();
                             this.throwErrors();
                         },
                         error: () => {
+                            this.submitDisabled = false;
                         },
                         next: () => {
                         },
                     });
             },
             next: (res) => {
+                this.submitDisabled = false;
                 this.spinner.hide();
                 this.response = res;
                 this.updateOrderStatus();
@@ -1535,19 +1533,11 @@ export class AddTripComponent implements OnInit {
 
     async updateTrip() {
         this.hideErrors();
-        // if (this.tripData.reeferTemperature != '' && this.tripData.reeferTemperatureUnit != '') {
-        //     this.tripData.reeferTemperature = this.tripData.reeferTemperature + this.tripData.reeferTemperatureUnit;
-        // } else {
-        //     this.tripData.reeferTemperature = '';
-        // }
-
+        this.submitDisabled = true;
         this.tripData.orderId = this.OrderIDs;
         this.tripData.tripPlanning = [];
         this.tripData['tripID'] = this.route.snapshot.params['tripID'];
-        // this.tripData.dateCreated =  moment(this.dateCreated, 'YYYY-MM-DD hh:mm:ss').format('x');
-        // this.tripData.dateCreated = parseInt(this.tripData.dateCreated);
         this.tripData.dateCreated = moment(this.dateCreated).format("YYYY-MM-DD");
-        // this.tripData.dateCreated =  this.dateCreated;
         let planData = this.trips;
 
         if (planData.length == 0) {
@@ -1687,16 +1677,19 @@ export class AddTripComponent implements OnInit {
                     )
                     .subscribe({
                         complete: () => {
+                            this.submitDisabled = false;
                             this.spinner.hide();
                             this.throwErrors();
                         },
                         error: () => {
+                            this.submitDisabled = false;
                         },
                         next: () => {
                         },
                     });
             },
             next: (res) => {
+                this.submitDisabled = false;
                 this.spinner.hide();
                 this.response = res;
                 this.updateOrderStatus();

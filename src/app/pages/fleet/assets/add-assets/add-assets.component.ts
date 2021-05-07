@@ -31,7 +31,7 @@ export class AddAssetsComponent implements OnInit {
     VIN: '',
     startDate: '',
     assetDetails: {
-      assetType: '',
+      assetType: null,
       currentStatus: '',
       year: '',
       manufacturer: '',
@@ -107,7 +107,7 @@ export class AddAssetsComponent implements OnInit {
 
   years = [];
   ownOperators: any = [];
-
+  submitDisabled = false;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -194,6 +194,7 @@ export class AddAssetsComponent implements OnInit {
    */
   addAsset() {
     this.hideErrors();
+    this.submitDisabled = true;
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
@@ -269,13 +270,17 @@ export class AddAssetsComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+             },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Asset added successfully.');
         this.router.navigateByUrl('/fleet/assets/list');
@@ -381,6 +386,7 @@ export class AddAssetsComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
 
+    this.submitDisabled = true;
     const data = {
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
@@ -429,7 +435,6 @@ export class AddAssetsComponent implements OnInit {
       uploadedDocs: this.existingDocs
     };
 
-
     // create form data instance
     const formData = new FormData();
 
@@ -462,13 +467,17 @@ export class AddAssetsComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
+              this.submitDisabled = false;
               this.throwErrors();
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
+        this.submitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully.');

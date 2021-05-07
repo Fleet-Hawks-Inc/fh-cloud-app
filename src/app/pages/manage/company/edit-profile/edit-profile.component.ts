@@ -21,7 +21,7 @@ export class EditProfileComponent implements OnInit {
   carriers: any = [];
   companyForm;
   Asseturl = this.apiService.AssetUrl;
-  logoSrc  = '';
+  logoSrc = '';
   CCC = '';
   DBAName = '';
   DOT = '';
@@ -102,19 +102,10 @@ export class EditProfileComponent implements OnInit {
   Error = '';
   Success = '';
   existingPhotos = [];
-   // front end validation
-   errorEIN = false;
-   errorMC = false;
-   errorDOT = false;
-   errorCCC =  false;
-   errorSCAC = false;
-   errorRouting = false;
-   errorTransit = false;
-   errorInstitution = false;
-   errorAccount = false;
+  yardAddress: boolean;
   constructor(private apiService: ApiService, private toaster: ToastrService,
-              private headerFnService: InvokeHeaderFnService,
-              private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
+    private headerFnService: InvokeHeaderFnService,
+    private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -122,113 +113,113 @@ export class EditProfileComponent implements OnInit {
     this.fetchCountries();
     this.searchLocation(); // search location on keyup
     this.companyID = this.route.snapshot.params[`carrierID`];
-    if(this.companyID){
+    if (this.companyID) {
       this.fetchCarrier();
     }
     $(document).ready(() => {
       this.companyForm = $('#companyForm').validate();
     });
   }
-  headerComponentFunction(){
+  headerComponentFunction() {
     this.headerFnService.callHeaderFn();
   }
-   fetchCarrier() {
+  fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
-        .subscribe(async(result: any) => {
-          this.carriers = result.Items[0];
-          this.carrierID = this.carriers.carrierID;
-          this.CCC = this.carriers.CCC;
-          this.DBAName = this.carriers.DBAName;
-          this.DOT = this.carriers.DOT;
-          this.EIN = this.carriers.EIN;
-          this.MC = this.carriers.MC;
-          this.SCAC = this.carriers.SCAC;
-          this.CSA = this.carriers.CSA;
-          this.CTPAT = this.carriers.CTPAT;
-          this.PIP = this.carriers.PIP;
-          this.cargoInsurance = this.carriers.cargoInsurance;
-          this.email = this.carriers.email;
-          this.userName = this.carriers.userName;
-          this.carrierName = this.carriers.carrierName;
-          this.password = this.carriers.password,
+      .subscribe(async (result: any) => {
+        this.carriers = result.Items[0];
+        this.carrierID = this.carriers.carrierID;
+        this.CCC = this.carriers.CCC;
+        this.DBAName = this.carriers.DBAName;
+        this.DOT = this.carriers.DOT;
+        this.EIN = this.carriers.EIN;
+        this.MC = this.carriers.MC;
+        this.SCAC = this.carriers.SCAC;
+        this.CSA = this.carriers.CSA;
+        this.CTPAT = this.carriers.CTPAT;
+        this.PIP = this.carriers.PIP;
+        this.cargoInsurance = this.carriers.cargoInsurance;
+        this.email = this.carriers.email;
+        this.userName = this.carriers.userName;
+        this.carrierName = this.carriers.carrierName;
+        this.password = this.carriers.password,
           this.confirmPassword = this.carriers.password,
           // carrierBusinessName = '';
           this.findingWay = this.carriers.findingWay;
-          this.firstName = this.carriers.firstName;
-          this.lastName = this.carriers.lastName;
-          this.liabilityInsurance = this.carriers.liabilityInsurance;
-          this.phone = this.carriers.phone;
-          this.bizCountry =  this.carriers.bizCountry;
-          // uploadedLogo = '';
-          this.fleets = {
-            curtainSide: this.carriers.fleets.curtainSide,
-            dryVans: this.carriers.fleets.dryVans,
-            flatbed: this.carriers.fleets.flatbed,
-            reefers: this.carriers.fleets.reefers,
-            totalFleets: this.carriers.fleets.totalFleets,
-            trailers: this.carriers.fleets.trailers,
-            trucks: this.carriers.fleets.trucks,
-          };
-          for (let i = 0; i < this.carriers.address.length; i++) {
-            await this.getStates(this.carriers.address[i].countryID);
-            await this.getCities(this.carriers.address[i].stateID);
-            if (this.carriers.address[i].manual) {
-              this.newAddress.push({
-                addressID: this.carriers.address[i].addressID,
-                addressType: this.carriers.address[i].addressType,
-                countryID: this.carriers.address[i].countryID,
-                countryName: this.carriers.address[i].countryName,
-                stateID: this.carriers.address[i].stateID,
-                stateName: this.carriers.address[i].stateName,
-                cityID: this.carriers.address[i].cityID,
-                cityName: this.carriers.address[i].cityName,
-                zipCode: this.carriers.address[i].zipCode,
-                address1: this.carriers.address[i].address1,
-                address2: this.carriers.address[i].address2,
-                geoCords: {
-                  lat: this.carriers.address[i].geoCords.lat,
-                  lng: this.carriers.address[i].geoCords.lng
-                },
-                manual: this.carriers.address[i].manual
-              })
-            } else {
-              this.newAddress.push({
-                addressID: this.carriers.address[i].addressID,
-                addressType: this.carriers.address[i].addressType,
-                countryID: this.carriers.address[i].countryID,
-                countryName: this.carriers.address[i].countryName,
-                stateID: this.carriers.address[i].stateID,
-                stateName: this.carriers.address[i].stateName,
-                cityID: this.carriers.address[i].cityID,
-                cityName: this.carriers.address[i].cityName,
-                zipCode: this.carriers.address[i].zipCode,
-                address1: this.carriers.address[i].address1,
-                address2: this.carriers.address[i].address2,
-                geoCords: {
-                  lat: this.carriers.address[i].geoCords.lat,
-                  lng: this.carriers.address[i].geoCords.lng
-                },
-                userLocation: this.carriers.address[i].userLocation
-              });
-            }
+        this.firstName = this.carriers.firstName;
+        this.lastName = this.carriers.lastName;
+        this.liabilityInsurance = this.carriers.liabilityInsurance;
+        this.phone = this.carriers.phone;
+        this.bizCountry = this.carriers.bizCountry;
+        // uploadedLogo = '';
+        this.fleets = {
+          curtainSide: this.carriers.fleets.curtainSide,
+          dryVans: this.carriers.fleets.dryVans,
+          flatbed: this.carriers.fleets.flatbed,
+          reefers: this.carriers.fleets.reefers,
+          totalFleets: this.carriers.fleets.totalFleets,
+          trailers: this.carriers.fleets.trailers,
+          trucks: this.carriers.fleets.trucks,
+        };
+        for (let i = 0; i < this.carriers.address.length; i++) {
+          await this.getStates(this.carriers.address[i].countryID);
+          await this.getCities(this.carriers.address[i].stateID);
+          if (this.carriers.address[i].manual) {
+            this.newAddress.push({
+              addressID: this.carriers.address[i].addressID,
+              addressType: this.carriers.address[i].addressType,
+              countryID: this.carriers.address[i].countryID,
+              countryName: this.carriers.address[i].countryName,
+              stateID: this.carriers.address[i].stateID,
+              stateName: this.carriers.address[i].stateName,
+              cityID: this.carriers.address[i].cityID,
+              cityName: this.carriers.address[i].cityName,
+              zipCode: this.carriers.address[i].zipCode,
+              address1: this.carriers.address[i].address1,
+              address2: this.carriers.address[i].address2,
+              geoCords: {
+                lat: this.carriers.address[i].geoCords.lat,
+                lng: this.carriers.address[i].geoCords.lng
+              },
+              manual: this.carriers.address[i].manual
+            })
+          } else {
+            this.newAddress.push({
+              addressID: this.carriers.address[i].addressID,
+              addressType: this.carriers.address[i].addressType,
+              countryID: this.carriers.address[i].countryID,
+              countryName: this.carriers.address[i].countryName,
+              stateID: this.carriers.address[i].stateID,
+              stateName: this.carriers.address[i].stateName,
+              cityID: this.carriers.address[i].cityID,
+              cityName: this.carriers.address[i].cityName,
+              zipCode: this.carriers.address[i].zipCode,
+              address1: this.carriers.address[i].address1,
+              address2: this.carriers.address[i].address2,
+              geoCords: {
+                lat: this.carriers.address[i].geoCords.lat,
+                lng: this.carriers.address[i].geoCords.lng
+              },
+              userLocation: this.carriers.address[i].userLocation
+            });
           }
-          this.addressDetails = this.newAddress;
-          this.bank = {
-            branchName: this.carriers.bank.branchName ,
-            accountNumber: this.carriers.bank.accountNumber,
-            transitNumber: this.carriers.bank.transitNumber,
-            routingNumber: this.carriers.bank.routingNumber,
-            institutionNumber: this.carriers.bank.institutionNumber,
-          };
-          this.bankID = this.carriers.bank.bankID;
-          this.uploadedLogo = this.carriers.uploadedLogo;
-          this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        });
+        }
+        this.addressDetails = this.newAddress;
+        this.bank = {
+          branchName: this.carriers.bank.branchName,
+          accountNumber: this.carriers.bank.accountNumber,
+          transitNumber: this.carriers.bank.transitNumber,
+          routingNumber: this.carriers.bank.routingNumber,
+          institutionNumber: this.carriers.bank.institutionNumber,
+        };
+        this.bankID = this.carriers.bank.bankID;
+        this.uploadedLogo = this.carriers.uploadedLogo;
+        this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+      });
   }
   // UPDATE PART
- /**
-   * address
-   */
+  /**
+    * address
+    */
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
@@ -416,89 +407,107 @@ export class EditProfileComponent implements OnInit {
         }
       }
     }
-    const data = {
-      carrierID: this.carrierID,
-      entityType: 'carrier',
-      CCC: this.CCC,
-      DBAName: this.DBAName,
-      DOT: this.DOT,
-      EIN: this.EIN,
-      MC: this.MC,
-      SCAC: this.SCAC,
-      cargoInsurance: this.cargoInsurance,
-      email: this.email,
-      userName: this.userName,
-      CTPAT: this.CTPAT,
-      CSA: this.CSA,
-      PIP: this.PIP,
-      carrierName: this.carrierName.trim(),
-      findingWay: this.findingWay,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      liabilityInsurance: this.liabilityInsurance,
-      password: this.password,
-      bizCountry: this.bizCountry,
-      confirmPassword: this.confirmPassword,
-      addressDetails: this.addressDetails,
-      phone: this.phone,
-      fleets: {
-        curtainSide: this.fleets.curtainSide,
-        dryVans: this.fleets.dryVans,
-        flatbed: this.fleets.flatbed,
-        reefers: this.fleets.reefers,
-        totalFleets: this.fleets.totalFleets,
-        trailers: this.fleets.trailers,
-        trucks: this.fleets.trucks
-      },
-      bank: {
-        branchName: this.bank.branchName ,
-        accountNumber: this.bank.accountNumber,
-        transitNumber: this.bank.transitNumber,
-        routingNumber: this.bank.routingNumber,
-        institutionNumber: this.bank.institutionNumber,
-        bankID:  this.bankID
-      },
-      uploadedLogo: this.uploadedLogo
-
-    };
-    // create form data instance
-    const formData = new FormData();
-
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (this.addressDetails[i].addressType === 'yard') {
+        this.yardAddress = true;
+        break;
+      } else {
+        this.yardAddress = false;
+      }
     }
-    // append other fields
-    formData.append('data', JSON.stringify(data));
+    if (this.yardAddress) {
+      const data = {
+        carrierID: this.carrierID,
+        entityType: 'carrier',
+        CCC: this.CCC,
+        DBAName: this.DBAName,
+        DOT: this.DOT,
+        EIN: this.EIN,
+        MC: this.MC,
+        SCAC: this.SCAC,
+        cargoInsurance: this.cargoInsurance,
+        email: this.email,
+        userName: this.userName,
+        CTPAT: this.CTPAT,
+        CSA: this.CSA,
+        PIP: this.PIP,
+        carrierName: this.carrierName.trim(),
+        findingWay: this.findingWay,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        liabilityInsurance: this.liabilityInsurance,
+        password: this.password,
+        bizCountry: this.bizCountry,
+        confirmPassword: this.confirmPassword,
+        addressDetails: this.addressDetails,
+        phone: this.phone,
+        fleets: {
+          curtainSide: this.fleets.curtainSide,
+          dryVans: this.fleets.dryVans,
+          flatbed: this.fleets.flatbed,
+          reefers: this.fleets.reefers,
+          totalFleets: this.fleets.totalFleets,
+          trailers: this.fleets.trailers,
+          trucks: this.fleets.trucks
+        },
+        bank: {
+          branchName: this.bank.branchName,
+          accountNumber: this.bank.accountNumber,
+          transitNumber: this.bank.transitNumber,
+          routingNumber: this.bank.routingNumber,
+          institutionNumber: this.bank.institutionNumber,
+          bankID: this.bankID
+        },
+        uploadedLogo: this.uploadedLogo
 
-    this.apiService.putData('carriers', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-             // val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.toaster.success('Carrier updated successfully.');
-        this.cancel();
-        this.headerComponentFunction();
-      },
-    });
+      };
+      // create form data instance
+      const formData = new FormData();
 
+      // append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      // append other fields
+      formData.append('data', JSON.stringify(data));
 
+      this.apiService.putData('carriers', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                // val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.toaster.success('Carrier updated successfully.');
+          this.cancel();
 
+          this.updateUser();
+        },
+      });
+    } else {
+      this.toaster.warning('Yard address is mandatory');
+    }
+  }
+  updateUser() {
+    let currentUser = `${this.firstName} ${this.lastName}`;
+    const outputName = currentUser.match(/\b(\w)/g);
+    let smallName = outputName.join('');
+    localStorage.setItem('currentUserName', currentUser);
+    localStorage.setItem('nickName', smallName);
+    this.headerComponentFunction();
   }
   throwErrors() {
     from(Object.keys(this.errors))
