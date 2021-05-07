@@ -476,7 +476,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveShipper(i) {
-    this.isShipperSubmit = true; 
+    // this.isShipperSubmit = true; 
     let location = this.shippersReceivers[i].shippers.pickupLocation;
     let geoCodeResponse;
     let platform = new H.service.Platform({
@@ -575,7 +575,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async saveReceiver(i) {
-    this.isReceiverSubmit = true;
+    // this.isReceiverSubmit = true;
 
     let location = this.shippersReceivers[i].receivers.dropOffLocation;
     let geoCodeResponse;
@@ -968,8 +968,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
-    this.isSubmit = true;
-    if (!this.checkFormErrors()) return false;
+    // this.isSubmit = true;
+    // if (!this.checkFormErrors()) return false;
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
 
@@ -1037,7 +1037,7 @@ export class AddOrdersComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.Success = "";
             },
             error: () => {},
@@ -1459,8 +1459,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   updateOrder() {
-    this.isSubmit = true;
-    if (!this.checkFormErrors()) return false;
+    // this.isSubmit = true;
+    // if (!this.checkFormErrors()) return false;
 
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
     this.orderData['uploadedDocs'] = this.existingUploadedDocs;
@@ -1526,7 +1526,7 @@ export class AddOrdersComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.Success = "";
             },
             error: () => {},
