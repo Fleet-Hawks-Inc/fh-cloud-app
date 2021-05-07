@@ -49,7 +49,7 @@ export class CompanyDocumentsComponent implements OnInit {
     documentName: '',
     description: '',
     uploadedDocs: [],
-    timeCreated: 0
+    dateCreated: moment().format('YYYY-MM-DD')
   };
   totalRecords = 20;
   pageLength = 10;
@@ -110,7 +110,7 @@ export class CompanyDocumentsComponent implements OnInit {
     });
   }
 
-  selectDoc(event) {
+  selectDoc(event) { 
     let files = [...event.target.files];
     let condition = true;
 
@@ -262,7 +262,8 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
-        this.documentData.timeCreated = result.timeCreated;
+        this.documentData['timeCreated'] = result.timeCreated;
+        this.documentData.dateCreated = result.dateCreated;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
@@ -327,7 +328,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.dataMessage = Constants.FETCHING_DATA;
 
           this.fetchDocuments();
-          this.initDataTable();
+          this.initDataTable(); 
         });
     }
   }
@@ -384,22 +385,26 @@ export class CompanyDocumentsComponent implements OnInit {
 
   searchFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.documents = [];
-      this.suggestions = [];
-      if (this.filterValues.startDate !== '') {
-        let start = this.filterValues.startDate;
-        this.filterValues.start = moment(start + ' 00:00:01').format("X");
-        this.filterValues.start = this.filterValues.start * 1000;
+      if(this.filterValues.startDate != '' && this.filterValues.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.documents = [];
+        this.suggestions = [];
+        if (this.filterValues.startDate !== '') {
+          this.filterValues.start = this.filterValues.startDate;
+        }
+        if (this.filterValues.endDate !== '') {
+          this.filterValues.end = this.filterValues.endDate;
+        }
+        // this.pageLength = this.totalRecords;
+        this.fetchDocumentsCount();
+        this.initDataTable();
       }
-      if (this.filterValues.endDate !== '') {
-        let end = this.filterValues.endDate;
-        this.filterValues.end = moment(end + ' 23:59:59').format("X");
-        this.filterValues.end = this.filterValues.end * 1000;
-      }
-      this.pageLength = this.totalRecords;
-      this.fetchDocumentsCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -418,9 +423,10 @@ export class CompanyDocumentsComponent implements OnInit {
         start: <any>'',
         end: <any>''
       };
+      this.resetCountResult();
       this.fetchDocumentsCount();
       this.initDataTable();
-      this.resetCountResult();
+      
     } else {
       return false;
     }
@@ -473,6 +479,7 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   resetCountResult() {
+    this.lastEvaluatedKey = '';
     this.docStartPoint = 1;
     this.docEndPoint = this.pageLength;
     this.docDraw = 0;
@@ -487,7 +494,7 @@ export class CompanyDocumentsComponent implements OnInit {
       documentName: '',
       description: '',
       uploadedDocs: [],
-      timeCreated: 0
+      dateCreated: moment().format('YYYY-MM-DD')
     };
     this.newDoc = '';
 

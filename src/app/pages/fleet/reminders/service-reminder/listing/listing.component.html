@@ -22,11 +22,11 @@
 
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
-                            placeholder="Select Reminder Status" (change)="setFilterStatus($event)">
+                            placeholder="Select Reminder Status">
                             <optgroup label="Select Reminder Status">
-                                <ng-option value="ALL">ALL</ng-option>
-                                <ng-option value="OVERDUE">OVERDUE</ng-option>
-                                <ng-option value="DUE SOON">DUE SOON</ng-option>
+                                <ng-option value="all">ALL</ng-option>
+                                <ng-option value="overdue">OVERDUE</ng-option>
+                                <ng-option value="dueSoon">DUE SOON</ng-option>
                             </optgroup>
                         </ng-select>
                     </div>
@@ -83,31 +83,31 @@
 											<td colspan="6">{{dataMessage}}</td>
 										</tr>
                                         <tr *ngFor="let item of remindersData" style="cursor: pointer;">
-                                            <td>{{vehicleList[item.reminderIdentification]}}</td>
+                                            <td>{{vehicleList[item.entityID]}}</td>
                                             <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
-                                                    *ngIf="item.reminderStatus === 'dueSoon'">{{item.reminderStatus}}<br></span>
+                                                    *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                                 <span class="text-danger font-weight-bold font-size-12 text-uppercase"
-                                                    *ngIf="item.reminderStatus === 'overdue'">{{item.reminderStatus}}<br></span>
+                                                    *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
                                                 <span class="font-weight-bold"
-                                                    title="Service Task">{{tasksList[item.reminderTasks.task]}}</span>
-                                                <br><span class="font-size-12">Every {{item.reminderTasks.remindByDays}}
-                                                    Day(s) or {{item.reminderTasks.odometer}} miles</span>
+                                                    title="Service Task">{{tasksList[item.tasks.taskID]}}</span>
+                                                <br><span class="font-size-12">Every {{item.tasks.time}}
+                                                    {{item.tasks.timeUnit}}(s) or {{item.tasks.odometer}} miles</span>
                                             </td>
                                             <td>
-                                                <span *ngIf="item.reminderTasks.remainingDays > 0">{{item.reminderTasks.remainingDays}} Days from now</span>
-                                                <span *ngIf= "0 > item.reminderTasks.remainingDays">{{item.reminderTasks.remainingDays | absoluteValue}} Days ago</span>
+                                                <span *ngIf="item.tasks.remainingDays > 0">{{item.tasks.remainingDays}} Days from now</span>
+                                                <span *ngIf= "0 > item.tasks.remainingDays">{{item.tasks.remainingDays | absoluteValue}} Days ago</span>
                                                 <br>
-                                                {{item.reminderTasks.remainingMiles}} miles from now
+                                                {{item.tasks.remainingMiles}} miles from now
                                             </td>
                                             <td>{{item.lastCompleted | date:'yyyy/MM/dd'}}</td>
                                             <td><span *ngFor="let s of item.subscribers; let g=index">
-                                                    <span *ngIf="s.subscriberType === 'user'">
-                                                        {{s.subscriberIdentification}}
+                                                    <span *ngIf="s.type === 'user'">
+                                                        {{users[s.id]}}
                                                     </span>
-                                                    <span *ngIf="s.subscriberType === 'group'">
-                                                        {{groups[s.subscriberIdentification]}}
+                                                    <span *ngIf="s.type === 'group'">
+                                                        {{groups[s.id]}}
                                                     </span>
-                                                    <span *ngIf="g>0 && g<item.subscribers.length-1">,</span>
+                                                    <span *ngIf="g<item.subscribers.length-1">,</span>
                                                 </span></td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
@@ -122,7 +122,7 @@
                                                         <a routerLink="/fleet/reminders/service-reminder/edit/{{item.reminderID }}"
                                                             class="dropdown-item text-1">Edit</a>
                                                         <a href="javascript:;" class="dropdown-item text-1"
-                                                            (click)="deleteReminder(item.reminderID)">Delete</a>
+                                                            (click)="deleteReminder(item)"> Delete</a>
                                                     </div>
                                                 </div>
                                             </td>

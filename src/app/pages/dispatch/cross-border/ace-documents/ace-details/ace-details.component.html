@@ -261,7 +261,7 @@
                                         <td data-toggle="modal" data-target="#showDriverDetails"
                                         class="modal-with-form "
                                         (click)="showMainDriverDetails()"><span
-                                                *ngFor="let document of mainDriver.travelDocuments">{{document.number}}</span>
+                                                *ngFor="let document of mainDriver.travelDocuments">{{document.number}},</span>
                                         </td>
                                         <td class="actions">
                                             <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
@@ -358,7 +358,7 @@
                                             title="Click to see details of vehicle">{{truck.number}}</td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle">{{vehicleTypeObects[truck.type]}}</td>
+                                            title="Click to see details of vehicle">{{vehicleTypeObjects[truck.type]}}</td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
                                             title="Click to see details of vehicle">{{truck.vinNumber}}</td>
@@ -368,13 +368,13 @@
                                             <td data-toggle="tooltip"
                                             data-placement="top"
                                             title="Click to see details of vehicle"><span
-                                                *ngFor="let license of truck.licensePlates;">{{license.number}}</span>
+                                                *ngFor="let license of truck.licensePlates;">{{license.number}},{{license.stateProvince}}</span>
                                         </td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
-                                            title="Click to see details of vehicle"><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIt's covered under 10.41(a) with
+                                            title="Click to see details of vehicle"><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
                                               carriers bond.</span>
-                                              <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIt's covered under 10.41(a) with
+                                              <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
                                                 importers bond.</span></td>
                                             <td data-toggle="tooltip"
                                             data-placement="top"
@@ -430,9 +430,9 @@
                                             <td><span
                                                 *ngFor="let license of trailer.licensePlates;">{{license.number}}</span>
                                         </td>
-                                            <td><span *ngIf="trailer.IIT === 'CARRIER'">Trip contains IIt's covered under 10.41(a) with
+                                            <td><span *ngIf="trailer.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
                                               carriers bond.</span>
-                                              <span *ngIf="trailer.IIT === 'IMPORTER'">Trip contains IIt's covered under 10.41(a) with
+                                              <span *ngIf="trailer.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
                                                 importers bond.</span></td>
                                             <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
@@ -494,7 +494,7 @@
     </div>
 </section>
 <!-- TRUCK  DETAILS -->
-<div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
+<!-- <div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 1200px;" role="document">
         <div class="modal-content">
@@ -506,7 +506,6 @@
             </div>
             <div class="modal-body text-dark">
                 <div class="card-body border">
-                    <!-- Insurance details-->
                     <div class="row mt-2">
                         <div class="col-lg-12">
                             <table class="table table-bordered table-striped m-0">
@@ -523,7 +522,86 @@
                                         <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
                                         <td>{{truck.insurancePolicy.issuedDate}}</td>
                                         <td>{{truck.insurancePolicy.policyNumber}}</td>
-                                        <td>{{truck.insurancePolicy.policyAmount}}</td>
+                                        <td>{{truck.insurancePolicy.policyAmount}}{{}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <a class="btn btn-default modal-dismiss" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="modal fade" id="showTruckDetails" tabindex="-1" role="dialog" aria-labelledby="showTruckDetails"
+    aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 1200px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vehicle Insurance Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <div class="card-body border">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <table class="table table-bordered m-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Vehicle Name:</th>
+                                        <td>{{truck.number}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray"> Vehicle Type:</th>
+                                        <td>{{vehicleTypeObjects[truck.type]}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">VIN/SN:</th>
+                                        <td>{{truck.vinNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">DOT#:</th>
+                                        <td>{{truck.dotNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">IIT:</th>
+                                        <td><span *ngIf="truck.IIT === 'CARRIER'">Trip contains IIT's covered under 10.41(a) with
+                                          carriers bond.</span>
+                                          <span *ngIf="truck.IIT === 'IMPORTER'">Trip contains IIT's covered under 10.41(a) with
+                                            importers bond.</span></td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <table class="table table-bordered m-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Seal Numbers :</th>
+                                        <td><span *ngFor="let seal of truck.sealNumbers">{{seal}}, </span></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Insurance Vendor:</th>
+                                        <td>{{truck.insurancePolicy.insuranceCompanyName}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Issued Date:</th>
+                                        <td>{{truck.insurancePolicy.issuedDate}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Insurance Policy#:</th>
+                                        <td>{{truck.insurancePolicy.policyNumber}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th width="40%" class="back-color-gray">Insurance Amount:</th>
+                                        <td>{{truck.insurancePolicy.policyAmount}} {{truck.insurancePolicy.amountCurrency}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -587,7 +665,9 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Broker:</th>
-                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}} &nbsp;Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}
+<br>
+                                       Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -615,8 +695,8 @@
                                       </tr>
                                       <tr>
                                         <th width="40%" class="back-color-gray">Subject To FDA?:</th>
-                                        <td><span *ngIf="shipmentData.inBondDetails.fda == 'true'">YES</span>
-                                            <span *ngIf="shipmentData.inBondDetails.fda == 'false'">NO</span>
+                                        <td><span *ngIf="shipmentData.inBondDetails.fda === true">YES</span>
+                                            <span *ngIf="shipmentData.inBondDetails.fda === false">NO</span>
                                         </td>
                                     </tr>
                                   </tbody>
@@ -690,8 +770,7 @@
                                         <td><span
                                                 class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}<br
-                                                *ngIf="commodity.value">
+                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}USD<br>
                                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
@@ -720,8 +799,6 @@
                                         </td>
                                         <td><span *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
                                                 class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
-                                                <span *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'"
-                                                class="font-weight-semibold">Commodity Value in USD:{{commodity.value}}<br></span>
                                             <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'" class="font-weight-semibold">Harmonized
                                                 Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
                                             <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span

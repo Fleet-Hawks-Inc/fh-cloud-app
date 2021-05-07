@@ -35,6 +35,7 @@ export class AciDetailsComponent implements OnInit {
       policyNumber: '',
       issuedDate: '',
       policyAmount: '',
+      amountCurrency: ''
     },
     licensePlate: {
       number: '',
@@ -227,6 +228,7 @@ export class AciDetailsComponent implements OnInit {
     this.apiService
       .getData('ACIeManifest/details/' + this.entryID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.entryID = this.entryID;
         this.data = result.data;
         this.sendId = result.sendId;

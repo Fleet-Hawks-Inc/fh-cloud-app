@@ -39,7 +39,16 @@
                         [(ngModel)]="partNumber"
                         class="form-control"
                         placeholder=" eg. 123AZ"
+                        #iPart="ngModel" required pattern="^[a-zA-Z0-9]+$"
                       />
+                      <div *ngIf="iPart.invalid && (iPart.dirty || iPart.touched)" class="text-danger">
+                        <div *ngIf="iPart.errors.required">
+                          Part number is required.
+                        </div>
+                        <div *ngIf="iPart.errors.pattern">
+                          Part Number must contain digits and letters only.
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-2">
@@ -53,7 +62,16 @@
                         type="text"
                         class="form-control"
                         placeholder=" eg. tires"
+                        #iItem="ngModel" required pattern="^[a-zA-Z]{2,30}$"
                       />
+                      <div *ngIf="iItem.invalid && (iItem.dirty || iItem.touched)" class="text-danger">
+                        <div *ngIf="iItem.errors.required">
+                          Item name is required.
+                        </div>
+                        <div *ngIf="iItem.errors.pattern">
+                          Item name must be between 2 to 30 characters and must contain letters only.
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-2">
@@ -67,6 +85,7 @@
                         name="categoryID"
                         [(ngModel)]="categoryID"
                         placeholder="Enter inventory category of inventory part"
+                        #Category="ngModel" required
                       >
                         <optgroup label="Select Category">
                           <ng-option
@@ -77,6 +96,16 @@
                           </ng-option>
                         </optgroup>
                       </ng-select>
+
+                      <div *ngIf="Category.invalid && (Category.dirty || Category.touched)" class="text-danger">
+                        <div>
+
+                          <div *ngIf="Category.errors.required">
+                           Select valid Category from the list.
+                           </div>
+                        </div>
+
+                      </div>
                     </div>
                     <div class="col-lg-2 mar-top-37 px-0">
                       <a (click)="showCategoryModal()"
@@ -101,7 +130,14 @@
                             name="cost"
                             [(ngModel)]="cost"
                             placeholder="Unit cost"
+                            #iUniC="ngModel" required
                           />
+                          <div *ngIf="iUniC.invalid && (iUniC.dirty || iUniC.touched)" class="text-danger">
+                            <div *ngIf="iUniC.errors.required">
+                              Unit cost is required.
+                            </div>
+
+                          </div>
                         </div>
                         <div class="col-lg-6 pl-0">
                           <ng-select
@@ -110,6 +146,7 @@
                             data-plugin-selectTwo
                             class="form-control populate"
                             placeholder="Select unit"
+                            #UnitB="ngModel" required
                           >
                             <optgroup label="Select Unit">
                               <ng-option value="Each">Each</ng-option>
@@ -119,6 +156,15 @@
                               <ng-option value="Tube">Tube</ng-option>
                             </optgroup>
                           </ng-select>
+                          <div *ngIf="UnitB.invalid && (UnitB.dirty || UnitB.touched)" class="text-danger">
+                            <div>
+
+                              <div *ngIf="UnitB.errors.required">
+                               Select valid Cost unit from the list.
+                               </div>
+                            </div>
+
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -134,7 +180,14 @@
                         name="quantity"
                         [(ngModel)]="quantity"
                         placeholder="eg. 1,2,3"
+                        #iQuan="ngModel" required
                       />
+                      <div *ngIf="iQuan.invalid && (iQuan.dirty || iQuan.touched)" class="text-danger">
+                        <div *ngIf="iQuan.errors.required">
+                          Quantity must contains numbers only.
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                   <div class="row mt-2">
@@ -175,6 +228,7 @@
                         data-plugin-selectTwo
                         class="form-control populate"
                       placeholder="Select warehouse"
+                      #WareH="ngModel" required
                       >
                         <optgroup label="Select">
                           <ng-option
@@ -185,6 +239,15 @@
                           </ng-option>
                         </optgroup>
                       </ng-select>
+                      <div *ngIf="WareH.invalid && (WareH.dirty || WareH.touched)" class="text-danger">
+                        <div>
+
+                          <div *ngIf="WareH.errors.required">
+                           Select valid Warehouse from the list.
+                           </div>
+                        </div>
+
+                      </div>
                     </div>
                     <div class="col-lg-2 mar-top-37 px-0">
                       <a
@@ -203,7 +266,7 @@
                             class="control-label font-weight-bold text-lg-right pt-2">Aisle&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label
                           >
-                          
+
                         </div>
                         <div class="col-lg-4">
                           <label
@@ -229,7 +292,13 @@
                             name="aisle"
                             [(ngModel)]="aisle"
                             placeholder="eg. 1,2,3 "
+                            #iAisle="ngModel" pattern="^[0-9]+$"
                           />
+                          <div *ngIf="iAisle.invalid && (iAisle.dirty || iAisle.touched)" class="text-danger">
+                            <div *ngIf="iAisle.errors.pattern">
+                              Aisle must contain numbers only.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-4">
                           <input
@@ -238,7 +307,13 @@
                             name="row"
                             [(ngModel)]="row"
                             placeholder="eg. 1,2,3 "
+                            #iRow="ngModel" pattern="^[0-9]+$"
                           />
+                          <div *ngIf="iRow.invalid && (iRow.dirty || iRow.touched)" class="text-danger">
+                            <div *ngIf="iRow.errors.pattern">
+                              Row must contain numbers only.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-4">
                           <input
@@ -247,7 +322,14 @@
                             name="bin"
                             [(ngModel)]="bin"
                             placeholder="eg. 1,2,3"
+                            #iBin="ngModel" pattern="^[0-9]+$"
                           />
+                          <div *ngIf="iBin.invalid && (iBin.dirty || iBin.touched)" class="text-danger">
+                            <div *ngIf="iBin.errors.pattern">
+                              Bin must contain numbers only.
+                            </div>
+                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -262,6 +344,7 @@
                         name="warehouseVendorID"
                         [(ngModel)]="warehouseVendorID"
                         placeholder="Select vendor"
+                        #Ven="ngModel" required
                       >
                         <optgroup label="Select Vendor">
                           <ng-option
@@ -272,6 +355,15 @@
                           </ng-option>
                         </optgroup>
                       </ng-select>
+                      <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
+                        <div>
+
+                          <div *ngIf="Ven.errors.required">
+                           Select valid Vendor from the list.
+                           </div>
+                        </div>
+
+                      </div>
                     </div>
                     <div class="col-lg-2 mar-top-37 px-0">
                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
@@ -296,7 +388,15 @@
                           name="trackingQuantity"
                           [(ngModel)]="trackingQuantity"
                           placeholder="eg. 1,2,3 "
-                        />
+                          #iQuani="ngModel" required
+                      />
+                      <div *ngIf="iQuani.invalid && (iQuani.dirty || iQuani.touched)" class="text-danger">
+                        <div *ngIf="iQuani.errors.required">
+                          Quantity must contains numbers only.
+                        </div>
+
+                      </div>
+
                       </div>
                     </div>
                     <div class="row mt-2">
@@ -313,7 +413,14 @@
                           name="reorderPoint"
                           [(ngModel)]="reorderPoint"
                           placeholder="eg. 1,2,3 "
+                          #iReco="ngModel" required
                         />
+                        <div *ngIf="iReco.invalid && (iReco.dirty || iReco.touched)" class="text-danger">
+                          <div *ngIf="iReco.errors.required">
+                            Recorder Point must contains numbers only.
+                          </div>
+
+                        </div>
                       </div>
                       <div class="col-lg-3 mx-4">
                         <label
@@ -328,7 +435,14 @@
                           name="reorderQuality"
                           [(ngModel)]="reorderQuality"
                           placeholder="eg. 1,2,3 "
+                          #iRecq="ngModel" required
                         />
+                        <div *ngIf="iRecq.invalid && (iRecq.dirty || iRecq.touched)" class="text-danger">
+                          <div *ngIf="iRecq.errors.required">
+                            Recorder quality must contains numbers only.
+                          </div>
+
+                        </div>
                       </div>
                       <!-- <div class="col-lg-3">
                                    <label class="control-label font-weight-bold  text-lg-right pt-2" >Max. Quantity</label>
@@ -362,6 +476,7 @@
                           name="preferredVendorID"
                           [(ngModel)]="preferredVendorID"
                           placeholder="Select preferred vendor"
+                          #Preven="ngModel" required
                         >
                           <optgroup label="Select">
                             <ng-option
@@ -372,6 +487,15 @@
                             </ng-option>
                           </optgroup>
                         </ng-select>
+                        <div *ngIf="Preven.invalid && (Preven.dirty || Preven.touched)" class="text-danger">
+                          <div>
+
+                            <div *ngIf="Preven.errors.required">
+                             Select valid Preferred vendor from the list.
+                             </div>
+                          </div>
+
+                        </div>
                       </div>
                       <div class="col-lg-2 mar-top-37 px-0 pl-0">
                         <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
@@ -414,7 +538,13 @@
                             name="days"
                             [(ngModel)]="days"
                             placeholder="eg. 1,2,3 "
+                            #iDays="ngModel" required
                           />
+                          <div *ngIf="iDays.invalid && (iDays.dirty || iDays.touched)" class="text-danger">
+                            <div *ngIf="iDays.errors.required">
+                              Days number must contain numbers only.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-4">
                           <label
@@ -458,7 +588,8 @@
                   <div class="row">
                     <div class="col-lg-10">
                       <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Attach Photo</label >
+                        class="control-label font-weight-bold text-lg-right pt-2">Attach Photo <span
+                        class="text-1 optional-label-color">(optional)</span> </label >
                       <input
                         (change)="selectDocuments($event, 'uploadedPhotos')"
                         type="file" class="form-control p-0" multiple
@@ -478,7 +609,7 @@
                              <div class="col-lg-8">Image {{i+1}}</div>
                              <div class="col-lg-4 text-right">
                               <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
-                               
+
                              </div>
                           </div>
                        </div>
@@ -487,7 +618,8 @@
                   <div class="row mt-2">
                     <div class="col-lg-10">
                       <label
-                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document</label
+                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document <span
+                        class="text-1 optional-label-color">(optional)</span></label
                       >
                       <input
                         (change)="selectDocuments($event, 'uploadedDocs')"
@@ -510,8 +642,8 @@
                           </div>
                           <hr class="solid mt-2">
                           <div class="row mb-1" *ngFor="let doc of inventoryDocs;let d= index">
-                             <div class="col-lg-9" > <a href="{{doc.path}}" target="_blank">Document No. {{d+1}}</a></div> 
-                             <div class="col-lg-3 text-right">  
+                             <div class="col-lg-9" > <a href="{{doc.path}}" target="_blank">Document No. {{d+1}}</a></div>
+                             <div class="col-lg-3 text-right">
                               <!-- <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>                               -->
                                 <i class="fas fa-times text-danger" (click)="delete('doc',doc.name)"></i>
                              </div>
@@ -704,9 +836,9 @@
                   placeholder="Select Province"
                 >
                   <optgroup label="Select State">
-                    
+
                          <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
-                     
+
                   </optgroup>
                 </ng-select>
                 </div>
@@ -780,7 +912,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">                          
+      <div class="modal-body">
            <div class="form-row">
               <div class="form-group col-md-12">
                  <div>
@@ -790,7 +922,7 @@
                  </div>
               </div>
            </div>
-       
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="setSrcValue()" data-dismiss="modal">Cancel</button>

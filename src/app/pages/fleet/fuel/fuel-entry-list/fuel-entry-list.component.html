@@ -6,14 +6,14 @@
 					<div class="row px-2" style="padding-top:9px;">
 						<div class="col-md-2 col-lg-2">
 							<div class="input-group input-group-sm mb-3">
-								<ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
+								<ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search by vehicle">
 									<ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
 								</ng-select>
 							</div>
 						</div>
 						<div class="col-md-2 col-lg-2 pr-0 pl-2">
 							<div class="input-group input-group-sm mb-3">
-								<ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;" placeholder="Search issues by asset">
+								<ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;" placeholder="Search by reefer">
 									<ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
 								</ng-select>
 							</div>
@@ -68,7 +68,7 @@
 										<tr>
 											<th style="min-width: 5% !important;">Date/Time</th>
 											<th>Fuel Card#</th>
-											<th>Vehicle Name</th>
+											<th>Unit Name</th>
 											<th>Unit Type</th>
 											<th>Driver Name</th>
 											<th>Vendor</th>

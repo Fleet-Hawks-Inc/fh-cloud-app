@@ -85,11 +85,12 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     {
-      preloadingStrategy: PreLoadStrategy
+      preloadingStrategy: PreLoadStrategy,
+      useHash: true
     }
   ), CommonModule, ChartsModule],
   exports: [RouterModule],
-  providers: [{ provide: LocationStrategy, useClass: PathLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
   entryComponents: [
     UnsavedChangesComponent,
   ]

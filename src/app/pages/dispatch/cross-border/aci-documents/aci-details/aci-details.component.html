@@ -389,7 +389,7 @@
                                 <h4 class="m-0 ">Vehicle on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
                                     <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
-                                        class="btn btn-success btn-sm"> Set Cargo Exemption</a>
+                                        class="btn btn-success btn-sm"> <i class="fas fa-plus"></i> Set IIT/Exemption(s)</a>
                                 </div>
                             </div>
                             <div class="card-body border">
@@ -401,7 +401,7 @@
                                             <th width="10%">Licence Plate Number</th>
                                             <th width="10%">Licence Province</th>
                                             <th width="10%">Licence Country</th>
-                                            <th width="15%">IIT/Cargo Exemption(s)</th>
+                                            <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
                                         </tr>
@@ -479,7 +479,7 @@
                                               <span *ngIf="trailer.type !== 'OE'">{{assetTypeCode[trailer.type]}}</span></td>
                                             <td>{{trailer.licensePlate.number}}</td>
                                             <td>{{stateCodeToName[trailer.licensePlate.stateProvince]}}</td>
-                                            <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}}&nbsp;</span></td>
+                                            <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},</span></td>
                                             <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}, </span></td>
                                             <td class="actions">
                                                 <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i
@@ -515,7 +515,7 @@
                                         <tr>
                                             <th>Container#</th>
                                             <th>Loaded On</th>
-                                            <th width="15%">Exemptions</th>
+                                            <th width="15%">IIT/Exemption(s)</th>
                                             <th width="15%">Seal Numbers</th>
                                             <th width="10%">Actions</th>
                                         </tr>
@@ -525,7 +525,7 @@
                                             <td>{{container.number}}</td>
                                             <td><span *ngIf="container.loadedOn.type === 'TRAILER'">Asset </span>
                                                 <span *ngIf="container.loadedOn.type === 'TRUCK'">Vehicle </span>[{{container.loadedOn.number}}]</td>
-                                            <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}}</td>
+                                            <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}},</td>
                                             <td><span *ngFor="let seal of container.sealNumbers;">{{seal}}, </span></td>
                                             <td class="actions"><a
                                                     routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
@@ -668,7 +668,7 @@
                                         <td>{{truck.dotNumber}}</td>
                                     </tr>
                                     <tr>
-                                        <th width="40%" class="back-color-gray">Cargo Exemptions:</th>
+                                        <th width="40%" class="back-color-gray">IIT/Exemption(s):</th>
                                         <td><span *ngFor="let exemption of truck.cargoExemptions">{{cargoExemptionTypeObjects[exemption]}},</span>
                                         </td>
                                     </tr>
@@ -698,7 +698,7 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Insurance Amount:</th>
-                                        <td>{{truck.insurancePolicy.policyAmount}}</td>
+                                        <td>{{truck.insurancePolicy.policyAmount}} {{truck.insurancePolicy.amountCurrency}}</td>
                                     </tr>
                                 </tbody>
                             </table>

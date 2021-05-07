@@ -132,8 +132,7 @@
                           class="btn btn-success btn-sm" (click)="addTruckSeal()"><i class="fas fa-plus"></i></button>
                       </div>
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Add IIT or
-                          Exemption&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Add IIT/Exemption(s)&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                         <ng-select [multiple]="true" name="truck.cargoExemptions" [(ngModel)]="truck.cargoExemptions"
                           placeholder="Select IIT or cargo exemption if any">
                           <ng-option *ngFor="let exemption of cargoExemptionsList" [value]="exemption.code">
@@ -393,7 +392,7 @@
                   <div class="col-lg-5">
                     <div class="form-group row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Exemptions</label>
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Add IIT/Exemption(s)</label>
                         <ng-select placeholder="Select Cargo Exemptions"[multiple]="true" [ngModelOptions]  ="{standalone: true}"
                           [attr.name]="'containers['+i+'].cargoExemptions'" [(ngModel)] ="container.cargoExemptions">
                           <ng-option *ngFor="let exemption of cargoExemptionsList" [value]="exemption.code">
@@ -1162,7 +1161,7 @@
                           <th width="20%">Asset Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
                           <th width="30%">Seal Numbers&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                           </th>
-                          <th width="30%">Add IIT or Exemption&nbsp; <span
+                          <th width="30%">Add IIT/Exemption(s)&nbsp; <span
                               class="text-1 optional-label-color">(optional)</span></th>
                           <th width="5%">Action</th>
                         </tr>
@@ -1226,7 +1225,7 @@
                   </div>
                   <div class="col-12 text-right">
                     <button type="button" *ngIf="addTrailerBtn" class="btn btn-sm btn-success"
-                      (click)="addTrailer()">Add Asset</button>
+                      (click)="addTrailer()"><i class="fas fa-plus"></i> Add Asset</button>
                   </div>
                 </div>
                 <!-- Reason of amending -->
