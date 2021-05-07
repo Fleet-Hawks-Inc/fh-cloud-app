@@ -665,7 +665,9 @@
                                     </tr>
                                     <tr>
                                         <th width="40%" class="back-color-gray">Broker:</th>
-                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}} &nbsp;Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
+                                        <td>{{shipmentData.broker.filerCode}} - {{brokerCodeObject[shipmentData.broker.filerCode]}}
+<br>
+                                       Port Location - {{shipmentData.broker.portLocation}} - {{USportsListObjects[shipmentData.broker.portLocation]}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -693,8 +695,8 @@
                                       </tr>
                                       <tr>
                                         <th width="40%" class="back-color-gray">Subject To FDA?:</th>
-                                        <td><span *ngIf="shipmentData.inBondDetails.fda == 'true'">YES</span>
-                                            <span *ngIf="shipmentData.inBondDetails.fda == 'false'">NO</span>
+                                        <td><span *ngIf="shipmentData.inBondDetails.fda === true">YES</span>
+                                            <span *ngIf="shipmentData.inBondDetails.fda === false">NO</span>
                                         </td>
                                     </tr>
                                   </tbody>
@@ -768,8 +770,7 @@
                                         <td><span
                                                 class="font-weight-semibold">Commodity:&nbsp;</span>{{commodity.description}}<br>
                                             <span class="font-weight-semibold"
-                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}<br
-                                                *ngIf="commodity.value">
+                                                *ngIf="commodity.value">Value:&nbsp;</span>{{commodity.value}}USD<br>
                                             <span class="font-weight-semibold">Quantity:&nbsp;</span>{{commodity.quantity}}
                                             {{packagingUnitsObects[commodity.packagingUnit]}} <br>
                                             <span class="font-weight-semibold">Weight:&nbsp;</span> {{commodity.weight}}
@@ -798,8 +799,6 @@
                                         </td>
                                         <td><span *ngIf="shipmentData.type === 'BRASS' || shipmentData.type === 'BRASS_MULTIPLE'"
                                                 class="font-weight-semibold">C4LineReleaseNumber:{{commodity.c4LineReleaseNumber}}<br></span>
-                                                <span *ngIf="shipmentData.type === 'IN_BOND' || shipmentData.type === 'SECTION_321' || shipmentData.type === 'SECTION_321_FDA'"
-                                                class="font-weight-semibold">Commodity Value in USD:{{commodity.value}}<br></span>
                                             <span *ngIf="shipmentData.type === 'IN_BOND' && shipmentData.inBondDetails.type === '62'" class="font-weight-semibold">Harmonized
                                                 Code:&nbsp;{{commodity.harmonizedCode}}<br></span>
                                             <span class="font-weight-semibold">Marks and Numbers:&nbsp;</span><span

@@ -1248,12 +1248,10 @@
                         <ng-select [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
                           (change)="onChangeHideErrors('hosDetails.type')" placeholder="Select the record keeping type"
                           #tSlt="ngModel" required>
-
                           <ng-option *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'" value="ELD">ELD
                           </ng-option>
                           <ng-option *ngIf="driverData.hosDetails.hosStatus == 'Exempted'" value="Log Book">Log Book
                           </ng-option>
-
                         </ng-select>
                         <div *ngIf="tSlt.invalid && (tSlt.dirty || tSlt.touched)" class="text-danger">
                           <div *ngIf="tSlt.errors.required">
@@ -1267,9 +1265,8 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.homeTerminal" name="hosDetails.homeTerminal"
                           class="form-control populate"
-                          (change)="onChangeHideErrors('hosDetails.homeTerminal');getUtc($event)"
+                          (change)="onChangeHideErrors('hosDetails.homeTerminal');"
                           placeholder="Select home terminal of the driver" #home="ngModel" required>
-
                           <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
                             value="{{yard.addressID}}">
                             <div *ngIf="yard.manual">
@@ -1280,42 +1277,12 @@
                               {{ yard.userLocation }}
                             </div>
                           </ng-option>
-
                         </ng-select>
                         <div *ngIf="home.invalid && (home.dirty || home.touched)" class="text-danger">
                           <div *ngIf="home.errors.required">
                             Home Terminal is required.
                           </div>
                         </div>
-                      </div>
-                      <div class="col-lg-5" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycle" name="hosDetails.hosCycle"
-                          (change)="onChangeHideErrors('hosDetails.hosCycle')" class="form-control populate"
-                          placeholder="Select the cycle for the driver">
-
-                          <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
-                            {{cycle.cycleName}}</ng-option>
-
-                        </ng-select>
-
-                        <script>
-                          function changeCycleModeForm() {
-                            var x = document.getElementById("cycleForm").value;
-
-                            if (x == "usa" || x == "Usatype1") {
-                              document.getElementById("crgo").style.display = "block";
-
-
-                            } else {
-                              document.getElementByID("crgo").style.display = "none";
-
-                            }
-                          }
-
-                        </script>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Operating Zone <span
@@ -1324,7 +1291,6 @@
                         <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
                           (change)="onChangeHideErrors('hosDetails.optZone')" class="form-control populate"
                           placeholder="Select the Operating Zone">
-
                           <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                           </ng-option>
                           <ng-option class="text-capitalize" value="North (Canada)">North (Canada)
@@ -1332,6 +1298,29 @@
                           <ng-option class="text-capitalize" value="USA">USA</ng-option>
                         </ng-select>
                       </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Home Terminal Timezone <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <ng-select [(ngModel)]="driverData.hosDetails.timezone" name="hosDetails.timezone"
+                          (change)="onChangeHideErrors('hosDetails.timezone')" class="form-control populate"
+                          placeholder="Select the home terminal timezone">
+                          <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones" [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
+                          </ng-option>
+                        </ng-select>
+                      </div>
+                      <div class="col-lg-10" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycle" name="hosDetails.hosCycle"
+                          (change)="onChangeHideErrors('hosDetails.hosCycle')" class="form-control populate"
+                          placeholder="Select the cycle for the driver">
+                          <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
+                            {{cycle.cycleName}}</ng-option>
+                        </ng-select>
+                      </div>
+
                       <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
                         <div class="checkbox">
                           <label class="control-label font-weight-bold">
