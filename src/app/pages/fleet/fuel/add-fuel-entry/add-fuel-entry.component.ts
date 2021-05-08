@@ -24,28 +24,29 @@ export class AddFuelEntryComponent implements OnInit {
 
   fuelData = {
     unitType: 'vehicle',
-    unitID: '',
+    unitID: null,
     billingCurrency: 'CAD',
+    fuelUnit: 'litre',
     fuelQtyAmt: 0,
     fuelQty: 0,
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
-    totalAmount: 0,
+    subTotal: 0,
     discType: null,
     discAmount: 0,
     amountPaid: 0,
     pricePerUnit: 0,
     fuelDate: '',
     fuelTime: '',
-    fuelType: '',
-    totalLitres: 0,
-    countryID: '',
-    stateID: '',
-    cityID: '',
+    fuelType: null,
+    totalUnits: 0,
+    countryID: null,
+    stateID: null,
+    cityID: null,
     reference: '',
-    tripID: '',
+    tripID: null,
     vendorID: '',
-    paidBy: '',
+    paidBy: null,
     taxes: [
       {
       taxType: null,
@@ -60,12 +61,12 @@ export class AddFuelEntryComponent implements OnInit {
     odometer: 0,
     description: '',
     uploadedPhotos: [],
-
+    lineItems:  []
   };
   fetchedUnitID;
   fetchedUnitType;
-  fuelQtyUnit = 'litre';
-  DEFFuelQtyUnit = 'litre';
+  // fuelQtyUnit = 'litre';
+  // DEFFuelQtyUnit = 'litre';
   // costPerUnit = 0;
   fuelDate: NgbDateStruct;
 
@@ -197,13 +198,16 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
   fetchAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.assets = result.Items;
-      for (let i = 0; i < result.Items.length; i++) {
-        if (result.Items[i].assetDetails.assetType === 'f3927440-7b25-11eb-8229-0588f994a55e') {
-          this.reeferArray.push(this.assets[i]);
+    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
+      result.forEach((e: any) => {
+        if (e.assetType == 'reefer') {
+          let obj = {
+            assetID: e.assetID,
+            assetIdentification: e.assetIdentification
+          };
+          this.reeferArray.push(obj);
         }
-      }
+      });
     });
   }
   fetchTrips() {
@@ -239,35 +243,20 @@ export class AddFuelEntryComponent implements OnInit {
     }
 
   }
-  changeFuelUnit() {
-    if (this.fuelQtyUnit === 'gallon') {
-      this.DEFFuelQtyUnit = 'gallon';
-    } else {
-      this.DEFFuelQtyUnit = 'litre';
-    }
-  }
+  // changeFuelUnit() {
+  //   if (this.fuelQtyUnit === 'gallon') {
+  //     this.DEFFuelQtyUnit = 'gallon';
+  //   } else {
+  //     this.DEFFuelQtyUnit = 'litre';
+  //   }
+  // }
   changeCurrency(val) {
     this.fuelData.billingCurrency = val;
-  }
-  calculate() {
-    // this.fuelData.totalAmount = 0;
-    // this.fuelData.pricePerUnit = 0;
-    // this.fuelData.totalAmount = Number(this.fuelData.fuelQtyAmt) + Number(this.fuelData.DEFFuelQtyAmt);
-    // const units = Number(this.fuelData.fuelQty) + Number(this.fuelData.DEFFuelQty);
-    // this.fuelData.amountPaid = this.fuelData.totalAmount - this.fuelData.discAmount;
-    // this.fuelData.pricePerUnit = (this.fuelData.amountPaid / units);
-
   }
   addFuelEntry() {
     this.hideErrors();
     this.submitDisabled = true;
-    if (this.fuelQtyUnit === 'litre') {
-      this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    } else {
-      this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
-      this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
-      this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    }
+    this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -351,16 +340,17 @@ export class AddFuelEntryComponent implements OnInit {
         this.fuelData.billingCurrency = result.billingCurrency,
         this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelUnit = result.fuelUnit;
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
         this.fuelData.discType = result.discType;
         this.fuelData.discAmount = result.discAmount;
-        this.fuelData.totalAmount = result.totalAmount;
+        this.fuelData.subTotal = result.subTotal;
         this.fuelData.pricePerUnit = result.pricePerUnit;
         this.fuelData.taxes = result.taxes;
-        this.fuelData.totalLitres = result.totalLitres;
+        this.fuelData.totalUnits = result.totalUnits;
         this.fuelData.amountPaid = result.amountPaid;
         this.fuelData.fuelDate = result.fuelDate;
         this.fuelData.fuelTime = result.fuelTime;
@@ -385,6 +375,7 @@ export class AddFuelEntryComponent implements OnInit {
         this.existingPhotos = result.uploadedPhotos;
         this.fetchedUnitID = result.unitID;
         this.fetchedUnitType = result.unitType;
+        this.fuelData.lineItems = result.lineItems;
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
@@ -400,24 +391,16 @@ export class AddFuelEntryComponent implements OnInit {
   updateFuelEntry() {
     this.submitDisabled = true;
     this.hideErrors();
-    if (this.fuelQtyUnit === 'litre') {
-      this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    } else {
-      this.fuelData.fuelQty = +((this.fuelData.fuelQty * 3.785).toFixed(2));
-      this.fuelData.DEFFuelQty = +((this.fuelData.DEFFuelQty * 3.785).toFixed(2));
-      this.fuelData.totalLitres = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    }
+    this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     this.fuelData.uploadedPhotos = this.existingPhotos;
-
+    this.fuelData.lineItems = this.fuelData.lineItems;
     // create form data instance
     const formData = new FormData();
-
-    //append photos if any
+    // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
-
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(this.fuelData));
     this.apiService.putData('fuelEntries', formData, true).subscribe({
       complete: () => { },

@@ -44,6 +44,7 @@
                                 value="contractor"> Contractor
                             </label>
                           </div>
+
                         </div>
                       </div>
                       <div class="col-lg-10" id="employeeIDDiv">
@@ -185,6 +186,7 @@
                               </div>
                               <div *ngIf="lName.errors.pattern">
                                 Last Name must not contain any special characters.
+
                               </div>
                             </div>
                           </div>
@@ -217,6 +219,7 @@
                                   Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                                 </div>
                               </div>
+
                           </div>
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
@@ -233,6 +236,7 @@
                                       }"
                                       (click)="togglecpwdfieldTextType()"></i>
                                     </span>
+
                                  </div>
                               </div>
                             <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
@@ -353,6 +357,7 @@
                               <div *ngIf="tDate.errors.required" class="text-danger">
                                 Termination Date must contain yyyy/mm/dd format.
                               </div>
+
                             </div>
                           </div>
                           <!-- driver is owner operator -->
@@ -367,6 +372,7 @@
                             <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                               <div *ngIf="dSlt.errors.required">
                                 Start Date is required and must contain yyyy/mm/dd format.
+
                               </div>
                             </div>
                           </div>
@@ -595,7 +601,6 @@
                           <div *ngIf="doc.errors.required">
                             Document Type is required.
                           </div>
-
                         </div>
                       </div>
                     </div>
@@ -734,6 +739,7 @@
                         </div>
                       </div>
                     </div>
+
 
                   </div>
                   <div class="col-lg-6 text-right"> <a href="javascript:;" (click)="remove('document', i)"
@@ -1138,7 +1144,6 @@
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
                         </div>
-
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                             Miles (Team) </label>
@@ -1191,6 +1196,7 @@
                               Pay Period Type is required.
                             </div>
                           </div>
+
 
                         </div>
                       </div>
