@@ -1479,6 +1479,7 @@
   aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
+      <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form" #grouphide="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Group</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
@@ -1487,7 +1488,7 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-          <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form">
+         
             <div class="form-row">
               <div class="form-group col-lg-12 mb-0">
                 <label class="control-label font-weight-bold" >Group Name 
@@ -1527,13 +1528,14 @@
                 </div>
               </div>
             </div>
-          </form>
+   
         </div>
       </div>
       <div class="modal-footer text-right">
         <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
-        <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
+        <button class="btn btn-success" (click)="addGroup()" [disabled]="!grouphide.form.valid">Save</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
