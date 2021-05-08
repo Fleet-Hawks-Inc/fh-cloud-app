@@ -1,0 +1,332 @@
+[
+  {
+    "name": "Container",
+    "borderAssetType":[
+      {
+        "code": "2B",
+        "description": "20 ft. Container (Closed top) sea container"
+      },
+      {
+        "code": "20",
+        "description": "20 ft. Container (Open top) sea container"
+      },
+      {
+        "code": "4B",
+        "description": "40 ft. Container (Closed top) sea container"
+      },
+      {
+        "code": "40",
+        "description": "40 ft. Container (Open top) sea container"
+      },
+      {
+        "code": "HC",
+        "description": "Hopper car (Covered)"
+      },
+      {
+        "code": "HP",
+        "description": "Hopper car  (Covered; Pneumatic discharge)"
+      },
+      {
+        "code": "HO",
+        "description": "Hopper car (Open)"
+      },
+      {
+        "code": "CL",
+        "description": "Other length sea container (Closed top)"
+      },
+      {
+        "code": "CU",
+        "description": "Other length sea container (Open top)"
+      },
+      {
+        "code": "TF",
+        "description": "Trailer (Dry freight)"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }
+    ]
+  },
+  {
+    "name": "Double Drop",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Dump Trailer",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Flat bed",
+    "borderAssetType":[{
+      "code": "DT",
+      "description": "Drop back trailer"
+    },
+    {
+      "code": "FT",
+      "description": "Flatbed/Perform trailer"
+    },
+    {
+      "code": "FR",
+      "description": "Flatbed trailer"
+    },
+    {
+      "code": "FH",
+      "description": "Flatbed trailer with headboards"
+    },
+    {
+      "code": "FN",
+      "description": "Flatbed trailer with no headboards"
+    },
+    {
+      "code": "OE",
+      "description": "Other"
+  }]
+  },
+  {
+    "name": "Lowboy",
+    "borderAssetType":[
+      {
+        "code": "DD",
+        "description": "Double drop trailer"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "StepDeck",
+    "borderAssetType":[
+      {
+        "code": "SD",
+        "description": "Single drop trailer"
+      },
+      {
+        "code": "RS",
+        "description": "Fixed rack, Single drop trailer"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Removable Gooseneck",
+    "borderAssetType": [{
+      "code": "RD",
+      "description": "Fixed rack, Double drop trailer"
+    },
+    {
+      "code": "CB",
+      "description": "Gooseneck trailer"
+    },
+    {
+      "code": "HE",
+      "description": "Horse trailer"
+    },
+    {
+      "code": "LT",
+      "description": "Livestock trailer"
+    },
+    {
+      "code": "OE",
+      "description": "Other"
+
+  }]
+  },
+  {
+    "name": "Dry Van",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Reefer",
+    "borderAssetType":[
+      {
+        "code": "RT",
+        "description": "Controlled temperature"
+      },
+      {
+        "code": "CZ",
+        "description": "Refrigerated container"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Power Only",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Conestoga Trailer",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Side Kit Trailer",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Specialized Trailer",
+    "borderAssetType":[
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Enclosed Trailer",
+    "borderAssetType":[
+      {
+        "code": "BI",
+        "description": "Beverage rack trailer"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Scrap Trailer",
+    "borderAssetType": [{
+      "code": "RG",
+      "description": "Gondola (Closed)"
+    },
+    {
+      "code": "RO",
+      "description": "Gondola (Open)"
+    },
+     {
+      "code": "OE",
+      "description": "Other"
+
+  }]
+  },
+  {
+    "name": "Semi Trailer",
+    "borderAssetType":[
+      {
+        "code": "TC",
+        "description": "Auto carrier/trailer"
+      },
+      {
+        "code": "TL",
+        "description": "Semi truck trailer"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+  {
+    "name": "Chassis",
+    "borderAssetType":[
+      {
+        "code": "CH",
+        "description": "Chassis"
+      },
+      {
+        "code": "OE",
+        "description": "Other"
+
+    }]
+  },
+{
+"name": "Tank Trailer",
+"borderAssetType": [{
+  "code": "T8",
+  "description": "Tank trailer (Chemicals) - Heated/Insulated"
+},
+{
+  "code": "T6",
+  "description": "Tank trailer (Chemicals) - Heated/Not insulated"
+},
+{
+  "code": "T7",
+  "description": "Tank trailer (Chemicals) - Not heated/Insulated"
+},
+{
+  "code": "T5",
+  "description": "Tank trailer (Chemicals) - Not heated/Not insulated"
+},
+{
+  "code": "TK",
+  "description": "Tank trailer (Food grade liquids)"
+},
+{
+  "code": "T4",
+  "description": "Tank trailer (Gas) - Heated/Insulated"
+},
+{
+  "code": "T2",
+  "description": "Tank trailer (Gas) - Heated/Not insulated"
+},
+{
+  "code": "T3",
+  "description": "Tank trailer (Gas) - Not heated/Insulated"
+},
+{
+  "code": "T1",
+  "description": "Tank trailer (Gas) - Not heated/Not insulated"
+},
+{
+  "code": "L4",
+  "description": "Tank trailer (Liquids) - Heated/Insulated"
+},
+{
+  "code": "L2",
+  "description": "Tank trailer (Liquids) - Heated/Not insulated"
+},
+{
+  "code": "L3",
+  "description": "Tank trailer (Liquids) - Not heated/Insulated"
+},
+{
+  "code": "L1",
+  "description": "Tank trailer (Liquids) - Not heated/Not insulated"
+},
+{
+  "code": "OE",
+  "description": "Other"
+
+}]
+}
+]
