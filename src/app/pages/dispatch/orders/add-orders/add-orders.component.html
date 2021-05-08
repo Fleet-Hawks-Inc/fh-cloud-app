@@ -329,7 +329,7 @@
                                  <div *ngIf="contact.invalid && (contact.dirty || contact.touched)" class="text-danger">
                                    
                                     <div *ngIf="contact.errors.pattern">
-                                   Additional Contact Name must contains upper and lowecase characters only.
+                                   Additional Contact Name must contains upper, lowecase characters and special character for peiod(space) only.
                                      </div> 
                                                   
                                   
@@ -535,14 +535,14 @@
                                                                   name="pickupLocation" (keyup)="searchTerm.next($event);"
                                                                   class="form-control " #pickupLocation="ngModel" required
                                                                   pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                                  #location="ngModel" required pattern="^[a-zA-Z0-9\s\,-]+$">
+                                                                  #location="ngModel" required pattern="^[a-zA-Z0-9\s\,\-\&]+$">
                                                                   <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
                                                                      <div *ngIf="location.errors.required">
                                                                       PickUp Location is required.
                                                                          </div> 
                                                                                  
                                                                      <div *ngIf="location.errors.pattern">
-                                                                     Pickup location contains uppercase lowercase and special characters only period(,) only.
+                                                                     Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
                                                                       </div> 
                                                                                    
                                                                    
@@ -644,7 +644,8 @@
                                                                      
                                                                                  
                                                                      <div *ngIf="person.errors.pattern">
-                                                                   Contact person at pickup must contains uppercase and lowercase characters only.
+                                                                   Contact person at pickup must contains uppercase, lowercase and special character for period(space) only.
+
                                                                       </div> 
                                                                                    
                                                                    
@@ -710,12 +711,12 @@
 
                                                                <div class="col-lg-10">
 
-                                                                  <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" (input)="assignReceiverValue('commodity','name',$event,i,z)" #commodityName="ngModel" required pattern="^[a-zA-Z\s]+$" >
+                                                                  <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" (input)="assignReceiverValue('commodity','name',$event,i,z)" #commodityName="ngModel"  pattern="^[a-zA-Z0-9\s]+$" >
                                                                   <div *ngIf="commodityName.invalid && (commodityName.dirty || commodityName.touched)" class="text-danger">
                                                                      
                                                                                  
-                                                                     <div *ngIf="commodityName.errors.required">
-                                                                     Commodity must not contains any number and special characters.
+                                                                     <div *ngIf="commodityName.errors.pattern">
+                                                                     Commodity must not contains any special characters except space.
                                                                       </div> 
                                                                                              
                                                                    
@@ -1013,7 +1014,7 @@
                                                                   name="dropOffLocation" #dropOffLocation="ngModel"
                                                                   required dropOffLocation
                                                                   (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
-                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required pattern="^^[a-zA-Z0-9\s\,-]+$">
+                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required pattern="^^[a-zA-Z0-9\s\,\-\&]+$">
                                                                   <div *ngIf="drop.invalid && (drop.dirty || drop.touched)" class="text-danger">
                                    
                                                                      <div *ngIf="drop.errors.required">
@@ -1023,7 +1024,7 @@
 
 
                                                                      <div *ngIf="drop.errors.pattern">
-                                                                     Drop Off Location must contains upper, lower case and special characters period(,) only.
+                                                                     Drop Off Location must contains upper, lower case and special characters for period(space,-,&,',') only.
                                                                       </div> 
                                                                                    
                                                                    
@@ -1112,11 +1113,11 @@
 
                                                                <input placeholder="eg. John Smith" [(ngModel)]="item.receivers.contactPerson"
                                                                   name="contactPerson" type="text" class="form-control"
-                                                                  id="inputDefault" #conPickup="ngModel" pattern="^[a-zA-Z\s\,]+$">
+                                                                  id="inputDefault" #conPickup="ngModel" pattern="^[a-zA-Z\s]+$">
                                                                   <div *ngIf="conPickup.invalid && (conPickup.dirty || conPickup.touched)" class="text-danger">
                                    
                                                                      <div *ngIf="conPickup.errors.pattern">
-                                                                     Contact person at  delivery must contains upper and lowercase chracters only.
+                                                                     Contact person at  delivery must contains uppercase,lowercase and special chracters for period(space) only.
                                                                       </div> 
                                                                                    
                                                                    
@@ -1139,7 +1140,7 @@
                                                                </label>
 
                                                                <input placeholder="eg. 01258956" [(ngModel)]="item.receivers.phone" name="phone"
-                                                                  type="text" class="form-control" id="inputDefault" #cPhone="ngModel" pattern="^[0-9]+$">
+                                                                  type="text" class="form-control" id="inputDefault" #cPhone="ngModel" pattern="^[0-9]+$" maxlength="10">
                                                                   <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
                                    
                                                                      <div *ngIf="cPhone.errors.pattern">
@@ -1178,11 +1179,11 @@
                                                                </div>
                                                                <div class="col-lg-10">
 
-                                                                  <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" #cCommodity="ngModel"  pattern="^[a-ZA-Z\s]+$">
+                                                                  <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name{{z}}" class="form-control" #cCommodity="ngModel"  pattern="^[a-zA-Z0-9\s]+$">
                                                                    <div *ngIf="cCommodity.invalid && (cCommodity.dirty || cCommodity.touched)" class="text-danger">
                                    
                                                                      <div *ngIf="cCommodity.errors.pattern">
-                                                                    Commodity must not contains any special characters.
+                                                                    Commodity must not contains any special characters except space.
                                                                       </div> 
                                                                                    
                                                                    
@@ -1656,14 +1657,14 @@
                                  <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                     for="inputDefault">Total Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input placeholder="eg. 5,15,20" type="text" [disabled]="orderData.milesInfo.calculateBy == 'google' || orderData.milesInfo.calculateBy == 'pcmiles'" [(ngModel)]="orderData.milesInfo.totalMiles" name="totalMiles"
-                                 #totalMiles="ngModel" required totalMiles class="form-control" #tMiles="ngModel" rquired pattern="^[0-9]+$">
+                                 #totalMiles="ngModel" required totalMiles class="form-control" #tMiles="ngModel" rquired pattern="^[0-9\.]+$">
                                  <div *ngIf="tMiles.invalid && (tMiles.dirty || tMiles.touched)" class="text-danger">
                                    
                                     <div *ngIf="tMiles.errors.required">
                                   Total Miles is requird.
                                      </div> 
                                      <div *ngIf="tMiles.errors.pattern">
-                                       Total Miles must contains number only.
+                                       Total Miles must contains number and special character for period(.) only.
                                           </div>       
                                   
           
@@ -2156,8 +2157,8 @@
                      <div class="col-lg-12 text-right">
                         <a href="javascript:;" routerLink="dispatch/orders"
                            class="mb-1 mt-1 mr-2 btn btn-default">Cancel</a>
-                        <button *ngIf="!getOrderID" type="submit" class="btn btn-success" [disabled]="aOrder.form.invalid">Save</button>
-                        <button *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success text-white" [disabled]="aOrder.form.invalid">Update</button>
+                        <button *ngIf="!getOrderID" type="submit" class="btn btn-success" >Save</button>
+                        <button *ngIf="getOrderID" (click)=updateOrder() class="btn btn-success text-white" >Update</button>
                      </div>
                   </div>
                </form>
