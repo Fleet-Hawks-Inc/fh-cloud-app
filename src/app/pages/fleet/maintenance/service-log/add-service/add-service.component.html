@@ -46,30 +46,67 @@
                              <div class="row" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2" >Select Vehicle <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service">
+                                   <ng-select (change)="getVehicleIssues($event)" [(ngModel)]="serviceData.vehicleID" name="vehicleID" style="width: 100%;" placeholder="Select vehicle for service" #Vehi="ngModel" required>
                                        <ng-option *ngFor="let vehicle of vehicles;" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                                    </ng-select>
+                                   <div *ngIf="Vehi.invalid && (Vehi.dirty || Vehi.touched)" class="text-danger">
+                                    <div>
+
+                                      <div *ngIf="Vehi.errors.required">
+                                       Select valid Vehicle from the list.
+                                       </div>
+                                    </div>
+
+                                  </div>
+
                                 </div>
                              </div>
                              <div class="row" *ngIf="serviceData.unitType === 'asset'">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2" > Select Asset <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service">
+                                 <ng-select (change)="getAssetIssues($event)" [(ngModel)]="serviceData.assetID" name="assetID" style="width: 100%;" placeholder="Select asset for service" #Asse="ngModel" required>
                                      <ng-option *ngFor="let asset of assets;" value="{{asset.assetID}}">{{asset.assetIdentification}}</ng-option>
                                  </ng-select>
+                                 <div *ngIf="Asse.invalid && (Asse.dirty || Asse.touched)" class="text-danger">
+                                  <div>
+
+                                    <div *ngIf="Asse.errors.required">
+                                     Select valid Asset from the list.
+                                     </div>
+                                  </div>
+
+                                </div>
+
                               </div>
                            </div>
                              <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="eg. 5000 , 10000 , 15000 ">
+                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="eg. 5000 , 10000 , 15000 " #Odo="ngModel" required pattern="^[0-9]+$">
+                                   <div *ngIf="Odo.invalid && (Odo.dirty || Odo.touched)" class="text-danger">
+                                    <div *ngIf="Odo.errors.required">
+                                    Odometer number is required.
+                                    </div>
+                                    <div *ngIf="Odo.errors.pattern">
+                                      Odometer must contain numbers only.
+                                    </div>
+                                  </div>
                                 </div>
                              </div>
                              <div class="row pt-2">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Completion Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input type="text" placeholder="yyyy/mm/dd"
+                                   <input type="text" placeholder="yyyy/mm/dd" #Date="ngModel" required
                                    (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="serviceData.completionDate" name="completionDate" class="form-control">
+                                   <div *ngIf="Date.invalid && (Date.dirty || Date.touched)" class="text-danger">
+                                    <div>
+
+                                      <div *ngIf="Date.errors.required">
+                                       Select valid Date.
+                                       </div>
+                                    </div>
+
+                                  </div>
                                 </div>
                              </div>
 
@@ -101,9 +138,18 @@
                            <div class="row">
                               <div class="col-lg-10" data-select2-id="118">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                 <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor">
+                                 <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;" placeholder="Select vendor" #Ven="ngModel" required>
                                      <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.vendorID}}">{{vendor.companyName}}</ng-option>
                                  </ng-select>
+                                 <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
+                                  <div>
+
+                                    <div *ngIf="Ven.errors.required">
+                                     Select valid Vendor from the list.
+                                     </div>
+                                  </div>
+
+                                </div>
                               </div>
                               <div class="col-lg-2  mar-top-37 pl-0">
                                   <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal" class="btn cus-btn-padd btn-success modal-with-form"><i class="fas fa-plus"></i></a>
