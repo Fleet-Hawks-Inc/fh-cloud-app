@@ -56,14 +56,14 @@
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelUnit | titlecase}}</td>
+                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelUnit}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
                                        <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
                                     </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit | titlecase}}</td>
+                                         <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit}}</td>
                                          <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                       <tr>
@@ -79,7 +79,7 @@
                                         <td><span *ngFor="let tax of fuelData.taxes"><span *ngIf="tax.taxType != '' || tax.taxAmount != 0">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></span></td>
                                      </tr>
                                      <tr>
-                                      <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit | titlecase}}</td>
+                                      <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit}}</td>
                                       <td>{{fuelData.totalUnits}}</td>
                                    </tr>
                                       <tr>
@@ -94,10 +94,10 @@
                                          <td class="back-color-gray font-weight-bold">Vendor</td>
                                          <td>{{vendorList[fuelData.vendorID]}}</td>
                                       </tr>
-                                      <!-- <tr>
+                                      <tr>
                                          <td class="back-color-gray font-weight-bold">Location</td>
                                          <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
-                                      </tr> -->
+                                      </tr>
                                       <tr>
                                         <td class="back-color-gray font-weight-bold">Paid By</td>
                                         <td>{{driverList[fuelData.paidBy]}}
@@ -181,7 +181,7 @@
                        </div>
                     </div>
                     <!-- Details div -->
-                    <div class="row mt-4" *ngIf="fuelData.lineItems?.length">
+                    <div class="row mt-4" *ngIf="fuelData.taxes.length != 0">
                       <div class="col">
                        <table class="table table-bordered table-responsive-lg">
                         <thead>
