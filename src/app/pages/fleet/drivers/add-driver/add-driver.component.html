@@ -151,7 +151,7 @@
                           #dob="ngModel" required>
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
-                            Birth Date is required must contain yyyy/mm/dd format..
+                            Birth date is required.
                           </div>
                         </div>
                       </div>
@@ -199,7 +199,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control form-control-lg"
+                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -226,7 +226,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                               <div class="input-group">
-                                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control form-control-lg"
+                                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
                                   />
                                   <div class="input-group-append">
                                     <span class="input-group-text eye">
@@ -273,14 +273,14 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                          (change)="onChangeHideErrors('phone')" placeholder="eg. 0016780571" #mob="ngModel"
+                          (change)="onChangeHideErrors('phone')" placeholder="eg. c" #mob="ngModel"
                           required pattern="^(\+1)[0-9]{10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
                             Phone is required.
                           </div>
                           <div *ngIf="mob.errors.pattern">
-                            Enter valid phone number eg. 1234567894.
+                            Enter valid phone number eg. +16040571231.
                           </div>
                         </div>
                       </div>
@@ -963,7 +963,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
-                          placeholder="Select licence type of driver" #vType="ngModel" required>
+                          placeholder="Select licence type of driver">
                           <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
                           <ng-option value="Light Vehicle">Light Vehicle</ng-option>
                         </ng-select>
@@ -1494,10 +1494,10 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-         
+
             <div class="form-row">
               <div class="form-group col-lg-12 mb-0">
-                <label class="control-label font-weight-bold" >Group Name 
+                <label class="control-label font-weight-bold" >Group Name
                   <span
                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                   </label>
@@ -1506,7 +1506,7 @@
                   <div *ngIf="groupModel.invalid && (groupModel.dirty || groupModel.touched)" class="text-danger">
                     <div *ngIf="groupModel.errors.required">
                       Group Name is required.
-                    </div>     
+                    </div>
                     <div *ngIf="groupModel.errors.pattern">
                            Group Name must contains uppercase, lowercase and special characters for period(space) only.
                     </div>
@@ -1534,7 +1534,7 @@
                 </div>
               </div>
             </div>
-   
+
         </div>
       </div>
       <div class="modal-footer text-right">

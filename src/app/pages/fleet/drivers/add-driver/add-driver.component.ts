@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
+
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -160,13 +161,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       WCB: '',
       medicalCardRenewal: '',
       healthCare: '',
-      vehicleType:  null,
+      vehicleType: '',
     },
     hosDetails: {
       hosStatus: null,
       timezone: null,
       type: null,
-      hosRemarks: null,
+      hosRemarks: '',
       hosCycle: null,
       homeTerminal: null,
       pcAllowed: false,
