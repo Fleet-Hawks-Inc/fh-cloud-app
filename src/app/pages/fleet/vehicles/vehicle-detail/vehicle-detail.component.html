@@ -70,11 +70,11 @@
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                      <div class="col-lg-8 p-2 border-box">Canada</div>
+                      <div class="col-lg-8 p-2 border-box">{{ countryName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province:</div>
-                      <div class="col-lg-8 p-2 border-box">ON</div>
+                      <div class="col-lg-8 p-2 border-box">{{ stateName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Assign Driver:</div>
@@ -140,7 +140,7 @@
                       <div class="col-lg-8 p-2">
                         <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
                           <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                            <img src="{{slide}}" alt="" style="margin: auto;">
+                            <img src="{{slide}}" class="img-fluid" alt="" style="margin: auto;">
                           </div>
                         </ngx-slick-carousel>
                       </div>
