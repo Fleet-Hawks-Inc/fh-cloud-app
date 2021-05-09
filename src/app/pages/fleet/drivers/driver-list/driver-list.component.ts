@@ -167,7 +167,7 @@ export class DriverListComponent implements OnInit {
   }
 
   fetchDriversCount() {
-    this.apiService.getData('drivers/get/count?driver='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
+    this.apiService.getData('drivers/get/count?driver=' + this.driverID + '&dutyStatus=' + this.dutyStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -258,24 +258,41 @@ export class DriverListComponent implements OnInit {
   }
 
 
-  deactivateDriver(item, driverID) {
-
+  deactivateDriver(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
-        .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.driverID,
+        status: eventData.driverStatus
+      }
+      this.apiService.postData('drivers/delete', record).subscribe((result: any) => {
 
-          this.drivers = [];
-          this.driverDraw = 0;
-          this.lastEvaluatedKey = '';
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.fetchDriversCount();
-          this.initDataTable();
-          this.toastr.success('Driver is deactivated!');
-        }, err => {
-
-        });
+        this.drivers = [];
+        this.driverDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.fetchDriversCount();
+        this.initDataTable();
+        this.toastr.success('Driver is deactivated!');
+      });
     }
+    // if (confirm('Are you sure you want to delete?') === true) {
+    //   this.apiService
+    //     .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
+    //     .subscribe((result: any) => {
+
+    //       this.drivers = [];
+    //       this.driverDraw = 0;
+    //       this.lastEvaluatedKey = '';
+    //       this.dataMessage = Constants.FETCHING_DATA;
+    //       this.fetchDriversCount();
+    //       this.initDataTable();
+    //       this.toastr.success('Driver is deactivated!');
+    //     }, err => {
+
+    //     });
+    // }
   }
 
   initDataTable() {
@@ -295,12 +312,13 @@ export class DriverListComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
           this.driverNext = false;
           // for prev button
-          if (!this.driverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].driverID)) {
-            this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
+          if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.driverPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
+          this.lastEvaluatedKey = lastEvalKey;
 
         } else {
           this.driverNext = true;

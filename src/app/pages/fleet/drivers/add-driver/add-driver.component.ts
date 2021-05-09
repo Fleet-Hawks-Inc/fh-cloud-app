@@ -72,6 +72,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   isEdit = false;
   driverData = {
     employeeContractorId: '',
+    createdDate : '',
+    createdTime : '',
     driverType: 'employee',
     entityType: Constants.DRIVER,
     gender: 'M',
@@ -381,23 +383,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     })
   }
  fetchTimezones(){
-  // const ct = require('countries-and-timezones');
-  // const UStimezones = ct.getTimezonesForCountry('US');
-  // UStimezones.forEach((element: any) => {
-  //   const obj: any = {
-  //     name: element.name,
-  //     country: element.country
-  //     };
-  //     this.finaltimezones.push(obj);
-  // });
-  // const CAtimezones = ct.getTimezonesForCountry('CA');
-  // CAtimezones.forEach((e: any) => {
-  // const obj: any = {
-  // name: e.name,
-  // country: e.country
-  // };
-  // this.finaltimezones.push(obj);
-  // });
+  const ct = require('countries-and-timezones');
+  const UStimezones = ct.getTimezonesForCountry('US');
+  UStimezones.forEach((element: any) => {
+    const obj: any = {
+      name: element.name,
+      country: element.country
+      };
+      this.finaltimezones.push(obj);
+  });
+  const CAtimezones = ct.getTimezonesForCountry('CA');
+  CAtimezones.forEach((e: any) => {
+  const obj: any = {
+  name: e.name,
+  country: e.country
+  };
+  this.finaltimezones.push(obj);
+  });
 }
 
 
@@ -662,8 +664,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     // this.spinner.show();
     this.hideErrors();
-    // this.driverData.empPrefix = this.prefixOutput;
-    // this.driverData.currentTab = this.currentTab;
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
 
     if (this.driverData.hosDetails.hosCycle !== '') {
       let cycleName = '';
@@ -889,6 +891,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
+        this.driverData.createdDate = result.createdDate;
+        this.driverData.createdTime = result.createdTime;
         if (result.driverImage !== '' && result.driverImage !== undefined) {
           this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
           this.showIcons = true;
@@ -1031,6 +1035,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     this.hideErrors();
     this.submitDisabled = true;
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if (element.countryID != '' || element.stateID != '' || element.cityID != '') {

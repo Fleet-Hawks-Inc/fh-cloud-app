@@ -96,8 +96,8 @@
                             <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus"
                               class="form-control form-control-sm" placeholder="Select driver status"
                               (change)="onChangeHideErrors('driverStatus')" #status="ngModel" required>
-                              <ng-option value="Active">Active</ng-option>
-                              <ng-option value="InActive">InActive</ng-option>
+                              <ng-option value="active">Active</ng-option>
+                              <ng-option value="inActive">InActive</ng-option>
                             </ng-select>
                             <div *ngIf="status.invalid && (status.dirty || status.touched)" class="text-danger">
                               <div *ngIf="status.errors.required">
