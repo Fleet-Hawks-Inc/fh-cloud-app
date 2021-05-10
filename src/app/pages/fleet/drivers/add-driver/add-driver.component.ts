@@ -380,24 +380,24 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.spinner.hide();
     })
   }
- fetchTimezones(){
-  // const ct = require('countries-and-timezones');
-  // const UStimezones = ct.getTimezonesForCountry('US');
-  // UStimezones.forEach((element: any) => {
-  //   const obj: any = {
-  //     name: element.name,
-  //     country: element.country
-  //     };
-  //     this.finaltimezones.push(obj);
-  // });
-  // const CAtimezones = ct.getTimezonesForCountry('CA');
-  // CAtimezones.forEach((e: any) => {
-  // const obj: any = {
-  // name: e.name,
-  // country: e.country
-  // };
-  // this.finaltimezones.push(obj);
-  // });
+ fetchTimezones() {
+  const ct = require('countries-and-timezones');
+  const UStimezones = ct.getTimezonesForCountry('US');
+  UStimezones.forEach((element: any) => {
+    const obj: any = {
+      name: element.name,
+      country: element.country
+      };
+      this.finaltimezones.push(obj);
+  });
+  const CAtimezones = ct.getTimezonesForCountry('CA');
+  CAtimezones.forEach((e: any) => {
+  const obj: any = {
+  name: e.name,
+  country: e.country
+  };
+  this.finaltimezones.push(obj);
+  });
 }
 
 
