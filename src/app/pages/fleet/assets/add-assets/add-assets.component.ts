@@ -8,7 +8,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { DomSanitizer} from '@angular/platform-browser';
-import { ListService } from '../../../../services/list.service'
+import { ListService } from '../../../../services/list.service';
+import * as moment from 'moment';
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -27,28 +28,30 @@ export class AddAssetsComponent implements OnInit {
   assetsData = {
     inspectionFormID:'',
     assetIdentification: '',
-    groupID: '',
+    groupID: null,
     VIN: '',
-    startDate: '',
+    startDate:  moment().format('YYYY-MM-DD'),
+    assetType: null,
+    status: null,
+    createdDate: '',
+    createdTime: '',
     assetDetails: {
-      assetType: null,
-      currentStatus: '',
-      year: '',
-      manufacturer: '',
-      model: '',
+      year: null,
+      manufacturer: null,
+      model: null,
       length: 0,
-      lengthUnit: '',
+      lengthUnit: null,
       height: 0,
-      heightUnit: '',
+      heightUnit: null,
       axle: '',
       GVWR: '',
-      GVWR_Unit: '',
+      GVWR_Unit: null,
       GAWR: '',
-      GAWR_Unit: '',
-      ownerShip: '',
-      ownerOperator: '',
-      licenceCountryID: '',
-      licenceStateID: '',
+      GAWR_Unit: null,
+      ownerShip: null,
+      ownerOperator: null,
+      licenceCountryID: null,
+      licenceStateID: null,
       licencePlateNumber: '',
       annualSafetyDate: '',
       annualSafetyReminder: true,
@@ -57,11 +60,11 @@ export class AddAssetsComponent implements OnInit {
     insuranceDetails: {
       dateOfIssue: '',
       premiumAmount: '',
-      premiumCurrency: '',
+      premiumCurrency: null,
       dateOfExpiry: '',
       reminderBefore: '',
       reminderBeforeUnit: '',
-      vendor: ''
+      vendor: null
     },
     crossBorderDetails: {
       ACI_ID: '',
@@ -102,7 +105,7 @@ export class AddAssetsComponent implements OnInit {
   existingDocs = [];
   assetsImages = []
   assetsDocs = [];
-  inspectionForms=[];
+  inspectionForms = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
   years = [];
@@ -127,7 +130,6 @@ export class AddAssetsComponent implements OnInit {
     this.fetchCountries(); // fetch countries
     this.fetchGroups();
     this.fetchAssets();
-    this.fetchAssetTypes();
     this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
     if (this.assetID) {
@@ -155,31 +157,11 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
-
-  // fetchAllAssetTypes() {
-  //   this.httpClient.get('assets/trailers.json').subscribe(data =>{
-  //     this.allAssetTypes = data;
-  //   });
-  // }
-
 
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
   }
-  /**
-   * fetch asset types from database
-   */
-  fetchAssetTypes() {
-    this.apiService.getData('assetTypes').subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-
-  }
-
 
   fetchInspectionForms() {
     this.apiService
@@ -201,9 +183,10 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.assetsData.inspectionFormID,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      status: this.assetsData.status,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
         model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
@@ -218,7 +201,6 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
@@ -321,11 +303,13 @@ export class AddAssetsComponent implements OnInit {
 
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
+        this.assetsData.createdTime = result.createdTime;
+        this.assetsData.createdDate = result.createdDate;
         this.assetsData.groupID = result.groupID;
         this.assetsData.inspectionFormID = result.inspectionFormID;
         this.assetsData.VIN = result.VIN;
         this.assetsData.startDate = result.startDate;
-        this.assetsData.assetDetails.assetType = result.assetDetails.assetType;
+        this.assetsData.assetType = result.assetType;
         this.assetsData.assetDetails.year = result.assetDetails.year;
         this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
         // this.getModels(result.assetDetails.manufacturer);
@@ -343,7 +327,7 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'Owner Operator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
-        this.assetsData.assetDetails.currentStatus = result.assetDetails.currentStatus;
+        this.assetsData.status = result.status;
         this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
         this.getStates(result.assetDetails.licenceCountryID);
         this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
@@ -393,9 +377,12 @@ export class AddAssetsComponent implements OnInit {
       groupID: this.assetsData.groupID,
       VIN: this.assetsData.VIN,
       startDate: this.assetsData.startDate,
-      inspectionFormID:this.assetsData.inspectionFormID,
+      createdTime: this.assetsData.createdTime,
+      createdDate: this.assetsData.createdDate,
+      inspectionFormID: this.assetsData.inspectionFormID,
+      assetType: this.assetsData.assetType,
+      status: this.assetsData.status,
       assetDetails: {
-        assetType: this.assetsData.assetDetails.assetType,
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer,
         model: this.assetsData.assetDetails.model,
@@ -410,7 +397,6 @@ export class AddAssetsComponent implements OnInit {
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
-        currentStatus: this.assetsData.assetDetails.currentStatus,
         licenceCountryID: this.assetsData.assetDetails.licenceCountryID,
         licenceStateID: this.assetsData.assetDetails.licenceStateID,
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
@@ -518,7 +504,11 @@ export class AddAssetsComponent implements OnInit {
   fetchCountries() {
     this.apiService.getData('countries')
       .subscribe((result: any) => {
-        this.countries = result.Items;
+        result.Items.map(elem => {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+            this.countries.push({countryName: elem.countryName, countryID: elem.countryID})
+          }
+        });
       });
   }
 

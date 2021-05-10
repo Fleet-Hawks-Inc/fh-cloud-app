@@ -24,19 +24,32 @@
                      </ul>
                   </div>
                </div>
-
                <div class="col-md-2 col-lg-2">
-                  <ng-select class="form-control" name="currentStatus" [(ngModel)]="currentStatus" placeholder="Select Type">
-                     <ng-option *ngFor="let item of allAssetTypes" [value]="item.assetTypeID">
-                        {{item.assetTypeName}}</ng-option>
+                  <ng-select class="form-control" name="assetType" [(ngModel)]="assetType" placeholder="Select Type">
+                    <ng-option value="container">Container</ng-option>
+                    <ng-option value="double_drop">Double Drop</ng-option>
+                    <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                    <ng-option value="flat_bed">Flat bed</ng-option>
+                    <ng-option value="lowboy">Lowboy</ng-option>
+                    <ng-option value="stepDeck">StepDeck</ng-option>
+                    <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                    <ng-option value="dry_van">Dry Van</ng-option>
+                    <ng-option value="reefer">Reefer</ng-option>
+                    <ng-option value="power_only">Power Only</ng-option>
+                    <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                    <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                    <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                    <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                    <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                    <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                    <ng-option value="chassis">Chassis</ng-option>
+                    <ng-option value="tank_trailer">Tank Trailer</ng-option>
                   </ng-select>
                </div>
-
                <div class="col-md-2 col-lg-2">
                   <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                   <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                </div>
-
                <div class="col-md-6 col-lg-6 text-right page-buttons">
                   <div class="btn-group flex-wrap" style="min-width:190px;">
                      <button type="button" class="mr-2 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
@@ -221,7 +234,7 @@
                         <th class="col4 minWidth200">Last Location</th>
                         <th class="col3 minWidth200"> Licence Plate Number</th>
                         <th class="col5 extra">Year</th>
-                        
+
                         <th class="col7 extra">Model</th>
                         <th class="col8 extra">Ownership</th>
                         <th class="col10 extra">Group</th>
@@ -240,12 +253,12 @@
                      <tr class="cursorpoint" *ngFor="let item of allData;let i = index">
                         <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
                         <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetIdentification}}</td>
-                        <td *ngIf="hideShow.type">{{assetTypeList[item.assetDetails.assetType]}}</td>
+                        <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
                         <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
                         <td *ngIf="hideShow.lastLocation" >Live Location</td>
                         <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                         <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
-                       
+
                         <td *ngIf="hideShow.model" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
                         <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
                         <!-- extra columns -->
@@ -254,7 +267,7 @@
                         <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
                         <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR ? item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
                         <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR ? item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
-                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.assetDetails.currentStatus}}</span></td>
+                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.status}}</span></td>
                         <td>
                            <div class="dropdown dropright">
                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -262,14 +275,14 @@
                               </button>
                               <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                  <a class="dropdown-item" routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
-                                 <a class="dropdown-item" href="javascript:;" (click)="deactivateAsset(item.isDeleted, item.assetID)">Delete</a>
+                                 <a class="dropdown-item" href="javascript:;" (click)="deleteAsset(item)">Delete</a>
                               </div>
                            </div>
                         </td>
                      </tr>
                   </tbody>
                </table>
-               
+
             </div>
             <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
                <div class="col-6">

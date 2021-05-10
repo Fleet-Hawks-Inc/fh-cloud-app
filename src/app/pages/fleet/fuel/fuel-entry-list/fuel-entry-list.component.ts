@@ -60,7 +60,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelStartPoint = 1;
   fuelEndPoint = this.pageLength;
   allVehicles = [];
-  allAssets = [];
+  allAssets: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -224,7 +224,6 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
-
       if (result[`LastEvaluatedKey`] !== undefined) {
         this.fuelNext = false;
         // for prev button
@@ -239,7 +238,7 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelEndPoint = this.totalRecords;
       }
 
-      if(this.totalRecords < this.fuelEndPoint) {
+      if (this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 
@@ -327,12 +326,16 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      for (let i = 0; i < result.Items.length; i++) {
-        if (result.Items[i].assetDetails.assetType === 'f3927440-7b25-11eb-8229-0588f994a55e') {
-          this.allAssets.push(result.Items[i]);
+    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
+      result.forEach((e: any) => {
+        if(e.assetType == 'reefer') {
+          let obj = {
+            assetID: e.assetID,
+            assetIdentification: e.assetIdentification
+          };
+          this.allAssets.push(obj);
         }
-      }
+      });
     });
   }
 }
