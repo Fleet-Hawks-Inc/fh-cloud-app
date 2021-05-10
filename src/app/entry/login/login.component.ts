@@ -97,6 +97,7 @@ export class LoginComponent implements OnInit {
       // });
       await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+      console.log('isActivatedUser', isActivatedUser)
       // if (!isActivatedUser.carrierID) {
       if (!isActivatedUser.carrierID) {
         this.hasError = true;
