@@ -20,10 +20,13 @@
                                     <a class="nav-link" [ngClass]="{'active': currentTab == 1}" (click)="tabChange(1)" [routerLink]="">Basic Details</a>
                                  </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" [routerLink]="">Address Details</a>
+                                    <a class="nav-link" [ngClass]="{'active': currentTab == 2}" (click)="tabChange(2)" [routerLink]="">Address</a>
                                  </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" [routerLink]="">Account Details</a>
+                                    <a class="nav-link" [ngClass]="{'active': currentTab == 3}" (click)="tabChange(3)" [routerLink]="">User Account</a>
+                                 </li>
+                                 <li class="nav-item">
+                                    <a class="nav-link" [ngClass]="{'active': currentTab == 4}" (click)="tabChange(4)" [routerLink]="">Payment Details</a>
                                  </li>
                             </ul>
                         </div>
@@ -36,6 +39,13 @@
                                         </div>
                                         <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
+
+                                             <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Company Name</label>
+                                                <input type="text" class="form-control"  [(ngModel)]="companyname" name="companyName"> </div>
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name</label>
+                                                   <input type="text" class="form-control"  [(ngModel)]="dbaname" name="dbaName"> </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">First Name</label>
                                                     <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName"> </div>
@@ -45,24 +55,17 @@
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Employee ID</label>
                                                     <input type="text" class="form-control"  [(ngModel)]="employeeID" name="employeeID"> </div>
-                                                <div class="col-lg-5">
+                                                <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
                                                     <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text"
                                                   class="form-control" placeholder="Select Date">
                                                    </div>
-                                                <div class="col-lg-5">
-                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Status</label>
-                                                      <ng-select [(ngModel)]="currentStatus" name="currentStatus"
-                                                      placeholder="Select user status">
-                                                      <ng-option value="ACTIVE">Active</ng-option>
-                                                      <ng-option value="INACTIVE">Inactive</ng-option>
-                                                   </ng-select>
-                                                </div>
+                                                
                                                 <div class="col-lg-10">
-                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Work Phone</label>
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2"> Phone</label>
                                                    <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
                                                    <div class="col-lg-10">
-                                                      <label class="control-label font-weight-bold text-lg-right pt-2">Work Email</label>
+                                                      <label class="control-label font-weight-bold text-lg-right pt-2"> Email</label>
                                                       <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
                                             </div>
                                         </div>
@@ -217,6 +220,9 @@
                                         </div>
                                         <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
+                                             <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Contract Start Date</label>
+                                                <input type="text" class="form-control" [(ngModel)]="contractstartdate" name="contractstartDate"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select Department</label>
                                                     <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName">
@@ -231,48 +237,46 @@
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">
-                                                                    <ng-option value="Full Admin">Full Admin</ng-option>
-                                                                    <ng-option value="Read Only Admin">Read Only Admin</ng-option>
-                                                                    <ng-option value="Dispatch">Dispatch</ng-option>
-                                                                    <ng-option value="Maintenance">Maintenance</ng-option>
-                                                                    <ng-option value="Safety Manager">Safety Manager</ng-option>
-                                                                    <ng-option value="Other">Other</ng-option>
-                                                    </ng-select>
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">User Name</label>
+                                                   <input type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]="disableInput">
+                                                </div>
+                                                <div class="col-lg-10">
+                                                   <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
+                                                   <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
                                                 </div>
                                                 <div class="col-lg-2 mar-top-37">
                                                         <!-- <a href="#addUserTypeModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                                           </div>
 
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Group&nbsp; <span
-                                                        class="text-1 optional-label-color">(optional)</span></label>
-                                                      <ng-select  [(ngModel)]="groupID" name="groupID" style="width: 100%;" placeholder="Select group for the vehicle">
-                                                      <optgroup label="Select Group">
-                                                         <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
-                                                            {{group.groupName}}</ng-option>
-                                                      <optgroup>
-                                                   </ng-select>
-
-                                                </div>
-                                                <div class="col-lg-2 mar-top-37">
-                                                    <button type="button" data-toggle="modal" data-target="#addGroupModal"
-                                                    class="modal-with-form btn btn-sm btn-success text-light"><i
-                                                       class="fas fa-plus"></i></button>
-                                                       </div>
+                                                
+                                                
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                         <div class="row">
+                                          <div class="col-lg-10">
+                                             <label class="control-label font-weight-bold text-lg-right pt-2">Contract End Date</label>
+                                             <input type="text" class="form-control" [(ngModel)]="contractenddate" name="contractendDate"> </div>
+                                             <div class="col-lg-10">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
+                                                <ng-select class="form-control" [(ngModel)]="designation" name="designation"> 
+                                                   <ng-option value="Executive">Executive</ng-option>
+                                                   <ng-option value="Manager">Manager</ng-option>
+                                                </ng-select>
+                                                </div>
+                                                
                                                 <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">User Name</label>
-                                                    <input type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]="disableInput">
-                                                 </div>
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
-                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
-                                                 </div>
+                                                   <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
+                                                   <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">
+                                                                   <ng-option value="Full Admin">Full Admin</ng-option>
+                                                                   <ng-option value="Read Only Admin">Read Only Admin</ng-option>
+                                                                   <ng-option value="Dispatch">Dispatch</ng-option>
+                                                                   <ng-option value="Maintenance">Maintenance</ng-option>
+                                                                   <ng-option value="Safety Manager">Safety Manager</ng-option>
+                                                                   <ng-option value="Other">Other</ng-option>
+                                                   </ng-select>
+                                               </div>
+                                                
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password</label>
                                                     <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="confirmUserPassword" name="confirmUserPassword" [disabled]="disableInput">
@@ -285,6 +289,78 @@
 
                             </div>
                         </div>
+
+                        <!-- Payment Details -->
+                        <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 4}" id="addUserAccount" role="tabpanel" aria-labelledby="addUserAccount-tab">
+                           <div class="form-group row">
+                              <div class="col-lg-10">
+                                 <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment Details</label>
+                             </div>
+                             <div class="col-lg-5 offset-lg-1">
+                                <div class="row">
+                             <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Select Payroll type</label>
+                              <ng-select class="form-control populate"  [(ngModel)]="payrolltype" name="payrollType">
+                                      <ng-option value="Flat">Flat</ng-option>
+                                      <ng-option value="Hour">Hour</ng-option>
+                               </ng-select>
+                          </div>
+                          <div class="col-lg-10">
+                           <label class="control-label font-weight-bold text-lg-right pt-2">Pay Period</label>
+                           <ng-select class="form-control populate"  [(ngModel)]="payperiod" name="payPeriod">
+                              <ng-option value="Weekly">Weekly</ng-option>
+                              <ng-option value="Biweekly">Biweekly</ng-option>
+                              <ng-option value="Monthly">Monthly</ng-option>
+                              <ng-option value="Quaterly">Quaterly</ng-option>
+                              <ng-option value="Annually">Annually</ng-option>
+                         </ng-select>
+                       </div> 
+                      
+
+               
+                          <div class="col-lg-2 mar-top-37">
+                           <!-- <a href="#addUserTypeModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
+                             </div>
+
+                             <div class="col-lg-5">
+                                <div class="row">
+
+                             <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
+                              <input type="text" class="form-control" placeholder="eg.1,2,3" [(ngModel)]="rate" name="rate"> </div>
+                              <div class="col-lg-5">
+                                 <label class="control-label font-weight-bold text-lg-right pt-2"></label>
+                                 <ng-select placeholder ="Select currency"class="form-control populate"  [(ngModel)]="currency" name="currency">
+                                         <ng-option value="CAD">CAD</ng-option>
+                                         <ng-option value="USD">USD</ng-option>
+                                  </ng-select>
+                             </div>
+                             <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">SIN</label>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="sin" name="sin"> </div>
+
+                              <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">WCB#</label>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="wcb" name="wcb"> </div>
+                              
+                              <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">Health care#</label>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="healthcare" name="healthCare"> </div>
+
+
+                           </div>
+                        </div>
+      
+      
+
+                           </div>
+                        </div>
+
+                           </div>
+
+                        </div>
+
+
                         <div class="form-group row mt-3">
                             <div class="col-lg-12 text-right pb-4 pr-5">
                                 <a type="button" (click)="cancel()" class="btn btn-default btnPrevious mr-2">Cancel</a>

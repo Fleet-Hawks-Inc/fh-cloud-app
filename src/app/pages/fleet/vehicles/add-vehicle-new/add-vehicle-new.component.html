@@ -733,8 +733,8 @@
                                                 data-placement="top"
                                                 title="Odometer reading on in-service date."></i></label>
 
-                                          <input type="number" class="form-control" name="lifeCycle.inServiceOdometer"
-                                             min="0" [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000" #odometer="ngModel" required pattern="^[0-9]+$">
+                                          <input type="text" class="form-control" name="lifeCycle.inServiceOdometer"
+                                             [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000" #odometer="ngModel" required pattern="^[0-9]+$">
                                              <div *ngIf="odometer.invalid && (odometer.dirty || odometer.touched)" class="text-danger">
                                                 <div *ngIf="odometer.errors.required">
                                                    In-Service Odometer is required.  
@@ -853,7 +853,7 @@
                                                 title="Final odometer reading on out-of-service date"></i>&nbsp; <span
                                                 class="text-1 optional-label-color">(optional)</span></label>
 
-                                          <input type="number" class="form-control" min="0"
+                                          <input type="text" class="form-control" 
                                              name="lifeCycle.outOfServiceOdometer"
                                              [(ngModel)]="lifeCycle.outOfServiceOdometer" placeholder="eg. 100000">
                                        </div>
