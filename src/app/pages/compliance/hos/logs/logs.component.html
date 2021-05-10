@@ -8,183 +8,20 @@
     <app-sidebar></app-sidebar>
     <!-- end: sidebar -->
 
-    <!-- <section role="main" class="content-body">
-      <header class="page-header">
-        <h2>{{ title }}</h2>
-
-        <div class="right-wrapper text-right">
-          <ol class="breadcrumbs pr-3">
-            <li>
-              <a routerLink="">
-                <i class="fas fa-home"></i>
-              </a>
-            </li>
-            <li>
-              <span>{{ title }}</span>
-            </li>
-          </ol>
-        </div>
-      </header>
-
-      <section class="card mb-4">
-        <div class="card-body">
-          <h2 class="card-title mt-2 mb-3">Driver Logs</h2>
-          <form class="form-horizontal form-bordered" method="get">
-            <div class="form-group row">
-              <div class="col-lg-3">
-                <div class="input-group mb-1">
-                  <span class="input-group-prepend positionsta">
-                    <span class="input-group-text"
-                      ><i class="fas fa-search"></i
-                    ></span>
-                  </span>
-                  <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      [(ngModel)]="userName"
-                      name="userName"
-                    >
-                      <optgroup label="">
-                        <option>All</option>
-                        <option
-                          *ngFor="let driver of drivers" 
-                          value="{{ driver.userName }}"
-                          >{{ driver.userName }}</option
-                        >
-                      </optgroup>
-                    </select>
-                </div>
-              </div>
-
-
-              <div class="col-lg-3">
-                <div class="input-group mb-1">
-                  <span class="input-group-prepend positionsta">
-                    <span class="input-group-text"
-                      ><i class="fas fa-search"></i
-                    ></span>
-                  </span>
-                  <select
-                      data-plugin-selectTwo
-                      class="form-control populate"
-                      name="violation"
-                    >
-                      <optgroup label="">
-                        <option>Violation</option>
-                        <option>Non Violation</option>
-                      </optgroup>
-                    </select>
-                </div>
-              </div>
-              
-              <div class="col-lg-3">
-                <div class="input-group mb-1">
-                  <span class="input-group-prepend positionsta">
-                    <span class="input-group-text" (click)="from.toggle()"
-                      ><i class="fas fa-calendar-alt"></i
-                    ></span>
-                  </span>
-                  <input
-                    ngbDatepicker #from="ngbDatepicker"
-                    readonly
-                    type="text"
-                    class="form-control"
-                    placeholder="From Date"
-                    [(ngModel)]="fromDate"
-                    name="fromDate"
-                  />
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="input-group mb-1">
-                  <span class="input-group-prepend positionsta">
-                    <span class="input-group-text" (click)="to.toggle()"
-                      ><i class="fas fa-calendar-alt"></i
-                    ></span>
-                  </span>
-                  <input
-                    readonly
-                    type="text"
-                    class="form-control"
-                    placeholder="To Date"
-                    [(ngModel)]="toDate"
-                    name="toDate"
-                    ngbDatepicker #to="ngbDatepicker"
-                  />
-                </div>
-              </div>
-
-            </div>
-            <div class="form-group row">
-              <div class="col-lg-12">
-                <button
-                  class="btn btn-dark mar-top-asg-stock-btn pull-right"
-                  (click)="getFilteredLogs()"
-                >
-                  Find
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <div class="row">
-        <div class="col">
-          <section class="card">
-            <header class="card-header">
-              <h2 class="card-title">{{ title }}</h2>
-            </header>
-            <div class="card-body">
-              <table
-                class="table table-bordered table-striped mb-0"
-                #FhDataTable
-                id="datatable-default"
-              >
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Driver</th>
-                    <th>On Duty Hours</th>
-                    <th>Drive Hours</th>
-                    <th>Break Hours</th>
-                    <th>Violation</th>
-                    <th>Distance</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let log of logs">
-                    <td>{{ log.date }}</td>
-                    <td>{{ log.driver }}</td>
-                    <td>{{ log.onDuty * 1000 | date: "H:mm:ss":"UTC" }}</td>
-                    <td>{{ log.onDrive * 1000 | date: "H:mm:ss":"UTC" }}</td>
-                    <td>{{ log.onBreak * 1000 | date: "H:mm:ss":"UTC" }}</td>
-                    <td><span class="cirgrn">&nbsp;;</span> No Violation</td>
-                    <td>877 mi</td>
-                    <td>
-                      <a class="btn btn-dark btn-sm mt-0 modal-confirm"
-                        routerLink="/compliance/hos/edit/{{log.driver}}/{{ log.date }}"
-                        >Edit</a
-                      >
-                    </td>
-
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section> -->
-
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr-5">
-        
-        <div class="row pr-1 mr-1" style="padding-top:10px;">
-          
+        <div class="row pr-1 mr-1" style="padding-top: 10px">
           <div class="col-lg-3">
-            <input               type="text"               class="form-control"              placeholder="Search By Drivers"             />
+
+            <ng-select class="form-control populate" name="userName" [(ngModel)]="userName"
+              placeholder="Select Driver" required  required>
+              <optgroup label="">
+                  <ng-option *ngFor="let driver of drivers" value="{{driver.userName}}">
+                    {{driver.firstName}} {{driver.lastName}}
+                  </ng-option>
+              </optgroup>
+            </ng-select>
+
           </div>
 
           <div class="col-lg-3 col-md-3">
@@ -199,62 +36,39 @@
                 class="form-control"
                 data-plugin-datepicker=""
                 placeholder="start date"
-                name="start"
+                name="fromDate"
+                (click)="d1.toggle()" 
+                ngbDatepicker 
+                #d1="ngbDatepicker"
+                [(ngModel)]="fromDate"
+                autocomplete="off"
               />
+
               <span
                 class="input-group-text border-left-0 border-right-0 rounded-0"
               >
                 to
               </span>
               <input
-                type="text"
-                class="form-control"
-                data-plugin-datepicker=""
-                placeholder="end date"
-                name="end"
-              />
+              type="text"
+              class="form-control"
+              data-plugin-datepicker=""
+              placeholder="to date"
+              name="toDate"
+              (click)="d2.toggle()" 
+              ngbDatepicker 
+              #d2="ngbDatepicker"
+              [(ngModel)]="toDate"
+              autocomplete="off"
+            />
             </div>
           </div>
 
           <div class="col-lg-1 col-md-1">
-            <button class="btn btn-success btn-sm">Search</button>
+            <button class="btn btn-success btn-sm" (click)="getLogs()">Search</button>
           </div>
-          
         </div>
       </header>
-
-      <section class="card mt-0 mr-0">
-        <!-- <div class="card-body">
-              
-               <form class="form-horizontal form-bordered" method="get">
-
-                  <div class="form-group row">
-                     
-                     <div class="col-lg-3">
-                        <div class="input-group">
-                           <span class="input-group-prepend positionsta">
-                              <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                           </span>
-                           <input type="text" data-plugin-datepicker class="form-control" placeholder="From Date">
-                        </div>
-                     </div>
-                     <div class="col-lg-3">
-                        <div class="input-group">
-                           <span class="input-group-prepend positionsta">
-                              <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                           </span>
-                           <input type="text" data-plugin-datepicker class="form-control" placeholder="To Date">
-                        </div>
-                     </div>
-                     <div class="col-lg-3">
-                          <button type="submit" class="btn btn-sm btn-dark">Find</button>
-                      </div>
-
-                  </div>
-                
-               </form>
-            </div> -->
-      </section>
 
       <div class="row">
         <div class="col pr-0">
@@ -279,22 +93,23 @@
                 <tbody>
                   <tr *ngFor="let log of logs">
                     <td>{{ log.date }}</td>
-                    <td>{{ log.driver }}</td>
-                    <td>{{ log.onDuty }}</td>
-                    <td>{{ log.onDrive }}</td>
-                    <td>45:00</td>
-                    <td>{{ log.onBreak }}</td>
+                    <td>{{ log.driverName }}</td>
+                    <td>{{ log.lastEventOfDay?.totalOnDutyTime }}</td>
+                    <td>{{ log.lastEventOfDay?.totalDailyDrivingLeft }}</td>
+                    <td>{{ log.lastEventOfDay?.totalCycleResetIn }}</td>
+                    <td>{{ log.lastEventOfDay?.totalBreakIn }}</td>
                     <td><span class="cirgrn">&nbsp;</span> No Violation</td>
                     <td>477 mi</td>
                     <td>
                       <a
-                        routerLink="/compliance/hos/detailed/{{log.driver}}/{{log.date}}"
+                        routerLink="/compliance/hos/detailed/{{ log.driver }}/{{
+                          log.date
+                        }}"
                         class="btn btn-dark btn-sm mt-0"
                         >Detail View</a
                       >
                     </td>
                   </tr>
-
                 </tbody>
               </table>
             </div>
