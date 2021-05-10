@@ -1341,7 +1341,7 @@
                               name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">Allow Yard Move (YM)</label>
                         </div>
                       </div>
-                      <div class="col-lg-10" id="crgo" style="display:none;">
+                      <!-- <div class="col-lg-10" id="crgo" style="display:none;">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Type <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
@@ -1373,7 +1373,7 @@
                             <option value="">No short Haul Exception</option>
                           </optgroup>
                         </select>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -1517,8 +1517,8 @@
                     class="text-1 optional-label-color">(optional)</span></label>
                 <ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" style="width: 100%;"
                   placeholder="Select group members">
-                  <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
-                    {{item.lastname}}</ng-option>
+                  <!-- <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
+                    {{item.lastname}}</ng-option> -->
                 </ng-select>
               </div>
             </div>

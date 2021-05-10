@@ -622,9 +622,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   fetchDrivers() {
-    this.apiService.getData(`drivers`).subscribe(res => {
-      this.allDrivers = res.Items;
-    });
+    // this.apiService.getData(`drivers`).subscribe(res => {
+    //   this.allDrivers = res.Items;
+    // });
   }
   addGroup() {
     this.hideErrors();
@@ -873,7 +873,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
+        console.log('result', result);
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -882,8 +882,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        this.driverData.password = result.password;
-        this.driverData.confirmPassword = result.confirmPassword;
+        // this.driverData.password = result.password;
+        // this.driverData.confirmPassword = result.confirmPassword;
         this.driverData.startDate = result.startDate;
         this.driverData.terminationDate = result.terminationDate;
         this.driverData.contractStart = result.contractStart;
@@ -956,7 +956,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         for (let i = 0; i < result.documentDetails.length; i++) {
           await this.getStates(result.documentDetails[i].issuingCountry);
           await this.getCities(result.documentDetails[i].issuingState);
-          let docmnt = []
+          let docmnt = [];
           if (result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0) {
             docmnt = result.documentDetails[i].uploadedDocs;
           }
