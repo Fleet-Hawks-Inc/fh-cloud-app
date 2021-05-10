@@ -156,9 +156,9 @@ fetchReceivers() {
   }
 
   fetchDrivers() {
-    // this.apiService.getData(`drivers`).subscribe((result: any) => {
-    //   this.driversDataSource.next(result.Items);
-    // });
+    this.apiService.getData(`drivers`).subscribe((result: any) => {
+      this.driversDataSource.next(result.Items);
+    });
   }
 
   fetchCustomers() {

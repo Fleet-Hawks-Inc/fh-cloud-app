@@ -931,6 +931,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           entryID: this.entryID,
+          sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
           usPortOfArrival: this.usPortOfArrival,
@@ -971,6 +972,7 @@ export class NewAceManifestComponent implements OnInit {
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
         entryID: this.entryID,
+        sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
         usPortOfArrival: this.usPortOfArrival,

@@ -8,36 +8,27 @@
         <button type="button" class="close" data-dismiss="modal">
           <i class="far fa-window-close" style="font-size:25px;"> </i>
         </button>
-
-
-
       </div>
       <div class="modal-body text-dark">
         <section class="card form-wizard" id="w1">
           <div class="card-body card-body-nopadding">
-
             <form>
-
               <div class="form-row">
                 <div class="form-group col-lg-12">
                   <label class="control-label font-weight-bold pt-2">Location Link</label>
                   <input type="text" value="https://track.fh.com/v/55235-bkkhh0df5qz45891q786pb" class="form-control">
                 </div>
               </div>
-
               <div class="form-row mt-2">
                 <div class="form-group mb-0 col-lg-6">
                   <label class="control-label font-weight-bold"> Set Link Expiry Date</label>
                   <input type="date" class="form-control">
                 </div>
-
                 <div class="form-group mb-0 col-lg-6">
                   <label class="control-label font-weight-bold"> Set Link Expiry Time</label>
                   <input type="time" class="form-control">
                 </div>
               </div>
-
-
               <div class="form-row mt-2">
                 <div class="form-group col-lg-12">
                   <div class="row">
@@ -48,7 +39,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="form-row mt-2">
                 <div class="form-group col-lg-12">
                   <div class="row">
@@ -60,11 +50,8 @@
                   </div>
                 </div>
               </div>
-
-
             </form>
           </div>
-
         </section>
       </div>
       <div class="modal-footer">
@@ -74,7 +61,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- share asset location modal -->
 <div class="modal fade" id="sharetlocation" tabindex="-1" role="dialog" aria-labelledby="sharetlocation"
@@ -279,7 +265,7 @@
       <div class="modal-body text-dark">
         <section class="card form-wizard">
           <div class="card-body card-body-nopadding">
-            
+
               <div class="row">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Enter Vehicle Make/Manufacturer
@@ -292,7 +278,7 @@
                     <div *ngIf="nMake.invalid && (nMake.dirty || nMake.touched)" class="text-danger">
                       <div *ngIf="nMake.errors.required">
                       Vehicle make/manufacturer is required.
-                      </div>     
+                      </div>
                       <div *ngIf="nMake.errors.pattern">
                              Vehicle make/manufacturer must contains uppercase, lowercase and special characters for period(space) only.
                       </div>
@@ -300,7 +286,7 @@
 
                 </div>
               </div>
-            
+
           </div>
         </section>
       </div>
@@ -328,7 +314,7 @@
       <div class="modal-body text-dark">
         <section class="card form-wizard">
           <div class="card-body card-body-nopadding">
-            
+
               <div class="row">
                 <div class="col-lg-12">
                   <label class="control-label font-weight-bold text-lg-right pt-2">Select Vehicle
@@ -344,9 +330,9 @@
                   </ng-select>
                   <div *ngIf="nManufacture.invalid && (nManufacture.dirty || nManufacture.touched)" class="text-danger">
                     <div *ngIf="nManufacture.errors.required">
-                     Select valid make/manufacture from the list is required 
-                    </div>     
-                    
+                     Select valid make/manufacture from the list is required
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -357,16 +343,16 @@
                   <input [(ngModel)]="vehicleModelData.modelName" name="modelName" type="text" placeholder="eg. Accord" class="form-control" #nModel="ngModel" required pattern="^[a-zA-Z\s]+$">
                   <div *ngIf="nModel.invalid && (nModel.dirty || nModel.touched)" class="text-danger">
                     <div *ngIf="nModel.errors.required">
-                     Select valid make/manufacture from the list is required 
-                    </div>     
+                     Select valid make/manufacture from the list is required
+                    </div>
                     <div *ngIf="nModel.errors.pattern">
                      Vehicle model name must contains uppercase, lowercase and special characters for period(space) only.
-                     </div>     
-                     
+                     </div>
+
                   </div>
                 </div>
               </div>
-            
+
           </div>
         </section>
       </div>
@@ -492,7 +478,7 @@
           <div class="row">
             <div class="col">
               <div class="card-body text-dark">
-               
+
                   <div class="form-group row">
                     <div class="col-lg-12">
                       <label
@@ -510,7 +496,7 @@
                             <div *ngIf="sProgram1.invalid && (sProgram1.dirty || sProgram1.touched)" class="text-danger">
                               <div *ngIf="sProgram1.errors.required">
                                Service program name is required.
-                              </div>     
+                              </div>
                               <div *ngIf="sProgram1.errors.pattern">
                                 Service program Name must contains uppercase, lowercase and special characters for period(space) only.
                               </div>
@@ -555,8 +541,8 @@
                               <div *ngIf="sTask.invalid && (sTask.dirty || sTask.touched)" class="text-danger">
                                 <div *ngIf="sTask.errors.required">
                                   Select valid service task from the list is required.
-                                </div>     
-                                
+                                </div>
+
                               </div>
 
                             </div>
@@ -582,7 +568,7 @@
                                         <div *ngIf="sTime.invalid && (sTime.dirty || sTime.touched)" class="text-danger">
                                           <div *ngIf="sTime.errors.required">
                                            Repeat by time is required.
-                                          </div>     
+                                          </div>
                                           <div *ngIf="sTime.errors.pattern">
                                                 Repeat by time must contains numbers only.
                                           </div>
@@ -602,8 +588,8 @@
                                       <div *ngIf="sPeriod.invalid && (sPeriod.dirty || sPeriod.touched)" class="text-danger">
                                         <div *ngIf="sPeriod.errors.required">
                                           Select valid time period from the list is required
-                                        </div>     
-                                        
+                                        </div>
+
                                       </div>
                                     </div>
                                   </div>
@@ -619,7 +605,7 @@
                                     <div *ngIf="sMiles.invalid && (sMiles.dirty || sMiles.touched)" class="text-danger">
                                       <div *ngIf="sMiles.errors.required">
                                         Repeat by odometer miles is required.
-                                      </div>     
+                                      </div>
                                       <div *ngIf="sMiles.errors.pattern">
                                         Repeat by odometer miles must contains numbers only.
                                       </div>
@@ -676,7 +662,7 @@
                     <div class="col-lg-5 offset-lg-1">
                     </div>
                   </div>
-                
+
               </div>
             </div>
           </div>
@@ -772,7 +758,7 @@
                             <div *ngIf="mVehicle.invalid && (mVehicle.dirty || mVehicle.touched)" class="text-danger">
                               <div *ngIf="mVehicle.errors.required">
                                 Vehicle Name is required.
-                              </div>     
+                              </div>
                               <div *ngIf="mVehicle.errors.pattern">
                                      Vehcle Name must contains uppercase, lowercase, numbers and special characters for period(space,-,_) only.
                               </div>
@@ -789,7 +775,7 @@
                             placeholder=" eg. 5YJSA1DG9DFP14705" #mVin="ngModel" maxlength="18" #mvin="ngModel" required pattern="^[a-zA-Z0-9\-]{17,18}$">
                             <div *ngIf="mVin.invalid && (mVin.dirty || mVin.touched)" class="text-danger">
                               <div *ngIf="mVin.errors.required">
-                                 VIN is required.    
+                                 VIN is required.
                               </div>
                               <div *ngIf="mVin.errors.pattern">
                                  VIN must be between 17-18 characters and must not contain any special characters eg. 5YJSA1DG9DFP14705.
@@ -814,9 +800,9 @@
                           </ng-select>
                           <div *ngIf="mMake.invalid && (mMake.dirty || mMake.touched)" class="text-danger">
                             <div *ngIf="mMake.errors.required">
-                               Select valid make from the list is required.   
+                               Select valid make from the list is required.
                             </div>
-                            
+
 
                          </div>
                         </div>
@@ -852,9 +838,9 @@
                           </ng-select>
                           <div *ngIf="mCountry.invalid && (mCountry.dirty || mCountry.touched)" class="text-danger">
                             <div *ngIf="mCountry.errors.required">
-                               Select valid country from the list is reuired.    
+                               Select valid country from the list is reuired.
                             </div>
-                            
+
 
                          </div>
                         </div>
@@ -878,9 +864,9 @@
                           </ng-select>
                           <div *ngIf="mVehicleType.invalid && (mVehicleType.dirty || mVehicleType.touched)" class="text-danger">
                             <div *ngIf="mVehicleType.errors.required">
-                              Select valid vehicle type from the list is required.    
+                              Select valid vehicle type from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -936,9 +922,9 @@
                           </ng-select>
                           <div *ngIf="mYear.invalid && (mYear.dirty || mYear.touched)" class="text-danger">
                             <div *ngIf="mYear.errors.required">
-                             Select valid year from the list is required.    
+                             Select valid year from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -949,12 +935,12 @@
                             placeholder="Enter plate number eg. XYZ12" #mPlate="ngModel" required pattern="^[a-zA-Z0-9\s\-]+$">
                             <div *ngIf="mPlate.invalid && (mPlate.dirty || mPlate.touched)" class="text-danger">
                               <div *ngIf="mPlate.errors.required">
-                                 Plate Number is required.    
+                                 Plate Number is required.
                               </div>
                               <div *ngIf="mPlate.errors.pattern">
-                                Plate number must contains uppercase.lowercase,numbers and special characters for period(space,-)only.    
+                                Plate number must contains uppercase.lowercase,numbers and special characters for period(space,-)only.
                              </div>
-  
+
                            </div>
                         </div>
                         <div class="col-lg-12">
@@ -971,9 +957,9 @@
                           </ng-select>
                           <div *ngIf="mModal.invalid && (mModal.dirty || mModal.touched)" class="text-danger">
                             <div *ngIf="mModal.errors.required">
-                             Select valid Model from the list is required.    
+                             Select valid Model from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -991,9 +977,9 @@
                           </ng-select>
                           <div *ngIf="mProvince.invalid && (mProvince.dirty || mProvince.touched)" class="text-danger">
                             <div *ngIf="mProvince.errors.required">
-                             Select valid Province from the list is required.    
+                             Select valid Province from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -1018,10 +1004,10 @@
                             [(ngModel)]="annualSafetyDate" class="form-control" #mAnnual="ngModel" required>
                             <div *ngIf="mAnnual.invalid && (mAnnual.dirty || mAnnual.touched)" class="text-danger">
                               <div *ngIf="mAnnual.errors.required">
-                               Select valid annual safety date from the list is required.    
+                               Select valid annual safety date from the list is required.
                               </div>
-                             
-  
+
+
                            </div>
 
                         </div>
@@ -1057,9 +1043,9 @@
                           </ng-select>
                           <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
                             <div *ngIf="mStatus.errors.required">
-                             Select valid status from the list is required.    
+                             Select valid status from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -1104,10 +1090,10 @@
                             name="lifeCycle.startDate" [(ngModel)]="lifeCycle.startDate" #mDate="ngModel" required>
                             <div *ngIf="mDate.invalid && (mDate.dirty || mDate.touched)" class="text-danger">
                               <div *ngIf="mDate.errors.required">
-                               Select valid date from the list is required.    
+                               Select valid date from the list is required.
                               </div>
-                             
-  
+
+
                            </div>
 
                         </div>
@@ -1126,10 +1112,10 @@
                             [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 4500" #mOdometer="ngModel" required >
                             <div *ngIf="mStatus.invalid && (mStatus.dirty || mStatus.touched)" class="text-danger">
                               <div *ngIf="mStatus.errors.required">
-                               In Service Odometer must contains numbers only.    
+                               In Service Odometer must contains numbers only.
                               </div>
-                             
-  
+
+
                            </div>
                         </div>
                       </div>
@@ -1152,10 +1138,10 @@
                                 [(ngModel)]="specifications.height" #mHeight="ngModel" required>
                                 <div *ngIf="mHeight.invalid && (mHeight.dirty || mHeight.touched)" class="text-danger">
                                   <div *ngIf="mHeight.errors.required">
-                                   Height must contains numbers only.    
+                                   Height must contains numbers only.
                                   </div>
-                                 
-      
+
+
                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
@@ -1168,10 +1154,10 @@
                               </ng-select>
                               <div *ngIf="mhType.invalid && (mhType.dirty || mhType.touched)" class="text-danger">
                                 <div *ngIf="mhType.errors.required">
-                                 Select valid height from the list is required.    
+                                 Select valid height from the list is required.
                                 </div>
-                               
-    
+
+
                              </div>
                             </div>
                           </div>
@@ -1198,9 +1184,9 @@
                           </ng-select>
                           <div *ngIf="mFuel.invalid && (mFuel.dirty || mFuel.touched)" class="text-danger">
                             <div *ngIf="mFuel.errors.required">
-                             Select valid status from the list is required.    
+                             Select valid status from the list is required.
                             </div>
-                           
+
 
                          </div>
                         </div>
@@ -1218,10 +1204,10 @@
                                 [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200 " #mTank1="ngModel" required>
                                 <div *ngIf="mTank1.invalid && (mTank1.dirty || mTank1.touched)" class="text-danger">
                                   <div *ngIf="mTank1.errors.required">
-                                   TFuel Tank 1 must contains numbers only.    
+                                   TFuel Tank 1 must contains numbers only.
                                   </div>
-                                 
-      
+
+
                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
@@ -1234,10 +1220,10 @@
                               </ng-select>
                               <div *ngIf="fuelType1.invalid && (fuelType1.dirty || fuelType1.touched)" class="text-danger">
                                 <div *ngIf="fuelType1.errors.required">
-                                Select valid fuel type from the list is required.  
+                                Select valid fuel type from the list is required.
                                 </div>
-                               
-    
+
+
                              </div>
                             </div>
                           </div>
@@ -1263,10 +1249,10 @@
                                 [(ngModel)]="fluid.oilCapacity" placeholder="eg. 100,200" #mOil="ngModel" required>
                                 <div *ngIf="mOil.invalid && (mOil.dirty || mOil.touched)" class="text-danger">
                                   <div *ngIf="mOil.errors.required">
-                                  Oil Capacity must contains numbers only.  
+                                  Oil Capacity must contains numbers only.
                                   </div>
-                                 
-      
+
+
                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
@@ -1279,10 +1265,10 @@
                               </ng-select>
                               <div *ngIf="fuelType2.invalid && (fuelType2.dirty || fuelType2.touched)" class="text-danger">
                                 <div *ngIf="fuelType2.errors.required">
-                                 Select valid fuel type from the list is required.    
+                                 Select valid fuel type from the list is required.
                                 </div>
-                               
-    
+
+
                              </div>
                             </div>
                           </div>
@@ -1302,8 +1288,8 @@
                                   <div *ngIf="mDef.errors.required">
                                    DEF must contains numbers only.
                                   </div>
-                                 
-      
+
+
                                </div>
                             </div>
                             <div class="col-lg-6 pl-0">
@@ -1316,10 +1302,10 @@
                               </ng-select>
                               <div *ngIf="mDefType.invalid && (mDefType.dirty || mDefType.touched)" class="text-danger">
                                 <div *ngIf="mDefType.errors.required">
-                                 Select valid def type from the list is required.    
+                                 Select valid def type from the list is required.
                                 </div>
-                               
-    
+
+
                              </div>
                             </div>
                           </div>

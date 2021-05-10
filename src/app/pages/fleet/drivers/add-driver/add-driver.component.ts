@@ -151,11 +151,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       waitingHourAfter: '',
       deliveryRate: '',
       deliveryRateUnit:  null,
-      SIN_Number: '',
       payPeriod:  null,
     },
+    SIN: '',
+    CDL_Number: '',
     licenceDetails: {
-      CDL_Number: '',
       issuedCountry:  null,
       issuedState:  null,
       licenceExpiry: '',
@@ -1001,9 +1001,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.paymentDetails.deliveryRate = result.paymentDetails.deliveryRate;
         this.driverData.paymentDetails.deliveryRateUnit = result.paymentDetails.deliveryRateUnit;
 
-        this.driverData.paymentDetails.SIN_Number = result.paymentDetails.SIN_Number;
+        this.driverData.SIN = result.SIN;
         this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
-        this.driverData.licenceDetails.CDL_Number = result.licenceDetails.CDL_Number;
+        this.driverData.CDL_Number = result.CDL_Number;
         this.driverData.licenceDetails.issuedCountry = result.licenceDetails.issuedCountry;
         this.driverData.licenceDetails.issuedState = result.licenceDetails.issuedState;
         this.driverData.licenceDetails.licenceExpiry = result.licenceDetails.licenceExpiry;
@@ -1035,6 +1035,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     this.hideErrors();
     this.submitDisabled = true;
+    this.driverData[`driverID`] = this.driverID;
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
     for (let i = 0; i < this.driverData.address.length; i++) {
@@ -1051,15 +1052,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-    this.driverData[`driverID`] = this.driverID;
-
     if (this.driverData.hosDetails.hosCycle != '') {
       let cycleName = '';
       this.cycles.map((v: any) => {
         if (this.driverData.hosDetails.hosCycle == v.cycleID) {
           cycleName = v.cycleName;
         }
-      })
+      });
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
     // create form data instance
@@ -1233,7 +1232,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   complianceChange(value) {
-    if (value === 'Non Exempted') {
+    if (value === 'non_Exempted') {
       this.driverData.hosDetails.type = 'ELD';
     } else {
       this.driverData.hosDetails.type = 'Log Book';
