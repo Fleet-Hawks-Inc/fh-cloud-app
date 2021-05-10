@@ -224,7 +224,6 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
-
       if (result[`LastEvaluatedKey`] !== undefined) {
         this.fuelNext = false;
         // for prev button
@@ -239,7 +238,7 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelEndPoint = this.totalRecords;
       }
 
-      if(this.totalRecords < this.fuelEndPoint) {
+      if (this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 

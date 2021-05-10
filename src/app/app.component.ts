@@ -22,6 +22,7 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
     const rootHtml = document.getElementsByTagName( 'html' )[0];
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
+        console.log('token', this.token);
         this.currentURL = event.url;
         if (event.url === '/Map-Dashboard') {
           rootHtml.classList.add('fixed');
@@ -31,17 +32,21 @@ export class AppComponent  implements OnInit, AfterContentChecked  {
           rootHtml.classList.add('fixed');
           rootHtml.classList.remove('sidebar-left-collapsed');
         }
+        console.log('currentURL', this.currentURL);
         
+        console.log('local storage', localStorage.getItem('LoggedIn') );
         if(localStorage.getItem('LoggedIn') != undefined && localStorage.getItem('LoggedIn') && localStorage.getItem('LoggedIn') != null) {
           this.token = true;
         } else {
           this.token = false;
         }
+
+        console.log(' last token', this.token);
       }
 
 
       /**
-       * Loading Indicator
+       * Loading Indicator 
        */
       switch (true) {
         case event instanceof NavigationStart: {

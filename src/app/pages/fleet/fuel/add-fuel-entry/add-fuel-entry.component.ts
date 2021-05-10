@@ -57,8 +57,7 @@ export class AddFuelEntryComponent implements OnInit {
     fuelCardNumber: '',
     reimburseToDriver: false,
     deductFromPay: false,
-    // avgGVW: '',
-    odometer: 0,
+    odometer: '',
     description: '',
     uploadedPhotos: [],
     lineItems:  []

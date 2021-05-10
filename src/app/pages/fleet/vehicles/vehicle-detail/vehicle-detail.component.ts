@@ -221,6 +221,8 @@ export class VehicleDetailComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   tasksList = [];
   usersList = [];
+  countryName = '';
+  stateName = '';
 
   constructor(
     private apiService: ApiService,
@@ -236,10 +238,6 @@ export class VehicleDetailComponent implements OnInit {
     this.getVehicle();
     this.fetchIssues();
     this.fetchReminders();
-    // this.fetchInspectionForms();
-    // this.fetchFuel();
-    // this.fetchServiceProgams();
-    // this.fetchServiceHistory();
     this.fetchFuelTypes();
     this.fetchDriversList();
     this.fetchStatesList();
@@ -261,7 +259,6 @@ export class VehicleDetailComponent implements OnInit {
   fetchVendorsList() {
     this.apiService.getData("vendors/get/list").subscribe((result: any) => {
       this.vendors = result;
-      console.log('this.vendors', this.vendors);
     });
   }
 
@@ -313,40 +310,6 @@ export class VehicleDetailComponent implements OnInit {
         this.vehicleManufacturersList = result;
       });
   }
-  fetchServiceProgams() {
-    this.apiService
-      .getData(`serviceLogs/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.serviceHistory = result.Items;
-        console.log('this.serviceHistory', this.serviceHistory);
-      });
-  }
-
-  // fetchServiceHistory() {
-  //   this.apiService
-  //     .getData(`servicePrograms/vehicle/${this.vehicleID}`)
-  //     .subscribe((result) => {
-  //       this.servicePrograms = result.Items;
-  //       console.log('this.servicePrograms', this.servicePrograms);
-  //     });
-  // }
-
-  // fetchInspectionForms() {
-  //   this.apiService
-  //     .getData(`inspectionForms/vehicle/${this.vehicleID}`)
-  //     .subscribe((result) => {
-  //       this.inspectionForms = result.Items;
-  //     });
-  // }
-
-  fetchFuel() {
-    this.apiService
-      .getData(`fuelEntries/vehicle/${this.vehicleID}`)
-      .subscribe((result) => {
-        this.fuelEntries = result.Items;
-        console.log('this.fuelEntries', this.fuelEntries);
-      });
-  }
 
   closeIssue(issueID) {
     this.apiService
@@ -369,8 +332,6 @@ export class VehicleDetailComponent implements OnInit {
             this.renewalReminders.push(element);
           }
         }
-        console.log('this.serviceReminders', this.serviceReminders);
-        console.log('this.renewalReminders', this.renewalReminders);
       });
   }
 
@@ -379,7 +340,6 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         this.issues = result.Items;
-        console.log('this.issues', this.issues);
       });
   }
 
@@ -417,6 +377,8 @@ export class VehicleDetailComponent implements OnInit {
         this.plateNumber = result.plateNumber;
         this.stateID = result.stateID;
         this.countryID = result.countryID;
+        this.countryName = result.countryName;
+        this.stateName = result.stateName;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;
@@ -589,7 +551,6 @@ export class VehicleDetailComponent implements OnInit {
             }
             this.docs.push(obj);
           });
-          console.log('this.docs', this.docs);
         }
 
         $("#hardBreakingParametersValue").html(
@@ -632,7 +593,6 @@ export class VehicleDetailComponent implements OnInit {
     let serviceProgramID = JSON.stringify(this.serviceProgramID);
     this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
       this.servicePrograms = result;
-      // console.log('program details result', result);
 
     })
   }

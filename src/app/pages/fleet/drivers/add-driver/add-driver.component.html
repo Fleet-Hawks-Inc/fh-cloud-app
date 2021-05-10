@@ -151,7 +151,7 @@
                           #dob="ngModel" required>
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
-                            Birth Date is required must contain yyyy/mm/dd format..
+                            Birth date is required.
                           </div>
                         </div>
                       </div>
@@ -199,7 +199,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control form-control-lg"
+                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"  class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -226,7 +226,7 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                               <div class="input-group">
-                                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control form-control-lg"
+                                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
                                   />
                                   <div class="input-group-append">
                                     <span class="input-group-text eye">
@@ -273,14 +273,14 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                          (change)="onChangeHideErrors('phone')" placeholder="eg. 0016780571" #mob="ngModel"
+                          (change)="onChangeHideErrors('phone')" placeholder="eg. c" #mob="ngModel"
                           required pattern="^(\+1)[0-9]{10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
                             Phone is required.
                           </div>
                           <div *ngIf="mob.errors.pattern">
-                            Enter valid phone number eg. 1234567894.
+                            Enter valid phone number eg. +16040571231.
                           </div>
                         </div>
                       </div>
@@ -963,7 +963,7 @@
                             class="text-1 optional-label-color">(optional)</span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.vehicleType" name="licenceDetails.vehicleType"
-                          placeholder="Select licence type of driver" #vType="ngModel" required>
+                          placeholder="Select licence type of driver">
                           <ng-option value="Heavy Vehicle">Heavy Vehicle</ng-option>
                           <ng-option value="Light Vehicle">Light Vehicle</ng-option>
                         </ng-select>
@@ -1485,6 +1485,7 @@
   aria-hidden="true" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
+      <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form" #grouphide="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Group</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
@@ -1493,12 +1494,23 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-          <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form">
+
             <div class="form-row">
               <div class="form-group col-lg-12 mb-0">
-                <label class="control-label font-weight-bold">Group Name</label>
+                <label class="control-label font-weight-bold" >Group Name
+                  <span
+                    class="mandfield text-2 ml-1"><sup>*</sup></span>
+                  </label>
                 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
-                  placeholder="eg. Fleet Group ">
+                  placeholder="eg. Fleet Group " #groupModel="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  <div *ngIf="groupModel.invalid && (groupModel.dirty || groupModel.touched)" class="text-danger">
+                    <div *ngIf="groupModel.errors.required">
+                      Group Name is required.
+                    </div>
+                    <div *ngIf="groupModel.errors.pattern">
+                           Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                    </div>
+                  </div>
               </div>
               <div class="form-group col-lg-12">
                 <label class="control-label font-weight-bold">Group Members&nbsp;<span
@@ -1522,13 +1534,14 @@
                 </div>
               </div>
             </div>
-          </form>
+
         </div>
       </div>
       <div class="modal-footer text-right">
         <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
-        <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
+        <button class="btn btn-success" (click)="addGroup()" [disabled]="!grouphide.form.valid">Save</button>
       </div>
+    </form>
     </div>
   </div>
 </div>

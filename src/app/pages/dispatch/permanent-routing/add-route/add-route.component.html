@@ -24,34 +24,36 @@
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeNo"
-                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02" #routeNumber="ngModel" required pattern="^[0-9]+$"> </div>
+                                                    [(ngModel)]="routeData.routeNo" placeholder="eg. 01,02" #routeNumber="ngModel" required pattern="^[0-9]+$"> 
                                                     <div *ngIf="routeNumber.invalid && (routeNumber.dirty || routeNumber.touched)" class="text-danger">
-                                                        <div>
+                                                      
                                                           <div *ngIf="routeNumber.errors.required">
                                                             Route is required.
                                                           </div>
                                                           <div *ngIf="routeNumber.errors.pattern">
                                                              Route must contains numbers only.
                                                           </div>
-                                                        </div>
+                                                        
                               
                                                       </div>
+                                                    </div>
                                         </div>
                                         <div class="row mt-2">
                                             <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Route Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input type="text" class="form-control" name="routeName"
-                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name" #routeName="ngModel" required pattern="^[a-zA-Z\s]+$"> </div>
+                                                    [(ngModel)]="routeData.routeName" placeholder="eg. Enter route name" #routeName="ngModel" required pattern="^[a-zA-Z\s]+$"> 
                                                     <div *ngIf="routeName.invalid && (routeName.dirty || routeName.touched)" class="text-danger">
-                                                        <div>
+                                                        
                                                           <div *ngIf="routeName.errors.required">
                                                             Route Name is required.
                                                           </div>
                                                           <div *ngIf="routeName.errors.pattern">
-                                                            Route name must contains uppercase ,lowercase special characters only.
+                                                            Route name must contains uppercase ,lowercase special characters for period(space)only.
                                                           </div>
-                                                        </div>
+                                                        
                               
+                                                      </div>
                                                       </div>
                                         </div>
                                         <div class="row mt-2">
@@ -134,14 +136,14 @@
                                                 <label class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="sourceInformation.sourceAddress"
                                                     [(ngModel)]="routeData.sourceInformation.sourceAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="eg. 01,Business Hub Center,New York,USA" #sAddress="ngModel" required pattern="^[a-zA-Z0-9\,\s\-]+$">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off" placeholder="eg. 01,Business Hub Center,New York,USA" #sAddress="ngModel" required pattern="^[a-zA-Z0-9\,\s\-\&]+$">
                                                     <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)" class="text-danger">
                                                         <div>
                                                           <div *ngIf="sAddress.errors.required">
                                                            Source Address is required.
                                                           </div>
                                                           <div *ngIf="sAddress.errors.pattern">
-                                                            Source Address must contains uppercase,lowercase, numbers and special chracters period(,\space,-)only.
+                                                            Source Address must contains uppercase,lowercase, numbers and special chracters period(,\space,-,&)only.
                                                           </div>
                                                         </div>
                               
@@ -242,14 +244,14 @@
                                                     class="control-label font-weight-bold pt-2 text-lg-right">Address<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input name="destinationInformation.destinationAddress"
                                                     [(ngModel)]="routeData.destinationInformation.destinationAddress"
-                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada" #dAddress="ngModel" required pattern="^[a-zA-Z0-9\,\s\-]+$">
+                                                    (keyup)="searchTerm.next($event);" class="form-control" autocomplete="nope" placeholder="eg. 02, Fleet Hawks Inc,Alberta,Canada" #dAddress="ngModel" required pattern="^[a-zA-Z0-9\,\s\-\&]+$">
                                                     <div *ngIf="dAddress.invalid && (dAddress.dirty || dAddress.touched)" class="text-danger">
                                                         <div>
                                                           <div *ngIf="dAddress.errors.required">
                                                           Destination Address is required.
                                                           </div>
                                                           <div *ngIf="dAddress.errors.pattern">
-                                                        Destination Address must contains uppercase,lowercase, numbers and special chracters period(,\space,-)only.
+                                                        Destination Address must contains uppercase,lowercase, numbers and special chracters period(,\space,-,&)only.
                                                           </div>
                                                         </div>
                               
