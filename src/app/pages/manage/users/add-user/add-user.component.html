@@ -42,31 +42,31 @@
 
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Company Name</label>
-                                                <input type="text" class="form-control"  [(ngModel)]="companyname" name="companyName"> </div>
+                                                <input type="text" class="form-control"  name="companyName"> </div>
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2">DBA Name</label>
-                                                   <input type="text" class="form-control"  [(ngModel)]="dbaname" name="dbaName"> </div>
+                                                   <input type="text" class="form-control"  name="dbaName"> </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">First Name</label>
-                                                    <input type="text" class="form-control" [(ngModel)]="firstName" name="firstName"> </div>
+                                                    <input type="text" class="form-control"  name="firstName"> </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Last Name</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="lastName" name="lastName"> </div>
+                                                    <input type="text" class="form-control"   name="lastName"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Employee ID</label>
-                                                    <input type="text" class="form-control"  [(ngModel)]="employeeID" name="employeeID"> </div>
+                                                    <input type="text" class="form-control"  name="employeeID"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Date Of Birth</label>
-                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" [(ngModel)]="dateOfBirth" name="dateOfBirth" type="text"
+                                                    <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker"  name="dateOfBirth" type="text"
                                                   class="form-control" placeholder="Select Date">
                                                    </div>
                                                 
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2"> Phone</label>
-                                                   <input type="text" class="form-control"  [(ngModel)]="phone" name="phone"> </div>
+                                                   <input type="text" class="form-control"   name="phone"> </div>
                                                    <div class="col-lg-10">
                                                       <label class="control-label font-weight-bold text-lg-right pt-2"> Email</label>
-                                                      <input type="text" class="form-control"  [(ngModel)]="email" name="email"> </div>
+                                                      <input type="text" class="form-control"   name="email"> </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
@@ -110,7 +110,7 @@
                                               <div class="row">
                                                  <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                    <ng-select [(ngModel)]="item.addressType" name="addressDetails[{{i}}].addressType"
+                                                    <ng-select  name="addressDetails[{{i}}].addressType"
                                                        placeholder="Select address type">
                                                        <ng-option value="Work">Work</ng-option>
                                                        <ng-option  value="Home">Home</ng-option>
@@ -123,7 +123,7 @@
                                               <label class="control-label font-weight-bold text-lg-right pt-2">Start typing your
                                                  location&nbsp; <span
                                                     class="text-1 optional-label-color">(optional)</span></label>
-                                              <input [(ngModel)]="item.userLocation" name="userLocation{{i}}"
+                                              <input  name="userLocation{{i}}"
                                                  (keyup)="searchTerm.next($event);" type="text" class="form-control"
                                                  placeholder="Type Address">
                                               <div class="checkbox-custom pt-2">
@@ -156,7 +156,7 @@
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                           Country</label>
-                                                       <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}"
+                                                       <ng-select  name="countryID{{i}}"
                                                           data-plugin-selectTwo (change)="getStates($event, i)"
                                                           class="form-control populate" placeholder="Select country">
                                                           <ng-option class="text-capitalize" *ngFor="let country of countries"
@@ -166,7 +166,7 @@
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                           State</label>
-                                                       <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
+                                                       <ng-select (change)="getCities($event, i)"
                                                           name="stateID{{i}}" placeholder="Select state">
                                                           <ng-option class="text-capitalize" *ngFor="let state of states"
                                                              value="{{state.stateID}}">{{state.stateName}}</ng-option>
@@ -175,7 +175,7 @@
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                           City</label>
-                                                       <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID"
+                                                       <ng-select (change)="getCityName(i, $event)" 
                                                           name="cityID{{i}}" placeholder="Select city">
 
                                                           <ng-option class="text-capitalize" *ngFor="let city of cities"
@@ -186,7 +186,7 @@
                                                     <div class="col-lg-5">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                                                           Code</label>
-                                                       <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text"
+                                                       <input name="zipCode{{i}}" type="text"
                                                           class="form-control" placeholder="Enter zipode eg. 7V2 3R4">
                                                     </div>
                                                  </div>
@@ -196,14 +196,14 @@
                                                     <div class="col-lg-10">
                                                        <label class="control-label font-weight-bold text-lg-right">Address
                                                           1</label>
-                                                       <input [(ngModel)]="item.address1" name="address1{{i}}" type="text"
+                                                       <input  name="address1{{i}}" type="text"
                                                           class="form-control" placeholder="Enter street level address">
                                                     </div>
                                                     <div class="col-lg-10">
                                                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                           2&nbsp; <span
                                                              class="text-1 optional-label-color">(optional)</span></label>
-                                                       <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
+                                                       <input  name="address2{{i}}" type="text"
                                                           class="form-control" placeholder="Enter street level address">
                                                     </div>
                                                  </div>
@@ -222,10 +222,10 @@
                                             <div class="row">
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contract Start Date</label>
-                                                <input type="text" class="form-control" [(ngModel)]="contractstartdate" name="contractstartDate"> </div>
+                                                <input type="text" class="form-control"  name="contractstartDate"> </div>
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select Department</label>
-                                                    <ng-select class="form-control populate"  [(ngModel)]="departmentName" name="departmentName">
+                                                    <ng-select class="form-control populate"   name="departmentName">
                                                             <ng-option value="Fleet">Fleet</ng-option>
                                                             <ng-option value="Operations">Operations</ng-option>
                                                             <ng-option value="Safety">Safety</ng-option>
@@ -238,11 +238,11 @@
                                                 </div>
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2">User Name</label>
-                                                   <input type="text" class="form-control" [(ngModel)]="userName" name="userName" [disabled]="disableInput">
+                                                   <input type="text" class="form-control" name="userName" [disabled]="disableInput">
                                                 </div>
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Password</label>
-                                                   <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="userPassword" name="userPassword" [disabled]="disableInput">
+                                                   <input type="password" class="form-control" [class.error]='errorClass'  name="userPassword" [disabled]="disableInput">
                                                 </div>
                                                 <div class="col-lg-2 mar-top-37">
                                                         <!-- <a href="#addUserTypeModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
@@ -256,10 +256,10 @@
                                         <div class="row">
                                           <div class="col-lg-10">
                                              <label class="control-label font-weight-bold text-lg-right pt-2">Contract End Date</label>
-                                             <input type="text" class="form-control" [(ngModel)]="contractenddate" name="contractendDate"> </div>
+                                             <input type="text" class="form-control"  name="contractendDate"> </div>
                                              <div class="col-lg-10">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Designation</label>
-                                                <ng-select class="form-control" [(ngModel)]="designation" name="designation"> 
+                                                <ng-select class="form-control"  name="designation"> 
                                                    <ng-option value="Executive">Executive</ng-option>
                                                    <ng-option value="Manager">Manager</ng-option>
                                                 </ng-select>
@@ -267,7 +267,7 @@
                                                 
                                                 <div class="col-lg-10">
                                                    <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">User Type</label>
-                                                   <ng-select class="form-control populate"  [(ngModel)]="userType" name="userType">
+                                                   <ng-select class="form-control populate"   name="userType">
                                                                    <ng-option value="Full Admin">Full Admin</ng-option>
                                                                    <ng-option value="Read Only Admin">Read Only Admin</ng-option>
                                                                    <ng-option value="Dispatch">Dispatch</ng-option>
@@ -279,7 +279,7 @@
                                                 
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password</label>
-                                                    <input type="password" class="form-control" [class.error]='errorClass' [(ngModel)]="confirmUserPassword" name="confirmUserPassword" [disabled]="disableInput">
+                                                    <input type="password" class="form-control" [class.error]='errorClass'  name="confirmUserPassword" [disabled]="disableInput">
                                                  </div>
                                                  <div *ngIf="errorClass" class="col-lg-10 text-danger">Password and Confirm Password must match and can not be empty.</div>
                                             </div>
@@ -300,14 +300,14 @@
                                 <div class="row">
                              <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Select Payroll type</label>
-                              <ng-select class="form-control populate"  [(ngModel)]="payrolltype" name="payrollType">
+                              <ng-select class="form-control populate"  name="payrollType">
                                       <ng-option value="Flat">Flat</ng-option>
                                       <ng-option value="Hour">Hour</ng-option>
                                </ng-select>
                           </div>
                           <div class="col-lg-10">
                            <label class="control-label font-weight-bold text-lg-right pt-2">Pay Period</label>
-                           <ng-select class="form-control populate"  [(ngModel)]="payperiod" name="payPeriod">
+                           <ng-select class="form-control populate"   name="payPeriod">
                               <ng-option value="Weekly">Weekly</ng-option>
                               <ng-option value="Biweekly">Biweekly</ng-option>
                               <ng-option value="Monthly">Monthly</ng-option>
@@ -327,25 +327,25 @@
 
                              <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
-                              <input type="text" class="form-control" placeholder="eg.1,2,3" [(ngModel)]="rate" name="rate"> </div>
+                              <input type="text" class="form-control" placeholder="eg.1,2,3" name="rate"> </div>
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2"></label>
-                                 <ng-select placeholder ="Select currency"class="form-control populate"  [(ngModel)]="currency" name="currency">
+                                 <ng-select placeholder ="Select currency"class="form-control populate" name="currency">
                                          <ng-option value="CAD">CAD</ng-option>
                                          <ng-option value="USD">USD</ng-option>
                                   </ng-select>
                              </div>
                              <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">SIN</label>
-                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="sin" name="sin"> </div>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456"  name="sin"> </div>
 
                               <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">WCB#</label>
-                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="wcb" name="wcb"> </div>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456"  name="wcb"> </div>
                               
                               <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Health care#</label>
-                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456" [(ngModel)]="healthcare" name="healthCare"> </div>
+                              <input type="text" class="form-control" placeholder="9 digits , eg.876543456"  name="healthCare"> </div>
 
 
                            </div>
