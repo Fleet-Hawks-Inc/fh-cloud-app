@@ -199,14 +199,12 @@
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select class="form-control populate" name="countryID" [(ngModel)]="countryID" placeholder="Select Country"
                                     (change)="resetState()" #country="ngModel" required>
-                                    <optgroup label="">
                                        <ng-container *ngFor="let country of countries | async">
                                           <ng-option
                                              *ngIf="country.countryID == '8e8a0700-8979-11ea-94e8-ddabdd2e57f0' || country.countryID == '73cba1a0-8977-11ea-b61f-0996be58fec9'"
                                              value="{{country.countryID}}">
                                              {{country.countryName}}</ng-option>
                                        </ng-container>
-                                    </optgroup>
                                  </ng-select>
                                  <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
                                     <div *ngIf="country.errors.required">
@@ -219,7 +217,7 @@
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Province <span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <ng-select class="form-control populate" name="stateID" [(ngModel)]="stateID" placeholder="Select Province"
-                                    id="stateSelect" #province="ngModel" required>
+                                    id="stateSelect" #province="ngModel" required (change)="selectedState()">
                                        <ng-container *ngFor="let state of states | async">
                                           <ng-option *ngIf="state.countryID == countryID" value="{{state.stateID}}">{{state.stateName}}
                                           </ng-option>
@@ -350,6 +348,7 @@
                                        Select Annual Safety Date is required.
                                     </div>
                                  </div>
+
                               </div>
                               <div class="col-lg-10">
                                  <div class="checkbox mt-1">
@@ -525,6 +524,7 @@
                </div>
             </div>
 
+
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
@@ -544,6 +544,7 @@
                                  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                     <div *ngIf="date.errors.required">
                                        Start Date is required.
+
                                     </div>
                                  </div>
                               </div>

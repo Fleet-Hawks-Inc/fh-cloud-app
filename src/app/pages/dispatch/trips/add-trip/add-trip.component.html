@@ -722,7 +722,7 @@
                                                                 <td>
                                                                     <div [innerHTML]="order.deliveryLocations"></div>
                                                                 </td>
-                                                                <td>CAD {{ order.totalAmount }}</td>
+                                                                <td> {{ order.totalAmount }} CAD</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -765,7 +765,7 @@
                                                         <td>
                                                             <div [innerHTML]="order.deliveryLocations"></div>
                                                         </td>
-                                                        <td>CAD {{ order.totalAmount }}</td>
+                                                        <td> {{ order.totalAmount }} CAD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -943,8 +943,9 @@
             <div class="modal-footer card-footer">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()" >Save</a>
-                        <button class="btn btn-default modal-dismiss" data-dismiss="modal" >Cancel</button>
+                        
+                        <button class="btn btn-default modal-dismiss" data-dismiss="modal" > Cancel</button>
+                        <a href="javascript:;" class="btn btn-success" (click)="saveAssetModalData()" > Save</a>
                     </div>
                 </div>
             </div>

@@ -48,7 +48,7 @@
                                       </tr>
                                       <tr *ngIf="!fuelData.lineItems">
                                          <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
-                                         <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit | titlecase}}(s)</td>
+                                         <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit | titlecase}}</td>
                                       </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
@@ -56,14 +56,14 @@
                                     </tr>
                                       <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelUnit | titlecase}}(s)</td>
+                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelUnit}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
                                        <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
                                     </tr>
                                       <tr>
-                                         <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit | titlecase}}</td>
+                                         <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit}}</td>
                                          <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
                                       </tr>
                                       <tr>
@@ -72,14 +72,14 @@
                                      </tr>
                                       <tr *ngIf="fuelData.discType">
                                         <td class="back-color-gray font-weight-bold">Discount</td>
-                                        <td><span *ngFor="let tax of fuelData.taxes">{{discountList[fuelData.discType]}} - {{fuelData.discAmount}} {{fuelData.billingCurrency}}</span></td>
+                                        <td>{{discountList[fuelData.discType]}} - {{fuelData.discAmount}} {{fuelData.billingCurrency}}</td>
                                      </tr>
-                                      <tr *ngIf="fuelData.taxes?.length">
+                                      <tr *ngIf="fuelData.taxes.length != 0">
                                         <td class="back-color-gray font-weight-bold">Taxes</td>
-                                        <td><span *ngFor="let tax of fuelData.taxes">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></td>
+                                        <td><span *ngFor="let tax of fuelData.taxes"><span *ngIf="tax.taxType != '' || tax.taxAmount != 0">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></span></td>
                                      </tr>
                                      <tr>
-                                      <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit | titlecase}}(s)</td>
+                                      <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit}}</td>
                                       <td>{{fuelData.totalUnits}}</td>
                                    </tr>
                                       <tr>
@@ -96,9 +96,7 @@
                                       </tr>
                                       <tr>
                                          <td class="back-color-gray font-weight-bold">Location</td>
-                                         <!-- <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td> -->
-                                         <td>{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
-
+                                         <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
                                       </tr>
                                       <tr>
                                         <td class="back-color-gray font-weight-bold">Paid By</td>
@@ -183,7 +181,7 @@
                        </div>
                     </div>
                     <!-- Details div -->
-                    <div class="row mt-4" *ngIf="fuelData.lineItems?.length">
+                    <div class="row mt-4" *ngIf="fuelData.taxes.length != 0">
                       <div class="col">
                        <table class="table table-bordered table-responsive-lg">
                         <thead>

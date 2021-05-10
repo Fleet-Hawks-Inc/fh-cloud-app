@@ -685,16 +685,12 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer Reading at
                           Time of Fuelling (miles)</label>
-                        <input placeholder="eg. 10000,20000" class="form-control" type="number" min='0' name="odometer"
+                        <input placeholder="eg. 10000,20000" class="form-control" type="text" min='0' name="odometer"
                           [(ngModel)]="fuelData.odometer" #odoRead="ngModel" required>
                           <div *ngIf="odoRead.invalid && (odoRead.dirty || odoRead.touched)" class="text-danger">
                             <div *ngIf="odoRead.errors.required">
                               This Field must be larger than or equal to 1.
-
                             </div>
-
-
-
                          </div>
                         <span *ngIf="LastOdometerMiles"> Last Odometer Miles {{LastOdometerMiles}}</span>
                       </div>
