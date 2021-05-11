@@ -98,12 +98,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     currentTab: null, // for send data on last tab
     address: [{
       addressID: '',
-      addressType: '',
-      countryID: '',
+      addressType: null,
+      countryID: null,
       countryName: '',
-      stateID: '',
+      stateID: null,
       stateName: '',
-      cityID: '',
+      cityID: null,
       cityName: '',
       zipCode: '',
       address1: '',
@@ -116,7 +116,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       userLocation: ''
     }],
     documentDetails: [{
-      documentType: '',
+      documentType: null,
       document: '',
       issuingAuthority: '',
       issuingCountry:  null,
