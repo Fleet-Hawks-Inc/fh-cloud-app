@@ -35,6 +35,7 @@ export class CompanyProfileComponent implements OnInit {
     this.apiService.getData(`carriers/${this.companyID}`)
         .subscribe((result: any) => {
           this.carriers = result.Items[0];
+          console.log('this.carriers',this.carriers);
           if (this.carriers.uploadedLogo !== '') {
             this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
           } else {
