@@ -622,9 +622,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   fetchDrivers() {
-    // this.apiService.getData(`drivers`).subscribe(res => {
-    //   this.allDrivers = res.Items;
-    // });
+    this.apiService.getData(`drivers`).subscribe(res => {
+      this.allDrivers = res.Items;
+    });
   }
   addGroup() {
     this.hideErrors();
@@ -873,7 +873,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -1251,12 +1250,18 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.currentUserCarrier = isCarrierID;
       }
     }
-
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        this.carrierYards.push(e);
-      })
+        if(e.addressType == 'yard') {
+          this.carrierYards.push(e);
+        }
+      });
     });
+    // this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
+    //   result.Items.map(e => {
+    //     this.carrierYards.push(e);
+    //   })
+    // });
   }
 
   closeGroupModal() {

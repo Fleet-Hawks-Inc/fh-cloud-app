@@ -462,25 +462,8 @@
               </div>
             </div>
             <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Birth:</div>
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Birth Date:</div>
               <div class="col-lg-6 p-2 bor_half">{{DOB}}</div>
-            </div>
-            <div class="row  m-0" *ngIf="driverType == 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
-              <div class="col-lg-6 p-2 bor_half">{{startDate}}</div>
-            </div>
-            <div class="row  m-0" *ngIf="driverType == 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
-              <div class="col-lg-6 p-2 bor_half">{{terminationDate ? terminationDate  : '-' }}</div>
-            </div>
-            <div class="row  m-0" *ngIf="driverType != 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:
-              </div>
-              <div class="col-lg-6 p-2 bor_half">{{contractStart ? contractStart : '-'}}</div>
-            </div>
-            <div class="row  m-0" *ngIf="driverType != 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
-              <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
             </div>
             <div class="row" *ngIf="absDocs.length > 0">
               <div class="col-lg-12 mt-2">
@@ -508,20 +491,8 @@
           </div>
           <div class="col-6">
             <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Card#:</div>
-              <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
-            </div>
-            <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
-              <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? fastExpiry : '-'}}</div>
-            </div>
-            <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[citizenship]}}</div>
-            </div>
-            <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
-              <div class="col-lg-6 p-2 bor_half">{{csa ? csa : false}}</div>
             </div>
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Phone:</div>
@@ -535,13 +506,26 @@
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{group ? groupsObjects[group] : '-'}}</div>
             </div>
-            <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
-              <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
+            <div class="row  m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Start Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{startDate}}</div>
             </div>
-            <div class="row  m-0">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
-              <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
+            <div class="row  m-0" *ngIf="driverType == 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Termination Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{terminationDate ? terminationDate  : '-' }}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract Start Date:
+              </div>
+              <div class="col-lg-6 p-2 bor_half">{{contractStart ? contractStart : '-'}}</div>
+            </div>
+            <div class="row  m-0" *ngIf="driverType != 'employee'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Contract End Date:</div>
+              <div class="col-lg-6 p-2 bor_half">{{contractEnd ? contractEnd : '-'}}</div>
+            </div>
+            <div class="row m-0">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Assigned Vehicle:</div>
+              <div class="col-lg-6 p-2 bor_half">{{assignedVehicle ? assignedVehicle : '-'}}</div>
             </div>
           </div>
         </div>
@@ -637,6 +621,39 @@
 
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div id="crossborder_div" class="mt-3">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold text-4 text-dark">Cross Border Details</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACE ID:</div>
+                <div class="col-lg-6 p-2 bor_half">{{aceID ? aceID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">ACI ID:</div>
+                <div class="col-lg-6 p-2 bor_half">{{aciID ? aciID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
+                <div class="col-lg-6 p-2 bor_half"><span *ngIf="csa == true">YES</span>
+                  <span *ngIf="csa == false">NO</span></div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Card#:</div>
+                <div class="col-lg-6 p-2 bor_half">{{fastID ? fastID : '-'}}</div>
+              </div>
+              <div class="row  m-0">
+                <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Fast Expiry Date:</div>
+                <div class="col-lg-6 p-2 bor_half">{{fastExpiry ? fastExpiry : '-'}}</div>
               </div>
             </div>
           </div>
@@ -771,15 +788,17 @@
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Remarks:</div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosRemarks ? hosRemarks : '-'}}</div>
           </div>
-          <div class="row  m-0">
+          <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance
               (PC):</div>
-            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosPcAllowed ? hosPcAllowed : 'False'}}</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosPcAllowed == true">YES</span>
+              <span *ngIf="hosPcAllowed == false">NO</span></div>
           </div>
-          <div class="row  m-0">
+          <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):
             </div>
-            <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosYmAllowed ? hosYmAllowed : 'False'}}</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosYmAllowed == true">YES</span>
+              <span *ngIf="hosYmAllowed == false">NO</span></div>
           </div>
           <div class="row  m-0">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>
@@ -789,6 +808,10 @@
           <div class="row  m-0">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Cycle:</div>
             <div class="col-lg-6 p-2 bor_half text-capitalize">{{hosCycle ? cycleObjects[hosCycle] : '-'}}</div>
+          </div>
+          <div class="row  m-0">
+            <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Operating Zone:</div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize">{{optzone ? optzone : '-'}}</div>
           </div>
           <div class="row  m-0">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Home Terminal:</div>
