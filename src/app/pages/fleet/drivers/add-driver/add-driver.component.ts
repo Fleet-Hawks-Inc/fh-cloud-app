@@ -382,7 +382,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.spinner.hide();
     })
   }
- fetchTimezones(){
+ fetchTimezones() {
   const ct = require('countries-and-timezones');
   const UStimezones = ct.getTimezonesForCountry('US');
   UStimezones.forEach((element: any) => {

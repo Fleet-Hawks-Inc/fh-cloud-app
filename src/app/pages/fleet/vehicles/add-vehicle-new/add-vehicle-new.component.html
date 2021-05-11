@@ -348,6 +348,7 @@
                                        Select Annual Safety Date is required.
                                     </div>
                                  </div>
+
                               </div>
                               <div class="col-lg-10">
                                  <div class="checkbox mt-1">
@@ -523,6 +524,7 @@
                </div>
             </div>
 
+
             <div class="row mb-3">
                <div class="col-lg-12">
                   <div class="bg-white p-3 text-dark">
@@ -542,6 +544,7 @@
                                  <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
                                     <div *ngIf="date.errors.required">
                                        Start Date is required.
+
                                     </div>
                                  </div>
                               </div>
@@ -1495,6 +1498,7 @@
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
+         <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #vForm="ngForm">
          <div class="modal-header">
             <h5 class="modal-title">Add Group</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1503,12 +1507,21 @@
          </div>
          <div class="modal-body text-dark">
             <div class="card-body p-0">
-               <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+              
                   <div class="form-row">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold">Vehicle Group Name</label>
+                        <label class="control-label font-weight-bold">Vehicle Group Name  <span
+                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
-                           placeholder="eg. Heavy Vehicle">
+                           placeholder="eg. Heavy Vehicle" #gVehicle="ngModel" required pattern="^[a-zA-Z\s]+$">
+                           <div *ngIf="gVehicle.invalid && (gVehicle.dirty || gVehicle.touched)" class="text-danger">
+                              <div *ngIf="gVehicle.errors.required">
+                                Vehicle Group Name is required.
+                              </div>     
+                              <div *ngIf="gVehicle.errors.pattern">
+                                     Vehicle Group Name  must contains uppercase, lowercase and special characters for period(space) only.
+                              </div>
+                            </div>
                      </div>
                   </div>
                   <div class="form-row mt-2">
@@ -1531,14 +1544,15 @@
                            id="comment" placeholder="Enter description of the group"></textarea>
                      </div>
                   </div>
-               </form>
+              
             </div>
          </div>
          <div class="modal-footer text-right">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-success" [disabled]="groupSubmitDisabled"
-               (click)="addGroup()">Save</button>
+               (click)="addGroup()" [disabled]="!vForm.form.valid">Save</button>
          </div>
+      </form>
       </div>
    </div>
 </div>

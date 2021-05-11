@@ -862,6 +862,7 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
+      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #assetForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Group</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -870,12 +871,22 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-          <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+          
             <div class="form-row">
               <div class="col-lg-12">
-                <label class="control-label font-weight-bold">Group Name</label>
+                <label class="control-label font-weight-bold">Group Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" placeholder="Enter group name"
-                  class="form-control">
+                  class="form-control" #aAsset="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  <div *ngIf="aAsset.invalid && (aAsset.dirty || aAsset.touched)" class="text-danger">
+                    <div *ngIf="aAsset.errors.required">
+                      Group Name is required.
+                    </div>     
+                    <div *ngIf="aAsset.errors.pattern">
+                           Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                    </div>
+                  </div>
+                  
               </div>
 
             </div>
@@ -898,13 +909,14 @@
                   id="comment" placeholder="Enter group description"></textarea>
               </div>
             </div>
-          </form>
+         
         </div>
       </div>
       <div class="modal-footer text-right">
         <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-        <a href="javascript:;" class="btn btn-success" (click)="addGroup()">Save</a>
+        <button href="javascript:;" class="btn btn-success" (click)="addGroup()" [disabled]="!assetForm.form.valid" >Save</button>
       </div>
+    </form>
     </div>
   </div>
 </div>

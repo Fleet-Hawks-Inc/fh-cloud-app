@@ -4,6 +4,7 @@ import * as moment from 'moment';
 declare var $: any;
 import {NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe} from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-logs',
@@ -22,7 +23,7 @@ export class LogsComponent implements OnInit {
   formattedToDate: any = '';
 
   constructor(private apiService: ApiService,
-              private parserFormatter: NgbDateParserFormatter,
+              private parserFormatter: NgbDateParserFormatter,private toastr: ToastrService,
               private datePipe: DatePipe) {
 
  //   this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
@@ -37,10 +38,9 @@ export class LogsComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService.getData('users/userType/driver').subscribe((result: any) => {
+    this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
     });
-    // console.log(this.drivers);
   }
 
   getInitialLogs() {
@@ -58,9 +58,14 @@ export class LogsComponent implements OnInit {
   }
 
 
-  private getLogs() {
+   getLogs() {
+     if((this.fromDate && !this.toDate) || (this.toDate && !this.fromDate)) {
+      this.toastr.error('Both dates are required');
+      return false;
+     }
+
     this.apiService
-      .getData(`eventLogs/HOSLogs?userName=${this.userName}&fromDate=${this.formattedFromDate}&toDate=${this.formattedToDate}`)
+      .getData(`compliance/hosLogs?userName=${this.userName}&fromDate=${this.fromDate}&toDate=${this.toDate}`)
       .subscribe((result: any) => {
       this.logs = result;
     });
