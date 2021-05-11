@@ -125,19 +125,19 @@ export class NewAciManifestComponent implements OnInit {
       uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
-      estimatedArrivalTimeZone: '',
+      estimatedArrivalTimeZone: null,
       cityOfLoading: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
       },
       cityOfAcceptance: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
       },
       consolidatedFreight: false,
       specialInstructions: '',
-      shipperID: '',
-      consigneeID: '',
+      shipperID: null,
+      consigneeID: null,
       deliveryDestinations: [{
         name: '',
         contactNumber: '',
@@ -188,9 +188,9 @@ export class NewAciManifestComponent implements OnInit {
         {
           description: '',
           quantity: '',
-          packagingUnit: '',
+          packagingUnit: null,
           weight: '',
-          weightUnit: '',
+          weightUnit: null,
           marksAndNumbers: '',
           hazmatDetails: {
             unCode: '',
@@ -202,7 +202,7 @@ export class NewAciManifestComponent implements OnInit {
       ],
     },
   ];
-  borderAssetTypes = [];
+  borderAssetType: any = [];
   packagingUnitsList: any = [];
   loadedType = 'TRAILER';
   containerLoaded = 'TRAILER';
@@ -264,6 +264,7 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchUSStates();
     this.fetchCarrier();
     this.fetchCities();
+    this.fetchAssetType();
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
       this.CANPorts = data;
     });
@@ -370,21 +371,21 @@ export class NewAciManifestComponent implements OnInit {
     * fetch asset types from mapped table
     */
   async getBorderAssetTypes(e) {
-    const assetID = e;
-    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
-    if (resultData.Items.length > 0) {// if parent asset type exists
-      this.borderAssetTypes = resultData.Items;
-    } else {
-      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
-      this.borderAssetTypes = fetchedBorderAssets.Items;
-    }
+    // const assetID = e;
+    // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    // let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
+    // if (resultData.Items.length > 0) {// if parent asset type exists
+    //   this.borderAssetTypes = resultData.Items;
+    // } else {
+    //   let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
+    //   this.borderAssetTypes = fetchedBorderAssets.Items;
+    // }
   }
-  fetchBorderAssetType() {
-    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
-      this.borderAssetTypes = result.Items;
-    });
-  }
+  fetchAssetType() {
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
+   this.borderAssetType = data;
+ });
+}
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -840,7 +841,7 @@ export class NewAciManifestComponent implements OnInit {
         this.modifiedBy = result.modifiedBy;
         setTimeout(() => {
           this.fetchUSStates();
-          this.fetchBorderAssetType();
+          this.fetchAssetType();
         }, 1000);
       });
   }

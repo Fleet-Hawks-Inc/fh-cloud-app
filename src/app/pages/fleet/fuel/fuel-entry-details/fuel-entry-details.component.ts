@@ -5,8 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
 import Constants from '../../constants';
 import { HereMapService } from '../../../../services';
-import { Environment } from 'aws-sdk/clients/lambda';
 import { environment } from '../../../../../environments/environment';
+import * as moment from 'moment';
 declare var H: any;
 declare var $: any;
 @Component({
@@ -22,11 +22,10 @@ export class FuelEntryDetailsComponent implements OnInit {
   /********** Form Fields ***********/
   fuelData = {
     unitID: '',
-    fuelQtyUnit: '',
+    fuelUnit: '',
     unitType: '',
     entryID: '',
     billingCurrency: '',
-    DEFFuelQtyUnit: '',
     fuelTime: '',
     fuelDate: '',
     fuelType: '',
@@ -40,13 +39,13 @@ export class FuelEntryDetailsComponent implements OnInit {
     fuelQty: 0,
     DEFFuelQty: 0,
     DEFFuelQtyAmt: 0,
-    totalAmount: 0,
+    subTotal: 0,
     discType: '',
     discAmount: 0,
     amountPaid: 0,
-    costPerGallon: 0,
+   fuelCardNumber: '',
     pricePerUnit: 0,
-    totalGallons: 0,
+    totalUnits: 0,
     countryID: '',
     stateID: '',
     taxes: [],
@@ -245,29 +244,28 @@ export class FuelEntryDetailsComponent implements OnInit {
       .getData('fuelEntries/' + this.entryID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        console.log('result', result);
         this.carrierID = result.carrierID;
         this.fuelData.entryID = this.entryID;
         this.fuelData.billingCurrency = result.billingCurrency,
         this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
+        this.fuelData.fuelUnit = result.fuelUnit;
         this.fuelData.fuelQty = result.fuelQty;
         this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
         this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-        this.fuelData.DEFFuelQtyUnit = result.fuelQtyUnit;
         this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
         this.fuelData.discType = result.discType;
         this.fuelData.discAmount = result.discAmount;
-        this.fuelData.totalAmount = result.totalAmount;
-        this.fuelData.costPerGallon = result.costPerGallon;
+        this.fuelData.subTotal = result.subTotal;
+        this.fuelData.totalUnits = result.totalUnits;
         this.fuelData.pricePerUnit =  result.pricePerUnit;
-        this.fuelData.totalGallons = result.totalGallons;
         this.fuelData.amountPaid = result.amountPaid;
-        this.fuelData.fuelDate = result.fuelDate;
+        this.fuelData.fuelDate =  moment(result.fuelDate).format('YYYY/MM/DD');
         this.fuelData.fuelTime = result.fuelTime;
         this.fuelData.fuelType = result.fuelType;
         this.fuelData.paidBy = result.paidBy;
         this.fuelData.paymentMode = result.paymentMode;
+        this.fuelData.fuelCardNumber = result.fuelCardNumber;
         this.fuelData.reference = result.reference;
         this.fuelData.reimburseToDriver = result.reimburseToDriver;
         this.fuelData.deductFromPay = result.deductFromPay;

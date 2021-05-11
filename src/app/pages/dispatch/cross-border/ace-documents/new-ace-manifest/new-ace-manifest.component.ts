@@ -55,7 +55,7 @@ export class NewAceManifestComponent implements OnInit {
       { sealNumber: '' },
       { sealNumber: '' },
     ],
-    IIT:  'IMPORTER'
+    IIT: 'IMPORTER'
 
   };
   trailers = [
@@ -203,7 +203,8 @@ export class NewAceManifestComponent implements OnInit {
     }
   };
   fetchedCoDrivers = [];
-  borderAssetTypes = [];
+  borderAssetTypes: any = [];
+  borderAssetType: any = [];
   /**
    * for front end validation of US address
    */
@@ -268,6 +269,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchCarrier();
     this.getCurrentuser();
     this.searchLocation();
+    this.fetchAssetType();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
     this.passengerDocStates = this.listService.stateList;
@@ -291,6 +293,7 @@ export class NewAceManifestComponent implements OnInit {
     this.httpClient.get('assets/ACEBrokersList.json').subscribe((data) => {
       this.brokersList = data;
     });
+
     this.httpClient
       .get('assets/jsonFiles/ACEinbond-types.json')
       .subscribe((data) => {
@@ -315,32 +318,30 @@ export class NewAceManifestComponent implements OnInit {
       this.form = $('#form_').validate();
     });
   }
-  shipmentLoadedFn(s,i){
+  shipmentLoadedFn(s, i) {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
+      console.log('this.assets ',this.assets );
     });
   }
   /***
-   * fetch asset types from mapped table
+   * fetch asset types from json file
    */
-  async getBorderAssetTypes(e) {
-    const assetID = e;
-    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border asset types are fetched whose parent is asset type of selected asset
-    if (resultData.Items.length > 0) {// if parent asset type exists
-      this.borderAssetTypes = resultData.Items;
-    } else {
-      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
-      this.borderAssetTypes = fetchedBorderAssets.Items;
-    }
-  }
-  fetchBorderAssetType() {
-    this.apiService.getData('borderAssetTypes').subscribe((result: any) => {
-      this.borderAssetTypes = result.Items;
+  fetchAssetType() {
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
+      this.borderAssetType = data;
     });
+  }
+  async getBorderAssetTypes(e) {
+    // const assetID = e;
+    // console.log('event data', e);
+    // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
+    // console.log('this.borderAssetTypes', this.borderAssetTypes);
+
   }
   getStates() {
     this.apiService
@@ -411,7 +412,7 @@ export class NewAceManifestComponent implements OnInit {
         { sealNumber: '' },
         { sealNumber: '' },
       ],
-     IIT: 'IMPORTER'
+      IIT: 'IMPORTER'
     });
     this.addTrailerBtn = true;
 
@@ -785,7 +786,8 @@ export class NewAceManifestComponent implements OnInit {
           shipments: this.shipments,
           currentStatus: 'Draft',
         };
-        this.addFunction(data);
+        console.log('data', data);
+        //  this.addFunction(data);
       }
     } else {
       this.usAddress = {
@@ -823,7 +825,8 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-     this.addFunction(data);
+      // this.addFunction(data);
+      console.log('data', data);
     }
   }
   throwErrors() {
@@ -871,7 +874,7 @@ export class NewAceManifestComponent implements OnInit {
         this.usAddress = result.usAddress;
         setTimeout(() => {
           this.getStates();
-          this.fetchBorderAssetType();
+          this.fetchAssetType();
         }, 1000);
       });
   }
@@ -929,6 +932,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           entryID: this.entryID,
+          sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
           usPortOfArrival: this.usPortOfArrival,
@@ -966,9 +970,10 @@ export class NewAceManifestComponent implements OnInit {
           userLocation: ''
         }
       };
-     // this.coDrivers.unshift(this.mainDriver);
+      // this.coDrivers.unshift(this.mainDriver);
       const data = {
         entryID: this.entryID,
+        sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
         usPortOfArrival: this.usPortOfArrival,
@@ -987,34 +992,34 @@ export class NewAceManifestComponent implements OnInit {
     }
   }
   // update function
-  updateFunction(data){
+  updateFunction(data) {
     this.apiService
-    .putData(`ACEeManifest/${this.amendManifest}`, data)
-    .subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.toastr.success('Manifest updated successfully.');
-        this.location.back(); // <-- go back to previous location
-      },
-    });
+      .putData(`ACEeManifest/${this.amendManifest}`, data)
+      .subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+              },
+              error: () => { },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          this.toastr.success('Manifest updated successfully.');
+          this.location.back(); // <-- go back to previous location
+        },
+      });
   }
   // add Function
   addFunction(data) {
@@ -1053,7 +1058,7 @@ export class NewAceManifestComponent implements OnInit {
       if (newString.length != 14) {
         this.errorFastCard = true;
       }
-       else {
+      else {
         const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
         const fastEnd = newString[12].concat(newString[13]);
         if (fastStart != '4270' && fastStart != '4110') {
@@ -1066,5 +1071,5 @@ export class NewAceManifestComponent implements OnInit {
         }
       }
     }
-   }
+  }
 }

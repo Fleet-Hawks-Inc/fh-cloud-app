@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
+
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -71,6 +72,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   isEdit = false;
   driverData = {
     employeeContractorId: '',
+    createdDate : '',
+    createdTime : '',
     driverType: 'employee',
     entityType: Constants.DRIVER,
     gender: 'M',
@@ -148,11 +151,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       waitingHourAfter: '',
       deliveryRate: '',
       deliveryRateUnit:  null,
-      SIN_Number: '',
       payPeriod:  null,
     },
+    SIN: '',
+    CDL_Number: '',
     licenceDetails: {
-      CDL_Number: '',
       issuedCountry:  null,
       issuedState:  null,
       licenceExpiry: '',
@@ -160,13 +163,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       WCB: '',
       medicalCardRenewal: '',
       healthCare: '',
-      vehicleType:  null,
+      vehicleType: '',
     },
     hosDetails: {
       hosStatus: null,
       timezone: null,
       type: null,
-      hosRemarks: null,
+      hosRemarks: '',
       hosCycle: null,
       homeTerminal: null,
       pcAllowed: false,
@@ -379,24 +382,24 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.spinner.hide();
     })
   }
- fetchTimezones(){
-  // const ct = require('countries-and-timezones');
-  // const UStimezones = ct.getTimezonesForCountry('US');
-  // UStimezones.forEach((element: any) => {
-  //   const obj: any = {
-  //     name: element.name,
-  //     country: element.country
-  //     };
-  //     this.finaltimezones.push(obj);
-  // });
-  // const CAtimezones = ct.getTimezonesForCountry('CA');
-  // CAtimezones.forEach((e: any) => {
-  // const obj: any = {
-  // name: e.name,
-  // country: e.country
-  // };
-  // this.finaltimezones.push(obj);
-  // });
+ fetchTimezones() {
+  const ct = require('countries-and-timezones');
+  const UStimezones = ct.getTimezonesForCountry('US');
+  UStimezones.forEach((element: any) => {
+    const obj: any = {
+      name: element.name,
+      country: element.country
+      };
+      this.finaltimezones.push(obj);
+  });
+  const CAtimezones = ct.getTimezonesForCountry('CA');
+  CAtimezones.forEach((e: any) => {
+  const obj: any = {
+  name: e.name,
+  country: e.country
+  };
+  this.finaltimezones.push(obj);
+  });
 }
 
 
@@ -619,9 +622,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   fetchDrivers() {
-    this.apiService.getData(`drivers`).subscribe(res => {
-      this.allDrivers = res.Items;
-    });
+    // this.apiService.getData(`drivers`).subscribe(res => {
+    //   this.allDrivers = res.Items;
+    // });
   }
   addGroup() {
     this.hideErrors();
@@ -661,8 +664,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     // this.spinner.show();
     this.hideErrors();
-    // this.driverData.empPrefix = this.prefixOutput;
-    // this.driverData.currentTab = this.currentTab;
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
 
     if (this.driverData.hosDetails.hosCycle !== '') {
       let cycleName = '';
@@ -870,7 +873,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
+        console.log('result', result);
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -879,8 +882,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        this.driverData.password = result.password;
-        this.driverData.confirmPassword = result.confirmPassword;
+        // this.driverData.password = result.password;
+        // this.driverData.confirmPassword = result.confirmPassword;
         this.driverData.startDate = result.startDate;
         this.driverData.terminationDate = result.terminationDate;
         this.driverData.contractStart = result.contractStart;
@@ -888,6 +891,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
+        this.driverData.createdDate = result.createdDate;
+        this.driverData.createdTime = result.createdTime;
         if (result.driverImage !== '' && result.driverImage !== undefined) {
           this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
           this.showIcons = true;
@@ -951,7 +956,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         for (let i = 0; i < result.documentDetails.length; i++) {
           await this.getStates(result.documentDetails[i].issuingCountry);
           await this.getCities(result.documentDetails[i].issuingState);
-          let docmnt = []
+          let docmnt = [];
           if (result.documentDetails[i].uploadedDocs != undefined && result.documentDetails[i].uploadedDocs.length > 0) {
             docmnt = result.documentDetails[i].uploadedDocs;
           }
@@ -996,9 +1001,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.paymentDetails.deliveryRate = result.paymentDetails.deliveryRate;
         this.driverData.paymentDetails.deliveryRateUnit = result.paymentDetails.deliveryRateUnit;
 
-        this.driverData.paymentDetails.SIN_Number = result.paymentDetails.SIN_Number;
+        this.driverData.SIN = result.SIN;
         this.driverData.paymentDetails.payPeriod = result.paymentDetails.payPeriod;
-        this.driverData.licenceDetails.CDL_Number = result.licenceDetails.CDL_Number;
+        this.driverData.CDL_Number = result.CDL_Number;
         this.driverData.licenceDetails.issuedCountry = result.licenceDetails.issuedCountry;
         this.driverData.licenceDetails.issuedState = result.licenceDetails.issuedState;
         this.driverData.licenceDetails.licenceExpiry = result.licenceDetails.licenceExpiry;
@@ -1030,6 +1035,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.hasSuccess = false;
     this.hideErrors();
     this.submitDisabled = true;
+    this.driverData[`driverID`] = this.driverID;
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
     for (let i = 0; i < this.driverData.address.length; i++) {
       const element = this.driverData.address[i];
       if (element.countryID != '' || element.stateID != '' || element.cityID != '') {
@@ -1044,15 +1052,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         }
       }
     }
-    this.driverData[`driverID`] = this.driverID;
-
     if (this.driverData.hosDetails.hosCycle != '') {
       let cycleName = '';
       this.cycles.map((v: any) => {
         if (this.driverData.hosDetails.hosCycle == v.cycleID) {
           cycleName = v.cycleName;
         }
-      })
+      });
       this.driverData.hosDetails.hosCycleName = cycleName;
     }
     // create form data instance
@@ -1226,7 +1232,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   complianceChange(value) {
-    if (value === 'Non Exempted') {
+    if (value === 'non_Exempted') {
       this.driverData.hosDetails.type = 'ELD';
     } else {
       this.driverData.hosDetails.type = 'Log Book';
