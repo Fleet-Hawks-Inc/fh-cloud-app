@@ -105,12 +105,12 @@ export class AssetListComponent implements OnInit {
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
-      this.fetchAllAssetTypes();
+    //  this.fetchAllAssetTypes();
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
       this.fetchModalsByIDs();
-      this.fetchAllAssetTypesList();
+    //  this.fetchAllAssetTypesList();
   }
 
   getSuggestions(value) {
@@ -167,6 +167,7 @@ export class AssetListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+        console.log('asset status', result);
         if (this.assetID !== '' || this.assetType != null) {
           this.assetEndPoint = this.totalRecords;
         }
