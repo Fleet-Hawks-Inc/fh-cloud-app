@@ -326,8 +326,8 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      result.forEach((e: any) => {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      result.Items.forEach((e: any) => {
         if(e.assetType == 'reefer') {
           let obj = {
             assetID: e.assetID,

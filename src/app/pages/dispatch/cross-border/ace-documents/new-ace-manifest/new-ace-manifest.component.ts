@@ -322,8 +322,9 @@ export class NewAceManifestComponent implements OnInit {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      this.assets = result;
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.assets = result.Items;
+      console.log('this.assets ',this.assets );
     });
   }
   /***

@@ -240,11 +240,11 @@ fuelTypes = [];
 };
 // Vehicles variables end
 // driver variables start
-hasBasic: boolean = false;
-hasDocs: boolean = false;
-hasLic: boolean = false;
-hasPay: boolean = false;
-hasHos: boolean = false;
+// hasBasic: boolean = false;
+// hasDocs: boolean = false;
+// hasLic: boolean = false;
+// hasPay: boolean = false;
+// hasHos: boolean = false;
 
 driverData = {
   userName: '',
@@ -313,11 +313,11 @@ driverData = {
     emptyMilesTeam: '',
     emptyMilesTeamUnit: '',
     paymentType: '',
-    SIN_Number: '',
     payPeriod: '',
   },
+  SIN: '',
+  CDL_Number: '',
   licenceDetails: {
-    CDL_Number: '',
     licenceExpiry: '',
     licenceNotification: true,
     issuedCountry: '',
@@ -333,20 +333,20 @@ driverData = {
     hosRemarks: '',
     type: '',
     homeTerminal: '',
-    utcOffset: '',
+    timezone: '',
     optZone: 'South (Canada)'
   },
   emergencyDetails: {},
 };
 
-abstractValid: boolean = false;
+abstractValid = false;
 prefixOutput: string;
 finalPrefix = '';
 currentUser: any;
 currentTab = 1;
 abstractDocs = [];
 uploadedDocs = [];
-isSubmitted: boolean = false;
+isSubmitted = false;
 carrierID: any;
 carrierYards = [];
 absDocs = [];
@@ -357,6 +357,10 @@ getcurrentDate: any;
 birthDateMinLimit: any;
 futureDatesLimit: any;
 countriesObject: any;
+fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
+  licCountries: any = [];
+finaltimezones: any = [];
 // driver variables ends
 
 // Issues variables ends
@@ -378,7 +382,7 @@ issuesData = {
  * service program props
  */
 pageTitle: string;
-vehicleModal: boolean = false;
+vehicleModal = false;
 vehicles: any;
 tasks = [];
 uploadedPhotos = [];
@@ -491,7 +495,7 @@ users = [];
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
     this.listService.fetchAssetManufacturers();
-
+this.fetchTimezones();
     $(document).ready(() => {
       this.form = $('#stateForm').validate();
       this.form = $('#cityForm').validate();
@@ -532,7 +536,25 @@ users = [];
    }
     });
  }
-
+ fetchTimezones(){
+  const ct = require('countries-and-timezones');
+  const UStimezones = ct.getTimezonesForCountry('US');
+  UStimezones.forEach((element: any) => {
+    const obj: any = {
+      name: element.name,
+      country: element.country
+      };
+      this.finaltimezones.push(obj);
+  });
+  const CAtimezones = ct.getTimezonesForCountry('CA');
+  CAtimezones.forEach((e: any) => {
+  const obj: any = {
+  name: e.name,
+  country: e.country
+  };
+  this.finaltimezones.push(obj);
+  });
+}
  fetchCycles() {
   this.apiService.getData('cycles')
     .subscribe((result: any) => {
@@ -597,6 +619,11 @@ fetchDrivers(){
     this.apiService.getData('countries')
       .subscribe((result: any) => {
         this.countries = result.Items;
+        this.countries.map(elem => {
+          if (elem.countryName == 'Canada' || elem.countryName == 'United States of America') {
+            this.licCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
+          }
+        });
       });
   }
 
@@ -638,7 +665,6 @@ fetchDrivers(){
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-      this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);
   }
 
@@ -1333,72 +1359,15 @@ fetchDrivers(){
     this.stateID = '';
     $('#stateSelect').val('');
   }
+  // DRIVER SECTION
 
-  async nextStep() {
-    await this.onSubmit();
-
-    if(this.abstractDocs.length == 0 && this.currentTab == 1) {
-      this.abstractValid = true;
-      return;
+    // Show password
+    toggleFieldTextType() {
+      this.fieldTextType = !this.fieldTextType;
     }
-    this.validateTabErrors();
-    if($('#addDriverBasic .error').length > 0 && this.currentTab == 1) return;
-    if($('#addDriverAddress .error').length > 0 && this.currentTab == 2) return;
-    if($('#documents .error').length > 0 && this.currentTab == 3) return;
-    if($('#addDriverCrossBorder .error').length > 0 && this.currentTab == 4) return;
-    if($('#licence .error').length > 0 && this.currentTab == 5) return;
-    if($('#payment .error').length > 0 && this.currentTab == 6) return;
-    if($('#Driverhos .error').length > 0 && this.currentTab == 7) return;
-
-    this.currentTab++;
-
-  }
-  prevStep() {
-    this.currentTab--;
-    if(this.driverID) return;
-    // localStorage.setItem('driver', JSON.stringify(this.driverData));
-  }
-  async tabChange(value) {
-    this.currentTab = value;
-  }
-
-  validateTabErrors(){
-    if($('#addDriverBasic .error').length > 0 && this.currentTab >= 1) {
-      this.hasBasic = true;
-    } else {
-      this.hasBasic = false;
+    togglecpwdfieldTextType() {
+      this.cpwdfieldTextType = !this.cpwdfieldTextType;
     }
-    if($('#documents .error').length > 0 && this.currentTab >= 2) {
-      this.hasDocs = true;
-    } else {
-      this.hasDocs = false;
-    }
-    if($('#licence .error').length > 0 && this.currentTab >= 3) {
-      this.hasLic = true;
-    } else {
-      this.hasLic = false;
-    }
-    if($('#payment .error').length > 0 && this.currentTab >= 4) {
-      this.hasPay = true;
-    } else {
-      this.hasPay = false;
-    }
-    if($('#Driverhos .error').length > 0 && this.currentTab >= 5) {
-      this.hasHos = true;
-    } else {
-      this.hasHos = false;
-    }
-  }
-
-  async getUtc(yard) {
-    this.carrierYards.map(async (element: any) => {
-      if (element.addressID == yard) {
-        let result = await this.HereMap.geoCode(element.userLocation);
-        result = result.items[0];
-        this.driverData.hosDetails.utcOffset = result.timeZone.utcOffset
-      }
-    })
-  }
 
   // for driver submittion
   async onSubmit() {
@@ -1448,7 +1417,7 @@ fetchDrivers(){
             complete: () => {
               this.throwErrors();
               this.hasError = true;
-              if(err) return reject(err);
+              // if(err) return reject(err);
               this.spinner.hide();
               //this.toastr.error('Please see the errors');
             },
@@ -1470,11 +1439,11 @@ fetchDrivers(){
   }}
 
   fetchDocuments() {
-    this.httpClient.get("assets/travelDocumentType.json").subscribe(data =>{
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
       this.documentTypeList = data;
     })
   }
-  adddriverDocument() {
+  addDriverDocument() {
     this.driverData.documentDetails.push({
       documentType: '',
       document: '',
@@ -1488,11 +1457,11 @@ fetchDrivers(){
   }
 
   complianceChange(value) {
-    if(value === 'Non Exempted') {
-      this.driverData.hosDetails['type'] = 'ELD';
+    if(value === 'non_Exempted') {
+      this.driverData.hosDetails[`type`] = 'ELD';
     } else {
-      this.driverData.hosDetails['type'] = 'Log Book';
-      this.driverData.hosDetails['hosCycle'] = '';
+      this.driverData.hosDetails[`type`] = 'Log Book';
+      this.driverData.hosDetails[`hosCycle`] = '';
     }
   }
   onChangeHideErrors(fieldname = '') {
@@ -1629,7 +1598,7 @@ fetchDrivers(){
         this.cities = result.Items;
       });
   }
-
+// ISSUE SECTION
   addIssue() {
     this.hideErrors();
 
@@ -2053,11 +2022,11 @@ fetchDrivers(){
         emptyMilesTeam: '',
         emptyMilesTeamUnit: '',
         paymentType: '',
-        SIN_Number: '',
         payPeriod: '',
       },
+      SIN: '',
+      CDL_Number: '',
       licenceDetails: {
-        CDL_Number: '',
         licenceExpiry: '',
         licenceNotification: true,
         issuedCountry: '',
@@ -2072,8 +2041,8 @@ fetchDrivers(){
         hosStatus: '',
         hosRemarks: '',
         type: '',
+        timezone: '',
         homeTerminal: '',
-        utcOffset: '',
         optZone: 'South (Canada)'
       },
       emergencyDetails: {},
