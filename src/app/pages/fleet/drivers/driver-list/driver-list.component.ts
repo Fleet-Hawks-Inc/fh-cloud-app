@@ -35,7 +35,7 @@ export class DriverListComponent implements OnInit {
   citiesObject: any = {};
   vehiclesObject: any = {};
   cyclesObject: any = {};
-  groupssObject:any = {}
+  groupssObject: any = {};
 
   driverID = '';
   driverName = '';
@@ -84,9 +84,6 @@ export class DriverListComponent implements OnInit {
     private toastr: ToastrService) { }
 
   ngOnInit(): void {
-
-
-    // this.hideShowColumn();
     this.fetchAllDocumentsTypes();
     this.fetchDriversCount();
     this.fetchAllStatesIDs();
@@ -95,8 +92,6 @@ export class DriverListComponent implements OnInit {
     this.fetchAllCountriesIDs();
     this.fetchAllCitiesIDs();
     this.fetchAllGrorups();
-    this.initDataTable();
-
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -105,10 +100,10 @@ export class DriverListComponent implements OnInit {
   }
 
   fetchAllDocumentsTypes() {
-    this.httpClient.get("assets/travelDocumentType.json").subscribe((data: any) =>{
+    this.httpClient.get(`assets/travelDocumentType.json`).subscribe((data: any) =>{
       this.allDocumentsTypes = data;
       this.documentsTypesObects =  data.reduce( (a: any, b: any) => {
-        return a[b['code']] = b['description'], a;
+        return a[b[`code`]] = b[`description`], a;
     }, {});
     })
   }
@@ -130,7 +125,6 @@ export class DriverListComponent implements OnInit {
       },
       plugins: ['types', 'checkbox']
     });
-
   }
 
   export() {
@@ -155,19 +149,17 @@ export class DriverListComponent implements OnInit {
     } else {
       this.suggestedDrivers = [];
     }
-
   }
 
   setDriver(driverID, firstName, lastName) {
-    this.driverName = firstName+' '+lastName;
+    this.driverName = firstName + ' ' + lastName;
     // this.driverID = driverID;
-    this.driverID = firstName+'-'+lastName;
-
+    this.driverID = firstName + '-' + lastName;
     this.suggestedDrivers = [];
   }
 
   fetchDriversCount() {
-    this.apiService.getData('drivers/get/count?driver='+this.driverID+'&dutyStatus='+this.dutyStatus).subscribe({
+    this.apiService.getData('drivers/get/count?driver=' + this.driverID + '&dutyStatus=' + this.dutyStatus).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -176,56 +168,46 @@ export class DriverListComponent implements OnInit {
         if(this.driverID != '') {
           this.driverEndPoint = this.totalRecords;
         }
+        this.initDataTable();
       },
     });
   }
-
   fetchAllStatesIDs() {
     this.apiService.getData('states/get/list')
     .subscribe((result: any) => {
       this.statesObject = result;
     });
-
   }
-
-
   fetchAllCountriesIDs() {
     this.apiService.getData('countries/get/list')
     .subscribe((result: any) => {
       this.countriesObject = result;
     });
   }
-
   fetchAllGrorups() {
     this.apiService.getData('groups/get/list')
     .subscribe((result: any) => {
       this.groupssObject = result;
     });
   }
-
   fetchAllCitiesIDs() {
     this.apiService.getData('cities/get/list')
     .subscribe((result: any) => {
       this.citiesObject = result;
     });
   }
-
   fetchAllVehiclesIDs() {
     this.apiService.getData('vehicles/get/list')
     .subscribe((result: any) => {
       this.vehiclesObject = result;
     });
   }
-
   fetchAllCyclesIDs() {
     this.apiService.getData('cycles/get/list')
     .subscribe((result: any) => {
       this.cyclesObject = result;
     });
-
   }
-
-
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {
@@ -258,23 +240,23 @@ export class DriverListComponent implements OnInit {
   }
 
 
-  deactivateDriver(item, driverID) {
-
+  deactivateDriver(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`drivers/isDeleted/${driverID}/${item.isDeleted}`)
-        .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.driverID,
+        status: eventData.driverStatus
+      }
+      this.apiService.postData('drivers/delete', record).subscribe((result: any) => {
 
-          this.drivers = [];
-          this.driverDraw = 0;
-          this.lastEvaluatedKey = '';
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.fetchDriversCount();
-          this.initDataTable();
-          this.toastr.success('Driver is deactivated!');
-        }, err => {
-
-        });
+        this.drivers = [];
+        this.driverDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.fetchDriversCount();
+        this.toastr.success('Driver is deactivated!');
+      });
     }
   }
 
@@ -287,31 +269,27 @@ export class DriverListComponent implements OnInit {
         }
         this.suggestedDrivers = [];
         this.getStartandEndVal();
-        this.drivers = result['Items'];
-
+        this.drivers = result[`Items`];
         if(this.driverID != '') {
           this.driverStartPoint = 1;
           this.driverEndPoint = this.totalRecords;
         }
-
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
           this.driverNext = false;
           // for prev button
-          if (!this.driverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].driverID)) {
-            this.driverPrevEvauatedKeys.push(result['LastEvaluatedKey'].driverID);
+          if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.driverPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].driverID;
-
+          this.lastEvaluatedKey = lastEvalKey;
         } else {
           this.driverNext = true;
           this.lastEvaluatedKey = '';
           this.driverEndPoint = this.totalRecords;
         }
-
         if(this.totalRecords < this.driverEndPoint) {
           this.driverEndPoint = this.totalRecords;
         }
-
         // disable prev btn
         if (this.driverDraw > 0) {
           this.driverPrev = false;
@@ -334,7 +312,6 @@ export class DriverListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedDrivers = [];
       this.fetchDriversCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -348,7 +325,6 @@ export class DriverListComponent implements OnInit {
       this.driverName = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDriversCount();
-      this.initDataTable();
       this.driverDraw = 0;
       this.resetCountResult();
     } else {

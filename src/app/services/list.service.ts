@@ -60,23 +60,23 @@ export class ListService {
 
   assetsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   assetsList = this.assetsDataSource.asObservable();
-  
+
 
   constructor(private apiService: ApiService) {}
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => { 
+    this.apiService.getData("vendors").subscribe((result: any) => {
       this.vendorDataSource.next(result.Items);
     });
   }
 
 fetchShippers() {
-  this.apiService.getData("shippers").subscribe((result: any) => {      
+  this.apiService.getData("shippers").subscribe((result: any) => {
     this.shipperDataSource.next(result.Items);
   });
 }
 fetchReceivers() {
-  this.apiService.getData("receivers").subscribe((result: any) => {      
+  this.apiService.getData("receivers").subscribe((result: any) => {
     this.receiverDataSource.next(result.Items);
   });
 }
@@ -123,7 +123,7 @@ fetchReceivers() {
         this.ownerOperatorDataSource.next(result.Items);
       });
   }
-  
+
   fetchAssetManufacturers() {
     this.apiService
       .getData(`assetManufacturers`)
@@ -147,7 +147,7 @@ fetchReceivers() {
       });
   }
 
-  
+
 
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
@@ -176,7 +176,7 @@ fetchReceivers() {
   async fetchVehicleIssues(id: any) {
     let promise: any = await this.apiService.getData(`issues/vehicle/${id}`).toPromise();
     this.issuesDataSource.next(promise.Items);
-    
+
   }
 
   async fetchAssetsIssues(id: any) {

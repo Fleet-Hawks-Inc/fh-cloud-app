@@ -185,26 +185,14 @@ export class AssetListComponent implements OnInit {
     });
   }
 
-  deleteAsset(eventData) {
-    // if (confirm('Are you sure you want to delete?') === true) {
-    //   this.apiService
-    //   .post(`assets/delete`)
-    //   .subscribe((result: any) => {
-    //     this.allData = [];
-    //     this.assetDraw = 0;
-    //     this.lastEvaluatedKey = '';
-    //     this.dataMessage = Constants.FETCHING_DATA;
-    //     this.fetchAssetsCount();
-    //     this.initDataTable();
-    //     this.toastr.success('Asset deleted successfully');
-    //   });
+  deleteAsset(eventData) {;
     // }
       if (confirm('Are you sure you want to delete?') === true) {
         let record = {
           date: eventData.createdDate,
           time: eventData.createdTime,
-          eventID: eventData.reminderID,
-          status: eventData.status
+          eventID: eventData.assetID,
+          status: eventData.currentStatus
         }
         this.apiService.postData('assets/delete', record).subscribe((result: any) => {
             this.allData = [];
