@@ -91,8 +91,8 @@
                            name="ownership" (change)="hideShowColumn()"> Ownership </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
-                           name="status" (change)="hideShowColumn()"> Status </label>
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.currentStatus"
+                           name="currentStatus" (change)="hideShowColumn()"> Status </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" [(ngModel)]="hideShow.group"
@@ -267,7 +267,7 @@
                         <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
                         <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR ? item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
                         <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR ? item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
-                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.status}}</span></td>
+                        <td *ngIf="hideShow.status"><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span></td>
                         <td>
                            <div class="dropdown dropright">
                               <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

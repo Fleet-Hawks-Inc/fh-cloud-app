@@ -322,8 +322,9 @@ export class NewAceManifestComponent implements OnInit {
     this.shipments[s].commodities[i].loadedOn.number = '';
   }
   fetchAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      this.assets = result;
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.assets = result.Items;
+      console.log('this.assets ',this.assets );
     });
   }
   /***
@@ -931,6 +932,7 @@ export class NewAceManifestComponent implements OnInit {
       if (this.address === true) {
         const data = {
           entryID: this.entryID,
+          sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
           usPortOfArrival: this.usPortOfArrival,
@@ -971,6 +973,7 @@ export class NewAceManifestComponent implements OnInit {
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
         entryID: this.entryID,
+        sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
         usPortOfArrival: this.usPortOfArrival,

@@ -185,15 +185,15 @@ export class AssetDetailComponent implements OnInit {
           //   result['devices'] = [];
           // }
 
-          if(result.assetDetails.ownerShip == 'Owner Operator'){
-            this.apiService.getData('ownerOperators/'+ result.assetDetails.ownerOperator).subscribe((result: any) => {
+          if(result.assetDetails.ownerShip == 'ownerOperator'){
+            this.apiService.getData('ownerOperators/' + result.assetDetails.ownerOperator).subscribe((result: any) => {
               let res = result.Items[0];
               this.ownerOperatorName = res.firstName + ' ' + res.lastName;
             });
           }
 
-          if(result.inspectionFormID != '' && result.inspectionFormID != undefined){
-            this.apiService.getData('inspectionForms/'+result.inspectionFormID).subscribe((result: any) => {
+          if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
+            this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
               this.inspectionFormName = res.inspectionFormName;
             });
