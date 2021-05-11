@@ -273,7 +273,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                          (change)="onChangeHideErrors('phone')" placeholder="eg. c" #mob="ngModel"
+                          (change)="onChangeHideErrors('phone')" placeholder="eg. +16789876543" #mob="ngModel"
                           required pattern="^(\+1)[0-9]{10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
@@ -662,7 +662,7 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State/Province <span
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
@@ -893,7 +893,7 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued State <span
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
