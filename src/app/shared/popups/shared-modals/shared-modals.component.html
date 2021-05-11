@@ -1719,7 +1719,7 @@
                                         class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     </label>
                                     <div class="input-group">
-                                      <input [disabled]="isEdit" (change)="onChangeHideErrors('employeeContractorId')"
+                                      <input (change)="onChangeHideErrors('employeeContractorId')"
                                         [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                         class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
                                         pattern="^[a-zA-Z0-9\s\-]{2,30}$" maxlength="30">
@@ -1952,7 +1952,7 @@
                                 <label class="control-label font-weight-bold text-lg-right">Email <span
                                     class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
-                                <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control" [disabled]="isEdit"
+                                <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control"
                                   (change)="onChangeHideErrors('email')" placeholder="eg. example@email.com" #em="ngModel"
                                   required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                 <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">

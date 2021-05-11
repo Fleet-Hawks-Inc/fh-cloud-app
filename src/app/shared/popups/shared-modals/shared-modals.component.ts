@@ -41,6 +41,7 @@ export class SharedModalsComponent implements OnInit {
       const date = new Date();
       this.getcurrentDate = {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
+      this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
      }
 
@@ -355,6 +356,7 @@ cycles = [];
 ownerOperators: any = [];
 getcurrentDate: any;
 birthDateMinLimit: any;
+birthDateMaxLimit: any;
 futureDatesLimit: any;
 countriesObject: any;
 fieldTextType: boolean;
