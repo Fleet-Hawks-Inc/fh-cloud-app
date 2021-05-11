@@ -787,7 +787,7 @@ export class NewAceManifestComponent implements OnInit {
           currentStatus: 'Draft',
         };
         console.log('data', data);
-        //  this.addFunction(data);
+         this.addFunction(data);
       }
     } else {
       this.usAddress = {
@@ -825,7 +825,7 @@ export class NewAceManifestComponent implements OnInit {
         shipments: this.shipments,
         currentStatus: 'Draft',
       };
-      // this.addFunction(data);
+       this.addFunction(data);
       console.log('data', data);
     }
   }
