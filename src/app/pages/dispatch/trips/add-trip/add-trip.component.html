@@ -109,10 +109,10 @@
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                         
                                                 <div class="btn-group-toggle">
-                                                    <label class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2" (click)="changeMapRoute('order')">
-                                                        <input id="googleMiles" name="mapFrom" value="order" type="radio"> Order Number</label>
-                                                    <label class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}" (click)="changeMapRoute('route')">
-                                                        <input id="pcmiles" name="mapFrom" value="route" type="radio"> Permanent Route</label>
+                                                    <label class="btn btn-outline btn-yesno mr-2 {{ mapOrderActive}} mb-2">
+                                                        <input id="googleMiles" name="mapFrom" [(ngModel)]="tripData.mapFrom" type="radio" (change)="changeMapRoute('order')"> Order Number</label>
+                                                    <label class="btn btn-outline btn-yesno mr-2 mb-2 {{ mapRouteActive}}">
+                                                        <input id="pcmiles" name="mapFrom" type="radio" [(ngModel)]="tripData.mapFrom" (change)="changeMapRoute('route')"> Permanent Route</label>
                                                 </div>
                                             </div>
                                         </div>

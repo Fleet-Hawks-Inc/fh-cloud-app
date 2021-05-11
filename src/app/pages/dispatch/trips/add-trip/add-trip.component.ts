@@ -173,6 +173,7 @@ export class AddTripComponent implements OnInit {
     mapOrderActive = 'active';
     mapRouteActive = '';
     submitDisabled = false;
+    orderStops = [];
 
     ngOnInit() {
 
@@ -563,6 +564,7 @@ export class AddTripComponent implements OnInit {
         let current = this;
         let totalMilesOrder = 0;
         let calculateBy = '';
+        this.orderStops = [];
         
         for (let i = 0; i < this.OrderIDs.length; i++) {
             const element = this.OrderIDs[i];
@@ -664,10 +666,10 @@ export class AddTripComponent implements OnInit {
             })
 
             if(locations.length > 0) {
-                // this.getCoords(locations);
                 this.resetMap();
             }
         }
+        this.orderStops = this.trips;
         this.orderMiles =
         {
             calculateBy: calculateBy,
@@ -676,29 +678,6 @@ export class AddTripComponent implements OnInit {
         this.actualMiles = 0;
         this.getMiles();
     }
-
-    // async getMiles(startingPoint,endingPoint){
-    //     console.log(startingPoint)
-    //     let savedCord=this.saveCords;
-    //     this.saveCords=endingPoint
-    //     console.log("savedCord",savedCord)
-    //     console.log('endingPoint',endingPoint)
-        
-    //     if(startingPoint==0){
-    //     return 0;
-    //     }
-    //     else{
-    //         try{
-    //             this.pcMiles.pcMiles.next(true);
-    //        let miles=await this.pcMiles.pcMilesDistance(savedCord+";"+endingPoint).toPromise()
-    //        console.log("miles",miles)
-    //        return miles
-    //         }
-    //         catch(error){
-    //             console.error(error)
-    //         }
-    //     }
-    // }
 
     async getMiles(){
         let savedCord='';
@@ -717,7 +696,6 @@ export class AddTripComponent implements OnInit {
                     catch (error) {
                         this.toastr.error('No route found with these locations.');
                         return false;
-                        // console.error(error)
                     }
                     savedCord=endingPoint;
                 }
@@ -1027,11 +1005,13 @@ export class AddTripComponent implements OnInit {
 
         if (planData.length == 0) {
             this.toastr.error('Please add trip plan.');
+            this.submitDisabled = false;
             return false;
         }
 
         if (planData.length < 2) {
             this.toastr.error('Please add atleast two trip plans.');
+            this.submitDisabled = false;
             return false;
         }
 
@@ -1106,7 +1086,7 @@ export class AddTripComponent implements OnInit {
                 }
 
                 if(element.locationName != '' && element.locationName != undefined) {
-                    element.locationName = element.locationName.replace(",", "");
+                    element.locationName = element.locationName.replace(/,/g, "");
                     selectedLocations += element.locationName.toLowerCase() + '|';
                 }
 
@@ -1387,61 +1367,26 @@ export class AddTripComponent implements OnInit {
         this.apiService.getData('trips/' + this.tripID).
             subscribe((result: any) => {
                 result = result.Items[0];
-                console.log('trip result', result);
-                // let temp = '';
-                // let tempUnit = null;
-                // if (result.reeferTemperature != undefined && result.reeferTemperature != '') {
-                //     let refTemp = result.reeferTemperature;
-                //     temp = refTemp.substring(0, refTemp.length - 1);
-                //     tempUnit = refTemp.substring(refTemp.length - 1, refTemp.length);
-                // }
-
                 let tripPlanning = result.tripPlanning;
                 this.tripData['reeferTemperature'] = result.reeferTemperature;
                 this.tripData['reeferTemperatureUnit'] = result.reeferTemperatureUnit;
                 this.tripData['tripNo'] = result.tripNo;
                 this.tripData['routeID'] = result.routeID;
                 this.tripData['bol'] = result.bol;
+                this.tripData['createdDate'] = result.createdDate;
+                this.tripData['createdTime'] = result.createdTime;
                 this.dateCreated = result.dateCreated;
-
-                // allFetchedOrders
                 this.orderNo = '';
-                // let curr = this;
-                // let calcultedBy = '';
-                // let totalMilesOrder = 0;
-
+                
                 //fetch order details
                 if(result.orderId.length > 0){
                     this.fetchOrderDetails(result.orderId);
                     this.OrderIDs = result.orderId;
                 }
                 
-                // for (let h = 0; h < result.orderId.length; h++) {
-                //     const elementh = result.orderId[h];
-
-                //     this.allFetchedOrders.filter(function (obj) {
-                //         if (obj.orderID == elementh) {
-                //             calcultedBy = obj.milesInfo.calculateBy;
-                //             totalMilesOrder += parseFloat(obj.milesInfo.totalMiles);
-                //             curr.orderNo += obj.orderNumber + ', ';
-                //             curr.OrderIDs.push(obj.orderID)
-                //             return true;
-                //         }
-                //     });
-                // }
-
-                // this.orderMiles =
-                // {
-                //     calculateBy: calcultedBy,
-                //     totalMiles: totalMilesOrder
-                // }
-
-                // this.tripData['reeferTemperature'] = temp;
-                // this.tripData['reeferTemperatureUnit'] = tempUnit;
                 this.tripData['orderType'] = result.orderType;
                 this.tripData['timeCreated'] = result.timeCreated;
                 this.tripData['tripStatus'] = result.tripStatus;
-                // this.tripData['dateCreated'] = result.dateCreated.split('-').reverse().join('-');
                 this.tripData.notifications = result.notifications;
 
                 // checkbox checked of ftl orders
@@ -1506,7 +1451,6 @@ export class AddTripComponent implements OnInit {
 
                     this.actualMiles += parseFloat(element.miles);
                     this.trips.push(obj);
-                    console.log('this.trips', this.trips);
                     let assetArr = [];
                     for (let j = 0; j < element.assetID.length; j++) {
                         const assetID = element.assetID[j];
@@ -1542,11 +1486,13 @@ export class AddTripComponent implements OnInit {
 
         if (planData.length == 0) {
             this.toastr.error('Please add trip plan.');
+            this.submitDisabled = false;
             return false;
         }
 
         if (planData.length < 2) {
             this.toastr.error('Please add atleast two trip plans.');
+            this.submitDisabled = false;
             return false;
         }
 
@@ -1644,7 +1590,7 @@ export class AddTripComponent implements OnInit {
             }
     
             if(element.locationName != '' && element.locationName != undefined) {
-                element.locationName = element.locationName.replace(",", "");
+                element.locationName = element.locationName.replace(/,/g, "");
                 selectedLocations += element.locationName.toLowerCase() + '|';
             }
 
@@ -1805,25 +1751,64 @@ export class AddTripComponent implements OnInit {
     changeMapRoute(type) {
         if(type == 'route') {
             if(this.tripData.routeID != '' && this.tripData.routeID != null) {
+                this.orderStops = this.trips;
+                this.trips = [];
                 //change route
                 this.apiService.getData('routes/' + this.tripData.routeID)
                 .subscribe(async (result: any) => {
                     let routeData = result.Items[0];
                     let routePath:any = [];
                     this.newCoords = [];
+                    
                     if(routeData.stops.length > 0) {
+                        
                         for (let i = 0; i < routeData.stops.length; i++) {
                             const element = routeData.stops[i];
                             routePath.push(element.stopName); 
+                            let routeType = '';
+                            if(i == 0) {
+                                routeType = 'Pickup';
+                            } else if(i > 0 && i < routeData.stops.length) {
+                                routeType = 'Stop';
+                            } else if(i == routeData.stops.length-1) {
+                                routeType = 'Delivery';
+                            }
+
+                            let obj = {
+                                type: routeType,
+                                name: '',
+                                miles: 0,
+                                carrierID: '',
+                                carrierName: '',
+                                pickupTime: '',
+                                dropTime: '',
+                                actualPickupTime: '',
+                                actualDropTime: '',
+                                locationName: element.stopName,
+                                vehicleName: '',
+                                trailerName: '',
+                                driverName: '',
+                                coDriverName: '',
+                                fromOrder: 'yes',
+                                lat:'',
+                                lng:''
+                            }
+
                             const posResult = await this.hereMap.geoCode(element.stopName);
                             if(posResult.items[0].position != undefined) {
+                                obj.lat = posResult.items[0].position.lat;
+                                obj.lng = posResult.items[0].position.lng;
+
                                 this.newCoords.push(`${posResult.items[0].position.lat},${posResult.items[0].position.lng}`)
                             }
+                            
+                            this.trips.push(obj);
                         }
                         this.hereMap.calculateRoute(this.newCoords);
                     }
+                    await this.getMiles();
                 });
-
+                
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';
@@ -1831,26 +1816,24 @@ export class AddTripComponent implements OnInit {
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
+                $('input[name="mapFrom"]').attr('checked', false);
+
                 this.toastr.error('Please select permanent route');
             }
         } else {
             if(this.orderNo != '' && this.orderNo != undefined) {
+                this.trips = this.orderStops;
                 this.resetMap();
                 this.mapOrderActive = 'active';
                 this.mapRouteActive = '';
                 this.tripData.mapFrom = 'order';
             } else {
+                $('input[name="mapFrom"]').attr('checked', false);
                 this.mapOrderActive = '';
                 this.mapRouteActive = 'active';
                 this.tripData.mapFrom = 'route';
                 this.toastr.error('Please select order');
             }
-            
         }
-        
-
-
-        // this.tripData.mapFrom = type;
-        console.log('this.tripData.mapFrom', this.tripData.mapFrom);
     }
 }

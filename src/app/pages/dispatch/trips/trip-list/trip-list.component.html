@@ -13,13 +13,17 @@
                             </ng-select>
                         </div> 
                         <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-md mb-3" *ngIf="tripsFiltr.category != 'driver' && tripsFiltr.category != 'vehicle' && tripsFiltr.category != 'asset' && tripsFiltr.category != 'tripType'">
+                            <div class="input-group input-group-md mb-3" *ngIf="tripsFiltr.category != 'driver' && tripsFiltr.category != 'vehicle' && tripsFiltr.category != 'asset' && tripsFiltr.category != 'tripType' && tripsFiltr.category != 'orderNo'  && tripsFiltr.category != 'tripStatus'">
                                 <input type="text" class="form-control" placeholder="Search" name="searchValue" [(ngModel)]="tripsFiltr.searchValue">
                             </div>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Trip Type" *ngIf="tripsFiltr.category == 'tripType'">
                                 <ng-option value="FTL"> FTL</ng-option>
                                 <ng-option value="LTL"> LTL</ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Trip Status" *ngIf="tripsFiltr.category == 'tripStatus'">
+                                <ng-option value="{{ data.value }}" *ngFor="let data of statusData"> {{ data.name }}</ng-option>
                             </ng-select>
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Driver" *ngIf="tripsFiltr.category == 'driver'">
@@ -32,6 +36,10 @@
 
                             <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Asset" *ngIf="tripsFiltr.category == 'asset'">
                                 <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="tripsFiltr.searchValue" name="searchValue" placeholder="Search By Order Number" *ngIf="tripsFiltr.category == 'orderNo'">
+                                <ng-option *ngFor="let data of ordersObject | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                             </ng-select>
                         </div>
                         
@@ -87,27 +95,27 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;"  (click)="setActiveDiv('confirmed')" [ngClass]="{'active': activeTab == 'confirmed'}">
-                                    Confirmed : {{ confirmedTripsCount }}</a>
+                                    Confirmed : {{ confirmedTrips.length }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="dispatchedTrip-tab" href="javascript:;" (click)="setActiveDiv('dispatched')" [ngClass]="{'active': activeTab == 'dispatched'}">
-                                    Dispatched : {{ dispatchedTripsCount }}</a>
+                                    Dispatched : {{ dispatchedTrips.length }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="started-tab" href="javascript:;" (click)="setActiveDiv('started')" [ngClass]="{'active': activeTab == 'started'}">
-                                    Started : {{ startedTripsCount }}</a>
+                                    Started : {{ startedTrips.length }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="enroute-tab" href="javascript:;" (click)="setActiveDiv('enroute')" [ngClass]="{'active': activeTab == 'enroute'}">
-                                    En-Route : {{ enrouteTripsCount }}</a>
+                                    En-Route : {{ enrouteTrips.length }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="setActiveDiv('cancelled')" [ngClass]="{'active': activeTab == 'cancelled'}">
-                                    Cancelled : {{ cancelledTripsCount }}</a>
+                                    Cancelled : {{ cancelledTrips.length }}</a>
                             </li>
                             <li class="nav-item navtabs">
                                 <a class="nav-link" id="delivered-tab" href="javascript:;" (click)="setActiveDiv('delivered')" [ngClass]="{'active': activeTab == 'delivered'}">
-                                    Delivered : {{ deliveredTripsCount }}</a>
+                                    Delivered : {{ deliveredTrips.length }}</a>
                             </li>
                         </ul>
                     </div>
@@ -131,10 +139,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngIf="trips.length == 0" class="text-center">
+                                    <tr *ngIf="!records" class="text-center">
                                         <td colspan="12">{{ dataMessage }}</td>
                                     </tr>
-                                    <tr class="cursorpoint" *ngFor="let trip of trips; let i= index">
+                                    <tr class="cursorpoint" *ngFor="let trip of trips[tripDraw]; let i= index">
                                         <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
                                             {{ trip.tripNo }}
                                         </td>
@@ -147,27 +155,27 @@
                                         <td>{{ trip.dateCreated | date: 'yyyy/MM/dd' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -182,9 +190,9 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -192,7 +200,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="trips.length > 0 && activeTab == 'all'">
+                        <div class="row mt-3 dtPaginate" *ngIf="records && activeTab == 'all'">
                             <div class="col-6">
                                 Showing {{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries
                             </div>
@@ -237,27 +245,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -272,24 +280,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="confirmedTrips.length > 0 && activeTab == 'confirmed'">
-                            <div class="col-6">
-                                Showing {{ tripConfirmedStartPoint }} to {{ tripConfirmedEndPoint }} of {{ confirmedTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('confirmed')" [disabled]="tripConfirmedPrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('confirmed')" [disabled]="tripConfirmedNext">Next</button>
-                            </div>
                         </div>
 
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'dispatched'}" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
@@ -327,27 +326,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -362,24 +361,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="dispatchedTrips.length > 0 && activeTab == 'dispatched'">
-                            <div class="col-6">
-                                Showing {{ tripDispatchedStartPoint }} to {{ tripDispatchedEndPoint }} of {{ dispatchedTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('dispatched')" [disabled]="tripDispatchedPrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('dispatched')" [disabled]="tripDispatchedNext">Next</button>
-                            </div>
                         </div>
 
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'started'}" id="started" role="tabpanel" aria-labelledby="started-tab" *ngIf="activeTab == 'started'">
@@ -417,27 +407,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -452,24 +442,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="startedTrips.length > 0 && activeTab == 'started'">
-                            <div class="col-6">
-                                Showing {{ tripStartedStartPoint }} to {{ tripStartedEndPoint }} of {{ startedTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('started')" [disabled]="tripStartedPrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('started')" [disabled]="tripStartedNext">Next</button>
-                            </div>
                         </div>
 
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'enroute'}" id="enroute" role="tabpanel" aria-labelledby="enroute-tab" *ngIf="activeTab == 'enroute'">
@@ -507,27 +488,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -542,24 +523,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="enrouteTrips.length > 0 && activeTab == 'enroute'">
-                            <div class="col-6">
-                                Showing {{ tripEnrouteStartPoint }} to {{ tripEnrouteEndPoint }} of {{ enrouteTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('enroute')" [disabled]="tripEnroutePrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('enroute')" [disabled]="tripEnrouteNext">Next</button>
-                            </div>
                         </div>
 
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'cancelled'}" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab" *ngIf="activeTab == 'cancelled'">
@@ -596,27 +568,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -631,24 +603,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="cancelledTrips.length > 0 && activeTab == 'cancelled'">
-                            <div class="col-6">
-                                Showing {{ tripCancelStartPoint }} to {{ tripCancelEndPoint }} of {{ cancelledTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('cancelled')" [disabled]="tripCancelPrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('cancelled')" [disabled]="tripCancelNext">Next</button>
-                            </div>
                         </div>
 
                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'delivered'}" id="delivered" role="tabpanel" aria-labelledby="delivered-tab" *ngIf="activeTab == 'delivered'">
@@ -686,27 +649,27 @@
                                         <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
                                         <td>
                                             {{ trip.pickupLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
+                                            <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ trip.dropLocation }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
+                                            <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ vehiclesObject[trip.vehicleId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
+                                            <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ assetsObject[trip.assetId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
+                                            <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ driversIDSObject[trip.driverId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
+                                            <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                         </td>
                                         <td>
                                             {{ carriersObject[trip.planCarrierId] }}
-                                            <span _ngcontent-ije-c15="" *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
+                                            <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                         </td>
                                         <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
                                         <td>
@@ -721,24 +684,15 @@
                                                     <a class="dropdown-item"
                                                         routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deleteTrip(trip.tripID)">Delete</a>
+                                                        (click)="deleteTrip(trip)">Delete</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="openStatusModal(trip.tripID)">Update Status</a>
+                                                        (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                        <div class="row mt-3 dtPaginate" *ngIf="deliveredTrips.length > 0 && activeTab == 'delivered'">
-                            <div class="col-6">
-                                Showing {{ tripDeliverStartPoint }} to {{ tripDeliverEndPoint }} of {{ deliveredTripsCount }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('delivered')" [disabled]="tripDeliverPrev">Prev</button>
-                                <button type="button" class="btn btn-default" (click)="nextResults('delivered')" [disabled]="tripDeliverNext">Next</button>
-                            </div>
                         </div>
                     </div>
                 </div>
