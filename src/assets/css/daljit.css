@@ -85,14 +85,14 @@ html.fixed .content-body {
 .schedule-drivers li {
  background-color: #f6f6f6 !important;
     font-size: 14px !important;
-    padding: 15px; 
-    width: 100%; 
+    padding: 15px;
+    width: 100%;
 }
 .schedule-drivers ul li.active{
     background-color: #eaeaea !important;
 }
 .schedule-trips .fc-h-event .fc-event-main {
-    color: #333; 
+    color: #333;
     white-space: initial;
 }
 
@@ -102,7 +102,7 @@ html.fixed .content-body {
 }
 .schedule-drivers ul {
     margin-top: 25px;
-    max-height: calc(100vh - 175px); 
+    max-height: calc(100vh - 175px);
     overflow-x: auto;
 }
 .dispatch-planner__wrapper .fc .fc-daygrid-day.fc-day-today {
@@ -173,7 +173,7 @@ html.fixed .content-body {
     height: 310px !important;
 }
 #reeferChart {
-    height: 260px !important;   
+    height: 260px !important;
 }
 #with_temp_graph img {
     height: 260px;
@@ -327,7 +327,7 @@ html.fixed .content-body {
     justify-content: center;
 }
 .invoice-templates__listing li:hover .invoice-actions {
-    opacity: 1;   
+    opacity: 1;
 }
 .selected-template {
     position: absolute;
@@ -363,55 +363,6 @@ html.fixed .content-body {
     height: 40px;
 }
 
-/*--circle progress css*/
-.circle-wrap {
-  margin: 36px auto;
-  width: 140px;
-  height: 140px;
-  background: #e6e2e7;
-  border-radius: 50%;
-}
-.circle-wrap .circle .mask,
-.circle-wrap .circle .fill {
-  width: 150px;
-  height: 150px;
-  position: absolute;
-  border-radius: 50%;
-}
-.circle-wrap .circle .mask {
-  clip: rect(0px, 150px, 150px, 75px);
-}
-.circle-wrap .circle .mask .fill {
-  clip: rect(0px, 75px, 150px, 0px);
-  background-color: #000;
-}
-.circle-wrap .circle .mask.full,
-.circle-wrap .circle .fill {
-  animation: fill ease-in-out 3s;
-  transform: rotate(150deg);
-}
-@keyframes fill {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(150deg);
-  }
-}
-.circle-wrap .inside-circle {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  background: #fff;
-  line-height: 130px;
-  text-align: center;
-  margin-top: 10px;
-  margin-left: 10px;
-  position: absolute;
-  z-index: 100;
-  font-weight: 700;
-  font-size: 2em;
-}
 
 #previewInvoiceModal {
     position: fixed;
@@ -475,7 +426,7 @@ html.fixed .content-body {
     border-color: #a6a6a6;
     color: #3d3d3d;
 }
-.dt-button-collection .dropdown-item.active, 
+.dt-button-collection .dropdown-item.active,
 .dt-button-collection .dropdown-item:active {
     color: #3d3d3d;
     text-decoration: none;
@@ -502,7 +453,7 @@ html.fixed .content-body {
     border-bottom: 1px solid #DADADA;
     padding: 18px;
     position: relative;
-} 
+}
 .modal .modal-title{
     color: #33353F;
     font-size: 20px;

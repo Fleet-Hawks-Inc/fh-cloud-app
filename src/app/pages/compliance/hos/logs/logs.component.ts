@@ -17,20 +17,14 @@ export class LogsComponent implements OnInit {
   logs = [];
   drivers = [];
   userName = '';
-  fromDate: any = '' ;
-  toDate: any = '' ;
-  formattedFromDate: any = '';
-  formattedToDate: any = '';
+  fromDate: any = moment().format('YYYY-MM-DD') ;
+  toDate: any = moment().format('YYYY-MM-DD');
 
   constructor(private apiService: ApiService,
               private parserFormatter: NgbDateParserFormatter,private toastr: ToastrService,
               private datePipe: DatePipe) {
 
- //   this.formattedToDate = this.datePipe.transform(new Date(),  'dd-MM-yyyy');
-   // this.formattedFromDate = moment(this.datePipe.transform(new Date(), 'yyyy-MM-dd').toString()).subtract(2 , 'days').format('DD-MM-YYYY');
-
     this.getInitialLogs();
-
   }
 
   ngOnInit() {
@@ -47,28 +41,24 @@ export class LogsComponent implements OnInit {
     this.getLogs();
   }
 
-
-  getFilteredLogs() {
-    /**
-     * this.fromDate and this.toDate are objects need to format them
-     */
-    this.formattedFromDate  = moment(this.parserFormatter.format(this.fromDate)).format('DD-MM-YYYY');
-    this.formattedToDate = moment(this.parserFormatter.format(this.toDate)).format('DD-MM-YYYY');
-    this.getLogs();
-  }
-
-
    getLogs() {
      if((this.fromDate && !this.toDate) || (this.toDate && !this.fromDate)) {
       this.toastr.error('Both dates are required');
       return false;
      }
 
+     let toDate = this.toDate;
+     if(this.toDate){
+      toDate =  moment(this.toDate).add(1, 'days').format("YYYY-MM-DD");
+     }
+
+     if(this.fromDate == null) this.fromDate = '';
+     if(toDate == null) toDate = '';
+
     this.apiService
-      .getData(`compliance/hosLogs?userName=${this.userName}&fromDate=${this.fromDate}&toDate=${this.toDate}`)
+      .getData(`compliance/hosLogs?userName=${this.userName}&fromDate=${this.fromDate}&toDate=${toDate}`)
       .subscribe((result: any) => {
       this.logs = result;
     });
-    console.log(this.logs);
   }
 }

@@ -188,7 +188,7 @@
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold text-lg-right pt-2">
                         Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                      <ng-select [(ngModel)]="assetsData.status" name="status"
+                      <ng-select [(ngModel)]="assetsData.currentStatus" name="currentStatus"
                         placeholder="Select asset status" #sSlt="ngModel" required >
 
                         <ng-option value="active">Active</ng-option>
@@ -431,7 +431,7 @@
                     </div>
 
                     <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                       <ng-select placeholder="Select Owner Operator"[(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
                         class="form-control populate ">

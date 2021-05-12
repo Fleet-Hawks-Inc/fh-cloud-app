@@ -18,7 +18,16 @@
                 <i class="fas fa-user logicon text-5"></i>
               </div>
               <input name="username" type="text" placeholder="Email ID or Username"
-                class="form-control login form-control-lg" [(ngModel)]="userName" />
+                class="form-control login form-control-lg" [(ngModel)]="userName" #login="ngModel" required pattern="^[a-z0-9\.]{6,20}$"/>
+                <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
+                  <div *ngIf="login.errors.required" >
+                    UserName is required.
+                  </div>
+                  <div *ngIf="login.errors.pattern">
+                      The length of  Username must be 6 characters and may contain combination of lowercase letters, numbers and special character(.).
+                  </div>
+                 
+                </div>
 
             </div>
           </div>
@@ -30,8 +39,9 @@
                 <i class="fa fa-lock logicon text-5"></i>
               </div>
               <input name="pwd"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg"
-                [(ngModel)]="password" />
-                <div class="input-group-append">
+                [(ngModel)]="password" #password1="ngModel" required pattern="^[a-zA-Z0-9\@\#\#$\&]{8,20}$"/>
+               
+                <div class="input-group-append " >
                   <span class="input-group-text eye">
                     <i class="fa" [ngClass]="{
                       'fa-eye-slash': !fieldTextType,
@@ -40,7 +50,15 @@
                     (click)="toggleFieldTextType()"></i>
                   </span>
                </div>
-
+               <div *ngIf="password1.invalid && (password1.dirty || password1.touched)" class="text-danger w100">
+                <div *ngIf="password1.errors.required" >
+                  Password is required.
+                </div>
+                <div *ngIf="password1.errors.pattern">
+                  The length of Password must be 8 characters and must contain combination of letters, numbers and special characters(@,#,$,'.',&).
+                </div>
+               
+              </div>
             </div>
 
           </div>
