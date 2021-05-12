@@ -40,33 +40,15 @@
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Date/Time</td>
-                                       <td>{{fuelData.fuelDate | date : 'yyyy/MM/dd'}},{{fuelData.fuelTime}}</td>
+                                       <td>{{fuelData.fuelDate | date : 'yyyy/mm/dd'}},{{fuelData.fuelTime}}</td>
                                     </tr>
-
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Trip#</td>
-                                         <td><a routerLink="/dispatch/trips/trip-details/{{fuelData.tripID }}" class="text-info">{{tripList[fuelData.tripID]}}</a></td>
-                                      </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Date/Time</td>
-                                         <td>{{fuelData.fuelDate}},{{fuelData.fuelTime}}</td>
-                                      </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Odometer</td>
-                                         <td>{{fuelData.odometer}} miles</td>
-                                      </tr>
-                                      <tr *ngIf="!fuelData.lineItems">
-                                         <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
-                                         <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit | titlecase}}</td>
-                                      </tr>
-                                      <tr>
-                                       <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
-                                       <td>{{fuelData.fuelQtyAmt}} {{fuelData.billingCurrency}}</td>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Odometer</td>
+                                       <td>{{fuelData.odometer}} miles</td>
                                     </tr>
-                                      <tr>
-                                       <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                                       <td>{{fuelData.DEFFuelQty}} {{fuelData.fuelUnit}}</td>
-
+                                    <tr *ngIf="!fuelData.lineItems">
+                                       <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
+                                       <td>{{fuelData.fuelQty}} {{fuelData.fuelUnit | titlecase}}</td>
                                     </tr>
                                     <tr>
                                      <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
@@ -84,52 +66,17 @@
                                        <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit}}</td>
                                        <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
                                     </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Price Per {{fuelData.fuelUnit}}</td>
-                                         <td>{{fuelData.pricePerUnit}} {{fuelData.billingCurrency}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="back-color-gray font-weight-bold">Sub Total</td>
-                                        <td>{{fuelData.subTotal}} {{fuelData.billingCurrency}}</td>
-                                     </tr>
-                                      <tr *ngIf="fuelData.discType">
-                                        <td class="back-color-gray font-weight-bold">Discount</td>
-                                        <td>{{discountList[fuelData.discType]}} - {{fuelData.discAmount}} {{fuelData.billingCurrency}}</td>
-                                     </tr>
-                                      <tr *ngIf="fuelData.taxes.length != 0">
-                                        <td class="back-color-gray font-weight-bold">Taxes</td>
-                                        <td><span *ngFor="let tax of fuelData.taxes"><span *ngIf="tax.taxType != '' || tax.taxAmount != 0">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></span></td>
-                                     </tr>
-                                     <tr>
-                                      <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit}}</td>
-                                      <td>{{fuelData.totalUnits}}</td>
+                                    <tr>
+                                      <td class="back-color-gray font-weight-bold">Sub Total</td>
+                                      <td>{{fuelData.subTotal}} {{fuelData.billingCurrency}}</td>
                                    </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
-                                         <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
-                                      </tr>
-                                      <tr *ngIf="!fuelData.lineItems">
-                                         <td class="back-color-gray font-weight-bold">Fuel Type</td>
-                                         <td>{{fuelTypeListCode[fuelData.fuelType]}}</td>
-                                      </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Vendor</td>
-                                         <td>{{vendorList[fuelData.vendorID]}}</td>
-                                      </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold">Location</td>
-                                         <td>{{cityList[fuelData.cityID]}},{{stateList[fuelData.stateID]}},{{countryList[fuelData.countryID]}}</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="back-color-gray font-weight-bold">Paid By</td>
-                                        <td>{{driverList[fuelData.paidBy]}}
-                                        </td>
-                                     </tr>
-                                     <tr>
-                                      <td class="back-color-gray font-weight-bold">Reimburse to driver</td>
-                                      <td><span *ngIf="fuelData.reimburseToDriver === true">YES</span>
-                                        <span *ngIf="fuelData.reimburseToDriver === false">NO</span></td>
-
+                                    <tr *ngIf="fuelData.discType">
+                                      <td class="back-color-gray font-weight-bold">Discount</td>
+                                      <td>{{discountList[fuelData.discType]}} - {{fuelData.discAmount}} {{fuelData.billingCurrency}}</td>
+                                   </tr>
+                                    <tr *ngIf="fuelData.taxes.length != 0">
+                                      <td class="back-color-gray font-weight-bold">Taxes</td>
+                                      <td><span *ngFor="let tax of fuelData.taxes"><span *ngIf="tax.taxType != '' || tax.taxAmount != 0">{{taxTypeList[tax.taxType]}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></span></td>
                                    </tr>
                                    <tr>
                                     <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit}}</td>
@@ -204,47 +151,32 @@
                               </div>
                            </div>
                         </div>
-
-                       </div>
-                    </div>
-                    <!-- Details div -->
-                    <div class="row mt-4" *ngIf="fuelData.taxes.length != 0">
-                      <div class="col">
-                       <table class="table table-bordered table-responsive-lg">
-                        <thead>
-                         <tr>
-                            <th width="5%">Sr</th>
-                            <th width="18%">Fuel </th>
-                            <th width="10%">Quantity</th>
-                            <th width="10%">Amount </th>
-                            <th width="10%">Price Per Unit </th>
-                            <th width="10%">Retail Amount </th>
-                            <th width="10%">Retail Price Per Unit </th>
-                            <th width="10%">Use Type</th>
-                            <th width="17%">Taxes</th>
-                         </tr>
-                        </thead>
-                        <tbody>
-                         <tr *ngFor="let item of fuelData.lineItems; let i=index;">
-                            <td>{{i+1}}</td>
-                            <td>{{fuelTypeWEXCode[item.fuelType]}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.amount}}{{fuelData.billingCurrency}}</td>
-                            <td>{{item.pricePerUnit}}{{fuelData.billingCurrency}}</td>
-                            <td>{{item.retailAmount}}{{fuelData.billingCurrency}}</td>
-                            <td>{{item.retailPricePerUnit}}{{fuelData.billingCurrency}}</td>
-                            <td>{{WEXuseTypeCodeList[item.useType]}}</td>
-                            <td><span *ngFor="let tax of item.tax">{{tax.taxCode}},</span><br>
-                            <button type="button" class="btn btn-success btn-xs" (click)="showFn(i)" id="showBtn{{i}}">Read More..</button>
-                            <span id="readMoreTaxDiv{{i}}" style="display: none;">
-                              <span *ngFor="let tax of item.tax">{{WEXTaxCodeList[tax.taxCode]}}({{tax.taxCode}}) - {{tax.amount}}<br></span>
-                            </span>
-                            <button type="button" class="btn btn-success btn-xs" (click)="hideFn(i)" style="display: none;" id="hideBtn{{i}}">Read Less...</button>
-                            </td>
-                         </tr><tr>
-                        </tr></tbody>
-                       </table>
-
+                        <!-- PHOTO DIV -->
+                        <div class="row mt-2" *ngIf="fuelEntryImages?.length">
+                         <div class="col-lg-12">
+                            <div class="vehicle-common-box p-3">
+                               <div class="row">
+                                  <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                  <div class="col-lg-6 text-right">
+                                  </div>
+                               </div>
+                               <hr class="solid mt-3">
+                               <div class="row" >
+                                  <div class="col-lg-6"  *ngFor="let photo of fuelEntryImages; let i=index">
+                                     <div class="vehicle-photo-box">
+                                        <img src="{{photo.path}}" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
+                                        <hr class="m-3">
+                                        <div class="row">
+                                           <div class="col-lg-8">Image {{i+1}}</div>
+                                           <div class="col-lg-4 text-right">
+                                              <i class="fas fa-times text-danger"  (click)="delete(photo.name)"></i>
+                                           </div>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
                       </div>
                      </div>
                   </div>
@@ -293,5 +225,3 @@
    </section>
   </div>
 </section>
-
-
