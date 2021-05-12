@@ -13,13 +13,15 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
+import { SettingsComponent } from './settings/settings.component';
 
 const COMPONENTS = [
   AddUserComponent,
   UserDetailsComponent,
   UsersListComponent,
   CompanyProfileComponent,
-  EditProfileComponent
+  EditProfileComponent,
+  SettingsComponent
 ];
 
 
@@ -75,6 +77,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 @NgModule({
   declarations: [
     ...COMPONENTS,
+    SettingsComponent,
   ],
   providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],

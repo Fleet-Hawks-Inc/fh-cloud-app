@@ -70,11 +70,11 @@
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                      <div class="col-lg-8 p-2 border-box">Canada</div>
+                      <div class="col-lg-8 p-2 border-box">{{ countryName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province:</div>
-                      <div class="col-lg-8 p-2 border-box">ON</div>
+                      <div class="col-lg-8 p-2 border-box">{{ stateName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Assign Driver:</div>
@@ -133,14 +133,14 @@
 
                   <div class="vehicle-common-box mt-4" *ngIf="slides.length >0">
                     <div class="row m-0">
-                      <div class="col-lg-12 p-2 font-weight-bold text-4 border-box">Photos
+                      <div class="col-lg-12 p-2 font-weight-bold text-4 border-box">Photo(s)
                       </div>
                     </div>
                     <div class="row m-0 justify-content-center">
                       <div class="col-lg-8 p-2">
                         <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
                           <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                            <img src="{{slide}}" alt="" style="margin: auto;">
+                            <img src="{{slide}}" class="img-fluid" alt="" style="margin: auto;">
                           </div>
                         </ngx-slick-carousel>
                       </div>
@@ -315,7 +315,7 @@
 
                   <div class="vehicle-common-box mt-4">
                     <div class="row m-0">
-                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Documents</div>
+                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Document(s)</div>
                     </div>
                     <table class="table table-responsive-lg mb-0">
                       <tbody>
