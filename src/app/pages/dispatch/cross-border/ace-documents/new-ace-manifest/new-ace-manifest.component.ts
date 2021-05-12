@@ -22,6 +22,7 @@ import { CountryStateCity } from '../../../../../shared/utilities/countryStateCi
 })
 export class NewAceManifestComponent implements OnInit {
   public manifestID;
+  public carrierID;
   sendId;
   title = 'Add ACE e-Manifest';
   modalTitle = 'Add';
@@ -71,6 +72,9 @@ export class NewAceManifestComponent implements OnInit {
       IIT: 'IMPORTER'
     },
   ];
+  borderResponses: any = [];
+  createdDate: '';
+  createdTime: '';
   addTrailerSealBtn = true;
   drivers: any = [];
   estimatedArrivalDate: any = '';
@@ -216,7 +220,7 @@ export class NewAceManifestComponent implements OnInit {
   errorClassPostal = false;
   errorFastCard = false;
   address = false;
-  amendManifest = false;
+  amendManifest = true;
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,
@@ -851,8 +855,9 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('ACEeManifest/' + this.manifestID).subscribe((result: any) => {
+      .getData('eManifests/ACE/' + this.manifestID).subscribe((result: any) => {
         result = result.Items[0];
+        console.log('result ',result );
         this.manifestID = this.manifestID;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
@@ -869,9 +874,11 @@ export class NewAceManifestComponent implements OnInit {
         this.shipments = result.shipments;
         this.currentStatus = result.currentStatus;
         this.usAddress = result.usAddress;
+        this.borderResponses = result.borderResponses;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.createdTime;
         setTimeout(() => {
-          this.getStates();
-          this.fetchAssetType();
+          this.getCAProvinces();
         }, 1000);
       });
   }
@@ -942,8 +949,12 @@ export class NewAceManifestComponent implements OnInit {
           usAddress: this.usAddress,
           passengers: this.passengers,
           shipments: this.shipments,
+          borderResponses : this.borderResponses,
+          createdDate: this.createdDate,
+          createdTime: this.createdTime,
           currentStatus: 'Draft',
         };
+        console.log('data',data);
         this.updateFunction(data);
       }
     } else {
@@ -983,6 +994,9 @@ export class NewAceManifestComponent implements OnInit {
         usAddress: this.usAddress,
         passengers: this.passengers,
         shipments: this.shipments,
+        borderResponses : this.borderResponses,
+        createdDate: this.createdDate,
+        createdTime: this.createdTime,
         currentStatus: 'Draft',
       };
       this.updateFunction(data);
@@ -991,7 +1005,7 @@ export class NewAceManifestComponent implements OnInit {
   // update function
   updateFunction(data) {
     this.apiService
-      .putData(`ACEeManifest/${this.amendManifest}`, data)
+      .putData(`eManifests/updateACEmanifest/${this.amendManifest}`, data)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
