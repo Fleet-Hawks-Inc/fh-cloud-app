@@ -24,8 +24,7 @@
                     UserName is required.
                   </div>
                   <div *ngIf="login.errors.pattern">
-                    Username consist of atleast 6 digits and must contain  small letters,numbers and special
-      characters for period('.') only.
+                      The length of  Username must be 6 characters and may contain combination of letters, numbers and special character(.).
                   </div>
                  
                 </div>
@@ -56,7 +55,7 @@
                   Password is required.
                 </div>
                 <div *ngIf="password1.errors.pattern">
-                  Password consist of atleast 8 digits and must contains uppercase,lowercase and special characters for period(@,#,$,'.',&) only.
+                  The length of Password must be 8 characters and must contain combination of letters, numbers and special characters(@,#,$,'.',&).
                 </div>
                
               </div>
