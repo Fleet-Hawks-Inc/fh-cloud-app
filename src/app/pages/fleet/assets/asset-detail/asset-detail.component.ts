@@ -50,7 +50,7 @@ export class AssetDetailComponent implements OnInit {
   ownerShip: string;
   remarks: string;
   startDate: string;
-  status: string;
+  currentStatus: string;
   annualSafetyDate: string;
 
   dateOfIssue: string;
@@ -205,7 +205,7 @@ export class AssetDetailComponent implements OnInit {
           this.assetType =  result.assetType;
           this.groupID =  result.groupID;
           this.startDate =  result.startDate;
-          this.status =  result.status;
+          this.currentStatus =  result.currentStatus;
           this.annualSafetyDate =  result.assetDetails.annualSafetyDate;
           this.licencePlateNumber =  result.assetDetails.licencePlateNumber;
           this.licenceCountryID = result.assetDetails.licenceCountryID;

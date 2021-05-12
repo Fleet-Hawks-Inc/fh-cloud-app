@@ -484,7 +484,7 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.assets">Live Status</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.contact">{{driver.phone}} </td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.licenceDetails.CDL_Number}}</td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dl">{{driver.CDL_Number}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.document"><span class="font-weight-bold">Type#:
                                        </span>{{documentsTypesObects[driver.documentDetails[0].documentType]}} <br><span
                                           class="font-weight-bold">Issue Province:
@@ -501,7 +501,7 @@
                                        </div>
                                     </td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.paymentType">{{driver.paymentDetails.paymentType}}</td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.sin">{{driver.paymentDetails.SIN_Number}}</td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.sin">{{driver.SIN}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
 
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.status">

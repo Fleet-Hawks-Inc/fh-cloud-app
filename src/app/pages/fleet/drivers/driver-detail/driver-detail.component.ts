@@ -47,7 +47,7 @@ export class DriverDetailComponent implements OnInit {
   citizenship: any;
   csa: any;
   group: any;
-
+  assignedVehicle: any;
   address: any;
   documents: any;
 
@@ -94,11 +94,12 @@ export class DriverDetailComponent implements OnInit {
 
   hosStatus: any;
   hosRemarks: any;
-  hosPcAllowed: any;
-  hosYmAllowed: any;
+  hosPcAllowed: boolean;
+  hosYmAllowed: boolean;
   hosType: any;
   hosCycle: any;
   timezone: any;
+  optzone:any;
   cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
@@ -185,7 +186,7 @@ export class DriverDetailComponent implements OnInit {
           this.citizenship = this.driverData.citizenship;
           this.csa = this.driverData.crossBorderDetails.csa;
           this.group = this.driverData.groupID;
-
+          this.assignedVehicle = this.driverData.assignedVehicle;
           this.address = this.driverData.address;
           let newDocuments = [];
           for (let i = 0; i < this.driverData.documentDetails.length; i++) {
@@ -244,7 +245,7 @@ export class DriverDetailComponent implements OnInit {
           this.hosType = this.driverData.hosDetails.type;
           this.hosCycle = this.driverData.hosDetails.hosCycle;
           this.timezone = this.driverData.hosDetails.timezone;
-
+          this.optzone = this.driverData.hosDetails.optZone;
           this.emerName = this.driverData.emergencyDetails.name;
           this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
           this.emerPhone = this.driverData.emergencyDetails.phone;
