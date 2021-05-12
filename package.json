@@ -45,7 +45,7 @@
     "aws-iot-device-sdk-v2": "1.0.3",
     "aws-sdk": "2.683.0",
     "buffer": "5.4.3",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "countries-and-timezones": "^2.4.0",
     "hammerjs": "^2.0.8",
     "html2canvas": "^1.0.0-rc.7",
