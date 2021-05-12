@@ -46,12 +46,19 @@ export class DetailedComponent implements OnInit {
      * Driver props
      */
     driverName = '';
-
+    driverLicense = '';
+    driverCycle = '';
     /**
      * Carrier Props
      */
     carrierName = '';
     carrierAddress = '';
+    carrierDot = '';
+    carrierMainOffice = '';
+    carrierHomeTerminalName = '';
+    carrierHomeTerminalAddress = ''
+
+    ELDProvider = '';
 
   constructor(private route: ActivatedRoute,
               private apiService: ApiService) {}
@@ -60,26 +67,24 @@ export class DetailedComponent implements OnInit {
     this.userName = this.route.snapshot.params['userName'];
     this.eventDate = this.route.snapshot.params['eventDate'];
 
-    this.fetchDriver();
     this.fetchEvents();
+    this.getOtherInfo();
   }
 
-  fetchDriver(){
-    this.apiService.getData(`drivers/userName/${this.userName}`).subscribe((result) => {
-      result = result.Items[0];
-      this.driverName = result.firstName + ' ' + result.lastName;
+  getOtherInfo(){
+    this.apiService.getData(`compliance/otherInfo/${this.userName}`).subscribe((result) => {
+      let carrier = result.carrier;
+      let driver = result.driver;
 
-      this.fetchCarrier(result.carrierID);
+      this.driverName = driver.firstName+ ' '+driver.lastName;
+      this.driverLicense = driver.licenceDetails.CDL_Number;
+      this.driverCycle = driver.hosDetails.cycleInfo.cycleName;
+
+      this.carrierName = carrier.carrierName;
+      this.carrierDot = carrier.DOT;
     });
   }
 
-  fetchCarrier(carrierID){
-    this.apiService.getData(`carriers/${carrierID}`).subscribe((result) => {
-      result = result.Items[0];
-      // this.carrierName = result.businessDetail.carrierName;
-      // this.carrierAddress = result.addressDetail.address1;
-    });
-  }
 
   fetchEvents(){
     this.apiService
