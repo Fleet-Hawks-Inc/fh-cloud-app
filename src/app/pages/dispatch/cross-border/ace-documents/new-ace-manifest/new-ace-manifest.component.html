@@ -177,7 +177,7 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'passengers['+i+'].citizenshipCountry'"
                               placeholder="Select citizenship country " [(ngModel)]="passenger.citizenshipCountry">
-                              <ng-option *ngFor="let country of countriesList" [value]="country.code">
+                              <ng-option *ngFor="let country of countries" [value]="country.code">
                                 {{country.name}}</ng-option>
                             </ng-select>
                           </div>
@@ -465,7 +465,7 @@
                             <ng-select [ngModelOptions]="{standalone: true}"
                               [attr.name]="'shipments['+s+'].provinceOfLoading'" [ngModelOptions]="{standalone: true}"
                               [(ngModel)]="shipment.provinceOfLoading">
-                              <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                              <ng-option *ngFor="let state of states" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-10" *ngIf="shipment.type === 'GOODS_ASTRAY'">

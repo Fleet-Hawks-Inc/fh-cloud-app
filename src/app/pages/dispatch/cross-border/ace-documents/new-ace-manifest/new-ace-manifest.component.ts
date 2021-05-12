@@ -13,7 +13,7 @@ import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
 import { updateFunctionDeclaration } from 'typescript';
 declare var $: any;
-
+import { CountryStateCity } from '../../../../../shared/utilities/countryStateCities';
 @Component({
   selector: 'app-new-ace-manifest',
   templateUrl: './new-ace-manifest.component.html',
@@ -265,7 +265,7 @@ export class NewAceManifestComponent implements OnInit {
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.fetchBrokers();
-    this.getStates();
+    this.getCAProvinces(); // fetch al provinces of Canada
     this.fetchCarrier();
     this.getCurrentuser();
     this.searchLocation();
@@ -324,10 +324,10 @@ export class NewAceManifestComponent implements OnInit {
   fetchAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.assets = result.Items;
-      console.log('this.assets ',this.assets );
     });
   }
-  /***
+
+   /***
    * fetch asset types from json file
    */
   fetchAssetType() {
@@ -343,12 +343,8 @@ export class NewAceManifestComponent implements OnInit {
     // console.log('this.borderAssetTypes', this.borderAssetTypes);
 
   }
-  getStates() {
-    this.apiService
-      .getData('states/getCanadianStates')
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+  getCAProvinces() {
+     this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
   }
   resetusAddressState() {
     this.usAddress.address.stateID = '';
@@ -387,6 +383,7 @@ export class NewAceManifestComponent implements OnInit {
     });
   }
   fetchCountries() {
+   // this.countries = CountryStateCity.GetAllCountries(); fetch countries from library
     this.apiService.getData('countries').subscribe((result: any) => {
       this.countries = result.Items;
     });
