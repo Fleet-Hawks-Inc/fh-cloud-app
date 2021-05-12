@@ -192,10 +192,10 @@
                           placeholder="eg. XYZ logistics" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
                           <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
                             <div *ngIf="cName.errors.required">
-                              Carrier name is required.
+                              Company name is required.
                             </div>
                             <div *ngIf="cName.errors.pattern">
-                              Carrier name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                              Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
                             </div>
                           </div>
                       </div>
@@ -217,15 +217,15 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Vehicle(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.trucks" name="trucks">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.trucks" name="trucks">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Asset(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.trailers" name="trailers">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.trailers" name="trailers">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Reefer(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.reefers" name="reefers">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.reefers" name="reefers">
                           </div>
                         </div>
                       </div>
@@ -235,15 +235,15 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Dry Van(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.dryVans" name="dryVans">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.dryVans" name="dryVans">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Flatbed(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.flatbed" name="flatbed">
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.flatbed" name="flatbed">
                           </div>
                           <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">CurtainSide(s)</label>
-                            <input type="number" class="form-control" [(ngModel)]="fleets.curtainSide"
+                            <input type="number" min="0" class="form-control" [(ngModel)]="fleets.curtainSide"
                               name="curtainSide">
                           </div>
                         </div>
@@ -280,7 +280,7 @@
                                         entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers
                                         for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN"  #ein="ngModel"  pattern="^[0-9]{9}$">
+                        <input type="number" min="0" class="form-control" placeholder="eg. 123435123" [(ngModel)]="EIN" name="EIN"  #ein="ngModel"  pattern="^[0-9]{9}$">
 
                         <div *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
                           <div *ngIf="ein.errors.pattern">
@@ -308,7 +308,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="MC number (Motor Carrier number) is 6 digit number, an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,in other words hauling cargo across state lines."></i>
                         </label>
-                        <input type="number" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC"
+                        <input type="number"  min="0" class="form-control" placeholder="Enter 6 digit MC number" [(ngModel)]="MC"
                         #mc="ngModel" pattern="^[0-9]{6}$" name="MC">
                           <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
                             <div *ngIf="mc.errors.pattern">
@@ -322,7 +322,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>&nbsp;<i class="fas fa-exclamation-circle"
                             data-toggle="tooltip" data-placement="top"
                             title="A Department of Transportation (DOT) number is a 8 digit number the Federal Motor Carrier Safety Administration, or FMCSA, assigns to registered commercial vehicles. All carrier vehicles that weigh more than a certain amount, carry specific amounts of paying passengers or operate between state lines require DOT numbers."></i></label>
-                        <input type="number" class="form-control" placeholder="Enter 8 digit  DOT number" [required]="bizCountry==='US'"
+                        <input type="number" min="0" class="form-control" placeholder="Enter 8 digit  DOT number" [required]="bizCountry==='US'"
                         [(ngModel)]="DOT" name="DOT" #dot="ngModel" pattern="^[0-9]{8}$">
                           <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
                             <div *ngIf="dot.errors.pattern">
@@ -584,7 +584,7 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.accountNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber"
                           placeholder="eg. 12123456701" name="accountNumber" #ac="ngModel" pattern="^[0-9]{7,12}$">
                           <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
@@ -602,7 +602,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
                         #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
                           <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
@@ -637,7 +637,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber"
                         #ins="ngModel" pattern="^[0-9]{3}$" placeholder="eg. 219"
                            name="institutionNumber">
                           <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">

@@ -1629,25 +1629,54 @@
                                                             <span class="mandfield text-2 ml-1" *ngIf="brokerData.brokerType == 'company'"><sup>*</sup></span>
                                                             &nbsp; <span class="text-1 optional-label-color" *ngIf="brokerData.brokerType == 'individual'">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="eg. Carroll Group">
+                                                        <input [(ngModel)]="brokerData.companyName" name="companyName" type="text" class="form-control" placeholder="eg. Carroll Group" #cName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                                                        <div *ngIf="cName.invalid && (cName.dirty || cName.touched)" class="text-danger">
+                                                            <div *ngIf="cName.errors.required">
+                                                                Company name is required.
+                                                             </div>
+                                                             <div *ngIf="cName.errors.pattern">
+                                                                Company name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                             </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">
                                                             DBA Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="eg. bookstore">
+                                                        <input [(ngModel)]="brokerData.dbaName" name="dbaName" type="text" class="form-control" placeholder="eg. bookstore" #dba="ngModel" pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                                                        <div *ngIf="dba.invalid && (dba.dirty || dba.touched)" class="text-danger">
+                                                            <div *ngIf="dba.errors.pattern">
+                                                                DBA name must be between 4-120 characters(small letters,capital letters or numbers) and no special character except period(.) .
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.firstName" name="firstName" type="text" class="form-control" placeholder="eg. John">
+                                                        <input [(ngModel)]="brokerData.firstName" name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
+                                                            <div *ngIf="fName.errors.required">
+                                                                Contact First name is required.
+                                                            </div>
+                                                            <div *ngIf="fName.errors.pattern">
+                                                                Contact First name must be between 2 to 30 characters and must contain letters only.
+                                                            </div>
+                                                       </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             Last Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="eg. Smith">
+                                                        <input [(ngModel)]="brokerData.lastName" name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <div  *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
+                                                            <div *ngIf="lName.errors.required">
+                                                                Contact Last name is required.
+                                                            </div>
+                                                            <div *ngIf="lName.errors.pattern">
+                                                                Contact Last name must be between 2 to 30 characters and must contain letters only.
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
@@ -1655,7 +1684,12 @@
                                                           data-placement="top"
                                                           title="Employer Identification Number (EIN) is a unique identification number that is assigned to a business entity so that it can easily be identified by the Internal Revenue Service (IRS).It is commonly used by employers for the purpose of reporting taxes.The EIN is also known as a Federal Tax Identification Number. "></i>&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
 
-                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="9 digits,beginning with 0 eg.067834562">
+                                                        <input [(ngModel)]="brokerData.ein" name="ein" type="text" class="form-control" placeholder="9 digits,beginning with 0 eg.067834562" #ein="ngModel"  pattern="^[0-9]{9}$">
+                                                        <div  *ngIf="ein.invalid && (ein.dirty || ein.touched)" class="text-danger">
+                                                            <div *ngIf="ein.errors.pattern">
+                                                                EIN must contain 9 digits.
+                                                            </div>
+                                                         </div>
 
                                                     </div>
                                                     <div class="col-lg-12">
@@ -1666,7 +1700,12 @@
                                                           in other words hauling cargo across state lines."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
 
-                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="6 digits , eg. 123456">
+                                                        <input [(ngModel)]="brokerData.mc" name="mc" type="text" class="form-control" placeholder="6 digits , eg. 123456" #mc="ngModel" pattern="^[0-9]{6}$">
+                                                        <div *ngIf="mc.invalid && (mc.dirty || mc.touched)" class="text-danger">
+                                                          <div *ngIf="mc.errors.pattern">
+                                                            MC number must contain 6 digits.
+                                                          </div>
+                                                        </div>
 
                                                     </div>
                                                     <div class="col-lg-12">
@@ -1676,11 +1715,26 @@
                                                           title="Department of Transportation(DOT) number is an identification number that allows FMCSA (the Federal Motor Carrier Safety Administration) to monitor a company's safety record and other information acquired during inspections and audits."></i> &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
 
-                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="8 digits , eg.12345678">
+                                                        <input [(ngModel)]="brokerData.dot" name="dot" type="text" class="form-control" placeholder="8 digits , eg.12345678" #dot="ngModel" pattern="^[0-9]{8}$">
+                                                        <div *ngIf="dot.invalid && (dot.dirty || dot.touched)" class="text-danger">
+                                                            <div  *ngIf="dot.errors.pattern">
+                                                                DOT number must contain 8 digits.
+                                                            </div>
+
+                                                        </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input [(ngModel)]="brokerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="eg. example@email.com">
+                                                        <input [(ngModel)]="brokerData.workEmail" name="workEmail" type="text" class="form-control" placeholder="eg. example@email.com"  #em="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                                                        <div  *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
+                                                            <div *ngIf="em.errors.required">
+                                                                Email is required.
+                                                            </div>
+                                                            <div *ngIf="em.errors.pattern">
+                                                                Enter valid email eg. johnsmith@test.com.
+                                                            </div>
+
+                                                        </div>
 
                                                     </div>
 
@@ -1698,12 +1752,21 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Account# &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
 
-                                                        <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="7-12 digits , eg. 897567567456">
+                                                        <input [(ngModel)]="brokerData.accountNumber" name="accountNumber" type="text" class="form-control" placeholder="7-12 digits , eg. 897567567456" #ac="ngModel" pattern="^[0-9]{7,12}$">
+                                                        <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
+                                                            <div *ngIf="ac.errors.pattern">
+                                                                Account number must be between 7-12 numbers.
+                                                            </div>
+
+                                                        </div>
 
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 0016780571">
+                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. +12032342345" #ph="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                        <div *ngIf="ph.errors.pattern">
+                                                            Enter valid phone number eg. +12032342345 .
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -3463,7 +3526,8 @@
                                                             Type &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                         <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
                                                             placeholder="Select Address Type">
-                                                            <ng-option value="Main">Main</ng-option>
+                                                            <ng-option value="Billing Address">Billing Address</ng-option>
+                                                            <ng-option value="Shipping Address">Shipping Address</ng-option>
                                                             <ng-option value="Office">Office</ng-option>
                                                             <ng-option value="Other">Other</ng-option>
                                                         </ng-select>
