@@ -357,8 +357,8 @@ export class NewAciManifestComponent implements OnInit {
     }
   }
   fetchAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      this.assets = result;
+    this.apiService.getData('assets').subscribe((result: any) => {
+      this.assets = result.Items;
     });
   }
   shipmentLoadedFn(s){

@@ -260,6 +260,8 @@ export class AddVehicleNewComponent implements OnInit {
   vendorModalStatus = false;
   submitDisabled = false;
   groupSubmitDisabled = false;
+  countryName = '';
+  stateName = '';
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {
@@ -310,13 +312,11 @@ export class AddVehicleNewComponent implements OnInit {
     this.manufacturers = this.listService.manufacturerList;
     this.countries = this.listService.countryList;
     this.models = this.listService.modelList;
-    this.countries = this.listService.countryList;
     this.states = this.listService.stateList;
     this.ownerOperators = this.listService.ownerOperatorList;
     this.serviceProgramss = this.listService.serviceProgramList;
     this.drivers = this.listService.driversList;
   }
-
 
 
   fetchDrivers() {
@@ -326,10 +326,21 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   resetState() {
+    this.apiService.getData(`countries/${this.countryID}`).subscribe((result: any) => {
+      this.countryName = result.Items[0].countryName;
+      console.log('countryName', this.countryName)
+    });
+
     this.stateID = null;
     $('#stateSelect').val('');
   }
 
+  selectedState() {
+    this.apiService.getData(`states/${this.stateID}`).subscribe((result: any) => {
+      this.stateName = result.Items[0].stateName;
+      console.log('stateName', this.stateName)
+    });
+  }
 
   resetModel() {
     this.modelID = null;
@@ -380,6 +391,8 @@ export class AddVehicleNewComponent implements OnInit {
       plateNumber: this.plateNumber,
       countryID: this.countryID,
       stateID: this.stateID,
+      countryName: this.countryName,
+      stateName: this.stateName,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       servicePrograms: Array.isArray(this.servicePrograms) ? this.servicePrograms : [],
@@ -655,6 +668,8 @@ export class AddVehicleNewComponent implements OnInit {
         this.plateNumber = result.plateNumber;
         this.countryID = result.countryID
         this.stateID = result.stateID;
+        this.countryName = result.countryName;
+        this.stateName = result.stateName;
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.servicePrograms = result.servicePrograms;
@@ -853,6 +868,8 @@ export class AddVehicleNewComponent implements OnInit {
       plateNumber: this.plateNumber,
       countryID: this.countryID,
       stateID: this.stateID,
+      countryName: this.countryName,
+      stateName: this.stateName,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
       servicePrograms: this.servicePrograms,

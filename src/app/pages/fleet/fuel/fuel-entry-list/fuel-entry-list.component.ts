@@ -224,7 +224,6 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
-
       if (result[`LastEvaluatedKey`] !== undefined) {
         this.fuelNext = false;
         // for prev button
@@ -239,7 +238,7 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelEndPoint = this.totalRecords;
       }
 
-      if(this.totalRecords < this.fuelEndPoint) {
+      if (this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 
@@ -327,8 +326,8 @@ export class FuelEntryListComponent implements OnInit {
   }
 
   fetchAllAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      result.forEach((e: any) => {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      result.Items.forEach((e: any) => {
         if(e.assetType == 'reefer') {
           let obj = {
             assetID: e.assetID,

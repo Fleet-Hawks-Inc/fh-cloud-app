@@ -47,7 +47,7 @@ export class DriverDetailComponent implements OnInit {
   citizenship: any;
   csa: any;
   group: any;
-
+  assignedVehicle: any;
   address: any;
   documents: any;
 
@@ -79,7 +79,7 @@ export class DriverDetailComponent implements OnInit {
 
   deliveryRate: string;
 
-  sinNumber: any;
+  SIN: any;
   loadPayPercentage: any;
   loadPayPercentageOf: any;
   payPeriod: any;
@@ -94,11 +94,12 @@ export class DriverDetailComponent implements OnInit {
 
   hosStatus: any;
   hosRemarks: any;
-  hosPcAllowed: any;
-  hosYmAllowed: any;
+  hosPcAllowed: boolean;
+  hosYmAllowed: boolean;
   hosType: any;
   hosCycle: any;
   timezone: any;
+  optzone:any;
   cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
@@ -127,8 +128,8 @@ export class DriverDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hereMap.mapSetAPI();
-    this.hereMap.mapInit();
+    // this.hereMap.mapSetAPI();
+    // this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
@@ -148,6 +149,7 @@ export class DriverDetailComponent implements OnInit {
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
+        console.log('result', result);
         if (result) {
           this.driverData = await result[`Items`][0];
           this.cycle = this.driverData.hosDetails.hosCycle;
@@ -155,7 +157,7 @@ export class DriverDetailComponent implements OnInit {
           this.email = this.driverData.email;
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
-          this.CDL = this.driverData.licenceDetails.CDL_Number;
+          this.CDL = this.driverData.CDL_Number;
           this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
@@ -184,7 +186,7 @@ export class DriverDetailComponent implements OnInit {
           this.citizenship = this.driverData.citizenship;
           this.csa = this.driverData.crossBorderDetails.csa;
           this.group = this.driverData.groupID;
-
+          this.assignedVehicle = this.driverData.assignedVehicle;
           this.address = this.driverData.address;
           let newDocuments = [];
           for (let i = 0; i < this.driverData.documentDetails.length; i++) {
@@ -231,7 +233,7 @@ export class DriverDetailComponent implements OnInit {
           this.waitingPay = this.driverData.paymentDetails.waitingPay + this.driverData.paymentDetails.waitingPayUnit;
           this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
           this.deliveryRate = this.driverData.paymentDetails.deliveryRate + this.driverData.paymentDetails.deliveryRateUnit;
-          this.sinNumber = this.driverData.paymentDetails.SIN_Number;
+          this.SIN = this.driverData.SIN;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
           this.payPeriod = this.driverData.paymentDetails.payPeriod;
@@ -243,7 +245,7 @@ export class DriverDetailComponent implements OnInit {
           this.hosType = this.driverData.hosDetails.type;
           this.hosCycle = this.driverData.hosDetails.hosCycle;
           this.timezone = this.driverData.hosDetails.timezone;
-
+          this.optzone = this.driverData.hosDetails.optZone;
           this.emerName = this.driverData.emergencyDetails.name;
           this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
           this.emerPhone = this.driverData.emergencyDetails.phone;

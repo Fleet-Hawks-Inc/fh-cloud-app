@@ -57,8 +57,7 @@ export class AddFuelEntryComponent implements OnInit {
     fuelCardNumber: '',
     reimburseToDriver: false,
     deductFromPay: false,
-    // avgGVW: '',
-    odometer: 0,
+    odometer: '',
     description: '',
     uploadedPhotos: [],
     lineItems:  []
@@ -198,8 +197,8 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
   fetchAssets() {
-    this.apiService.getData('assets/projection/fewfields').subscribe((result: any) => {
-      result.forEach((e: any) => {
+    this.apiService.getData('assets').subscribe((result: any) => {
+      result.Items.forEach((e: any) => {
         if (e.assetType == 'reefer') {
           let obj = {
             assetID: e.assetID,
