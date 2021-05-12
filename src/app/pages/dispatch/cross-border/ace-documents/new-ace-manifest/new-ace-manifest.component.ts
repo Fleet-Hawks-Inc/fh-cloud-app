@@ -21,14 +21,14 @@ declare var $: any;
   providers: [],
 })
 export class NewAceManifestComponent implements OnInit {
-  public entryID;
+  public manifestID;
   sendId;
   title = 'Add ACE e-Manifest';
   modalTitle = 'Add';
   vehicles = [];
   assets = [];
   fetchedDrivers = [];
-  mainDriver = '';
+  mainDriver = null;
   coDrivers = [];
   shippers: any = [];
   consignees: any = [];
@@ -242,8 +242,8 @@ export class NewAceManifestComponent implements OnInit {
 
   }
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
-    if (this.entryID) {
+    this.manifestID = this.route.snapshot.params[`manifestID`];
+    if (this.manifestID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
@@ -854,9 +854,9 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('ACEeManifest/' + this.entryID).subscribe((result: any) => {
+      .getData('ACEeManifest/' + this.manifestID).subscribe((result: any) => {
         result = result.Items[0];
-        this.entryID = this.entryID;
+        this.manifestID = this.manifestID;
         this.sendId = result.sendId;
         this.timeCreated = result.timeCreated;
         this.SCAC = result.SCAC;
@@ -931,7 +931,7 @@ export class NewAceManifestComponent implements OnInit {
       }
       if (this.address === true) {
         const data = {
-          entryID: this.entryID,
+          manifestID: this.manifestID,
           sendId: this.sendId,
           SCAC: this.SCAC,
           tripNumber: this.SCAC + this.tripNumber,
@@ -972,7 +972,7 @@ export class NewAceManifestComponent implements OnInit {
       };
       // this.coDrivers.unshift(this.mainDriver);
       const data = {
-        entryID: this.entryID,
+        manifestID: this.manifestID,
         sendId: this.sendId,
         SCAC: this.SCAC,
         tripNumber: this.SCAC + this.tripNumber,
@@ -1023,7 +1023,7 @@ export class NewAceManifestComponent implements OnInit {
   }
   // add Function
   addFunction(data) {
-    this.apiService.postData('ACEeManifest', data).subscribe({
+    this.apiService.postData('eManifests/addACEemanifest', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
