@@ -32,7 +32,7 @@ export class AddAssetsComponent implements OnInit {
     VIN: '',
     startDate:  moment().format('YYYY-MM-DD'),
     assetType: null,
-    status: null,
+    currentStatus: null,
     createdDate: '',
     createdTime: '',
     assetDetails: {
@@ -185,7 +185,7 @@ export class AddAssetsComponent implements OnInit {
       startDate: this.assetsData.startDate,
       inspectionFormID: this.assetsData.inspectionFormID,
       assetType: this.assetsData.assetType,
-      status: this.assetsData.status,
+      currentStatus: this.assetsData.currentStatus,
       assetDetails: {
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
@@ -327,7 +327,7 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'Owner Operator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
-        this.assetsData.status = result.status;
+        this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryID = result.assetDetails.licenceCountryID;
         this.getStates(result.assetDetails.licenceCountryID);
         this.assetsData.assetDetails.licenceStateID = result.assetDetails.licenceStateID;
@@ -381,7 +381,7 @@ export class AddAssetsComponent implements OnInit {
       createdDate: this.assetsData.createdDate,
       inspectionFormID: this.assetsData.inspectionFormID,
       assetType: this.assetsData.assetType,
-      status: this.assetsData.status,
+      currentStatus: this.assetsData.currentStatus,
       assetDetails: {
         year: this.assetsData.assetDetails.year,
         manufacturer: this.assetsData.assetDetails.manufacturer,
