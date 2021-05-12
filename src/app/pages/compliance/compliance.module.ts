@@ -26,6 +26,8 @@ import { ListInspectionComponent } from "./dvir/inspection/list-inspection/list-
 import { ViewInspectionComponent } from "./dvir/inspection/view-inspection/view-inspection.component";
 import { UncertifiedComponent } from "./hos/uncertified/uncertified.component";
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HosChartComponent } from './hos/hos-chart/hos-chart.component';
+import { ChartsModule } from 'ng2-charts';
 @NgModule({
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     MatExpansionModule,
     NgbModule,
     NgSelectModule,
+    ChartsModule
   ],
   declarations: [
     LogsComponent,
@@ -57,6 +60,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ViewInspectionComponent,
     IftaReturnDetailsComponent,
     UncertifiedComponent,
+    HosChartComponent,
   ],
 })
 export class ComplianceModule {}
