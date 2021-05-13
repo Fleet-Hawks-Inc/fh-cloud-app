@@ -772,7 +772,7 @@
                   <div class="row pt-2">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                        Photo</label>
+                        Photo Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" type="file"
                         multiple class="form-control border-0 p-0">
                     </div>
@@ -800,7 +800,7 @@
                   <div class="row pt-2">
                     <div class="col-lg-10">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                        Document</label>
+                        Document Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input (change)="selectDocuments($event, 'uploadedDocs')" name="uploadedDocs" type="file" multiple
                         class="form-control border-0 p-0">
                     </div>
@@ -871,7 +871,7 @@
       </div>
       <div class="modal-body text-dark">
         <div class="card-body p-0">
-          
+
             <div class="form-row">
               <div class="col-lg-12">
                 <label class="control-label font-weight-bold">Group Name <span
@@ -881,12 +881,12 @@
                   <div *ngIf="aAsset.invalid && (aAsset.dirty || aAsset.touched)" class="text-danger">
                     <div *ngIf="aAsset.errors.required">
                       Group Name is required.
-                    </div>     
+                    </div>
                     <div *ngIf="aAsset.errors.pattern">
                            Group Name must contains uppercase, lowercase and special characters for period(space) only.
                     </div>
                   </div>
-                  
+
               </div>
 
             </div>
@@ -909,7 +909,7 @@
                   id="comment" placeholder="Enter group description"></textarea>
               </div>
             </div>
-         
+
         </div>
       </div>
       <div class="modal-footer text-right">

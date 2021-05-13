@@ -394,7 +394,7 @@
                             <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                               name="driverImage" type="file" class="hidden_input1 w-100" />
                             <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                              Photo</label>
+                              Photo Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                           </div>
                         </div>
                       </div>
@@ -716,7 +716,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                          Document</label>
+                          Document Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                         <input class="form-control p-0" name="document.uploadedDocs{{i}}"
                           (change)="selectDocuments($event, i)" type="file" multiple>
                       </div>
