@@ -251,7 +251,7 @@
                                                     {{vendorsList[vehicle.insurance.vendorID]}}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.insuranceAmount" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
-                                                    {{ vehicle.insurance.amountCurrency }} {{vehicle.insurance.amount}}
+                                                     {{vehicle.insurance.amount}} {{ vehicle.insurance.amountCurrency }}
                                                 </td>
                                                 <td class="hand-icon" *ngIf="hideShow.engineSummary" routerLink="/fleet/vehicles/detail/{{vehicle.vehicleID}}">
                                                     {{vehicle.engine.engineSummary}}

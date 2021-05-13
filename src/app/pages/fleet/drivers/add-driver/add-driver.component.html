@@ -273,7 +273,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                          (change)="onChangeHideErrors('phone')" placeholder="eg. c" #mob="ngModel"
+                          (change)="onChangeHideErrors('phone')" placeholder="eg. +16789876543" #mob="ngModel"
                           required pattern="^(\+1)[0-9]{10}$">
                         <div *ngIf="mob.invalid && (mob.dirty || mob.touched)" class="text-danger">
                           <div *ngIf="mob.errors.required">
@@ -665,7 +665,10 @@
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State/Province </label>
+
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+
                         <ng-select
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
@@ -744,7 +747,7 @@
 
 
                   </div>
-                  <div class="col-lg-6 text-right"> <a href="javascript:;" (click)="remove('document', i)"
+                  <div class="col-lg-6 text-right"> <a href="javascript:;" (click)="remove('document', i)" *ngIf="i>1"
                       class="btn btn-danger"><i class="fa fa-minus"></i></a>
                   </div>
                 </div>
@@ -787,14 +790,13 @@
                           <div *ngIf="ace.errors.pattern">
                             ACE ID must contain ony 10 numbers and combination of uppercase,lowercase and numbers only.
                           </div>
-
                         </div>
                       </div>
                     </div>
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <div class="checkbox-custom pt-2">
-                          <input type="checkbox" name="terms">
+                          <input type="checkbox"  [(ngModel)]="driverData.crossBorderDetails.csa" name="crossBorderDetails.csa">
                           <label for="csa">CSA</label>
                         </div>
                       </div>
@@ -858,8 +860,6 @@
                           <div *ngIf="cdl.errors.pattern">
                             CDL# must contain numbers only and special characters(period(-)) only.
                           </div>
-
-
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -895,7 +895,7 @@
                         </div>
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued State <span
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issued Province <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
@@ -1106,7 +1106,6 @@
                               <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
                               </ng-option>
                               <ng-option value="Total Income">Total Income</ng-option>
-
                             </ng-select>
                           </div>
                         </div>
@@ -1157,7 +1156,6 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit"
                             name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency">
-
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -1173,7 +1171,6 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit"
                             name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency">
-
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -1198,8 +1195,6 @@
                               Pay Period Type is required.
                             </div>
                           </div>
-
-
                         </div>
                       </div>
                     </div>
@@ -1343,39 +1338,6 @@
                               name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">Allow Yard Move (YM)</label>
                         </div>
                       </div>
-                      <!-- <div class="col-lg-10" id="crgo" style="display:none;">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Type <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">Property</option>
-                          <optgroup label="">
-                            <option value="">Property</option>
-                            <option value="">Passenger</option>
-                            <option value="">Oil and Gases</option>
-                          </optgroup>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Restart<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">34 hour Start</option>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Reset Break<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">30 min</option>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Short Haul Exception<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <optgroup label="">
-                            <option value="">No short Haul Exception</option>
-                          </optgroup>
-                        </select>
-                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -1519,8 +1481,8 @@
                     class="text-1 optional-label-color">(optional)</span></label>
                 <ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" style="width: 100%;"
                   placeholder="Select group members">
-                  <!-- <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
-                    {{item.lastname}}</ng-option> -->
+                  <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
+                    {{item.lastname}}</ng-option>
                 </ng-select>
               </div>
             </div>

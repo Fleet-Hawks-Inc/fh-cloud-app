@@ -34,7 +34,7 @@ export class OrderDetailComponent implements OnInit {
   totalAccessDeductions: any;
   discountAmount: any;
   discountAmtUnit: string;
-  
+
   totalTax = 0;
   totalAmount: number;
   calculateBy: string;
@@ -49,7 +49,7 @@ export class OrderDetailComponent implements OnInit {
   accessrialData: any;
   deductionsData: any;
   taxesData: any;
-  
+
   getCurrency: string;
 
   totalPickups: number = 0;
@@ -160,7 +160,7 @@ export class OrderDetailComponent implements OnInit {
 
     });
   }
-  
+
 
   /**
    * fetch Asset data
@@ -170,7 +170,6 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
-          console.log('====== order result', result);
           if(result.stateTaxID != undefined) {
             if(result.stateTaxID != '') {
               this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
@@ -190,6 +189,25 @@ export class OrderDetailComponent implements OnInit {
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
           this.shipperReceiversInfos = result.shippersReceiversInfo;
+
+          for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
+            const element = this.shipperReceiversInfos[u];
+              for (let k = 0; k < element.shippers.length; k++) {
+                const element1 = element.shippers[k];
+                element1.date = '';
+                element1.time = '';
+
+                let datetime = element1.dateAndTime.split(' ');
+                if(datetime[0] != undefined) {
+                  element1.date = datetime[0];
+                }
+                if(datetime[1] != undefined) {
+                  element1.time = datetime[1];
+                }
+
+              }
+
+
           this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
@@ -210,10 +228,25 @@ export class OrderDetailComponent implements OnInit {
 
           this.milesArr = [];
           console.log('result.shippersReceiversInfo', result.shippersReceiversInfo);
+          for (let k = 0; k < element.receivers.length; k++) {
+            const element2 = element.receivers[k];
+            element2.date = '';
+            element2.time = '';
+
+            let datetime = element2.dateAndTime.split(' ');
+            if(datetime[0] != undefined) {
+              element2.date = datetime[0];
+            }
+            if(datetime[1] != undefined) {
+              element2.time = datetime[1];
+            }
+
+          }
+      }
 
           // for (let p = 0; p < result.shippersReceiversInfo.length; p++) {
           //   const element = result.shippersReceiversInfo[p];
-            
+
           // }
 
           result.shippersReceiversInfo.map((v) => {
@@ -242,7 +275,7 @@ export class OrderDetailComponent implements OnInit {
           } else {
             this.totalCharges = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
           }
-          
+
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
@@ -277,7 +310,7 @@ export class OrderDetailComponent implements OnInit {
             this.allPhotos = result.uploadedDocs;
           }
           // this.orderData = result['Items'];
-          
+
           // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
 
           // this.shipperReceiversInfo.forEach(element => {
@@ -288,13 +321,13 @@ export class OrderDetailComponent implements OnInit {
           //     this.totalDrops++;
           //   });
           // });
-          
+
           // let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
           // this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
 
           // let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
           // this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
-         
+
           // this.totalMiles = this.orderData[0].milesInfo.totalMiles;
           // this.calculateBy = this.orderData[0].milesInfo.calculateBy;
 
@@ -310,7 +343,7 @@ export class OrderDetailComponent implements OnInit {
           // this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
           // this.discountAmount = this.orderData[0].discount.amount;
           // this.discountAmtUnit = this.orderData[0].discount.unit;
-          
+
           // this.orderData[0].taxesInfo.forEach(item => {
           //   this.totalTax += parseFloat(item.amount);
           // });
@@ -320,12 +353,12 @@ export class OrderDetailComponent implements OnInit {
 
           // if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
           //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
-          // }     
-        
+          // }
+
           this.fetchCustomersByID();
 
-        
-      }, (err) => {        
+
+      }, (err) => {
       });
   }
 
@@ -360,7 +393,7 @@ export class OrderDetailComponent implements OnInit {
       } else {
         this.customerAddress = result.address[0].userLocation;
       }
-      
+
       this.customerCityName = result.address[0].cityName;
       this.customerStateName = result.address[0].stateName;
       this.customerCountryName = result.address[0].countryName;
@@ -370,24 +403,24 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  
+
   generatePDF() {
     var data = document.getElementById('print_wrap');
     html2canvas(data).then(canvas => {
-      // Few necessary setting options  
+      // Few necessary setting options
       var imgWidth = 208;
       var pageHeight = 295;
       var imgHeight = canvas.height * imgWidth / canvas.width;
       var heightLeft = imgHeight;
 
       const contentDataURL = canvas.toDataURL('image/png')
-      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  
+      let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
       var position = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
-      pdf.save('MYPdf.pdf'); // Generated PDF   
+      pdf.save('MYPdf.pdf'); // Generated PDF
     });
-  }  
-  
+  }
+
   previewModal() {
     $('#templateSelectionModal').modal('hide');
     setTimeout(function () {
@@ -395,7 +428,7 @@ export class OrderDetailComponent implements OnInit {
     }, 500);
   }
 
-  // delete uploaded images and documents 
+  // delete uploaded images and documents
   delete(type: string,name: string){
     this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${type}/${name}`).subscribe((result: any) => {
       this.fetchOrder();
@@ -416,7 +449,7 @@ export class OrderDetailComponent implements OnInit {
    /*
    * Selecting files before uploading
    */
-  selectDocuments(event) { 
+  selectDocuments(event) {
     let files = [...event.target.files];
     let totalCount = this.docs.length+files.length;
 
@@ -438,19 +471,19 @@ export class OrderDetailComponent implements OnInit {
           return false;
         }
       }
-      
+
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
-  
+
       // create form data instance
       const formData = new FormData();
-  
+
       //append photos if any
       for (let i = 0; i < this.uploadedDocs.length; i++) {
         formData.append('uploadedDocs', this.uploadedDocs[i]);
       }
-  
+
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
         this.docs = [];
         if (result.length > 0) {
@@ -489,7 +522,7 @@ export class OrderDetailComponent implements OnInit {
       $('#shipperArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
       $('#shipperArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
     }
-    else {  
+    else {
       $('#shipperArea-' + i + '-' + j).children('i').addClass('fa-caret-right')
       $('#shipperArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
     }
@@ -500,7 +533,7 @@ export class OrderDetailComponent implements OnInit {
       $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
       $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
     }
-    else {  
+    else {
       $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-right')
       $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-down');
     }
