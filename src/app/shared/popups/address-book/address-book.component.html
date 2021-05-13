@@ -3173,10 +3173,10 @@
                                                                 <div class="col-lg-8">
                                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Loaded Miles</label>
                                                                     <input type="number"  min="0" [(ngModel)]="ownerData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
-                                                                        class="form-control" placeholder="eg. 1,2,3 " #ownerloaded="ngModel"  pattern="[0-9\.]+$">
+                                                                        class="form-control" placeholder="eg. 1,2,3 " #ownerloadedmiles="ngModel"  pattern="[0-9\.]+$">
 
-                                                                        <div *ngIf="ownerloaded.invalid && (ownerload.dirty || ownerloaded.touched)" class="text-danger">
-                                                                          <div *ngIf="ownerloaded.errors.pattern">
+                                                                        <div *ngIf="ownerloadedmiles.invalid && (ownerloadedmiles.dirty || ownerloadedmiles.touched)" class="text-danger">
+                                                                          <div *ngIf="ownerloadedmiles.errors.pattern">
                                                                             Loaded Miles must contain numbers and only one special character (dot) only . 
                                                                           </div>
                                                                         </div>
