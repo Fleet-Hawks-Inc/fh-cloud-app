@@ -3147,10 +3147,10 @@
                                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Load Pay Percent</label>
                                                                 <div class="row">
                                                                     <div class="col-lg-3">
-                                                                        <input type="number" min="0" class="form-control" placeholder="eg. 1,2,3 " [(ngModel)]="ownerData.paymentDetails.payrollPercent" name="paymentDetails.payrollPercent" #ownerload="ngModel"  pattern="[0-9\.]+$">
+                                                                        <input type="number" min="0" class="form-control" placeholder="eg. 1,2,3 " [(ngModel)]="ownerData.paymentDetails.payrollPercent" name="paymentDetails.payrollPercent" #ownerloadpaypercent="ngModel"  pattern="[0-9\.]+$">
 
-                                                                        <div *ngIf="ownerload.invalid && (ownerload.dirty || ownerload.touched)" class="text-danger">
-                                                                          <div *ngIf="ownerload.errors.pattern">
+                                                                        <div *ngIf="ownerloadpaypercent.invalid && (ownerloadpaypercent.dirty || ownerloadpaypercent.touched)" class="text-danger">
+                                                                          <div *ngIf="ownerloadpaypercent.errors.pattern">
                                                                             Load Pay Percent must contain numbers and only one special character (dot) only . 
                                                                           </div>
                                                                         </div>
