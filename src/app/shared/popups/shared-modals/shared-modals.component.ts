@@ -1506,7 +1506,7 @@ fetchDrivers(){
         if(e.addressType == 'yard') {
           this.carrierYards.push(e);
         }
-      })
+      });
     });
   }
 

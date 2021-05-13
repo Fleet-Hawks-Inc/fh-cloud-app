@@ -65,7 +65,7 @@ export class AssetListComponent implements OnInit {
     make: true,
     model: false,
     ownership: false,
-    status: true,
+    currentStatus: true,
     group: false,
     aceID: false,
     aciID: false,
@@ -105,12 +105,10 @@ export class AssetListComponent implements OnInit {
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
-      this.fetchAllAssetTypes();
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
       this.fetchModalsByIDs();
-      this.fetchAllAssetTypesList();
   }
 
   getSuggestions(value) {
@@ -133,12 +131,7 @@ export class AssetListComponent implements OnInit {
 
     this.suggestedAssets = [];
   }
-  fetchAllAssetTypesList() {
-    this.apiService.getData('assetTypes/get/list')
-    .subscribe((result: any) => {
-      this.assetTypeList = result;
-    });
-  }
+
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
@@ -170,20 +163,11 @@ export class AssetListComponent implements OnInit {
         if (this.assetID !== '' || this.assetType != null) {
           this.assetEndPoint = this.totalRecords;
         }
+        this.initDataTable();
       },
     });
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
-
-  fetchAllAssetTypes() {
-    this.apiService.getData('assetTypes')
-    .subscribe((result: any) => {
-      this.allAssetTypes = result.Items;
-    });
-  }
 
   deleteAsset(eventData) {;
     // }
@@ -200,7 +184,6 @@ export class AssetListComponent implements OnInit {
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
             this.fetchAssetsCount();
-            this.initDataTable();
             this.toastr.success('Asset Deleted Successfully!');
           });
       }
@@ -276,7 +259,6 @@ export class AssetListComponent implements OnInit {
       this.allData = [];
       this.suggestedAssets = [];
       this.fetchAssetsCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -291,7 +273,6 @@ export class AssetListComponent implements OnInit {
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -359,7 +340,7 @@ export class AssetListComponent implements OnInit {
       $('.col8').css('min-width','200px');
     }
 
-    if(this.hideShow.status == false) {
+    if(this.hideShow.currentStatus == false) {
       $('.col9').css('display','none');
     } else {
       $('.col9').css('display','');
