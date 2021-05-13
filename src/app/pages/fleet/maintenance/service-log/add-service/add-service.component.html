@@ -82,7 +82,7 @@
                              <div class="row pt-2" *ngIf="serviceData.unitType === 'vehicle'">
                                 <div class="col-lg-10">
                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="text" class="form-control" placeholder="eg. 5000 , 10000 , 15000 " #Odo="ngModel" required pattern="^[0-9]+$">
+                                   <input [(ngModel)]="serviceData.odometer" name="odometer" type="number" class="form-control" placeholder="eg. 5000 , 10000 , 15000 " #Odo="ngModel" required pattern="^[0-9]+$">
                                    <div *ngIf="Odo.invalid && (Odo.dirty || Odo.touched)" class="text-danger">
                                     <div *ngIf="Odo.errors.required">
                                     Odometer number is required.
