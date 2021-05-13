@@ -25,8 +25,14 @@
                 <input
                   type="text"
                   class="form-control"
+                  data-plugin-datepicker=""
                   placeholder="start date"
-                  name="start"
+                  name="fromDate"
+                  (click)="d1.toggle()" 
+                  ngbDatepicker 
+                  #d1="ngbDatepicker"
+                  [(ngModel)]="fromDate"
+                  autocomplete="off"
                 />
                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                   to
@@ -34,8 +40,14 @@
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="end date"
-                  name="end"
+                  data-plugin-datepicker=""
+                  placeholder="to date"
+                  name="toDate"
+                  (click)="d2.toggle()" 
+                  ngbDatepicker 
+                  #d2="ngbDatepicker"
+                  [(ngModel)]="toDate"
+                  autocomplete="off"
                 />
               </div>
             </div>
@@ -45,16 +57,16 @@
                    <button type="button" class="mr-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">All Log <span class="caret"></span></button>
                    <div class="dropdown-menu" role="menu">
                       <a class="dropdown-item text-1" href="#">All Log</a>
-                      <a class="dropdown-item text-1" href="#">Complaint Log</a>
+                      <!-- <a class="dropdown-item text-1" href="#">Complaint Log</a>
                       <a class="dropdown-item text-1" href="#">Logs with HOS Violations</a>
-                      <a class="dropdown-item text-1" href="#">Logs with Form & Manner Error</a>
+                      <a class="dropdown-item text-1" href="#">Logs with Form & Manner Error</a> -->
                    </div>
                 </div>
              </div>
 
   
             <div class="col-lg-1 col-md-1">
-              <button class="btn btn-success btn-sm">Search</button>
+              <button class="btn btn-success btn-sm" (click)="fetchUncertifiedLogs()">Search</button>
             </div>
   
             <div class="col-md-6 col-lg-6 text-right pr-1"></div>
@@ -72,38 +84,16 @@
                           <th>Date</th>
                           <th>Driver</th>
                           <th>Events</th>
-                          <th>Start Time</th>
-                          <th>End Time</th>
                           <th>Location</th>
                           <th>Action</th>
                        </tr>
                     </thead>
                     <tbody>
-                       <tr>
-                          <td >28/04/2020</td>
-                          <td>John</td>
-                          <td >Driving</td>
-                          <td >01:00</td>
-                          <td >02:30</td>
-                          <td >3455 King Street,Queen Town,Toronto,Canada</td>
-                          <td ><button class="btn btn-danger btn-sm mt-0">Reminder</button> </td>
-                       </tr>
-                       <tr>
-                          <td >28/04/2020</td>
-                          <td>Will</td>
-                          <td >Driving</td>
-                          <td >01:00</td>
-                          <td >02:30</td>
-                          <td >3455 King Street,Queen Town,Toronto,Canada</td>
-                          <td ><button class="btn btn-danger btn-sm mt-0">Reminder</button> </td>
-                       </tr>
-                       <tr>
-                          <td >28/04/2020</td>
-                          <td>David</td>
-                          <td >Driving</td>
-                          <td >01:00</td>
-                          <td >02:30</td>
-                          <td >3455 King Street,Queen Town,Toronto,Canada</td>
+                       <tr *ngFor="let log of logs">
+                          <td >{{log.date}} {{log.time}}</td>
+                          <td>{{log.driverName}}</td>
+                          <td >{{log.eventType}}</td>
+                          <td >{{log.location}}</td>
                           <td ><button class="btn btn-danger btn-sm mt-0">Reminder</button> </td>
                        </tr>
                     </tbody>
