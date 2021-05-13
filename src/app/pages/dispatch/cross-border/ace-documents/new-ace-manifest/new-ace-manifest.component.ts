@@ -220,7 +220,7 @@ export class NewAceManifestComponent implements OnInit {
   errorClassPostal = false;
   errorFastCard = false;
   address = false;
-  amendManifest = true;
+  amendManifest = false;
   constructor(
     private httpClient: HttpClient,
     private route: ActivatedRoute,

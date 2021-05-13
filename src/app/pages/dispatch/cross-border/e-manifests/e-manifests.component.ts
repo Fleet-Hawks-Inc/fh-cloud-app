@@ -18,7 +18,6 @@ export class EManifestsComponent implements OnInit {
   activeDiv = 'ace';
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageACI: string = Constants.FETCHING_DATA;
-  countries = [];
   ACEList = [];
   ACIList = [];
   aceSearch = '';
@@ -100,7 +99,6 @@ export class EManifestsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchCountries();
     this.ACEEntries();
     this.ACIEntries();
     this.fetchVehiclesList();
@@ -176,7 +174,6 @@ export class EManifestsComponent implements OnInit {
   fetchAssetsList() {
     this.apiService.getData('assets/get/list').subscribe((result: any) => {
       this.assetsList = result;
-      console.log('this.assetsList', this.assetsList);
     });
   }
   fetchDriversList() {
@@ -192,11 +189,6 @@ export class EManifestsComponent implements OnInit {
   fetchShippersList() {
     this.apiService.getData('shippers/get/list').subscribe((result: any) => {
       this.shippersList = result;
-    });
-  }
-  fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
     });
   }
   ACEEntries() {
@@ -231,7 +223,7 @@ export class EManifestsComponent implements OnInit {
           this.aceEndPoint = this.totalRecords;
         }
         if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+          const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
           this.aceNext = false;
           // for prev button
           if (!this.acePrevEvauatedKeys.includes(lastEvalKey)) {
@@ -316,7 +308,7 @@ export class EManifestsComponent implements OnInit {
           eventID: eventData.manifestID,
           status: eventData.currentStatus
         }
-        this.apiService.postData('emanifests/delete/ACEmanifest', record).subscribe((result: any) => {
+        this.apiService.postData('eManifests/delete/ACEmanifest', record).subscribe((result: any) => {
             this.aceDraw = 0;
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
@@ -342,7 +334,7 @@ export class EManifestsComponent implements OnInit {
 
   initDataTableACI() {
     this.spinner.show();
-    this.apiService.getData('ACIeManifest/fetch/records?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
+    this.apiService.getData('eManifests/fetch/ACIrecords?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory + '&lastKey=' + this.lastEvaluatedKeyACI)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageACI = Constants.NO_RECORDS_FOUND;
@@ -354,12 +346,13 @@ export class EManifestsComponent implements OnInit {
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].emanifestSK.replace(/#/g, '--');
           this.aciNext = false;
           // for prev button
-          if (!this.aciPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].manifestID)) {
-            this.aciPrevEvauatedKeys.push(result[`LastEvaluatedKey`].manifestID);
+          if (!this.aciPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.aciPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyACI = result[`LastEvaluatedKey`].manifestID;
+          this.lastEvaluatedKeyACI = lastEvalKey;
         } else {
           this.aciNext = true;
           this.lastEvaluatedKeyACI = '';
@@ -437,17 +430,20 @@ export class EManifestsComponent implements OnInit {
     }
   }
 
-  deleteACIEntry(manifestID) {
+  deleteACIEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .getData(`ACIeManifest/isDeleted/${manifestID}/` + 1)
-        .subscribe((result: any) => {
-          this.dataMessageACI = Constants.FETCHING_DATA;
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.manifestID,
+        status: eventData.currentStatus
+      };
+      this.apiService.postData('eManifests/delete/ACImanifest', record).subscribe((result: any) => {
           this.aciDraw = 0;
-          this.lastEvaluatedKeyACI = '';
-          this.initDataTableACI();
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastEvaluatedKey = '';
           this.getACICount();
-          this.toastr.success('ACI eManifest Entry Deleted Successfully!');
+          this.toastr.success('Manifest Deleted Successfully!');
         });
     }
   }
@@ -480,11 +476,12 @@ export class EManifestsComponent implements OnInit {
   }
 
   getACICount() {
-    this.apiService.getData('ACIeManifest/get/count?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory).subscribe({
+    this.apiService.getData('eManifests/get/ACIcount?aciSearch=' + this.aciSearch + '&fromDate='+this.aciFromDate +'&toDate='+this.aciToDate +'&category='+this.aciFilterCategory).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalACIRecords = result.Count;
+        this.initDataTableACI();
       },
     });
   }

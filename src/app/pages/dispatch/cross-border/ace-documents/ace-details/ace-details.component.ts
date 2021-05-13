@@ -255,6 +255,7 @@ export class AceDetailsComponent implements OnInit {
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
@@ -279,16 +280,17 @@ export class AceDetailsComponent implements OnInit {
       date: this.createdDate,
       time: this.createdTime,
       eventID: this.manifestID,
+      manifestType: 'ACE',
       status: val
     }
-    this.apiService.postData('eManifests/ACEmanifest/setStatus', record).subscribe((result: any) => {
+    this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
       });
   }
   sendCBPFn() {
     this.apiService
-      .getData('ACEeManifest/CBPdetails/' + this.manifestID)
+      .getData('eManifests/ACE/CBPdetails/' + this.manifestID)
       .subscribe((result: any) => {
         // this.sendBorderConnectOption = result;
         // if (this.sendBorderConnectOption === true) {
