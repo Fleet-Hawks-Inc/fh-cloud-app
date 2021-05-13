@@ -45,6 +45,7 @@ export class DetailedComponent implements OnInit {
     /**
      * Driver props
      */
+    driverID = '';
     driverName = '';
     driverLicense = '';
     driverCycle = '';
@@ -76,8 +77,9 @@ export class DetailedComponent implements OnInit {
       let carrier = result.carrier;
       let driver = result.driver;
 
+      this.driverID = driver.driverID;
       this.driverName = driver.firstName+ ' '+driver.lastName;
-      this.driverLicense = driver.licenceDetails.CDL_Number;
+      this.driverLicense = driver.CDL_Number;
       this.driverCycle = driver.hosDetails.cycleInfo.cycleName;
 
       this.carrierName = carrier.carrierName;

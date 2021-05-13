@@ -34,7 +34,7 @@
                     ><a class="text-info" href="driver-profile2.php">
                       {{ driverName }}</a
                     >
-                    ID:3454
+                    ID:{{driverID}}
                   </div>
                   <div class="col-lg-3 text-4" title="Hours Worked">
                     <i class="fas fa-clock"></i> 7 hrs 7 mins 2 secs
@@ -55,7 +55,7 @@
                         Driver License:
                       </div>
                       <div class="col-lg-9">
-                        <a href="">1234213</a>
+                        <a href="">{{driverLicense}}</a>
                       </div>
                     </div>
                     <div class="row">
@@ -218,7 +218,7 @@
                             {{ event.eventComment }}
                           </td>
                           <td>
-                            <a href="#editDetailedModal" class="modal-with-form"
+                            <a [routerLink]="" class="modal-with-form"
                               ><i class="fas fa-pencil-alt"></i> Edit</a
                             >
                           </td>
