@@ -10,7 +10,7 @@
                             aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                 class="dropdown-item text-1">Edit</a>
                         </div>
                     </div> -->
@@ -24,7 +24,7 @@
                                 eManifest</a>
                             <a class="dropdown-item text-1" (click)="amendManifest()">Amend Completed
                                 eManifest</a>
-                            <a class="dropdown-item text-1" (click) ="cancelManifest(entryID)">Cancel Completed eManifest</a>
+                            <a class="dropdown-item text-1" (click) ="cancelManifest(manifestID)">Cancel Completed eManifest</a>
                         </div>
                     </div>
                     <a [routerLink]="['/dispatch', 'cross-border','eManifests']" class="btn btn-default btn-sm"><i
@@ -65,23 +65,23 @@
                                                         <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Draft')">Draft</a>
+                                                                (click)="setStatus('Draft')">Draft</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Cancelled Manifest')">Cancelled Manifest</a>
+                                                                (click)="setStatus('Cancelled_Manifest')">Cancelled Manifest</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Transmitted to CBP')">Transmitted to CBP</a>
+                                                                (click)="setStatus('Transmitted_to_CBP')">Transmitted to CBP</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Preliminary Manifest on File with CBP')">Preliminary Manifest On File with CBP</a>
+                                                                (click)="setStatus('Preliminary_Manifest_on_File_with_CBP')">Preliminary Manifest On File with CBP</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'CBP Returned Error')">CBP Returned Error</a>
+                                                                (click)="setStatus('CBP_Returned_Error')">CBP Returned Error</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Complete Manifest On File with CBP')">Complete Manifest On File with CBP</a>
+                                                                (click)="setStatus('Complete_Manifest_On_File_with_CBP')">Complete Manifest On File with CBP</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Complete Manifest and Entry Numbers On File with CBP')">Complete Manifest and Entry Numbers On File with CBP</a>
+                                                                (click)="setStatus('Complete_Manifest_and_Entry_Numbers_On_File_with_CBP')">Complete Manifest and Entry Numbers On File with CBP</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Truck Arrived at Border')">Truck Arrived at Border</a>
+                                                                (click)="setStatus('Truck_Arrived_at_Border')">Truck Arrived at Border</a>
                                                             <a class="dropdown-item text-1" href="javascript:;"
-                                                                (click)="setStatus(entryID,'Truck Released at Border')">Truck Released at Border</a>
+                                                                (click)="setStatus('Truck_Released_at_Border')">Truck Released at Border</a>
                                                         </div>
                                                     </div></th>
                                                     <td>{{currentStatus}}</td>
@@ -99,7 +99,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-3" *ngIf =" borderResponses ?.length">
+                <div class="row mt-3" *ngIf ="borderResponses ?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -142,7 +142,7 @@
                                 <div class=" pull-right">
                                     <!-- <button class="btn btn-success btn-sm mr-1"> Set Shipment Status</button> -->
                                     <!-- <button class="btn btn-success btn-sm"> Send to CBP</button> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a>
                                 </div>
                             </div>
@@ -202,9 +202,9 @@
                                                     *ngFor="let commodity of shipment.commodities">{{commodity.quantity}}{{packagingUnitsObects[commodity.packagingUnit]}},</span>
                                             </td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
+                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                                 <!-- <a href="" class="delete-row"><i class="far fa-trash-alt black_color"></i> Edit</a> -->
                                             </td>
                                         </tr>
@@ -223,10 +223,10 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
                                 <div class=" pull-right">
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add
                                         Co-Driver</a>
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
                                 </div>
                             </div>
@@ -264,7 +264,7 @@
                                                 *ngFor="let document of mainDriver.travelDocuments">{{document.number}},</span>
                                         </td>
                                         <td class="actions">
-                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                     class="fas fa-pencil-alt black_color"></i> Edit</a>
                                         </td>
                                     </tr>
@@ -290,7 +290,7 @@
 
                                             <!-- <td>Address</td> -->
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -314,7 +314,7 @@
                                             </td>
                                             <!-- <td>Address</td> -->
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -379,7 +379,7 @@
                                             <td data-toggle="tooltip"
                                             data-placement="top"
                                             title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
-                                            <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                            <td class="actions"><a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -398,9 +398,9 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Asset(s) on <b>{{tripNumber}}</b></h4>
                                 <div class=" pull-right">
-                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                                    <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm mr-1"> Set IIT Status</a> -->
-                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
                                 </div>
                             </div>
@@ -436,9 +436,9 @@
                                                 importers bond.</span></td>
                                             <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
-                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{entryID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
+                                                <!-- <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{manifestID }}" class="delete-row"><i class="far fa-trash-alt black_color"></i> Delete</a> -->
                                             </td>
                                         </tr>
                                     </tbody>
