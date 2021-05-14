@@ -185,6 +185,7 @@
                                 Last Name is required.
                               </div>
                               <div *ngIf="lName.errors.pattern">
+
                                 Last Name must contains uppercase and lowercase character only.
 
                               </div>
@@ -219,7 +220,6 @@
                                   Password must be 8 digits long and  a combination of small letters,capital letters and atleast one special characters(#,@,$,&).
                                 </div>
                               </div>
-
                           </div>
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
@@ -236,7 +236,6 @@
                                       }"
                                       (click)="togglecpwdfieldTextType()"></i>
                                     </span>
-
                                  </div>
                               </div>
                             <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
@@ -246,7 +245,6 @@
                               <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
                             </div>
                           </div>
-
                         </div>
                       </div>
                     </div>
