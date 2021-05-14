@@ -47,17 +47,17 @@
 
 
                       <ng-select class="form-control populate" [(ngModel)]="assetsData.groupID"
-                        placeholder="Select group for asset" name="groupID" #groupSlt="ngModel" required>
+                        placeholder="Select group for asset" name="groupID" #groupSlt="ngModel" >
 
                         <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                           {{group.groupName}}</ng-option>
 
                       </ng-select>
-                      <div *ngIf="groupSlt.invalid && (groupSlt.dirty || groupSlt.touched)" class="text-danger">
+                      <!-- <div *ngIf="groupSlt.invalid && (groupSlt.dirty || groupSlt.touched)" class="text-danger">
                         <div *ngIf="groupSlt.errors.required">
                           Select Group.
                         </div>
-                     </div>
+                     </div> -->
                     </div>
                     <div class="col-lg-1 mar-top-37 pl-0">
                       <a data-toggle="modal" data-target="#addGroupModal" href="javascript:;"
@@ -72,15 +72,14 @@
                           class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                           data-placement="top" title="Vehicle Identification Number."></i></label>
                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                        placeholder="17-18 digits Alphanumeric , eg. 78678678678678689" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[0-9\-]{17,18}$">
+                        placeholder="17-18 digits Alphanumeric , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                         <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
                           <div>
                             <div *ngIf="vName.errors.required">
                               VIN is required.
                             </div>
                             <div *ngIf="vName.errors.pattern">
-                               VIN contains 17-18 alphanumeric number only eg.78678678678678689
-                            </div>
+                               VIN contains 17-18 alphanumeric numbers only eg.2G1WH55K5Y9322458 </div>
                           </div>
                         </div>
                     </div>
@@ -175,12 +174,11 @@
 												<ng-option value="2015">2015</ng-option> -->
 
                       </ng-select>
-                      <div *ngIf="ySlt.invalid && (aSlt.dirty || ySlt.touched)" class="text-danger">
-                        <div>
-                          <div *ngIf="ySlt.errors.required">
+                      <div *ngIf="ySlt.invalid && (ySlt.dirty || ySlt.touched)" class="text-danger">
+                      <div *ngIf="ySlt.errors.required">
                             Year is required.
                           </div>
-                        </div>
+                        
 
                       </div>
 
@@ -273,15 +271,15 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <input [(ngModel)]="assetsData.assetDetails.length" name="assetDetails.length" min="0" type="number"
-                            class="form-control" placeholder="eg. 10,20 etc." #length="ngModel" required>
-                            <div *ngIf="length.invalid && (length.dirty || length.touched)" class="text-danger">
-                              <div>
+                            class="form-control" placeholder="eg. 10,20 etc." #length="ngModel" >
+                            <!-- <div *ngIf="length.invalid && (length.dirty || length.touched)" class="text-danger">
+                             
                                 <div *ngIf="length.errors.required">
                                  Length must contains numbers only.
                                 </div>
-                              </div>
+                              
 
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-lg-6 pl-0"> <div *ngIf="sSlt.invalid && (sSlt.dirty || sSlt.touched)" class="text-danger">
                         <div>
@@ -290,20 +288,20 @@
 
                       </div>
                           <ng-select [(ngModel)]="assetsData.assetDetails.lengthUnit" name="assetDetails.lengthUnit"
-                            placeholder="Select unit" #lType="ngModel" required>
+                            placeholder="Select unit" #lType="ngModel" >
 
                             <ng-option value="Feet">Feet</ng-option>
                             <ng-option value="Meters">Meters</ng-option>
 
                           </ng-select>
-                          <div *ngIf="lType.invalid && (lType.dirty || lType.touched)" class="text-danger">
+                          <!-- <div *ngIf="lType.invalid && (lType.dirty || lType.touched)" class="text-danger">
                             <div>
                               <div *ngIf="lType.errors.required">
                                Select Length Type.
                               </div>
                             </div>
 
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -335,27 +333,25 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <input  placeholder="eg. 100,200 etc"[(ngModel)]="assetsData.assetDetails.GVWR" name="assetDetails.GVWR" type="text"
-                            class="form-control" #gvwr="ngModel" required pattern="^[0-9]+$">
+                            class="form-control" #gvwr="ngModel"  pattern="^[0-9]+$">
                             <div *ngIf="gvwr.invalid && (gvwr.dirty || gvwr.touched)" class="text-danger">
-                              <div>
-                                <div *ngIf="gvwr.errors.required">
-                                  GVWR must contain numbers only.
-                                 </div>
+                             
+                               
                                 <div *ngIf="gvwr.errors.pattern">
                                  GVWR must not contain uppercase,lowercase and any special character.
                                 </div>
-                              </div>
+                             
 
                             </div>
                         </div>
                         <div class="col-lg-6 pl-0">
                           <ng-select [(ngModel)]="assetsData.assetDetails.GVWR_Unit" name="assetDetails.GVWR_Unit"
                             (change)="gwr($event, 'GVWR_Unit')" data-pluginng-selectTwo class="form-control populate"
-                            placeholder="Select unit" #gvwrType="ngModel" required>
+                            placeholder="Select unit" #gvwrType="ngModel" >
                             <ng-option value="Pounds">Pounds</ng-option>
                             <ng-option value="Kilograms">Kilograms</ng-option>
                           </ng-select>
-                          <div *ngIf="gvwrType.invalid && (gvwrType.dirty || gvwrType.touched)" class="text-danger">
+                          <!-- <div *ngIf="gvwrType.invalid && (gvwrType.dirty || gvwrType.touched)" class="text-danger">
                             <div>
                               <div *ngIf="gvwrType.errors.required">
                                 Select Weight Type.
@@ -363,7 +359,7 @@
 
                             </div>
 
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -376,12 +372,12 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <input  placeholder="eg. 100,200 etc" [(ngModel)]="assetsData.assetDetails.GAWR" name="assetDetails.GAWR" type="text"
-                            class="form-control" #gawr="ngModel" required pattern="^[0-9]+$">
+                            class="form-control" #gawr="ngModel"  pattern="^[0-9]+$">
                             <div *ngIf="gawr.invalid && (gawr.dirty || gawr.touched)" class="text-danger">
 
-                                <div *ngIf="gawr.errors.required">
+                                <!-- <div *ngIf="gawr.errors.required">
                                   GAWR must contain numbers only.
-                                 </div>
+                                 </div> -->
                                  <div *ngIf="gawr.errors.pattern">
                                   GAWR must not contain uppercase,lowercase and any special character.
                                  </div>
@@ -392,13 +388,13 @@
                         </div>
                         <div class="col-lg-6 pl-0">
                           <ng-select [(ngModel)]="assetsData.assetDetails.GAWR_Unit" name="assetDetails.GAWR_Unit"
-                            class="form-control populate" (change)="gwr($event, 'GAWR_Unit')" placeholder="Select unit" #gawrType="ngModel" required >
+                            class="form-control populate" (change)="gwr($event, 'GAWR_Unit')" placeholder="Select unit" #gawrType="ngModel"  >
 
                             <ng-option value="Pounds">Pounds</ng-option>
                             <ng-option value="Kilograms">Kilograms</ng-option>
 
                           </ng-select>
-                          <div *ngIf="gawrType.invalid && (gawrType.dirty || gawrType.touched)" class="text-danger">
+                          <!-- <div *ngIf="gawrType.invalid && (gawrType.dirty || gawrType.touched)" class="text-danger">
 
                             <div *ngIf="gawrType.errors.required">
                               Select Weight Type.
@@ -407,7 +403,7 @@
 
 
 
-                        </div>
+                        </div> -->
 
                         </div>
                       </div>
@@ -431,15 +427,21 @@
                     </div>
 
                     <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
-                      <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
 
                       <ng-select placeholder="Select Owner Operator"[(ngModel)]="assetsData.assetDetails.ownerOperator" name="assetDetails.ownerOperator"
-                        class="form-control populate ">
+                        class="form-control populate " #sltO="ngModel" required>
                         <ng-option *ngFor="let item of ownOperators | async" value="{{item.operatorID}}">
                           {{item.companyName}}
                         </ng-option>
 
                       </ng-select>
+                      <div *ngIf="sltO.invalid && (sltO.dirty || sltO.touched)" class="text-danger">
+                        <div *ngIf="sltO.errors.required">
+                          Select valid owner operator from the list is required.
+                        </div>
+                        
+                      </div>
                     </div>
                     <div class="col-lg-2  mar-top-37" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
                       <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
@@ -466,7 +468,7 @@
                         </div>
 
                       </div>
-
+ 
                     </div>
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence Province<span
@@ -500,7 +502,7 @@
                             Licence plate number is required.
                           </div>
                             <div *ngIf="pName.errors.pattern">
-                            Licence plate number contains no special characters.
+                            Licence plate number contains 7-8 uppercase, lowercase numbers and special characters for period(space,'-')only .
                             </div>
 
 
@@ -583,15 +585,8 @@
                         Issue&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfIssue" name="insuranceDetails.dateOfIssue"
                         type="text" placeholder="yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
-                        class="form-control" #issueDate="ngModel" required>
-                        <div *ngIf="issueDate.invalid && (issueDate.dirty || issueDate.touched)" class="text-danger">
-                          <div>
-                            <div *ngIf="issueDate.errors.required">
-                              Date of Issue must follow yyyy/mm/dd format.
-                            </div>
-                          </div>
-
-                        </div>
+                        class="form-control" >
+                        
                     </div>
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Premium
@@ -599,9 +594,9 @@
                       <div class="row">
                         <div class="col-lg-6">
                           <input [(ngModel)]="assetsData.insuranceDetails.premiumAmount"
-                            name="insuranceDetails.premiumAmount" type="text" placeholder="eg. 100,200"
-                            class="form-control" #preAmount="ngModel" required >
-                            <div *ngIf="preAmount.invalid && (preAmount.dirty || preAmount.touched)" class="text-danger">
+                            name="insuranceDetails.premiumAmount" type="number" placeholder="eg. 100,200"
+                            class="form-control" #preAmount="ngModel"  >
+                            <!-- <div *ngIf="preAmount.invalid && (preAmount.dirty || preAmount.touched)" class="text-danger">
                               <div>
                                 <div *ngIf="preAmount.errors.required">
                                   Premium Amount must contain numbers only.
@@ -609,15 +604,15 @@
 
                               </div>
 
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-lg-6 pl-0">
                           <ng-select [(ngModel)]="assetsData.insuranceDetails.premiumCurrency"
-                            name="insuranceDetails.premiumCurrency" placeholder="Select currency" #sltCurrency="ngModel" required>
+                            name="insuranceDetails.premiumCurrency" placeholder="Select currency" #sltCurrency="ngModel">
                             <ng-option value="USD">USD</ng-option>
                             <ng-option value="CAD">CAD</ng-option>
                           </ng-select>
-                          <div *ngIf="sltCurrency.invalid && (sltCurrency.dirty || sltCurrency.touched)" class="text-danger">
+                          <!-- <div *ngIf="sltCurrency.invalid && (sltCurrency.dirty || sltCurrency.touched)" class="text-danger">
                             <div>
                               <div *ngIf="sltCurrency.errors.required">
                                 Select Currency Type.
@@ -625,7 +620,7 @@
 
                             </div>
 
-                          </div>
+                          </div> -->
                         </div>
                       </div>
                     </div>
@@ -636,16 +631,8 @@
                         Expiry&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.insuranceDetails.dateOfExpiry" name="insuranceDetails.dateOfExpiry"
                         placeholder="yyyy/mm/dd" (click)="d1.toggle()" ngbDatepicker #d1="ngbDatepicker" type="text"
-                        class="form-control" #dateExpiry="ngModel" required>
-                        <div *ngIf="dateExpiry.invalid && (dateExpiry.dirty || dateExpiry.touched)" class="text-danger">
-                          <div>
-                            <div *ngIf="dateExpiry.errors.required">
-                             Date of Expiry must follow yyyy/mm/dd format.
-                            </div>
-
-                          </div>
-
-                        </div>
+                        class="form-control">
+                        
                     </div>
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold text-lg-right pt-2">Reminder
@@ -653,8 +640,8 @@
                       <div class="row">
                         <div class="col-lg-6"><input [(ngModel)]="assetsData.insuranceDetails.reminderBefore"
                             name="insuranceDetails.reminderBefore" min="0" type="number" placeholder="eg. 5,10"
-                            class="form-control" #reminder="ngModel" required>
-                            <div *ngIf="reminder.invalid && (reminder.dirty || reminder.touched)" class="text-danger">
+                            class="form-control" #reminder="ngModel" >
+                            <!-- <div *ngIf="reminder.invalid && (reminder.dirty || reminder.touched)" class="text-danger">
                               <div>
                                 <div *ngIf="reminder.errors.required">
                                  Reminder must contains numbers only.
@@ -662,18 +649,18 @@
 
                               </div>
 
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-lg-6 pl-0">
                           <ng-select [(ngModel)]="assetsData.insuranceDetails.reminderBeforeUnit"
-                            name="insuranceDetails.reminderBeforeUnit" placeholder="Select unit" #remType="ngModel" required>
+                            name="insuranceDetails.reminderBeforeUnit" placeholder="Select unit" #remType="ngModel" >
 
                             <ng-option value="Day(s)">Day(s)</ng-option>
                             <ng-option value="Week(s)">Week(s)</ng-option>
                             <ng-option value="Month(s)">Month(s)</ng-option>
 
                           </ng-select>
-                          <div *ngIf="remType.invalid && (remType.dirty || remType.touched)" class="text-danger">
+                          <!-- <div *ngIf="remType.invalid && (remType.dirty || remType.touched)" class="text-danger">
                             <div>
                               <div *ngIf="remType.errors.required">
                               Select Reminder Type.
@@ -681,7 +668,7 @@
 
                             </div>
 
-                          </div>
+                          </div> -->
 
                         </div>
                       </div>
@@ -694,12 +681,12 @@
                       <label class="control-label font-weight-bold text-lg-right pt-2">Vendor&nbsp; <span
                           class="text-1 optional-label-color">(optional)</span></label>
                       <ng-select [(ngModel)]="assetsData.insuranceDetails.vendor" name="insuranceDetails.vendor"
-                        placeholder="Select vendor" class="form-control populate" #vendorName="ngModel" required>
+                        placeholder="Select vendor" class="form-control populate" #vendorName="ngModel" >
                         <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.vendorID}}">
                           {{vendor.companyName}}
                         </ng-option>
                       </ng-select>
-                      <div *ngIf="vendorName.invalid && (vendorName.dirty || vendorName.touched)" class="text-danger">
+                      <!-- <div *ngIf="vendorName.invalid && (vendorName.dirty || vendorName.touched)" class="text-danger">
                         <div>
                           <div *ngIf="vendorName.errors.required">
                           Select Vendor.
@@ -707,7 +694,7 @@
 
                         </div>
 
-                      </div>
+                      </div> -->
                     </div>
                     <div class="col-lg-2  mar-top-37 pl-0">
                       <a href="javascript:;" data-toggle="modal" data-target="#addVendorModal"
@@ -727,7 +714,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACI
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACI_ID" name="ACI_ID"
-                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aciIdName="ngModel" required pattern="^[0-9]{2,10}$">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aciIdName="ngModel" pattern="^[0-9]{2,10}$">
                         <div *ngIf="aciIdName.invalid && (aciIdName.dirty || aciIdName.touched)" class="text-danger">
                           <div>
 
@@ -747,7 +734,7 @@
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">ACE
                         ID&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                       <input [(ngModel)]="assetsData.crossBorderDetails.ACE_ID" name="ACE_ID"
-                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aceIdName="ngModel" required pattern="^[0-9]{2,10}$">
+                        placeholder="10 digits , eg. 4567895676" type="text" class="form-control" maxlength="10" #aceIdName="ngModel" pattern="^[0-9]{2,10}$">
                         <div *ngIf="aceIdName.invalid && (aceIdName.dirty || aceIdName.touched)" class="text-danger">
                           <div>
 
@@ -862,7 +849,7 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
     <div class="modal-content">
-      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #assetForm="ngForm">
+      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #groupForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Group</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -914,7 +901,7 @@
       </div>
       <div class="modal-footer text-right">
         <a class="btn btn-default" data-dismiss="modal">Cancel</a>
-        <button href="javascript:;" class="btn btn-success" (click)="addGroup()" [disabled]="!assetForm.form.valid" >Save</button>
+        <button href="javascript:;" class="btn btn-success" (click)="addGroup()" [disabled]="!groupForm.form.valid" >Save</button>
       </div>
     </form>
     </div>
