@@ -1254,7 +1254,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
         this.carrierYards.push(e);
-      })
+      });
     });
   }
 
