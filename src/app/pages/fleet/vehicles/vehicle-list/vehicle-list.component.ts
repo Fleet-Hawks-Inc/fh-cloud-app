@@ -277,7 +277,7 @@ export class VehicleListComponent implements OnInit {
       let record = {
         date: eventData.createdDate,
         time: eventData.createdTime,
-        eventID: eventData.vehcileID,
+        eventID: eventData.vehicleID,
         status: eventData.currentStatus
       }
       this.apiService.postData('vehicles/delete', record).subscribe((result: any) => {
@@ -469,5 +469,11 @@ export class VehicleListComponent implements OnInit {
     this.vehicleStartPoint = 1;
     this.vehicleEndPoint = this.pageLength;
     this.vehicleDraw = 0;
+  }
+
+  createNewSK() {
+    this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
+      console.log('done result', result);
+    });
   }
 }

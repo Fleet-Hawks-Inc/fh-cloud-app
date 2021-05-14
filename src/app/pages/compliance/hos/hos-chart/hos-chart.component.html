@@ -1,0 +1,42 @@
+<div
+  class="cominr table-wrapper-scroll-y table-scrollbarulogs bg-white pt-0 px-3 pb-3"
+>
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+      <canvas
+        baseChart
+        width="750"
+        height="150"
+        [datasets]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins"
+      >
+      </canvas>
+    </div>
+    <div class="grightbox2 col-md-3">
+      <h5 class="font-weight-bold text-3 align-chart-items text-dark">
+        {{ accumulatedOFF * 1000 | date: "H:mm:ss":"UTC" }}
+      </h5>
+      <h5 class="font-weight-bold text-3 align-chart-items text-dark">
+        {{ accumulatedSB * 1000 | date: "H:mm:ss":"UTC" }}
+      </h5>
+      <h5 class="font-weight-bold text-3 align-chart-items text-dark">
+        {{ accumulatedD * 1000 | date: "H:mm:ss":"UTC" }}
+      </h5>
+      <h5 class="font-weight-bold text-3 align-chart-items text-dark">
+        {{ accumulatedON * 1000 | date: "H:mm:ss":"UTC" }}
+      </h5>
+      <h5 class="font-weight-bold mb-5 align-chart-items text-dark">
+        {{
+          (accumulatedOFF + accumulatedSB + accumulatedD + accumulatedON) * 1000
+            | date: "H:mm:ss":"UTC"
+        }}
+      </h5>
+    </div>
+  </div>
+</div>

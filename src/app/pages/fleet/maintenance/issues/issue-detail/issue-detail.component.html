@@ -1,212 +1,212 @@
 <section class="body">
-   <div class="inner-wrapper">
-      <section role="main" class="content-body pl-0 pr-0 pt-0">
-         <header class="page-header">
-            <div class="row" style="padding-top:10px;">
-               <div class="col-md-4 col-lg-4 pl-4">
-                  <span class=" font-weight-bold text-4 text-dark"> Issue </span> <span
-                     class="badge badge-dark p-1"> {{currentStatus | uppercase}}</span>
-               </div>
-               <div class="col-md-8 col-lg-8 text-right">
-                  <a [routerLink]="['/fleet','maintenance', 'issues', 'list']" class="btn btn-sm btn-default mr-2"><i
-                        class="fas fa-list"></i> Issues List</a>
-                  <div *ngIf="currentStatus != 'RESOLVED'" class="btn-group flex-wrap mr-2">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                        aria-expanded="false">Resolve<span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1"(click)="resolveIssue()"  href="javascript:;">Resolve via Service Entry</a>
-                        <a class="dropdown-item text-1" href="#" *ngIf="currentStatus ==='OPEN'" data-toggle="modal" data-target="#issueCloseModal">Close</a>
-                     </div>
-                  </div>
-                  <div class="btn-group flex-wrap" *ngIf="!environment">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                        aria-expanded="false">Actions<span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" routerLink="/fleet/maintenance/issues/edit/{{issueID }}" href="javascript:;">Edit</a>
-                        <a class="modal-with-form dropdown-item text-1"(click)="deleteIssue(issueID)" href="javascript:;">Delete</a>
-                     </div>
-                  </div>
-                  <!-- <a href="add-issue.php"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Issue</a> -->
-               </div>
-            </div>
-         </header>
-         <div class="row">
-            <div class="col pr-0">
-               <div class="card-body text-dark">
-                  <form class="form-horizontal form-bordered" method="get">
-                     <div class=" row">
-                        <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
-                           Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
+  <div class="inner-wrapper">
+     <section role="main" class="content-body pl-0 pr-0 pt-0">
+        <header class="page-header">
+           <div class="row" style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4 pl-4">
+                 <span class=" font-weight-bold text-4 text-dark"> Issue </span> <span
+                    class="badge badge-dark p-1"> {{currentStatus | uppercase}}</span>
+              </div>
+              <div class="col-md-8 col-lg-8 text-right">
+                 <a [routerLink]="['/fleet','maintenance', 'issues', 'list']" class="btn btn-sm btn-default mr-2"><i
+                       class="fas fa-list"></i> Issues List</a>
+                 <div *ngIf="currentStatus != 'RESOLVED'" class="btn-group flex-wrap mr-2">
+                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">Resolve<span class="caret"></span></button>
+                    <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                       style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                       <a class="dropdown-item text-1"(click)="resolveIssue()"  href="javascript:;">Resolve via Service Entry</a>
+                       <a class="dropdown-item text-1" href="#" *ngIf="currentStatus ==='OPEN'" data-toggle="modal" data-target="#issueCloseModal">Close</a>
+                    </div>
+                 </div>
+                 <div class="btn-group flex-wrap" *ngIf="!environment">
+                    <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                       aria-expanded="false">Actions<span class="caret"></span></button>
+                    <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                       style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                       <a class="dropdown-item text-1" routerLink="/fleet/maintenance/issues/edit/{{issueID }}" href="javascript:;">Edit</a>
+                       <a class="modal-with-form dropdown-item text-1"(click)="deleteIssue(issueID)" href="javascript:;">Delete</a>
+                    </div>
+                 </div>
+                 <!-- <a href="add-issue.php"  class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Issue</a> -->
+              </div>
+           </div>
+        </header>
+        <div class="row">
+           <div class="col pr-0">
+              <div class="card-body text-dark">
+                 <form class="form-horizontal form-bordered" method="get">
+                    <div class=" row">
+                       <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
+                          Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
 
 
-                              <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
-                                 </span>{{description}}</div>
+                             <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
+                                </span>{{description}}</div>
 
 
-                        <div class="col-lg-6">
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <table class="table table-bordered table-responsive-lg">
-                                    <tbody>
-                                       <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">
-                                             {{unitType | titlecase}}</td>
-                                          <td width="60%"><a routerLink="/fleet/assets/detail/{{unitID}}"  class="text-info">
-                                             <span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span></a>
-                                             <a routerLink="/fleet/vehicles/detail/{{unitID}}" class="text-info">
-                                                 <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span></a>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Reported Date</td>
-                                          <td>{{reportedDate | date: 'yyyy-MM-dd'}}</td>
-                                       </tr>
-                                       <tr *ngIf= "unitType === 'vehicle'">
-                                          <td class="back-color-gray font-weight-bold">Odometer(miles) </td>
-                                          <td>{{odometer}}</td>
-                                       </tr>
-                                       <tr>
-                                          <td class="back-color-gray font-weight-bold">Assigned To</td>
-                                          <td>{{usersList[assignedTo]}}</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                           <!-- Docs TABLE -->
-                            <div class="row" *ngIf="issueDocs?.length">
-                              <div class="col-lg-12">
-                                 <div class="vehicle-common-box p-3">
-                                    <div class="row">
-                                       <div class="col-lg-6"><label
-                                             class="control-label font-weight-bold text-3">Document(s)</label></div>
-                                       <div class="col-lg-6 text-right">
-                                       </div>
-                                    </div>
-                                    <hr class="solid mt-2">
-                                    <div class="row" *ngFor="let doc of issueDocs;let d= index">
-                                       <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div>
-                                       <div class="col-lg-3 text-right">
-                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                          <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name)"></i>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-lg-6">
-                           <div class="row">
-                              <div class="col-lg-12">
-                                 <div class="vehicle-common-box p-3">
-                                    <div class="row">
-                                       <div class="col-lg-12"><label
-                                             class="control-label font-weight-bold text-3">Activity</label></div>
-                                    </div>
-                                    <hr class="solid mt-2">
-                                    <div class="row">
-                                       <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
-                                          <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
-                                             {{usersList[reportedBy]}}
-                                          </span></div>
-                                       <div class="col-lg-3 text-right">
-
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="row pt-2" *ngIf="issueImages?.length">
-                              <div class="col-lg-12">
-                                 <div class="vehicle-common-box p-3">
-                                    <div class="row">
-                                       <div class="col-lg-6"><label
-                                             class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                                       <div class="col-lg-6 text-right">
-                                          <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
-                                       </div>
-                                    </div>
-                                    <hr class="solid mt-3">
-                                    <div class="row">
-                                       <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
-                                          <div class="vehicle-photo-box">
-                                             <img src="{{photo.path}}" width="100%" class="img-fluid"
-                                                style="height: 180px; object-fit: cover;">
-                                             <hr class="m-3">
-                                             <div class="row">
-                                                <div class="col-lg-8">Image {{i+1}}</div>
-                                                <div class="col-lg-4 text-right">
-                                                   <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
-                                                </div>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-
-                        </div>
-                     </div>
-                  </form>
-                  <!-- VIEW DOCUMENT MODAL -->
-                  <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
-                     <div class="modal-dialog" role="document">
-                       <div class="modal-content">
-                         <div class="modal-header">
-                           <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                             <span aria-hidden="true">&times;</span>
-                           </button>
-                         </div>
-                         <div class="modal-body">
-                              <div class="form-row">
-                                 <div class="form-group col-md-12">
-                                    <div>
-                                       <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
-                                    </div>
-                                 </div>
-                              </div>
-
-                         </div>
-                         <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                         </div>
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <table class="table table-bordered table-responsive-lg">
+                                   <tbody>
+                                      <tr>
+                                         <td width="40%" class="back-color-gray font-weight-bold">
+                                            {{unitType | titlecase}}</td>
+                                         <td width="60%"><a routerLink="/fleet/assets/detail/{{unitID}}"  class="text-info">
+                                            <span *ngIf= "unitType === 'asset'">{{assetList[unitID]}}</span></a>
+                                            <a routerLink="/fleet/vehicles/detail/{{unitID}}" class="text-info">
+                                                <span *ngIf= "unitType === 'vehicle'">{{vehicleList[unitID]}}</span></a>
+                                         </td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Reported Date</td>
+                                         <td>{{reportedDate | date : 'yyyy/MM/dd'}}</td>
+                                      </tr>
+                                      <tr *ngIf= "unitType === 'vehicle'">
+                                         <td class="back-color-gray font-weight-bold">Odometer(miles) </td>
+                                         <td>{{odometer}}</td>
+                                      </tr>
+                                      <tr>
+                                         <td class="back-color-gray font-weight-bold">Assigned To</td>
+                                         <td>{{usersList[assignedTo]}}</td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                             </div>
+                          </div>
+                          <!-- Docs TABLE -->
+                           <div class="row" *ngIf="issueDocs?.length">
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-6"><label
+                                            class="control-label font-weight-bold text-3">Document(s)</label></div>
+                                      <div class="col-lg-6 text-right">
+                                      </div>
+                                   </div>
+                                   <hr class="solid mt-2">
+                                   <div class="row" *ngFor="let doc of issueDocs;let d= index">
+                                      <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div>
+                                      <div class="col-lg-3 text-right">
+                                         <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
+                                         <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name)"></i>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
                        </div>
-                     </div>
-                   </div>
-                  <!-- Issue close MODAL -->
-                  <div class="modal fade" id="issueCloseModal" tabindex="-1" role="dialog" aria-labelledby="issueCloseModalLabel" aria-hidden="true">
-                     <div class="modal-dialog" role="document">
-                       <div class="modal-content">
-                         <div class="modal-header">
-                           <h5 class="modal-title" id="issueCloseModalLabel">Corfirm Action</h5>
-                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                             <span aria-hidden="true">&times;</span>
-                           </button>
-                         </div>
-                         <div class="modal-body">
-                           <form>
-                              <div class="form-row">
-                                 <div class="form-group col-md-12">
-                                    <label for="inputEmail4">Are you sure you want to close issue?</label>
-                                 </div>
-                              </div>
-                           </form>
-                         </div>
-                         <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                           <button type="button" class="btn btn-success" (click)="setStatus(issueID)" data-dismiss="modal">Close Issue</button>
-                         </div>
-                       </div>
-                     </div>
-                   </div>
-               </div>
-            </div>
-         </div>
-      </section>
+                       <div class="col-lg-6">
+                          <div class="row">
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-12"><label
+                                            class="control-label font-weight-bold text-3">Activity</label></div>
+                                   </div>
+                                   <hr class="solid mt-2">
+                                   <div class="row">
+                                      <div class="col-lg-9"><i class="fas fa-exclamation-circle"></i> Issue Created
+                                         <br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="font-size-12">By:
+                                            {{usersList[reportedBy]}}
+                                         </span></div>
+                                      <div class="col-lg-3 text-right">
 
-   </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                          <div class="row pt-2" *ngIf="issueImages?.length">
+                             <div class="col-lg-12">
+                                <div class="vehicle-common-box p-3">
+                                   <div class="row">
+                                      <div class="col-lg-6"><label
+                                            class="control-label font-weight-bold text-3">Photo(s)</label></div>
+                                      <div class="col-lg-6 text-right">
+                                         <!-- <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo<input type="file" class="hidden_input"></div> -->
+                                      </div>
+                                   </div>
+                                   <hr class="solid mt-3">
+                                   <div class="row">
+                                      <div class="col-lg-6" *ngFor="let photo of issueImages;let i= index">
+                                         <div class="vehicle-photo-box">
+                                            <img src="{{photo.path}}" width="100%" class="img-fluid"
+                                               style="height: 180px; object-fit: cover;">
+                                            <hr class="m-3">
+                                            <div class="row">
+                                               <div class="col-lg-8">Image {{i+1}}</div>
+                                               <div class="col-lg-4 text-right">
+                                                  <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
+                                               </div>
+                                            </div>
+                                         </div>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+
+                       </div>
+                    </div>
+                 </form>
+                 <!-- VIEW DOCUMENT MODAL -->
+                 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                             <div class="form-row">
+                                <div class="form-group col-md-12">
+                                   <div>
+                                      <iframe [src]='pdfSrc' frameborder="0" width="100%" height="400px"> </iframe>
+                                   </div>
+                                </div>
+                             </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 <!-- Issue close MODAL -->
+                 <div class="modal fade" id="issueCloseModal" tabindex="-1" role="dialog" aria-labelledby="issueCloseModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="issueCloseModalLabel">Corfirm Action</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                             <div class="form-row">
+                                <div class="form-group col-md-12">
+                                   <label for="inputEmail4">Are you sure you want to close issue?</label>
+                                </div>
+                             </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-success" (click)="setStatus(issueID)" data-dismiss="modal">Close Issue</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+           </div>
+        </div>
+     </section>
+
+  </div>
 </section>

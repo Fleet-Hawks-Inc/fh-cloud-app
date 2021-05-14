@@ -75,8 +75,8 @@ export class AddOrdersComponent implements OnInit {
     stateTaxID: "",
     customerID: "",
     orderNumber: "",
-    creationDate: moment().format('YYYY-MM-DD'),
-    creationTime: moment().format('HH:mm'),
+    createdDate: "",
+    createdTime: "",
     customerPO: "",
     reference: "",
     phone: "",
@@ -85,7 +85,6 @@ export class AddOrdersComponent implements OnInit {
     TotalAgreedAmount: "",
     ShipperDetails: "",
     ConsigneeDetails: "",
-
     Customer: "",
     Reference: "",
     csa: "",
@@ -950,8 +949,6 @@ export class AddOrdersComponent implements OnInit {
       !this.orderData.customerID ||
       !this.orderData.customerPO ||
       !this.orderData.orderNumber ||
-      !this.orderData.creationDate ||
-      !this.orderData.creationTime ||
       !this.orderData.charges.freightFee.type ||
       !this.orderData.charges.freightFee.amount ||
       !this.orderData.charges.freightFee.currency ||
@@ -994,12 +991,12 @@ export class AddOrdersComponent implements OnInit {
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
-        let newloc = h.dropOffLocation.replace(",", "");
+        let newloc = h.dropOffLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
 
       element.shippers.map((h:any) => {
-        let newloc = h.pickupLocation.replace(",", "");
+        let newloc = h.pickupLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
     }
@@ -1345,8 +1342,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["orderStatus"] = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
-        this.orderData["creationDate"] = result.creationDate;
-        this.orderData["creationTime"] = result.creationTime;
+        this.orderData["createdDate"] = result.createdDate;
+        this.orderData["createdTime"] = result.createdTime;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -1745,8 +1742,14 @@ export class AddOrdersComponent implements OnInit {
 
   // delete uploaded images and documents
   delete(type: string, name: string, index) {
-    this.apiService.deleteData(`orders/uploadDelete/${this.getOrderID}/${type}/${name}`).subscribe((result: any) => {
-      // this.fetchAssetByID();
+    let record = {
+      eventID: this.getOrderID,
+      type: type,
+      name: name,
+      date: this.orderData.createdDate,
+      time: this.orderData.createdTime 
+    }
+    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
       this.orderAttachments.splice(index, 1);
     });
   }
