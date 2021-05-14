@@ -126,7 +126,10 @@
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Inspection Form:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ inspectionForms.inspectionFormName }}</div>
+                      <div class="col-lg-8 p-2 border-box">
+                        <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal"
+                          class="modal-with-form font-weight-bold">{{ inspectionForms.inspectionFormName }}</a>
+                      </div>
                     </div>
                   </div>
 
@@ -794,4 +797,71 @@
          </div>
       </div>
    </div>
+</div>
+
+<!-- view inspection form -->
+<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inspectionFormModalLabel">Vehicle Inspection Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="row text-dark">
+                <div class="col-lg-3 font-weight-bold">
+                  Form Name:
+                </div>
+                <div class="col-lg-9">
+                  {{ inspectionForms.inspectionFormName }}
+                </div>
+              </div>
+              <div class="row text-dark mt-3">
+                <div class="col-lg-3 font-weight-bold">
+                  Form Type:
+                </div>
+                <div class="col-lg-9">
+                  {{ inspectionForms.inspectionType }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-lg-12">
+              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Parameter</h4>
+              <table class="table table-bordered table-responsive-lg">
+                <thead>
+                  <tr>
+                    <th width="20%" class="back-color-gray font-weight-bold">Sr. No.</th>
+                    <th width="60%" class="back-color-gray">Parameters Name</th>
+                    <th width="20%" class="back-color-gray">Remarks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of inspectionForms.parameters; let i=index;">
+                    <td>{{ i+1 }}</td>
+                    <td class="font-weight-bold">{{ data.name }}</td>
+                    <td class="font-weight-bold">{{ (data.remarks != '') ? data.remarks : '-' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <button class="btn btn-default modal-dismiss">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
