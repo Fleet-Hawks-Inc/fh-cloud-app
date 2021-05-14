@@ -11,7 +11,7 @@
                             aria-expanded="false">Actions<span class="caret"></span></button>
                         <div class="dropdown-menu" role="menu" x-plACIment="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
+                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"
                                 class="dropdown-item text-1"> Edit</a>
                         </div>
                     </div> -->
@@ -27,7 +27,7 @@
                             <a class="dropdown-item text-1" href="javascript:;">Change Trip and Shipments</a>
                             <a class="dropdown-item text-1" (click)="amendManifest()">Amend Trip and Shipments(Use After
                                 Arrival)</a>
-                            <a class="dropdown-item text-1" (click) ="cancelManifest(entryID)">Cancel Trip and Shipments</a>
+                            <a class="dropdown-item text-1" (click) ="cancelManifest(manifestID)">Cancel Trip and Shipments</a>
                             <a class="dropdown-item text-1" href="javascript:;">Send Trip Only(Shipments already on file
                                 or empty)</a>
                             <a class="dropdown-item text-1" href="javascript:;">Change Trip Only(Shipments will not be
@@ -80,32 +80,32 @@
                                                                 x-placement="bottom-start"
                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Draft')">Draft</a>
+                                                                    (click)="setStatus('Draft')">Draft</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Cancelled')">Cancelled</a>
+                                                                    (click)="setStatus('Cancelled')">Cancelled</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Transmitted to CBSA')">Transmitted
+                                                                    (click)="setStatus('Transmitted_to_CBSA')">Transmitted
                                                                     to CBSA</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'CBSA Returned Error')">CBSA
+                                                                    (click)="setStatus('CBSA_Returned_Error')">CBSA
                                                                     Returned Error</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'On File with CBSA')">On
+                                                                    (click)="setStatus('On_File_with_CBSA')">On
                                                                     File with CBSA</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'On File with Match Notice')">On
+                                                                    (click)="setStatus('On_File_with_Match_Notice')">On
                                                                     File with Match Notice</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'On File with Transaction Number(s)')">On
+                                                                    (click)="setStatus('On_File_with_Transaction_Number(s)')">On
                                                                     File with Transaction Number(s)</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Arrival Reported at Border')">Arrival
+                                                                    (click)="setStatus('Arrival_Reported_at_Border')">Arrival
                                                                     Reported at Border</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Rejected After Arrival at Border')">Rejected
+                                                                    (click)="setStatus('Rejected_After_Arrival_at_Border')">Rejected
                                                                     After Arrival at Border</a>
                                                                 <a class="dropdown-item text-1" href="javascript:;"
-                                                                    (click)="setStatus(entryID,'Released')">Released</a>
+                                                                    (click)="setStatus('Released')">Released</a>
                                                             </div>
                                                         </div>
                                                     </th>
@@ -147,7 +147,7 @@
 
                 </div>
 
-                <div class="row mt-3" *ngIf =" borderResponses ?.length">
+                <div class="row mt-3" *ngIf ="borderResponses ?.length">
                     <div class="col-12">
                         <div class="card">
                             <div
@@ -206,7 +206,7 @@
                                         <a class="dropdown-item text-1" href="">Released</a>
                                     </div>
                                 </div> -->
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Shipment</a>
                                 </div>
                             </div>
@@ -269,7 +269,7 @@
                                                 <span *ngIf="shipment.loadedOn.type == 'TRUCK'">Vehicle </span>
                                                 <span *ngIf="shipment.loadedOn.type == 'CONTAINER'">Container</span>
                                                 <span *ngIf="shipment.loadedOn.type == 'TRAILER'">Asset </span>[{{shipment.loadedOn.number}}]</td>
-                                            <td class="actions">                                   <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                            <td class="actions">                                   <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -288,9 +288,9 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Drivers,Co-Drivers and Passengers</h4>
                                 <div class=" pull-right">
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm mr-1"><i class="fas fa-plus"></i> Add Co-Driver</a>
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Passenger</a>
                                 </div>
                             </div>
@@ -324,7 +324,7 @@
                                                 *ngFor="let document of mainDriver.travelDocuments">{{document.number}}</span>
                                         </td>
                                         <td class="actions">
-                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                     class="fas fa-pencil-alt black_color"></i> Edit</a>
                                         </td>
                                     </tr>
@@ -346,7 +346,7 @@
                                                     *ngFor="let document of driver.travelDocuments">{{document.number}}</span>
                                             </td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -369,7 +369,7 @@
                                                     *ngFor="let document of passenger.travelDocuments">{{document.number}}</span>
                                             </td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
                                             </td>
                                         </tr>
@@ -388,7 +388,7 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Vehicle on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"
                                         class="btn btn-success btn-sm"> <i class="fas fa-plus"></i> Set IIT/Exemption(s)</a>
                                 </div>
                             </div>
@@ -431,7 +431,7 @@
                                             data-placement="top"
                                             title="Click to see details of vehicle"><span *ngFor="let seal of truck.sealNumbers;">{{seal}},</span></td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
                                             </td>
@@ -451,9 +451,9 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Assets on <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
-                                    <!-- <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
+                                    <!-- <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm mr-1"> Set Cargo Exemption</a> -->
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Asset</a>
                                 </div>
                             </div>
@@ -482,7 +482,7 @@
                                             <td><span *ngFor="let cargo of trailer.cargoExemptions">{{cargoExemptionTypeObjects[cargo]}},</span></td>
                                             <td><span *ngFor="let seal of trailer.sealNumbers;">{{seal}}, </span></td>
                                             <td class="actions">
-                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"><i
+                                                <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
                                             </td>
@@ -504,7 +504,7 @@
                                 class="card-header border back-color-gray p-2 d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 ">Containers on ACI eManifest <b> {{tripNumber}}</b></h4>
                                 <div class=" pull-right">
-                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID}}"
+                                    <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID}}"
                                         class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Container</a>
                                 </div>
                             </div>
@@ -528,7 +528,7 @@
                                             <td>{{cargoExemptionTypeObjects[container.cargoExemptions]}},</td>
                                             <td><span *ngFor="let seal of container.sealNumbers;">{{seal}}, </span></td>
                                             <td class="actions"><a
-                                                    routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{entryID }}"><i
+                                                    routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{manifestID }}"><i
                                                         class="fas fa-pencil-alt black_color"></i> Edit</a>
 
                                             </td>

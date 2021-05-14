@@ -284,8 +284,6 @@ export class TripListComponent implements OnInit {
   deleteTrip(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
         eventID: eventData.tripID,
         status: eventData.tripStatus
       }
@@ -342,8 +340,6 @@ export class TripListComponent implements OnInit {
 
     let tripObj = {
       entryID : this.tripID,
-      date: this.tripDate,
-      time: this.tripTime,
       status: this.tripStatus
     }
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => { 
