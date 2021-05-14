@@ -99,7 +99,7 @@
                                             <td>
                                                 <span *ngFor="let s of item.subscribers; let g=index">
                                                     <span *ngIf="s.type === 'user'">
-                                                        {{users[s.id]}}
+                                                        {{usersList[s.id]}}
                                                     </span>
                                                     <span *ngIf="s.type === 'group'">
                                                         {{groups[s.id]}}

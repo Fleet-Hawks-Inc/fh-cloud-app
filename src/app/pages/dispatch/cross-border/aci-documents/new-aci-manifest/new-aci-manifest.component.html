@@ -440,6 +440,13 @@
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="form-group row">
+                          <div class="col-lg-10 offset-lg-1">
+                            <div class="checkbox-custom">
+                              <input [(ngModel)]="shipment.referenceOnlyShipment"
+                                name="shipment.referenceOnlyShipment" type="checkbox">
+                              <label class="control-label font-weight-bold">Reference Shipment?</label>
+                            </div>
+                          </div>
                           <div class="col-lg-5 offset-lg-1">
                             <div class="form-group row">
                               <div class="col-lg-10">

@@ -198,7 +198,9 @@ export class VehicleDetailComponent implements OnInit {
   serviceReminders = [];
   renewalReminders = [];
   inspectionForms = {
-    inspectionFormName : ''
+    inspectionFormName : '',
+    parameters: [],
+    inspectionType: ''
   };
   fuelEntries = [];
   documents = [];
@@ -364,7 +366,8 @@ export class VehicleDetailComponent implements OnInit {
 
         if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
-            this.inspectionForms = result1.Items[0];
+            this.inspectionForms = result1.Items[0]; 
+            console.log('this.inspectionForms', this.inspectionForms);
           });
         }
         this.annualSafetyDate = result.annualSafetyDate;
@@ -590,10 +593,12 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   fetchProgramDetails() {
-    let serviceProgramID = JSON.stringify(this.serviceProgramID);
-    this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
-      this.servicePrograms = result;
+    if(this.serviceProgramID.length > 0) {
+      let serviceProgramID = JSON.stringify(this.serviceProgramID);
+      this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+        this.servicePrograms = result;
 
-    })
+      })
+    }
   }
 }
