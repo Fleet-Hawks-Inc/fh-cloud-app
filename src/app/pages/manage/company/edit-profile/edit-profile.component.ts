@@ -71,13 +71,13 @@ export class EditProfileComponent implements OnInit {
     },
     manual: false
   }];
-  bank: any = {
+  banks: any = [{
     branchName: '',
     accountNumber: '',
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
-  };
+  }];
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -103,6 +103,7 @@ export class EditProfileComponent implements OnInit {
   Success = '';
   existingPhotos = [];
   yardAddress: boolean;
+  submitDisabled = false;
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
     private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
@@ -160,58 +161,59 @@ export class EditProfileComponent implements OnInit {
           trailers: this.carriers.fleets.trailers,
           trucks: this.carriers.fleets.trucks,
         };
-        for (let i = 0; i < this.carriers.address.length; i++) {
-          await this.getStates(this.carriers.address[i].countryID);
-          await this.getCities(this.carriers.address[i].stateID);
-          if (this.carriers.address[i].manual) {
+        for (let i = 0; i < this.carriers.addressDetails.length; i++) {
+          await this.getStates(this.carriers.addressDetails[i].countryID);
+          await this.getCities(this.carriers.addressDetails[i].stateID);
+          if (this.carriers.addressDetails[i].manual) {
             this.newAddress.push({
-              addressID: this.carriers.address[i].addressID,
-              addressType: this.carriers.address[i].addressType,
-              countryID: this.carriers.address[i].countryID,
-              countryName: this.carriers.address[i].countryName,
-              stateID: this.carriers.address[i].stateID,
-              stateName: this.carriers.address[i].stateName,
-              cityID: this.carriers.address[i].cityID,
-              cityName: this.carriers.address[i].cityName,
-              zipCode: this.carriers.address[i].zipCode,
-              address1: this.carriers.address[i].address1,
-              address2: this.carriers.address[i].address2,
+              addressID: this.carriers.addressDetails[i].addressID,
+              addressType: this.carriers.addressDetails[i].addressType,
+              countryID: this.carriers.addressDetails[i].countryID,
+              countryName: this.carriers.addressDetails[i].countryName,
+              stateID: this.carriers.addressDetails[i].stateID,
+              stateName: this.carriers.addressDetails[i].stateName,
+              cityID: this.carriers.addressDetails[i].cityID,
+              cityName: this.carriers.addressDetails[i].cityName,
+              zipCode: this.carriers.addressDetails[i].zipCode,
+              address1: this.carriers.addressDetails[i].address1,
+              address2: this.carriers.addressDetails[i].address2,
               geoCords: {
-                lat: this.carriers.address[i].geoCords.lat,
-                lng: this.carriers.address[i].geoCords.lng
+                lat: this.carriers.addressDetails[i].geoCords.lat,
+                lng: this.carriers.addressDetails[i].geoCords.lng
               },
-              manual: this.carriers.address[i].manual
+              manual: this.carriers.addressDetails[i].manual
             })
           } else {
             this.newAddress.push({
-              addressID: this.carriers.address[i].addressID,
-              addressType: this.carriers.address[i].addressType,
-              countryID: this.carriers.address[i].countryID,
-              countryName: this.carriers.address[i].countryName,
-              stateID: this.carriers.address[i].stateID,
-              stateName: this.carriers.address[i].stateName,
-              cityID: this.carriers.address[i].cityID,
-              cityName: this.carriers.address[i].cityName,
-              zipCode: this.carriers.address[i].zipCode,
-              address1: this.carriers.address[i].address1,
-              address2: this.carriers.address[i].address2,
+              addressID: this.carriers.addressDetails[i].addressID,
+              addressType: this.carriers.addressDetails[i].addressType,
+              countryID: this.carriers.addressDetails[i].countryID,
+              countryName: this.carriers.addressDetails[i].countryName,
+              stateID: this.carriers.addressDetails[i].stateID,
+              stateName: this.carriers.addressDetails[i].stateName,
+              cityID: this.carriers.addressDetails[i].cityID,
+              cityName: this.carriers.addressDetails[i].cityName,
+              zipCode: this.carriers.addressDetails[i].zipCode,
+              address1: this.carriers.addressDetails[i].address1,
+              address2: this.carriers.addressDetails[i].address2,
               geoCords: {
-                lat: this.carriers.address[i].geoCords.lat,
-                lng: this.carriers.address[i].geoCords.lng
+                lat: this.carriers.addressDetails[i].geoCords.lat,
+                lng: this.carriers.addressDetails[i].geoCords.lng
               },
-              userLocation: this.carriers.address[i].userLocation
+              userLocation: this.carriers.addressDetails[i].userLocation
             });
           }
         }
         this.addressDetails = this.newAddress;
-        this.bank = {
-          branchName: this.carriers.bank.branchName,
-          accountNumber: this.carriers.bank.accountNumber,
-          transitNumber: this.carriers.bank.transitNumber,
-          routingNumber: this.carriers.bank.routingNumber,
-          institutionNumber: this.carriers.bank.institutionNumber,
-        };
-        this.bankID = this.carriers.bank.bankID;
+        // this.banks = [{
+        //   branchName: this.carriers.banks.branchName,
+        //   accountNumber: this.carriers.bank.accountNumber,
+        //   transitNumber: this.carriers.bank.transitNumber,
+        //   routingNumber: this.carriers.bank.routingNumber,
+        //   institutionNumber: this.carriers.bank.institutionNumber,
+        // }];
+        this.banks = this.carriers.banks;
+      //  this.bankID = this.carriers.bank.bankID;
         this.uploadedLogo = this.carriers.uploadedLogo;
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
       });
@@ -393,6 +395,7 @@ export class EditProfileComponent implements OnInit {
   async UpdateCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
@@ -450,14 +453,15 @@ export class EditProfileComponent implements OnInit {
           trailers: this.fleets.trailers,
           trucks: this.fleets.trucks
         },
-        bank: {
-          branchName: this.bank.branchName,
-          accountNumber: this.bank.accountNumber,
-          transitNumber: this.bank.transitNumber,
-          routingNumber: this.bank.routingNumber,
-          institutionNumber: this.bank.institutionNumber,
-          bankID: this.bankID
-        },
+        // banks: [{
+        //   branchName: this.bank.branchName,
+        //   accountNumber: this.bank.accountNumber,
+        //   transitNumber: this.bank.transitNumber,
+        //   routingNumber: this.bank.routingNumber,
+        //   institutionNumber: this.bank.institutionNumber,
+        //   bankID: this.bankID
+        // }],
+        banks: this.banks,
         uploadedLogo: this.uploadedLogo
 
       };
@@ -484,13 +488,15 @@ export class EditProfileComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.submitDisabled = false;
               },
-              error: () => { },
+              error: () => {this.submitDisabled = false; },
               next: () => { },
             });
         },
         next: (res) => {
           this.response = res;
+          this.submitDisabled = false;
           this.toaster.success('Carrier updated successfully.');
           this.cancel();
 

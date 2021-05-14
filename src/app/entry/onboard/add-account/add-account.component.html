@@ -71,7 +71,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control form-control-lg"
+                              <input  id="pd" [(ngModel)]="password" name="password"  #pwd="ngModel" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9//#//@//$//&]{8,20}$"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -97,7 +97,7 @@
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <div class="input-group">
-                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control form-control-lg"
+                              <input  id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword"  #cpwd="ngModel" required   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
                                 />
                                 <div class="input-group-append">
                                   <span class="input-group-text eye">
@@ -109,8 +109,6 @@
                                   </span>
                                </div>
                             </div>
-                        <!-- <input id="cnf" type="password" class="form-control" name="confirmPassword" minlength="8" #cpwd="ngModel" required
-                          placeholder="eg. johnSmith@123" [(ngModel)]="confirmPassword"> -->
                           <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
                             <div *ngIf="cpwd.errors.required">
                               Confirm password is required.
@@ -169,20 +167,16 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="row">
                   <div class="col-lg-12 mt-2">
                     <hr class="solid mt-4">
                   </div>
                 </div>
-
-
                 <div class="row">
                   <div class="col-lg-12">
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Business
                       Detail</label>
                   </div>
-
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
@@ -315,7 +309,6 @@
                               MC number must contain 6 digits.
                             </div>
                           </div>
-
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">DOT# <span
@@ -329,7 +322,6 @@
                               DOT number must contain 8 digits.
                             </div>
                           </div>
-
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -345,7 +337,6 @@
                               CCC must be of length 4 and contains  capital letters or numbers.
                             </div>
                           </div>
-
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SCAC&nbsp;<i
@@ -493,7 +484,7 @@
                               <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID" name="cityID{{i}}"
                                 placeholder="Select city">
 
-                                <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">
+                                <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
                               </ng-select>
@@ -566,12 +557,14 @@
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
                       Detail</label>
                   </div>
+                </div>
+                <div class="row" *ngFor="let bank of banks;let b = index;">
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
                           placeholder="eg. XYZ Bank">
                           <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
@@ -584,8 +577,8 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber"
-                          placeholder="eg. 12123456701" name="accountNumber" #ac="ngModel" pattern="^[0-9]{7,12}$">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
+                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" pattern="^[0-9]{7,12}$">
                           <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
                               Account number must be between 7-12 numbers.
@@ -602,7 +595,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
                         #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
                           <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
@@ -620,7 +613,7 @@
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber" name="transitNumber"
+                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
                         #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
@@ -637,9 +630,9 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
                         #ins="ngModel" pattern="^[0-9]{3}$" placeholder="eg. 219"
-                           name="institutionNumber">
+                        [attr.name]="'banks['+b+'].institutionNumber'">
                           <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
                             <div *ngIf="ins.errors.pattern">
                               Institution number must be of 3 digits.

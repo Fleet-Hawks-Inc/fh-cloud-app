@@ -63,13 +63,13 @@ export class AddAccountComponent implements OnInit {
     },
     manual: false
   }];
-  bank = {
+  banks = [{
     branchName: '',
     accountNumber: '',
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
-  };
+  }];
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -350,7 +350,7 @@ export class AddAccountComponent implements OnInit {
           trailers: this.fleets.trailers,
           trucks: this.fleets.trucks
         },
-        bank: this.bank
+        banks: this.banks
       };
       // create form data instance
       const formData = new FormData();

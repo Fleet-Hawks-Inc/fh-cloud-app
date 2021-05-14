@@ -63,8 +63,16 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
-                        <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"  [disabled]=true
-                          placeholder="eg. +19897899879"  >
+                        <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
+                          placeholder="eg. +19897899879"  required pattern="^(\+1)[0-9]{10}$">
+                      </div>
+                      <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                        <div *ngIf="ph.errors.required">
+                        Phone number is required.
+                        </div>
+                        <div *ngIf="ph.errors.pattern">
+                          Enter valid phone number eg. +12032342345.
+                        </div>
                       </div>
                     </div>
                     <div class=" row">
@@ -425,7 +433,7 @@
                                 name="cityID{{i}}" placeholder="Select city">
 
                                 <ng-option class="text-capitalize" *ngFor="let city of cities"
-                                  value="{{city.cityID}}">
+                                  value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
                               </ng-select>
@@ -499,14 +507,14 @@
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
                       Detail</label>
                   </div>
-
-
+                </div>
+                <div class="row" *ngFor="let bank of banks;let b = index;">
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
                           placeholder="eg. XYZ Bank">
                           <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
@@ -519,8 +527,8 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.accountNumber"
-                          placeholder="eg. 12123456701" name="accountNumber" #ac="ngModel" pattern="^[0-9]{7,12}$">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
+                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" pattern="^[0-9]{7,12}$">
                           <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
                               Account number must be between 7-12 numbers.
@@ -537,8 +545,8 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
-                        #route="ngModel" pattern="^(0)[0-9]{8}$" placeholder="eg. 023456789">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
+                        #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
                           <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
                               Routing number must be of 9 digits.
@@ -555,7 +563,7 @@
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber" name="transitNumber"
+                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
                         #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
@@ -572,9 +580,9 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
                         #ins="ngModel" pattern="^[0-9]{3}$" placeholder="eg. 219"
-                           name="institutionNumber">
+                        [attr.name]="'banks['+b+'].institutionNumber'">
                           <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
                             <div *ngIf="ins.errors.pattern">
                               Institution number must be of 3 digits.
@@ -587,7 +595,7 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <button type="button" (click)="UpdateCarrier()" class="btn btn-success" >Update</button>
+                    <button type="button" (click)="UpdateCarrier()" [disabled]="submitDisabled" class="btn btn-success" >Update</button>
                   </div>
                 </div>
                 <div class="row mt-2">
