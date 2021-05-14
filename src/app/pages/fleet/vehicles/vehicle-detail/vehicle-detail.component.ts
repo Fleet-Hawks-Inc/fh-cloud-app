@@ -199,7 +199,8 @@ export class VehicleDetailComponent implements OnInit {
   renewalReminders = [];
   inspectionForms = {
     inspectionFormName : '',
-    parameters: []
+    parameters: [],
+    inspectionType: ''
   };
   fuelEntries = [];
   documents = [];
