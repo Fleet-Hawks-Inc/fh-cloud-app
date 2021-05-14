@@ -70,6 +70,7 @@ export class AddAccountComponent implements OnInit {
     routingNumber: '',
     institutionNumber: '',
   }];
+  submitDisabled = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -293,6 +294,7 @@ export class AddAccountComponent implements OnInit {
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
@@ -373,13 +375,15 @@ export class AddAccountComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
+                this.submitDisabled = true;
               },
               error: () => { },
-              next: () => { },
+              next: () => {this.submitDisabled = true; },
             });
         },
         next: (res) => {
           this.response = res;
+          this.submitDisabled = true;
           this.toaster.success('Carrier created successfully.');
           this.cancel();
         },
