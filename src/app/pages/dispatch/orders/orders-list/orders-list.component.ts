@@ -200,9 +200,6 @@ export class OrdersListComponent implements OnInit {
           this.ordersEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords > this.ordersEndPoint) {
-          this.ordersEndPoint = this.totalRecords;
-        }
 
         // disable prev btn
         if (this.ordersDraw > 0) {

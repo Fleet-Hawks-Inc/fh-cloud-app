@@ -5,10 +5,8 @@
                 <div class="row px-2" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="vehicleID" name="vehicleID" style="width: 100%;"
-                            placeholder="Search by vehicle">
-                            <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">
-                                {{data.vehicleIdentification}}</ng-option>
+                        <ng-select [(ngModel)]="vehicleID" name="vehicleID" placeholder="Search By vehicle">
+                            <ng-option *ngFor="let data of vehicleList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                         </ng-select>
                     </div>
 
