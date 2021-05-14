@@ -72,14 +72,14 @@
                           class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                           data-placement="top" title="Vehicle Identification Number."></i></label>
                       <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"
-                        placeholder="17-18 digits Alphanumeric , eg. 78678678678678689" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9\-]{17,18}$">
+                        placeholder="17-18 digits Alphanumeric , eg. 2G1WH55K5Y9322458" class="form-control" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
                         <div *ngIf="vName.invalid && (vName.dirty || vName.touched)" class="text-danger">
                           <div>
                             <div *ngIf="vName.errors.required">
                               VIN is required.
                             </div>
                             <div *ngIf="vName.errors.pattern">
-                               VIN contains 17-18 alphanumeric number and special characters for period('-') only eg.ARD12345-4er78                           </div>
+                               VIN contains 17-18 alphanumeric numbers only eg.2G1WH55K5Y9322458 </div>
                           </div>
                         </div>
                     </div>
