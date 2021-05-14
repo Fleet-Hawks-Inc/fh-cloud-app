@@ -750,7 +750,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.cancel();
+            this.router.navigateByUrl('/fleet/drivers/list');
           },
         });
       });
