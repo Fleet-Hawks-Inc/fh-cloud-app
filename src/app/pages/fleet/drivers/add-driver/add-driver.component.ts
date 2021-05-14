@@ -828,7 +828,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
 
   throwErrors() {
-
     from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')

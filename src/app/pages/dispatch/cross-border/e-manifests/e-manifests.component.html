@@ -74,28 +74,23 @@
                          <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
                       </ng-select>
                    </div>
-
                    <div class="col-md-2 col-lg-2 pr-0 pl-2">
                       <div class="input-group input-group mb-3" *ngIf="aciFilterCategory != 'driver' && aciFilterCategory != 'vehicle' &&  aciFilterCategory != 'entryPort'">
                          <input type="text" name="aciSearch" [(ngModel)]="aciSearch" class="form-control" placeholder="Search" />
                       </div>
-
                       <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Driver"
                          *ngIf="aciFilterCategory == 'driver'">
                          <ng-option *ngFor="let data of driversList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                       </ng-select>
-
                       <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Vehicle"
                          *ngIf="aciFilterCategory == 'vehicle'">
                          <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }} </ng-option>
                       </ng-select>
-
                       <ng-select [(ngModel)]="aciSearch" name="aciSearch" placeholder="Search By Port Entry"
                          *ngIf="aciFilterCategory == 'entryPort'">
                          <ng-option *ngFor="let data of canadianPortsObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
                       </ng-select>
                    </div>
-
                    <div class="col-lg-3 col-md-3">
                       <div class="input-daterange input-group">
                          <span class="input-group-prepend">
@@ -117,7 +112,6 @@
                       <button type="button" (click)="resetACIFilter()" class="btn btn-sm btn-success">Reset</button>
                    </div>
                    <div class="col-md-3 col-lg-3 text-right">
-
                       <div class="btn-group flex-wrap" *ngIf="!environment">
                          <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                             aria-expanded="false">Actions<span class="caret"></span></button>
@@ -130,7 +124,6 @@
                       </div>
                       <a [routerLink]="['/dispatch','cross-border','ACI-new-eManifest']" class="btn btn-success btn-sm mx-2"
                          style="color:white;"><i class="fas fa-plus"></i> Add ACI eManifest</a>
-
                    </div>
                 </div>
              </form>
@@ -144,147 +137,146 @@
                    <a class="nav-link {{ aciClass }}" id="aci-emanifest-tab" (click)= "changeTab('aci')" role="tab" aria-controls="aci-emanifest" aria-selected="false">ACI eManifest</a>
                 </li>
              </ul>
-          <div class="row">
-             <div class="col">
-                <section class="card">
-                   <div class="card-body">
-                       <div class="tab-content p-0">
-                         <div class="tab-pane show table-responsive active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
-                            <table class="table table-bordered table-responsive-lg table-striped mb-0" id="ace">
-                               <thead>
-                                  <tr>
+            <div class="row">
+              <div class="col">
+                  <section class="card">
+                    <div class="card-body">
+                        <div class="tab-content p-0">
+                          <div class="tab-pane show table-responsive active" id="ace-emanifest" role="tabpanel" aria-labelledby="ace-tab">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0" id="ace">
+                                <thead>
+                                    <tr>
+                                      <th>Trip#</th>
+                                      <th>Shipment#</th>
+                                      <th>Shipment type</th>
+                                      <th  width="8%">Est. date/time</th>
+                                      <th>Port of entry</th>
+                                      <th>Driver</th>
+                                      <th>Vehicle</th>
+                                      <th>Asset</th>
+                                      <th>Consignor</th>
+                                      <th>Consignee</th>
+                                      <th width="15%">Status</th>
+                                      <th width="5%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="ACEList.length == 0" class="text-center">
+                                      <td colspan="12">{{ dataMessage }}</td>
+                                    </tr>
+                                    <tr *ngFor = "let aceManifest of ACEList;">
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{aceManifest.tripNumber}}</td>
+                                      <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{aceManifest.SCAC}}</td>-->
 
-                                     <th>Trip#</th>
-                                     <th>Shipment#</th>
-                                     <th>Shipment type</th>
-                                     <th  width="8%">Est. date/time</th>
-                                     <th>Port of entry</th>
-                                     <th>Driver</th>
-                                     <th>Vehicle</th>
-                                     <th>Asset</th>
-                                     <th>Consignor</th>
-                                     <th>Consignee</th>
-                                     <th width="15%">Status</th>
-                                     <th width="5%">Actions</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                                  <tr *ngIf="ACEList.length == 0" class="text-center">
-                                     <td colspan="12">{{ dataMessage }}</td>
-                                  </tr>
-                                  <tr *ngFor = "let aceManifest of ACEList;">
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.tripNumber}}</td>
-                                     <!-- <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.SCAC}}</td>-->
-
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{aceShipmentTypeObjects[shipment.type]}},</span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{USPortsObjects[aceManifest.usPortOfArrival]}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.entryID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let trailer of aceManifest.trailers;let i = index">{{assetsList[trailer.assetID]}}<span *ngIf= "i != aceManifest.trailers.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments; let i=index">{{shippersList[shipment.shipperID]}}<span *ngIf= "i != aceManifest.shipments.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span *ngFor = "let shipment of aceManifest.shipments; let i = index">{{consigneesList[shipment.consigneeID]}}<span *ngIf= "i != aceManifest.shipments.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.entryID }}"><span class="statusBtn"
-                                      [ngClass]="[(aceManifest.currentStatus =='Cancelled Manifest') ? 'cancelBtn' :
-                                      (aceManifest.currentStatus =='Transmitted to CBP') ? 'transmittedBtn' :
-                                      (aceManifest.currentStatus =='Truck Released at Border') ? 'truckReleasedBtn' :
-                                      (aceManifest.currentStatus =='Complete Manifest and Entry Numbers On File with CBP') ? 'completeManifestEntryBtn' :
-                                      (aceManifest.currentStatus =='CBP Returned Error') ? 'CBPReturnedErrorBtn' :
-                                      (aceManifest.currentStatus =='Truck Arrived at Border') ? 'truckArrivedBtn' :
-                                      (aceManifest.currentStatus =='Preliminary Manifest On File with CBP') ? 'preliminaryBtn' :
-                                      (aceManifest.currentStatus =='Complete Manifest On File with CBP') ? 'completeBtn' :  'draftBtn']">{{aceManifest.currentStatus}}</span></td>
-                                     <td><div class="btn-group flex-wrap">
-                                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu" role="menu">
-                                           <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.entryID }}" class="dropdown-item text-1">Edit</a>
-                                            <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest.entryID)"  >Delete</button>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{aceShipmentTypeObjects[shipment.type]}},</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{USPortsObjects[aceManifest.usPortOfArrival]}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.manifestID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let trailer of aceManifest.trailers;let i = index">{{assetsList[trailer.assetID]}}<span *ngIf= "i != aceManifest.trailers.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments; let i=index">{{shippersList[shipment.shipperID]}}<span *ngIf= "i != aceManifest.shipments.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments; let i = index">{{consigneesList[shipment.consigneeID]}}<span *ngIf= "i != aceManifest.shipments.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span class="statusBtn"
+                                        [ngClass]="[(aceManifest.currentStatus =='Cancelled_Manifest') ? 'cancelBtn' :
+                                        (aceManifest.currentStatus =='Transmitted_to_CBP') ? 'transmittedBtn' :
+                                        (aceManifest.currentStatus =='Truck_Released_at_Border') ? 'truckReleasedBtn' :
+                                        (aceManifest.currentStatus =='Complete_Manifest_and_Entry_Numbers_On_File_with_CBP') ? 'completeManifestEntryBtn' :
+                                        (aceManifest.currentStatus =='CBP_Returned_Error') ? 'CBPReturnedErrorBtn' :
+                                        (aceManifest.currentStatus =='Truck_Arrived_at_Border') ? 'truckArrivedBtn' :
+                                        (aceManifest.currentStatus =='Preliminary_Manifest_On_File_with_CBP') ? 'preliminaryBtn' :
+                                        (aceManifest.currentStatus =='Complete_Manifest_On_File_with_CBP') ? 'completeBtn' :  'draftBtn']">{{aceManifest.currentStatus}}</span></td>
+                                      <td><div class="btn-group flex-wrap">
+                                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                          <div class="dropdown-menu" role="menu">
+                                            <a routerLink="/dispatch/cross-border/ACE-edit-eManifest/{{aceManifest.manifestID }}" class="dropdown-item text-1">Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACEEntry(aceManifest)"  >Delete</button>
+                                          </div>
+                                        </div></td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                          </div>
+                          <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0 && activeDiv == 'ace'">
+                              <div class="col-6">
+                                Showing {{ aceStartPoint }} to {{ aceEndPoint }} of {{ totalRecords }} enteries
+                              </div>
+                              <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('ace')" [disabled]="acePrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('ace')" [disabled]="aceNext">Next</button>
+                              </div>
+                          </div>
+                          <div class="tab-pane table-responsive" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
+                              <table class="table table-bordered table-responsive-lg table-striped mb-0" id="aci">
+                                <thead>
+                                    <tr>
+                                      <th>Trip#</th>
+                                      <th>Cargo control#</th>
+                                      <th>Shipment type</th>
+                                      <th width="8%">Est. date/time</th>
+                                      <th>Port of entry</th>
+                                      <th>Driver</th>
+                                      <th>Vehicle</th>
+                                      <th>Asset</th>
+                                      <th>Consignor</th>
+                                      <th>Consignee</th>
+                                      <th width="15%">Status</th>
+                                      <th width="5%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="ACIList.length == 0" class="text-center">
+                                      <td colspan="12">{{ dataMessageACI }}</td>
+                                    </tr>
+                                    <tr *ngFor = "let aciManifest of ACIList;">
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}">{{aciManifest.tripNumber}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{aciShipmentTypeObjects[shipment.shipmentType]}},</span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}">{{ canadianPortsObjects[aciManifest.portOfEntry]}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span>{{driversList[aciManifest.mainDriver]}}</span><span *ngIf="aciManifest.coDrivers.length>0"><span *ngFor = "let driver of aciManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span *ngFor = "let trailer of aciManifest.trailers;let i = index">{{assetsList[trailer.assetID]}}<span *ngIf= "i != aciManifest.trailers.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span *ngFor = "let shipment of aciManifest.shipments;let i = index">{{shippersList[shipment.shipperID]}}<span *ngIf= "i != aciManifest.shipments.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span *ngFor = "let shipment of aciManifest.shipments;let i = index">{{consigneesList[shipment.consigneeID]}}<span *ngIf= "i != aciManifest.shipments.length-1">,</span></span></td>
+                                      <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.manifestID }}"><span class="statusBtn"
+                                        [ngClass]="[(aciManifest.currentStatus =='Cancelled_Manifest') ? 'ACIcancelBtn' :
+                                        (aciManifest.currentStatus =='Transmitted_to_CBSA') ? 'ACItransmittedBtn' :
+                                        (aciManifest.currentStatus =='On_File_with_CBSA') ? 'ACIonFileCBSABtn' :
+                                        (aciManifest.currentStatus =='Released') ? 'ACIReleasedBtn' :
+                                        (aciManifest.currentStatus =='CBSA_Returned_Error') ? 'CBSAReturnedErrorBtn' :
+                                        (aciManifest.currentStatus =='On_File_with_Match_Notice') ? 'ACIMatchNoticeBtn' :
+                                        (aciManifest.currentStatus =='On_File_with_Transaction_Number(s)') ? 'ACIOnFileTransactionBtn' :
+                                        (aciManifest.currentStatus =='Arrival_Reported_at_Border') ? 'ACIArrivalBorderBtn' :
+                                        (aciManifest.currentStatus =='Rejected_After_Arrival_at_Border') ? 'ACIRejectedAtBorderBtn' :
+                                          'ACIdraftBtn']">{{aciManifest.currentStatus}}</span></td>
+                                      <td><div class="btn-group flex-wrap">
+                                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                          <div class="dropdown-menu" role="menu">
+                                            <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.manifestID }}" class="dropdown-item text-1" >Edit</a>
+                                              <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest)" >Delete</button>
+                                          </div>
                                         </div>
-                                      </div></td>
-                                  </tr>
-                               </tbody>
-                            </table>
-                         </div>
-                         <div class="row mt-3 dtPaginate" *ngIf="ACEList.length > 0 && activeDiv == 'ace'">
-                            <div class="col-6">
-                               Showing {{ aceStartPoint }} to {{ aceEndPoint }} of {{ totalRecords }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                               <button type="button" class="btn btn-default mr-2" (click)="prevResults('ace')" [disabled]="acePrev">Prev</button>
-                               <button type="button" class="btn btn-default" (click)="nextResults('ace')" [disabled]="aceNext">Next</button>
-                            </div>
-                         </div>
+                                      </td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                          </div>
+                          <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0 && activeDiv == 'aci'">
+                              <div class="col-6">
+                                Showing {{ aciStartPoint }} to {{ aciEndPoint }} of {{ totalACIRecords }} enteries
+                              </div>
+                              <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('aci')" [disabled]="aciPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults('aci')" [disabled]="aciNext">Next</button>
+                              </div>
+                          </div>
+                        </div>
 
-                         <div class="tab-pane table-responsive" id="aci-emanifest" role="tabpanel" aria-labelledby="aci-tab">
-                             <table class="table table-bordered table-responsive-lg table-striped mb-0" id="aci">
-                               <thead>
-                                  <tr>
-                                     <th>Trip#</th>
-                                     <th>Cargo control#</th>
-                                     <th>Shipment type</th>
-                                     <th  width="8%">Est. date/time</th>
-                                     <th>Port of entry</th>
-                                     <th>Driver</th>
-                                     <th>Vehicle</th>
-                                     <th>Asset</th>
-                                     <th>Consignor</th>
-                                     <th>Consignee</th>
-                                     <th width="15%">Status</th>
-                                     <th width="5%">Actions</th>
-                                  </tr>
-                               </thead>
-                               <tbody>
-                                  <tr *ngIf="ACIList.length == 0" class="text-center">
-                                     <td colspan="12">{{ dataMessageACI }}</td>
-                                  </tr>
-                                  <tr *ngFor = "let aciManifest of ACIList;">
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.tripNumber}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{shipment.CCC}}{{shipment.cargoControlNumber}},</span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments">{{aciShipmentTypeObjects[shipment.shipmentType]}},</span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{aciManifest.estimatedArrivalDate}} &nbsp; {{aciManifest.estimatedArrivalTime}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{ canadianPortsObjects[aciManifest.portOfEntry]}}</td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span>{{driversList[aciManifest.mainDriver]}}</span><span *ngIf="aciManifest.coDrivers.length>0"><span *ngFor = "let driver of aciManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}">{{vehiclesList[aciManifest.truck.truckID]}}  </td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let trailer of aciManifest.trailers;let i = index">{{assetsList[trailer.assetID]}}<span *ngIf= "i != aciManifest.trailers.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments;let i = index">{{shippersList[shipment.shipperID]}}<span *ngIf= "i != aciManifest.shipments.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span *ngFor = "let shipment of aciManifest.shipments;let i = index">{{consigneesList[shipment.consigneeID]}}<span *ngIf= "i != aciManifest.shipments.length-1">,</span></span></td>
-                                     <td routerLink="/dispatch/cross-border/ACI-details/{{aciManifest.entryID }}"><span class="statusBtn"
-                                      [ngClass]="[(aciManifest.currentStatus =='Cancelled Manifest') ? 'ACIcancelBtn' :
-                                      (aciManifest.currentStatus =='Transmitted to CBSA') ? 'ACItransmittedBtn' :
-                                      (aciManifest.currentStatus =='On File with CBSA') ? 'ACIonFileCBSABtn' :
-                                      (aciManifest.currentStatus =='Released') ? 'ACIReleasedBtn' :
-                                      (aciManifest.currentStatus =='CBSA Returned Error') ? 'CBSAReturnedErrorBtn' :
-                                      (aciManifest.currentStatus =='On File with Match Notice') ? 'ACIMatchNoticeBtn' :
-                                      (aciManifest.currentStatus =='On File with Transaction Number(s)') ? 'ACIOnFileTransactionBtn' :
-                                      (aciManifest.currentStatus =='Arrival Reported at Border') ? 'ACIArrivalBorderBtn' :
-                                      (aciManifest.currentStatus =='Rejected After Arrival at Border') ? 'ACIRejectedAtBorderBtn' :
-                                        'ACIdraftBtn']">{{aciManifest.currentStatus}}</span></td>
-                                     <td><div class="btn-group flex-wrap">
-                                        <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu" role="menu">
-                                           <a routerLink="/dispatch/cross-border/ACI-edit-eManifest/{{aciManifest.entryID }}" class="dropdown-item text-1" >Edit</a>
-                                            <button type="button" class="dropdown-item text-1" (click)="deleteACIEntry(aciManifest.entryID)" >Delete</button>
-                                        </div>
-                                      </div></td>
-                                  </tr>
-                               </tbody>
-                            </table>
-                         </div>
-                         <div class="row mt-3 dtPaginate" *ngIf="ACIList.length > 0 && activeDiv == 'aci'">
-                            <div class="col-6">
-                               Showing {{ aciStartPoint }} to {{ aciEndPoint }} of {{ totalACIRecords }} enteries
-                            </div>
-                            <div class="col-6 text-right">
-                               <button type="button" class="btn btn-default mr-2" (click)="prevResults('aci')" [disabled]="aciPrev">Prev</button>
-                               <button type="button" class="btn btn-default" (click)="nextResults('aci')" [disabled]="aciNext">Next</button>
-                            </div>
-                         </div>
-                      </div>
-
-                   </div>
-                </section>
-             </div>
-          </div>
+                    </div>
+                  </section>
+              </div>
+            </div>
           </div>
        </section>
   </div>

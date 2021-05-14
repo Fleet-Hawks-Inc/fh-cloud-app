@@ -295,7 +295,7 @@
                                     </div>
                                  </div>
                                  <div class="mt-3">
-                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
+                                    <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo Type&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                        <input (change)="selectDocuments($event, 'uploadedPhotos')" class="hidden_input1 w-100" name="uploadedPhotos"
                                           type="file" multiple>
                                     </div>
@@ -463,7 +463,7 @@
                                        class="text-1 optional-label-color">(optional)</span> </label>
                                  <input type="text" class="form-control" name="vehicleColor" [(ngModel)]="vehicleColor" placeholder="eg. Red etc">
                               </div>
-                     
+
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right">Add Document <span
                                        class="text-1 optional-label-color">(optional)</span> </label>
@@ -496,7 +496,7 @@
                            </div>
                         </div>
                         <div class="col-lg-5 mb-3 pb-1 offset-lg-1">
-                     
+
                            <div class="row mt-4 pt-1">
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Select the Inspection Form <span
@@ -510,13 +510,13 @@
                                     </ng-select>
                                  </div>
                               </div>
-                     
+
                               <div class="col-lg-1 pl-0 mar-top-37">
                                  <a href="/#/compliance/dvir/inspection-add" target="_blank" class="modal-with-form btn btn-success"><i
                                        class="fas fa-plus"></i></a>
                               </div>
-                     
-                     
+
+
                            </div>
                         </div>
                      </div>
@@ -557,13 +557,13 @@
                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                     <i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top" title="Odometer reading on in-service date."></i>
                                  </label>
-                                 <input type="text" class="form-control" name="lifeCycle.inServiceOdometer" 
+                                 <input type="text" class="form-control" name="lifeCycle.inServiceOdometer"
                                     [(ngModel)]="lifeCycle.inServiceOdometer" placeholder="eg. 10000" #odometer="ngModel" required
                                     pattern="^[0-9]+$">
                                  <div *ngIf="odometer.invalid && (odometer.dirty || odometer.touched)" class="text-danger">
                                     <div *ngIf="odometer.errors.required">
                                        In-Service Odometer is required.
-                           
+
                                     </div>
                                     <div *ngIf="odometer.errors.pattern">
                                        In-Service Odometer must contain numbers only.
@@ -692,7 +692,7 @@
                                           <div *ngIf="height.errors.required">
                                              Height is required and must contain numbers
                                              only.
-                                    
+
                                           </div>
                                        </div>
                                     </div>
@@ -941,7 +941,7 @@
                                     <div class="col-lg-6">
                                        <input type="number" class="form-control" name="fluid.fuelTankOneCapacity" min="0"
                                           [(ngModel)]="fluid.fuelTankOneCapacity" placeholder="eg. 100,200" #fuelTank="ngModel" required pattern="^[0-9]+$">
-                                       
+
                                        <div *ngIf="fuelTank.invalid && (fuelTank.dirty || fuelTank.touched)" class="text-danger">
                                           <div *ngIf="fuelTank.errors.required">
                                              Fuel Tank is required and must contain numbers
@@ -1273,7 +1273,7 @@
                            <div class="col-lg-10">
                               <label class="control-label font-weight-bold text-lg-right pt-2">Purchase Odometer <span
                                     class="text-1 optional-label-color">(optional)</span> </label>
-                              <input type="text" class="form-control" name="purchase.purchaseOdometer" 
+                              <input type="text" class="form-control" name="purchase.purchaseOdometer"
                                  [(ngModel)]="purchase.purchaseOdometer" placeholder="eg. 4500">
                            </div>
                         </div>
@@ -1386,7 +1386,7 @@
                                     </div>
                                  </div>
                               </div>
-                              
+
                               <div class="col-lg-5">
                                  <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan <span
                                        class="text-1 optional-label-color">(optional)</span></label>
@@ -1508,7 +1508,7 @@
          </div>
          <div class="modal-body text-dark">
             <div class="card-body p-0">
-              
+
                   <div class="form-row">
                      <div class="col-lg-12">
                         <label class="control-label font-weight-bold">Vehicle Group Name  <span
@@ -1518,7 +1518,7 @@
                            <div *ngIf="gVehicle.invalid && (gVehicle.dirty || gVehicle.touched)" class="text-danger">
                               <div *ngIf="gVehicle.errors.required">
                                 Vehicle Group Name is required.
-                              </div>     
+                              </div>
                               <div *ngIf="gVehicle.errors.pattern">
                                      Vehicle Group Name  must contains uppercase, lowercase and special characters for period(space) only.
                               </div>
@@ -1545,7 +1545,7 @@
                            id="comment" placeholder="Enter description of the group"></textarea>
                      </div>
                   </div>
-              
+
             </div>
          </div>
          <div class="modal-footer text-right">

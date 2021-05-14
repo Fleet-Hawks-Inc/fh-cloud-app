@@ -80,8 +80,8 @@ export class OrderDetailComponent implements OnInit {
   customerPo = '';
   reference = '';
   // creation = '';
-  creationDate = '';
-  creationTime = '';
+  createdDate = '';
+  createdTime = '';
   additionalContactName = '';
   additionalPhone  = '';
   additionalEmail = '';
@@ -170,12 +170,12 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/${this.orderID}`)
       .subscribe((result: any) => {
           result = result.Items[0];
-
-          if(result.stateTaxID != '') {
-            this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
-              this.stateCode = result.Items[0].stateCode;
-
-            });
+          if(result.stateTaxID != undefined) {
+            if(result.stateTaxID != '') {
+              this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
+                this.stateCode = result.Items[0].stateCode;
+              });
+            }
           }
 
           this.zeroRated = result.zeroRated;
@@ -183,8 +183,8 @@ export class OrderDetailComponent implements OnInit {
           this.customerID = result.customerID;
           this.customerPo = result.customerPO;
           this.reference = result.reference;
-          this.creationDate = `${result.creationDate }`;
-          this.creationTime = `${result.creationTime }`;
+          this.createdDate = result.createdDate;
+          this.createdTime = result.createdTime;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;

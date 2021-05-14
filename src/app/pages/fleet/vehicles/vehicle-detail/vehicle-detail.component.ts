@@ -590,10 +590,12 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   fetchProgramDetails() {
-    let serviceProgramID = JSON.stringify(this.serviceProgramID);
-    this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
-      this.servicePrograms = result;
+    if(this.serviceProgramID.length > 0) {
+      let serviceProgramID = JSON.stringify(this.serviceProgramID);
+      this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
+        this.servicePrograms = result;
 
-    })
+      })
+    }
   }
 }
