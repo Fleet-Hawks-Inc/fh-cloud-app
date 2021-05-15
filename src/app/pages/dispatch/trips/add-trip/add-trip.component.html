@@ -92,24 +92,13 @@
                                                     class="control-label font-weight-semibold labelmt text-3 text-dark">Select
                                                     Permanent Route
                                                 </label>
-                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID"
-                                                    placeholder="eg. Calgary to Edmonton" #pRoute="ngModel" required>
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID" (change)="makeRoutePlan()"
+                                                    placeholder="eg. Calgary to Edmonton" #pRoute="ngModel">
                                                     <ng-option *ngFor="let route of permanentRoutes"
                                                         value="{{ route.routeID }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
-                                                <div *ngIf="pRoute.invalid && (pRoute.dirty || pRoute.touched)"
-                                                    class="text-danger">
-                                                    <div>
-
-                                                        <div *ngIf="pRoute.errors.required">
-                                                            Select valid permanent route from the list.
-                                                        </div>
-
-
-                                                    </div>
-
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                         <div class="row">
@@ -147,15 +136,10 @@
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="eg. 13253578" #BOL="ngModel"
-                                                    required pattern="^[a-zA-Z0-9\-\/]+$">
+                                                     pattern="^[a-zA-Z0-9\-\/]+$">
                                                 <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
                                                     class="text-danger">
                                                     <div>
-
-                                                        <div *ngIf="BOL.errors.required">
-                                                            BOL/POD is required.
-                                                        </div>
-
                                                         <div *ngIf="BOL.errors.pattern">
                                                             BOL/POD must contains uppercase , lowercase, number and
                                                             special characters period(-,/) only. eg BOL-123
@@ -207,7 +191,7 @@
                                                             name="reeferTemperature"
                                                             [(ngModel)]="tripData.reeferTemperature"
                                                             placeholder="eg. 340.95 °C or °F " #reeferTemp="ngModel"
-                                                            required>
+                                                            >
                                                         <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
                                                             class="text-danger">
                                                             <div>
@@ -224,22 +208,11 @@
                                                         <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
                                                             name="reeferTemperatureUnit"
                                                             placeholder="Select Temperature Unit"
-                                                            #sltReeferTemp="ngModel" required>
+                                                            #sltReeferTemp="ngModel">
                                                             <ng-option value="C">°C</ng-option>
                                                             <ng-option value="F">°F</ng-option>
                                                         </ng-select>
-                                                        <div *ngIf="sltReeferTemp.invalid && (sltReeferTemp.dirty || sltReeferTemp.touched)"
-                                                            class="text-danger">
-                                                            <div>
-
-                                                                <div *ngIf="sltReeferTemp.errors.required">
-                                                                    Select valid reefer temperature from the list.
-                                                                </div>
-
-
-                                                            </div>
-
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -255,7 +228,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Type</th>
-                                                    <!-- <th>Date</th> -->
+                                                    <th>Date</th>
                                                     <!-- <th>Time</th> -->
                                                     <th>Pickup Time</th>
                                                     <th>Drop Off Time</th>
@@ -278,8 +251,8 @@
                                                 <tr class="ui-sortable-handle" cdkDrag
                                                     *ngFor="let trip of trips; let i= index">
                                                     <td id="labelCell1{{i}}" class="labelRow{{i}}">{{ trip.type }}</td>
-                                                    <!-- <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
-                                                    <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
+                                                    <td id="labelCell2{{i}}" class="labelRow{{i}}">{{ trip.date }}</td>
+                                                     <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
                                                     <td id="labelCell13{{i}}" class="labelRow{{i}}">{{ trip.pickupTime
                                                         }}</td>
                                                     <td id="labelCell14{{i}}" class="labelRow{{i}}">{{ trip.dropTime }}
@@ -333,10 +306,10 @@
                                                                 {{ type }}</option>
                                                         </select>
                                                     </td>
-                                                    <!-- <td class="rowStatus textRows editRow{{i}}">
+                                                    <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="date" class="form-control" id="editCell2{{i}}"
                                                             value="{{ trip.date }}">
-                                                    </td>-->
+                                                    </td>
 
                                                     <td class="rowStatus textRows editRow{{i}}">
                                                         <input type="time" class="form-control" id="editCell13{{i}}"
@@ -429,6 +402,10 @@
                                                             <option *ngFor="let type of typeOptions" value="{{ type }}">
                                                                 {{ type }}</option>
                                                         </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="date" class="form-control newRow" id="cell2"
+                                                            name="cell2">
                                                     </td>
                                                     <td>
                                                         <input type="time" class="form-control newRow" id="cell13"
@@ -599,19 +576,21 @@
                                             </ul>
                                         </div> -->
 
-                                        <div class="row mt-3 justify-content-center">
-                                            <div class="col-lg-11">
+                                        <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                            <div class="w100 pl-3">
                                                 <div class="tripbarn"></div>
                                             </div>
                                         </div>
                 
-                                        <div class="row d-flex justify-content-between pl-3 pr-3">
-                                            <div class="text-center" *ngFor="let trip of trips">
-                                                <div class="tripcirclen"></div>
-                                                <div class="tripcontentn">
-                                                    <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
-                                                        <br>{{ trip.locationName }}
-                                                        <br>{{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}</p>
+                                        <div class="tripinfoscroll">
+                                            <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                                <div class="text-center" *ngFor="let trip of trips">
+                                                    <div class="tripcirclen" data-toggle="tooltip" title="{{ trip.locationName }}"></div>
+                                                    <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
+                                                        <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
+                                                            <br>{{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
