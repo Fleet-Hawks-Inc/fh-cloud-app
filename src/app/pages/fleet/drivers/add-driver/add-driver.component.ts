@@ -746,9 +746,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.submitDisabled = false;
             this.toastr.success('Driver added successfully');
             this.isSubmitted = true;
-           // this.modalServiceOwn.triggerRedirect.next(true);
-            // this.takeUntil$.next();
-            // this.takeUntil$.complete();
+           this.modalServiceOwn.triggerRedirect.next(true);
+            this.takeUntil$.next();
+            this.takeUntil$.complete();
             this.spinner.hide();
             this.router.navigateByUrl('/fleet/drivers/list');
           },
@@ -1114,11 +1114,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.hasSuccess = true;
             this.isSubmitted = true;
             this.submitDisabled = false;
-            for (let i = 0; i < this.deletedAddress.length; i++) {
-              const element = this.deletedAddress[i];
-              this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
-
-            }
+            // for (let i = 0; i < this.deletedAddress.length; i++) {
+            //   const element = this.deletedAddress[i];
+            //   this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
+            // }
             this.toastr.success('Driver updated successfully');
             // this.router.navigateByUrl('/fleet/drivers/list');
             this.cancel();
@@ -1257,6 +1256,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
           this.carrierYards.push(e);
         }
       });
+      console.log(' this.carrierYards', this.carrierYards);
     });
   }
 

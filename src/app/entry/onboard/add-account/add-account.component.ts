@@ -340,7 +340,6 @@ export class AddAccountComponent implements OnInit {
         lastName: this.lastName,
         liabilityInsurance: this.liabilityInsurance,
         password: this.password,
-        confirmPassword: this.confirmPassword,
         addressDetails: this.addressDetails,
         phone: this.phone,
         fleets: {

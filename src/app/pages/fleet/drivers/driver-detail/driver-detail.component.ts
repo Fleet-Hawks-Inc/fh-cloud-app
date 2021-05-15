@@ -99,7 +99,7 @@ export class DriverDetailComponent implements OnInit {
   hosType: any;
   hosCycle: any;
   timezone: any;
-  optzone:any;
+  optzone: any;
   cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};

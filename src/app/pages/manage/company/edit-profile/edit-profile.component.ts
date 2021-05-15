@@ -143,7 +143,6 @@ export class EditProfileComponent implements OnInit {
         this.userName = this.carriers.userName;
         this.carrierName = this.carriers.carrierName;
         this.password = this.carriers.password,
-          this.confirmPassword = this.carriers.password,
           // carrierBusinessName = '';
           this.findingWay = this.carriers.findingWay;
         this.firstName = this.carriers.firstName;
@@ -441,7 +440,6 @@ export class EditProfileComponent implements OnInit {
         liabilityInsurance: this.liabilityInsurance,
         password: this.password,
         bizCountry: this.bizCountry,
-        confirmPassword: this.confirmPassword,
         addressDetails: this.addressDetails,
         phone: this.phone,
         fleets: {
