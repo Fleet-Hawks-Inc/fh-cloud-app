@@ -98,12 +98,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     currentTab: null, // for send data on last tab
     address: [{
       addressID: '',
-      addressType: null,
-      countryID: null,
+      addressType: '',
+      countryID: '',
       countryName: '',
-      stateID: null,
+      stateID: '',
       stateName: '',
-      cityID: null,
+      cityID: '',
       cityName: '',
       zipCode: '',
       address1: '',
@@ -116,7 +116,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       userLocation: ''
     }],
     documentDetails: [{
-      documentType: null,
+      documentType: '',
       document: '',
       issuingAuthority: '',
       issuingCountry:  null,
@@ -622,9 +622,9 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   fetchDrivers() {
-    this.apiService.getData(`drivers`).subscribe(res => {
-      this.allDrivers = res.Items;
-    });
+    // this.apiService.getData(`drivers`).subscribe(res => {
+    //   this.allDrivers = res.Items;
+    // });
   }
   addGroup() {
     this.hideErrors();
@@ -750,7 +750,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.takeUntil$.next();
             this.takeUntil$.complete();
             this.spinner.hide();
-            this.cancel();
+            this.router.navigateByUrl('/fleet/drivers/list');
           },
         });
       });
@@ -872,6 +872,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+        console.log('result', result);
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         // this.driverData.contractorId = result.contractorId;
@@ -1249,18 +1250,12 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.currentUserCarrier = isCarrierID;
       }
     }
+
     this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
       result.Items.map(e => {
-        if(e.addressType == 'yard') {
-          this.carrierYards.push(e);
-        }
+        this.carrierYards.push(e);
       });
     });
-    // this.apiService.getData(`addresses/carrier/${this.currentUserCarrier}`).subscribe(result => {
-    //   result.Items.map(e => {
-    //     this.carrierYards.push(e);
-    //   })
-    // });
   }
 
   closeGroupModal() {

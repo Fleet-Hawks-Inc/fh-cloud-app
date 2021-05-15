@@ -23,27 +23,39 @@
                 </span>
               </span>
               <input
-                type="text"
-                class="form-control"
-                placeholder="start date"
-                name="start"
-              />
+                  type="text"
+                  class="form-control"
+                  data-plugin-datepicker=""
+                  placeholder="start date"
+                  name="fromDate"
+                  (click)="d1.toggle()" 
+                  ngbDatepicker 
+                  #d1="ngbDatepicker"
+                  [(ngModel)]="fromDate"
+                  autocomplete="off"
+                />
               <span
                 class="input-group-text border-left-0 border-right-0 rounded-0"
               >
                 to
               </span>
               <input
-                type="text"
-                class="form-control"
-                placeholder="end date"
-                name="end"
-              />
+                  type="text"
+                  class="form-control"
+                  data-plugin-datepicker=""
+                  placeholder="to date"
+                  name="toDate"
+                  (click)="d2.toggle()" 
+                  ngbDatepicker 
+                  #d2="ngbDatepicker"
+                  [(ngModel)]="toDate"
+                  autocomplete="off"
+                />
             </div>
           </div>
 
           <div class="col-lg-1 col-md-1">
-            <button class="btn btn-success btn-sm">Search</button>
+            <button class="btn btn-success btn-sm" (click)="fetchUncertifiedLogs()">Search</button>
           </div>
 
           <div class="col-md-6 col-lg-6 text-right pr-1"></div>
@@ -73,15 +85,15 @@
                 <tbody>
                   <tr *ngFor="let log of logs">
                     <td><input type="checkbox" /></td>
-                    <td>28/04/2020 - 09:15AM</td>
-                    <td>Vehicle 745</td>
-                    <td>15 mi</td>
+                    <td>{{log.date}} - {{log.time}}</td>
+                    <td>{{log.vehicle}}</td>
+                    <td></td>
                     <td>45:00</td>
-                    <td>2345 King Street,Palace Town,Royal City,345667</td>
-                    <td>2345 King Street,Palace Town,Royal City,345667</td>
+                    <td>{{log.time}}</td>
+                    <td>{{log.endTime}}</td>
                     <td>
                       <a
-                        href="#milesAssignModal"
+                        [routerLink]=""
                         class="btn btn-sm btn-success modal-with-form"
                         ><i class="fas fa-check"></i> Assign</a
                       >
