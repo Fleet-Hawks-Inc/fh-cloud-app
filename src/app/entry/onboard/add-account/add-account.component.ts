@@ -5,6 +5,7 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from '
 import { from, Subject, throwError } from 'rxjs';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 
 declare var $: any;
 @Component({
@@ -48,15 +49,13 @@ export class AddAccountComponent implements OnInit {
   };
   addressDetails = [{
     addressType: 'yard',
-    countryID: '',
     countryName: '',
-    stateID: '',
+    countryCode: '',
+    stateCode: '',
     stateName: '',
-    cityID: '',
     cityName: '',
     zipCode: '',
-    address1: '',
-    address2: '',
+    address: '',
     geoCords: {
       lat: '',
       lng: ''
@@ -103,7 +102,7 @@ export class AddAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchCountries();
+  //  this.fetchCountries();
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
       this.carrierForm = $('#carrierForm').validate();
@@ -131,29 +130,38 @@ export class AddAccountComponent implements OnInit {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
+  // async getStates(id: any, oid = null) {
+  //   if (oid != null) {
+  //     this.addressDetails[oid].countryName = this.countriesObject[id];
+  //   }
+  //   this.apiService.getData('states/country/' + id)
+  //     .subscribe((result: any) => {
+  //       this.states = result.Items;
+  //     });
+  // }
   async getStates(id: any, oid = null) {
-    if (oid != null) {
-      this.addressDetails[oid].countryName = this.countriesObject[id];
-    }
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+    // if (oid != null) {
+    //   this.addressDetails[oid].countryName = this.countriesObject[id];
+    // }
+    this.states = CountryStateCity.GetStatesByCountryCode([id]);
+  //  console.log('this.states', this.states);
   }
-
-  async getCities(id: any, oid = null) {
+  async getCities(id: any, oid = null, CID: any) {
+  //  console.log('event', CID);
     if (oid != null) {
       this.addressDetails[oid].stateName = this.statesObject[id];
     }
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
+    // this.apiService.getData('cities/state/' + id)
+    //   .subscribe((result: any) => {
+    //     this.cities = result.Items;
+    //   });
+    this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
+  //  console.log('this.cities', this.cities);
   }
-  getCityName(i, id: any) {
-    const result = this.citiesObject[id];
-    this.addressDetails[i].cityName = result;
-  }
+  // getCityName(i, id: any) {
+  //   const result = this.citiesObject[id];
+  //   this.addressDetails[i].cityName = result;
+  // }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
@@ -161,15 +169,13 @@ export class AddAccountComponent implements OnInit {
     else {
       this.addressDetails.push({
         addressType: '',
-        countryID: '',
         countryName: '',
-        stateID: '',
+        countryCode: '',
+        stateCode: '',
         stateName: '',
-        cityID: '',
         cityName: '',
         zipCode: '',
-        address1: '',
-        address2: '',
+        address: '',
         geoCords: {
           lat: '',
           lng: ''
@@ -178,72 +184,41 @@ export class AddAccountComponent implements OnInit {
       });
     }
   }
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-        this.countries.map(elem => {
-          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
-            this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID });
-          }
-        });
-      });
-  }
-  async fetchCountriesByName(name: string, i) {
-    const result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;
-    }
-    return '';
-  }
+  // async fetchCountriesByName(name: string, i) {
+  //   const result = await this.apiService.getData(`countries/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     this.getStates(result.Items[0].countryID, i);
+  //     return result.Items[0].countryID;
+  //   }
+  //   return '';
+  // }
 
-  async fetchStatesByName(name: string, i) {
-    const result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID, i);
-      return result.Items[0].stateID;
-    }
-    return '';
-  }
+  // async fetchStatesByName(name: string, i) {
+  //   const result = await this.apiService.getData(`states/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     //this.getCities(result.Items[0].stateID, i,CID);
+  //     return result.Items[0].stateID;
+  //   }
+  //   return '';
+  // }
 
-  async fetchCitiesByName(name: string) {
-    const result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
+  // async fetchCitiesByName(name: string) {
+  //   const result = await this.apiService.getData(`cities/get/${name}`)
+  //     .toPromise();
+  //   if (result.Items.length > 0) {
+  //     return result.Items[0].cityID;
+  //   }
+  //   return '';
+  // }
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
       if (addressID != null) {
-        this.deletedAddress.push(addressID)
+        this.deletedAddress.push(addressID);
       }
       this.addressDetails.splice(i, 1);
     }
-  }
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
   }
   public searchLocation() {
     let target;
@@ -268,18 +243,17 @@ export class AddAccountComponent implements OnInit {
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
+    console.log('result address',result);
     this.addressDetails[i][`userLocation`] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
     this.addressDetails[i].countryName = result.address.countryName;
     $('div').removeClass('show-search__result');
+    this.addressDetails[i].stateCode = result.address.stateCode;
     this.addressDetails[i].stateName = result.address.state;
     this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
-    this.addressDetails[i].stateID = '';
-    this.addressDetails[i].cityID = '';
+    this.addressDetails[i].countryCode = ''; // empty the fields if manual is false (if manual was true IDs were stored)
     this.addressDetails[i].zipCode = result.address.postalCode;
-
     if (result.address.houseNumber === undefined) {
       result.address.houseNumber = '';
     }
@@ -298,9 +272,9 @@ export class AddAccountComponent implements OnInit {
     this.hideErrors();
     for (let i = 0; i < this.addressDetails.length; i++) {
       const element = this.addressDetails[i];
-      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-    ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      if (element.countryCode !== '' && element.stateCode !== '' && element.cityName !== '') {
+        let fullAddress = `${element.address} ${element.cityName}
+    ${element.stateCode} ${element.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
@@ -353,6 +327,7 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
+      console.log('data',data);
       // create form data instance
       const formData = new FormData();
       // append photos if any

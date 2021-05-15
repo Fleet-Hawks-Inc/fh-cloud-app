@@ -125,17 +125,17 @@
                       <td width="20%" class="back-color-gray">Address Type</td>
                       <td width="30%">{{address.addressType | titlecase}}</td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address1}}</span></td>
+                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Country</td>
-                      <td><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{countryList[address.countryID]}}</span></td>
+                      <td><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{address.countryName}}</span></td>
                       <td class="back-color-gray">Province</td>
-                      <td><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{stateList[address.stateID]}}</span></td>
+                      <td><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{address.stateName}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">City</td>
-                      <td><span *ngIf="!address.manual">{{address.cityName}}</span><span *ngIf="address.manual">{{address.cityID}}</span></td>
+                      <td>{{address.cityName}}</td>
                       <td class="back-color-gray">Postal Code</td>
                       <td>{{address.zipCode}}</td>
                     </tr>
