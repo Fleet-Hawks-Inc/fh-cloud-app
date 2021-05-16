@@ -74,11 +74,11 @@ const routes: Routes = [
     component: FuelEntryListComponent,
   },
   {
-    path: 'edit/:entryID',
+    path: 'edit/:fuelID',
     component: AddFuelEntryComponent,
   },
   {
-    path: 'detail/:entryID',
+    path: 'detail/:fuelID',
     component: FuelEntryDetailsComponent,
   },
 ];

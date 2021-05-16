@@ -717,9 +717,9 @@
                         <div class="row">
                           <div class="col-10">
                             <button type="button" class="btn cus-btn-padd btn-default mr-2" (click)="cancel()">Cancel</button>
-                            <button type="button" *ngIf="!entryID" (click)="addFuelEntry()"
+                            <button type="button" *ngIf="!fuelID" (click)="addFuelEntry()"
                               class="btn btn-success cus-btn-padd" [disabled]="submitDisabled">Save</button>
-                            <button type="button" *ngIf="entryID" (click)="updateFuelEntry()"
+                            <button type="button" *ngIf="fuelID" (click)="updateFuelEntry()"
                               class="btn btn-success cus-btn-padd" [disabled]="submitDisabled">Update</button>
                           </div>
                         </div>
