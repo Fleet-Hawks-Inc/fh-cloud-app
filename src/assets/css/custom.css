@@ -2030,7 +2030,6 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .tripcirclen{
-	position: absolute;
   display: block; margin-left:35px;
   background: #CCC;
   color: #FFF;
@@ -2048,7 +2047,12 @@ table.dataTable thead th, table.dataTable thead td {
 
 .tripcontentn{
 	display: inline-block;
-  margin-top:35px;
+  margin-top:17px; margin-left: 20px;
   min-width: 50px;
-  max-width: 100px;
+  max-width: 75px;
+}
+
+.tripinfoscroll {
+  overflow-x: scroll; 
+  white-space: nowrap;
 }
