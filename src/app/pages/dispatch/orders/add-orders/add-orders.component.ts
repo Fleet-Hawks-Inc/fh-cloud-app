@@ -455,7 +455,7 @@ export class AddOrdersComponent implements OnInit {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((term) => {
-          console.log(term)
+          
           if(term!=undefined){
           return this.HereMap.searchEntries(term);
         }
@@ -476,7 +476,7 @@ export class AddOrdersComponent implements OnInit {
   }
   resetSearch(){
     if(this.searchResults.length>0){
-    console.log("it's working")
+    
     this.searchResults=[]
     }
   }
