@@ -120,7 +120,7 @@
                                                 Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 
                                             <input class="form-control" placeholder="yyyy-mm-dd"
-                                                [(ngModel)]="reportedDate" name="reportedDate" (click)="d.toggle()"
+                                                [(ngModel)]="reportedDate" (keydown)="$event.preventDefault()" name="reportedDate" (click)="d.toggle()"
                                                 ngbDatepicker #d="ngbDatepicker" #dateReport="ngModel" required>
                                                 <div *ngIf="dateReport.invalid && (dateReport.dirty || dateReport.touched)" class="text-danger">
                                                     <div *ngIf="dateReport.errors.required">

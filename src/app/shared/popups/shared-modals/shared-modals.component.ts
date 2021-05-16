@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import constants from '../../../../app/pages/fleet/constants';
 import { HereMapService } from '../../../services';
 import { Auth } from 'aws-amplify';
+import * as moment from 'moment';
 
 declare var $: any;
 @Component({
@@ -371,7 +372,7 @@ issuesData = {
   currentStatus: 'OPEN',
   unitID: '',
   unitType: 'vehicle',
-  reportedDate: '',
+  reportedDate: moment().format('YYYY-MM-DD'),
   description: '',
   odometer: null,
   reportedBy: '',

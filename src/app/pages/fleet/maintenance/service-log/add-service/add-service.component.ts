@@ -10,6 +10,7 @@ import { HereMapService } from '../../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ListService } from '../../../../../services/list.service'
 import { isTemplateHead } from 'typescript';
+import { DomSanitizer} from '@angular/platform-browser';
 declare var $: any;
 
 @Component({
@@ -18,6 +19,7 @@ declare var $: any;
   styleUrls: ['./add-service.component.css']
 })
 export class AddServiceComponent implements OnInit {
+  logurl = this.apiService.AssetUrl;
   groups;
   vendors;
   vehicles;
@@ -81,7 +83,9 @@ export class AddServiceComponent implements OnInit {
     geoCords: {
       lat: '',
       lng: ''
-    }
+    },
+     uploadedPhotos: [],
+    uploadedDocs: []
   };
   
   uploadedPhotos = [];
@@ -123,7 +127,14 @@ export class AddServiceComponent implements OnInit {
 
   inventoryQuantity: any = {};
   savedIssues = [];
-  
+
+  logImages = []
+  logDocs = [];
+  existingPhotos = [];
+  existingDocs = [];
+
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -133,6 +144,7 @@ export class AddServiceComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private hereMap: HereMapService,
+    private domSanitizer: DomSanitizer,
     private listService: ListService
   ) {
     this.selectedFileNames = new Map<any, any>();
@@ -360,7 +372,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   /*
-   * Get a vehicle by ID
+   * Get a assets by ID
    */
   fetchAssetByID(id) {
     this.apiService.getData(`assets/${id}`).subscribe(async (result: any) => {
@@ -532,7 +544,6 @@ export class AddServiceComponent implements OnInit {
       reminderID: remindID,
       schedule: newSchedule,
     });
-    console.log('addTasks', this.selectedTasks);
   }
 
   async addListedTasks(data: any) {
@@ -549,9 +560,7 @@ export class AddServiceComponent implements OnInit {
       reminderID: data.reminderID,
       schedule: `Every ${data.reminderTasks.odometer} Miles`,
     });
-    // console.log('serviceTaskList', this.serviceData.allServiceTasks.serviceTaskList);
-    console.log('selectedTasks', this.selectedTasks);
-    // console.log('task****', data)
+    
   }
 
   removeListedTasks(data) {
@@ -705,6 +714,7 @@ export class AddServiceComponent implements OnInit {
       .getData('serviceLogs/' + this.logID)
       .subscribe((result: any) => {
         result = result.Items[0];
+        
         this.serviceData['logID'] = this.logID;
         this.serviceData.unitType = result.unitType;
         if (result.vehicleID) {
@@ -727,6 +737,7 @@ export class AddServiceComponent implements OnInit {
         this.serviceData.description = result.description;
         
         this.savedIssues = result.selectedIssues;
+        this.serviceData.selectedIssues = result.selectedIssues;
         
         let newTasks = [];
         for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
@@ -772,7 +783,20 @@ export class AddServiceComponent implements OnInit {
         
         this.totalPartsPrice = result.allServiceParts['subTotal'];
         this.totalQuantity = result.allServiceParts['totalQuantity'];
-        
+        this.existingPhotos = result.uploadedPhotos;
+        this.existingDocs = result.uploadedDocs;
+
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.logImages = result.uploadedPhotos.map(x => ({
+            path: `${this.logurl}/${result.carrierID}/${x}`,
+            name: x,
+          }));
+        }
+
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+          this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
+        }
+
         this.selectedIssues = result.selectedIssues;
         this.serviceData['timeCreated'] = result.timeCreated;
       });
@@ -805,6 +829,27 @@ export class AddServiceComponent implements OnInit {
       delete this.serviceData.vehicleID;
     }
 
+    const data = {
+      logID: this.logID,
+      unitType: this.serviceData.unitType,
+      reference: this.serviceData.reference,
+      vehicleID: this.serviceData.vehicleID,
+      assetID: this.serviceData.assetID,
+      odometer: this.serviceData.odometer,
+      completionDate: this.serviceData.completionDate,
+      vendorID: this.serviceData.vendorID,
+      description: this.serviceData.description,
+      taskIds: this.serviceData.taskIds,
+      allServiceTasks: this.serviceData.allServiceTasks,
+      allServiceParts: this.serviceData.allServiceParts,
+      selectedIssues: this.serviceData.selectedIssues,
+      location: this.serviceData.location,
+      geoCords: this.serviceData.geoCords,
+      uploadedPhotos: this.existingPhotos,
+      uploadedDocs:  this.existingDocs 
+    };
+
+    console.log('data', data)
     // create form data instance
     const formData = new FormData();
 
@@ -817,10 +862,10 @@ export class AddServiceComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
-
+    
     //append other fields
-    formData.append('data', JSON.stringify(this.serviceData));
-    this.apiService.putData('serviceLogs', formData, true).subscribe({
+    formData.append('data', JSON.stringify(data));
+    this.apiService.putData('serviceLogs/', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1192,6 +1237,24 @@ export class AddServiceComponent implements OnInit {
       warehouseID: undefined
     }
     $("#partModal").modal('show');
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents
+  delete(type: string, name: string) {
+    this.apiService.deleteData(`assets/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      this.fetchServiceByID();
+    });
   }
 
 }
