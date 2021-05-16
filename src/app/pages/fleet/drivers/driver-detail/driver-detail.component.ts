@@ -137,6 +137,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
+    this.fetchDriverTrips();
   }
   fetchHomeTerminal(homeTerminal){
       if (homeTerminal && homeTerminal.length > 0) {
