@@ -1955,12 +1955,16 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. +12032342345" #brokerph="ngModel" required pattern="^(\+1)[0-9]{10}$">
-                                                        <div *ngIf="brokerph.invalid && (brokerph.dirty || brokerph.touched)" class="text-danger">
-                                                            <div *ngIf="brokerph.errors.pattern">
-                                                            Enter valid phone number eg. +12032342345 .
-                                                        </div>
-                                                    </div>
+
+                                                        <input [(ngModel)]="brokerData.workPhone" name="workPhone" type="text" class="form-control" placeholder=" eg. +12032342345" #brokerphn2="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                          <div *ngIf="brokerphn2.invalid && (brokerphn2.dirty || brokerphn2.touched)" class="text-danger">
+                                                            <div *ngIf="brokerphn2.errors.pattern">
+                                                                Phone number must be between Valid.
+                                                            </div>
+
+                                                          </div>                                                        
+
+
                                                     </div>
                                                 </div>
                                             </div>

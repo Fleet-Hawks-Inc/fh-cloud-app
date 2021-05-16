@@ -139,6 +139,7 @@ export class DriverDetailComponent implements OnInit {
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
+    this.fetchDriverTrips();
   }
 
    /**
@@ -334,6 +335,12 @@ export class DriverDetailComponent implements OnInit {
   delete(type: string, name: string, index: string){
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
       this.fetchDriver();
+    });
+  }
+
+  fetchDriverTrips(){
+    this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+      console.log('trip result', result);
     });
   }
 }
