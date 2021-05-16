@@ -279,7 +279,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel"  pattern="^[0-9 A-Z]{4}$">
+                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" pattern="^[0-9 A-Z]{4}$">
                           <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
                             <div *ngIf="ccc.errors.pattern">
                               CCC must be of length 4 and contains  capital letters or numbers.
@@ -292,7 +292,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC"
+                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JK12"
                         #scac="ngModel"  pattern="^[0-9 A-Z]{4}$">
                           <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
@@ -306,13 +306,13 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Liability Insurance#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance"
+                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance" placeholder="Enter liability insurance number"
                           name="liabilityInsurance">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance">
+                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance" placeholder="Enter cargo insurance number">
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -447,10 +447,10 @@
                               <label
                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
                               <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
-                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.\,]+$">
                                 <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
-                                    Street address must contain small letters,capital letters or numbers and no special character except # .
+                                    Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
                                   </div>
                                 </div>
                             </div>

@@ -147,7 +147,7 @@
                         </label>
                         <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
                           [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB"
-                          name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value="" (change)="birthdate($event)"
+                          name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
                           #dob="ngModel" required>
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
@@ -401,7 +401,7 @@
                         <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
                           placeholder="Select the citizenship country of driver"
                           (change)="onChangeHideErrors('citizenship')" #cSlt="ngModel" required>
-                          <ng-option class="text-capitalize" *ngFor="let country of countries"
+                          <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
                         <div *ngIf="cSlt.invalid && (cSlt.dirty || cSlt.touched)" class="text-danger">
@@ -652,11 +652,11 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getStates($event)"
+                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event)"
                           [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
                           [ngModelOptions]="{standalone: true}" class="form-control populate"
                           placeholder="Select the issuing country">
-                          <ng-option class="text-capitalize" *ngFor="let country of countries"
+                          <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
                       </div>
@@ -666,7 +666,7 @@
                           (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
                           [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
-                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateCode}}">
+                          <ng-option class="text-capitalize" *ngFor="let state of docStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
                       </div>

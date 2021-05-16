@@ -125,7 +125,6 @@ export class EditProfileComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
-        console.log('result', result);
         this.carriers = result.Items[0];
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
@@ -159,43 +158,6 @@ export class EditProfileComponent implements OnInit {
           trailers: this.carriers.fleets.trailers,
           trucks: this.carriers.fleets.trucks,
         };
-        // for (let i = 0; i < this.carriers.addressDetails.length; i++) {
-        //   if (this.carriers.addressDetails[i].manual) {
-        //     this.newAddress.push({
-        //       addressID: this.carriers.addressDetails[i].addressID,
-        //       addressType: this.carriers.addressDetails[i].addressType,
-        //       countryCode: this.carriers.addressDetails[i].countryCode,
-        //       countryName: this.carriers.addressDetails[i].countryName,
-        //       stateCode: this.carriers.addressDetails[i].stateCode,
-        //       stateName: this.carriers.addressDetails[i].stateName,
-        //       cityName: this.carriers.addressDetails[i].cityName,
-        //       zipCode: this.carriers.addressDetails[i].zipCode,
-        //       address: this.carriers.addressDetails[i].address,
-        //       geoCords: {
-        //         lat: this.carriers.addressDetails[i].geoCords.lat,
-        //         lng: this.carriers.addressDetails[i].geoCords.lng
-        //       },
-        //       manual: this.carriers.addressDetails[i].manual
-        //     })
-        //   } else {
-        //     this.newAddress.push({
-        //       addressID: this.carriers.addressDetails[i].addressID,
-        //       addressType: this.carriers.addressDetails[i].addressType,
-        //       countryCode: this.carriers.addressDetails[i].countryCode,
-        //       countryName: this.carriers.addressDetails[i].countryName,
-        //       stateCode: this.carriers.addressDetails[i].stateCode,
-        //       stateName: this.carriers.addressDetails[i].stateName,
-        //       cityName: this.carriers.addressDetails[i].cityName,
-        //       zipCode: this.carriers.addressDetails[i].zipCode,
-        //       address: this.carriers.addressDetails[i].address,
-        //       geoCords: {
-        //         lat: this.carriers.addressDetails[i].geoCords.lat,
-        //         lng: this.carriers.addressDetails[i].geoCords.lng
-        //       },
-        //       userLocation: this.carriers.addressDetails[i].userLocation
-        //     });
-        //   }
-        // }
         this.addressDetails = this.carriers.addressDetails;
         this.fetchAddress(this.carriers.addressDetails);
         this.banks = this.carriers.banks;
@@ -254,9 +216,6 @@ export class EditProfileComponent implements OnInit {
 
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID)
-      }
       this.addressDetails.splice(i, 1);
     }
   }
@@ -283,7 +242,6 @@ export class EditProfileComponent implements OnInit {
   async userAddress(i, item) {
     let result = await this.HereMap.geoCode(item.address.label);
     result = result.items[0];
-    console.log('result address',result);
     this.addressDetails[i][`userLocation`] = result.address.label;
     this.addressDetails[i].geoCords.lat = result.position.lat;
     this.addressDetails[i].geoCords.lng = result.position.lng;
@@ -403,7 +361,6 @@ export class EditProfileComponent implements OnInit {
           this.submitDisabled = false;
           this.toaster.success('Carrier updated successfully.');
           this.cancel();
-
           this.updateUser();
         },
       });
@@ -412,12 +369,15 @@ export class EditProfileComponent implements OnInit {
     }
   }
   updateUser() {
-    let currentUser = `${this.firstName} ${this.lastName}`;
-    const outputName = currentUser.match(/\b(\w)/g);
-    let smallName = outputName.join('');
-    localStorage.setItem('currentUserName', currentUser);
-    localStorage.setItem('nickName', smallName);
-    this.headerComponentFunction();
+    let currentLoggedUserName = localStorage.getItem('currentLoggedUserName');
+    if(currentLoggedUserName == this.userName){
+      let currentUser = `${this.firstName} ${this.lastName}`;
+      const outputName = currentUser.match(/\b(\w)/g);
+      let smallName = outputName.join('');
+      localStorage.setItem('currentUserName', currentUser);
+      localStorage.setItem('nickName', smallName);
+      this.headerComponentFunction();
+    }
   }
   throwErrors() {
     from(Object.keys(this.errors))

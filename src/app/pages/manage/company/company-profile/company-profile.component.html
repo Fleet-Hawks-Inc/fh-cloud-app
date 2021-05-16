@@ -9,7 +9,7 @@
           <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
         </div>
         <div class="col-md-10 col-lg-10 text-right pr-1">
-          <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"><i class="fas fa-plus"></i> Edit Company
+          <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" *ngIf="carriers.carrierID != '' || carriers.carrierID != undefined"><i class="fas fa-plus"></i> Edit Company
             Detail</a>
         </div>
       </div>

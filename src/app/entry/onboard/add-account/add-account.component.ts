@@ -102,7 +102,6 @@ export class AddAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-  //  this.fetchCountries();
     this.searchLocation(); // search location on keyup
     $(document).ready(() => {
       this.carrierForm = $('#carrierForm').validate();
@@ -130,38 +129,14 @@ export class AddAccountComponent implements OnInit {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  // async getStates(id: any, oid = null) {
-  //   if (oid != null) {
-  //     this.addressDetails[oid].countryName = this.countriesObject[id];
-  //   }
-  //   this.apiService.getData('states/country/' + id)
-  //     .subscribe((result: any) => {
-  //       this.states = result.Items;
-  //     });
-  // }
   async getStates(id: any, oid = null) {
-    // if (oid != null) {
-    //   this.addressDetails[oid].countryName = this.countriesObject[id];
-    // }
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
   //  console.log('this.states', this.states);
   }
   async getCities(id: any, oid = null, CID: any) {
-  //  console.log('event', CID);
-    if (oid != null) {
-      this.addressDetails[oid].stateName = this.statesObject[id];
-    }
-    // this.apiService.getData('cities/state/' + id)
-    //   .subscribe((result: any) => {
-    //     this.cities = result.Items;
-    //   });
     this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
   //  console.log('this.cities', this.cities);
   }
-  // getCityName(i, id: any) {
-  //   const result = this.citiesObject[id];
-  //   this.addressDetails[i].cityName = result;
-  // }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
@@ -184,34 +159,6 @@ export class AddAccountComponent implements OnInit {
       });
     }
   }
-  // async fetchCountriesByName(name: string, i) {
-  //   const result = await this.apiService.getData(`countries/get/${name}`)
-  //     .toPromise();
-  //   if (result.Items.length > 0) {
-  //     this.getStates(result.Items[0].countryID, i);
-  //     return result.Items[0].countryID;
-  //   }
-  //   return '';
-  // }
-
-  // async fetchStatesByName(name: string, i) {
-  //   const result = await this.apiService.getData(`states/get/${name}`)
-  //     .toPromise();
-  //   if (result.Items.length > 0) {
-  //     //this.getCities(result.Items[0].stateID, i,CID);
-  //     return result.Items[0].stateID;
-  //   }
-  //   return '';
-  // }
-
-  // async fetchCitiesByName(name: string) {
-  //   const result = await this.apiService.getData(`cities/get/${name}`)
-  //     .toPromise();
-  //   if (result.Items.length > 0) {
-  //     return result.Items[0].cityID;
-  //   }
-  //   return '';
-  // }
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
       if (addressID != null) {

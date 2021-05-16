@@ -227,7 +227,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   documentTypeList: any = [];
   driverLicenseCountry = '';
   groups = [];
-  countries = [];
+  docCountries = [];
+  docStates = [];
   vehicles: any;
   states = [];
 
@@ -359,10 +360,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     $(document).ready(() => {
       this.form = $('#driverForm, #groupForm').validate();
     });
-    for (let i = 0; i < this.driverData.documentDetails.length; i++) {
-      const element = this.driverData.documentDetails[i];
-      await this.getStates(element.issuingCountry);
-    }
+    // for (let i = 0; i < this.driverData.documentDetails.length; i++) {
+    //   const element = this.driverData.documentDetails[i];
+    //   await this.getStates(element.issuingCountry);
+    // }
     this.vehicles = this.listService.vehicleList;
     this.ownerOperators = this.listService.ownerOperatorList;
 
@@ -481,7 +482,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     });
   }
   fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries();
+    this.docCountries = CountryStateCity.GetAllCountries();
   }
 
   fetchYards() {
@@ -491,21 +492,28 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       });
   }
 
-  async getStates(id: any, oid = null) {
+   getStates(id: any, oid = null) {
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
   }
 
-  async getCities(id: any, oid = null, CID: any) {
+   getCities(id: any, oid = null, CID: any) {
     this.cities = CountryStateCity.GetCitiesByStateCodes(CID, id);
   }
-  fetchStates(docs){
-    let countryCodes: any = ['US','CA'];
+  getDocStates(cntryCode){
+    this.docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+  }
+ fetchStates() {
+  let countryCodes: any = ['US', 'CA'];
+  this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
+ }
+  fetchDocStates(docs){
+    let countryCodes: any = [];
     for(let d=0; d < docs.length; d++){
-      docs.map((d: any) => {
-        countryCodes.push(d.issuingCountry);
+      docs.map((e: any) => {
+        countryCodes.push(e.issuingCountry);
       });
     }
-    this.states = CountryStateCity.GetStatesByCountryCode(countryCodes);
+    this.docStates = CountryStateCity.GetStatesByCountryCode(countryCodes);
   }
 fetchCities(address){
   for(let a=0; a< address.length; a++){
@@ -517,7 +525,6 @@ fetchCities(address){
     }
     this.cities = _.merge(this.cities, cityList);
   }
-  console.log('tghis.cities', this.cities);
 }
 
   fetchDocuments() {
@@ -553,7 +560,7 @@ fetchCities(address){
     reader.onload = e => this.driverProfileSrc = reader.result;
     reader.readAsDataURL(files[0]);
     this.uploadedPhotos = [];
-    this.uploadedPhotos.push(files[0])
+    this.uploadedPhotos.push(files[0]);
 
     if (this.uploadedPhotos.length > 0) {
       this.profileTitle = 'Change';
@@ -802,7 +809,8 @@ fetchCities(address){
       .subscribe(async (result: any) => {
         result = result.Items[0];
         console.log('result', result);
-        this.fetchStates(result.documentDetails);
+        this.fetchStates();
+        this.fetchDocStates(result.documentDetails);
         this.fetchCities(result.address);
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
@@ -942,7 +950,7 @@ fetchCities(address){
         this.driverData.hosDetails.type = result.hosDetails.type;
         this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
         this.driverData.hosDetails.hosCycle = result.hosDetails.hosCycle;
-        this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal;
+        this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal[0].addressID;
         this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
         this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
         this.driverData.hosDetails.timezone = result.hosDetails.timezone;
@@ -1039,13 +1047,9 @@ fetchCities(address){
             this.hasSuccess = true;
             this.isSubmitted = true;
             this.submitDisabled = false;
-            // for (let i = 0; i < this.deletedAddress.length; i++) {
-            //   const element = this.deletedAddress[i];
-            //   this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
-            // }
             this.toastr.success('Driver updated successfully');
-            // this.router.navigateByUrl('/fleet/drivers/list');
-            this.cancel();
+            this.router.navigateByUrl('/fleet/drivers/list');
+          //  this.cancel();
 
           },
         })
