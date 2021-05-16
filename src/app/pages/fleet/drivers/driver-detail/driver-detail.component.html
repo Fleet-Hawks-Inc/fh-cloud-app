@@ -417,7 +417,7 @@
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
-      <div class="modal-body text-dark">
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right"><button type="button" data-toggle="modal"
@@ -492,7 +492,7 @@
           <div class="col-6">
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Citizenship:</div>
-              <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[citizenship]}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{citizenship}}</div>
             </div>
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Phone:</div>
@@ -583,11 +583,11 @@
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Country:</div>
-              <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[item.issuingCountry]}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingCountry}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issuing Province:</div>
-              <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[item.issuingState]}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{item.issuingState}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issue Date:</div>
@@ -669,11 +669,11 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Province:</div>
-                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{statesObject[liceIssueSate]}}</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceIssueSate}}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Issued Country:</div>
-                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{countriesObject[liceIssueCountry]}}</div>
+                    <div class="col-lg-6 p-2 bor_half text-capitalize">{{liceIssueCountry}}</div>
                   </div>
 
                   <div class="row  m-0">

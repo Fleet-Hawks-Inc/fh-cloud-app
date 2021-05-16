@@ -26,7 +26,7 @@
                   <div *ngIf="login.errors.pattern">
                       The length of  Username must be 6 characters and may contain combination of lowercase letters, numbers and special character(.).
                   </div>
-                 
+
                 </div>
 
             </div>
@@ -40,7 +40,7 @@
               </div>
               <input name="pwd"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg"
                 [(ngModel)]="password" #password1="ngModel" required pattern="^[a-zA-Z0-9\@\#\#$\&]{8,20}$"/>
-               
+
                 <div class="input-group-append " >
                   <span class="input-group-text eye">
                     <i class="fa" [ngClass]="{
@@ -57,23 +57,15 @@
                 <div *ngIf="password1.errors.pattern">
                   The length of Password must be 8 characters and must contain combination of letters, numbers and special characters(@,#,$,'.',&).
                 </div>
-               
               </div>
             </div>
-
           </div>
-
           <div class="row">
-            
             <p *ngIf="hasError" class="text text-danger" >{{Error}}</p>
           </div>
-
           <div class="row">
-
             <div class="col-sm-12 pl-signin text-center">
-
               <button id="btnsubmit" type="submit" class="btn btn-primary btn-block btn-lg mt-2" (click)="loginAction1()">Sign In</button>
-            
             </div>
             <div class="col-sm-12 mt-2 pt-1 text-center">
               <a [routerLink]="['/onboard']" class="font-weight-semibold">Does not have an account yet!&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
