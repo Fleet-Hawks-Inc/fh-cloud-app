@@ -145,9 +145,9 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Birth Date <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker"
+                        <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
                           [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" [(ngModel)]="driverData.DOB"
-                          name="DOB" type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
+                          name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
                           #dob="ngModel" required>
                         <div *ngIf="dob.invalid && (dob.dirty || dob.touched)" class="text-danger">
                           <div *ngIf="dob.errors.required">
@@ -337,7 +337,7 @@
                               class="form-control" placeholder="yyyy/mm/dd" #dSlt="ngModel" required>
                             <div *ngIf="dSlt.invalid && (dSlt.dirty || dSlt.touched)" class="text-danger">
                               <div *ngIf="dSlt.errors.required">
-                                Start Date is required and must contain yyyy/mm/dd format..
+                                Start Date is required and must contain yyyy/mm/dd format.
                               </div>
                             </div>
                           </div>
@@ -401,8 +401,8 @@
                         <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
                           placeholder="Select the citizenship country of driver"
                           (change)="onChangeHideErrors('citizenship')" #cSlt="ngModel" required>
-                          <ng-option class="text-capitalize" *ngFor="let country of countries"
-                            value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                          <ng-option class="text-capitalize" *ngFor="let country of docCountries"
+                            value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
                         <div *ngIf="cSlt.invalid && (cSlt.dirty || cSlt.touched)" class="text-danger">
                           <div *ngIf="cSlt.errors.required">
@@ -504,28 +504,28 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               Country</label>
-                            <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}" data-plugin-selectTwo
+                            <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}" data-plugin-selectTwo
                               (change)="getStates($event, i)" class="form-control populate"
                               placeholder="Select country">
-                              <ng-option class="text-capitalize" *ngFor="let country of addressCountries"
-                                value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                              <ng-option value="CA">Canada</ng-option>
+                              <ng-option value="US">United States of America</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               Province</label>
-                            <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID" name="stateID{{i}}"
+                            <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
                               placeholder="Select Province">
-                              <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
+                              <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateCode}}">
                                 {{state.stateName}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               City</label>
-                            <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID" name="cityID{{i}}"
+                            <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}"
                               placeholder="Select city">
-                              <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">
+                              <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityName}}">
                                 {{city.cityName}}</ng-option>
                             </ng-select>
                           </div>
@@ -652,21 +652,21 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getStates($event)"
+                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event)"
                           [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
                           [ngModelOptions]="{standalone: true}" class="form-control populate"
                           placeholder="Select the issuing country">
-                          <ng-option class="text-capitalize" *ngFor="let country of countries"
-                            value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                          <ng-option class="text-capitalize" *ngFor="let country of docCountries"
+                            value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State/Province </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');getCities($event)"
+                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
                           [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province">
-                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
+                          <ng-option class="text-capitalize" *ngFor="let state of docStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
                       </div>
@@ -880,8 +880,8 @@
                           [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
                           name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel" required>
 
-                          <ng-option class="text-capitalize" *ngFor="let country of addressCountries"
-                            value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                          <ng-option value="CA">Canada</ng-option>
+                              <ng-option value="US">United States of America</ng-option>
 
                         </ng-select>
                         <div *ngIf="conSlt.invalid && (conSlt.dirty || conSlt.touched)" class="text-danger">
@@ -896,13 +896,10 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
                           placeholder="Select Province"
-                          (change)="onChangeHideErrors('licenceDetails.issuedState');getCities($event)" #ipSlt="ngModel"
+                          (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
                           required>
-
-
-                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
+                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
-
                         </ng-select>
                         <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
                           <div *ngIf="ipSlt.errors.required">
@@ -1008,10 +1005,10 @@
                           pattern="^[0-9]+$" maxlength="9">
                         <div *ngIf="sin.invalid && (sin.dirty || sin.touched)" class="text-danger">
                           <div *ngIf="sin.errors.required">
-                            SIN is required.
+                            Sin is required.
                           </div>
                           <div *ngIf="sin.errors.pattern">
-                            SIN must contains numbers only.
+                            Sin must contains numbers only.
                           </div>
                         </div>
                       </div>
@@ -1274,8 +1271,7 @@
                           <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
                             value="{{yard.addressID}}">
                             <div *ngIf="yard.manual">
-                              {{ yard.address1 }} {{ yard.address2}}, {{ yard.cityName }}, {{
-                            yard.stateName }}, {{ yard.countryName }}
+                              {{ yard.address }} {{ yard.cityName }}, {{ yard.stateName }}, {{ yard.countryName }}
                             </div>
                             <div *ngIf="!yard.manual">
                               {{ yard.userLocation }}
@@ -1339,39 +1335,6 @@
                               name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">Allow Yard Move (YM)</label>
                         </div>
                       </div>
-                      <!-- <div class="col-lg-10" id="crgo" style="display:none;">
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Type <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">Property</option>
-                          <optgroup label="">
-                            <option value="">Property</option>
-                            <option value="">Passenger</option>
-                            <option value="">Oil and Gases</option>
-                          </optgroup>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Restart<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">34 hour Start</option>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Reset Break<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <option selected="selected">30 min</option>
-                        </select>
-                        <label class="control-label font-weight-bold text-lg-right pt-2">Short Haul Exception<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <select data-plugin-selectTwo class="form-control populate">
-                          <optgroup label="">
-                            <option value="">No short Haul Exception</option>
-                          </optgroup>
-                        </select>
-                      </div> -->
                     </div>
                   </div>
                 </div>

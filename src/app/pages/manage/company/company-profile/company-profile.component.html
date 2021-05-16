@@ -9,7 +9,7 @@
           <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
         </div>
         <div class="col-md-10 col-lg-10 text-right pr-1">
-          <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"><i class="fas fa-plus"></i> Edit Company
+          <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" *ngIf="carriers.carrierID != '' || carriers.carrierID != undefined"><i class="fas fa-plus"></i> Edit Company
             Detail</a>
         </div>
       </div>
@@ -72,14 +72,14 @@
                     <tr>
                       <td class="back-color-gray">Vehicle(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span></td>
-                      <td class="back-color-gray">MC#</td>
-                      <td>{{carriers.MC}}</td>
+                      <td class="back-color-gray">Liability Insurance#</td>
+                      <td>{{carriers.liabilityInsurance}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Asset(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span></td>
-                      <td class="back-color-gray">DOT#</td>
-                      <td>{{carriers.DOT}}</td>
+                      <td class="back-color-gray">Cargo Insurance#</td>
+                      <td>{{carriers.cargoInsurance}}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Reefer(s)</td>
@@ -96,44 +96,50 @@
                     <tr>
                       <td class="back-color-gray">Flatbed(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span></td>
-                      <td class="back-color-gray">Liability Insurance#</td>
-                      <td>{{carriers.liabilityInsurance}}</td>
+                      <td class="back-color-gray">Business Country</td>
+                      <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
+                        <span *ngIf="carriers.bizCountry == 'US'">United States of America</span>
+                        <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span></td>
+
                     </tr>
                     <tr>
                       <td class="back-color-gray">Curtainside(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide}}</span></td>
-                      <td class="back-color-gray">Cargo Insurance#</td>
-                      <td>{{carriers.cargoInsurance}}</td>
+                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#</td>
+                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.DOT}}</td>
+                    </tr>
+                    <tr>
+                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
+                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
+                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
+                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
               <div class="col-lg-12">
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
                 <table class="table table-bordered table-responsive-lg">
-                  <tbody *ngFor="let address of carriers.address">
+                  <tbody *ngFor="let address of carriers.addressDetails">
                     <tr>
                       <td width="20%" class="back-color-gray">Address Type</td>
                       <td width="30%">{{address.addressType | titlecase}}</td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address1}}</span></td>
+                      <td width="30%"><span *ngIf="!address.manual">{{address.userLocation}}</span><span *ngIf="address.manual">{{address.address}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Country</td>
-                      <td><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{countryList[address.countryID]}}</span></td>
+                      <td><span *ngIf="!address.manual">{{address.countryName}}</span><span *ngIf="address.manual">{{address.countryName}}</span></td>
                       <td class="back-color-gray">Province</td>
-                      <td><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{stateList[address.stateID]}}</span></td>
+                      <td><span *ngIf="!address.manual">{{address.stateName}}</span><span *ngIf="address.manual">{{address.stateName}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">City</td>
-                      <td><span *ngIf="!address.manual">{{address.cityName}}</span><span *ngIf="address.manual">{{cityList[address.cityID]}}</span></td>
+                      <td>{{address.cityName}}</td>
                       <td class="back-color-gray">Postal Code</td>
                       <td>{{address.zipCode}}</td>
                     </tr>
-                    <br>
                   </tbody>
-
                 </table>
               </div>
 
@@ -141,22 +147,22 @@
               <div class="col-lg-12">
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Detail</h2>
                 <table class="table table-bordered table-responsive-lg" >
-                  <tbody>
+                  <tbody *ngFor="let bank of carriers.banks">
                     <tr>
                       <td width="20%" class="back-color-gray">Bank Name</td>
-                      <td width="30%"><span *ngIf="carriers.bank != undefined">{{carriers.bank.branchName}}</span></td>
+                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName}}</span></td>
                       <td width="20%" class="back-color-gray">Routing#</td>
-                      <td width="30%"><span *ngIf="carriers.bank != undefined">{{carriers.bank.routingNumber}}</span></td>
+                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Account#</td>
-                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.accountNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber}}</span></td>
                       <td class="back-color-gray">Transit#</td>
-                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.transitNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber}}</span></td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Institution#</td>
-                      <td><span *ngIf="carriers.bank != undefined">{{carriers.bank.institutionNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber}}</span></td>
                     </tr>
                   </tbody>
                 </table>
