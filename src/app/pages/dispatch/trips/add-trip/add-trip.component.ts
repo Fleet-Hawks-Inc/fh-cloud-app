@@ -183,7 +183,8 @@ export class AddTripComponent implements OnInit {
             this.pageTitle = 'Edit Trip';
         } else {
             this.pageTitle = 'Add Trip';
-        }
+            this.fetchLastTripNumber();
+        } 
         this.fetchOrders();
         this.fetchCustomerByIDs();
         this.fetchCarriers();
@@ -201,6 +202,7 @@ export class AddTripComponent implements OnInit {
         this.fetchVehiclesByIDs();
         this.getCurrentuser();
         this.fetchAllCarrierIDs();
+        
         if (this.tripID != undefined) {
             this.fetchTripDetail();
         }
@@ -210,7 +212,6 @@ export class AddTripComponent implements OnInit {
         });
     }
 
-    
     fetchCarriers() {
         this.apiService.getData('externalCarriers')
             .subscribe((result: any) => {
@@ -256,6 +257,7 @@ export class AddTripComponent implements OnInit {
         if (this.textFieldValues.type !== '' && this.textFieldValues.locationName !== '') {
 
             this.textFieldValues.time = $("#cell12").val();
+            this.textFieldValues.date = $("#cell2").val();
             this.textFieldValues.pickupTime = $("#cell13").val();
             this.textFieldValues.dropTime = $("#cell14").val();
             this.textFieldValues.actualPickupTime = $("#cell15").val();
@@ -579,19 +581,19 @@ export class AddTripComponent implements OnInit {
                     
                     if (v.shippersReceiversInfo) {
                         v.shippersReceiversInfo.map((m) => {
-                            let PDate = '';
+                            let PDate = moment().format('YYYY-MM-DD');
                             let PTime = '';
                             
                             m.shippers.map(async (n) => {
                                 if (n.dateAndTime != undefined && n.dateAndTime != '') {
                                     let dmy = n.dateAndTime.split(' ');
-                                    PDate = dmy[0].split('-').reverse().join('-');
+                                    PDate = dmy[0];
                                     PTime = dmy[1];
                                 }
                                 let pickupMiles = 0;
                                 let obj = {
                                     type: 'Pickup',
-                                    // date: PDate,
+                                    date: PDate,
                                     name: current.shippersObjects[n.shipperID],
                                     
                                     miles: pickupMiles,
@@ -622,18 +624,18 @@ export class AddTripComponent implements OnInit {
 
                         v.shippersReceiversInfo.map( (j) => {
                              j.receivers.map(async (k) => {
-                                let DrDate = '';
+                                let DrDate = moment().format('YYYY-MM-DD');
                                 let DrTime = '';
                                 if (k.dateAndTime != undefined && k.dateAndTime != '') {
                                     let dmy = k.dateAndTime.split(' ');
-                                    DrDate = dmy[0].split('-').reverse().join('-');
+                                    DrDate = dmy[0];
                                     DrTime = dmy[1];
                                 }
                                 
                                 let deliveryMiles = 0;
                                 let obj = {
                                     type: 'Delivery',
-                                    // date: DrDate,
+                                    date: DrDate,
                                     name: current.receiversObjects[k.receiverID],
                                     miles: deliveryMiles,
                                     carrierID: '',
@@ -1030,6 +1032,7 @@ export class AddTripComponent implements OnInit {
 
                 let obj = {
                     type: '',
+                    date: '',
                     name: '',
                     location: '',
                     mileType: '',
@@ -1052,6 +1055,7 @@ export class AddTripComponent implements OnInit {
                 const element = planData[i];
 
                 obj.type = element.type;
+                obj.date = element.date;
                 obj.name = element.name;
                 obj.location = element.locationName;
                 obj.mileType = element.mileType;
@@ -1426,7 +1430,7 @@ export class AddTripComponent implements OnInit {
                         carrierName: this.carriersObject[element.carrierID],
                         coDriverName: this.driversObjects[element.codriverUsername],
                         coDriverUsername: element.codriverUsername,
-                        // date: element.date,
+                        date: element.date,
                         // time: element.time,
                         pickupTime: element.pickupTime,
                         dropTime: element.dropTime,
@@ -1514,7 +1518,7 @@ export class AddTripComponent implements OnInit {
 
             let obj = {
                 type: '',
-                // date: '',
+                date: '',
                 name: '',
                 location: '',
                 mileType: '',
@@ -1538,7 +1542,7 @@ export class AddTripComponent implements OnInit {
             const element = planData[i];
 
             obj.type = element.type;
-            //   obj.date = element.date;
+            obj.date = element.date;
             obj.name = element.name;
             obj.location = element.locationName,
             obj.mileType = element.mileType;
@@ -1845,7 +1849,8 @@ export class AddTripComponent implements OnInit {
                                 routeType = 'Pickup';
                             } else if(i > 0 && i < routeData.stops.length) {
                                 routeType = 'Stop';
-                            } else if(i == routeData.stops.length-1) {
+                            } 
+                            if(i == routeData.stops.length-1) {
                                 routeType = 'Delivery';
                             }
 
@@ -1912,6 +1917,19 @@ export class AddTripComponent implements OnInit {
                 this.tripData.mapFrom = 'route';
                 this.toastr.error('Please select order');
             }
+        }
+    }
+
+    fetchLastTripNumber(){
+        this.apiService.getData('trips/get/last/tripNo').subscribe((result) => {
+          this.tripData.tripNo = result.toString();
+          console.log('this.tripData.tripNo', this.tripData.tripNo);
+        });
+    }
+
+    makeRoutePlan() {
+        if(this.tripData.mapFrom == 'route') {
+            this.changeMapRoute('route')
         }
     }
 }

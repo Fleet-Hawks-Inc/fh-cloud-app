@@ -1500,10 +1500,10 @@ fetchDrivers(){
       if(isCarrierID != undefined) {
         currentUserCarrier = isCarrierID;
       }
-    }
-    this.apiService.getData(`addresses/carrier/${currentUserCarrier}`).subscribe(result => {
-      result.Items.map(e => {
-        if(e.addressType == 'yard') {
+    };
+    this.apiService.getData(`carriers/${currentUserCarrier}`).subscribe(result => {
+      result.Items[0].addressDetails.map(e => {
+        if (e.addressType === 'yard') {
           this.carrierYards.push(e);
         }
       });
