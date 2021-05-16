@@ -39,7 +39,7 @@ export class AddOrdersComponent implements OnInit {
   pageTitle = "Add Order";
   private readonly search: any;
   public searchTerm = new Subject<string>();
-  public searchResults: any;
+  public searchResults: any='';
   public searchResults1: any;
   public readonly apiKey = environment.mapConfig.apiKey;
   time: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
@@ -386,6 +386,7 @@ export class AddOrdersComponent implements OnInit {
     this.listService.fetchCustomers();
     this.fetchAssetTypes();
 
+
     $(document).ready(() => {
       this.form = $("#form_").validate();
 
@@ -454,16 +455,30 @@ export class AddOrdersComponent implements OnInit {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((term) => {
+          console.log(term)
+          if(term!=undefined){
           return this.HereMap.searchEntries(term);
+        }
+        else{
+          return ' '
+        }
         }),
         catchError((e) => {
           return throwError(e);
         })
       )
       .subscribe((res) => {
+
         this.searchResults = res;
         this.searchResults1 = res;
+        
       });
+  }
+  resetSearch(){
+    if(this.searchResults.length>0){
+    console.log("it's working")
+    this.searchResults=[]
+    }
   }
 
   driverLoadChange(i, value){
@@ -555,8 +570,9 @@ export class AddOrdersComponent implements OnInit {
       maxTemprature: this.shippersReceivers[i].shippers.maxTemprature,
       maxTempratureUnit: this.shippersReceivers[i].shippers.maxTempratureUnit,
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
-      position: geoCodeResponse.position,
+
     };
+    currentShipper.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
     // this.orderData.shipperInfo.push(currentShipper);
     if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].shippers = [];
@@ -652,8 +668,8 @@ export class AddOrdersComponent implements OnInit {
       maxTemprature: this.shippersReceivers[i].receivers.maxTemprature,
       maxTempratureUnit: this.shippersReceivers[i].receivers.maxTempratureUnit,
       driverUnload: this.shippersReceivers[i].receivers.driverUnload,
-      position: geoCodeResponse.position,
     };
+    currentReceiver.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
     // this.orderData.receiverInfo.push(currentReceiver);
     if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].receivers = [];
