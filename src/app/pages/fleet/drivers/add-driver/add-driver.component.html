@@ -351,7 +351,7 @@
                             </label>
                             <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
-                              class="form-control" placeholder="yyyy/mm/dd" 
+                              class="form-control" placeholder="yyyy/mm/dd"
                               >
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
                               <div *ngIf="tDate.errors.required" class="text-danger">
@@ -384,13 +384,13 @@
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
                               class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
                               >
-                            
+
                           </div>
                           <div class="col-lg-2 pl-0 pr-0 mar-top-37">
                             <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                               name="driverImage" type="file" class="hidden_input1 w-100" />
                             <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                              Photo Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                              Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                           </div>
                         </div>
                       </div>
@@ -475,13 +475,13 @@
                       <input [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                         type="text" class="form-control" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                         [disabled]="item.manual">
-                        
+
                       <div class="checkbox-custom pt-2">
                         <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
                           type="checkbox">
                         <label for="man_address">Type Manually</label>
                       </div>
-                      
+
                       <div class="map-search__results bg-white">
                         <ul class="p-0 m-0 text-left">
                           <li *ngFor="let item of searchResults;">
@@ -498,7 +498,7 @@
                       <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
                         class="btn btn-danger cus-btn-padd" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                     </div>
-                    
+
                   </div>
                   <div class="address-inner" *ngIf="item.manual">
                     <div class="row mb-3 border-bottom pb-4">
@@ -513,7 +513,7 @@
                               <ng-option class="text-capitalize" *ngFor="let country of addressCountries"
                                 value="{{country.countryID}}">{{country.countryName}}</ng-option>
                             </ng-select>
-                            
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
@@ -523,7 +523,7 @@
                               <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateID}}">
                                 {{state.stateName}}</ng-option>
                             </ng-select>
-                            
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
@@ -533,7 +533,7 @@
                               <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityID}}">
                                 {{city.cityName}}</ng-option>
                             </ng-select>
-                            
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Zip
@@ -541,10 +541,10 @@
                             <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
                               placeholder=" eg. 7V2 3R4" #txtZip="ngModel"   pattern="^[a-zA-Z0-9\s]+$">
                               <div *ngIf="txtZip.invalid && (txtZip.dirty || txtZip.touched)" class="text-danger">
-                                
+
                                 <div *ngIf="txtZip.errors.pattern">
                                  Zip Code must contains uppercase,lowercase,numbers and special characters for period(space) only.
-                                    </div> 
+                                    </div>
                             </div>
                           </div>
                         </div>
@@ -557,10 +557,10 @@
                             <input [(ngModel)]="item.address1" name="address1{{i}}" type="text" class="form-control"
                               placeholder="eg. Rocky View County, AB, Canada" #add1="ngModel" pattern="^[a-zA-Z0-9\s\,\-\&]+$">
                               <div *ngIf="add1.invalid && (add1.dirty || add1.touched)" class="text-danger">
-                               
+
                                 <div *ngIf="add1.errors.pattern">
                                Address 1 must contains uppercase,lowecase,numbers and special characters for period(space,&,-,'.') only.
-                                    </div> 
+                                    </div>
                             </div>
                           </div>
                           <div class="col-lg-12">
@@ -569,10 +569,10 @@
                             <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control"
                               placeholder="eg. Rocky View County, AB, Canada" #add2="ngModel" pattern="^[a-zA-Z0-9\s\,\-\&]+$">
                               <div *ngIf="add2.invalid && (add2.dirty || add2.touched)" class="text-danger">
-                                
+
                                 <div *ngIf="add2.errors.pattern">
                                   Address 2 must contains uppercase,lowecase,numbers and special characters for period(space,&,-,'.') only..
-                                    </div> 
+                                    </div>
                             </div>
                           </div>
                         </div>
@@ -681,12 +681,12 @@
                             value="{{country.countryID}}">{{country.countryName}}</ng-option>
                         </ng-select>
                         <div *ngIf="iCountry.invalid && (iCountry.dirty || iCountry.touched)" class="text-danger">
-                          
+
                             <div *ngIf="iCountry.errors.required">
                               Select valid issue country from the list is required.
                             </div>
-                          
-  
+
+
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -700,12 +700,12 @@
                             {{state.stateName}}</ng-option>
                         </ng-select>
                         <div *ngIf="iState.invalid && (iState.dirty || iState.touched)" class="text-danger">
-                        
+
                             <div *ngIf="iState.errors.required">
                               Select valid issue state/province from the list is required.
                             </div>
-                        
-  
+
+
                         </div>
                       </div>
                     </div>
@@ -747,7 +747,7 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                          Document Type&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+                          Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                         <input class="form-control p-0" name="document.uploadedDocs{{i}}"
                           (change)="selectDocuments($event, i)" type="file" multiple>
                       </div>
@@ -1068,9 +1068,9 @@
                              Rate is required
                             </div>
                             <div *ngIf="Rate.errors.pattern">
-                              Rate must contains numbers only.   
+                              Rate must contains numbers only.
                              </div>
-                           
+
 
                          </div>
                       </div>
@@ -1086,11 +1086,11 @@
                           <div *ngIf="rCurrency.errors.required">
                            Select valid currency from the list is required.
                           </div>
-                          
-                         
+
+
 
                        </div>
-                        
+
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
@@ -1102,9 +1102,9 @@
                                Waiting Period Pay is required.
                             </div>
                             <div *ngIf="wPay.errors.pattern">
-                              Waiting Period Pay must contains numbers only.   
+                              Waiting Period Pay must contains numbers only.
                              </div>
-                           
+
 
                          </div>
                       </div>
@@ -1120,8 +1120,8 @@
                           <div *ngIf="wCurrency.errors.required">
                            Select valid currency from the list is required.
                           </div>
-                          
-                         
+
+
 
                        </div>
                       </div>
@@ -1136,9 +1136,9 @@
                                Waiting Hour Start After is required.
                             </div>
                             <div *ngIf="wHour.errors.pattern">
-                              Waiting Hour Start After must contains uppercase,lowercase,numbers and special characters for period(space) only.   
+                              Waiting Hour Start After must contains uppercase,lowercase,numbers and special characters for period(space) only.
                              </div>
-                           
+
 
                          </div>
                       </div>
@@ -1156,9 +1156,9 @@
                                Delivery Rate is required.
                             </div>
                             <div *ngIf="dRate.errors.pattern">
-                              Delivery Rate must contains numbers only.   
+                              Delivery Rate must contains numbers only.
                              </div>
-                           
+
 
                          </div>
                       </div>
@@ -1174,8 +1174,8 @@
                           <div *ngIf="dCurrency.errors.required">
                         Select valid currency from the list is required.
                           </div>
-                          
-                         
+
+
 
                        </div>
                       </div>
@@ -1196,10 +1196,10 @@
                                    Load Pay Percent is required.
                                 </div>
                                 <div *ngIf="pLoad.errors.pattern">
-                                  Load Pay Percent must contains numbers only.   
+                                  Load Pay Percent must contains numbers only.
                                  </div>
-                               
-    
+
+
                              </div>
                           </div>
                           <div class="col-lg-2 px-0">
@@ -1221,9 +1221,9 @@
                               <div *ngIf="sPer.errors.required">
                                  Select valid freight from the list is required.
                               </div>
-                              
-                             
-  
+
+
+
                            </div>
                           </div>
                         </div>
@@ -1242,10 +1242,10 @@
                                 Loaded Miles is required.
                               </div>
                               <div *ngIf="lMiles.errors.pattern">
-                               Loaded Miles must contains numbers only.   
+                               Loaded Miles must contains numbers only.
                                </div>
-                             
-  
+
+
                            </div>
                         </div>
                         <div class="col-lg-2 ">
@@ -1261,8 +1261,8 @@
                             <div *ngIf="milesC.errors.required">
                               Select valid currency from the list is required.
                             </div>
-                            
-                           
+
+
 
                          </div>
                         </div>
@@ -1276,10 +1276,10 @@
                             Empty Miles is required.
                               </div>
                               <div *ngIf="eMiles.errors.pattern">
-                           Empty Miles must contains numbers only.   
+                           Empty Miles must contains numbers only.
                                </div>
-                             
-  
+
+
                            </div>
                         </div>
                         <div class="col-lg-2 ">
@@ -1294,8 +1294,8 @@
                             <div *ngIf="eCurrency.errors.required">
                                Select valid currency from the list is required.
                             </div>
-                           
-                           
+
+
 
                          </div>
                         </div>
@@ -1310,10 +1310,10 @@
                                 Loaded Miles(Team) is required.
                               </div>
                               <div *ngIf="tMiles.errors.pattern">
-                               Loaded Miles(Team)  must contains numbers only.   
+                               Loaded Miles(Team)  must contains numbers only.
                                </div>
-                             
-  
+
+
                            </div>
                         </div>
                         <div class="col-lg-2">
@@ -1329,8 +1329,8 @@
                             <div *ngIf="tCurrency.errors.required">
                                Select valid currency from the list is required.
                             </div>
-                            
-                           
+
+
 
                          </div>
                         </div>
@@ -1345,11 +1345,11 @@
                                  Empty Miles(Team) is required.
                               </div>
                               <div *ngIf="emptyMiles.errors.pattern">
-                                Empty Miles(Team) must contains numbers only.   
+                                Empty Miles(Team) must contains numbers only.
                                </div>
-                             
-  
-                           </div> 
+
+
+                           </div>
                         </div>
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1363,8 +1363,8 @@
                             <div *ngIf="sltEmpty.errors.required">
                               Select empty miles(team) from the list is required.
                             </div>
-                           
-                           
+
+
 
                          </div>
                         </div>
@@ -1501,7 +1501,7 @@
                              Select valid operating zone from the list is required.
                             </div>
                           </div>
-  
+
                         </div>
                       </div>
                       <div class="col-lg-5">
@@ -1520,7 +1520,7 @@
                               Select valid home terminal timezone from the list is required.
                             </div>
                           </div>
-  
+
                         </div>
                       </div>
                       <div class="col-lg-10" *ngIf="driverData.hosDetails.hosStatus == 'Non Exempted'">
@@ -1538,7 +1538,7 @@
                             <div *ngIf="sltCycle.errors.required">
                               Select valid cycle from the list is required.                     </div>
                           </div>
-  
+
                         </div>
                       </div>
 
@@ -1649,7 +1649,7 @@
                 <div class="form-group row mt-3">
                   <div class="col-lg-12 text-right pb-4 pr-5">
                     <a type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</a>
-                    <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID" 
+                    <button type="submit" class="cus-btn-padd btn btn-success" *ngIf="!driverID"
                      >Save</button>
                     <button type="button" (click)="updateDriver()" *ngIf="driverID" class="btn cus-btn-padd btn-success"
                       >Update</button>
