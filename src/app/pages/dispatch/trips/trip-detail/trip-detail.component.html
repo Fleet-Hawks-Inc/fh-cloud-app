@@ -252,18 +252,21 @@
                                     </li>
                                 </ul>
                             </div> -->
-                            <div class="row mt-3 justify-content-center">
-                                <div class="col-lg-11">
+                            <div class="row mt-3 justify-content-center pl-5 pr-5">
+                                <div class="w100 pl-3">
                                     <div class="tripbarn"></div>
                                 </div>
                             </div>
     
-                            <div class="row d-flex justify-content-between pl-3 pr-3">
-                                <div class="text-center" *ngFor="let trip of trips">
-                                    <div class="tripcirclen"></div>
-                                    <div class="tripcontentn">
-                                        <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
-                                            <br>{{ trip.locationName }}</p>
+                            <div class="tripinfoscroll">
+                                <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
+                                    <div class="text-center" *ngFor="let trip of trips">
+                                        <div class="tripcirclen" data-toggle="tooltip" title="{{ trip.locationName }}"></div>
+                                        <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
+                                            <p class="font-weight-bold text-dark text-2 line-height-xs">{{ trip.type}}
+                                                <br>{{ (trip.type == 'Pickup') ? trip.pickupTime : trip.dropTime  }}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
