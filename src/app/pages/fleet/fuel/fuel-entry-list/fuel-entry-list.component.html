@@ -86,7 +86,7 @@
 											<td colspan="13">{{ dataMessage }}</td>
 										</tr>
 										<tr *ngFor="let fuelEntry of fuelList" style="cursor: pointer;">
-											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelDate}}, {{fuelEntry.fuelTime}}</td>
+											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelDate | date : 'yyyy/mm/dd'}}, {{fuelEntry.fuelTime}}</td>
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">{{fuelEntry.fuelCardNumber}}</td>
 											<td routerLink="/fleet/fuel/detail/{{ fuelEntry.entryID }}">
 												<span
