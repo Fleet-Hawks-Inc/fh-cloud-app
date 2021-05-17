@@ -61,8 +61,6 @@ export class AddFuelEntryComponent implements OnInit {
     description: '',
     uploadedPhotos: [],
     lineItems:  [],
-    createdDate: '',
-    createdTime: '',
   };
   fetchedUnitID;
   fetchedUnitType;
@@ -377,6 +375,8 @@ export class AddFuelEntryComponent implements OnInit {
         this.fetchedUnitID = result.unitID;
         this.fetchedUnitType = result.unitType;
         this.fuelData.lineItems = result.lineItems;
+        this.fuelData[`createdDate`] = result.createdDate;
+        this.fuelData[`createdTime`] = result.createdTime;
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
