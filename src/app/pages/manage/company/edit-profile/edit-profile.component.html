@@ -63,8 +63,16 @@
                       <div class="col-lg-2"></div>
                       <div class="col-lg-10">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Phone</label>
-                        <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"  [disabled]=true
-                          placeholder="eg. +19897899879"  >
+                        <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone" #ph="ngModel"
+                          placeholder="eg. +19897899879"  required pattern="^(\+1)[0-9]{10}$">
+                      </div>
+                      <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                        <div *ngIf="ph.errors.required">
+                        Phone number is required.
+                        </div>
+                        <div *ngIf="ph.errors.pattern">
+                          Enter valid phone number eg. +12032342345.
+                        </div>
                       </div>
                     </div>
                     <div class=" row">
@@ -271,7 +279,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Canadian Carrier Code is a four-character unique identifier that is assigned by the CBSA to identify a carrier. Only one carrier code is issued to each legal entity (corporation, partnership or sole proprietorship) per mode of transport (highway, marine, air or rail)."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel"  pattern="^[0-9 A-Z]{4}$">
+                        <input type="text" class="form-control" [(ngModel)]="CCC" name="CCC" #ccc="ngModel" placeholder="eg. 1234" pattern="^[0-9 A-Z]{4}$">
                           <div *ngIf="ccc.invalid && (ccc.dirty || ccc.touched)" class="text-danger">
                             <div *ngIf="ccc.errors.pattern">
                               CCC must be of length 4 and contains  capital letters or numbers.
@@ -284,7 +292,7 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="SCAC (Standard Carrier Alpha Code) is a unique 4 letter code used to identify transportation companies. A SCAC is required for all carriers doing business with a U.S. Goverment agency. As such, all carriers crossing the border into the United States are required to have a SCAC in order to identify themselves to CBP(Customs and Border Protection)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC"
+                        <input type="text" class="form-control" maxlength="4" [(ngModel)]="SCAC" name="SCAC" placeholder="eg. JK12"
                         #scac="ngModel"  pattern="^[0-9 A-Z]{4}$">
                           <div *ngIf="scac.invalid && (scac.dirty || scac.touched)" class="text-danger">
                             <div *ngIf="scac.errors.pattern">
@@ -298,13 +306,13 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Liability Insurance#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance"
+                        <input type="text" class="form-control" [(ngModel)]="liabilityInsurance" placeholder="Enter liability insurance number"
                           name="liabilityInsurance">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cargo Insurance#&nbsp; <span
                             class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance">
+                        <input type="text" class="form-control" [(ngModel)]="cargoInsurance" name="cargoInsurance" placeholder="Enter cargo insurance number">
                       </div>
                     </div>
                     <div class="row pt-2">
@@ -394,11 +402,11 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Country</label>
-                              <ng-select [(ngModel)]="item.countryID" name="countryID{{i}}"
+                              <ng-select [(ngModel)]="item.countryCode" name="countryCode{{i}}"
                                 (change)="getStates($event, i)" class="form-control populate"
                                 placeholder="Select country">
-                                <ng-option class="text-capitalize" *ngFor="let country of addressCountries"
-                                  value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                <ng-option value="CA">Canada</ng-option>
+                                  <ng-option value="US">United States of America</ng-option>
                               </ng-select>
                             </div>
                           </div>
@@ -406,33 +414,29 @@
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 Province</label>
-                              <ng-select (change)="getCities($event, i)" [(ngModel)]="item.stateID"
-                                name="stateID{{i}}" placeholder="Select state">
+                              <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
+                                name="stateCode{{i}}" placeholder="Select state">
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
-                                  value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                  value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                               </ng-select>
                             </div>
                             <div class="col-lg-2  mar-top-37">
-                              <!-- <a href="#addState" class="modal-with-form btn btn-success btn-sm "><i
-                                 class="fas fa-plus"></i></a> -->
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-lg-10">
                               <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Select
                                 City</label>
-                              <ng-select (change)="getCityName(i, $event)" [(ngModel)]="item.cityID"
-                                name="cityID{{i}}" placeholder="Select city">
+                              <ng-select  [(ngModel)]="item.cityName"
+                                name="cityName{{i}}" placeholder="Select city">
 
                                 <ng-option class="text-capitalize" *ngFor="let city of cities"
-                                  value="{{city.cityID}}">
+                                  value="{{city.cityName}}">
                                   {{city.cityName}}</ng-option>
 
                               </ng-select>
                             </div>
                             <div class="col-lg-2  mar-top-37">
-                              <!-- <a href="#addCity" class="modal-with-form btn btn-success btn-sm "><i
-                                 class="fas fa-plus"></i></a> -->
                             </div>
                           </div>
                         </div>
@@ -442,24 +446,14 @@
                             <div class="col-lg-10">
                               <label
                                 class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address</label>
-                              <input [(ngModel)]="item.address1" name="address1{{i}}" type="text" class="form-control"
-                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.]+$">
+                              <input [(ngModel)]="item.address" name="address{{i}}" type="text" class="form-control"
+                                placeholder="Enter street level address" #adLine="ngModel" pattern="^[a-zA-Z0-9\s\#\.\,]+$">
                                 <div *ngIf="adLine.invalid && (adLine.dirty || adLine.touched)" class="text-danger">
                                   <div *ngIf="adLine.errors.pattern">
-                                    Street address must contain small letters,capital letters or numbers and no special character except # .
+                                    Street address must contain small letters,capital letters or numbers and no special character except (#,period(.),comma(,)) .
                                   </div>
                                 </div>
                             </div>
-                          </div>
-                          <div class="row">
-                            <!-- <div class="col-lg-2"></div>
-                              <div class="col-lg-10">
-                                <label
-                                  class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Address
-                                  2&nbsp;
-                                  <span class="text-1 optional-label-color">(optional)</span></label>
-                                <input type="text" class="form-control">
-                              </div> -->
                           </div>
                           <div class="row">
                             <div class="col-lg-2"></div>
@@ -499,14 +493,14 @@
                     <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5 pt-2">Bank
                       Detail</label>
                   </div>
-
-
+                </div>
+                <div class="row" *ngFor="let bank of banks;let b = index;">
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Bank Name&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" name="branchName" #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
+                        <input type="text" class="form-control" [(ngModel)]="bank.branchName" [attr.name]="'banks['+b+'].branchName'" [ngModelOptions]="{standalone: true}"  #bName="ngModel" pattern="^[a-zA-Z0-9\s]{2,30}$"
                           placeholder="eg. XYZ Bank">
                           <div *ngIf="bName.invalid && (bName.dirty || bName.touched)" class="text-danger">
                             <div *ngIf="bName.errors.pattern">
@@ -519,8 +513,8 @@
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Account#&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.accountNumber"
-                          placeholder="eg. 12123456701" name="accountNumber" #ac="ngModel" pattern="^[0-9]{7,12}$">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.accountNumber" [ngModelOptions]="{standalone: true}"
+                          placeholder="eg. 12123456701"  [attr.name]="'banks['+b+'].accountNumber'" #ac="ngModel" pattern="^[0-9]{7,12}$">
                           <div *ngIf="ac.invalid && (ac.dirty || ac.touched)" class="text-danger">
                             <div *ngIf="ac.errors.pattern">
                               Account number must be between 7-12 numbers.
@@ -537,8 +531,8 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="Routing Number is a 9 digit code used for electronic fund transfers (EFT) such as direct deposits, electronic payments, etc.Routing number (EFT Code) is comprising of a leading zero (0), the institution number (YYY), then the branch number (XXXXX). "></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.routingNumber" name="routingNumber"
-                        #route="ngModel" pattern="^(0)[0-9]{8}$" placeholder="eg. 023456789">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.routingNumber" [ngModelOptions]="{standalone: true}"  [attr.name]="'banks['+b+'].routingNumber'"
+                        #route="ngModel" pattern="^[0-9]{9}$" placeholder="eg. 023456789">
                           <div *ngIf="route.invalid && (route.dirty || route.touched)" class="text-danger">
                             <div *ngIf="route.errors.pattern">
                               Routing number must be of 9 digits.
@@ -555,7 +549,7 @@
                               This code identifies the branch (and bank/credit union) on which the cheque is drawn.The format of check transit number – XXXXX–YYY
                             The first 5 digit is called branch transit number and identifies the exact branch of the bank. YYY is the institution code which identifies the bank or credit union."></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber" name="transitNumber"
+                        <input type="text" class="form-control" [(ngModel)]="bank.transitNumber"  [attr.name]="'banks['+b+'].transitNumber'" [ngModelOptions]="{standalone: true}"
                         #trans="ngModel" pattern="^[0-9]{9}$"  placeholder="eg. 12345789"
                           maxlength="9">
                           <div *ngIf="trans.invalid && (trans.dirty || trans.touched)" class="text-danger">
@@ -572,9 +566,9 @@
                             class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
                             title="The institution number (three digits) identifies which bank you use (i.e., TD, RBC, Scotiabank, etc)"></i>&nbsp;
                           <span class="text-1 optional-label-color">(optional)</span></label>
-                        <input type="number" class="form-control" [(ngModel)]="bank.institutionNumber"
+                        <input type="number" min="0" class="form-control" [(ngModel)]="bank.institutionNumber" [ngModelOptions]="{standalone: true}"
                         #ins="ngModel" pattern="^[0-9]{3}$" placeholder="eg. 219"
-                           name="institutionNumber">
+                        [attr.name]="'banks['+b+'].institutionNumber'">
                           <div *ngIf="ins.invalid && (ins.dirty || ins.touched)" class="text-danger">
                             <div *ngIf="ins.errors.pattern">
                               Institution number must be of 3 digits.
@@ -587,7 +581,7 @@
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                    <button type="button" (click)="UpdateCarrier()" class="btn btn-success" >Update</button>
+                    <button type="button" (click)="UpdateCarrier()" [disabled]="submitDisabled" class="btn btn-success" >Update</button>
                   </div>
                 </div>
                 <div class="row mt-2">
