@@ -19,7 +19,7 @@ declare var $: any;
 export class AddFuelEntryComponent implements OnInit {
   title = 'Add Fuel Entry';
   Asseturl = this.apiService.AssetUrl;
-  public entryID;
+  public fuelID;
   /********** Form Fields ***********/
 
   fuelData = {
@@ -60,7 +60,7 @@ export class AddFuelEntryComponent implements OnInit {
     odometer: '',
     description: '',
     uploadedPhotos: [],
-    lineItems:  []
+    lineItems:  [],
   };
   fetchedUnitID;
   fetchedUnitType;
@@ -137,8 +137,8 @@ export class AddFuelEntryComponent implements OnInit {
     this.listService.fetchStates();
     this.listService.fetchCities();
 
-    this.entryID = this.route.snapshot.params[`entryID`];
-    if (this.entryID) {
+    this.fuelID = this.route.snapshot.params[`fuelID`];
+    if (this.fuelID) {
       this.title = 'Edit Fuel Entry';
       this.fetchFuelEntry();
     } else {
@@ -228,7 +228,7 @@ export class AddFuelEntryComponent implements OnInit {
       });
   }
   onChangeUnitType(value: any) {
-    if (this.entryID) {
+    if (this.fuelID) {
       if (value !== this.fetchedUnitType) {
         this.fuelData.unitID = '';
         this.fuelData.unitType = value;
@@ -332,10 +332,10 @@ export class AddFuelEntryComponent implements OnInit {
  */
   fetchFuelEntry() {
     this.apiService
-      .getData('fuelEntries/' + this.entryID)
+      .getData('fuelEntries/' + this.fuelID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        this.fuelData[`entryID`] = this.entryID;
+        this.fuelData[`fuelID`] = this.fuelID;
         this.fuelData.billingCurrency = result.billingCurrency,
         this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
@@ -375,6 +375,8 @@ export class AddFuelEntryComponent implements OnInit {
         this.fetchedUnitID = result.unitID;
         this.fetchedUnitType = result.unitType;
         this.fuelData.lineItems = result.lineItems;
+        this.fuelData[`createdDate`] = result.createdDate;
+        this.fuelData[`createdTime`] = result.createdTime;
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
@@ -433,7 +435,7 @@ export class AddFuelEntryComponent implements OnInit {
 
   // delete uploaded images and documents
   delete(name: string) {
-    this.apiService.deleteData(`fuelEntries/uploadDelete/${this.entryID}/${name}`).subscribe((result: any) => {
+    this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
       this.fetchFuelEntry();
     });
   }

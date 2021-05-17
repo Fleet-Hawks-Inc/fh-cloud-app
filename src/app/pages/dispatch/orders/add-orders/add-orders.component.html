@@ -23,7 +23,7 @@
    }
 </style>
 
-<section class="body">
+<section class="body" (click)="resetSearch()">
    <div class="inner-wrapper">
       <section role="main" class="content-body p-0">
          <header class="page-header">
@@ -549,7 +549,7 @@
 
                                                                  </div>
 
-                                                               <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%">
+                                                               <div class="map-search__results bg-white row mt-3 mar-top-30 ml-0" style="width: 93%" *ngIf=searchResults>
                                                                   <ul class="p-0 m-0 text-left">
                                                                      <li *ngFor="let item of searchResults;">
                                                                         <a href="javascript:;" (click)="assignLocation(i, 'shipper', item.address.label)"
