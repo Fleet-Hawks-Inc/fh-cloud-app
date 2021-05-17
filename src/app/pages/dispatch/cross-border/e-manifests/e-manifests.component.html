@@ -170,7 +170,7 @@
 
                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{shipment.SCAC}}{{shipment.shipmentControlNumber}},</span></td>
                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}"><span *ngFor = "let shipment of aceManifest.shipments">{{aceShipmentTypeObjects[shipment.type]}},</span></td>
-                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{aceManifest.estimatedArrivalDate}} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
+                                      <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{aceManifest.estimatedArrivalDate | date : 'yyyy/mm/dd' }} &nbsp; {{aceManifest.estimatedArrivalTime}}</td>
                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{USPortsObjects[aceManifest.usPortOfArrival]}}</td>
                                       <td routerLink="/dispatch/cross-border/ACI-details/{{aceManifest.manifestID }}"><span>{{driversList[aceManifest.mainDriver]}}</span><span *ngIf="aceManifest.coDrivers.length>0"><span *ngFor = "let driver of aceManifest.coDrivers">,{{driversList[driver]}}</span></span></td>
                                       <td routerLink="/dispatch/cross-border/ACE-details/{{aceManifest.manifestID }}">{{vehiclesList[aceManifest.truck.truckID]}}</td>
