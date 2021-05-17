@@ -260,6 +260,23 @@ export class HereMapService {
     });
   }
 
+  // public async getImageMap(value:any){
+  //   let coords=await this.geoCode(value)
+  //   try{
+  //   if(coords){
+  //   const result=`https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${this.apiKey}&c=${coords}`
+  //   return result
+  //   }
+  //   else{
+  //     return "Coords not found."
+  //   }
+  // }
+  // catch(error){
+  //   console.error(error)
+  // }
+
+  // }
+
   calculateRoute(coordinates,additionalSpec?) {
     try {
       this.viaPoints = [];
