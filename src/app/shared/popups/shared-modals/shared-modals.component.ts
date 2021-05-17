@@ -44,6 +44,12 @@ export class SharedModalsComponent implements OnInit {
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+
+      this.listService.abc1().subscribe(res => {
+       this.issuesData.unitID = res.name;
+       this.issuesData.unitType = res.type;
+       this.issuesData.odometer = res.odometer;
+      })
      }
 
 stateData = {
@@ -1601,6 +1607,7 @@ fetchDrivers(){
         this.cities = result.Items;
       });
   }
+  
 // ISSUE SECTION
   addIssue() {
     this.hideErrors();

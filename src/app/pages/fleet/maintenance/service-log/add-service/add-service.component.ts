@@ -949,6 +949,17 @@ export class AddServiceComponent implements OnInit {
   gotoIssuePage() {
     // this.router.navigateByUrl('/fleet/maintenance/issues/add')
     $('#addIssuesModal').modal('show');
+    let selectedUnit: any = {
+      type: this.serviceData.unitType,
+      name: this.serviceData.vehicleID ? this.serviceData.vehicleID : this.serviceData.assetID,
+    }
+    if(this.serviceData.vehicleID){
+      selectedUnit.odometer = this.serviceData.odometer
+    } else {
+      delete selectedUnit.odometer
+    }
+    localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
+    this.listService.abc(selectedUnit);
   }
   
   currencyChange(value: string) {
