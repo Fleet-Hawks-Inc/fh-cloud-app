@@ -24,7 +24,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     unitID: '',
     fuelUnit: '',
     unitType: '',
-    entryID: '',
+    fuelID: '',
     billingCurrency: '',
     fuelTime: '',
     fuelDate: '',
@@ -81,7 +81,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   timeCreated: '';
   public map;
   marker: any;
-  entryID = '';
+  fuelID = '';
   vehicles = [];
   assets = [];
   vendors = [];
@@ -117,7 +117,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
+    this.fuelID = this.route.snapshot.params[`fuelID`];
     this.fetchCitiesList();
     this.fetchFuelEntry();
     this.fetchAssetList();
@@ -242,11 +242,11 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
   fetchFuelEntry() {
     this.apiService
-      .getData('fuelEntries/' + this.entryID)
+      .getData('fuelEntries/' + this.fuelID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.carrierID = result.carrierID;
-        this.fuelData.entryID = this.entryID;
+        this.fuelData.fuelID = this.fuelID;
         this.fuelData.billingCurrency = result.billingCurrency,
         this.fuelData.unitType = result.unitType;
         this.fuelData.unitID = result.unitID;
@@ -295,9 +295,9 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fuelEntryImages.splice(i, 1);
     this.toastr.success('Image Deleted Successfully!');
   }
-  deleteFuelEntry(entryID) {
+  deleteFuelEntry(fuelID) {
     this.apiService
-      .deleteData('fuelEntries/' + entryID)
+      .deleteData('fuelEntries/' + fuelID)
       .subscribe((result: any) => {
         this.toastr.success('Fuel Entry Deleted Successfully!');
         this.router.navigateByUrl('/fleet/expenses/fuel/list');
@@ -305,7 +305,7 @@ export class FuelEntryDetailsComponent implements OnInit {
   }
    // delete uploaded images and documents
  delete(name: string){
-  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.entryID}/${name}`).subscribe((result: any) => {
+  this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
     this.fetchFuelEntry();
   });
 }
