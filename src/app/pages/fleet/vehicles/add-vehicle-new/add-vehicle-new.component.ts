@@ -607,7 +607,7 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        console.log('v----------', v);
+        
         if(v == 'vehicleIdentification') {
           $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
@@ -1059,7 +1059,7 @@ export class AddVehicleNewComponent implements OnInit {
               )
               .subscribe({
                 complete: () => {
-                  this.throwErrors();
+                 
                   if (err) return reject(err);
                   this.submitDisabled = false;
                 },
