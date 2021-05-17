@@ -348,7 +348,7 @@ export class HosChartComponent implements OnChanges {
               this.addYesterdayLastEventAccumulated();
 
               // Decide last/current event accumulated data
-              this.lastEventAccumulatedData();
+            //  this.lastEventAccumulatedData();   //already decided from backend
             }
           }
         }

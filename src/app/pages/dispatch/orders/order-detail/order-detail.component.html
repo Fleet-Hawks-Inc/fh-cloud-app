@@ -106,7 +106,7 @@
                       <div
                         class="col-lg-3 p-2 font-weight-bold text-3 text-left"
                       >
-                        Customer: 
+                        Customer:
                       </div>
                       <div class="col-lg-9 p-2">{{ customerName }}</div>
                     </div>
@@ -189,7 +189,7 @@
                       >
                         Order Creation Date/Time:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ creationDate | date:"yyyy/MM/dd" }} {{ creationTime }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ createdDate | date : 'yyyy/MM/dd' }} {{ createdTime }}</div>
                     </div>
                     <div class="row m-0">
                       <div
@@ -291,10 +291,10 @@
 
                             <div class="col-lg-4 pl-0 pr-0 offset-lg-1">
                               <div class="pl-0 pr-5" *ngFor="let shipper of shipperReceiversInfo.shippers; let j = index">
-                               
+
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' + i + '-' + j" href="#collapseShipperArea-{{i}}-{{j}}" aria-expanded="false">
                                     <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickShipper(i,j) id="shipperArea-{{i}}-{{j}}">
-                                      <span class="pull-left">Consignor {{j+1}}</span>  
+                                      <span class="pull-left">Consignor {{j+1}}</span>
                                       <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                   </a>
@@ -311,7 +311,7 @@
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Pickup Date/Time:</strong>
-                                            {{shipperReceiversInfo.shippers[j].dateAndTime}}
+                                            {{shipperReceiversInfo.shippers[j].date | date:'yyyy/MM/dd' }} {{shipperReceiversInfo.shippers[j].time}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Pickup Instruction:</strong>
@@ -324,13 +324,13 @@
                                             {{shipperReceiversInfo.shippers[j].contactPerson}}
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong> 
+                                            <strong>Phone:</strong>
                                             {{shipperReceiversInfo.shippers[j].phone}}
                                           </p>
                                           <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
                                             <thead>
                                              <tr>
-                                              
+
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
                                               <th>PU#</th>
@@ -346,7 +346,7 @@
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
-                                             
+
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
@@ -362,15 +362,15 @@
 
                             <div class="col-lg-4 pl-0 pr-0 offset-lg-2">
                               <div class="pl-0 pr-5" *ngFor="let receiver of shipperReceiversInfo.receivers; let k = index">
-                              
+
                                  <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' + i + '-' + k" href="#collapseReceiverArea-{{i}}-{{k}}" aria-expanded="false">
-                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}"> 
+                                    <label style="background: #F4F4F4;width: 100%;" class="text-dark text-5 font-weight-bold btn" (click)=caretClickReceiver(i,k) id="receiverArea-{{i}}-{{k}}">
                                       <span class="pull-left">Consignee {{k+1}}</span>
-                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>  
+                                      <i class="fas fa-caret-right caret_icon pull-right mt-2"></i>
                                     </label>
                                     <div class="expand_caret caret"></div>
                                   </a>
-                                  
+
                                   <section>
                                     <div id="collapseReceiverArea-{{i}}-{{k}}" class="collapse">
                                       <div class="row">
@@ -383,7 +383,7 @@
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong>Delivery Date/Time:</strong>
-                                            {{shipperReceiversInfo.receivers[k].dateAndTime}}
+                                            {{shipperReceiversInfo.receivers[k].date | date:'yyyy/MM/dd'}} {{shipperReceiversInfo.receivers[k].time}}
                                           </p>
                                           <p class="mb-0 text-dark">
                                             <strong
@@ -401,13 +401,13 @@
 
                                           </p>
                                           <p class="mb-0 text-dark">
-                                            <strong>Phone:</strong> 
+                                            <strong>Phone:</strong>
                                             {{shipperReceiversInfo.receivers[k].phone}}
                                           </p>
                                           <table class="table table-responsive-lg table-bordered table-striped table-sm mt-3">
                                             <thead>
                                              <tr>
-                                              
+
                                               <th>Sr. No.</th>
                                               <th>Commodity</th>
                                               <th>DEL#</th>
@@ -423,7 +423,7 @@
                                               <td>{{commodity.quantity}}</td>
                                               <td>{{commodity.weight}}</td>
                                              </tr>
-                                             
+
                                          </table>
                                           <p class="mb-0 text-dark">
                                             <strong>Will Driver Load ?:</strong>
@@ -499,7 +499,7 @@
                         Temperature Required:
                       </div>
                       <div class="col-lg-8 p-2 border-box">
-                        From 
+                        From
                         {{additionalDetails.refeerTemp.minTemprature}}
                         {{additionalDetails.refeerTemp.minTempratureUnit }}
                         To
@@ -656,7 +656,7 @@
 
                             <!-- <p class="mb-0 text-dark" *ngIf="stateCode == ''"> Tax Amount <span class="pull-right">${{taxesTotal}}</span> </p> -->
                             <p class="mb-0 text-dark" *ngIf="!zeroRated">
-                              Tax Amount 
+                              Tax Amount
                               <span *ngIf="stateCode != ''">
                                 ( <span class="font-weight-semibold">{{ stateCode }}</span> )
                               </span>
@@ -719,7 +719,7 @@
                               <img class="img-fluid" src="{{doc.imgPath}}" width="75">
                             </a>
                           </div>
-  
+
                           <div class="col-md-3 mb-3" *ngFor="let localPhoto of localPhotos">
                             <a class="image-popup-no-margins" href="{{localPhoto}}" target="_blank">
                               <img class="img-fluid" src="{{localPhoto}}" width="75">
