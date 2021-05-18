@@ -39,8 +39,8 @@
                                                 </label>
 
                                                 <input type="text" class="form-control" name="tripNo"
-                                                    [(ngModel)]="tripData.tripNo" placeholder="eg. Trip 1234"
-                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9\-\/]+$">
+                                                    [(ngModel)]="tripData.tripNo" placeholder="eg. Trip1234"
+                                                    #tripNumber="ngModel" required pattern="^[a-zA-Z0-9]+$">
                                                 <div *ngIf="tripNumber.invalid && (tripNumber.dirty || tripNumber.touched)"
                                                     class="text-danger">
                                                     <div>
@@ -50,8 +50,8 @@
                                                         </div>
 
                                                         <div *ngIf="tripNumber.errors.pattern">
-                                                            Trip must contains uppercase, lowercase alphanumeric numbers
-                                                            and special characters period(-,/) only. eg. trip001-209
+                                                            Trip number must contains alphanumeric chracters only eg.Trip1234
+                                                            
                                                         </div>
                                                     </div>
 
@@ -136,13 +136,13 @@
                                                 </label>
                                                 <input type="text" class="form-control" name="bol"
                                                     [(ngModel)]="tripData.bol" placeholder="eg. 13253578" #BOL="ngModel"
-                                                     pattern="^[a-zA-Z0-9\-\/]+$">
+                                                     pattern="^[a-zA-Z0-9]+$">
                                                 <div *ngIf="BOL.invalid && (BOL.dirty || BOL.touched)"
                                                     class="text-danger">
                                                     <div>
                                                         <div *ngIf="BOL.errors.pattern">
-                                                            BOL/POD must contains uppercase , lowercase, number and
-                                                            special characters period(-,/) only. eg BOL-123
+                                                            BOL/POD must contains alphanumeric characters only. eg. BOL874
+                                                            
                                                         </div>
                                                     </div>
 
@@ -167,8 +167,8 @@
                                                     <div>
 
                                                         <div *ngIf="tDate.errors.required">
-                                                            Select valid trip date is required and
-                                                            follow yyyy/mm/dd format.
+                                                            Select valid trip date is required.
+                                                            
                                                         </div>
 
 
@@ -190,17 +190,17 @@
                                                         <input type="number" class="form-control"
                                                             name="reeferTemperature"
                                                             [(ngModel)]="tripData.reeferTemperature"
-                                                            placeholder="eg. 340.95 °C or °F " #reeferTemp="ngModel"
+                                                            placeholder="eg. 340.95 °C or °F " #reeferTemp="ngModel" pattern="^[0-9\.]+$"
                                                             >
                                                         <div *ngIf="reeferTemp.invalid && (reeferTemp.dirty || reeferTemp.touched)"
                                                             class="text-danger">
-                                                            <div>
+                                                        
 
-                                                                <div *ngIf="reeferTemp.errors.required">
-                                                                    Reefer temperature must contains numbers only.
+                                                                <div *ngIf="reeferTemp.errors.pattern">
+                                                                    Reefer temperature must contains numbers and special characters for period('.') only.
                                                                 </div>
 
-                                                            </div>
+                                                        
 
                                                         </div>
                                                     </div>

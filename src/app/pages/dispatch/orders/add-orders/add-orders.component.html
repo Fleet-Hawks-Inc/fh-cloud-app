@@ -329,7 +329,7 @@
                                  <div *ngIf="contact.invalid && (contact.dirty || contact.touched)" class="text-danger">
 
                                     <div *ngIf="contact.errors.pattern">
-                                   Additional Contact Name must contains upper, lowecase characters and special character for peiod(space) only.
+                                   Additional Contact Name must contains upper, lowecase characters and special character for period(space) only.
                                      </div>
 
 
@@ -340,11 +340,11 @@
                         <div class="row mt-2">
                            <div class="col-lg-5">
                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Phone</label>
-                              <input placeholder="eg. 0016780571" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control" #phone="ngModel" pattern="^[0-9]+$" maxlength="10">
+                              <input placeholder="eg. +14872364894" [(ngModel)]="orderData.phone" name="order_phone" type="text" class="form-control" #phone="ngModel" pattern="^(\+1)[0-9]{10}$" >
                               <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
 
                                  <div *ngIf="phone.errors.pattern">
-                                 Enter valid mobile number.
+                                 Phone must contains 10 numbers.
                                   </div>
 
 
@@ -357,7 +357,7 @@
                               <div *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="text-danger">
 
                                  <div *ngIf="mail.errors.pattern">
-                                 Enter valid email Id.
+                                 Enter valid email Id eg abc@test.com.
                                   </div>
 
 
@@ -535,15 +535,15 @@
                                                                   name="pickupLocation" (keyup)="searchTerm.next($event);"
                                                                   class="form-control " #pickupLocation="ngModel" required
                                                                   pickupLocation tabindex="-1" aria-hidden="true" autocomplete="off"
-                                                                  #location="ngModel" required pattern="^[a-zA-Z0-9\s\,\-\&]+$">
+                                                                  #location="ngModel" required>
                                                                   <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
                                                                      <div *ngIf="location.errors.required">
                                                                       PickUp Location is required.
                                                                          </div>
 
-                                                                     <div *ngIf="location.errors.pattern">
+                                                                     <!-- <div *ngIf="location.errors.pattern">
                                                                      Pickup location contains uppercase lowercase and special characters for period(space,-,&,',') only.
-                                                                      </div>
+                                                                      </div> -->
 
 
 
@@ -583,7 +583,7 @@
                                                                      class="form-control" autocomplete="off" #orderDate="ngModel" required>
                                                                      <div *ngIf="orderDate.invalid && (orderDate.dirty || orderDate.touched)" class="text-danger">
                                                                         <div *ngIf="orderDate.errors.required">
-                                                                         PickUp Date must follow yyyy/mm/dd format.
+                                                                         PickUp Date is required.
                                                                             </div>
 
 
@@ -667,13 +667,13 @@
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                                </label>
 
-                                                               <input placeholder="eg. 0016780571" [(ngModel)]="item.shippers.phone" name="shippers.phone"
-                                                                  type="text" class="form-control" id="inputDefault" #orderP="ngModel" pattern="^[0-9]+$" maxlength="10">
+                                                               <input placeholder="eg. +1451456287" [(ngModel)]="item.shippers.phone" name="shippers.phone"
+                                                                  type="text" class="form-control" id="inputDefault" #orderP="ngModel" pattern="^(\+1)[0-9]{10}$">
                                                                   <div *ngIf="orderP.invalid && (orderP.dirty || orderP.touched)" class="text-danger">
 
 
                                                                      <div *ngIf="orderP.errors.pattern">
-                                                                   Phone must contains numbers only.
+                                                                   Phone must contains 10 numbers.
                                                                       </div>
 
 
@@ -716,7 +716,7 @@
 
 
                                                                      <div *ngIf="commodityName.errors.pattern">
-                                                                     Commodity must not contains any special characters except space.
+                                                                     Commodity must alphanumeric characters and special characters for period(space) only.
                                                                       </div>
 
 
@@ -1014,7 +1014,7 @@
                                                                   name="dropOffLocation" #dropOffLocation="ngModel"
                                                                   required dropOffLocation
                                                                   (keyup)="searchTerm.next($event);" class="form-control" autocomplete="off"
-                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required pattern="^^[a-zA-Z0-9\s\,\-\&]+$">
+                                                                  tabindex="-1" aria-hidden="true" #drop="ngModel" required >
                                                                   <div *ngIf="drop.invalid && (drop.dirty || drop.touched)" class="text-danger">
 
                                                                      <div *ngIf="drop.errors.required">
@@ -1022,10 +1022,10 @@
                                                                          </div>
 
 
-
+<!-- 
                                                                      <div *ngIf="drop.errors.pattern">
                                                                      Drop Off Location must contains upper, lower case and special characters for period(space,-,&,',') only.
-                                                                      </div>
+                                                                      </div> -->
 
 
 
@@ -1062,7 +1062,7 @@
                                                                      <div *ngIf="delDate.invalid && (delDate.dirty || delDate.touched)" class="text-danger">
 
                                                                         <div *ngIf="delDate.errors.required">
-                                                                       Delivery Date and Time is required and must follow yyyy/mm/dd format.
+                                                                       Delivery Date and Time is required.
                                                                          </div>
 
 
@@ -1139,12 +1139,12 @@
                                                                   <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>                                                                      -->
                                                                </label>
 
-                                                               <input placeholder="eg. 01258956" [(ngModel)]="item.receivers.phone" name="phone"
-                                                                  type="text" class="form-control" id="inputDefault" #cPhone="ngModel" pattern="^[0-9]+$" maxlength="10">
+                                                               <input placeholder="eg. +12583579515" [(ngModel)]="item.receivers.phone" name="phone"
+                                                                  type="text" class="form-control" id="inputDefault" #cPhone="ngModel" pattern="^(\+1)[0-9]{10}$" >
                                                                   <div *ngIf="cPhone.invalid && (cPhone.dirty || cPhone.touched)" class="text-danger">
 
                                                                      <div *ngIf="cPhone.errors.pattern">
-                                                                     Phone must contains number only.
+                                                                     Phone must contains 10 numbers.
                                                                       </div>
 
 
@@ -1183,7 +1183,7 @@
                                                                    <div *ngIf="cCommodity.invalid && (cCommodity.dirty || cCommodity.touched)" class="text-danger">
 
                                                                      <div *ngIf="cCommodity.errors.pattern">
-                                                                    Commodity must not contains any special characters except space.
+                                                                    Commodity must alphanumeric characters and special characters for period(space) only.
                                                                       </div>
 
 
@@ -1529,7 +1529,16 @@
                            <div class="col-lg-4 offset-lg-2">
                               <input
                                  name="orderData.additionalDetails.refeerTemp.minTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.minTemprature" type="text" class="form-control"
-                                 placeholder="From" id="inputDefault">
+                                 placeholder="From" id="inputDefault" #temperature="ngModel" pattern="^[0-9\.]+$">
+                                 <div *ngIf="temperature.invalid && (temperature.dirty || temperature.touched)" class="text-danger">
+
+                                    <div *ngIf="temperature.errors.pattern">
+                                  Temperature must contains numbers and special characters for period('.') only.
+                                     </div>
+   
+   
+   
+                                </div>
                            </div>
                            <div class="col-lg-4">
                               <ng-select
@@ -1556,7 +1565,16 @@
                               <input
                               name="orderData.additionalDetails.refeerTemp.maxTemprature" [(ngModel)]="orderData.additionalDetails.refeerTemp.maxTemprature" type="text" class="form-control"
                               type="text" class="form-control"
-                                 placeholder="To" id="inputDefault">
+                                 placeholder="To" id="inputDefault" #temp2="ngModel" pattern="^[0-9\.]+$">
+                                 <div *ngIf="temp2.invalid && (temp2.dirty || temp2.touched)" class="text-danger">
+
+                                    <div *ngIf="temp2.errors.pattern">
+                                  Temperature must contains numbers and special characters for period('.') only.
+                                     </div>
+   
+   
+   
+                                </div>
                            </div>
                            <div class="col-lg-4">
                               <ng-select
