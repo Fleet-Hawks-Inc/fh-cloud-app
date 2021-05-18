@@ -100,17 +100,22 @@
                       <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
                         <span *ngIf="carriers.bizCountry == 'US'">United States of America</span>
                         <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span></td>
-
                     </tr>
                     <tr>
                       <td class="back-color-gray">Curtainside(s)</td>
                       <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide}}</span></td>
-                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#</td>
-                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.DOT}}</td>
+                      <td class="back-color-gray">CSA</td>
+                      <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span></td>
                     </tr>
                     <tr>
-                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
-                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
+                      <td class="back-color-gray" >PIP</td>
+                      <td ><span *ngIf="carriers.PIP == false">NO</span><span *ngIf="carriers.PIP == true">YES</span></td>
+                      <td class="back-color-gray" >CTPAT</td>
+                      <td ><span *ngIf="carriers.CTPAT == false">NO</span><span *ngIf="carriers.CTPAT == true">YES</span></td>
+                    </tr>
+                    <tr>
+                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#</td>
+                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.DOT}}</td>
                       <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
                       <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
                     </tr>

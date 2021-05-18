@@ -106,15 +106,24 @@
                             </div>
                           </div>
                           <div class="col-lg-12" *ngIf="driverData.driverType == 'contractor'">
-                            <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span>
-                            </label>
-                            <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
-                              class="form-control form-control-sm" placeholder="Select Owner Operator "
-                              (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
-                              <ng-option *ngFor="let item of ownerOperators | async" value="{{item.operatorID}}">
-                                {{item.companyName}}</ng-option>
-                            </ng-select>
+                            <div class="row">
+                              <div class="col-lg-11">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                              </label>
+                              <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
+                                class="form-control form-control-sm" placeholder="Select Owner Operator "
+                                (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required>
+                                <ng-option *ngFor="let item of ownerOperators | async" value="{{item.operatorID}}">
+                                  {{item.companyName}}</ng-option>
+                              </ng-select>
+                              </div>
+                              <div class="col-lg-1  mar-top-37 text-left">
+                                <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
+                                  class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                              </div>
+                            </div>
+
                             <div *ngIf="oSlt.invalid && (oSlt.dirty || oSlt.touched)" class="text-danger">
                               <div *ngIf="oSlt.errors.required">
                                 Owner Operator is required.
@@ -652,7 +661,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event)"
+                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
                           [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
                           [ngModelOptions]="{standalone: true}" class="form-control populate"
                           placeholder="Select the issuing country">
@@ -790,7 +799,7 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <div class="checkbox-custom pt-2">
-                          <input type="checkbox" name="terms">
+                          <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa" name="crossBorderDetails.csa" >
                           <label for="csa">CSA</label>
                         </div>
                       </div>
@@ -876,7 +885,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getStates($event)"
+                        <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getLicStates($event)"
                           [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
                           name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel" required>
 
@@ -898,7 +907,7 @@
                           placeholder="Select Province"
                           (change)="onChangeHideErrors('licenceDetails.issuedState');" #ipSlt="ngModel"
                           required>
-                          <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateCode}}">
+                          <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
                         <div *ngIf="ipSlt.invalid && (ipSlt.dirty || ipSlt.touched)" class="text-danger">
@@ -1477,8 +1486,8 @@
                     class="text-1 optional-label-color">(optional)</span></label>
                 <ng-select [multiple]=true [(ngModel)]="groupData.groupMembers" name="groupMembers" style="width: 100%;"
                   placeholder="Select group members">
-                  <!-- <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
-                    {{item.lastname}}</ng-option> -->
+                  <ng-option *ngFor="let item of allDrivers;" value={{item.driverID}}>{{item.firstName}}
+                    {{item.lastname}}</ng-option>
                 </ng-select>
               </div>
             </div>

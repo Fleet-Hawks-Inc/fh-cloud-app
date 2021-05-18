@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
@@ -130,10 +130,13 @@ export class AddAccountComponent implements OnInit {
     }
   }
   async getStates(id: any, oid = null) {
+    this.addressDetails[oid].stateCode = '';
+    this.addressDetails[oid].cityName = '';
     this.states = CountryStateCity.GetStatesByCountryCode([id]);
   //  console.log('this.states', this.states);
   }
   async getCities(id: any, oid = null, CID: any) {
+    this.addressDetails[oid].cityName = '';
     this.cities   = CountryStateCity.GetCitiesByStateCodes(CID, id);
   //  console.log('this.cities', this.cities);
   }
@@ -274,6 +277,10 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
+      if(data.bizCountry == 'CA') {
+        data.MC = null;
+        data.DOT = null;
+      }
       console.log('data',data);
       // create form data instance
       const formData = new FormData();
