@@ -281,7 +281,7 @@ export class AddInventoryComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.hasError = true;
               this.Error = 'Please see the errors';
             },
@@ -360,7 +360,7 @@ export class AddInventoryComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {},
             next: () => {},
@@ -463,7 +463,7 @@ export class AddInventoryComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {},
             next: () => {},
