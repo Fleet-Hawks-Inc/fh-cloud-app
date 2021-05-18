@@ -102,7 +102,8 @@
                                                 {{ issue.issueName }}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{issue.reportedDate | date : 'yyyy/mm/dd'}}
+                                                {{issue.reportedDate | date: 'yyyy/MM/dd'}}
+
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ usersList[issue.reportedBy] }}

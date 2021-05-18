@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import constants from '../../../../app/pages/fleet/constants';
 import { HereMapService } from '../../../services';
 import { Auth } from 'aws-amplify';
+import * as moment from 'moment';
 
 declare var $: any;
 @Component({
@@ -43,6 +44,12 @@ export class SharedModalsComponent implements OnInit {
       this.birthDateMinLimit = {year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate()};
       this.birthDateMaxLimit = { year: date.getFullYear() - 18, month: date.getMonth() + 1, day: date.getDate() };
       this.futureDatesLimit = {year: date.getFullYear() + 30, month: date.getMonth() + 1, day: date.getDate()};
+
+      this.listService.abc1().subscribe(res => {
+       this.issuesData.unitID = res.name;
+       this.issuesData.unitType = res.type;
+       this.issuesData.odometer = res.odometer;
+      })
      }
 
 stateData = {
@@ -371,7 +378,7 @@ issuesData = {
   currentStatus: 'OPEN',
   unitID: '',
   unitType: 'vehicle',
-  reportedDate: '',
+  reportedDate: moment().format('YYYY-MM-DD'),
   description: '',
   odometer: null,
   reportedBy: '',
@@ -1600,6 +1607,7 @@ fetchDrivers(){
         this.cities = result.Items;
       });
   }
+  
 // ISSUE SECTION
   addIssue() {
     this.hideErrors();
