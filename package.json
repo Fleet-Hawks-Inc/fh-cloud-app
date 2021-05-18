@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "cypress": "cypress open",
-    "bundle-report": "webpack-bundle-analyzer dist/stats.json"
+    "bundle-report": "webpack-bundle-analyzer dist/fleethawks-dashboard/stats.json"
   },
   "private": true,
   "dependencies": {
