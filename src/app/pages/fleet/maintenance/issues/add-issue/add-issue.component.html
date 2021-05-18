@@ -125,11 +125,11 @@
                                                 <div *ngIf="dateReport.invalid && (dateReport.dirty || dateReport.touched)" class="text-danger">
                                                     <div *ngIf="dateReport.errors.required">
                                                        Select valid reported date is required from the list.
-                                                         
+
                                                     </div>
-                                              
-                                                    
-                          
+
+
+
                                                  </div>
 
                                         </div>
@@ -157,12 +157,12 @@
                                                 placeholder="Enter odometer miles at which issue is reported. eg. 10000" #odoMiles="ngModel" required>
                                                 <div *ngIf="odoMiles.invalid && (odoMiles.dirty || odoMiles.touched)" class="text-danger">
                                                     <div *ngIf="odoMiles.errors.required">
-                                                      Odometer Miles is required and must contain numbers only. 
-                                                         
+                                                      Odometer Miles is required and must contain numbers only.
+
                                                     </div>
-                                              
-                                                    
-                          
+
+
+
                                                  </div>
                                         </div>
                                     </div>
@@ -201,11 +201,11 @@
                                                 <div *ngIf="aIssue.invalid && (aIssue.dirty || aIssue.touched)" class="text-danger">
                                                     <div *ngIf="aIssue.errors.required">
                                                        Select valid issue assigned to is required from the list.
-                                                         
+
                                                     </div>
-                                              
-                                                    
-                          
+
+
+
                                                  </div>
                                             </div>
                                         </div>
@@ -215,14 +215,14 @@
                                     <div class="col-lg-12">
                                         <label
                                             class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
-                                            Details</label>
+                                            Details </label>
                                     </div>
                                     <div class="col-lg-5 offset-lg-1">
                                         <div class="row">
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                    Photo</label>
+                                                    Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input (change)="selectDocuments($event, 'uploadedPhotos')"
                                                     name="uploadedPhotos" type="file" multiple class="form-control p-0">
                                             </div>
@@ -252,7 +252,7 @@
                                             <div class="col-lg-10">
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right">Attach
-                                                    Document</label>
+                                                    Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                                                 <input (change)="selectDocuments($event, 'uploadedDocs')"
                                                     name="uploadedDocs" type="file" multiple class="form-control p-0">
                                             </div>

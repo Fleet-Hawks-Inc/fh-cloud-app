@@ -17,12 +17,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 const routes: Routes = [
   { path: 'eManifests', component: EManifestsComponent },
   { path: 'ACE-new-eManifest', component: NewAceManifestComponent },
-  { path: 'ACE-edit-eManifest/:entryID', component: NewAceManifestComponent },
-  { path: 'ACE-details/:entryID', component: AceDetailsComponent },
+  { path: 'ACE-edit-eManifest/:manifestID', component: NewAceManifestComponent },
+  { path: 'ACE-details/:manifestID', component: AceDetailsComponent },
 
   { path: 'ACI-new-eManifest', component: NewAciManifestComponent },
-  { path: 'ACI-edit-eManifest/:entryID', component: NewAciManifestComponent },
-  { path: 'ACI-details/:entryID', component: AciDetailsComponent },
+  { path: 'ACI-edit-eManifest/:manifestID', component: NewAciManifestComponent },
+  { path: 'ACI-details/:manifestID', component: AciDetailsComponent },
 ];
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.

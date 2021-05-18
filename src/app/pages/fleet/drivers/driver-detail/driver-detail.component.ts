@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer} from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import {environment} from '../../../../../environments/environment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 @Component({
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
@@ -47,7 +48,7 @@ export class DriverDetailComponent implements OnInit {
   citizenship: any;
   csa: any;
   group: any;
-
+  assignedVehicle: any;
   address: any;
   documents: any;
 
@@ -79,7 +80,7 @@ export class DriverDetailComponent implements OnInit {
 
   deliveryRate: string;
 
-  sinNumber: any;
+  SIN: any;
   loadPayPercentage: any;
   loadPayPercentageOf: any;
   payPeriod: any;
@@ -94,11 +95,12 @@ export class DriverDetailComponent implements OnInit {
 
   hosStatus: any;
   hosRemarks: any;
-  hosPcAllowed: any;
-  hosYmAllowed: any;
+  hosPcAllowed: boolean;
+  hosYmAllowed: boolean;
   hosType: any;
   hosCycle: any;
   timezone: any;
+  optzone: any;
   cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
@@ -127,19 +129,42 @@ export class DriverDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hereMap.mapSetAPI();
-    this.hereMap.mapInit();
+    // this.hereMap.mapSetAPI();
+    // this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
     this.fetchCyclesbyIDs();
-    this.fetchAllCountriesIDs();
-    this.fetchAllStatesIDs();
-    this.fetchAllCitiesIDs();
     this.fetchGroupsbyIDs();
     this.fetchAllOwnOperatorsIDs();
     this.fetchDocuments();
+    this.fetchDriverTrips();
   }
-
+  fetchHomeTerminal(homeTerminal){
+      if (homeTerminal && homeTerminal.length > 0) {
+          if (homeTerminal[0].manual) {
+            let combineAddress: any;
+            if (homeTerminal[0].address != '') {
+              combineAddress = `${homeTerminal[0].address}`;
+            }
+            if (homeTerminal[0].cityName != '') {
+              combineAddress += `,` + `${homeTerminal[0].cityName}`;
+            }
+            if (homeTerminal[0].stateCode != '') {
+              combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal[0].stateCode,homeTerminal[0].countryCode);
+            }
+            if (homeTerminal[0].countryCode != '') {
+              combineAddress += `,` + CountryStateCity.GetCountryName(homeTerminal[0].countryCode);
+            }
+            if (homeTerminal[0].zipCode != '') {
+              combineAddress += ` - ${homeTerminal[0].zipCode}`;
+            }
+            this.homeTerminal = combineAddress;
+          }
+          else {
+            this.homeTerminal = homeTerminal[0].userLocation;
+          }
+        }
+  }
    /**
    * fetch Asset data
    */
@@ -148,14 +173,17 @@ export class DriverDetailComponent implements OnInit {
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
+        console.log('result', result);
         if (result) {
           this.driverData = await result[`Items`][0];
+          this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
+          this.fetchCompleteAdd(this.driverData.address);
           this.cycle = this.driverData.hosDetails.hosCycle;
-          this.homeTerminal = this.driverData.hosDetails.homeTerminal;
+         // this.homeTerminal = this.driverData.hosDetails.homeTerminal;
           this.email = this.driverData.email;
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
-          this.CDL = this.driverData.licenceDetails.CDL_Number;
+          this.CDL = this.driverData.CDL_Number;
           this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
@@ -181,10 +209,10 @@ export class DriverDetailComponent implements OnInit {
           this.aciID = this.driverData.crossBorderDetails.ACI_ID;
           this.fastID = this.driverData.crossBorderDetails.fast_ID;
           this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
-          this.citizenship = this.driverData.citizenship;
+          this.citizenship = CountryStateCity.GetCountryName(this.driverData.citizenship);
           this.csa = this.driverData.crossBorderDetails.csa;
           this.group = this.driverData.groupID;
-
+          this.assignedVehicle = this.driverData.assignedVehicle;
           this.address = this.driverData.address;
           let newDocuments = [];
           for (let i = 0; i < this.driverData.documentDetails.length; i++) {
@@ -196,8 +224,8 @@ export class DriverDetailComponent implements OnInit {
               documentType: this.driverData.documentDetails[i].documentType,
               document: this.driverData.documentDetails[i].document,
               issuingAuthority: this.driverData.documentDetails[i].issuingAuthority,
-              issuingCountry: this.driverData.documentDetails[i].issuingCountry,
-              issuingState: this.driverData.documentDetails[i].issuingState,
+              issuingCountry: CountryStateCity.GetCountryName(this.driverData.documentDetails[i].issuingCountry),
+              issuingState: CountryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
               issueDate: this.driverData.documentDetails[i].issueDate,
               expiryDate: this.driverData.documentDetails[i].expiryDate,
               uploadedDocs: docmnt
@@ -207,8 +235,8 @@ export class DriverDetailComponent implements OnInit {
             }
           }
           this.documents = newDocuments;
-          this.liceIssueSate = this.driverData.licenceDetails.issuedState;
-          this.liceIssueCountry = this.driverData.licenceDetails.issuedCountry;
+          this.liceIssueSate = CountryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
+          this.liceIssueCountry = CountryStateCity.GetCountryName(this.driverData.licenceDetails.issuedCountry);
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
           this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
           this.liceWCB = this.driverData.licenceDetails.WCB;
@@ -231,7 +259,7 @@ export class DriverDetailComponent implements OnInit {
           this.waitingPay = this.driverData.paymentDetails.waitingPay + this.driverData.paymentDetails.waitingPayUnit;
           this.waitingHourAfter = this.driverData.paymentDetails.waitingHourAfter;
           this.deliveryRate = this.driverData.paymentDetails.deliveryRate + this.driverData.paymentDetails.deliveryRateUnit;
-          this.sinNumber = this.driverData.paymentDetails.SIN_Number;
+          this.SIN = this.driverData.SIN;
           this.loadPayPercentage = this.driverData.paymentDetails.loadPayPercentage;
           this.loadPayPercentageOf = this.driverData.paymentDetails.loadPayPercentageOf;
           this.payPeriod = this.driverData.paymentDetails.payPeriod;
@@ -243,13 +271,12 @@ export class DriverDetailComponent implements OnInit {
           this.hosType = this.driverData.hosDetails.type;
           this.hosCycle = this.driverData.hosDetails.hosCycle;
           this.timezone = this.driverData.hosDetails.timezone;
-
+          this.optzone = this.driverData.hosDetails.optZone;
           this.emerName = this.driverData.emergencyDetails.name;
           this.emergencyAddress = this.driverData.emergencyDetails.emergencyAddress;
           this.emerPhone = this.driverData.emergencyDetails.phone;
           this.emerEmail = this.driverData.emergencyDetails.email;
           this.emerRelationship = this.driverData.emergencyDetails.relationship;
-
           this.spinner.hide();
 
         }
@@ -258,7 +285,16 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-
+  fetchCompleteAdd(address: any) {
+  for(let a=0; a<address.length; a++){
+   address.map((e: any) => {
+       if(e.manual){
+         e.countryName = CountryStateCity.GetCountryName(e.countryCode);
+         e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+       }
+    });
+  }
+  }
   fetchDocuments() {
     this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
       this.documentTypeList = data;
@@ -285,20 +321,6 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
   fetchAllOwnOperatorsIDs() {
     this.apiService.getData('ownerOperators/get/list')
       .subscribe((result: any) => {
@@ -306,12 +328,6 @@ export class DriverDetailComponent implements OnInit {
       });
   }
 
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
 
   async getCarrierID(){
     this.carrierID = await this.apiService.getCarrierID();
@@ -332,6 +348,11 @@ export class DriverDetailComponent implements OnInit {
   delete(type: string, name: string, index: string){
     this.apiService.deleteData(`drivers/uploadDelete/${this.driverID}/${type}/${name}/${index}`).subscribe((result: any) => {
       this.fetchDriver();
+    });
+  }
+  fetchDriverTrips(){
+    this.apiService.getData(`trips/get/driver/active/${this.driverID}`).subscribe((result: any) => {
+      console.log('trip result', result);
     });
   }
 }

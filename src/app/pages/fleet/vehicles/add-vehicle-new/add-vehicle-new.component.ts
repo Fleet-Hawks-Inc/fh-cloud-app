@@ -607,9 +607,12 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
+        console.log('v----------', v);
+        if(v == 'vehicleIdentification') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
+        }
       });
     // this.validateTabErrors();
     // this.vehicleForm.showErrors(this.errors);

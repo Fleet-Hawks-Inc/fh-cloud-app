@@ -46,7 +46,7 @@
     "aws-iot-device-sdk-v2": "1.0.3",
     "aws-sdk": "2.683.0",
     "buffer": "5.4.3",
-    "chart.js": "2.9.3",
+    "chart.js": "2.9.4",
     "countries-and-timezones": "^2.4.0",
     "country-state-city": "^2.1.0",
     "hammerjs": "^2.0.8",
@@ -83,6 +83,8 @@
     "zone.js": "0.9.1"
   },
   "devDependencies": {
+    "ng2-charts": "^2.4.2",
+    "chart.js": "^2.9.4",
     "@angular-devkit/build-angular": "^0.803.29",
     "@angular/cli": "^8.3.29",
     "@angular/compiler-cli": "^8.2.14",

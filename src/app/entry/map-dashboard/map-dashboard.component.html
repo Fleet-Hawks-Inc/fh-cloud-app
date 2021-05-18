@@ -217,7 +217,7 @@
                                     <a href="javascript:;" class="text-5 text-capitalize">{{ (data.driverData.main) ? data.driverData.main.fullName : '' }} </a><span
                                        class="badge badge-dark p-1">D</span>
                                      <a href="javascript:;" class="text-3 text-capitalize" *ngIf="data.driverData.other"> | {{ (data.driverData.other) ? data.driverData.other.fullName : '' }} </a><span
-                                       class="badge badge-dark p-1">SB</span>
+                                       class="badge badge-dark p-1">{{ (data.driverData.other) ? 'SB' : ''  }}</span>
                                  </p>
                     
                               </div>
@@ -260,7 +260,7 @@
                            <p class="mb-1 text-4 font-weight-semibold text-dark">Trip <span
                                  class="badge badge-dark p-1">{{ data.tripStatus }}</span>
    
-                              <a class="pull-right mx-1" href="">{{ data.tripNo }}</a>
+                              <a class="pull-right mx-1" href="javascript:;">{{ data.tripNo }}</a>
                               <span class="pull-right LTLload">{{ data.tripType }}</span>
                            </p>
    

@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment';
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -54,21 +55,13 @@ export class VehicleRenewListComponent implements OnInit {
 
   ngOnInit() {
     this.getRemindersCount();
-    this.fetchAllVehicles();
     this.fetchServiceTaks();
-    this.fetchVehicles();
     this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
-    this.initDataTable();
     this.fetchUsers();
-
-    $(document).ready(() => {
-      setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      }, 1800);
-    });
   }
+
   fetchGroupsList() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groups = result;
@@ -77,9 +70,7 @@ export class VehicleRenewListComponent implements OnInit {
 
   fetchServiceTaks() {
     let test = [];
-    let taskType = 'vehicle';
     this.apiService.getData('tasks').subscribe((result: any) => {
-      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
     });
@@ -96,11 +87,7 @@ export class VehicleRenewListComponent implements OnInit {
       this.tasksList = result;
     });
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
+
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
@@ -162,24 +149,9 @@ export class VehicleRenewListComponent implements OnInit {
           this.dataMessage = Constants.FETCHING_DATA;
           this.lastEvaluatedKey = '';
           this.getRemindersCount();
-          this.initDataTable();
           this.toastr.success('Vehicle Renewal Deleted Successfully!');
         });
     }
-  }
-
-  setVehicle(vehicleID, vehicleIdentification) {
-    this.vehicleIdentification = vehicleIdentification;
-    this.vehicleID = vehicleID;
-    this.suggestedVehicles = [];
-  }
-
-  getSuggestions(value) {
-    this.apiService
-      .getData(`vehicles/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedVehicles = result.Items;
-      });
   }
 
   getRemindersCount() {
@@ -192,6 +164,8 @@ export class VehicleRenewListComponent implements OnInit {
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -206,7 +180,6 @@ export class VehicleRenewListComponent implements OnInit {
         this.suggestedVehicles = [];
         this.getStartandEndVal();
         this.remindersData = result['Items'];
-        // this.fetchRenewals();
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.vehicleRenewStartPoint = 1;
           this.vehicleRenewEndPoint = this.totalRecords;
@@ -248,7 +221,6 @@ export class VehicleRenewListComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -259,12 +231,11 @@ export class VehicleRenewListComponent implements OnInit {
       this.vehicleID = null;
       this.vehicleIdentification = '';
       this.searchServiceTask = null;
-      this.filterStatus = '';
+      this.filterStatus = null;
 
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -312,9 +283,4 @@ export class VehicleRenewListComponent implements OnInit {
     this.vehicleRenewDraw = 0;
   }
 
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
-    });
-  }
 }
