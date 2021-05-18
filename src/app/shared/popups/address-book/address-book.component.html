@@ -19,7 +19,7 @@
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addConsigneeModal" (click)="resetModal('consignee')" href="javascript:;">Consignee</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addShipperModal" (click)="resetModal('shipper')" href="javascript:;">Consignor</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addCustomerModal" (click)="resetModal('customer')" href="javascript:;">Customer</a>
-                            <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a>
+                            <!-- <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addStaffModal" (click)="resetModal('staff')" href="javascript:;">Employee</a> -->
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addFCModal" (click)="resetModal('company')" href="javascript:;">Factoring Company</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addOwnerOperatorModal" (click)="resetModal('operator')" href="javascript:;">Owner Operator</a>
                             <a class="dropdown-item text-1" data-toggle="modal" data-dismiss="modal" data-target="#addVendorModal" (click)="resetModal('vendor')" href="javascript:;">Vendor</a>
@@ -45,7 +45,7 @@
                             <li class="nav-item"> <a class="nav-link" id="consignee-tab" data-toggle="tab" href="#consignee" role="tab" aria-controls="consignee" aria-selected="false" (click)="setActiveDiv('consignee')">Consignee</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="shipper-tab" data-toggle="tab" href="#shipper" role="tab" aria-controls="shipper" aria-selected="false" (click)="setActiveDiv('shipper')">Consignor</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="customer-tab" data-toggle="tab" href="#customer" role="tab" aria-controls="customer" aria-selected="false" (click)="setActiveDiv('customer')">Customer</a> </li>
-                            <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li>
+                            <!-- <li class="nav-item"> <a class="nav-link" id="staff-tab" data-toggle="tab" href="#staff" role="tab" aria-controls="staff" aria-selected="false" (click)="setActiveDiv('staff')">Employee</a> </li> -->
                             <li class="nav-item"> <a class="nav-link" id="fc-tab" data-toggle="tab" href="#fc" role="tab" aria-controls="fc" aria-selected="false" (click)="setActiveDiv('company')">Factoring Company</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="ownerOperator-tab" data-toggle="tab" href="#ownerOperator" role="tab" aria-controls="ownerOperator" aria-selected="false" (click)="setActiveDiv('operator')">Owner Operator</a> </li>
                             <li class="nav-item"> <a class="nav-link" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false" (click)="setActiveDiv('vendor')">Vendor</a> </li>
@@ -69,7 +69,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Customer Name" name="customerName"
                                             [(ngModel)]="filterVal.customerName" class="form-control"
@@ -83,7 +83,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('customer')" class="btn cus-btn-padd btn-success mr-3">Search</button>
@@ -95,7 +95,7 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Customer Name</th>
+                                        <!-- <th width="15%">Customer Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
@@ -108,7 +108,7 @@
                                     </tr>
                                     <tr *ngFor="let customer of customers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, customer, 'Customer')">{{customer.companyName}}</td>
-                                        <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td> -->
                                         <td>{{customer.workEmail}}</td>
                                         <td>{{customer.workPhone}}</td>
                                         <td *ngIf="customer.address[0]">
@@ -131,7 +131,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                    <a class="dropdown-item" href="javascript:;" (click)="editUser(customer.entityType, customer)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateCustomer(customer, customer.customerID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateCustomer(customer, customer.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -166,7 +166,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Broker Name" name="brokerName"
                                             [(ngModel)]="filterVal.brokerName" class="form-control"
@@ -180,7 +180,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('broker')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -191,12 +191,12 @@
                             <table id="brokerTable" class="table table-responsive-lg table-bordered table-striped mb-0 simple-table">
                                 <thead>
                                     <tr>
-                                        <th width="15%">Company Name</th>
-                                        <th width="15%">Broker Name</th>
+                                        <th width="15%">Company/Broker Name</th>
+                                        <!-- <th width="15%">Broker Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -205,7 +205,7 @@
                                     </tr>
                                     <tr *ngFor="let broker of brokers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, broker,'Broker')">{{broker.companyName}}</td>
-                                        <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td> -->
                                         <td>{{broker.workEmail}}</td>
                                         <td>{{broker.workPhone}}</td>
                                         <td *ngIf="broker.address[0] != undefined">
@@ -228,7 +228,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(broker.entityType, broker)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateBroker(broker, broker.brokerID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateBroker(broker, broker.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -263,7 +263,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Vendor Name" name="vendorName"
                                             [(ngModel)]="filterVal.vendorName" class="form-control"
@@ -277,7 +277,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('vendor')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -288,11 +288,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Vendor Name</th>
+                                        <!-- <th width="15%">Vendor Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -301,7 +301,7 @@
                                     </tr>
                                     <tr *ngFor="let vendor of vendors;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.companyName}}</td>
-                                        <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td> -->
                                         <td>{{vendor.workEmail}}</td>
                                         <td>{{vendor.workPhone}}</td>
                                         <td *ngIf="vendor.address[0] != undefined">
@@ -324,7 +324,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(vendor.entityType, vendor)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateVendor(vendor, vendor.vendorID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateVendor(vendor, vendor.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -359,7 +359,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Carrier Name" name="carrierName"
                                             [(ngModel)]="filterVal.carrierName" class="form-control"
@@ -373,7 +373,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('carrier')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -384,11 +384,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Carrier Name</th>
+                                        <!-- <th width="15%">Carrier Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -397,7 +397,7 @@
                                     </tr>
                                     <tr *ngFor="let carrier of carriers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.companyName}}</td>
-                                        <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td> -->
                                         <td>{{carrier.workEmail}}</td>
                                         <td>{{carrier.workPhone}}</td>
                                         <td *ngIf="carrier.address[0] != undefined">
@@ -420,7 +420,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(carrier.entityType, carrier)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateCarrier(carrier, carrier.infoID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateCarrier(carrier, carrier.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -455,7 +455,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Owner Operator Name" name="operatorName"
                                             [(ngModel)]="filterVal.operatorName" class="form-control"
@@ -469,7 +469,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('operator')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -480,11 +480,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Owner Operator Name</th>
+                                        <!-- <th width="15%">Owner Operator Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -493,7 +493,7 @@
                                     </tr>
                                     <tr *ngFor="let operator of ownerOperatorss;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.companyName}}</td>
-                                        <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td> -->
                                         <td>{{operator.workEmail}}</td>
                                         <td>{{operator.workPhone}}</td>
                                         <td *ngIf="operator.address[0] != undefined">
@@ -516,7 +516,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(operator.entityType, operator)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateOperator(operator, operator.operatorID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateOperator(operator, operator.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -551,7 +551,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Consignor Name" name="shipperName"
                                             [(ngModel)]="filterVal.shipperName" class="form-control"
@@ -565,7 +565,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('shipper')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -577,11 +577,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Consignor Name</th>
+                                        <!-- <th width="15%">Consignor Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -590,7 +590,7 @@
                                     </tr>
                                     <tr *ngFor="let shipper of shippers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.companyName}}</td>
-                                        <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.firstName}} {{shipper.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.firstName}} {{shipper.lastName}}</td> -->
                                         <td>{{shipper.workEmail}}</td>
                                         <td>{{shipper.workPhone}}</td>
                                         <td *ngIf="shipper.address[0] != undefined">
@@ -613,7 +613,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(shipper.entityType, shipper)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateShipper(shipper, shipper.shipperID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateShipper(shipper, shipper.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -648,7 +648,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Consignee Name" name="consigneeName"
                                             [(ngModel)]="filterVal.consigneeName" class="form-control"
@@ -662,7 +662,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('consignee')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -673,11 +673,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Consignee Name</th>
+                                        <!-- <th width="15%">Consignee Name</th> -->
                                         <th width="20%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="45%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -686,7 +686,7 @@
                                     </tr>
                                     <tr *ngFor="let receiver of receivers;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.companyName}}</td>
-                                        <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td> -->
                                         <td>{{receiver.workEmail}}</td>
                                         <td>{{receiver.workPhone}}</td>
                                         <td *ngIf="receiver.address[0] != undefined">
@@ -710,7 +710,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(receiver.entityType, receiver)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateReceiver(receiver, receiver.receiverID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateReceiver(receiver, receiver.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -729,7 +729,7 @@
                         </div>
 
 
-                        <div class="tab-pane fade px-2 py-3 shadow-none" id="staff" role="tabpanel" aria-labelledby="staff-tab">
+                        <!-- <div class="tab-pane fade px-2 py-3 shadow-none" id="staff" role="tabpanel" aria-labelledby="staff-tab">
                             <div class="row pr-1 mr-1">
                                 <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
@@ -811,7 +811,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(staff.entityType, staff)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateStaff(staff, staff.staffID)">Delete</a>
+                                                    <a class="dropdown-item" href="javascript:;" (click)="deactivateStaff(staff, staff.contactID)">Delete</a>
                                                 </div>
                                              </div>
                                         </td>
@@ -827,7 +827,7 @@
                                     <button type="button" class="btn btn-default" (click)="nextResults('staff')" [disabled]="staffNext">Next</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- factoring Company Table -->
                         <div class="tab-pane fade px-2 py-3 shadow-none" id="fc" role="tabpanel" aria-labelledby="fc-tab">
@@ -847,7 +847,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-lg-3 pr-1">
+                                <!-- <div class="col-md-3 col-lg-3 pr-1">
                                     <div class="input-group input-group-md mb-3">
                                         <input type="text" autocomplete="off" placeholder="Search By Factoring Company Name" name="fcompanyName"
                                             [(ngModel)]="filterVal.fcompanyName" class="form-control"
@@ -861,7 +861,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-md-3 col-lg-3">
                                     <button type="submit" (click)="searchFilter('company')" class="btn cus-btn-padd btn-success mt-0 mr-3">Search</button>
@@ -872,11 +872,11 @@
                                 <thead>
                                     <tr>
                                         <th width="15%">Company Name</th>
-                                        <th width="15%">Factoring Company Name</th>
+                                        <!-- <th width="15%">Factoring Company Name</th> -->
                                         <th width="15%">Email</th>
                                         <th width="15%">Phone</th>
                                         <th width="20%">Address</th>
-                                        <th>Actions</th>
+                                        <th width="5%">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -885,7 +885,7 @@
                                     </tr>
                                     <tr *ngFor="let company of fcCompanies;let i = index;" class="cursorpoint">
                                         <td (click)="openDetail(content, company, 'Factoring Company')">{{company.companyName}}</td>
-                                        <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td>
+                                        <!-- <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td> -->
                                         <td>{{company.workEmail}}</td>
                                         <td>{{company.workPhone}}</td>
                                         <td *ngIf="company.address[0] != undefined">
@@ -908,7 +908,7 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="javascript:;" (click)="editUser(company.entityType, company)">Edit</a>
                                                     <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateCompany(company, company.factoringCompanyID)">Delete</a>
+                                                        (click)="deactivateCompany(company, company.contactID)">Delete</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -936,7 +936,7 @@
     </div>
 </div>
 
-<!-- Add Vendor Modal -->
+<!-- Add modals start -->
 <div class="modal fade" id="addVendorModal" tabindex="-1" role="dialog" aria-labelledby="addVendorModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -1008,7 +1008,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-12">
+                                            <!-- <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="vendorData.firstName"
@@ -1027,15 +1027,15 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor
                                                     Last Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="vendorData.lastName"
-                                                name="lastName"  type="text" class="form-control" placeholder="eg. Smith " #vendorlName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                <input [(ngModel)]="vendorData.lastName" name="lastName" type="text" class="form-control" placeholder="eg. Smith "
+                                                    #vendorlName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                 <div *ngIf="vendorlName.invalid && (vendorlName.dirty || vendorlName.touched)" class="text-danger">
                                             
-                                                <div  *ngIf="vendorlName.errors.pattern">
-                                                    Last name must be between 2 to 30 characters and must contain letters only.
+                                                    <div *ngIf="vendorlName.errors.pattern">
+                                                        Last name must be between 2 to 30 characters and must contain letters only.
+                                                    </div>
                                                 </div>
-                                                </div>
-                                               </div>
+                                            </div> -->
                                             <div class="col-lg-12">
                                                 <label
                                                     class="control-label font-weight-bold text-lg-right pt-2">Email <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -1135,28 +1135,28 @@
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <ng-select (change)= "getStates($event, 'vendor', i)" [(ngModel)]="item.countryID"
+                                                    <ng-select (change)= "getStates($event, 'vendor', i)" [(ngModel)]="item.countryCode"
                                                         name="countryID{{i}}" class="form-control populate address_country"
                                                             placeholder="Select Country">
-                                                            <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                            <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Province</label>
-                                                    <ng-select (change)= "getCities($event, 'vendor', i)" [(ngModel)]="item.stateID"
+                                                    <ng-select (change)= "getCities($event, 'vendor', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
                                                         placeholder="Select Province">
-                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                        <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <ng-select [(ngModel)]="item.cityID" name="cityID{{i}}" class="form-control populate address_city"
-                                                        placeholder="Select City" (change)="getCityName($event, 'vendor', i)">
-                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    <ng-select [(ngModel)]="item.cityName" name="cityID{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -1301,7 +1301,7 @@
                                                               </div>
                                                             </div>
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <!-- <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -1330,7 +1330,7 @@
                                                             Last name must be between 2 to 30 characters and must contain letters only.
                                                           </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">EIN &nbsp;<i
@@ -1536,28 +1536,28 @@
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <ng-select (change)= "getStates($event, 'customer', i)" [(ngModel)]="item.countryID"
+                                                            <ng-select (change)= "getStates($event, 'customer', i)" [(ngModel)]="item.countryCode"
                                                                 name="countryID{{i}}" class="form-control populate address_country"
                                                                     placeholder="Select Country">
-                                                                    <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                    <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Province</label>
-                                                            <ng-select (change)= "getCities($event, 'customer', i)" [(ngModel)]="item.stateID"
-                                                            name="stateID{{i}}" class="form-control populate address_state"
+                                                            <ng-select (change)= "getCities($event, 'customer', i)" [(ngModel)]="item.stateCode"
+                                                            name="stateCode{{i}}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
-                                                            <ng-select [(ngModel)]="item.cityID" name="cityID{{i}}" class="form-control populate address_city"
+                                                            <ng-select [(ngModel)]="item.cityName" name="cityCode{{i}}" class="form-control populate address_city"
                                                                 placeholder="Select City" (change)="getCityName($event, 'customer', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -1601,33 +1601,21 @@
                                                               </div>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="col-lg-12 pt-3">
-                                                            <div class="checkbox-custom">
-                                                                <input [(ngModel)]="item.saveAsLocation"
-                                                                name="saveAsLocation{{i}}" type="checkbox" name="terms">
-                                                                <label for="w1-terms">Also Save as Location?</label>
-                                                            </div>
-                                                        </div> -->
                                                     </div>
                                                 </div>
-
-
-
                                             </div>
-
-
                                         </div>
                                     </div>
                                     <div class="tab-pane fade"  [ngClass]="{'active show': custCurrentTab == 3}" id="customerContact" role="tabpanel" aria-labelledby="customerContact-tab">
-                                        <div class="row pt-3">
+                                        <div class="row pt-3" *ngFor="let additionData of customerData.additionalContact; let ad = index; ">
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">First Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="customerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control" placeholder="eg. John" #customerfname1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.firstName"
+                                                        name="firstName1_{{ad}}" type="text" class="form-control" placeholder="eg. John" #customerfname1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="customerfname1.invalid && (customerfname1.dirty || customerfname1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="customerfname1.errors.pattern">
@@ -1639,8 +1627,8 @@
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Last Name&nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
-                                                        <input [(ngModel)]="customerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control" placeholder="eg. Smith"  #customerlname1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.lastName"
+                                                        name="lastName1_{{ad}}" type="text" class="form-control" placeholder="eg. Smith"  #customerlname1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="customerlname1.invalid && (customerlname1.dirty || customerlname1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerlname1.errors.pattern">
@@ -1651,8 +1639,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="customerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control" placeholder="eg. Software Developer" #customerdname2="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.designation"
+                                                        name="designation_{{ad}}" type="text" class="form-control" placeholder="eg. Software Developer" #customerdname2="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="customerdname2.invalid && (customerdname2.dirty || customerdname2.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerdname2.errors.pattern">
@@ -1667,8 +1655,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="customerData.additionalContact.phone"
-                                                        name="phone" type="text" class="form-control" placeholder="eg. +12032342345" #customerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                        <input [(ngModel)]="additionData.phone"
+                                                        name="phone_{{ad}}" type="text" class="form-control" placeholder="eg. +12032342345" #customerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                         <div *ngIf="customerph1.invalid && (customerph1.dirty || customerph1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerph1.errors.pattern">
@@ -1679,8 +1667,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Email&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="customerData.additionalContact.email"
-                                                        name="email" type="text" class="form-control" placeholder="eg. example@email.com" #customerem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                                                        <input [(ngModel)]="additionData.email"
+                                                        name="email_{{ad}}" type="text" class="form-control" placeholder="eg. example@email.com" #customerem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                         <div *ngIf="customerem1.invalid && (customerem1.dirty || customerem1.touched)" class="text-danger">
                                                         
                                                           <div *ngIf="customerem1.errors.pattern">
@@ -1691,8 +1679,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Fax&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="customerData.additionalContact.fax"
-                                                        name="fax" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #customerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax"
+                                                        name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #customerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="customerfax1.invalid && (customerfax1.dirty || customerfax1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="customerfax1.errors.pattern">
@@ -1702,7 +1690,13 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="col-12 mt-3 mb-2 text-right">
+                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(customerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('customer', ad)"><i class="fa fa-minus"></i> Delete</a>
+                                            </div>
                                         </div>
+                                        
                                         <div class="form-group row">
                                             <div class="col-lg-12">
                                                 <p class="text text-danger" *ngIf="hasError">{{Error}}</p>
@@ -1776,7 +1770,6 @@
                                                             <div class="col-lg-4">
                                                                 <label class="control-label font-weight-bold text-lg-right">Broker Type:</label>
                                                             </div>
-
                                                             <div class="col-lg-8">
                                                                 <div class="btn-group-toggle" data-toggle="buttons">
                                                                     <label class="btn btn-outline btn-fleet mr-2"
@@ -1794,27 +1787,6 @@
                                                                     </label>
                                                                  </div>
                                                             </div>
-
-                                                            <!--
-                                                            <div class="col-lg-3 px-0">
-                                                                <div class="radio">
-                                                                    <label>
-                                                                        <input [(ngModel)]="brokerData.brokerType" type="radio"
-                                                                            name="brokerType" value="company" checked>
-                                                                        Company </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4  pr-0">
-                                                                <div class="radio">
-                                                                    <label>
-                                                                        <input [(ngModel)]="brokerData.brokerType" type="radio"
-                                                                            name="brokerType" value="individual">
-                                                                        Individual </label>
-                                                                </div>
-                                                            </div>
-                                                        -->
-
-
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
@@ -1844,7 +1816,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-12" *ngIf="brokerData.brokerType === 'individual'">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
@@ -1858,7 +1830,7 @@
                                                             </div>
                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-12" *ngIf="brokerData.brokerType === 'individual'">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             Last Name &nbsp; <span class="text-1 optional-label-color">(optional)</span>
                                                         </label>
@@ -2019,19 +1991,19 @@
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <ng-select (change)= "getStates($event, 'broker', i)" [(ngModel)]="item.countryID"
+                                                            <ng-select (change)= "getStates($event, 'broker', i)" [(ngModel)]="item.countryCode"
                                                             name="countryID{{i}}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
-                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Province</label>
-                                                            <ng-select (change)= "getCities($event, 'broker', i)" [(ngModel)]="item.stateID"
+                                                            <ng-select (change)= "getCities($event, 'broker', i)" [(ngModel)]="item.stateCode"
                                                             name="stateID{{i}}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -2039,10 +2011,10 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
 
-                                                            <ng-select [(ngModel)]="item.cityID"
+                                                            <ng-select [(ngModel)]="item.cityName"
                                                             name="cityID{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'broker', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -2087,7 +2059,6 @@
                                                                 <div *ngIf="badLine2.errors.pattern">
                                                                     Street address must contain small letters,capital letters or numbers and no special character except # .
                                                                  </div>
-
                                                             </div>
                                                         </div>
                                                         <!-- <div class="col-lg-12 pt-3">
@@ -2101,16 +2072,15 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}"  id="brokerContact" role="tabpanel" aria-labelledby="brokerContact-tab">
-                                        <div class="row">
+                                        <div class="row" *ngFor="let additionData of brokerData.additionalContact; let ad=index;">
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.firstName" name="firstName1" type="text"
+                                                        <input [(ngModel)]="additionData.firstName" name="firstName1_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. John"  #brokerfName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="brokerfName.invalid && (brokerfName.dirty || brokerfName.touched)" class="text-danger">
                                                                <div *ngIf="brokerfName.errors.pattern">
@@ -2121,7 +2091,7 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.lastName" name="lastName1" type="text"
+                                                        <input [(ngModel)]="additionData.lastName" name="lastName1_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. Smith"  #brokerlName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="brokerlName.invalid && (brokerlName.dirty || brokerlName.touched)" class="text-danger">
                                                               <div *ngIf="brokerlName.errors.pattern">
@@ -2131,7 +2101,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.designation" name="designation" type="text"
+                                                        <input [(ngModel)]="additionData.designation" name="designation_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. Software Developer" #dName="ngModel" required pattern="^[a-zA-Z]{2,30}$" >
                                                             <div  *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
                                                                 <div *ngIf="dName.errors.pattern">
@@ -2146,7 +2116,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.phone" name="phone" type="text"
+                                                        <input [(ngModel)]="additionData.phone" name="phone_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. 0016780571" #brokerphone="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                             <div *ngIf="brokerphone.invalid && (brokerphone.dirty || brokerphone.touched)" class="text-danger">
                                                                 <div *ngIf="brokerphone.errors.pattern">
@@ -2157,7 +2127,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.email" name="email" type="text"
+                                                        <input [(ngModel)]="additionData.email" name="email_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. example@email.com" #brokerem="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                             <div *ngIf="brokerem.invalid && (brokerem.dirty || brokerem.touched)" class="text-danger">
                                                                 <div *ngIf="brokerem.errors.pattern">
@@ -2168,7 +2138,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="brokerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #bfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #bfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="bfax.invalid && (bfax.dirty || bfax.touched)" class="text-danger">
                                                             <div *ngIf="bfax.errors.pattern">
                                                                 Enter valid fax number eg. +1-212-987654367.
@@ -2177,6 +2147,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-12 mt-3 mb-2 text-right">
+                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(brokerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('broker', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -2287,7 +2261,7 @@
                                                             </div>
                                                     </div>
                                                     
-                                                    <div class="col-lg-12">
+                                                    <!-- <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="carrierData.firstName" name="firstName" type="text" class="form-control" placeholder="eg. John"  #carrierfName="ngModel" required pattern="^[a-zA-Z]{2,30}$">
@@ -2312,7 +2286,7 @@
                                                             </div>
 
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="carrierData.workPhone" name="workPhone" type="text" class="form-control" placeholder="eg. 0016780571"  #carrierph="ngModel" required pattern="^(\+1)[0-9]{10}$">
@@ -2749,29 +2723,29 @@
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <ng-select (change)= "getStates($event, 'carrier', i)" [(ngModel)]="item.countryID"
-                                                            [attr.name]="'address['+i+'].countryID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
+                                                            <ng-select (change)= "getStates($event, 'carrier', i)" [(ngModel)]="item.countryCode"
+                                                            [attr.name]="'address['+i+'].countryCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
-                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Province</label>
-                                                            <ng-select (change)= "getCities($event, 'carrier', i)" [(ngModel)]="item.stateID"
-                                                            [attr.name]="'address['+i+'].stateID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
+                                                            <ng-select (change)= "getCities($event, 'carrier', i)" [(ngModel)]="item.stateCode"
+                                                            [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
-                                                            <ng-select [(ngModel)]="item.cityID"
-                                                            [attr.name]="'address['+i+'].cityID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'carrier', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                            <ng-select [(ngModel)]="item.cityName"
+                                                            [attr.name]="'address['+i+'].cityName'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -2822,16 +2796,15 @@
                                         </div>
                                     </div>
                                     <div id="carrierAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane px-0 py-3">
-                                        <div class="row pt-3    ">
+                                        <div class="row pt-3" *ngFor="let additionData of carrierData.additionalContact; let ad = index;">
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.firstName" name="firstName1" type="text"
-                                                            class="form-control" placeholder="eg. John"  #carrierfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.firstName" name="firstName1_{{ad}}" type="text"
+                                                            class="form-control" placeholder="eg. John" #carrierfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="carrierfName1.invalid && (carrierfName1.dirty || carrierfName1.touched)" class="text-danger">
-                                                            
                                                               <div *ngIf="carrierfName1.errors.pattern">
                                                                 First name must be between 2 to 30 characters and must contain letters only.
                                                               </div>
@@ -2840,7 +2813,7 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.lastName" name="lastName1" type="text"
+                                                        <input [(ngModel)]="additionData.lastName" name="lastName1_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. Smith" #carrierlName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="carrierlName1.invalid && (carrierlName1.dirty || carrierlName1.touched)" class="text-danger">
                                                             
@@ -2851,7 +2824,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.designation" name="designation" type="text"
+                                                        <input [(ngModel)]="additionData.designation" name="designation_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. Software Developer" #carrierdName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                             <div *ngIf="carrierdName1.invalid && (carrierdName1.dirty || carrierdName1.touched)" class="text-danger">
                                                             
@@ -2866,7 +2839,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.phone" name="phone1" type="text"
+                                                        <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. 0016780571" #cph="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                             <div *ngIf="cph.invalid && (cph.dirty || cph.touched)" class="text-danger">
                                                               
@@ -2877,7 +2850,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.email" name="email1" type="text"
+                                                        <input [(ngModel)]="additionData.email" name="email1_{{ad}}" type="text"
                                                             class="form-control" placeholder="eg. example@email.com"  #cem="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                             <div *ngIf="cem.invalid && (cem.dirty || cem.touched)" class="text-danger">
                                                               
@@ -2888,7 +2861,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="carrierData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #cfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #cfax="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="cfax.invalid && (cfax.dirty || cfax.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="cfax.errors.pattern">
@@ -2897,6 +2870,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-12 mt-3 mb-2 text-right">
+                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(carrierData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('carrier', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -2997,7 +2974,7 @@
                                                               </div>
                                                             </div>
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <!-- <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                         </label>
@@ -3022,7 +2999,7 @@
                                                             Last name must be between 2 to 30 characters and must contain letters only.
                                                           </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone
                                                             &nbsp; <span class="text-1 optional-label-color">(optional)</span>
@@ -3285,27 +3262,27 @@
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select Country</label>
-                                                            <ng-select (change)= "getStates($event, 'operator', i)" [(ngModel)]="item.countryID"
-                                                            [attr.name]="'address['+i+'].countryID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
+                                                            <ng-select (change)= "getStates($event, 'operator', i)" [(ngModel)]="item.countryCode"
+                                                            [attr.name]="'address['+i+'].countryCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
-                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select Province</label>
-                                                            <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateID"
-                                                            [attr.name]="'address['+i+'].stateID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
+                                                            <ng-select (change)= "getCities($event, 'operator', i)" [(ngModel)]="item.stateCode"
+                                                            [attr.name]="'address['+i+'].stateCode'" [ngModelOptions]="{standalone: true}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select City</label>
-                                                            <ng-select [(ngModel)]="item.cityID"
-                                                            [attr.name]="'address['+i+'].cityID'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'operator', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                            <ng-select [(ngModel)]="item.cityName"
+                                                            [attr.name]="'address['+i+'].cityName'" [ngModelOptions]="{standalone: true}" class="form-control populate address_city"
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-6">
@@ -3356,14 +3333,14 @@
                                         </div>
                                     </div>
                                     <div id="ownerAdditionalDetails" [ngClass]="{'active show': custCurrentTab == 4}" class="tab-pane p-3 height460">
-                                        <div class="row">
+                                        <div class="row" *ngFor="let additionData of ownerData.additionalContact; let ad=index">
                                             <div class="col-lg-6">
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.firstName"
-                                                        name="firstName1" type="text" class="form-control" placeholder="eg. John" #ownerfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.firstName"
+                                                        name="firstName1_{{ad}}" type="text" class="form-control" placeholder="eg. John" #ownerfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="ownerfName1.invalid && (ownerfName1.dirty || ownerfName1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerfName1.errors.pattern">
@@ -3374,8 +3351,8 @@
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.lastName"
-                                                        name="lastName1" type="text" class="form-control" placeholder="eg. Smith" #ownerlName2="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.lastName"
+                                                        name="lastName1_{{ad}}" type="text" class="form-control" placeholder="eg. Smith" #ownerlName2="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="ownerlName2.invalid && (ownerlName2.dirty || ownerlName2.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerlName2.errors.pattern">
@@ -3386,8 +3363,8 @@
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.designation"
-                                                        name="designation" type="text" class="form-control" placeholder="eg. Software developer " #ownerdesignation1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                                        <input [(ngModel)]="additionData.designation"
+                                                        name="designation_{{ad}}" type="text" class="form-control" placeholder="eg. Software developer " #ownerdesignation1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                         <div *ngIf="ownerdesignation1.invalid && (ownerdesignation1.dirty || ownerdesignation1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerdesignation1.errors.pattern">
@@ -3401,7 +3378,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.phone" name="phone1" type="text" class="form-control" placeholder="eg. +12032342345" #ownerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
+                                                        <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text" class="form-control" placeholder="eg. +12032342345" #ownerph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                         <div *ngIf="ownerph1.invalid && (ownerph1.dirty || ownerph1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="ownerph1.errors.pattern">
@@ -3411,7 +3388,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.email" name="email1" type="text" class="form-control" placeholder="eg. example@email.com" #ownerem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                                                        <input [(ngModel)]="additionData.email" name="email1_{{ad}}" type="text" class="form-control" placeholder="eg. example@email.com" #ownerem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                         <div *ngIf="ownerem1.invalid && (ownerem1.dirty || ownerem1.touched)" class="text-danger">
                                                           
                                                           <div *ngIf="ownerem1.errors.pattern">
@@ -3421,7 +3398,7 @@
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                        <input [(ngModel)]="ownerData.additionalContact.fax" name="fax" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #ownerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                        <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control" placeholder="13 digits , eg. +1-212-987654367" #ownerfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                         <div *ngIf="ownerfax1.invalid && (ownerfax1.dirty || ownerfax1.touched)" class="text-danger">
                                                          
                                                           <div *ngIf="ownerfax1.errors.pattern">
@@ -3430,6 +3407,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-12 mt-3 mb-2 text-right">
+                                                <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(ownerData)"><i class="fa fa-plus"></i> Add More</a>
+                                                <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('ownerOperator', ad)"><i class="fa fa-minus"></i> Delete</a>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -3525,7 +3506,7 @@
                                                       </div>
                                                     </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <!-- <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="shipperData.firstName" name="firstName" type="text"
@@ -3550,7 +3531,7 @@
                                                         Last name must be between 2 to 30 characters and must contain letters only.
                                                       </div>
                                                     </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
                                                   class="fas fa-exclamation-circle" data-toggle="tooltip"
@@ -3666,28 +3647,28 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <ng-select (change)= "getStates($event, 'shipper', i)" [(ngModel)]="item.countryID"
-                                                    name="countryID{{i}}" class="form-control populate address_country"
+                                                    <ng-select (change)= "getStates($event, 'shipper', i)" [(ngModel)]="item.countryCode"
+                                                    name="countryCode{{i}}" class="form-control populate address_country"
                                                         placeholder="Select Country">
-                                                        <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                        <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Province</label>
-                                                    <ng-select (change)= "getCities($event, 'shipper', i)" [(ngModel)]="item.stateID"
+                                                    <ng-select (change)= "getCities($event, 'shipper', i)" [(ngModel)]="item.stateCode"
                                                     name="stateID{{i}}" class="form-control populate address_state"
                                                         placeholder="Select Province">
-                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                        <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <ng-select [(ngModel)]="item.cityID"
-                                                    name="cityID{{i}}" class="form-control populate address_city"
-                                                        placeholder="Select City" (change)="getCityName($event, 'shipper', i)">
-                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    <ng-select [(ngModel)]="item.cityName"
+                                                    name="cityName{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
@@ -3734,13 +3715,13 @@
                             </div>
                             <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}" id="shipperAdditionalContact" role="tabpanel"
                                 aria-labelledby="shipperAdditionalContact-tab">
-                                <div class="row">
+                                <div class="row" *ngFor="let additionData of shipperData.additionalContact; let ad=index;">
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.firstName" name="firstName1"
+                                                <input [(ngModel)]="additionData.firstName" name="firstName1_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. John"  #consignorfName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consignorfName1.invalid && (consignorfName1.dirty || consignorfName1.touched)" class="text-danger">
                                                       
@@ -3752,7 +3733,7 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.lastName" name="lastName1"
+                                                <input [(ngModel)]="additionData.lastName" name="lastName1_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. Smith" #consignorlName2="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consignorlName2.invalid && (consignorlName2.dirty || consignorlName2.touched)" class="text-danger">
                                                       
@@ -3763,7 +3744,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.designation" name="designation"
+                                                <input [(ngModel)]="additionData.designation" name="designation_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. Software developer" #consignordesignation1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consignordesignation1.invalid && (consignordesignation1.dirty || consignordesignation1.touched)" class="text-danger">
                                                       
@@ -3778,7 +3759,7 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.phone" name="phone1" type="text"
+                                                <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
                                                     class="form-control" placeholder="eg. +12032342345" #consignorph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                     <div *ngIf="consignorph1.invalid && (consignorph1.dirty || consignorph1.touched)" class="text-danger">
                                                       
@@ -3789,7 +3770,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.email" name="email1" type="text"
+                                                <input [(ngModel)]="additionData.email" name="email1_{{ad}}" type="text"
                                                     class="form-control" placeholder="eg. example@email.com"  #consignorem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                     <div *ngIf="consignorem1.invalid && (consignorem1.dirty || consignorem1.touched)" class="text-danger">
                                                       
@@ -3799,17 +3780,22 @@
                                                     </div>
                                             </div>
                                             <div class="col-lg-12">
-                                                <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="shipperData.additionalContact.fax" name="fax" type="text"
-                                                    class="form-control" placeholder="13 digits , eg. +1-212-987654367" #consignorfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
-                                                    <div *ngIf="consignorfax1.invalid && (consignorfax1.dirty || consignorfax1.touched)" class="text-danger">
-                                                      
-                                                      <div *ngIf="consignorfax1.errors.pattern">
+                                                <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span
+                                                        class="text-1 optional-label-color">(optional)</span></label>
+                                                <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text" class="form-control"
+                                                    placeholder="13 digits , eg. +1-212-987654367" #consignorfax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
+                                                <div *ngIf="consignorfax1.invalid && (consignorfax1.dirty || consignorfax1.touched)" class="text-danger">
+                                            
+                                                    <div *ngIf="consignorfax1.errors.pattern">
                                                         Enter valid fax number eg. +1-212-987654367.
-                                                      </div>
                                                     </div>
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-12 mt-3 mb-2 text-right">
+                                        <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(shipperData)"><i class="fa fa-plus"></i> Add More</a>
+                                        <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('consignor', ad)"><i class="fa fa-minus"></i> Delete</a>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -3896,7 +3882,7 @@
                                                       </div>
                                                     </div>
                                             </div>
-                                            <div class="col-lg-12">
+                                            <!-- <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                     First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <input [(ngModel)]="consigneeData.firstName" name="firstName" type="text"
@@ -3921,7 +3907,7 @@
                                                         Last name must be between 2 to 30 characters and must contain letters only.
                                                       </div>
                                                     </div>
-                                            </div>
+                                            </div> -->
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">MC#&nbsp;<i
                                                   class="fas fa-exclamation-circle" data-toggle="tooltip"
@@ -4038,28 +4024,28 @@
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Country</label>
-                                                    <ng-select (change)= "getStates($event, 'consignee', i)" [(ngModel)]="item.countryID"
-                                                    name="countryID{{i}}" class="form-control populate address_country"
+                                                    <ng-select (change)= "getStates($event, 'consignee', i)" [(ngModel)]="item.countryCode"
+                                                    name="countryCode{{i}}" class="form-control populate address_country"
                                                         placeholder="Select Country">
-                                                        <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                        <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         Province </label>
-                                                    <ng-select (change)= "getCities($event, 'consignee', i)" [(ngModel)]="item.stateID"
-                                                    name="stateID{{i}}" class="form-control populate address_state"
+                                                    <ng-select (change)= "getCities($event, 'consignee', i)" [(ngModel)]="item.stateCode"
+                                                    name="stateCode{{i}}" class="form-control populate address_state"
                                                         placeholder="Select Province">
-                                                        <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                        <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                         City</label>
-                                                    <ng-select [(ngModel)]="item.cityID"
-                                                    name="cityID{{i}}" class="form-control populate address_city"
-                                                        placeholder="Select City" (change)="getCityName($event, 'consignee', i)">
-                                                        <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                    <ng-select [(ngModel)]="item.cityName"
+                                                    name="cityName{{i}}" class="form-control populate address_city"
+                                                        placeholder="Select City">
+                                                        <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                     </ng-select>
                                                 </div>
                                                 <div class="col-lg-5">
@@ -4108,13 +4094,13 @@
                             </div>
                             <div class="tab-pane fade" [ngClass]="{'active show': custCurrentTab == 3}" id="consigneeAdditionalContact" role="tabpanel"
                                 aria-labelledby="consigneeAdditionalContact-tab">
-                                <div class="row pt-3">
+                                <div class="row pt-3" *ngFor="let additionData of consigneeData.additionalContact; let ad=index;">
                                     <div class="col-lg-6">
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.firstName" name="firstName1"
+                                                <input [(ngModel)]="additionData.firstName" name="firstName1_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. John"  #consigneefName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consigneefName1.invalid && (consigneefName1.dirty || consigneefName1.touched)" class="text-danger">
                                                       
@@ -4126,7 +4112,7 @@
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                     Name &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.lastName" name="lastName1"
+                                                <input [(ngModel)]="additionData.lastName" name="lastName1_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. Smith" #consigneelName1="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consigneelName1.invalid && (consigneelName1.dirty || consigneelName1.touched)" class="text-danger">
                                                       
@@ -4137,7 +4123,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Designation &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.designation" name="designation"
+                                                <input [(ngModel)]="additionData.designation" name="designation_{{ad}}"
                                                     type="text" class="form-control" placeholder="eg. Software developer" #consigneedesignation="ngModel" required pattern="^[a-zA-Z]{2,30}$">
                                                     <div *ngIf="consigneedesignation.invalid && (consigneedesignation.dirty || consigneedesignation.touched)" class="text-danger">
                                                       
@@ -4152,7 +4138,7 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.phone" name="phone1" type="text"
+                                                <input [(ngModel)]="additionData.phone" name="phone1_{{ad}}" type="text"
                                                     class="form-control" placeholder="eg. +12032342345" #consigneeph1="ngModel" required pattern="^(\+1)[0-9]{10}$">
                                                     <div *ngIf="consigneeph1.invalid && (consigneeph1.dirty || consigneeph1.touched)" class="text-danger">
                                                       
@@ -4163,7 +4149,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Email &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.email" name="email1" type="text"
+                                                <input [(ngModel)]="additionData.email" name="email1_{{ad}}" type="text"
                                                     class="form-control" placeholder="eg. example@email.com" #consigneeem1="ngModel" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                                                     <div *ngIf="consigneeem1.invalid && (consigneeem1.dirty || consigneeem1.touched)" class="text-danger">
                                                      
@@ -4174,7 +4160,7 @@
                                             </div>
                                             <div class="col-lg-12">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Fax &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
-                                                <input [(ngModel)]="consigneeData.additionalContact.fax" name="fax" type="text"
+                                                <input [(ngModel)]="additionData.fax" name="fax_{{ad}}" type="text"
                                                     class="form-control" placeholder="13 digits , eg. +1-212-987654367" #consigneefax1="ngModel" required pattern="^(\+1)[0-9]{13}$">
                                                     <div *ngIf="consigneefax1.invalid && (consigneefax1.dirty || consigneefax1.touched)" class="text-danger">
                                                       
@@ -4184,6 +4170,10 @@
                                                     </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-12 mt-3 mb-2 text-right">
+                                        <a href="javascript:;" *ngIf="ad==0" id="add-document" class="btn btn-success" (click)="addAdditionalContact(consigneeData)"><i class="fa fa-plus"></i> Add More</a>
+                                        <a href="javascript:;" *ngIf="ad>0" class="btn btn-danger" (click)="delAdditionalContact('consignee', ad)"><i class="fa fa-minus"></i> Delete</a>
                                     </div>
                                 </div>
 
@@ -4298,7 +4288,7 @@
 
                                                             </div>
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <!-- <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Contact
                                                             First Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="fcCompanyData.firstName" name="firstName" type="text"
@@ -4325,7 +4315,7 @@
                                                                 </div>
 
                                                             </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-lg-12">
                                                         <label
                                                             class="control-label font-weight-bold text-lg-right pt-2">Phone &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
@@ -4417,28 +4407,28 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <ng-select (change)= "getStates($event, 'company', i)" [(ngModel)]="item.countryID"
-                                                            name="countryID{{i}}" class="form-control populate address_country"
+                                                            <ng-select (change)= "getStates($event, 'company', i)" [(ngModel)]="item.countryCode"
+                                                            name="countryCode{{i}}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
-                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Province</label>
-                                                            <ng-select (change)= "getCities($event, 'company', i)" [(ngModel)]="item.stateID"
-                                                            name="stateID{{i}}" class="form-control populate address_state"
+                                                            <ng-select (change)= "getCities($event, 'company', i)" [(ngModel)]="item.stateCode"
+                                                            name="stateCode{{i}}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
-                                                            <ng-select [(ngModel)]="item.cityID"
-                                                            name="cityID{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'company', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                            <ng-select [(ngModel)]="item.cityName"
+                                                            name="cityName{{i}}" class="form-control populate address_city"
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
@@ -4618,7 +4608,7 @@
                                                         <input [(ngModel)]="staffData.dbaName" name="dbaName" type="text" class="form-control"
                                                             placeholder="eg. bookstore">
                                                     </div>
-                                                    <div class="col-lg-12">
+                                                    <!-- <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">First
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="staffData.firstName" name="firstName" type="text" class="form-control" placeholder="eg. John" >
@@ -4627,7 +4617,7 @@
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Last
                                                             Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <input [(ngModel)]="staffData.lastName" name="lastName" type="text" class="form-control" placeholder="eg. Smith">
-                                                    </div>
+                                                    </div> -->
                                                     <div class="col-lg-12">
                                                         <label class="control-label font-weight-bold text-lg-right pt-2">Employee
                                                             ID <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -4718,28 +4708,28 @@
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Country</label>
-                                                            <ng-select (change)= "getStates($event, 'staff', i)" [(ngModel)]="item.countryID"
-                                                            name="countryID{{i}}" class="form-control populate address_country"
+                                                            <ng-select (change)= "getStates($event, 'staff', i)" [(ngModel)]="item.countryCode"
+                                                            name="countryCode{{i}}" class="form-control populate address_country"
                                                                 placeholder="Select Country">
-                                                                <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
+                                                                <ng-option *ngFor="let country of countries" value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 Province</label>
-                                                            <ng-select (change)= "getCities($event, 'staff', i)" [(ngModel)]="item.stateID"
-                                                            name="stateID{{i}}" class="form-control populate address_state"
+                                                            <ng-select (change)= "getCities($event, 'staff', i)" [(ngModel)]="item.stateCode"
+                                                            name="stateCode{{i}}" class="form-control populate address_state"
                                                                 placeholder="Select Province">
-                                                                <ng-option *ngFor="let state of states" value="{{state.stateID}}">{{state.stateName}}</ng-option>
+                                                                <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">{{state.stateName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">
                                                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
-                                                            <ng-select [(ngModel)]="item.cityID"
-                                                            name="cityID{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'staff', i)">
-                                                                <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
+                                                            <ng-select [(ngModel)]="item.cityName"
+                                                            name="cityName{{i}}" class="form-control populate address_city"
+                                                                placeholder="Select City">
+                                                                <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
                                                         <div class="col-lg-5">

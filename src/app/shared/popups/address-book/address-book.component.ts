@@ -9,6 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import {Auth} from 'aws-amplify';
 import  Constants  from '../../../pages/fleet/constants';
 import { environment } from 'src/environments/environment';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
 
 declare var $: any;
@@ -48,8 +49,8 @@ export class AddressBookComponent implements OnInit {
   customerData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     ein: '',
     accountNumber: '',
     workPhone: '',
@@ -83,16 +84,19 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       phone: '',
       designation: '',
       email: '',
       fax: ''
-    }
+    }]
   };
 
   // Broker Object
@@ -111,11 +115,8 @@ export class AddressBookComponent implements OnInit {
     brokerType: 'company',
     address: [{
       addressType: '',
-      countryID: '',
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
       cityName: '',
       zipCode: '',
       address1: '',
@@ -129,24 +130,27 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       designation: '',
       phone: '',
       email: '',
       fax: '',
-    }
+    }]
   };
 
   // ownerOperator Object
   ownerData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     workPhone: '',
     workEmail: '',
     csa: false,
@@ -187,16 +191,19 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       designation: '',
       phone: '',
       email: '',
       fax: '',
-    }
+    }]
   };
 
   // Vendor Object
@@ -204,8 +211,8 @@ export class AddressBookComponent implements OnInit {
     companyName: '',
     dbaName: '',
     accountNumber: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     workEmail: '',
     workPhone: '',
     preferedVendor: false,
@@ -230,7 +237,9 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
   };
 
@@ -238,8 +247,8 @@ export class AddressBookComponent implements OnInit {
   carrierData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     workPhone: '',
     workEmail: '',
     csa: false,
@@ -293,29 +302,32 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       designation: '',
       phone: '',
       email: '',
       fax: ''
-    }
+    }]
   };
 
   // Shipper Object
   shipperData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     mc: '',
     dot: '',
     workPhone: '',
     workEmail:'',
-    entityType: 'shipper',
+    entityType: 'consignor',
     address: [{
       addressType: '',
       countryID: '',
@@ -336,24 +348,27 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       designation: '',
       phone: '',
       email: '',
       fax: ''
-    }
+    }]
   };
 
   // Consignee Object
   consigneeData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     mc: '',
     dot: '',
     workPhone: '',
@@ -379,16 +394,19 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
-    additionalContact: {
+    additionalContact: [{
+      fullName: '',
       firstName: '',
       lastName: '',
       designation: '',
       phone: '',
       email: '',
       fax: ''
-    }
+    }]
   };
 
   // fcCompany Object
@@ -396,11 +414,11 @@ export class AddressBookComponent implements OnInit {
     companyName: '',
     dbaName: '',
     isDefault: false,
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     workPhone: '',
     workEmail: '',
-    entityType: 'factoring company',
+    entityType: 'factoringCompany',
     address: [{
       addressType: '',
       countryID: '',
@@ -421,7 +439,9 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
     fcDetails: {
       accountNumber: '',
@@ -434,8 +454,8 @@ export class AddressBookComponent implements OnInit {
    staffData = {
     companyName: '',
     dbaName: '',
-    firstName: '',
-    lastName: '',
+    // firstName: '',
+    // lastName: '',
     employeeID: '',
     dateOfBirth: '',
     workPhone: '',
@@ -471,7 +491,9 @@ export class AddressBookComponent implements OnInit {
       countryCode: '',
       stateCode: '',
       houseNumber: '',
-      street: ''
+      street: '',
+      states: [],
+      cities: []
     }],
     userAccount: {
       contractStartDate: '',
@@ -690,31 +712,8 @@ export class AddressBookComponent implements OnInit {
   ngOnInit() {
     this.getCurrentuser();
     this.fetchCountries();
-    this.fetchCustomersCount();
     this.fetchBrokersCount();
-    this.fetchVendorsCount();
-    this.fetchCarriersCount();
-    this.fetchOwnerOperatorsCount();
-    this.fetchShippersCount();
-    this.fetchConsigneeCount();
-    this.fetchStaffsCount();
-    this.fetchFcCompaniesCount();
-
-    this.initDataTable();
-    this.initDataTableBroker();
-    this.initDataTableVendor();
-    this.initDataTableCarrier();
-    this.initDataTableOperator();
-    this.initDataTableShipper();
-    this.initDataTableConsignee();
-    this.initDataTableStaff();
-    this.initDataTableCompany();
-
     this.searchLocation();
-    this.fetchAllCountriesIDs();
-    this.fetchAllStatesIDs();
-    this.fetchAllCitiesIDs();
-
     $(document).ready(() => {
       this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -741,7 +740,6 @@ export class AddressBookComponent implements OnInit {
     this.userDetailTitle = data.firstName;
     this.modalService.open(targetModal);
     this.userDetailData = data;
-    console.log('userDetailData', this.userDetailData);
     this.detailTab = type;
   }
 
@@ -802,11 +800,8 @@ export class AddressBookComponent implements OnInit {
     this.searchResults = [];
     data.address.push({
       addressType: '',
-      countryID: '',
       countryName: '',
-      stateID: '',
       stateName: '',
-      cityID: '',
       cityName: '',
       zipCode: '',
       address1: '',
@@ -857,16 +852,22 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.customerData.address.length; i++) {
       const element = this.customerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
+    }
+
+    for (let j = 0; j < this.customerData.additionalContact.length; j++) {
+      const element = this.customerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
     this.lastEvaluatedKeyCustomer = '';
     // create form data instance
@@ -880,7 +881,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.customerData));
 
-    this.apiService.postData('customers', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -915,7 +916,6 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.customers = [];
           this.fetchCustomersCount();
-          this.initDataTable();
           this.activeDiv = 'customerTable';
           this.spinner.hide();
           this.toastr.success('Customer Added Successfully');
@@ -942,30 +942,25 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.customerDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.customerData);
 
     for (let i = 0; i < this.customerData.address.length; i++) {
-      if(this.customerData.address[i].geoCords == undefined) {
-        this.customerData.address[i].geoCords = {
-          lat: '',
-          lng: ''
-        };
-      }
-    
       const element = this.customerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
-        element['geoCords']['lat'] = '';
-        element['geoCords']['lng'] = '';
+
         result = result.items[0];
-        
-        if(result != undefined) {
-          element['geoCords']['lat'] = result.position.lat;
-          element['geoCords']['lng'] = result.position.lng;
-        }
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
       }
+    }
+
+    for (let j = 0; j < this.customerData.additionalContact.length; j++) {
+      const element = this.customerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -979,7 +974,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.customerData));
 
-    this.apiService.putData('customers', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1005,22 +1000,14 @@ export class AddressBookComponent implements OnInit {
       next: (res) => {
         this.hasSuccess = true;
         this.customerDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteCustomerAddr.length; i++) {
-          const element = this.deleteCustomerAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
         $('#addCustomerModal').modal('hide');
         this.customerDraw = 0;
         this.lastEvaluatedKeyCustomer = '';
         this.dataMessageCustomer = Constants.FETCHING_DATA;
-
+        this.listService.fetchCustomers();
         this.showMainModal();
-        // this.customers = [];
         this.activeDiv = 'customerTable';
         this.fetchCustomersCount();
-        this.initDataTable();
         this.toastr.success('Customer updated successfully');
       },
     });
@@ -1034,9 +1021,11 @@ export class AddressBookComponent implements OnInit {
     this.hideErrors();
     for (let i = 0; i < this.brokerData.address.length; i++) {
       const element = this.brokerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1044,6 +1033,11 @@ export class AddressBookComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
 
       }
+    }
+
+    for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
+      const element = this.brokerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1058,8 +1052,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.brokerData));
 
     this.lastEvaluatedKeyBroker = '';
-    this.apiService.postData('brokers', formData, true).
-    subscribe({
+    this.apiService.postData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1088,9 +1081,9 @@ export class AddressBookComponent implements OnInit {
         this.brokerDisabled = false;
         this.dataMessageBroker = Constants.FETCHING_DATA;
         $('#addBrokerModal').modal('hide');
+        this.listService.fetchCustomers();
         this.fetchBrokersCount();
         this.showMainModal();
-        this.initDataTableBroker();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
         this.toastr.success('Broker Added Successfully');
@@ -1107,17 +1100,24 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.ownerData.address.length; i++) {
       const element = this.ownerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
+
       }
     }
 
+    for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
+      const element = this.ownerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
+    }
     // create form data instance
     const formData = new FormData();
 
@@ -1130,7 +1130,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.ownerData));
     this.lastEvaluatedKeyOperator = '';
 
-    this.apiService.postData('ownerOperators', formData, true).
+    this.apiService.postData('contacts', formData, true).
     subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -1160,10 +1160,10 @@ export class AddressBookComponent implements OnInit {
         this.operatorDisabled = false;
         this.dataMessageOwner = Constants.FETCHING_DATA;
         $('#addOwnerOperatorModal').modal('hide');
+        this.listService.fetchCustomers();
         this.fetchOwnerOperatorsCount();
         this.showMainModal();
         this.listService.fetchOwnerOperators();
-        this.initDataTableOperator();
         this.ownerOperatorss = [];
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner Operator Added Successfully');
@@ -1180,15 +1180,23 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.ownerData.address.length; i++) {
       const element = this.ownerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
+
       }
+    }
+
+    for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
+      const element = this.ownerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1202,14 +1210,13 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.ownerData));
 
-    this.apiService.putData('ownerOperators', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              // this.errors[val.context.key] = val.message;
               this.errors[val.context.label] = val.message;
             })
           )
@@ -1227,24 +1234,17 @@ export class AddressBookComponent implements OnInit {
           });
       },
       next: (res) => {
-        this.response = res.Items[0];
         this.hasSuccess = true;
         this.operatorDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteOperatorAddr.length; i++) {
-          const element = this.deleteOperatorAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
+        this.listService.fetchCustomers();
         $('#addOwnerOperatorModal').modal('hide');
         this.ownerOperatorDraw = 0;
         this.lastEvaluatedKeyOperator = '';
         this.dataMessageOwner = Constants.FETCHING_DATA;
-
+        this.fetchOwnerOperatorsCount();
         this.showMainModal();
         this.listService.fetchOwnerOperators();
         this.ownerOperatorss = [];
-        this.initDataTableOperator();
         this.activeDiv = 'operatorTable';
         this.toastr.success('Owner operator updated successfully');
       },
@@ -1256,18 +1256,25 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.brokerDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.brokerData);
     for (let i = 0; i < this.brokerData.address.length; i++) {
       const element = this.brokerData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
+
       }
+    }
+
+    for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
+      const element = this.brokerData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1281,7 +1288,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.brokerData));
 
-    this.apiService.putData('brokers', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1308,21 +1315,16 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.brokerDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteBrokerAddr.length; i++) {
-          const element = this.deleteBrokerAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
+        
         $('#addBrokerModal').modal('hide');
         this.brokerDraw = 0;
         this.lastEvaluatedKeyBroker = '';
         this.dataMessageBroker = Constants.FETCHING_DATA;
+        this.listService.fetchCustomers();
         this.showMainModal();
         this.brokers = [];
         this.activeDiv = 'brokerTable';
         this.fetchBrokersCount();
-        this.initDataTableBroker();
         this.toastr.success('Broker updated successfully');
       },
     });
@@ -1337,9 +1339,11 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.vendorData.address.length; i++) {
       const element = this.vendorData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1360,7 +1364,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.vendorData));
     this.lastEvaluatedKeyVendor = '';
 
-    this.apiService.postData('vendors', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1395,7 +1399,6 @@ export class AddressBookComponent implements OnInit {
           this.fetchVendorsCount();
           this.showMainModal();
           this.vendors = [];
-          this.initDataTableVendor();
           this.activeDiv = 'vendorTable';
         }
       });
@@ -1406,12 +1409,13 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.vendorDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.vendorData);
     for (let i = 0; i < this.vendorData.address.length; i++) {
       const element = this.vendorData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1432,7 +1436,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.vendorData));
 
-    this.apiService.putData('vendors', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1459,12 +1463,6 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.vendorDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteVendorAddr.length; i++) {
-          const element = this.deleteVendorAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
         $('#addVendorModal').modal('hide');
         this.vendorDraw = 0;
         this.lastEvaluatedKeyVendor = '';
@@ -1473,7 +1471,6 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.vendors = [];
         this.fetchVendorsCount();
-        this.initDataTableVendor();
         this.activeDiv = 'vendorTable';
         this.toastr.success('Vendor updated successfully');
       },
@@ -1489,9 +1486,11 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.carrierData.address.length; i++) {
       const element = this.carrierData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1499,6 +1498,11 @@ export class AddressBookComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
 
       }
+    }
+
+    for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
+      const element = this.carrierData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1513,7 +1517,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.carrierData));
     this.lastEvaluatedKeyCarrier = '';
 
-    this.apiService.postData('externalCarriers', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1543,8 +1547,8 @@ export class AddressBookComponent implements OnInit {
           this.carrierDisabled = false;
           this.dataMessageCarrier = Constants.FETCHING_DATA;
           $('#addCarrierModal').modal('hide');
+          this.listService.fetchCustomers();
           this.fetchCarriersCount();
-          this.initDataTableCarrier();
           this.showMainModal();
           this.carriers = [];
           this.activeDiv = 'carrierTable';
@@ -1558,13 +1562,14 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.carrierDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.carrierData);
 
     for (let i = 0; i < this.carrierData.address.length; i++) {
       const element = this.carrierData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1572,6 +1577,11 @@ export class AddressBookComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
 
       }
+    }
+
+    for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
+      const element = this.carrierData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1585,14 +1595,13 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.carrierData));
 
-    this.apiService.putData('externalCarriers', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
-              // this.errors[val.context.key] = val.message;
               this.errors[val.context.label] = val.message;
             })
           )
@@ -1612,13 +1621,8 @@ export class AddressBookComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
+        this.listService.fetchCustomers();
         this.carrierDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteCarrierAddr.length; i++) {
-          const element = this.deleteCarrierAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
         $('#addCarrierModal').modal('hide');
         this.carrierDraw = 0;
         this.lastEvaluatedKeyCarrier = '';
@@ -1628,7 +1632,6 @@ export class AddressBookComponent implements OnInit {
         this.carriers = [];
         this.activeDiv = 'carrierTable';
         this.fetchCarriersCount();
-        this.initDataTableCarrier();
         this.toastr.success('Carrier updated successfully');
       },
     });
@@ -1641,26 +1644,25 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.consignorDisabled = true;
     this.hideErrors();
-    for (let i = 0; i < this.shipperData.address.length; i++) {
-      if(this.shipperData.address[i].geoCords == undefined) {
-        this.shipperData.address[i].geoCords = {
-          lat: '',
-          lng: ''
-        };
-      }
 
+    for (let i = 0; i < this.shipperData.address.length; i++) {
       const element = this.shipperData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
       }
+    }
+
+    for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
+      const element = this.shipperData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1675,7 +1677,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.shipperData));
     this.lastEvaluatedKeyShipper = '';
 
-    this.apiService.postData('shippers', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1705,14 +1707,13 @@ export class AddressBookComponent implements OnInit {
           this.consignorDisabled = false;
           this.dataMessageConsignor = Constants.FETCHING_DATA;
           $('#addShipperModal').modal('hide');
+          this.listService.fetchCustomers();
           this.listService.fetchShippers();
           this.fetchShippersCount();
           this.showMainModal();
           this.shippers = [];
-          this.initDataTableShipper();
           this.activeDiv = 'shipperTable';
           this.toastr.success('Consignor Added Successfully');
-
         }
       });
   }
@@ -1722,27 +1723,25 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.consignorDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.shipperData);
     for (let i = 0; i < this.shipperData.address.length; i++) {
-      if(this.shipperData.address[i].geoCords == undefined) {
-        this.shipperData.address[i].geoCords = {
-          lat: '',
-          lng: ''
-        };
-      }
-
       const element = this.shipperData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
-        if(result != undefined) {
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
-        }
+        element.geoCords.lat = result.position.lat;
+        element.geoCords.lng = result.position.lng;
+
       }
+    }
+
+    for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
+      const element = this.shipperData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1756,7 +1755,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.shipperData));
 
-    this.apiService.putData('shippers', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1783,13 +1782,6 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.consignorDisabled = false;
-
-        //delete address
-        for (let i = 0; i < this.deleteShipperAddr.length; i++) {
-          const element = this.deleteShipperAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
         $('#addShipperModal').modal('hide');
         this.shipperDraw = 0;
         this.lastEvaluatedKeyShipper = '';
@@ -1797,8 +1789,8 @@ export class AddressBookComponent implements OnInit {
 
         this.shippers = [];
         this.showMainModal();
+        this.listService.fetchCustomers();
         this.fetchShippersCount();
-        this.initDataTableShipper();
         this.activeDiv = 'shipperTable';
         this.toastr.success('Consignor updated successfully');
       },
@@ -1815,16 +1807,22 @@ export class AddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.consigneeData.address.length; i++) {
       const element = this.consigneeData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
-
       }
+    }
+
+    for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
+      const element = this.consigneeData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1839,7 +1837,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.consigneeData));
     this.lastEvaluatedKeyConsignee = '';
 
-    this.apiService.postData('receivers', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -1870,11 +1868,11 @@ export class AddressBookComponent implements OnInit {
           this.dataMessageConsignee = Constants.FETCHING_DATA;
           $('#addConsigneeModal').modal('hide');
           this.listService.fetchReceivers();
+          this.listService.fetchCustomers();
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
           this.fetchConsigneeCount();
-          this.initDataTableConsignee();
           this.toastr.success('Consignee Added Successfully');
         }
       });
@@ -1885,12 +1883,13 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.consigneeDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.consigneeData);
     for (let i = 0; i < this.consigneeData.address.length; i++) {
       const element = this.consigneeData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1898,6 +1897,11 @@ export class AddressBookComponent implements OnInit {
         element.geoCords.lng = result.position.lng;
 
       }
+    }
+
+    for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
+      const element = this.consigneeData.additionalContact[j];
+      element.fullName = element.firstName + ' '+ element.lastName;
     }
 
     // create form data instance
@@ -1911,7 +1915,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.consigneeData));
 
-    this.apiService.putData('receivers', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -1938,11 +1942,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.consigneeDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteConsigneeAddr.length; i++) {
-          const element = this.deleteConsigneeAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
+        this.listService.fetchCustomers();
 
         $('#addConsigneeModal').modal('hide');
         this.consigneeDraw = 0;
@@ -1952,7 +1952,6 @@ export class AddressBookComponent implements OnInit {
         this.receivers = [];
         this.showMainModal();
         this.fetchConsigneeCount();
-        this.initDataTableConsignee();
         this.activeDiv = 'consigneeTable';
         this.toastr.success('Consignee updated successfully');
       },
@@ -1967,9 +1966,11 @@ export class AddressBookComponent implements OnInit {
     this.hideErrors();
     for (let i = 0; i < this.fcCompanyData.address.length; i++) {
       const element = this.fcCompanyData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -1991,7 +1992,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.fcCompanyData));
     this.lastEvaluatedKeyCompany = '';
 
-    this.apiService.postData('factoringCompanies', formData, true).
+    this.apiService.postData('contacts', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -2020,11 +2021,11 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           this.companyDisabled = false;
           this.dataMessageFactoring = Constants.FETCHING_DATA;
+          this.listService.fetchCustomers();
           $('#addFCModal').modal('hide');
           this.fetchFcCompaniesCount();
           this.showMainModal();
           this.brokers = [];
-          this.initDataTableCompany();
           this.activeDiv = 'brokerTable';
           this.toastr.success('Company Added Successfully');
         }
@@ -2036,12 +2037,14 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.companyDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.fcCompanyData);
+    // this.removeAddressFields(this.fcCompanyData);
     for (let i = 0; i < this.fcCompanyData.address.length; i++) {
       const element = this.fcCompanyData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -2062,7 +2065,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.fcCompanyData));
 
-    this.apiService.putData('factoringCompanies', formData, true).subscribe({
+    this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -2089,12 +2092,7 @@ export class AddressBookComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.companyDisabled = false;
-        //delete address
-        for (let i = 0; i < this.deleteCompanyAddr.length; i++) {
-          const element = this.deleteCompanyAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
-        }
-
+        this.listService.fetchCustomers();
         $('#addFCModal').modal('hide');
         this.companyDraw = 0;
         this.lastEvaluatedKeyCompany = '';
@@ -2103,7 +2101,7 @@ export class AddressBookComponent implements OnInit {
         this.showMainModal();
         this.fcCompanies = [];
         this.fetchFcCompaniesCount();
-        this.initDataTableCompany();
+        // this.initDataTableCompany();
         this.activeDiv = 'companyTable';
         this.toastr.success('Company updated successfully');
       },
@@ -2116,20 +2114,23 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.employeeDisabled = true;
     this.hideErrors();
-    this.spinner.show();
+    // this.spinner.show();
     for (let i = 0; i < this.staffData.address.length; i++) {
       const element = this.staffData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
         element.geoCords.lat = result.position.lat;
         element.geoCords.lng = result.position.lng;
+
       }
     }
-
+    
     // create form data instance
     const formData = new FormData();
 
@@ -2142,7 +2143,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.staffData));
     this.lastEvaluatedKeyStaff = ''; 
     
-    this.apiService.postData('staffs?newUser='+this.newStaffUser, formData, true).
+    this.apiService.postData('contacts?newUser='+this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -2192,12 +2193,14 @@ export class AddressBookComponent implements OnInit {
     this.hasSuccess = false;
     this.employeeDisabled = true;
     this.hideErrors();
-    this.removeAddressFields(this.staffData);
+    // this.removeAddressFields(this.staffData);
     for (let i = 0; i < this.staffData.address.length; i++) {
       const element = this.staffData.address[i];
-      if(element.countryID != '' && element.stateID != '' && element.cityID != '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-        ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+      delete element.states;
+      delete element.cities;
+      if(element.countryName != '' && element.stateName != '' && element.cityName != '') {
+        let fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        ${element.stateName} ${element.countryName}`;
         let result = await this.HereMap.geoCode(fullAddress);
 
         result = result.items[0];
@@ -2218,7 +2221,7 @@ export class AddressBookComponent implements OnInit {
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
 
-    this.apiService.putData('staffs?newUser='+this.newStaffUser, formData, true).subscribe({
+    this.apiService.putData('contacts?newUser='+this.newStaffUser, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -2297,88 +2300,95 @@ export class AddressBookComponent implements OnInit {
    * Get all countries from api
    */
   fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-      });
+    this.countries = CountryStateCity.GetAllCountries();
   }
 
-  getStates(id, type='', index='') {
-    let countryResult = this.countriesObject[id];
+  getStates(countryCode, type='', index='') {
+    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    console.log('states=======', states);
+    let countryName = CountryStateCity.GetCountryName(countryCode);
     if(type == 'vendor') {
-      this.vendorData.address[index].countryName = countryResult;
+      this.vendorData.address[index].countryName = countryName;
+      this.vendorData.address[index].states = states;
     } else if(type == 'customer') {
-      this.customerData.address[index].countryName = countryResult;
+      this.customerData.address[index].countryName = countryName;
+      this.customerData.address[index].states = states;
     } else if(type == 'broker') {
-      this.brokerData.address[index].countryName = countryResult;
+      this.brokerData.address[index].countryName = countryName;
+      this.brokerData.address[index].states = states;
     } else if(type == 'carrier') {
-      this.carrierData.address[index].countryName = countryResult;
+      this.carrierData.address[index].countryName = countryName;
+      this.carrierData.address[index].states = states;
     } else if(type == 'operator') {
-      this.ownerData.address[index].countryName = countryResult;
+      this.ownerData.address[index].countryName = countryName;
+      this.ownerData.address[index].states = states;
     } else if(type == 'shipper') {
-      this.shipperData.address[index].countryName = countryResult;
+      this.shipperData.address[index].countryName = countryName;
+      this.shipperData.address[index].states = states;
     } else if(type == 'consignee') {
-      this.consigneeData.address[index].countryName = countryResult;
+      this.consigneeData.address[index].countryName = countryName;
+      this.consigneeData.address[index].states = states;
     } else if(type == 'company') {
-      this.fcCompanyData.address[index].countryName = countryResult;
+      this.fcCompanyData.address[index].countryName = countryName;
+      this.fcCompanyData.address[index].states = states;
     } else if(type == 'staff') {
-      this.staffData.address[index].countryName = countryResult;
+      this.staffData.address[index].countryName = countryName;
+      this.staffData.address[index].states = states;
+    }
+  }
+
+  getCities(stateCode, type='', index='') {
+    let countryCode = '';
+    if(type == 'vendor') {
+      countryCode = this.vendorData.address[index].countryCode;
+    } else if(type == 'customer') {
+      countryCode = this.customerData.address[index].countryCode;
+    } else if(type == 'broker') {
+      countryCode = this.brokerData.address[index].countryCode;
+    } else if(type == 'carrier') {
+      countryCode = this.carrierData.address[index].countryCode;
+    } else if(type == 'operator') {
+      countryCode = this.ownerData.address[index].countryCode;
+    } else if(type == 'shipper') {
+      countryCode = this.shipperData.address[index].countryCode;
+    } else if(type == 'consignee') {
+      countryCode = this.consigneeData.address[index].countryCode;
+    } else if(type == 'company') {
+      countryCode = this.fcCompanyData.address[index].countryCode;
+    } else if(type == 'staff') {
+      countryCode = this.staffData.address[index].countryCode;
     }
 
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
-  }
+    let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
 
-  getCities(id, type='', index='') {
-    let stateResult = this.statesObject[id];
     if(type == 'vendor') {
       this.vendorData.address[index].stateName = stateResult;
+      this.vendorData.address[index].cities = cities;
     } else if(type == 'customer') {
       this.customerData.address[index].stateName = stateResult;
+      this.customerData.address[index].cities = cities;
     } else if(type == 'broker') {
       this.brokerData.address[index].stateName = stateResult;
+      this.brokerData.address[index].cities = cities;
     } else if(type == 'carrier') {
       this.carrierData.address[index].stateName = stateResult;
+      this.carrierData.address[index].cities = cities;
     } else if(type == 'operator') {
       this.ownerData.address[index].stateName = stateResult;
+      this.ownerData.address[index].cities = cities;
     } else if(type == 'shipper') {
       this.shipperData.address[index].stateName = stateResult;
+      this.shipperData.address[index].cities = cities;
     } else if(type == 'consignee') {
       this.consigneeData.address[index].stateName = stateResult;
+      this.consigneeData.address[index].cities = cities;
     } else if(type == 'company') {
       this.fcCompanyData.address[index].stateName = stateResult;
+      this.fcCompanyData.address[index].cities = cities;
     } else if(type == 'staff') {
       this.staffData.address[index].stateName = stateResult;
-    }
-
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
-  }
-
-  getCityName(id, type='', index='') {
-    let result = this.citiesObject[id];
-    if(type == 'vendor') {
-      this.vendorData.address[index].cityName = result;
-    } else if(type == 'customer') {
-      this.customerData.address[index].cityName = result;
-    } else if(type == 'broker') {
-      this.brokerData.address[index].cityName = result;
-    } else if(type == 'carrier') {
-      this.carrierData.address[index].cityName = result;
-    } else if(type == 'operator') {
-      this.ownerData.address[index].cityName = result;
-    } else if(type == 'shipper') {
-      this.shipperData.address[index].cityName = result;
-    } else if(type == 'consignee') {
-      this.consigneeData.address[index].cityName = result;
-    } else if(type == 'company') {
-      this.fcCompanyData.address[index].cityName = result;
-    } else if(type == 'staff') {
-      this.staffData.address[index].cityName = result;
+      this.staffData.address[index].cities = cities;
     }
   }
 
@@ -2396,83 +2406,94 @@ export class AddressBookComponent implements OnInit {
     }
   }
 
-
   fetchAddress() {
     return this.apiService.getData('addresses');
   }
 
   fetchCustomersCount() {
-    this.apiService.getData('customers/get/count?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/customer?searchValue='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsCustomer = result.Count;
+
+        this.initDataTable();
       },
     });
   }
 
   fetchOwnerOperatorsCount() {
-    this.apiService.getData('ownerOperators/get/count?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/ownerOperator?searchValue='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsOperator = result.Count;
+
+        this.initDataTableOperator();
       },
     });
   }
 
   fetchBrokersCount() {
-    this.apiService.getData('brokers/get/count?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/broker?searchValue='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsBroker = result.Count;
+
+        this.initDataTableBroker();
       },
     });
   }
 
   fetchVendorsCount() {
-    this.apiService.getData('vendors/get/count?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/vendor?searchValue='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsVendor = result.Count;
+
+        this.initDataTableVendor();
       },
     });
   }
 
   fetchCarriersCount() {
-    this.apiService.getData('externalCarriers/get/count?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/carrier?searchValue='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsCarrier = result.Count;
+
+        this.initDataTableCarrier();
       },
     });
   }
 
   fetchShippersCount() {
-    this.apiService.getData('shippers/get/count?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/consignor?searchValue='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsShipper = result.Count;
+        this.initDataTableShipper();
       },
     });
   }
 
   fetchConsigneeCount() {
-    this.apiService.getData('receivers/get/count?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/consignee?searchValue='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsConsignee = result.Count;
+        this.initDataTableConsignee();
       },
     });
   }
 
   fetchStaffsCount() {
-    this.apiService.getData('staffs/get/count?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/employee?searchValue='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -2482,11 +2503,12 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchFcCompaniesCount() {
-    this.apiService.getData('factoringCompanies/get/count?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
+    this.apiService.getData('contacts/get/count/factoringCompany?searchValue='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecordsCompany = result.Count;
+        this.initDataTableCompany();
       },
     });
   }
@@ -2498,66 +2520,64 @@ export class AddressBookComponent implements OnInit {
     }
   }
 
-  assignAddressToUpdate(entityAddresses: any) {
-    this.newAddress = [];
-    for (let i = 0; i < entityAddresses.length; i++) {
-      this.newAddress.push({
-        addressID: entityAddresses[i].addressID,
-        addressType: entityAddresses[i].addressType,
-        countryID: entityAddresses[i].countryID,
-        countryName: entityAddresses[i].countryName,
-        stateID: entityAddresses[i].stateID,
-        stateName: entityAddresses[i].stateName,
-        cityID: entityAddresses[i].cityID,
-        cityName: entityAddresses[i].cityName,
-        zipCode: entityAddresses[i].zipCode,
-        address1: entityAddresses[i].address1,
-        address2: entityAddresses[i].address2,
-        userLocation: entityAddresses[i].userLocation,
-        manual: (entityAddresses[i].manual == undefined) ? false : entityAddresses[i].manual,
-        geoCords:{
-          lat: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lat : '',
-          lng: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lng : ''
-        },
-        houseNumber: entityAddresses[i].houseNumber,
-        street: entityAddresses[i].street
-      })
+  // assignAddressToUpdate(entityAddresses: any) {
+  //   this.newAddress = [];
+  //   for (let i = 0; i < entityAddresses.length; i++) {
+  //     this.newAddress.push({
+  //       addressID: entityAddresses[i].addressID,
+  //       addressType: entityAddresses[i].addressType,
+  //       countryID: entityAddresses[i].countryID,
+  //       countryName: entityAddresses[i].countryName,
+  //       stateID: entityAddresses[i].stateID,
+  //       stateName: entityAddresses[i].stateName,
+  //       cityID: entityAddresses[i].cityID,
+  //       cityName: entityAddresses[i].cityName,
+  //       zipCode: entityAddresses[i].zipCode,
+  //       address1: entityAddresses[i].address1,
+  //       address2: entityAddresses[i].address2,
+  //       userLocation: entityAddresses[i].userLocation,
+  //       manual: (entityAddresses[i].manual == undefined) ? false : entityAddresses[i].manual,
+  //       geoCords:{
+  //         lat: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lat : '',
+  //         lng: (entityAddresses[i].geoCords != undefined) ? entityAddresses[i].geoCords.lng : ''
+  //       },
+  //       houseNumber: entityAddresses[i].houseNumber,
+  //       street: entityAddresses[i].street
+  //     })
 
-      this.getEditStates(entityAddresses[i].countryID);
-      this.getEditCities(entityAddresses[i].stateID);
-    }
+  //     this.getEditStates(entityAddresses[i].countryID);
+  //     this.getEditCities(entityAddresses[i].stateID);
+  //   }
 
-    return this.newAddress;
-  }
+  //   return this.newAddress;
+  // }
 
   async deactivateCustomer(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       await this.apiService
-      .getData(`customers/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/customer/${userID}`)
       .subscribe(async(result: any) => {
         this.customerDraw = 0;
         this.lastEvaluatedKeyCustomer = '';
         this.dataMessageCustomer = Constants.FETCHING_DATA;
         this.customers = [];
         this.fetchCustomersCount();
-        this.initDataTable();
+        // this.initDataTable();
         this.toastr.success('Customer deleted successfully');
-
       });
     }
   }
 
   deactivateBroker(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
-      this.apiService
-      .getData(`brokers/isDeleted/${userID}/${item.isDeleted}`)
+      this.apiService.getData(`contacts/delete/broker/${userID}`)
       .subscribe((result: any) => {
         this.brokerDraw = 0;
         this.lastEvaluatedKeyBroker = '';
         this.dataMessageBroker = Constants.FETCHING_DATA;
         this.brokers = [];
         this.fetchBrokersCount();
-        this.initDataTableBroker();
+        // this.initDataTableBroker();
         this.toastr.success('Broker deleted successfully');
       });
     }
@@ -2566,14 +2586,14 @@ export class AddressBookComponent implements OnInit {
   deactivateVendor(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`vendors/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/vendor/${userID}`)
       .subscribe((result: any) => {
         this.vendorDraw = 0;
         this.lastEvaluatedKeyVendor = '';
         this.dataMessageVendor = Constants.FETCHING_DATA;
         this.vendors = [];
         this.fetchVendorsCount();
-        this.initDataTableVendor();
+        // this.initDataTableVendor();
         this.toastr.success('Vendor deleted successfully');
       });
     }
@@ -2582,14 +2602,14 @@ export class AddressBookComponent implements OnInit {
   deactivateShipper(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`shippers/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/consignor/${userID}`)
       .subscribe((result: any) => {
         this.shipperDraw = 0;
         this.lastEvaluatedKeyShipper = '';
         this.dataMessageConsignor = Constants.FETCHING_DATA;
         this.shippers = [];
         this.fetchShippersCount();
-        this.initDataTableShipper();
+        // this.initDataTableShipper();
         this.toastr.success('Consignor deleted successfully');
       });
     }
@@ -2597,14 +2617,14 @@ export class AddressBookComponent implements OnInit {
   deactivateReceiver(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`receivers/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/consignee/${userID}`)
       .subscribe((result: any) => {
         this.consigneeDraw = 0;
         this.lastEvaluatedKeyConsignee = '';
         this.dataMessageConsignee = Constants.FETCHING_DATA;
         this.receivers = [];
         this.fetchConsigneeCount();
-        this.initDataTableConsignee();
+        // this.initDataTableConsignee();
         this.toastr.success('Consignee deleted successfully');
       });
     }
@@ -2613,7 +2633,7 @@ export class AddressBookComponent implements OnInit {
   deactivateStaff(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`staffs/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/employee/${userID}`)
       .subscribe((result: any) => {
         this.staffDraw = 0;
         this.lastEvaluatedKeyStaff = '';
@@ -2629,14 +2649,14 @@ export class AddressBookComponent implements OnInit {
   deactivateCompany(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`factoringCompanies/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/factoringCompany/${userID}`)
       .subscribe((result: any) => {
         this.companyDraw = 0;
         this.lastEvaluatedKeyCompany = '';
         this.dataMessageFactoring = Constants.FETCHING_DATA;
         this.fcCompanies = [];
         this.fetchFcCompaniesCount();
-        this.initDataTableCompany();
+        // this.initDataTableCompany();
         this.toastr.success('Company deleted successfully');
       });
     }
@@ -2645,14 +2665,14 @@ export class AddressBookComponent implements OnInit {
   deactivateOperator(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`ownerOperators/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/ownerOperator/${userID}`)
       .subscribe((result: any) => {
         this.ownerOperatorDraw = 0;
         this.lastEvaluatedKeyOperator = '';
         this.dataMessageOwner = Constants.FETCHING_DATA;
         this.ownerOperatorss = [];
         this.fetchOwnerOperatorsCount();
-        this.initDataTableOperator();
+        // this.initDataTableOperator();
         this.toastr.success('Operator deleted successfully');
       });
     }
@@ -2661,14 +2681,14 @@ export class AddressBookComponent implements OnInit {
   deactivateCarrier(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`externalCarriers/isDeleted/${userID}/${item.isDeleted}`)
+      .getData(`contacts/delete/carrrier/${userID}`)
       .subscribe((result: any) => {
         this.carrierDraw = 0;
         this.lastEvaluatedKeyCarrier = '';
         this.dataMessageCarrier = Constants.FETCHING_DATA;
         this.carriers = [];
         this.fetchCarriersCount();
-        this.initDataTableCarrier();
+        // this.initDataTableCarrier();
         this.toastr.success('Carrier deleted successfully');
       });
     }
@@ -2702,68 +2722,32 @@ export class AddressBookComponent implements OnInit {
 
     if(type === 'customer') {
       $('#addCustomerModal').modal('show');
-      this.customerData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.customerData.address = result;
 
     } else if(type === 'broker') {
       $('#addBrokerModal').modal('show');
-      this.brokerData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.brokerData.address = result;
 
     } else if(type === 'vendor') {
       $('#addVendorModal').modal('show');
-      this.vendorData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.vendorData.address = result;
 
-    } else if(type === 'shipper') {
+    } else if(type === 'consignor') {
       $('#addShipperModal').modal('show');
-      this.shipperData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.shipperData.address = result;
 
     } else if(type === 'consignee') {
       $('#addConsigneeModal').modal('show');
-      this.consigneeData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.consigneeData.address = result;
 
     } else if(type === 'staff') {
       $('#addStaffModal').modal('show');
-      this.staffData = item;
-      if(item.loginEnabled){
-        this.loginDiv = true;
-        this.fieldvisibility = 'true';
-        this.newStaffUser = 'false';
-      } else {
-        this.staffData.loginEnabled = false;
-        this.loginDiv = false;
-        this.fieldvisibility = 'false';
-        this.newStaffUser = 'true';
-      }
-      let result = this.assignAddressToUpdate(item.address)
-      this.staffData.address = result;
 
-    } else if(type === 'factoring company') {
+    } else if(type === 'factoringCompany') {
       $('#addFCModal').modal('show');
-      this.fcCompanyData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.fcCompanyData.address = result;
 
     } else if(type === 'ownerOperator') {
       $('#addOwnerOperatorModal').modal('show');
-      this.ownerData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.ownerData.address = result;
 
     } else if(type === 'carrier') {
       $('#addCarrierModal').modal('show');
-      this.carrierData = item;
-      let result = this.assignAddressToUpdate(item.address)
-      this.carrierData.address = result;
     }
+    this.getEditRecord(item.contactID, type);
   }
 
   nextStep() {
@@ -2795,6 +2779,23 @@ export class AddressBookComponent implements OnInit {
   }
 
   setActiveDiv(type){
+    if(type == 'broker') {
+      this.fetchBrokersCount();
+    } else if(type == 'carrier') {
+      this.fetchCarriersCount();
+    } else if(type == 'consignee') {
+      this.fetchConsigneeCount();
+    } else if(type == 'customer') {
+      this.fetchCustomersCount();
+    } else if(type == 'company') {
+      this.fetchFcCompaniesCount();
+    } else if(type == 'operator') {
+      this.fetchOwnerOperatorsCount();
+    } else if(type == 'vendor') {
+      this.fetchVendorsCount();
+    } else if(type == 'shipper') {
+      this.fetchShippersCount();
+    }
     this.activeDiv = type+'Table';
   }
 
@@ -2814,8 +2815,8 @@ export class AddressBookComponent implements OnInit {
     this.customerData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       ein: '',
       accountNumber: '',
       workPhone: '',
@@ -2849,16 +2850,19 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         phone: '',
         designation: '',
         email: '',
         fax: ''
-      }
+      }]
     };
 
     // Broker Object
@@ -2877,11 +2881,8 @@ export class AddressBookComponent implements OnInit {
       brokerType: 'company',
       address: [{
         addressType: '',
-        countryID: '',
         countryName: '',
-        stateID: '',
         stateName: '',
-        cityID: '',
         cityName: '',
         zipCode: '',
         address1: '',
@@ -2895,24 +2896,27 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         designation: '',
         phone: '',
         email: '',
         fax: ''
-      }
+      }]
     };
 
     // ownerOperator Object
     this.ownerData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       workPhone: '',
       workEmail: '',
       csa: false,
@@ -2953,16 +2957,19 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         designation: '',
         phone: '',
         email: '',
         fax: '',
-      }
+      }]
     };
 
     // Vendor Object
@@ -2970,8 +2977,8 @@ export class AddressBookComponent implements OnInit {
       companyName: this.currentUser,
       dbaName: '',
       accountNumber: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       workEmail: '',
       workPhone: '',
       preferedVendor: false,
@@ -2996,7 +3003,9 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
     };
 
@@ -3004,8 +3013,8 @@ export class AddressBookComponent implements OnInit {
     this.carrierData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       workPhone: '',
       workEmail: '',
       csa: false,
@@ -3059,29 +3068,32 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         designation: '',
         phone: '',
         email: '',
         fax: ''
-      }
+      }]
     };
 
     // Shipper Object
     this.shipperData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       mc: '',
       dot: '',
       workPhone: '',
       workEmail:'',
-      entityType: 'shipper',
+      entityType: 'consignor',
       address: [{
         addressType: '',
         countryID: '',
@@ -3102,24 +3114,27 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         designation: '',
         phone: '',
         email: '',
         fax: ''
-      }
+      }]
     };
 
     // Consignee Object
     this.consigneeData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       mc: '',
       dot: '',
       workPhone: '',
@@ -3145,16 +3160,19 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
-      additionalContact: {
+      additionalContact: [{
+        fullName: '',
         firstName: '',
         lastName: '',
         designation: '',
         phone: '',
         email: '',
         fax: ''
-      }
+      }]
     };
 
     // fcCompany Object
@@ -3162,11 +3180,11 @@ export class AddressBookComponent implements OnInit {
       companyName: this.currentUser,
       dbaName: '',
       isDefault: false,
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       workPhone: '',
       workEmail: '',
-      entityType: 'factoring company',
+      entityType: 'factoringCompany',
       address: [{
         addressType: '',
         countryID: '',
@@ -3187,7 +3205,9 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
       fcDetails: {
         accountNumber: '',
@@ -3200,8 +3220,8 @@ export class AddressBookComponent implements OnInit {
     this.staffData = {
       companyName: this.currentUser,
       dbaName: '',
-      firstName: '',
-      lastName: '',
+      // firstName: '',
+      // lastName: '',
       employeeID: '',
       dateOfBirth: '',
       workPhone: '',
@@ -3237,7 +3257,9 @@ export class AddressBookComponent implements OnInit {
         countryCode: '',
         stateCode: '',
         houseNumber: '',
-        street: ''
+        street: '',
+        states: [],
+        cities: []
       }],
       userAccount: {
         contractStartDate: '',
@@ -3259,30 +3281,9 @@ export class AddressBookComponent implements OnInit {
     
   }
 
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
-
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('customers/fetch/records?customer='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCustomer)
+    this.apiService.getData('contacts/fetch/records/customer?searchValue='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName+'&lastKey='+this.lastEvaluatedKeyCustomer)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCustomer = Constants.NO_RECORDS_FOUND;
@@ -3299,12 +3300,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.customerNext = false;
           // for prev button
-          if(!this.customerPrevEvauatedKeys.includes(result['LastEvaluatedKey'].customerID)){
-            this.customerPrevEvauatedKeys.push(result['LastEvaluatedKey'].customerID);
+          if(!this.customerPrevEvauatedKeys.includes(lastEvalKey)){
+            this.customerPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyCustomer = result['LastEvaluatedKey'].customerID;
+          this.lastEvaluatedKeyCustomer = lastEvalKey;
 
         } else {
           // disable next button if no lastevaluated key is found
@@ -3327,13 +3329,13 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableBroker() {
     this.spinner.show();
-    this.apiService.getData('brokers/fetch/records?broker='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyBroker)
+    this.apiService.getData('contacts/fetch/records/broker?searchValue='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName+'&lastKey='+this.lastEvaluatedKeyBroker)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageBroker = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedBrokers = [];
-        this.suggestedBrokerCompanies = [];
+        this.suggestedBrokerCompanies = []; 
         this.getStartandEndVal('broker');
 
         this.brokers = result['Items'];
@@ -3344,12 +3346,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.brokerNext = false;
           // for prev button
-          if (!this.brokerPrevEvauatedKeys.includes(result['LastEvaluatedKey'].brokerID)) {
-            this.brokerPrevEvauatedKeys.push(result['LastEvaluatedKey'].brokerID);
+          if (!this.brokerPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.brokerPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyBroker = result['LastEvaluatedKey'].brokerID;
+          this.lastEvaluatedKeyBroker = lastEvalKey;
 
         } else {
           this.brokerNext = true;
@@ -3371,7 +3374,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableVendor() {
     this.spinner.show();
-    this.apiService.getData('vendors/fetch/records?vendor='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyVendor)
+    this.apiService.getData('contacts/fetch/records/vendor?searchValue='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyVendor)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageVendor = Constants.NO_RECORDS_FOUND;
@@ -3388,12 +3391,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.vendorNext = false;
           // for prev button
-          if (!this.vendorPrevEvauatedKeys.includes(result['LastEvaluatedKey'].vendorID)) {
-            this.vendorPrevEvauatedKeys.push(result['LastEvaluatedKey'].vendorID);
+          if (!this.vendorPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.vendorPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyVendor = result['LastEvaluatedKey'].vendorID;
+          this.lastEvaluatedKeyVendor = lastEvalKey;
 
         } else {
           this.vendorNext = true;
@@ -3415,7 +3419,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCarrier() {
     this.spinner.show();
-    this.apiService.getData('externalCarriers/fetch/records?info='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCarrier)
+    this.apiService.getData('contacts/fetch/records/carrier?searchValue='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName+'&lastKey='+this.lastEvaluatedKeyCarrier)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageCarrier = Constants.NO_RECORDS_FOUND;
@@ -3432,12 +3436,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.carrierNext = false;
           // for prev button
-          if (!this.carrierPrevEvauatedKeys.includes(result['LastEvaluatedKey'].infoID)) {
-            this.carrierPrevEvauatedKeys.push(result['LastEvaluatedKey'].infoID);
+          if (!this.carrierPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.carrierPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyCarrier = result['LastEvaluatedKey'].infoID;
+          this.lastEvaluatedKeyCarrier = lastEvalKey;
 
         } else {
           this.carrierNext = true;
@@ -3459,7 +3464,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableOperator() {
     this.spinner.show();
-    this.apiService.getData('ownerOperators/fetch/records?operator='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyOperator)
+    this.apiService.getData('contacts/fetch/records/ownerOperator?searchValue='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyOperator)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageOwner = Constants.NO_RECORDS_FOUND;
@@ -3476,12 +3481,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.ownerOperatorNext = false;
           // for prev button
-          if (!this.ownerOperatorPrevEvauatedKeys.includes(result['LastEvaluatedKey'].operatorID)) {
-            this.ownerOperatorPrevEvauatedKeys.push(result['LastEvaluatedKey'].operatorID);
+          if (!this.ownerOperatorPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.ownerOperatorPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyOperator = result['LastEvaluatedKey'].operatorID;
+          this.lastEvaluatedKeyOperator = lastEvalKey;
 
         } else {
           this.ownerOperatorNext = true;
@@ -3503,7 +3509,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableShipper() {
     this.spinner.show();
-    this.apiService.getData('shippers/fetch/records?shipper='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyShipper)
+    this.apiService.getData('contacts/fetch/records/consignor?searchValue='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignor = Constants.NO_RECORDS_FOUND;
@@ -3520,12 +3526,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.shipperNext = false;
           // for prev button
-          if (!this.shipperPrevEvauatedKeys.includes(result['LastEvaluatedKey'].shipperID)) {
-            this.shipperPrevEvauatedKeys.push(result['LastEvaluatedKey'].shipperID);
+          if (!this.shipperPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.shipperPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyShipper = result['LastEvaluatedKey'].shipperID;
+          this.lastEvaluatedKeyShipper = lastEvalKey;
 
         } else {
           this.shipperNext = true;
@@ -3547,7 +3554,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableConsignee() {
     this.spinner.show();
-    this.apiService.getData('receivers/fetch/records?consignee='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyConsignee)
+    this.apiService.getData('contacts/fetch/records/consignee?searchValue='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyConsignee)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageConsignee = Constants.NO_RECORDS_FOUND;
@@ -3564,12 +3571,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.consigneeNext = false;
           // for prev button
-          if (!this.consigneePrevEvauatedKeys.includes(result['LastEvaluatedKey'].receiverID)) {
-            this.consigneePrevEvauatedKeys.push(result['LastEvaluatedKey'].receiverID);
+          if (!this.consigneePrevEvauatedKeys.includes(lastEvalKey)) {
+            this.consigneePrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyConsignee = result['LastEvaluatedKey'].receiverID;
+          this.lastEvaluatedKeyConsignee = lastEvalKey;
 
         } else {
           this.consigneeNext = true;
@@ -3591,7 +3599,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableStaff() {
     this.spinner.show();
-    this.apiService.getData('staffs/fetch/records?staff='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyStaff)
+    this.apiService.getData('contacts/fetch/records/employee?searchValue='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyStaff)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageEmployee = Constants.NO_RECORDS_FOUND;
@@ -3608,12 +3616,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.staffNext = false;
           // for prev button
-          if (!this.staffPrevEvauatedKeys.includes(result['LastEvaluatedKey'].staffID)) {
-            this.staffPrevEvauatedKeys.push(result['LastEvaluatedKey'].staffID);
+          if (!this.staffPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.staffPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyStaff = result['LastEvaluatedKey'].staffID;
+          this.lastEvaluatedKeyStaff = lastEvalKey;
 
         } else {
           this.staffNext = true;
@@ -3635,7 +3644,7 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCompany() {
     this.spinner.show();
-    this.apiService.getData('factoringCompanies/fetch/records?company='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCompany)
+    this.apiService.getData('contacts/fetch/records/factoringCompany?searchValue='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCompany)
       .subscribe((result: any) => {
         if(result.Items.length == 0) {
           this.dataMessageFactoring = Constants.NO_RECORDS_FOUND;
@@ -3652,12 +3661,13 @@ export class AddressBookComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
           this.companyNext = false;
           // for prev button
-          if (!this.companyPrevEvauatedKeys.includes(result['LastEvaluatedKey'].factoringCompanyID)) {
-            this.companyPrevEvauatedKeys.push(result['LastEvaluatedKey'].factoringCompanyID);
+          if (!this.companyPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.companyPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKeyCompany = result['LastEvaluatedKey'].factoringCompanyID;
+          this.lastEvaluatedKeyCompany = lastEvalKey;
 
         } else {
           this.companyNext = true;
@@ -3689,7 +3699,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedCustomerCompanies = [];
       }
       this.apiService
-        .getData(`customers/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=customer`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3718,7 +3728,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedBrokerCompanies = [];
       }
       this.apiService
-        .getData(`brokers/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=broker`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedBrokerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3747,7 +3757,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedVendorCompanies = [];
       }
       this.apiService
-        .getData(`vendors/nameSuggestions/${value}?type=${searchType}`)
+        .getData(`contacts/nameSuggestions/${value}?type=${searchType}&tab=vendor`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedVendorCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3777,7 +3787,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedCarrierCompanies = [];
       }
       this.apiService
-        .getData(`externalCarriers/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=carrier`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedCarrierCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3805,7 +3815,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedOperatorCompanies = [];
       }
       this.apiService
-        .getData(`ownerOperators/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=ownerOperator`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedOperatorCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3833,7 +3843,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedShipperCompanies = [];
       }
       this.apiService
-        .getData(`shippers/suggestion/${value}?type=${searchType}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=consignor`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedShipperCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3862,7 +3872,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedConsigneeCompanies = [];
       }
       this.apiService
-        .getData(`receivers/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=consignee`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedConsigneeCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3890,7 +3900,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedStaffCompanies = [];
       }
       this.apiService
-        .getData(`staffs/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=employee`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedStaffCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -3918,7 +3928,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedFactoringCompanies = [];
       }
       this.apiService
-        .getData(`factoringCompanies/suggestion/${value}?type=${searchType}`)
+        .getData(`contacts/suggestion/${value}?type=${searchType}&tab=factoringCompany`)
         .subscribe((result) => {
           if (searchType == 'company') {
             this.suggestedFactoringCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
@@ -4054,7 +4064,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'customerTable';
         this.dataMessageCustomer = Constants.FETCHING_DATA;
         this.fetchCustomersCount();
-        this.initDataTable();
+        // this.initDataTable();
       } else {
         return false
       }
@@ -4075,7 +4085,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'brokerTable';
         this.dataMessageBroker = Constants.FETCHING_DATA;
         this.fetchBrokersCount();
-        this.initDataTableBroker();
+        // this.initDataTableBroker();
       } else {
         return false
       }
@@ -4096,7 +4106,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'vendorTable';
         this.dataMessageVendor = Constants.FETCHING_DATA;
         this.fetchVendorsCount();
-        this.initDataTableVendor();
+        // this.initDataTableVendor();
       } else {
         return false
       }
@@ -4117,7 +4127,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'carrierTable';
         this.dataMessageCarrier = Constants.FETCHING_DATA;
         this.fetchCarriersCount();
-        this.initDataTableCarrier();
+        // this.initDataTableCarrier();
       } else {
         return false
       }
@@ -4138,7 +4148,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'operatorTable';
         this.dataMessageOwner = Constants.FETCHING_DATA;
         this.fetchOwnerOperatorsCount();
-        this.initDataTableOperator();
+        // this.initDataTableOperator();
       } else {
         return false
       }
@@ -4159,7 +4169,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'shipperTable';
         this.dataMessageConsignor = Constants.FETCHING_DATA;
         this.fetchShippersCount();
-        this.initDataTableShipper();
+        // this.initDataTableShipper();
       } else {
         return false
       }
@@ -4180,7 +4190,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'consigneeTable';
         this.dataMessageConsignee = Constants.FETCHING_DATA;
         this.fetchConsigneeCount();
-        this.initDataTableConsignee();
+        // this.initDataTableConsignee();
       } else {
         return false
       }
@@ -4223,7 +4233,7 @@ export class AddressBookComponent implements OnInit {
         this.activeDiv = 'companyTable';
         this.dataMessageFactoring = Constants.FETCHING_DATA;
         this.fetchFcCompaniesCount()
-        this.initDataTableCompany();
+        // this.initDataTableCompany();
       } else {
         return false
       }
@@ -4244,7 +4254,7 @@ export class AddressBookComponent implements OnInit {
         this.dataMessageCustomer = Constants.FETCHING_DATA;
         this.suggestedCustomerCompanies = [];
         this.fetchCustomersCount();
-        this.initDataTable();
+        // this.initDataTable();
         this.customerDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4263,7 +4273,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedBrokerCompanies = [];
         this.dataMessageBroker = Constants.FETCHING_DATA;
         this.fetchBrokersCount();
-        this.initDataTableBroker();
+        // this.initDataTableBroker();
         this.brokerDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4282,7 +4292,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedVendorCompanies = [];
         this.dataMessageVendor = Constants.FETCHING_DATA;
         this.fetchVendorsCount();
-        this.initDataTableVendor();
+        // this.initDataTableVendor();
         this.vendorDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4301,7 +4311,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedCarrierCompanies = [];
         this.dataMessageCarrier = Constants.FETCHING_DATA;
         this.fetchCarriersCount();
-        this.initDataTableCarrier();
+        // this.initDataTableCarrier();
         this.carrierDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4320,7 +4330,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedOperatorCompanies = [];
         this.dataMessageOwner = Constants.FETCHING_DATA;
         this.fetchOwnerOperatorsCount();
-        this.initDataTableOperator();
+        // this.initDataTableOperator();
         this.ownerOperatorDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4339,7 +4349,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedShipperCompanies = [];
         this.dataMessageConsignor = Constants.FETCHING_DATA;
         this.fetchShippersCount();
-        this.initDataTableShipper();
+        // this.initDataTableShipper();
         this.shipperDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4358,7 +4368,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedConsigneeCompanies = [];
         this.dataMessageConsignee = Constants.FETCHING_DATA;
         this.fetchConsigneeCount();
-        this.initDataTableConsignee();
+        // this.initDataTableConsignee();
         this.consigneeDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4396,7 +4406,7 @@ export class AddressBookComponent implements OnInit {
         this.suggestedCompany = [];
         this.dataMessageFactoring = Constants.FETCHING_DATA;
         this.fetchFcCompaniesCount();
-        this.initDataTableCompany();
+        // this.initDataTableCompany();
         this.companyDraw = 0;
         this.resetCountResult(type);
       } else {
@@ -4492,14 +4502,13 @@ export class AddressBookComponent implements OnInit {
     } else if(type == 'broker') {
       this.brokerData.address[index].address1 = '';
       this.brokerData.address[index].address2 = '';
-      this.brokerData.address[index].cityID = '';
       this.brokerData.address[index].cityName = '';
-      this.brokerData.address[index].countryID = '';
       this.brokerData.address[index].countryName = '';
-      this.brokerData.address[index].stateID = '';
       this.brokerData.address[index].stateName = '';
       this.brokerData.address[index].userLocation = '';
       this.brokerData.address[index].zipCode = '';
+      this.brokerData.address[index].countryCode = '';
+      this.brokerData.address[index].stateCode = '';
 
     } else if(type == 'carrier') {
       this.carrierData.address[index].address1 = '';
@@ -4798,199 +4807,217 @@ export class AddressBookComponent implements OnInit {
     if(type == 'customer') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.customerData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.customerData.address[i].countryID = '';
-        this.customerData.address[i].countryName = '';
-        this.customerData.address[i].stateID = '';
-        this.customerData.address[i].stateName = '';
-        this.customerData.address[i].cityID = '';
-        this.customerData.address[i].cityName = '';
-        this.customerData.address[i].zipCode = '';
-        this.customerData.address[i].address1 = '';
-        this.customerData.address[i].address2 = '';
-        if(this.customerData.address[i].geoCords != undefined){
-          this.customerData.address[i].geoCords.lat = '';
-          this.customerData.address[i].geoCords.lng = '';
-        }
+      }
+      this.customerData.address[i]['userLocation'] = '';
+      this.customerData.address[i].countryCode = '';
+      this.customerData.address[i].countryName = '';
+      this.customerData.address[i].stateCode = '';
+      this.customerData.address[i].stateName = '';
+      this.customerData.address[i].cityName = '';
+      this.customerData.address[i].zipCode = '';
+      this.customerData.address[i].address1 = '';
+      this.customerData.address[i].address2 = '';
+      if(this.customerData.address[i].geoCords != undefined){
+        this.customerData.address[i].geoCords.lat = '';
+        this.customerData.address[i].geoCords.lng = '';
       }
     } else if(type == 'broker') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.brokerData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.brokerData.address[i].countryID = '';
-        this.brokerData.address[i].countryName = '';
-        this.brokerData.address[i].stateID = '';
-        this.brokerData.address[i].stateName = '';
-        this.brokerData.address[i].cityID = '';
-        this.brokerData.address[i].cityName = '';
-        this.brokerData.address[i].zipCode = '';
-        this.brokerData.address[i].address1 = '';
-        this.brokerData.address[i].address2 = '';
-        if(this.brokerData.address[i].geoCords != undefined){
-          this.brokerData.address[i].geoCords.lat = '';
-          this.brokerData.address[i].geoCords.lng = '';
-        }
-        
+      }
+      this.brokerData.address[i]['userLocation'] = '';
+      this.brokerData.address[i].countryCode = '';
+      this.brokerData.address[i].stateCode = '';
+      this.brokerData.address[i].countryName = '';
+      this.brokerData.address[i].stateName = '';
+      this.brokerData.address[i].cityName = '';
+      this.brokerData.address[i].zipCode = '';
+      this.brokerData.address[i].address1 = '';
+      this.brokerData.address[i].address2 = '';
+      if(this.brokerData.address[i].geoCords != undefined){
+        this.brokerData.address[i].geoCords.lat = '';
+        this.brokerData.address[i].geoCords.lng = '';
       }
     } else if(type == 'vendor') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.vendorData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.vendorData.address[i].countryID = '';
-        this.vendorData.address[i].countryName = '';
-        this.vendorData.address[i].stateID = '';
-        this.vendorData.address[i].stateName = '';
-        this.vendorData.address[i].cityID = '';
-        this.vendorData.address[i].cityName = '';
-        this.vendorData.address[i].zipCode = '';
-        this.vendorData.address[i].address1 = '';
-        this.vendorData.address[i].address2 = '';
-        if(this.vendorData.address[i].geoCords != undefined){
-          this.vendorData.address[i].geoCords.lat = '';
-          this.vendorData.address[i].geoCords.lng = '';
-        }
+      }
+      this.vendorData.address[i]['userLocation'] = '';
+      this.vendorData.address[i].countryCode = '';
+      this.vendorData.address[i].countryName = '';
+      this.vendorData.address[i].stateCode = '';
+      this.vendorData.address[i].stateName = '';
+      this.vendorData.address[i].cityName = '';
+      this.vendorData.address[i].zipCode = '';
+      this.vendorData.address[i].address1 = '';
+      this.vendorData.address[i].address2 = '';
+      if(this.vendorData.address[i].geoCords != undefined){
+        this.vendorData.address[i].geoCords.lat = '';
+        this.vendorData.address[i].geoCords.lng = '';
       }
     } else if(type == 'carrier') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.carrierData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.carrierData.address[i].countryID = '';
-        this.carrierData.address[i].countryName = '';
-        this.carrierData.address[i].stateID = '';
-        this.carrierData.address[i].stateName = '';
-        this.carrierData.address[i].cityID = '';
-        this.carrierData.address[i].cityName = '';
-        this.carrierData.address[i].zipCode = '';
-        this.carrierData.address[i].address1 = '';
-        this.carrierData.address[i].address2 = '';
-        if(this.carrierData.address[i].geoCords != undefined){
-          this.carrierData.address[i].geoCords.lat = '';
-          this.carrierData.address[i].geoCords.lng = '';
-        }
+      }
+      this.carrierData.address[i]['userLocation'] = '';
+      this.carrierData.address[i].countryCode = '';
+      this.carrierData.address[i].countryName = '';
+      this.carrierData.address[i].stateCode = '';
+      this.carrierData.address[i].stateName = '';
+      this.carrierData.address[i].cityName = '';
+      this.carrierData.address[i].zipCode = '';
+      this.carrierData.address[i].address1 = '';
+      this.carrierData.address[i].address2 = '';
+      if(this.carrierData.address[i].geoCords != undefined){
+        this.carrierData.address[i].geoCords.lat = '';
+        this.carrierData.address[i].geoCords.lng = '';
       }
     } else if(type == 'owner') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.ownerData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.ownerData.address[i].countryID = '';
-        this.ownerData.address[i].countryName = '';
-        this.ownerData.address[i].stateID = '';
-        this.ownerData.address[i].stateName = '';
-        this.ownerData.address[i].cityID = '';
-        this.ownerData.address[i].cityName = '';
-        this.ownerData.address[i].zipCode = '';
-        this.ownerData.address[i].address1 = '';
-        this.ownerData.address[i].address2 = '';
-        if(this.ownerData.address[i].geoCords != undefined){
-          this.ownerData.address[i].geoCords.lat = '';
-          this.ownerData.address[i].geoCords.lng = '';
-        }
+      }
+      this.ownerData.address[i]['userLocation'] = '';
+      this.ownerData.address[i].countryCode = '';
+      this.ownerData.address[i].countryName = '';
+      this.ownerData.address[i].stateCode = '';
+      this.ownerData.address[i].stateName = '';
+      this.ownerData.address[i].cityName = '';
+      this.ownerData.address[i].zipCode = '';
+      this.ownerData.address[i].address1 = '';
+      this.ownerData.address[i].address2 = '';
+      if(this.ownerData.address[i].geoCords != undefined){
+        this.ownerData.address[i].geoCords.lat = '';
+        this.ownerData.address[i].geoCords.lng = '';
       }
     } else if(type == 'shipper') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.shipperData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.shipperData.address[i].countryID = '';
-        this.shipperData.address[i].countryName = '';
-        this.shipperData.address[i].stateID = '';
-        this.shipperData.address[i].stateName = '';
-        this.shipperData.address[i].cityID = '';
-        this.shipperData.address[i].cityName = '';
-        this.shipperData.address[i].zipCode = '';
-        this.shipperData.address[i].address1 = '';
-        this.shipperData.address[i].address2 = '';
-        if(this.shipperData.address[i].geoCords != undefined){
-          this.shipperData.address[i].geoCords.lat = '';
-          this.shipperData.address[i].geoCords.lng = '';
-        }
+      }
+      this.shipperData.address[i]['userLocation'] = '';
+      this.shipperData.address[i].countryCode = '';
+      this.shipperData.address[i].countryName = '';
+      this.shipperData.address[i].stateCode = '';
+      this.shipperData.address[i].stateName = '';
+      this.shipperData.address[i].cityName = '';
+      this.shipperData.address[i].zipCode = '';
+      this.shipperData.address[i].address1 = '';
+      this.shipperData.address[i].address2 = '';
+      if(this.shipperData.address[i].geoCords != undefined){
+        this.shipperData.address[i].geoCords.lat = '';
+        this.shipperData.address[i].geoCords.lng = '';
       }
     } else if(type == 'consignee') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.consigneeData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.consigneeData.address[i].countryID = '';
-        this.consigneeData.address[i].countryName = '';
-        this.consigneeData.address[i].stateID = '';
-        this.consigneeData.address[i].stateName = '';
-        this.consigneeData.address[i].cityID = '';
-        this.consigneeData.address[i].cityName = '';
-        this.consigneeData.address[i].zipCode = '';
-        this.consigneeData.address[i].address1 = '';
-        this.consigneeData.address[i].address2 = '';
-        if(this.consigneeData.address[i].geoCords != undefined){
-          this.consigneeData.address[i].geoCords.lat = '';
-          this.consigneeData.address[i].geoCords.lng = '';
-        }
+      }
+      this.consigneeData.address[i]['userLocation'] = '';
+      this.consigneeData.address[i].countryCode = '';
+      this.consigneeData.address[i].countryName = '';
+      this.consigneeData.address[i].stateCode = '';
+      this.consigneeData.address[i].stateName = '';
+      this.consigneeData.address[i].cityName = '';
+      this.consigneeData.address[i].zipCode = '';
+      this.consigneeData.address[i].address1 = '';
+      this.consigneeData.address[i].address2 = '';
+      if(this.consigneeData.address[i].geoCords != undefined){
+        this.consigneeData.address[i].geoCords.lat = '';
+        this.consigneeData.address[i].geoCords.lng = '';
       }
     } else if(type == 'staff') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.staffData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.staffData.address[i].countryID = '';
-        this.staffData.address[i].countryName = '';
-        this.staffData.address[i].stateID = '';
-        this.staffData.address[i].stateName = '';
-        this.staffData.address[i].cityID = '';
-        this.staffData.address[i].cityName = '';
-        this.staffData.address[i].zipCode = '';
-        this.staffData.address[i].address1 = '';
-        this.staffData.address[i].address2 = '';
-        if(this.staffData.address[i].geoCords != undefined){
-          this.staffData.address[i].geoCords.lat = '';
-          this.staffData.address[i].geoCords.lng = '';
-        }
+      }
+      this.staffData.address[i]['userLocation'] = '';
+      this.staffData.address[i].countryCode = '';
+      this.staffData.address[i].countryName = '';
+      this.staffData.address[i].stateCode = '';
+      this.staffData.address[i].stateName = '';
+      this.staffData.address[i].cityName = '';
+      this.staffData.address[i].zipCode = '';
+      this.staffData.address[i].address1 = '';
+      this.staffData.address[i].address2 = '';
+      if(this.staffData.address[i].geoCords != undefined){
+        this.staffData.address[i].geoCords.lat = '';
+        this.staffData.address[i].geoCords.lng = '';
       }
     } else if(type == 'fcCompany') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
-        this.fcCompanyData.address[i]['userLocation'] = '';
       } else {
         $(event.target).closest('.address-item').removeClass('open');
-        this.fcCompanyData.address[i].countryID = '';
-        this.fcCompanyData.address[i].countryName = '';
-        this.fcCompanyData.address[i].stateID = '';
-        this.fcCompanyData.address[i].stateName = '';
-        this.fcCompanyData.address[i].cityID = '';
-        this.fcCompanyData.address[i].cityName = '';
-        this.fcCompanyData.address[i].zipCode = '';
-        this.fcCompanyData.address[i].address1 = '';
-        this.fcCompanyData.address[i].address2 = '';
-        if(this.fcCompanyData.address[i].geoCords != undefined){
-          this.fcCompanyData.address[i].geoCords.lat = '';
-          this.fcCompanyData.address[i].geoCords.lng = '';
-        }
+      }
+      this.fcCompanyData.address[i]['userLocation'] = '';
+      this.fcCompanyData.address[i].countryCode = '';
+      this.fcCompanyData.address[i].countryName = '';
+      this.fcCompanyData.address[i].stateCode = '';
+      this.fcCompanyData.address[i].stateName = '';
+      this.fcCompanyData.address[i].cityName = '';
+      this.fcCompanyData.address[i].zipCode = '';
+      this.fcCompanyData.address[i].address1 = '';
+      this.fcCompanyData.address[i].address2 = '';
+      if(this.fcCompanyData.address[i].geoCords != undefined){
+        this.fcCompanyData.address[i].geoCords.lat = '';
+        this.fcCompanyData.address[i].geoCords.lng = '';
       }
     }
   }
 
-  getEditStates(id) {
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+  getEditStates(countryCode, type, index) {
+    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    if(type == 'broker') {
+      this.brokerData.address[index].states = states;
+    } else if(type == 'customer') {
+      this.customerData.address[index].states = states;
+    } else if(type == 'vendor') {
+      this.vendorData.address[index].states = states;
+    } else if(type == 'carrier') {
+      this.carrierData.address[index].states = states;
+    } else if(type == 'operator') {
+      this.ownerData.address[index].states = states;
+    } else if(type == 'shipper') {
+      this.shipperData.address[index].states = states;
+    } else if(type == 'consignee') {
+      this.consigneeData.address[index].states = states;
+    } else if(type == 'company') {
+      this.fcCompanyData.address[index].states = states;
+    }
   }
 
-  getEditCities(id) {
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
+  getEditCities(countryCode, stateCode, type, index) {
+    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    if(type == 'broker') {
+      this.brokerData.address[index].cities = cities;
+    } else if(type == 'customer') {
+      this.customerData.address[index].cities = cities;
+    } else if(type == 'vendor') {
+      this.vendorData.address[index].cities = cities;
+    } else if(type == 'carrier') {
+      this.carrierData.address[index].cities = cities;
+    } else if(type == 'operator') {
+      this.ownerData.address[index].cities = cities;
+    } else if(type == 'shipper') {
+      this.shipperData.address[index].cities = cities;
+    } else if(type == 'consignee') {
+      this.consigneeData.address[index].cities = cities;
+    } else if(type == 'company') {
+      this.fcCompanyData.address[index].cities = cities;
+    }
   }
 
   brokerType(value: any) {
@@ -5051,10 +5078,9 @@ export class AddressBookComponent implements OnInit {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
     } 
-  }
+  } 
 
   checkCompanyName = _.debounce(function(value, type, searchType='') {
-    // console.log("name changed!");
 
     this.apiService
         .getData(`customers/suggestion/${value}?type=${searchType}`)
@@ -5077,4 +5103,140 @@ export class AddressBookComponent implements OnInit {
           }
         });
   }, 400);
+
+  getEditRecord(id, type) {
+    this.apiService.getData('contacts/detail/' + id).subscribe((result: any) => {
+      if(result.Items.length > 0) {
+        delete result.Items[0].contactSK;
+        delete result.Items[0].carrierID;
+        delete result.Items[0].timeModified;
+
+        if(type == 'broker') {
+          this.brokerData = result.Items[0];
+          for (let k = 0; k < this.brokerData['address'].length; k++) {
+            const element = this.brokerData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'broker', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'broker', k);
+            }
+          }
+
+        } else if(type == 'carrier') {
+          this.carrierData = result.Items[0];
+          for (let k = 0; k < this.carrierData['address'].length; k++) {
+            const element = this.carrierData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'carrier', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'carrier', k);
+            }
+          }
+
+        } else if(type == 'consignee') {
+          this.consigneeData = result.Items[0];
+          for (let k = 0; k < this.consigneeData['address'].length; k++) {
+            const element = this.consigneeData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'consignee', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'consignee', k);
+            }
+          }
+
+        } else if(type == 'consignor') {
+          this.shipperData = result.Items[0];
+          for (let k = 0; k < this.shipperData['address'].length; k++) {
+            const element = this.shipperData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'consignor', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'consignor', k);
+            }
+          }
+
+        } else if(type == 'customer') {
+          this.customerData = result.Items[0];
+          for (let k = 0; k < this.customerData['address'].length; k++) {
+            const element = this.customerData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'customer', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'customer', k);
+            }
+          }
+
+        } else if(type == 'factoringCompany') {
+          this.fcCompanyData = result.Items[0];
+          for (let k = 0; k < this.fcCompanyData['address'].length; k++) {
+            const element = this.fcCompanyData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'factoringCompany', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'factoringCompany', k);
+            }
+          }
+
+        } else if(type == 'ownerOperator') {
+          this.ownerData = result.Items[0];
+          for (let k = 0; k < this.ownerData['address'].length; k++) {
+            const element = this.ownerData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'ownerOperator', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'ownerOperator', k);
+            }
+          }
+
+        } else if(type == 'vendor') {
+          this.vendorData = result.Items[0];
+          for (let k = 0; k < this.vendorData['address'].length; k++) {
+            const element = this.vendorData['address'][k];
+            if (element.manual) {
+              this.getEditStates(element.countryCode, 'vendor', k);
+              this.getEditCities(element.countryCode, element.stateCode, 'vendor', k);
+            }
+          }
+        }
+      }
+    });
+  }
+
+  getContactsCount() {
+    this.apiService.getData('contacts/get/types/count').subscribe((result: any) => {
+      this.totalRecordsCustomer = result.customerCount;
+      this.totalRecordsBroker = result.brokerCount;
+      this.totalRecordsVendor = result.vendorCount;
+      this.totalRecordsCarrier = result.carrierCount;
+      this.totalRecordsOperator = result.operatorCount;
+      this.totalRecordsShipper = result.consignorCount;
+      this.totalRecordsConsignee = result.consigneeCount;
+      this.totalRecordsStaff = result.staffCount;
+      this.totalRecordsCompany = result.fcompanyCount;
+
+      this.initDataTableBroker();
+    });
+  }
+
+  addAdditionalContact(data){
+    let newObj = {
+      fullName: '',
+      firstName: '',
+      lastName: '',
+      designation: '',
+      phone: '',
+      email: '',
+      fax: '',
+    };
+    data.additionalContact.push(newObj);
+  }
+
+  delAdditionalContact(type, index) {
+    if(type == 'broker') {
+      this.brokerData.additionalContact.splice(index, 1);
+    } else if(type == 'carrier') {
+      this.carrierData.additionalContact.splice(index, 1);
+    } else if(type == 'consignee') {
+      this.consigneeData.additionalContact.splice(index, 1);
+    } else if(type == 'consignor') {
+      this.shipperData.additionalContact.splice(index, 1);
+    } else if(type == 'customer') {
+      this.customerData.additionalContact.splice(index, 1);
+    } else if(type == 'ownerOperator') {
+      this.ownerData.additionalContact.splice(index, 1);
+    }
+  }
 }

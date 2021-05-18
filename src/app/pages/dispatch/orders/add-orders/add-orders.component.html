@@ -146,7 +146,7 @@
                      </div>
                      <div class="col-lg-5 offset-lg-1">
                         <div class="row">
-                           <div class="col-lg-10">
+                           <div class="col-lg-10"> 
                               <label
                                  class="control-label font-weight-bold labelmt text-3 text-dark">Customer
                                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -154,7 +154,7 @@
                               <ng-select (change)="selectedCustomer($event)" [(ngModel)]="orderData.customerID"
 
                                  name="orderData.customerID" #customerID="ngModel" required customerID placeholder="Select Customer" class="form-control" #customer="ngModel" required>
-                                 <ng-option *ngFor="let customer of customers | async" value="{{customer.customerID}}">
+                                 <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
                                     {{customer.companyName}}
 
                                  </ng-option>
@@ -178,7 +178,7 @@
                                     class="fas fa-plus"></i>
                               </a>
                            </div>
-                           <div class="col-lg-10 mt-4" *ngIf="customerSelected">
+                           <div class="col-lg-10 mt-4" *ngIf="customerSelected.shippingAddr">
                               <div class="" style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px;">
                                  <div class="row pl-3 pr-3">
                                     <div class="col-lg-6" style="background-color:#e1e2e3;">
@@ -189,8 +189,8 @@
                                     </div>
                                  </div>
                                  <div class="row pl-3 pr-3">
-                                    <div class="col-lg-12" *ngFor="let item of customerSelected">
-                                       <div class="" *ngFor="let address of item.address">
+                                    <div class="col-lg-12">
+                                       <div class="" *ngFor="let address of customerSelected.address">
                                           <div class="row" *ngIf="address.addressType =='Shipping Address'">
                                              <div class="col-lg-6">
                                                 <label class="control-label" *ngIf="address.manual"><span class=" font-weight-bold">Address:</span>
@@ -323,18 +323,19 @@
                         <div class="row mt-2">
                            <div class="col-lg-5">
                               <label class="control-label font-weight-bold labelmt text-3 text-dark">Additonal
-                                 Contact Name</label>
-                              <input placeholder="eg. John Shaw" [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text"
+                                 Contact</label>
+
+                              <ng-select [(ngModel)]="orderData.additionalContact" name="orderData.additionalContact" class="form-control populate"
+                                 placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
+                                 <ng-option value="{{ data.fullName }}" *ngFor="let data of customerSelected.additionalContact">{{ data.fullName }}</ng-option>
+                              </ng-select>
+                              <!-- <input placeholder="eg. John Shaw" [(ngModel)]="orderData.additionalContact" name="additionalContact" type="text"
                                  class="form-control" #contact="ngModel"  pattern="^[a-zA-Z\s]+$">
                                  <div *ngIf="contact.invalid && (contact.dirty || contact.touched)" class="text-danger">
-
                                     <div *ngIf="contact.errors.pattern">
-                                   Additional Contact Name must contains upper, lowecase characters and special character for peiod(space) only.
-                                     </div>
-
-
-
-                                </div>
+                                    Additional Contact Name must contains upper, lowecase characters and special character for peiod(space) only.
+                                       </div>
+                                 </div> -->
                            </div>
                         </div>
                         <div class="row mt-2">
@@ -346,9 +347,6 @@
                                  <div *ngIf="phone.errors.pattern">
                                  Enter valid mobile number.
                                   </div>
-
-
-
                              </div>
                            </div>
                            <div class="col-lg-5">
@@ -498,7 +496,7 @@
                                                                   name="shipperID" #shipperID="ngModel" required
                                                                   shipperID placeholder="Select Consignor" class="form-control" #conSlt="ngModel" required>
 
-                                                                     <ng-option *ngFor="let item of shippers | async" value="{{item.shipperID}}">{{item.companyName}}</ng-option>
+                                                                     <ng-option *ngFor="let item of shippers | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
 
                                                                </ng-select>
                                                                <div *ngIf="conSlt.invalid && (conSlt.dirty || conSlt.touched)" class="text-danger">
@@ -979,7 +977,7 @@
                                                                   name="receiverID" #receiverID="ngModel" required
                                                                   receiverID placeholder="Select Consignee"class="form-control" data-select2-id="16"
                                                                   tabindex="-1" aria-hidden="true" #consignee="ngModel" required>
-                                                                  <ng-option *ngFor="let item of receivers | async;" value="{{item.receiverID}}">{{item.companyName}}</ng-option>
+                                                                  <ng-option *ngFor="let item of receivers | async;" value="{{item.contactID}}">{{item.companyName}}</ng-option>
                                                                </ng-select>
                                                                <div *ngIf="consignee.invalid && (consignee.dirty || consignee.touched)" class="text-danger">
 
