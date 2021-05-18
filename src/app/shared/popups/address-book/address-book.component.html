@@ -1556,7 +1556,7 @@
                                                                 class="control-label font-weight-bold text-lg-right pt-2">Select
                                                                 City</label>
                                                             <ng-select [(ngModel)]="item.cityName" name="cityCode{{i}}" class="form-control populate address_city"
-                                                                placeholder="Select City" (change)="getCityName($event, 'customer', i)">
+                                                                placeholder="Select City">
                                                                 <ng-option *ngFor="let city of item.cities" value="{{city.cityName}}">{{city.cityName}}</ng-option>
                                                             </ng-select>
                                                         </div>
