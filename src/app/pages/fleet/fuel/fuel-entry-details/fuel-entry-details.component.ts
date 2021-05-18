@@ -135,6 +135,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.fetchTaxTypeFromID();
     this.fetchDiscFromID();
     this.fetchDriverList();
+    
   }
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {

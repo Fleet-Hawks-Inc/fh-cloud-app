@@ -114,14 +114,26 @@
                                     (Reminder of Due Soon)<span
                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
-                                    <div class="col-lg-4"><input [(ngModel)]="reminderData.tasks.time" name="time" type="number"
-                                          class="form-control" min="1"></div>
+                                    <div class="col-lg-4">
+                                       <input [(ngModel)]="reminderData.tasks.time" name="time" type="number"
+                                          class="form-control" min="1" #dueTime="ngModel" required>
+                                          <div *ngIf="dueTime.invalid && (dueTime.dirty || dueTime.touched)" class="text-danger">
+                                             <div *ngIf="dueTime.errors.required">
+                                                Time is required.
+                                             </div>
+                                          </div>
+                                       </div>
                                     <div class="col-lg-8 pl-0">
-                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="timeUnit">
+                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="timeUnit" #tPeriod="ngModel" required>
                                           <ng-option value="day">Day(s)</ng-option>
                                           <ng-option value="week">Week(s)</ng-option>
                                           <ng-option value="month">Month(s)</ng-option>
                                        </ng-select>
+                                       <div *ngIf="tPeriod.invalid && (tPeriod.dirty || tPeriod.touched)" class="text-danger">
+                                          <div *ngIf="tPeriod.errors.required">
+                                             Select valid time period is required.
+                                          </div>
+                                       </div>
                                     </div>
                                  </div>
                               </div>

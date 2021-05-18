@@ -152,7 +152,7 @@ export class AddGeofenceComponent implements OnInit {
     this.apiService.postData('geofenceTypes', this.geofenceTypeData).subscribe({
       complete: () => { },
        error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -161,7 +161,7 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -184,7 +184,7 @@ export class AddGeofenceComponent implements OnInit {
     this.apiService.postData('geofences', this.geofenceData).subscribe({
       complete: () => { },
        error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -194,14 +194,14 @@ export class AddGeofenceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.spinner.hide();
             },
             error: () => { },
             next: () => { },
           });
       },
-      
+
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
@@ -247,7 +247,7 @@ export class AddGeofenceComponent implements OnInit {
       .getData('geofences/' + this.getGeofenceID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        
+
         this.geofenceData['geofenceID'] = this.getGeofenceID;
         this.geofenceData.geofenceName = result.geofenceName;
         this.geofenceData.location = result.location;
@@ -258,10 +258,10 @@ export class AddGeofenceComponent implements OnInit {
         if (result.geofence.cords[0]) {
           const newCoords = [];
           for (let i = 0; i < result.geofence.cords[0].length - 1; i++) {
-  
+
             for (let j = 0; j < result.geofence.cords[0][i].length - 1; j++) {
               newCoords.push([result.geofence.cords[0][i][j + 1], result.geofence.cords[0][i][j]]);
-  
+
             }
           }
 
@@ -276,10 +276,10 @@ export class AddGeofenceComponent implements OnInit {
             this.geofenceData.geofence.type = polyEdit.geometry.type;
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
           });
-  
+
           polylayer.on('pm:drag', (e) => {
             const layer = e.layer;
-            
+
             const polyEdit = layer.toGeoJSON();
             this.geofenceData.geofence.type = polyEdit.geometry.type;
             this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
@@ -290,7 +290,7 @@ export class AddGeofenceComponent implements OnInit {
           });
           this.spinner.hide();
         }
-       
+
       });
   }
   /*
@@ -302,7 +302,7 @@ export class AddGeofenceComponent implements OnInit {
   this.apiService.putData('geofences', this.geofenceData).subscribe({
     complete: () => { },
     error: (err: any) => {
-     from(err.error) 
+     from(err.error)
        .pipe(
          map((val: any) => {
            val.message = val.message.replace(/".*"/, 'This Field');
@@ -311,7 +311,7 @@ export class AddGeofenceComponent implements OnInit {
        )
        .subscribe({
          complete: () => {
-           this.throwErrors();
+          //  this.throwErrors();
          },
          error: () => { },
          next: () => { },

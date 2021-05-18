@@ -356,9 +356,11 @@
                             </label>
                             <input (click)="d12.toggle()" ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
+
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #tDate="ngModel"
                               required>
                             <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
+
                               <div *ngIf="tDate.errors.required" class="text-danger">
                                 Termination Date must contain yyyy/mm/dd format.
                               </div>
@@ -387,6 +389,7 @@
                             </label>
                             <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
+
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
                               required>
                             <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
@@ -394,12 +397,15 @@
                                 End Date is required and must contain yyyy/mm/dd format.
                               </div>
                             </div>
+
                           </div>
                           <div class="col-lg-2 pl-0 pr-0 mar-top-37">
                             <input (change)="selectPhoto($event)" [(ngModel)]="driverData.driverImage"
                               name="driverImage" type="file" class="hidden_input1 w-100" />
                             <label class="btn btn-sm btn-success" for="upload"><i class="fas fa-plus"></i> Add
-                              Photo</label>
+
+                              Photo &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+
                           </div>
                         </div>
                       </div>
@@ -484,11 +490,13 @@
                       <input [(ngModel)]="item.userLocation" name="userLocation{{i}}" (keyup)="searchTerm.next($event);"
                         type="text" class="form-control" placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
                         [disabled]="item.manual">
+
                       <div class="checkbox-custom pt-2">
                         <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
                           type="checkbox">
                         <label for="man_address">Type Manually</label>
                       </div>
+
                       <div class="map-search__results bg-white">
                         <ul class="p-0 m-0 text-left">
                           <li *ngFor="let item of searchResults;">
@@ -505,6 +513,7 @@
                       <a *ngIf="i != 0;" (click)="remove('address', i, item.addressID)"
                         class="btn btn-danger cus-btn-padd" href="javascript:;"><i class="fa fa-minus fa-fw"></i></a>
                     </div>
+
                   </div>
                   <div class="address-inner" *ngIf="item.manual">
                     <div class="row mb-3 border-bottom pb-4">
@@ -519,6 +528,7 @@
                               <ng-option value="CA">Canada</ng-option>
                               <ng-option value="US">United States of America</ng-option>
                             </ng-select>
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
@@ -528,6 +538,7 @@
                               <ng-option class="text-capitalize" *ngFor="let state of states" value="{{state.stateCode}}">
                                 {{state.stateName}}</ng-option>
                             </ng-select>
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
@@ -537,12 +548,15 @@
                               <ng-option class="text-capitalize" *ngFor="let city of cities" value="{{city.cityName}}">
                                 {{city.cityName}}</ng-option>
                             </ng-select>
+
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Zip
                               Code</label>
                             <input [(ngModel)]="item.zipCode" name="zipCode{{i}}" type="text" class="form-control"
+
                               placeholder=" eg. 7V2 3R4">
+
                           </div>
                         </div>
                       </div>
@@ -552,13 +566,17 @@
                             <label class="control-label font-weight-bold text-lg-right">Address
                               1</label>
                             <input [(ngModel)]="item.address1" name="address1{{i}}" type="text" class="form-control"
+
                               placeholder="eg. Rocky View County, AB, Canada">
+
                           </div>
                           <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Address
                               2&nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
                             <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control"
+
                               placeholder="eg. Rocky View County, AB, Canada">
+
                           </div>
                         </div>
                       </div>
@@ -668,6 +686,8 @@
                           <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
+
+
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing State/Province </label>
@@ -678,6 +698,8 @@
                           <ng-option class="text-capitalize" *ngFor="let state of docStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
+
+
                       </div>
                     </div>
                   </div>
@@ -718,7 +740,9 @@
                     <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                          Document</label>
+
+                          Document &nbsp; <span class="text-1 optional-label-color">(optional)</span></label>
+
                         <input class="form-control p-0" name="document.uploadedDocs{{i}}"
                           (change)="selectDocuments($event, i)" type="file" multiple>
                       </div>
@@ -1030,7 +1054,9 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Rate<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
+
                           class="form-control" placeholder="eg. 10,20">
+
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1040,12 +1066,15 @@
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
+
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
                           period Pay<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay"
+
                           type="text" class="form-control" placeholder=" eg. 10,20">
+
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1055,13 +1084,16 @@
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
+
                       </div>
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting hour
                           start after<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
                           name="paymentDetails.waitingHourAfter" type="text" class="form-control"
+
                           placeholder="eg. Min 3 hours">
+
                       </div>
 
                     </div>
@@ -1071,7 +1103,9 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Delivery
                           Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
+
                           type="text" class="form-control" placeholder="eg. 30,35">
+
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1081,6 +1115,7 @@
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
                         </ng-select>
+
                       </div>
                     </div>
                     <div class="row" id="payPercentageForm"
@@ -1093,7 +1128,9 @@
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                               name="paymentDetails.loadPayPercentage" type="text" class="form-control"
                               placeholder="eg. 2%, 5%, 10%"
+
                               (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
+
                           </div>
                           <div class="col-lg-2 px-0">
                             <label class="font-weight-bold">%</label>
@@ -1110,6 +1147,8 @@
                               <ng-option value="Total Income">Total Income</ng-option>
 
                             </ng-select>
+
+
                           </div>
                         </div>
                       </div>
@@ -1121,7 +1160,9 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                             Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
+
                             type="text" class="form-control" placeholder="eg. 10,20">
+
                         </div>
                         <div class="col-lg-2 ">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1132,12 +1173,15 @@
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
+
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                             Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
+
                             type="text" class="form-control" placeholder="eg. 10,20">
+
                         </div>
                         <div class="col-lg-2 ">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1147,13 +1191,16 @@
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
+
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                             Miles (Team) </label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                             name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
+
                             placeholder="eg. 10,20">
+
                         </div>
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1163,13 +1210,16 @@
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
+
                         </div>
                         <div class="col-lg-3 pr-0">
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                             Miles (Team)</label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                             name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
+
                             placeholder="eg. 10,20">
+
                         </div>
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
@@ -1179,6 +1229,7 @@
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
+
                         </div>
                       </div>
                       <div class="row">
@@ -1306,6 +1357,7 @@
                           </ng-option>
                           <ng-option class="text-capitalize" value="USA">USA</ng-option>
                         </ng-select>
+
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Home Terminal Timezone <span
@@ -1317,6 +1369,7 @@
                           <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones" [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
                           </ng-option>
                         </ng-select>
+
                       </div>
                       <div class="col-lg-10" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
@@ -1328,6 +1381,7 @@
                           <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
                             {{cycle.cycleName}}</ng-option>
                         </ng-select>
+
                       </div>
 
                       <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
