@@ -277,7 +277,7 @@ export class AddFuelEntryComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -416,7 +416,7 @@ export class AddFuelEntryComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;

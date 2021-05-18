@@ -180,7 +180,7 @@ export class AddContactRenewComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -295,7 +295,7 @@ export class AddContactRenewComponent implements OnInit {
             }),
           )
           .subscribe((val) => {
-            this.throwErrors();
+            // this.throwErrors();
           });
 
       },
@@ -336,7 +336,7 @@ export class AddContactRenewComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -366,7 +366,7 @@ export class AddContactRenewComponent implements OnInit {
 
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },

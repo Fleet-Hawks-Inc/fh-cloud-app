@@ -216,7 +216,7 @@ export class AddReminderComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -318,7 +318,7 @@ export class AddReminderComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.submitDisabled = false;
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => {
               this.submitDisabled = false;
@@ -351,7 +351,7 @@ export class AddReminderComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -380,7 +380,7 @@ export class AddReminderComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
