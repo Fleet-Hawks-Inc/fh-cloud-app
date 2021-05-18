@@ -1,7 +1,7 @@
 <section class="body">
-  
+
   <div class="inner-wrapper">
-    
+
     <section role="main" class="content-body pl-0 pt-0">
       <header class="page-header">
          <div class="row" style="padding-top:10px;">
@@ -63,8 +63,8 @@
                                  Geofence Name  is required.
 
                                 </div>
-                                <div *ngIf="gName.errors.pattern"> 
-                                 Geofence name must contain letters , numbers and except (.) or # only.  
+                                <div *ngIf="gName.errors.pattern">
+                                 Geofence name must contain letters , numbers and except (.) or # only.
 
                                 </div>
                              </div>
@@ -72,7 +72,13 @@
                           </div>
                           <div class="col-lg-12">
                              <label class="control-label font-weight-bold text-lg-right pt-2">Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                             <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="eg. Calgary, AB, Canada">
+                             <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="eg. Calgary, AB, Canada" #Loca="ngModel" required>
+                             <div *ngIf="Loca.invalid && (Loca.dirty || Loca.touched)" class="text-danger">
+                              <div *ngIf="Loca.errors.required">
+                              Location field is required.
+                              </div>
+
+                            </div>
                           </div>
                        </div>
                     </div>
@@ -86,12 +92,21 @@
                                 <div class="col-lg-12">
                                    <ng-select
                                       placeholder="Select geofence type"
-                                      class="form-control populate" name="geofenceType" [(ngModel)]="geofenceData.geofenceType">
-                                       <ng-option *ngFor="let item of geofenceTypes;" 
+                                      class="form-control populate" name="geofenceType" #gType="ngModel" required [(ngModel)]="geofenceData.geofenceType">
+                                       <ng-option *ngFor="let item of geofenceTypes;"
                                           value="{{item.typeID}}"
                                        > {{item.geofenceType}}
                                        </ng-option>
                                    </ng-select>
+                                   <div *ngIf="gType.invalid && (gType.dirty || gType.touched)" class="text-danger">
+                                    <div>
+
+                                      <div *ngIf="gType.errors.required">
+                                       Select valid Type from the list.
+                                       </div>
+                                    </div>
+
+                                  </div>
                                 </div>
                                 <div class="col-lg-1 pl-0">
                                    <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn cus-btn-padd text-light btn-success"><i class="fas fa-plus"></i></a>
@@ -176,4 +191,3 @@
    </div>
 </div>
 
- 

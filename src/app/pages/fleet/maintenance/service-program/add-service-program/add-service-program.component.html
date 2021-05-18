@@ -31,7 +31,7 @@
                               <div class="col-lg-10">
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Program Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="serviceData.programName" name="programName"
-                                    type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z]{2,30}$">
+                                    type="text" class="form-control" placeholder="eg. Heavy vehicle " #Spn="ngModel" required pattern="^[a-zA-Z\s]{2,30}$">
                                     <div *ngIf="Spn.invalid && (Spn.dirty || Spn.touched)" class="text-danger">
                                       <div *ngIf="Spn.errors.required">
                                         Service Program Name is required.
@@ -107,7 +107,7 @@
                                                    <input placeholder="eg. 1,2,3"[(ngModel)]="task.repeatByTime" #Rtime="ngModel" required pattern="^[0-9]+$"
                                                    [attr.name]="'serviceScheduleDetails['+i+'].repeatByTime'" [ngModelOptions]="{standalone: true}" type="text" class="form-control" >
                                                    <div *ngIf="Rtime.invalid && (Rtime.dirty || Rtime.touched)" class="text-danger">
-                                                    <div *ngIf="Rtime.errors.pattern">
+                                                    <div *ngIf="Rtime.errors.required">
                                                       Repeat By Time is required.
                                                     </div>
                                                     <div *ngIf="Rtime.errors.pattern">
@@ -129,7 +129,7 @@
 
 
                                                     <div *ngIf="Uni.errors.required">
-                                                      Select valid Schedule details from the list..
+                                                      Select valid Schedule details from the list.
                                                      </div>
 
 
@@ -141,10 +141,10 @@
                                              <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By Odometer Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                              <input [(ngModel)]="task.repeatByOdometer"
-                                             [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" placeholder="eg. 1000,2000" #Odom="ngModel" required  >
-                                             <div *ngIf="Odom.invalid && (Odom.dirty || Odom.touched)" class="text-danger">
-                                              <div *ngIf="Odom.errors.required">
-                                                Repeat By Odometer Miles must contain numbers only.
+                                             [attr.name]="'serviceScheduleDetails['+i+'].repeatByOdometer'" [ngModelOptions]="{standalone: true}" type="number" min="0" class="form-control" placeholder="eg. 1000,2000" #Odomiles="ngModel" required  >
+                                             <div *ngIf="Odomiles.invalid && (Odomiles.dirty || Odomiles.touched)" class="text-danger">
+                                              <div *ngIf="Odomiles.errors.required">
+                                                Repeat By Odometer Miles is required.
                                               </div>
 
                                             </div>
