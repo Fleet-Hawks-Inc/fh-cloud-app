@@ -64,9 +64,7 @@ export class ListingComponent implements OnInit {
     this.fetchTasksList();
     this.fetchVehicleList();
     this.fetchServiceTaks();
-    this.initDataTable();
     this.fetchUsers();
-    this.fetchAllVehicles();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -77,12 +75,6 @@ export class ListingComponent implements OnInit {
   fetchVehicleList() {
     this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
       this.vehicleList = result;
-    });
-  }
-
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
     });
   }
 
@@ -99,7 +91,6 @@ export class ListingComponent implements OnInit {
   fetchUsers() {
     this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.users = result;
-      console.log('this.users', this.users)
     });
   }
   setFilterStatus(val) {
@@ -108,7 +99,6 @@ export class ListingComponent implements OnInit {
   fetchServiceTaks() {
     let test = [];
     this.apiService.getData('tasks').subscribe((result: any) => {
-      // this.apiService.getData(`tasks?taskType=${taskType}`).subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
     });
@@ -185,21 +175,6 @@ export class ListingComponent implements OnInit {
   //   }
 
   // }
-  setVehicle(vehicleID, vehicleIdentification) {
-    this.vehicleIdentification = vehicleIdentification;
-    this.vehicleID = vehicleID;
-    this.suggestedVehicles = [];
-  }
-  // getSuggestions(value) {
-  //   this.apiService
-  //     .getData(`vehicles/suggestion/${value}`)
-  //     .subscribe((result) => {
-  //       this.suggestedVehicles = result.Items;
-  //       if (this.suggestedVehicles.length === 0) {
-  //         this.vehicleID = '';
-  //       }
-  //     });
-  // }
 
   deleteReminder(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
@@ -210,13 +185,11 @@ export class ListingComponent implements OnInit {
         type: eventData.type
       }
       this.apiService.postData('reminders/delete', record).subscribe((result: any) => {
-        console.log('delete result', result);
           this.remindersData = [];
           this.serviceDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;
           this.lastEvaluatedKey = '';
           this.getRemindersCount();
-          this.initDataTable();
           this.toastr.success('Service Reminder Deleted Successfully!');
         });
     }
@@ -232,6 +205,8 @@ export class ListingComponent implements OnInit {
         if (this.vehicleID != null || this.searchServiceTask != null) {
           this.serviceEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -298,7 +273,6 @@ export class ListingComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -313,7 +287,6 @@ export class ListingComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;

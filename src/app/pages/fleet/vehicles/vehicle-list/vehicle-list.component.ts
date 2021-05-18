@@ -7,7 +7,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import  Constants  from '../../constants';
 import {environment} from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import {OnboardDefaultService} from '../../../../services/onboard-default.service'
+import {OnboardDefaultService} from '../../../../services/onboard-default.service';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
@@ -21,7 +22,7 @@ export class VehicleListComponent implements OnInit {
   vehicles = [];
   suggestedVehicles = [];
   vehicleID = '';
-  currentStatus = '';
+  currentStatus = null;
   vehicleIdentification = '';
   allOptions: any = {};
   groupsList: any = {};
@@ -78,8 +79,8 @@ export class VehicleListComponent implements OnInit {
     this.fetchVehicleManufacturerList();
     this.fetchDriversList();
     this.fetchServiceProgramsList();
-    this.fetchVehiclesList();
-    this.initDataTable();
+    this.fetchVendorList();
+    // this.initDataTable();
     this.fetchFuelTypesbyIDs();
     $(document).ready(() => {
       setTimeout(() => {
@@ -94,7 +95,8 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  getSuggestions(value) {
+  // getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
 
     value = value.toLowerCase();
     if(value != '') {
@@ -106,7 +108,7 @@ export class VehicleListComponent implements OnInit {
     } else {
       this.suggestedVehicles = []
     }
-  }
+  }, 800);
 
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
@@ -138,7 +140,7 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  fetchVehiclesList() {
+  fetchVendorList() {
     this.apiService.getData('vendors/get/list').subscribe((result: any) => {
       this.vendorsList = result;
     });
@@ -151,9 +153,11 @@ export class VehicleListComponent implements OnInit {
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != '' || this.currentStatus != '') {
+        if(this.vehicleID != '' || this.currentStatus != null) {
           this.vehicleEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -207,13 +211,14 @@ export class VehicleListComponent implements OnInit {
           this.vehicleEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result['LastEvaluatedKey'] !== undefined) { 
+          let lastEvalKey = result[`LastEvaluatedKey`].vehicleSK.replace(/#/g,'--');
           this.vehicleNext = false;
           // for prev button
-          if (!this.vehiclePrevEvauatedKeys.includes(result['LastEvaluatedKey'].vehicleID)) {
-            this.vehiclePrevEvauatedKeys.push(result['LastEvaluatedKey'].vehicleID);
+          if (!this.vehiclePrevEvauatedKeys.includes(lastEvalKey)) {
+            this.vehiclePrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].vehicleID;
+          this.lastEvaluatedKey = lastEvalKey;
           
         } else {
           this.vehicleNext = true;
@@ -236,7 +241,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if(this.vehicleID == '') {
         this.vehicleID = this.vehicleIdentification;
@@ -245,40 +250,44 @@ export class VehicleListComponent implements OnInit {
       this.vehicles = [];
       this.suggestedVehicles = [];
       this.fetchVehiclesCount();
-      this.initDataTable();
+      // this.initDataTable();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+    if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
       this.vehicleID = '';
       this.suggestedVehicles = [];
       this.vehicleIdentification = '';
-      this.currentStatus = '';
+      this.currentStatus = null;
       this.vehicles = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchVehiclesCount();
-      this.initDataTable();
+      // this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
     }
   }
 
-  deleteVehicle(entryID) {
+  deleteVehicle(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`vehicles/isDeleted/${entryID}/`+1)
-      .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.vehicleID,
+        status: eventData.currentStatus
+      }
+      this.apiService.postData('vehicles/delete', record).subscribe((result: any) => {
 
         this.vehicles = [];
         this.vehicleDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.fetchVehiclesCount();
-        this.initDataTable();
+        // this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
@@ -460,5 +469,11 @@ export class VehicleListComponent implements OnInit {
     this.vehicleStartPoint = 1;
     this.vehicleEndPoint = this.pageLength;
     this.vehicleDraw = 0;
+  }
+
+  createNewSK() {
+    this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
+      console.log('done result', result);
+    });
   }
 }

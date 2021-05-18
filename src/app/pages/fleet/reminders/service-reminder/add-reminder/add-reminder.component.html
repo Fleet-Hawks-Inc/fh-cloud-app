@@ -106,15 +106,26 @@
                                        <div class="row">
                                           <div class="col-lg-6">
                                              <input [(ngModel)]="reminderData.tasks.time" name="tasks.time" type="number" min='1'
-                                                class="form-control">
+                                                class="form-control" #time1="ngModel" required>
+                                                <div *ngIf="time1.invalid && (time1.dirty || time1.touched)" class="text-danger">
+                                                   <div *ngIf="time1.errors.required">
+                                                      Time is required.
+                                                   </div>
+                                                </div>
+
                                           </div>
                                           <div class="col-lg-6 pl-0">
-                                             <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit" placeholder="Select Duration">
+                                             <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit" placeholder="Select Duration" #timeZone="ngModel" required >
                                                 <ng-option value="day">Day(s)</ng-option>
                                                 <ng-option value="week">Week(s)</ng-option>
                                                 <ng-option value="month">Month(s)</ng-option>
                                                 <ng-option value="year">Year(s)</ng-option>
                                              </ng-select>
+                                             <div *ngIf="timeZone.invalid && (timeZone.dirty || timeZone.touched)" class="text-danger">
+                                                <div *ngIf="timeZone.errors.required">
+                                                   Select valid time period is required.
+                                                </div>
+                                             </div>
                                           </div>
                                        </div>
                                     </div>
@@ -123,10 +134,10 @@
                                           class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
                                           Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input [(ngModel)]="reminderData.tasks.odometer"
-                                          placeholder="Miles to repeat service task" name="task.odometer" type="number"
-                                          class="form-control" min='0' #odo="ngModel" required>
-                                       <div *ngIf="odo.invalid && (odo.dirty || odo.touched)" class="text-danger">
-                                          <div *ngIf="odo.errors.required">
+                                          placeholder="Miles to repeat service task" name="task.odometer" type="text"
+                                          class="form-control"  #odo1="ngModel" required>
+                                       <div *ngIf="odo1.invalid && (odo1.dirty || odo1.touched)" class="text-danger">
+                                          <div *ngIf="odo1.errors.required">
                                              Odometer Miles is required and must contain number only.
                                           </div>
                                        </div>
@@ -143,9 +154,12 @@
                                     Date (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.lastServiceDate" name="reminderData.lastServiceDate" type="text"
                                     placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker
-                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" *ngIf="!reminderID">
+                                    #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" *ngIf="!reminderID" #date123="ngModel" required>
+                                    
                               </div>
+                              
                            </div>
+                           
                         </div>
 
                         <div class="col-lg-5 offset-lg-1" *ngIf="!reminderID">
@@ -155,7 +169,12 @@
                                     Odometer (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <input [(ngModel)]="reminderData.lastServiceOdometer"
                                     placeholder="Approximate odometers of last service" name="lastServiceOdometer"
-                                    type="number" class="form-control" min='0'>
+                                    type="number" class="form-control" min='0' #meter1="ngModel" required>
+                                    <div *ngIf="meter1.invalid && (meter1.dirty || meter1.touched)" class="text-danger">
+                                       <div *ngIf="meter1.errors.required">
+                                          Last Service Odometer is required.
+                                       </div>
+                                    </div>
                               </div>
                            </div>
                         </div>
@@ -191,6 +210,8 @@
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
+         
+         <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #reminderForm="ngForm">
          <div class="modal-header">
             <h5 class="modal-title">Add Users/Groups</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -199,12 +220,20 @@
          </div>
          <div class="modal-body text-dark">
             <div class="card-body p-0">
-               <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
                   <div class="form-row">
                      <div class="col-lg-12">
-                        <label class="control-label font-weight-bold">Group Name</label>
+                        <label class="control-label font-weight-bold">Group Name <span
+                           class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
-                           placeholder="Enter users group name">
+                           placeholder="Enter users group name" #rGroup="ngModel" required pattern="^[a-zA-Z\s]+$">
+                           <div *ngIf="rGroup.invalid && (rGroup.dirty || rGroup.touched)" class="text-danger">
+                              <div *ngIf="rGroup.errors.required">
+                                Group Name is required.
+                              </div>     
+                              <div *ngIf="rGroup.errors.pattern">
+                                     Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                              </div>
+                            </div>
                      </div>
                   </div>
                   <div class="form-row mt-2">
@@ -227,14 +256,15 @@
                            id="comment" placeholder="Enter user group description"></textarea>
                      </div>
                   </div>
-               </form>
+               
             </div>
          </div>
          <div class="modal-footer text-right">
 
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+            <button type="button" class="btn btn-success" (click)="addGroup()" [disabled]="!reminderForm.form.valid">Save</button>
          </div>
+      </form>
       </div>
    </div>
 </div>
@@ -244,6 +274,7 @@
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
+         <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get" #service="ngForm">
          <div class="modal-header">
             <h5 class="modal-title" id="serviceTaskModalTitle">Add Service Task</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -251,13 +282,22 @@
             </button>
          </div>
          <div class="modal-body text-dark">
-            <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
+            
                <div class="row">
                   <div class="col-lg-12">
                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task
-                        Name</label>
+                        Name <span
+                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                      <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
-                        placeholder="Enter service task name">
+                        placeholder="Enter service task name" #txtTask="ngModel" required pattern="^[a-zA-Z\s]+">
+                        <div *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)" class="text-danger">
+                           <div *ngIf="txtTask.errors.required">
+                             Service Task Name is required.
+                           </div>     
+                           <div *ngIf="txtTask.errors.pattern">
+                                  Service Task Name must contains uppercase, lowercase and special characters for period(space) only.
+                           </div>
+                         </div>
                   </div>
                </div>
                <div class="row mt-2">
@@ -268,12 +308,13 @@
                         placeholder="Enter service task description"></textarea>
                   </div>
                </div>
-            </form>
+   
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addServiceTask()">Save</button>
+            <button type="button" class="btn btn-success" (click)="addServiceTask()" [disabled]="!service.form.valid">Save</button>
          </div>
+      </form>
       </div>
    </div>
 </div>

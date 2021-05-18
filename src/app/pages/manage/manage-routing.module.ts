@@ -7,11 +7,13 @@ import {
   CompanyProfileComponent,
   EditProfileComponent
 } from './index';
+import {SettingsComponent} from './settings/settings.component'
 
 const COMPONENTS = [
   AddUserComponent,
   UserDetailsComponent,
   UsersListComponent,
+  SettingsComponent
 ];
 
 const routes: Routes = [
@@ -31,6 +33,10 @@ const routes: Routes = [
       { path: 'edit/:carrierID', component: EditProfileComponent }
 
     ],
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent
   },
 ];
 

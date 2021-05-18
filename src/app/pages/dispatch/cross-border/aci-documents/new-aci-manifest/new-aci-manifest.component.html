@@ -308,9 +308,9 @@
                             </ng-select>
                           </div>
                           <div class="col-lg-2 mar-top-37">
-                            <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                              class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> </div>
-
+                            <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                              class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>  -->
+                            </div>
                         </div>
                       </div>
                     </div>
@@ -440,6 +440,13 @@
                           </mat-panel-title>
                         </mat-expansion-panel-header>
                         <div class="form-group row">
+                          <div class="col-lg-10 offset-lg-1">
+                            <div class="checkbox-custom">
+                              <input [(ngModel)]="shipment.referenceOnlyShipment"
+                                name="shipment.referenceOnlyShipment" type="checkbox">
+                              <label class="control-label font-weight-bold">Reference Shipment?</label>
+                            </div>
+                          </div>
                           <div class="col-lg-5 offset-lg-1">
                             <div class="form-group row">
                               <div class="col-lg-10">
@@ -641,7 +648,7 @@
                                 <ng-select placeholder="Select State of Loading" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.stateProvince'"
                                   [(ngModel)]="shipment.cityOfLoading.stateProvince">
-                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} - {{state.stateName}}</ng-option>
+                                  <ng-option *ngFor="let state of loadingStates" [value]="state.stateCode">{{state.stateCode}} - {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -650,12 +657,8 @@
                                 <ng-select placeholder="Select City of Loading " [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfLoading.cityName'"
                                   [(ngModel)]="shipment.cityOfLoading.cityName">
-                                  <!-- <ng-option *ngFor="let city of loadingCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option> -->
-                                    <ng-container *ngFor="let city of loadingCities">
-                                      <ng-option *ngIf="city.stateID == shipment.cityOfLoading.stateProvince" value="{{city.cityName}}">
-                                        {{city.cityName}}</ng-option>
-                                    </ng-container>
+                                  <ng-option *ngFor="let city of loadingCities" value="{{city.cityName}}">
+                                    {{city.cityName}}</ng-option>
                                 </ng-select>
                               </div>
                               <div class="col-lg-5">
@@ -668,7 +671,7 @@
                                   [attr.name]="'shipments['+s+'].cityOfAcceptance.stateProvince'"
                                   (change)="getAcceptanceCities(s)"
                                   [(ngModel)]="shipment.cityOfAcceptance.stateProvince">
-                                  <ng-option *ngFor="let state of states" [value]="state.stateID">{{state.stateCode}} -
+                                  <ng-option *ngFor="let state of loadingStates" [value]="state.stateCode">{{state.stateCode}} -
                                     {{state.stateName}}</ng-option>
                                 </ng-select>
                               </div>
@@ -680,12 +683,8 @@
                                 <ng-select placeholder="Select City of Acceptance" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'shipments['+s+'].cityOfAcceptance.cityName'"
                                   [(ngModel)]="shipment.cityOfAcceptance.cityName">
-                                  <!-- <ng-option *ngFor="let city of acceptanceCities" [value]="city.cityID">
-                                    {{city.cityName}}</ng-option> -->
-                                    <ng-container *ngFor="let city of loadingCities">
-                                      <ng-option *ngIf="city.stateID == shipment.cityOfAcceptance.stateProvince" value="{{city.cityName}}">
+                                      <ng-option *ngFor="let city of loadingCities" value="{{city.cityName}}">
                                         {{city.cityName}}</ng-option>
-                                    </ng-container>
                                 </ng-select>
                               </div>
                               <div class="col-lg-10">
@@ -807,8 +806,8 @@
 
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addStateModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                   </div>
@@ -827,8 +826,8 @@
 
                                       </div>
                                       <div class="col-lg-2 mar-top-37">
-                                        <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
-                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#addCityModal"
+                                          class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
                                       </div>
                                     </div>
                                     <div class="row">
@@ -1184,11 +1183,8 @@
                               <div class="col-lg-12">
                                 <ng-select placeholder="Select Asset Type" [(ngModel)]="trailer.assetTypeCode" [ngModelOptions]="{standalone: true}"
                                   [attr.name]="'trailers['+t+'].assetTypeCode'">
-                                  <ng-option *ngFor="let assetType of borderAssetTypes"
-                                    [value]="assetType.borderAssetTypeCode">
-                                    {{assetType.borderAssetTypeName}}</ng-option>
-                                  <ng-option value="OE">Other</ng-option>
-
+                                  <ng-option *ngFor="let assetType of borderAssetType" [value]="assetType.code" >
+                                    {{assetType.description}}</ng-option>
                                 </ng-select>
                               </div>
                             </div>
@@ -1253,9 +1249,9 @@
                 <div class="form-group row">
                   <div class="col-lg-12 text-right">
                     <button type="button" (click)="cancel()" class="btn btn-default m-1">Cancel</button>
-                    <button type="button" *ngIf="!entryID" (click)="addACIManifest()"
+                    <button type="button" *ngIf="!manifestID" (click)="addACIManifest()"
                       class="btn btn-success">Save</button>
-                    <button type="button" *ngIf="entryID" (click)="updateACIManifest()"
+                    <button type="button" *ngIf="manifestID" (click)="updateACIManifest()"
                       class="btn btn-success">Update</button>
                   </div>
                 </div>

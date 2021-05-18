@@ -20,7 +20,7 @@ export class FuelEntryListComponent implements OnInit {
   title = 'Fuel Entries List';
   fromDate: any = '';
   toDate: any = '';
-  entryId = '';
+  fuelID = '';
   vehicles = [];
   vehicleList: any = {};
   tripList: any = {};
@@ -33,7 +33,7 @@ export class FuelEntryListComponent implements OnInit {
   checked = false;
   isChecked = false;
   headCheckbox = false;
-  selectedEntryID: any;
+  selectedfuelID: any;
   fuelCheckCount = null;
   countryName: any = '';
   formattedFromDate: any = '';
@@ -60,7 +60,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelStartPoint = 1;
   fuelEndPoint = this.pageLength;
   allVehicles = [];
-  allAssets = [];
+  allAssets: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -195,22 +195,40 @@ export class FuelEntryListComponent implements OnInit {
     return;
   }
 
-  deleteFuelEntry(entryID) {
+  // deleteFuelEntry(fuelID) {
+  //   if (confirm('Are you sure you want to delete?') === true) {
+  //     this.apiService
+  //     .getData(`fuelEntries/isDeleted/${fuelID}/` + 1)
+  //     .subscribe((result: any) => {
+  //       this.fuelList = [];
+  //       this.fuelEntriesCount();
+  //       this.initDataTable();
+  //       this.fuelDraw = 0;
+  //       this.dataMessage = Constants.FETCHING_DATA;
+  //       this.lastEvaluatedKey = '';
+  //       this.toastr.success('Fuel Entry Deleted Successfully!');
+  //     });
+  //   }
+  // }
+  deleteFuelEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`fuelEntries/isDeleted/${entryID}/` + 1)
-      .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.fuelID
+      }
+      this.apiService.postData('fuelEntries/delete', record).subscribe((result: any) => {
+
         this.fuelList = [];
-        this.fuelEntriesCount();
-        this.initDataTable();
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
+        this.fuelEntriesCount();
+        this.initDataTable();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
-
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
@@ -224,14 +242,14 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
-
       if (result[`LastEvaluatedKey`] !== undefined) {
+        const lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
-        if (!this.fuelPrevEvauatedKeys.includes(result[`LastEvaluatedKey`].entryID)) {
-          this.fuelPrevEvauatedKeys.push(result[`LastEvaluatedKey`].entryID);
+        if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
+          this.fuelPrevEvauatedKeys.push(lastEvalKey);
         }
-        this.lastEvaluatedKey = result[`LastEvaluatedKey`].entryID;
+        this.lastEvaluatedKey = lastEvalKey;
 
       } else {
         this.fuelNext = true;
@@ -239,7 +257,7 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelEndPoint = this.totalRecords;
       }
 
-      if(this.totalRecords < this.fuelEndPoint) {
+      if (this.totalRecords < this.fuelEndPoint) {
         this.fuelEndPoint = this.totalRecords;
       }
 
@@ -328,11 +346,15 @@ export class FuelEntryListComponent implements OnInit {
 
   fetchAllAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
-      for (let i = 0; i < result.Items.length; i++) {
-        if (result.Items[i].assetDetails.assetType === 'f3927440-7b25-11eb-8229-0588f994a55e') {
-          this.allAssets.push(result.Items[i]);
+      result.Items.forEach((e: any) => {
+        if(e.assetType == 'reefer') {
+          let obj = {
+            assetID: e.assetID,
+            assetIdentification: e.assetIdentification
+          };
+          this.allAssets.push(obj);
         }
-      }
+      });
     });
   }
 }

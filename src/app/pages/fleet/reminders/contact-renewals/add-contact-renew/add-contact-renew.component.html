@@ -111,15 +111,27 @@
                                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Time (Reminder of Due Soon)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                  <div class="row">
                                     <div class="col-lg-4">
-                                       <input type="number" min='1' class="form-control" [(ngModel)]="reminderData.tasks.time" name="reminderData.tasks.time" placeholder="eg. 2,3,4..">
+                                       <input type="number" min='1' class="form-control" [(ngModel)]="reminderData.tasks.time" name="reminderData.tasks.time" placeholder="eg. 2,3,4.." #time2="ngModel" required>
+                                       <div *ngIf="time2.invalid && (time2.dirty || time2.touched)" class="text-danger">
+                                          <div *ngIf="time2.errors.required">
+                                             Time is required.
+                                          </div>
+                                       </div>
                                     </div>
                                     <div class="col-lg-8 pl-0">
-                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="reminderData.tasks.timeUnit">
+                                       <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="reminderData.tasks.timeUnit" #tZone1="ngModel" required>
+                                          
                                           <ng-option value="day">Day(s)</ng-option>
                                           <ng-option value="week">Week(s)</ng-option>
                                           <ng-option value="month">Month(s)</ng-option>
+                                          
 
                                        </ng-select>
+                                       <div *ngIf="tZone1.invalid && (tZone1.dirty || tZone1.touched)" class="text-danger">
+                                          <div *ngIf="tZone1.errors.required">
+                                             Select valid time period is required.
+                                          </div>
+                                       </div>
                                     </div>
                                  </div>
 
@@ -158,6 +170,8 @@
    aria-hidden="true">
    <div class="modal-dialog" style="max-width: 600px;" role="document">
       <div class="modal-content">
+         
+         <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get" #contactForm="ngForm">
          <div class="modal-header">
             <h5 class="modal-title" id="serviceTaskModalTitle">Add Renewal Type</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -165,13 +179,21 @@
            </button>
          </div>
          <div class="modal-body text-dark">
-           <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get">
              <div class="row">
                 <div class="col-lg-12">
                   <label
-                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name</label>
+                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Renewal Name <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                <input [(ngModel)]="serviceTask.taskName"
-                  name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type">
+                  name="taskName" type="text" class="form-control" placeholder="Enter name of the renewal type" #nameR="ngModel" required pattern="^[a-zA-Z\s]+$">
+                  <div *ngIf="nameR.invalid && (nameR.dirty || nameR.touched)" class="text-danger">
+                     <div *ngIf="nameR.errors.required">
+                       Renewal Name is required.
+                     </div>     
+                     <div *ngIf="nameR.errors.pattern">
+                            Renewal Name must contains uppercase, lowercase and special characters for period(space) only.
+                     </div>
+                   </div>
                 </div>
              </div>
              <div class="row mt-2">
@@ -182,12 +204,13 @@
                  <textarea class="form-control" rows="3" [(ngModel)]="serviceTask.description" name="description"></textarea>
                </div>
             </div>
-           </form>
+          
          </div>
          <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addServiceTask()">Save</button>
+            <button type="button" class="btn btn-success" (click)="addServiceTask()" [disabled]="!contactForm.form.valid">Save</button>
          </div>
+      </form>
       </div>
    </div>
 </div>
@@ -196,6 +219,7 @@
 <div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="addGroupModal" aria-hidden="true">
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
+      <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form" #rContact="ngForm">
      <div class="modal-header">
         <h5 class="modal-title">Add Users/Groups</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,11 +228,20 @@
      </div>
      <div class="modal-body text-dark">
             <div class="card-body p-0">
-           <form id="groupForm" class="form-horizontal form-bordered bg-white" method="get" name="form">
+           
               <div class="form-row">
                 <div class="col-lg-12">
-                  <label class="control-label font-weight-bold">Group Name</label>
-                  <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name">
+                  <label class="control-label font-weight-bold">Group Name <span
+                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                  <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control" placeholder="Enter users group name" #aContact="ngModel" required pattern="^[a-zA-Z\s]+">
+                  <div *ngIf="aContact.invalid && (aContact.dirty || aContact.touched)" class="text-danger">
+                     <div *ngIf="aContact.errors.required">
+                       Group Name is required.
+                     </div>     
+                     <div *ngIf="aContact.errors.pattern">
+                            Group Name must contains uppercase, lowercase and special characters for period(space) only.
+                     </div>
+                   </div>
                 </div>
               </div>
               <div class="form-row mt-2">
@@ -229,14 +262,15 @@
                   <textarea [(ngModel)]="groupData.description" name="description" class="form-control" rows="4" id="comment" placeholder="Enter user group description"></textarea>
                </div>
               </div>
-           </form>
+           
          </div>
      </div>
      <div class="modal-footer text-right">
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" (click)="addGroup()">Save</button>
+        <button type="button" class="btn btn-success" (click)="addGroup()" [disabled]="!rContact.form.valid">Save</button>
      </div>
+   </form>
   </div>
 </div>
 </div>

@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./ace-details.component.css']
 })
 export class AceDetailsComponent implements OnInit {
-  public entryID;
+  public manifestID;
   usPortOfArrival: string;
   estimatedArrivalDateTime: string;
   tripNumber: string;
@@ -39,8 +39,11 @@ export class AceDetailsComponent implements OnInit {
     sealNumbers: [],
     IIT: ''
     };
+
   mainDriver : any  = {};
   drivers = [];
+  createdDate: '';
+  createdTime: '';
   trailers = [];
   shipments = [];
   passengers = [];
@@ -144,7 +147,7 @@ export class AceDetailsComponent implements OnInit {
               private httpClient: HttpClient, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
+    this.manifestID = this.route.snapshot.params[`manifestID`];
     this.fetchACEEntry();
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
@@ -178,12 +181,13 @@ export class AceDetailsComponent implements OnInit {
   fetchCountriesCodeName() {
     this.apiService.getData('countries/get/country/CodeToName').subscribe((result: any) => {
     this.countryCodeName = result;
-    console.log('this.countryCodeName', this.countryCodeName);
     });
   }
   fetchAssetsCodeName() {
-    this.apiService.getData('borderAssetTypes/get/list').subscribe((result: any) => {
-    this.assetTypeCode = result;
+      this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
+      this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
     });
   }
   fetchDocuments() {
@@ -249,8 +253,9 @@ export class AceDetailsComponent implements OnInit {
   fetchACEEntry() {
     this.spinner.show(); // loader init
     this.apiService
-      .getData('ACEeManifest/details/' + this.entryID)
+      .getData('eManifests/ACEdetails/' + this.manifestID)
       .subscribe((result: any) => {
+        console.log('result', result);
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
         this.tripNumber = result.tripNumber;
@@ -265,23 +270,32 @@ export class AceDetailsComponent implements OnInit {
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
         this.createdBy = result.createdBy;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.createdTime;
         this.spinner.hide(); // loader hide
       });
   }
-  setStatus(entryID, val) {
-    this.apiService.getData('ACEeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
+  setStatus(val) {
+    let record = {
+      date: this.createdDate,
+      time: this.createdTime,
+      eventID: this.manifestID,
+      manifestType: 'ACE',
+      status: val
+    }
+    this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
-    });
+      });
   }
   sendCBPFn() {
     this.apiService
-      .getData('ACEeManifest/CBPdetails/' + this.entryID)
+      .getData('eManifests/ACE/CBPdetails/' + this.manifestID)
       .subscribe((result: any) => {
         // this.sendBorderConnectOption = result;
         // if (this.sendBorderConnectOption === true) {
         //   const val = 'Queued';
-        //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+        //   const setStatus: any = this.apiService.getData('ACEeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
         //     this.toastr.success('Status Updated Successfully!');
         //      this.currentStatus = val;
         //   });
@@ -369,12 +383,12 @@ export class AceDetailsComponent implements OnInit {
     };
   }
 
-  cancelManifest(entryID){
-    this.apiService.getData(`ACEeManifest/cancelManifest/` + entryID).subscribe();
+  cancelManifest(manifestID){
+    this.apiService.getData(`eManifests/ACEmanifest/cancelManifest/` + manifestID).subscribe();
   }
 
  amendManifest() {
    const amend = true;
- this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.entryID + `?amendManifest=` + amend);
+ this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
  }
 }

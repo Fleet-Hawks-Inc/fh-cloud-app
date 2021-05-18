@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AciDetailsComponent implements OnInit {
 
-  public entryID;
+  public manifestID;
   title = 'ACI e-Manifest Details';
   data: string;
   sendId: string;
@@ -24,6 +24,8 @@ export class AciDetailsComponent implements OnInit {
   countryCodeName: any = {};
   assetTypeCode: any = {};
   stateCodeToName: any = {};
+  createdDate: '';
+  createdTime: '';
   truck: any = {
     number: '',
     type: '',
@@ -132,7 +134,7 @@ export class AciDetailsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router, private httpClient: HttpClient) { }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
+    this.manifestID = this.route.snapshot.params[`manifestID`];
     this.fetchACIEntry();
     this.fetchCountriesCodeName();
     this.fetchAssetsCodeName();
@@ -152,8 +154,10 @@ export class AciDetailsComponent implements OnInit {
     });
   }
   fetchAssetsCodeName() {
-    this.apiService.getData('borderAssetTypes/get/list').subscribe((result: any) => {
-    this.assetTypeCode = result;
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
+      this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
+        return a[b[`code`]] = b[`description`], a;
+    }, {});
     });
   }
   fetchVehicleType() {
@@ -224,10 +228,10 @@ export class AciDetailsComponent implements OnInit {
   }
   fetchACIEntry() {
     this.apiService
-      .getData('ACIeManifest/details/' + this.entryID)
+      .getData('eManifests/ACIdetails/' + this.manifestID)
       .subscribe((result: any) => {
         console.log('result', result);
-        this.entryID = this.entryID;
+        this.manifestID = this.manifestID;
         this.data = result.data;
         this.sendId = result.sendId;
         this.companyKey = result.companyKey;
@@ -251,22 +255,31 @@ export class AciDetailsComponent implements OnInit {
         this.createdBy = result.createdBy;
         this.modifiedBy = result.modifiedBy;
         this.borderResponses = result.borderResponses;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.createdTime;
       });
   }
 
-  setStatus(entryID, val) {
-    this.apiService.getData('ACIeManifest/setStatus/' + entryID + '/' + val).subscribe((result: any) => {
+  setStatus(val) {
+    let record = {
+      date: this.createdDate,
+      time: this.createdTime,
+      eventID: this.manifestID,
+      manifestType: 'ACI',
+      status: val
+    };
+    this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
-    });
+      });
   }
   sendCBSAFn() {
     this.apiService
-      .getData('ACIeManifest/CBSAdetails/' + this.entryID).subscribe((result: any) => {
+      .getData('eManifests/ACI/CBSAdetails/' + this.manifestID).subscribe((result: any) => {
         // this.sendBorderConnectOption = result;
         // if (this.sendBorderConnectOption === true) {
         //   const val = 'Queued';
-        //   const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.entryID + '/' + val).subscribe((result: any) => {
+        //   const setStatus: any = this.apiService.getData('ACIeManifest/setStatus/' + this.manifestID + '/' + val).subscribe((result: any) => {
         //     this.toastr.success('Status Updated Successfully!');
         //      this.currentStatus = val;
         //   });
@@ -350,9 +363,9 @@ export class AciDetailsComponent implements OnInit {
   }
   amendManifest() {
     const amend = true;
-  this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.entryID + `?amendManifest=` + amend);
+  this.router.navigateByUrl('/dispatch/cross-border/ACI-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
   }
-  cancelManifest(entryID) {
-    this.apiService.getData(`ACIeManifest/cancelManifest/` + entryID).subscribe();
+  cancelManifest(manifestID) {
+    this.apiService.getData(`eManifests/ACImanifest/cancelManifest/` + manifestID).subscribe();
   }
 }

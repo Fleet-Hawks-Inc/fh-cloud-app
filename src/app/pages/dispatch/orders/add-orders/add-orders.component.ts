@@ -39,7 +39,7 @@ export class AddOrdersComponent implements OnInit {
   pageTitle = "Add Order";
   private readonly search: any;
   public searchTerm = new Subject<string>();
-  public searchResults: any;
+  public searchResults: any='';
   public searchResults1: any;
   public readonly apiKey = environment.mapConfig.apiKey;
   time: NgbTimeStruct = { hour: 13, minute: 30, second: 30 };
@@ -75,8 +75,8 @@ export class AddOrdersComponent implements OnInit {
     stateTaxID: "",
     customerID: "",
     orderNumber: "",
-    creationDate: moment().format('YYYY-MM-DD'),
-    creationTime: moment().format('HH:mm'),
+    createdDate: "",
+    createdTime: "",
     customerPO: "",
     reference: "",
     phone: "",
@@ -85,7 +85,6 @@ export class AddOrdersComponent implements OnInit {
     TotalAgreedAmount: "",
     ShipperDetails: "",
     ConsigneeDetails: "",
-
     Customer: "",
     Reference: "",
     csa: "",
@@ -387,6 +386,7 @@ export class AddOrdersComponent implements OnInit {
     this.listService.fetchCustomers();
     this.fetchAssetTypes();
 
+
     $(document).ready(() => {
       this.form = $("#form_").validate();
 
@@ -455,16 +455,30 @@ export class AddOrdersComponent implements OnInit {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap((term) => {
+          
+          if(term!=undefined){
           return this.HereMap.searchEntries(term);
+        }
+        else{
+          return ' '
+        }
         }),
         catchError((e) => {
           return throwError(e);
         })
       )
       .subscribe((res) => {
+
         this.searchResults = res;
         this.searchResults1 = res;
+        
       });
+  }
+  resetSearch(){
+    if(this.searchResults.length>0){
+    
+    this.searchResults=[]
+    }
   }
 
   driverLoadChange(i, value){
@@ -556,8 +570,9 @@ export class AddOrdersComponent implements OnInit {
       maxTemprature: this.shippersReceivers[i].shippers.maxTemprature,
       maxTempratureUnit: this.shippersReceivers[i].shippers.maxTempratureUnit,
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
-      position: geoCodeResponse.position,
+
     };
+    currentShipper.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
     // this.orderData.shipperInfo.push(currentShipper);
     if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].shippers = [];
@@ -653,8 +668,8 @@ export class AddOrdersComponent implements OnInit {
       maxTemprature: this.shippersReceivers[i].receivers.maxTemprature,
       maxTempratureUnit: this.shippersReceivers[i].receivers.maxTempratureUnit,
       driverUnload: this.shippersReceivers[i].receivers.driverUnload,
-      position: geoCodeResponse.position,
     };
+    currentReceiver.position= (geoCodeResponse!=undefined)?geoCodeResponse.position:'';
     // this.orderData.receiverInfo.push(currentReceiver);
     if (this.finalShippersReceivers[i] == undefined) {
       this.finalShippersReceivers[i].receivers = [];
@@ -950,8 +965,6 @@ export class AddOrdersComponent implements OnInit {
       !this.orderData.customerID ||
       !this.orderData.customerPO ||
       !this.orderData.orderNumber ||
-      !this.orderData.creationDate ||
-      !this.orderData.creationTime ||
       !this.orderData.charges.freightFee.type ||
       !this.orderData.charges.freightFee.amount ||
       !this.orderData.charges.freightFee.currency ||
@@ -994,12 +1007,12 @@ export class AddOrdersComponent implements OnInit {
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
-        let newloc = h.dropOffLocation.replace(",", "");
+        let newloc = h.dropOffLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
 
       element.shippers.map((h:any) => {
-        let newloc = h.pickupLocation.replace(",", "");
+        let newloc = h.pickupLocation.replace(/,/g, "");
         selectedLoc += newloc.toLowerCase() + '|';
       })
     }
@@ -1345,8 +1358,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["orderStatus"] = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
-        this.orderData["creationDate"] = result.creationDate;
-        this.orderData["creationTime"] = result.creationTime;
+        this.orderData["createdDate"] = result.createdDate;
+        this.orderData["createdTime"] = result.createdTime;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -1745,8 +1758,14 @@ export class AddOrdersComponent implements OnInit {
 
   // delete uploaded images and documents
   delete(type: string, name: string, index) {
-    this.apiService.deleteData(`orders/uploadDelete/${this.getOrderID}/${type}/${name}`).subscribe((result: any) => {
-      // this.fetchAssetByID();
+    let record = {
+      eventID: this.getOrderID,
+      type: type,
+      name: name,
+      date: this.orderData.createdDate,
+      time: this.orderData.createdTime 
+    }
+    this.apiService.postData(`orders/uploadDelete`, record).subscribe((result: any) => {
       this.orderAttachments.splice(index, 1);
     });
   }

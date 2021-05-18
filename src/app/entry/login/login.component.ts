@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   LoginAction() {
     this.hasError = false;
-    
+
     const data = JSON.stringify({'userName': this.email ,
       'password': this.password });
     this.apiService.getJwt('auth', data).
@@ -97,6 +97,8 @@ export class LoginComponent implements OnInit {
       // });
       await Auth.signIn(this.userName, this.password);
       const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+      localStorage.setItem('currentLoggedUserName', this.userName);
+      console.log('isActivatedUser', isActivatedUser)
       // if (!isActivatedUser.carrierID) {
       if (!isActivatedUser.carrierID) {
         this.hasError = true;
@@ -133,7 +135,7 @@ export class LoginComponent implements OnInit {
         //   // localStorage.setItem('vehicle', JSON.stringify(this.vehicle));
         // }
         localStorage.setItem('user', JSON.stringify(user));
-        
+
       }
     } catch (err) {
 

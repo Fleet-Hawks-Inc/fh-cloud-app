@@ -1,0 +1,17 @@
+.align-chart-items {
+  padding-top: 0px;
+}
+
+.grightbox2 {
+  padding-top: 25px;
+  padding-left: 50px;
+}
+
+canvas {
+  background-image: url("hosgrid.png");
+}
+
+.table th,
+.table td {
+  font-size: 12px;
+}

@@ -2020,3 +2020,39 @@ table.dataTable thead th, table.dataTable thead td {
 .adddriverpl {
   padding-left: 73px;
 }
+
+/* circles in trips and routes */
+.tripbarn{
+	height: 2px; width:100%;
+  position: relative;
+  top: 15px;
+  background: #cccccc;
+}
+
+.tripcirclen{
+  display: block; margin-left:35px;
+  background: #CCC;
+  color: #FFF;
+  line-height: 26px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 35px;
+  font-size: 13px;
+  text-indent: -1px;
+  border: 2px solid #CCC;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+}
+
+.tripcontentn{
+	display: inline-block;
+  margin-top:17px; margin-left: 20px;
+  min-width: 50px;
+  max-width: 75px;
+}
+
+.tripinfoscroll {
+  overflow-x: scroll; 
+  white-space: nowrap;
+}

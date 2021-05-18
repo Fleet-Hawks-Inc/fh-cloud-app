@@ -846,7 +846,7 @@ export class AddServiceComponent implements OnInit {
       location: this.serviceData.location,
       geoCords: this.serviceData.geoCords,
       uploadedPhotos: this.existingPhotos,
-      uploadedDocs:  this.existingDocs
+
     };
 
     console.log('data', data)
@@ -862,7 +862,7 @@ export class AddServiceComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
-
+    
     //append other fields
     formData.append('data', JSON.stringify(data));
     this.apiService.putData('serviceLogs/', formData, true).subscribe({

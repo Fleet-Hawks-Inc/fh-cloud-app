@@ -667,7 +667,7 @@
                           <button type="button" class="btn btn-default mr-2" routerLink="/fleet/inventory/list" >
                             Cancel
                           </button>
-                          <a href="javascript:;" *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Save</a>
+                          <button  *ngIf="!itemID" (click)="addInventory()" class="btn btn-success">Save</button>
                           <a href="javascript:;" *ngIf="itemID" (click)="updateInventory()" class="btn btn-success">Update</a>
                         </div>
                       </div>
@@ -698,6 +698,7 @@
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+      <form form #cInventory="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Inventory Category</h5>
         <button  type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -705,7 +706,7 @@
         </button>
       </div>
       <div class="modal-body text-dark" id="groupForm">
-        <form form>
+      
           <div class="form-row">
             <div class="form-group col-lg-12">
               <label class="control-label font-weight-bold"
@@ -715,8 +716,16 @@
                 class="form-control"
                 [(ngModel)]="groupName"
                 name="groupName"
-                placeholder="eg. Raw Materials"
+                placeholder="eg. Raw Materials" #inventory="ngModel" required pattern="^[a-zA-Z\s]+$"
               />
+              <div *ngIf="inventory.invalid && (inventory.dirty || inventory.touched)" class="text-danger">
+                <div *ngIf="inventory.errors.required">
+                  Category Name is required.
+                </div>     
+                <div *ngIf="inventory.errors.pattern">
+                       Category Name must contains uppercase, lowercase and special characters for period(space) only.
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-row">
@@ -747,7 +756,7 @@
               </p>
             </div>
           </div>
-        </form>
+       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
@@ -758,10 +767,11 @@
           class="btn btn-success"
           [routerLink]=""
           (click)="addGroup()"
-        >
+        [disabled]="!cInventory.form.valid">
           Save
         </button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -776,6 +786,7 @@
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+      <form id="warehoseForm" #warehouseForm="ngForm">
       <div class="modal-header">
         <h5 class="modal-title">Add Warehouse</h5>
         <button
@@ -789,14 +800,22 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-        <form id="warehoseForm">
+        
           <div class="form-row">
             <div class="form-group col-lg-12">
               <label class="control-label font-weight-bold"
                 >Warehouse Name <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
               >
               <input type="text" class="form-control"  name="warehouseName" placeholder="Enter warehouse name"
-              [(ngModel)]="warehouseName"/>
+              [(ngModel)]="warehouseName" #aWarehouse="ngModel" required pattern="^[a-zA-Z\s]+$"/>
+              <div *ngIf="aWarehouse.invalid && (aWarehouse.dirty || aWarehouse.touched)" class="text-danger">
+                <div *ngIf="aWarehouse.errors.required">
+                  Warehouse Name is required.
+                </div>     
+                <div *ngIf="aWarehouse.errors.pattern">
+                       Warehouse Name must contains uppercase, lowercase and special characters for period(space) only.
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-row pt-3">
@@ -816,13 +835,19 @@
                   name="countryID"
                   [(ngModel)]="countryID"
                   (change)="getStates()"
-                  placeholder="Select country"
+                  placeholder="Select country" #sltI="ngModel" required
                 >
                   <optgroup label="Select Country">
                     <ng-option *ngFor="let country of countries" value="{{country.countryID}}">{{country.countryName}}</ng-option>
 
                   </optgroup>
                 </ng-select>
+                <div *ngIf="sltI.invalid && (sltI.dirty || sltI.touched)" class="text-danger">
+                  <div *ngIf="sltI.errors.required">
+                    Select valid country from the list is required.
+                  </div>     
+                  
+                </div>
                 </div>
                 <div class="col-lg-6">
                   <label
@@ -835,7 +860,7 @@
                   name="stateID"
                   [(ngModel)]="stateID"
                   (change)="getCities()"
-                  placeholder="Select Province"
+                  placeholder="Select Province" #sltP="ngModel" required
                 >
                   <optgroup label="Select State">
 
@@ -843,6 +868,12 @@
 
                   </optgroup>
                 </ng-select>
+                <div *ngIf="sltP.invalid && (sltP.dirty || sltP.touched)" class="text-danger">
+                  <div *ngIf="sltP.errors.required">
+                    Select valid province from the list is required.
+                  </div>     
+                  
+                </div>
                 </div>
               </div>
               <div class="row">
@@ -856,13 +887,19 @@
                   class="form-control populate"
                   name="cityID"
                   [(ngModel)]="cityID"
-                  placeholder="Select city"
+                  placeholder="Select city" #sltC="ngModel" required
                 >
                   <optgroup label="Select City">
                     <ng-option *ngFor="let city of cities" value="{{city.cityID}}">{{city.cityName}}</ng-option>
 
                   </optgroup>
                 </ng-select>
+                <div *ngIf="sltC.invalid && (sltC.dirty || sltC.touched)" class="text-danger">
+                  <div *ngIf="sltC.errors.required">
+                   Select valid city from the list is required.
+                  </div>     
+                  
+                </div>
                 </div>
                 <div class="col-lg-6">
                   <label
@@ -870,7 +907,15 @@
                     >Zip Code <span class="mandfield text-2 ml-1"><sup>*</sup></span></label
                   >
                   <input type="text" class="form-control"  name="zipCode"
-                  [(ngModel)]="zipCode" placeholder="Enter zip code"/>
+                  [(ngModel)]="zipCode" placeholder="Enter zip code" #cCode="ngModel" required pattern="^[a-zA-Z0-9\s]+$"/>
+                  <div *ngIf="cCode.invalid && (cCode.dirty || cCode.touched)" class="text-danger">
+                    <div *ngIf="cCode.errors.required">
+                      Zip Code is required.
+                    </div>     
+                    <div *ngIf="cCode.errors.pattern">
+                           Zip Code must contains uppercase, lowercase, numbers and special characters for period(space) only.
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -879,7 +924,15 @@
                     class="control-label font-weight-bold text-lg-right pt-2"
                     >Street Address <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <input type="text" class="form-control"  name="address"
-                  [(ngModel)]="address" placeholder="eg. 01, Business Hub Center "/>
+                  [(ngModel)]="address" placeholder="eg. 01, Business Hub Center " #sAddress="ngModel" required pattern="^[a-zA-Z0-9\s\-\,\&\/]+$"/>
+                  <div *ngIf="sAddress.invalid && (sAddress.dirty || sAddress.touched)" class="text-danger">
+                    <div *ngIf="sAddress.errors.required">
+                      Street Address  is required.
+                    </div>     
+                    <div *ngIf="sAddress.errors.pattern">
+                           Street Address must contains uppercase, lowercase, numbers and special characters for period(space,&,-,',') only.
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -892,15 +945,16 @@
               </p>
             </div>
           </div>
-        </form>
+       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
           Cancel
         </button>
         <button type="button" class="btn btn-success" [routerLink]=""
-        (click)="addWarehouse()">Save</button>
+        (click)="addWarehouse()" [disabled]="!warehouseForm.form.valid">Save</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
