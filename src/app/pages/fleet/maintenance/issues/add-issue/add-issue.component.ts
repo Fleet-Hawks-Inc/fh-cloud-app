@@ -179,7 +179,7 @@ export class AddIssueComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -330,7 +330,7 @@ setSrcValue(){
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
